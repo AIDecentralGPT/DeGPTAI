@@ -1,0 +1,94 @@
+{
+  "name": "i18next-resources-to-backend",
+  "version": "1.2.0",
+  "description": "This package helps to transform resources to an i18next backend",
+  "keywords": [
+    "i18next",
+    "i18next-backend",
+    "i18next-chained-backend"
+  ],
+  "homepage": "https://github.com/i18next/i18next-resources-to-backend",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:i18next/i18next-resources-to-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/i18next/i18next-resources-to-backend/issues"
+  },
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/umd/i18nextResourcesToBackend.js",
+  "types": "./index.d.mts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": {
+        "require": "./dist/cjs/index.d.ts",
+        "import": "./dist/esm/index.d.mts"
+      },
+      "module": "./dist/esm/index.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./cjs": {
+      "types": "./dist/cjs/index.d.ts",
+      "default": "./dist/cjs/index.js"
+    },
+    "./esm": {
+      "types": "./dist/esm/index.d.mts",
+      "default": "./dist/esm/index.js"
+    },
+    "./src": {
+      "default": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "lint:javascript": "eslint .",
+    "lint:typescript": "eslint -c .ts.eslintrc *.d.ts *.d.mts test/types/**/*.test-d.ts",
+    "lint": "npm run lint:javascript && npm run lint:typescript",
+    "build": "rm -rf dist && rollup -c && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json && cp index.d.ts dist/cjs/index.d.ts && cp index.d.ts dist/esm/index.d.ts && cp index.d.mts dist/esm/index.d.mts",
+    "test:deno": "deno test test/deno/*.ts --reload --no-check",
+    "test:typescript": "tsd",
+    "test": "npm run lint && mocha --colors --reporter spec --recursive test/*.js",
+    "test:all": "npm run test && npm run test:typescript && npm run test:deno",
+    "preversion": "npm run test && npm run build && git push",
+    "postversion": "git push && git push --tags"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime": "^7.23.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/plugin-transform-runtime": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/mocha": "^10.0.4",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "eslint": "^8.53.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.3.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-require-path-exists": "^1.1.9",
+    "eslint-plugin-standard": "^5.0.0",
+    "i18next": "^23.7.1",
+    "i18next-chained-backend": "^4.6.2",
+    "mocha": "^10.2.0",
+    "rollup": "^4.3.0",
+    "should": "^13.2.3",
+    "sinon": "^17.0.1",
+    "tsd": "^0.29.0",
+    "typescript": "^5.2.2"
+  },
+  "tsd": {
+    "directory": "test/types"
+  }
+}
