@@ -1,0 +1,78 @@
+# SERVER_HOST：您服务器的IP地址或域名。
+# SERVER_USER：SSH登录用户名。
+# SERVER_PASSWORD：SSH登录密码。（推荐使用SSH密钥对认证代替密码）
+# DOCKER_PASSWORD
+# DOCKER_USERNAME
+
+name: Deploy to Server # 定义工作流程的名称
+
+on: # 定义触发工作流程的事件
+  push: # 当代码被推送时
+    branches: # 指定触发工作流程的分支
+      - main # 只有main分支的推送才会触发此工作流程
+
+jobs: # 定义需要执行的工作
+  build: # 工作的标识符，这里是构建工作
+    runs-on: ubuntu-latest # 指定运行环境为最新版本的Ubuntu虚拟环境
+    steps: # 定义执行的步骤
+      - name: Checkout code # 步骤名称
+        uses: actions/checkout@v2 # 使用GitHub Action官方提供的actions/checkout@v2动作，用于检出仓库代码
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        # run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+
+
+      - name: Build and Push Docker image # 步骤名称
+        uses: docker/build-push-action@v5 # 使用docker/build-push-action@v2动作，用于构建并推送Docker镜像
+        with: # 传递给动作的参数
+          # username: ${{ secrets.DOCKER_USERNAME }}
+          # password: ${{ secrets.DOCKER_PASSWORD }}
+
+          push: true # 推送镜像到Docker Hub
+          tags: jiangxiaoyu66/open-webui:latest # 设置镜像的标签
+
+
+      - name: Deploy to Server # 步骤名称
+        uses: appleboy/ssh-action@master # 使用appleboy/ssh-action@master动作，用于通过SSH连接到服务器
+        with: # 传递给动作的参数
+          host: ${{ secrets.SERVER_HOST }} # 服务器的IP地址或域名
+          username: ${{ secrets.SERVER_USER }} # SSH登录用户名
+          password: ${{ secrets.SERVER_PASSWORD }} # SSH登录密码
+          script: | # 通过SSH执行的脚本
+
+            # docker pull jiangxiaoyu66/open-webui:latest # 拉取最新的Docker镜像
+            # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
+            # docker run -p 3000:3000 -d  --rm  --name open-webui jiangxiaoyu66/open-webui:latest # 运行Docker容器
+            # docker logs open-webui
+
+            docker pull jiangxiaoyu66/open-webui:latest # 拉取最新的Docker镜像
+            # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
+            if [ "$(docker ps -q -f name=open-webui)" ]; then
+              docker stop open-webui # 停止运行中的容器
+            fi
+
+            docker rm open-webui || true # 删除容器，如果容器不存在则忽略错误
+            docker run -p 3000:8080 -d --rm --name open-webui jiangxiaoyu66/open-webui:latest # 运行Docker容器
+            # docker images -q | tail -n +4 | xargs docker rmi # 删除除前三个以外的所有Docker镜像
+
+
+# 注释解释
+# docker run --rm -d --name open-webui jiangxiaoyu66/open-webui:latest
+# --rm: 容器退出时自动清理容器文件系统
+# -d: 后台运行容器
+# --name open-webui: 为容器指定一个名称
+# jiangxiaoyu66/open-webui:latest: 使用的镜像及其标签
+
+
+# 先提前到服务器安装docker并docker login
+
+# 步骤1：下载并运行Docker安装脚本
+# curl -fsSL https://get.docker.com -o get-docker.sh
+# sudo sh get-docker.sh
+
+# 步骤2：登录
+# docker login -u XXX  -p xxx
+
+
+

@@ -321,7 +321,7 @@
 						}
 						responseMessage.userContext = userContext;
 
-						if (model?.external) {
+						if (model?.external) { // 走openai接口
 							await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
 						} else if (model) {
 							await sendPromptOllama(model, prompt, responseMessageId, _chatId);
