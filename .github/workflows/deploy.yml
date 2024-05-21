@@ -11,6 +11,7 @@ on: # 定义触发工作流程的事件
     branches: # 指定触发工作流程的分支
       - main # 只有main分支的推送才会触发此工作流程
 
+      
 jobs: # 定义需要执行的工作
   build: # 工作的标识符，这里是构建工作
     runs-on: ubuntu-latest # 指定运行环境为最新版本的Ubuntu虚拟环境
