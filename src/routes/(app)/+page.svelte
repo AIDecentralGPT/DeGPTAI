@@ -220,6 +220,7 @@
 			await tick();
 
 			// Create new chat if only one message in messages
+			// 创建新chat
 			if (messages.length == 1) {
 				if ($settings.saveChatHistory ?? true) {
 					chat = await createNewChat(localStorage.token, {

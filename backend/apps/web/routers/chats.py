@@ -156,6 +156,7 @@ async def get_all_user_chats_in_db(user=Depends(get_admin_user)):
 
 @router.post("/new", response_model=Optional[ChatResponse])
 async def create_new_chat(form_data: ChatForm, user=Depends(get_current_user)):
+    print("create_new_chat")
     try:
         chat = Chats.insert_new_chat(user.id, form_data)
         return ChatResponse(**{**chat.model_dump(), "chat": json.loads(chat.chat)})
