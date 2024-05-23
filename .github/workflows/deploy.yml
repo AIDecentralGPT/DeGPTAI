@@ -45,7 +45,7 @@ jobs: # 定义需要执行的工作
             # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
             # docker run -p 3000:3000 -d  --rm  --name open-webui dianbobo202311/open-webui:latest # 运行Docker容器
             # docker logs open-webui
-
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
             docker pull dianbobo202311/open-webui:latest # 拉取最新的Docker镜像
             # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
             if [ "$(docker ps -q -f name=open-webui)" ]; then
