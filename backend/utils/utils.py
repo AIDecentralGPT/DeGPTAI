@@ -39,12 +39,28 @@ def get_password_hash(password):
 
 
 def create_token(data: dict, expires_delta: Union[timedelta, None] = None) -> str:
+    """
+    生成JWT Token
+    
+    Args:
+        data (dict): 包含JWT负载信息的字典
+        expires_delta (Union[timedelta, None], optional): Token过期时间差，默认为None。
+    
+    Returns:
+        str: 生成的JWT Token字符串
+    
+    """
+    # 复制传入的字典数据
     payload = data.copy()
 
+    # 如果传入了过期时间差
     if expires_delta:
+        # 计算过期时间
         expire = datetime.utcnow() + expires_delta
+        # 将过期时间加入到payload中
         payload.update({"exp": expire})
 
+    # 使用jwt库对payload进行编码生成JWT
     encoded_jwt = jwt.encode(payload, SESSION_SECRET, algorithm=ALGORITHM)
     return encoded_jwt
 
@@ -75,25 +91,42 @@ def get_http_authorization_cred(auth_header: str):
 
 
 def get_current_user(
+    # 传入HTTPAuthorizationCredentials类型的auth_token参数，默认为Depends(bearer_security)
     auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
 ):
     print("auth_token", auth_token)
+
+    # 根据API密钥进行认证
     # auth by api key
     if auth_token.credentials.startswith("sk-"):
+        # 调用get_current_user_by_api_key函数，传入auth_token.credentials作为参数，返回当前用户
         return get_current_user_by_api_key(auth_token.credentials)
+
+    # 解码token
     # auth by jwt token
     data = decode_token(auth_token.credentials)
+
+    # 如果解码后的数据不为空且包含"id"字段
     if data != None and "id" in data:
+        # 根据id获取用户
         user = Users.get_user_by_id(data["id"])
+
+        # 如果用户不存在
         if user is None:
+            # 抛出HTTP异常，状态码为401，错误详情为无效的token
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=ERROR_MESSAGES.INVALID_TOKEN,
             )
         else:
+            # 更新用户的最后活跃时间
             Users.update_user_last_active_by_id(user.id)
+
+        # 返回当前用户
         return user
+
     else:
+        # 抛出HTTP异常，状态码为401，错误详情为未授权
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=ERROR_MESSAGES.UNAUTHORIZED,

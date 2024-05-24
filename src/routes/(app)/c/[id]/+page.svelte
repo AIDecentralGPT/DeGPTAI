@@ -181,86 +181,93 @@
 	// Ollama functions
 	//////////////////////////
 
-	const submitPrompt = async (userPrompt, _user = null) => {
-		console.log('submitPrompt', $chatId);
+// 2. 点击提交按钮，触发检查
+const submitPrompt = async (userPrompt, _user = null) => {
+	console.log('submitPrompt', $chatId);
 
-		if (selectedModels.includes('')) {
-			toast.error($i18n.t('Model not selected'));
-		} else if (messages.length != 0 && messages.at(-1).done != true) {
-			// Response not done
-			console.log('wait');
-		} else if (
-			files.length > 0 &&
-			files.filter((file) => file.upload_status === false).length > 0
-		) {
-			// Upload not done
-			toast.error(
-				`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`
-			);
-		} else {
-			// Reset chat message textarea height
-			document.getElementById('chat-textarea').style.height = '';
+	// TODO： 要取消注释
+	// if (selectedModels.includes('')) {
+	// 	toast.error($i18n.t('Model not selected'));
+	// } else 
+	if (messages.length != 0 && messages.at(-1).done != true) {
+		// 响应未完成
+		console.log('wait');
+	} else if (
+		files.length > 0 &&
+		files.filter((file) => file.upload_status === false).length > 0
+	) {
+		// 上传未完成
+		toast.error(
+			`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`
+		);
+	} else {
+		// 重置聊天消息文本区高度
+		document.getElementById('chat-textarea').style.height = '';
 
-			// Create user message
-			let userMessageId = uuidv4();
-			let userMessage = {
-				id: userMessageId,
-				parentId: messages.length !== 0 ? messages.at(-1).id : null,
-				childrenIds: [],
-				role: 'user',
-				user: _user ?? undefined,
-				content: userPrompt,
-				files: files.length > 0 ? files : undefined,
-				timestamp: Math.floor(Date.now() / 1000), // Unix epoch
-				models: selectedModels
-			};
+		// 创建用户消息
+		let userMessageId = uuidv4();
+		let userMessage = {
+			id: userMessageId,
+			parentId: messages.length !== 0 ? messages.at(-1).id : null,
+			childrenIds: [],
+			role: 'user',
+			user: _user ?? undefined,
+			content: userPrompt,
+			files: files.length > 0 ? files : undefined,
+			timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+			models: selectedModels
+		};
 
-			// Add message to history and Set currentId to messageId
-			history.messages[userMessageId] = userMessage;
-			history.currentId = userMessageId;
+		// 将消息添加到历史记录并设置 currentId 为 messageId
+		history.messages[userMessageId] = userMessage;
+		history.currentId = userMessageId;
 
-			// Append messageId to childrenIds of parent message
-			if (messages.length !== 0) {
-				history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
-			}
-
-			// Wait until history/message have been updated
-			await tick();
-
-			// Create new chat if only one message in messages
-			if (messages.length == 1) {
-				if ($settings.saveChatHistory ?? true) {
-					chat = await createNewChat(localStorage.token, {
-						id: $chatId,
-						title: $i18n.t('New Chat'),
-						models: selectedModels,
-						system: $settings.system ?? undefined,
-						options: {
-							...($settings.options ?? {})
-						},
-						messages: messages,
-						history: history,
-						timestamp: Date.now()
-					});
-					await chats.set(await getChatList(localStorage.token));
-					await chatId.set(chat.id);
-				} else {
-					await chatId.set('local');
-				}
-				await tick();
-			}
-			// Reset chat input textarea
-			prompt = '';
-			files = [];
-
-			// Send prompt
-			await sendPrompt(userPrompt, userMessageId);
+		// 将 messageId 附加到父消息的 childrenIds 中
+		if (messages.length !== 0) {
+			history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
 		}
-	};
 
+		// 等待 history/message 更新完成
+		await tick();
+
+		// 如果 messages 中只有一条消息，则创建新的聊天
+		if (messages.length == 1) {
+			if ($settings.saveChatHistory ?? true) {
+				// 3\1. 创建新的会话
+				chat = await createNewChat(localStorage.token, {
+					id: $chatId,
+					title: $i18n.t('New Chat'),
+					models: selectedModels,
+					system: $settings.system ?? undefined,
+					options: {
+						...($settings.options ?? {})
+					},
+					messages: messages,
+					history: history,
+					timestamp: Date.now()
+				});
+				await chats.set(await getChatList(localStorage.token));
+				await chatId.set(chat.id);
+			} else {
+				await chatId.set('local');
+			}
+			await tick();
+		}
+		// 重置聊天输入文本区
+		prompt = '';
+		files = [];
+
+		// 发送提示
+		await sendPrompt(userPrompt, userMessageId);
+	}
+};
+
+	// 3\2. 继续聊天会话
 	const sendPrompt = async (prompt, parentId, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 
+
+		// 对每个模型都做请求
 		await Promise.all(
 			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
 				async (modelId) => {
@@ -268,7 +275,7 @@
 					const model = $models.filter((m) => m.id === modelId).at(0);
 
 					if (model) {
-						// Create response message
+						// 创建响应消息
 						let responseMessageId = uuidv4();
 						let responseMessage = {
 							parentId: parentId,
@@ -281,18 +288,18 @@
 							timestamp: Math.floor(Date.now() / 1000) // Unix epoch
 						};
 
-						// Add message to history and Set currentId to messageId
+						// 将消息添加到历史记录并设置 currentId 为 messageId
 						history.messages[responseMessageId] = responseMessage;
 						history.currentId = responseMessageId;
 
-						// Append messageId to childrenIds of parent message
+						// 将 messageId 附加到父消息的 childrenIds 中
 						if (parentId !== null) {
 							history.messages[parentId].childrenIds = [
 								...history.messages[parentId].childrenIds,
 								responseMessageId
 							];
 						}
-
+						// 等待 history/message 更新完成
 						await tick();
 
 						let userContext = null;
@@ -321,11 +328,14 @@
 						}
 						responseMessage.userContext = userContext;
 
-						if (model?.external) { // 走openai接口
-							await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
-						} else if (model) {
-							await sendPromptOllama(model, prompt, responseMessageId, _chatId);
-						}
+						// 4. 调试：先都走openai接口
+						await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
+
+						// if (model?.external) { // 走openai接口
+						// 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
+						// } else if (model) {
+						// 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
+						// }
 					} else {
 						toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
@@ -335,6 +345,7 @@
 
 		await chats.set(await getChatList(localStorage.token));
 	};
+
 
 	const sendPromptOllama = async (model, userPrompt, responseMessageId, _chatId) => {
 		model = model.id;
@@ -586,6 +597,7 @@
 		}
 	};
 
+	// 5. 给openai发请求
 	const sendPromptOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
 
@@ -675,6 +687,7 @@
 
 			scrollToBottom();
 
+			// 6. 创建openai对话数据流
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 

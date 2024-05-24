@@ -201,6 +201,8 @@ def get_config_value(config_path: str):
 T = TypeVar("T")
 
 
+# 持久配置
+#  "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "-1")
 class PersistentConfig(Generic[T]):
     def __init__(self, env_name: str, config_path: str, env_value: T):
         self.env_name = env_name
@@ -271,8 +273,10 @@ WEBUI_AUTH = os.environ.get("WEBUI_AUTH", "True").lower() == "true"
 WEBUI_AUTH_TRUSTED_EMAIL_HEADER = os.environ.get(
     "WEBUI_AUTH_TRUSTED_EMAIL_HEADER", None
 )
+# 过期时长
 JWT_EXPIRES_IN = PersistentConfig(
-    "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "-1")
+    "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "7d")
+    # "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "-1")
 )
 
 ####################################
@@ -831,5 +835,5 @@ LITELLM_PROXY_HOST = os.getenv("LITELLM_PROXY_HOST", "127.0.0.1")
 ####################################
 
 # DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DATA_DIR}/webui.db")
-DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:Cont23ent-by4law5-sigh111t-roast@43.242.202.166/my_webui_db")
+DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:Jxyyidingyaojicanghai666!__!@43.242.202.166/my_webui_db")
 

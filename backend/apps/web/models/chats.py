@@ -38,6 +38,7 @@ class ChatModel(BaseModel):
 
     created_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
+    
 
     share_id: Optional[str] = None
     archived: bool = False
@@ -80,21 +81,39 @@ class ChatTable:
         db.create_tables([Chat])
 
     def insert_new_chat(self, user_id: str, form_data: ChatForm) -> Optional[ChatModel]:
+        # 生成一个随机的UUID作为聊天ID
         id = str(uuid.uuid4())
+
+        # 创建一个ChatModel对象，并将相关信息赋值给该对象
         chat = ChatModel(
             **{
+                # 聊天ID
                 "id": id,
+                # 用户ID
                 "user_id": user_id,
+                # 聊天标题，如果form_data.chat中不包含"title"，则默认为"New Chat"
                 "title": (
                     form_data.chat["title"] if "title" in form_data.chat else "New Chat"
                 ),
+                # 将form_data.chat转换为JSON字符串作为聊天内容
                 "chat": json.dumps(form_data.chat),
+                # 创建时间，取当前时间戳
                 "created_at": int(time.time()),
+                # 更新时间，取当前时间戳
                 "updated_at": int(time.time()),
             }
         )
+        print("112",chat)
 
-        result = Chat.create(**chat.model_dump())
+        # 调用Chat的create方法创建新的聊天记录，并返回结果
+        try:
+            result = Chat.create(**chat.model_dump()) # **是用来解构的
+        except Exception as e:
+            print(1, e)
+            
+        print("result", result)
+
+        # 如果创建成功，返回chat对象，否则返回None
         return chat if result else None
 
     def update_chat_by_id(self, id: str, chat: dict) -> Optional[ChatModel]:

@@ -105,11 +105,16 @@ async def update_password(
 
 @router.post("/signin", response_model=SigninResponse)
 async def signin(request: Request, form_data: SigninForm):
+    # 检查是否启用了基于信任头的 WebUI 认证
     if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
+        # 检查请求头中是否包含信任头
         if WEBUI_AUTH_TRUSTED_EMAIL_HEADER not in request.headers:
+            print(1)
             raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_TRUSTED_HEADER)
 
+        # 获取信任头中的邮箱并转为小写
         trusted_email = request.headers[WEBUI_AUTH_TRUSTED_EMAIL_HEADER].lower()
+        # 检查用户是否存在，如果不存在则进行注册
         if not Users.get_user_by_email(trusted_email.lower()):
             await signup(
                 request,
@@ -117,26 +122,37 @@ async def signin(request: Request, form_data: SigninForm):
                     email=trusted_email, password=str(uuid.uuid4()), name=trusted_email
                 ),
             )
+
+        # 通过信任头邮箱进行用户认证
         user = Auths.authenticate_user_by_trusted_header(trusted_email)
+    # 检查是否禁用了 WebUI 认证
     elif WEBUI_AUTH == False:
         admin_email = "admin@localhost"
         admin_password = "admin"
+        print(2)
 
+        # 检查管理员账号是否存在
         if Users.get_user_by_email(admin_email.lower()):
+            # 管理员账号存在，进行认证
             user = Auths.authenticate_user(admin_email.lower(), admin_password)
         else:
+            # 管理员账号不存在，检查是否有其他用户
             if Users.get_num_users() != 0:
                 raise HTTPException(400, detail=ERROR_MESSAGES.EXISTING_USERS)
 
+            # 没有其他用户，进行管理员账号注册
             await signup(
                 request,
                 SignupForm(email=admin_email, password=admin_password, name="User"),
             )
 
+            # 注册完成后，再次进行认证
             user = Auths.authenticate_user(admin_email.lower(), admin_password)
     else:
+        # 使用表单中的邮箱和密码进行用户认证
         user = Auths.authenticate_user(form_data.email.lower(), form_data.password)
 
+    # 如果认证成功，则生成令牌并返回用户信息
     if user:
         token = create_token(
             data={"id": user.id},
@@ -153,6 +169,8 @@ async def signin(request: Request, form_data: SigninForm):
             "profile_image_url": user.profile_image_url,
         }
     else:
+        # 如果认证失败，则打印日志并返回错误提示
+        print(3)
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
 
 

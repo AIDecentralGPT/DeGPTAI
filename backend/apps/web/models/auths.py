@@ -122,19 +122,29 @@ class AuthsTable:
         else:
             return None
 
+    # 验证用户
     def authenticate_user(self, email: str, password: str) -> Optional[UserModel]:
+        # 记录日志，打印要验证的用户邮箱
         log.info(f"authenticate_user: {email}")
         try:
+            # 根据邮箱和活动状态查询Auth表中的记录
             auth = Auth.get(Auth.email == email, Auth.active == True)
             if auth:
+                # 如果找到了匹配的Auth记录
+                # 验证密码是否正确
                 if verify_password(password, auth.password):
+                    # 如果密码验证通过，根据Auth记录的id查询Users表中的用户信息
                     user = Users.get_user_by_id(auth.id)
+                    # 返回用户信息
                     return user
                 else:
+                    # 如果密码验证失败，返回None
                     return None
             else:
+                # 如果没有找到匹配的Auth记录，返回None
                 return None
         except:
+            # 如果发生异常，返回None
             return None
 
     def authenticate_user_by_api_key(self, api_key: str) -> Optional[UserModel]:

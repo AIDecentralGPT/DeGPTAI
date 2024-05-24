@@ -174,9 +174,11 @@
 			$models.map((m) => m.id).includes(modelId) ? modelId : ''
 		);
 
-		if (selectedModels.includes('')) {
-			toast.error($i18n.t('Model not selected'));
-		} else if (messages.length != 0 && messages.at(-1).done != true) {
+	// TODO： 要取消注释
+	// if (selectedModels.includes('')) {
+	// 	toast.error($i18n.t('Model not selected'));
+	// } else 
+		if (messages.length != 0 && messages.at(-1).done != true) {
 			// Response not done
 			console.log('wait');
 		} else if (
@@ -253,6 +255,7 @@
 		}
 	};
 
+	// 发送prompt
 	const sendPrompt = async (prompt, parentId, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 
@@ -262,7 +265,9 @@
 					console.log('modelId', modelId);
 					const model = $models.filter((m) => m.id === modelId).at(0);
 
-					if (model) {
+					// TODO 先注释,回头要还原if(model) 
+					// if (model) {
+					if (true) {
 						// Create response message
 						let responseMessageId = uuidv4();
 						let responseMessage = {
@@ -316,7 +321,9 @@
 						}
 						responseMessage.userContext = userContext;
 
-						if (model?.external) {
+						
+						// TODO 先注释，还原：if (model?.external) {
+						if (true) {
 							await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
 						} else if (model) {
 							await sendPromptOllama(model, prompt, responseMessageId, _chatId);
@@ -660,7 +667,7 @@
 					docs: docs.length > 0 ? docs : undefined,
 					citations: docs.length > 0
 				},
-				model?.source?.toLowerCase() === 'litellm'
+				model?.source?.toLowerCase() === 'litellm' // litellm是OpenAI 代理服务器
 					? `${LITELLM_API_BASE_URL}/v1`
 					: `${OPENAI_API_BASE_URL}`
 			);
@@ -813,6 +820,7 @@
 		}
 	};
 
+	// 继续生成
 	const continueGeneration = async () => {
 		console.log('continueGeneration');
 		const _chatId = JSON.parse(JSON.stringify($chatId));
