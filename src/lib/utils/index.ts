@@ -162,7 +162,7 @@ export const generateInitialsImage = (name) => {
 		return '/user.png';
 	}
 
-	ctx.fillStyle = '#F39C12';
+	ctx.fillStyle = '#b78e55';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	ctx.fillStyle = '#FFFFFF';

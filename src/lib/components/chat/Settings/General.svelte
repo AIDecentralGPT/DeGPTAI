@@ -15,7 +15,8 @@
 
 	// General
 	let themes = ['dark', 'light', 'rose-pine dark', 'rose-pine-dawn light', 'oled-dark'];
-	let selectedTheme = 'system';
+	// let selectedTheme = 'system';
+	let selectedTheme = 'dark';
 
 	let languages = [];
 	let lang = $i18n.language;
@@ -69,7 +70,9 @@
 	};
 
 	onMount(async () => {
-		selectedTheme = localStorage.theme ?? 'system';
+		selectedTheme = localStorage.theme ?? 'dark';
+		console.log("localStorage.theme", localStorage.theme);
+		
 
 		let settings = JSON.parse(localStorage.getItem('settings') ?? '{}');
 		languages = await getLanguages();
@@ -178,7 +181,7 @@
 						href="https://github.com/open-webui/open-webui/blob/main/docs/CONTRIBUTING.md#-translations-and-internationalization"
 						target="_blank"
 					>
-						Help us translate Open WebUI!
+						Help us translate DeGPT!
 					</a>
 				</div>
 			{/if}
@@ -296,7 +299,7 @@
 
 	<div class="flex justify-end pt-3 text-sm font-medium">
 		<button
-			class="  px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-gray-100 transition rounded-lg"
+			class="  px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
 			on:click={() => {
 				saveSettings({
 					system: system !== '' ? system : undefined,

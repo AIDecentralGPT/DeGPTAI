@@ -129,6 +129,7 @@ class AuthsTable:
         try:
             # 根据邮箱和活动状态查询Auth表中的记录
             auth = Auth.get(Auth.email == email, Auth.active == True)
+            print("auth", auth)
             if auth:
                 # 如果找到了匹配的Auth记录
                 # 验证密码是否正确
@@ -143,7 +144,8 @@ class AuthsTable:
             else:
                 # 如果没有找到匹配的Auth记录，返回None
                 return None
-        except:
+        except Exception as e:
+            print("authenticate_user Exception", e)
             # 如果发生异常，返回None
             return None
 

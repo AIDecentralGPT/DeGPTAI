@@ -9,13 +9,14 @@
 		<link
 			rel="search"
 			type="application/opensearchdescription+xml"
-			title="Open WebUI"
+			title="DeGPT"
 			href="/opensearch.xml"
 		/>
 
 		<script>
 			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
 			(() => {
+				console.log("localStorage?.theme", localStorage?.theme);
 				if (localStorage?.theme && localStorage?.theme.includes('oled')) {
 					document.documentElement.style.setProperty('--color-gray-900', '#000000');
 					document.documentElement.style.setProperty('--color-gray-950', '#000000');
@@ -24,7 +25,7 @@
 					localStorage.theme === 'light' ||
 					(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)
 				) {
-					document.documentElement.classList.add('light');
+					document.documentElement.classList.add('dark');
 				} else if (localStorage.theme && localStorage.theme !== 'system') {
 					localStorage.theme.split(' ').forEach((e) => {
 						document.documentElement.classList.add(e);
@@ -50,7 +51,7 @@
 			})();
 		</script>
 
-		<title>Open WebUI</title>
+		<title>DeGPT</title>
 
 		%sveltekit.head%
 	</head>

@@ -63,10 +63,13 @@ async def update_profile(
     form_data: UpdateProfileForm, session_user=Depends(get_current_user)
 ):
     if session_user:
-        user = Users.update_user_by_id(
-            session_user.id,
-            {"profile_image_url": form_data.profile_image_url, "name": form_data.name},
-        )
+        try:
+            user = Users.update_user_by_id(
+                session_user.id,
+                {"profile_image_url": form_data.profile_image_url, "name": form_data.name},
+            )
+        except Exception as e:
+            print("update_profile", e)
         if user:
             return user
         else:
@@ -107,6 +110,7 @@ async def update_password(
 async def signin(request: Request, form_data: SigninForm):
     # 检查是否启用了基于信任头的 WebUI 认证
     if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
+        print("检查是否启用了基于信任头的 WebUI 认证")
         # 检查请求头中是否包含信任头
         if WEBUI_AUTH_TRUSTED_EMAIL_HEADER not in request.headers:
             print(1)
@@ -127,6 +131,7 @@ async def signin(request: Request, form_data: SigninForm):
         user = Auths.authenticate_user_by_trusted_header(trusted_email)
     # 检查是否禁用了 WebUI 认证
     elif WEBUI_AUTH == False:
+        print("检查是否禁用了 WebUI 认证")
         admin_email = "admin@localhost"
         admin_password = "admin"
         print(2)
@@ -151,6 +156,7 @@ async def signin(request: Request, form_data: SigninForm):
     else:
         # 使用表单中的邮箱和密码进行用户认证
         user = Auths.authenticate_user(form_data.email.lower(), form_data.password)
+        print("使用表单中的邮箱和密码进行用户认证", user)
 
     # 如果认证成功，则生成令牌并返回用户信息
     if user:

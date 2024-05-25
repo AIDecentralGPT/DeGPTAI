@@ -111,3 +111,15 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
 	-moz-appearance: textfield; /* Firefox */
 }
+
+
+
+/* 按钮颜色 */
+.primaryButton {
+  background-color: rgba(184, 142, 86, 1);
+
+}
+
+.primaryButton:hover {
+	background-color: rgb(205 150 75)
+}
