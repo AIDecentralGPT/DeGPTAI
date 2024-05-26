@@ -36,6 +36,8 @@
 	export let selectedModels;
 	export let selectedModelfiles = [];
 
+	
+
 	$: if (autoScroll && bottomPadding) {
 		(async () => {
 			await tick();
@@ -242,9 +244,14 @@
 			history: history
 		});
 	};
+
+
+	console.log("Messages组件包含提问和回答：", history);
+
 </script>
 
 <div class="h-full flex mb-16">
+	<!-- {console.log("messages:",messages, "history" ,history)} -->
 	{#if messages.length == 0}
 		<Placeholder
 			models={selectedModels}
@@ -295,6 +302,7 @@
 								? 'max-w-full'
 								: 'max-w-5xl'} mx-auto rounded-lg group"
 						>
+						<!-- 角色是用户 -->
 							{#if message.role === 'user'}
 								<UserMessage
 									on:delete={() => messageDeleteHandler(message.id)}

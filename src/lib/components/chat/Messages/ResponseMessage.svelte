@@ -83,6 +83,8 @@
 		extensions: any;
 	};
 
+	
+
 	$: if (message) {
 		renderStyling();
 	}
@@ -330,7 +332,6 @@
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
-
 {#key message.id}
 	<div
 		class=" flex w-full message-{message.id}"

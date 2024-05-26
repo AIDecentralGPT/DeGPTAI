@@ -118,7 +118,7 @@
 
 	<div class="mt-2 flex justify-end">
 		<button
-			class=" bg-emerald-700 text-white text-sm font-medium rounded-lg px-3.5 py-1.5"
+			class=" primaryButton text-white text-sm font-medium rounded-lg px-3.5 py-1.5"
 			on:click={() => {
 				submitHandler();
 			}}

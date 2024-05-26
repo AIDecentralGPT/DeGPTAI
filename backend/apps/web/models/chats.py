@@ -111,7 +111,6 @@ class ChatTable:
         except Exception as e:
             print(1, e)
             
-        print("result", result)
 
         # 如果创建成功，返回chat对象，否则返回None
         return chat if result else None

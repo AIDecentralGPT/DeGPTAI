@@ -5,6 +5,7 @@ from config import SRC_LOG_LEVELS, DATA_DIR, DATABASE_URL
 import os
 import logging
 
+
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["DB"])
 

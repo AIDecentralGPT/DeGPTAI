@@ -1,26 +1,25 @@
 <script lang="ts">
-	import { v4 as uuidv4 } from 'uuid';
 	import { toast } from 'svelte-sonner';
+	import { v4 as uuidv4 } from 'uuid';
 
-	import { onMount, tick, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { getContext, onMount, tick } from 'svelte';
 
 	import {
-		models,
-		modelfiles,
-		user,
-		settings,
-		chats,
-		chatId,
-		config,
 		WEBUI_NAME,
 		tags as _tags,
-		showSidebar
+		chatId,
+		chats,
+		config,
+		modelfiles,
+		models,
+		settings,
+		showSidebar,
+		user
 	} from '$lib/stores';
 	import { copyToClipboard, splitStream } from '$lib/utils';
 
-	import { generateChatCompletion, cancelOllamaRequest } from '$lib/apis/ollama';
 	import {
 		addTagById,
 		createNewChat,
@@ -30,18 +29,24 @@
 		getTagsById,
 		updateChatById
 	} from '$lib/apis/chats';
-	import { queryCollection, queryDoc } from '$lib/apis/rag';
+	import { cancelOllamaRequest, generateChatCompletion } from '$lib/apis/ollama';
 	import { generateOpenAIChatCompletion, generateTitle } from '$lib/apis/openai';
+	import { generateDeOpenAIChatCompletion, generateDeTitle } from '$lib/apis/de';
+	import { queryCollection, queryDoc } from '$lib/apis/rag';
 
+	import { queryMemory } from '$lib/apis/memories';
+	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import MessageInput from '$lib/components/chat/MessageInput.svelte';
 	import Messages from '$lib/components/chat/Messages.svelte';
 	import ModelSelector from '$lib/components/chat/ModelSelector.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
+	import {
+		LITELLM_API_BASE_URL,
+		OLLAMA_API_BASE_URL,
+		OPENAI_API_BASE_URL,
+		WEBUI_BASE_URL
+	} from '$lib/constants';
 	import { RAGTemplate } from '$lib/utils/rag';
-	import { LITELLM_API_BASE_URL, OLLAMA_API_BASE_URL, OPENAI_API_BASE_URL } from '$lib/constants';
-	import { WEBUI_BASE_URL } from '$lib/constants';
-	import { createOpenAITextStream } from '$lib/apis/streaming';
-	import { queryMemory } from '$lib/apis/memories';
 
 	const i18n = getContext('i18n');
 
@@ -174,11 +179,9 @@
 			$models.map((m) => m.id).includes(modelId) ? modelId : ''
 		);
 
-	// TODO： 要取消注释
-	// if (selectedModels.includes('')) {
-	// 	toast.error($i18n.t('Model not selected'));
-	// } else 
-		if (messages.length != 0 && messages.at(-1).done != true) {
+		if (selectedModels.includes('')) {
+			toast.error($i18n.t('Model not selected'));
+		} else if (messages.length != 0 && messages.at(-1).done != true) {
 			// Response not done
 			console.log('wait');
 		} else if (
@@ -222,7 +225,6 @@
 			await tick();
 
 			// Create new chat if only one message in messages
-			// 创建新chat
 			if (messages.length == 1) {
 				if ($settings.saveChatHistory ?? true) {
 					chat = await createNewChat(localStorage.token, {
@@ -255,7 +257,6 @@
 		}
 	};
 
-	// 发送prompt
 	const sendPrompt = async (prompt, parentId, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 
@@ -265,9 +266,7 @@
 					console.log('modelId', modelId);
 					const model = $models.filter((m) => m.id === modelId).at(0);
 
-					// TODO 先注释,回头要还原if(model) 
-					// if (model) {
-					if (true) {
+					if (model) {
 						// Create response message
 						let responseMessageId = uuidv4();
 						let responseMessage = {
@@ -321,13 +320,14 @@
 						}
 						responseMessage.userContext = userContext;
 
-						
-						// TODO 先注释，还原：if (model?.external) {
-						if (true) {
-							await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
-						} else if (model) {
-							await sendPromptOllama(model, prompt, responseMessageId, _chatId);
-						}
+
+						await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
+
+						// if (model?.external) {
+						// 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
+						// } else if (model) {
+						// 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
+						// }
 					} else {
 						toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
@@ -339,6 +339,8 @@
 	};
 
 	const sendPromptOllama = async (model, userPrompt, responseMessageId, _chatId) => {
+		console.log("sendPromptOllama");
+		
 		model = model.id;
 		const responseMessage = history.messages[responseMessageId];
 
@@ -588,8 +590,180 @@
 		}
 	};
 
+	// De的openai走这里！
+	const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
+		const responseMessage = history.messages[responseMessageId];
+		console.log("sendPromptDeOpenAI", model, userPrompt, responseMessageId, _chatId);
+
+		const docs = messages
+			.filter((message) => message?.files ?? null)
+			.map((message) =>
+				message.files.filter((item) => item.type === 'doc' || item.type === 'collection')
+			)
+			.flat(1);
+
+		console.log(docs);
+
+		scrollToBottom();
+
+		try {
+			const [res, controller] = await generateDeOpenAIChatCompletion(
+				localStorage.token,
+				{
+					// 想要请求的模型名称
+					"model": model.id,
+					// 预设的系统助理行为模式和交替问答记录
+					// "messages": [
+					// 		{
+					// 				"role": "system",
+					// 				"content": "You are a helpful assistant."
+					// 		},
+					// 		{
+					// 				"role": "user",
+					// 				"content": userPrompt
+					// 		}
+					// ],
+					messages: [
+						$settings.system || (responseMessage?.userContext ?? null)
+							? {
+									role: 'system',
+									content: `${$settings?.system ?? ''}${
+										responseMessage?.userContext ?? null
+											? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join('\n')}`
+											: ''
+									}`
+							  }
+							: undefined,
+						...messages
+					]
+						.filter((message) => message)
+						.filter((message) => message.content != '')
+						.map((message, idx, arr) => ({
+							role: message.role,
+							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
+							message.role === 'user'
+								? {
+										content: [
+											{
+												type: 'text',
+												text:
+													arr.length - 1 !== idx
+														? message.content
+														: message?.raContent ?? message.content
+											},
+											...message.files
+												.filter((file) => file.type === 'image')
+												.map((file) => ({
+													type: 'image_url',
+													image_url: {
+														url: file.url
+													}
+												}))
+										]
+								  }
+								: {
+										content:
+											arr.length - 1 !== idx
+												? message.content
+												: message?.raContent ?? message.content
+								  })
+						})),
+			},
+			);
+
+			// Wait until history/message have been updated
+			await tick();
+
+			scrollToBottom();
+
+			if (res && res.ok && res.body) {
+				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
+
+				for await (const update of textStream) {
+					const { value, done, citations, error } = update;
+					if (error) {
+						await handleOpenAIError(error, null, model, responseMessage);
+						break;
+					}
+					if (done || stopResponseFlag || _chatId !== $chatId) {
+						responseMessage.done = true;
+						messages = messages;
+
+						if (stopResponseFlag) {
+							controller.abort('User: Stop Response');
+						}
+
+						break;
+					}
+
+					if (citations) {
+						responseMessage.citations = citations;
+						continue;
+					}
+
+					if (responseMessage.content == '' && value == '\n') {
+						continue;
+					} else {
+						responseMessage.content += value;
+						messages = messages;
+					}
+
+					if ($settings.notificationEnabled && !document.hasFocus()) {
+						const notification = new Notification(`OpenAI ${model}`, {
+							body: responseMessage.content,
+							icon: `${WEBUI_BASE_URL}/static/favicon.png`
+						});
+					}
+
+					if ($settings.responseAutoCopy) {
+						copyToClipboard(responseMessage.content);
+					}
+
+					if ($settings.responseAutoPlayback) {
+						await tick();
+						document.getElementById(`speak-button-${responseMessage.id}`)?.click();
+					}
+
+					if (autoScroll) {
+						scrollToBottom();
+					}
+				}
+
+				if ($chatId == _chatId) {
+					if ($settings.saveChatHistory ?? true) {
+						chat = await updateChatById(localStorage.token, _chatId, {
+							messages: messages,
+							history: history
+						});
+						await chats.set(await getChatList(localStorage.token));
+					}
+				}
+			} else {
+				await handleOpenAIError(null, res, model, responseMessage);
+			}
+		} catch (error) {
+			await handleOpenAIError(error, null, model, responseMessage);
+		}
+		messages = messages;
+
+		stopResponseFlag = false;
+		await tick();
+
+		if (autoScroll) {
+			scrollToBottom();
+		}
+
+		if (messages.length == 2) {
+			window.history.replaceState(history.state, '', `/c/${_chatId}`);
+
+			const _title = await generateDeChatTitle(userPrompt);
+			await setChatTitle(_chatId, _title);
+		}
+	};
+
 	const sendPromptOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
+		console.log("sendPromptOpenAI");
 
 		const docs = messages
 			.filter((message) => message?.files ?? null)
@@ -622,6 +796,7 @@
 						...messages
 					]
 						.filter((message) => message)
+						.filter((message) => message.content != '')
 						.map((message, idx, arr) => ({
 							role: message.role,
 							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
@@ -667,7 +842,7 @@
 					docs: docs.length > 0 ? docs : undefined,
 					citations: docs.length > 0
 				},
-				model?.source?.toLowerCase() === 'litellm' // litellm是OpenAI 代理服务器
+				model?.source?.toLowerCase() === 'litellm'
 					? `${LITELLM_API_BASE_URL}/v1`
 					: `${OPENAI_API_BASE_URL}`
 			);
@@ -820,7 +995,6 @@
 		}
 	};
 
-	// 继续生成
 	const continueGeneration = async () => {
 		console.log('continueGeneration');
 		const _chatId = JSON.parse(JSON.stringify($chatId));
@@ -833,25 +1007,61 @@
 			const model = $models.filter((m) => m.id === responseMessage.model).at(0);
 
 			if (model) {
-				if (model?.external) {
-					await sendPromptOpenAI(
-						model,
-						history.messages[responseMessage.parentId].content,
-						responseMessage.id,
-						_chatId
-					);
-				} else
-					await sendPromptOllama(
-						model,
-						history.messages[responseMessage.parentId].content,
-						responseMessage.id,
-						_chatId
-					);
+				await sendPromptDeOpenAI(
+					model,
+					history.messages[responseMessage.parentId].content,
+					responseMessage.id,
+					_chatId
+				);
+
+				// if (model?.external) {
+				// 	await sendPromptOpenAI(
+						// model,
+						// history.messages[responseMessage.parentId].content,
+						// responseMessage.id,
+						// _chatId
+				// 	);
+				// } else
+				// 	await sendPromptOllama(
+				// 		model,
+				// 		history.messages[responseMessage.parentId].content,
+				// 		responseMessage.id,
+				// 		_chatId
+				// 	);
 			}
 		} else {
 			toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 		}
 	};
+
+
+	const generateDeChatTitle = async (userPrompt) => {
+		if ($settings?.title?.auto ?? true) {
+			const model = $models.find((model) => model.id === selectedModels[0]);
+
+			const titleModelId =
+				model?.external ?? false
+					? $settings?.title?.modelExternal ?? selectedModels[0]
+					: $settings?.title?.model ?? selectedModels[0];
+			const titleModel = $models.find((model) => model.id === titleModelId);
+
+			console.log(titleModel);
+			const title = await generateDeTitle(
+				localStorage.token,
+				$settings?.title?.prompt ??
+					$i18n.t(
+						"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
+					) + ' {{prompt}}',
+				titleModelId,
+				userPrompt,
+			);
+
+			return title;
+		} else {
+			return `${userPrompt}`;
+		}
+	};
+
 
 	const generateChatTitle = async (userPrompt) => {
 		if ($settings?.title?.auto ?? true) {

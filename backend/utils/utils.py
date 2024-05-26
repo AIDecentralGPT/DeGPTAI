@@ -94,6 +94,18 @@ def get_current_user(
     # 传入HTTPAuthorizationCredentials类型的auth_token参数，默认为Depends(bearer_security)
     auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
 ):
+    """
+    根据传入的auth_token参数获取当前用户
+    
+    Args:
+        auth_token (HTTPAuthorizationCredentials): 用户的认证令牌，默认为Depends(bearer_security)
+    
+    Returns:
+        Union[User, None]: 当前用户对象或None（如果未找到用户）
+    
+    Raises:
+        HTTPException: 如果token无效或未授权
+    """
     print("auth_token", auth_token)
 
     # 根据API密钥进行认证

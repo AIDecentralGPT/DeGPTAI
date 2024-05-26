@@ -3,24 +3,32 @@ import sha256 from 'js-sha256';
 import { getOllamaModels } from '$lib/apis/ollama';
 import { getOpenAIModels } from '$lib/apis/openai';
 import { getLiteLLMModels } from '$lib/apis/litellm';
+import { getDeModels } from '$lib/apis/de';
 
 export const getModels = async (token: string) => {
 	let models = await Promise.all([
-		getOllamaModels(token).catch((error) => {
+		// getOllamaModels(token).catch((error) => {
+		// 	console.log(error);
+		// 	return null;
+		// }),
+		// getOpenAIModels(token).catch((error) => {
+		// 	console.log(error);
+		// 	return null;
+		// }),
+		// getLiteLLMModels(token).catch((error) => {
+		// 	console.log(error);
+		// 	return null;
+		// })
+		getDeModels(token).catch((error) => {
 			console.log(error);
 			return null;
 		}),
-		getOpenAIModels(token).catch((error) => {
-			console.log(error);
-			return null;
-		}),
-		getLiteLLMModels(token).catch((error) => {
-			console.log(error);
-			return null;
-		})
+	
 	]);
 
 	models = models.filter((models) => models).reduce((a, e, i, arr) => a.concat(e), []);
+
+
 
 	return models;
 };

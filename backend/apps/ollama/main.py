@@ -949,6 +949,10 @@ class OpenAIChatCompletionForm(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
+
+
+
+# 这是ollama！！！不要看这里！！！！！
 @app.post("/v1/chat/completions")
 @app.post("/v1/chat/completions/{url_idx}")
 async def generate_openai_chat_completion(
@@ -956,10 +960,26 @@ async def generate_openai_chat_completion(
     url_idx: Optional[int] = None,
     user=Depends(get_verified_user),
 ):
+    """
+    生成OpenAI聊天补全结果
+    
+    Args:
+        form_data (OpenAIChatCompletionForm): 聊天补全表单数据
+        url_idx (Optional[int], optional): URL索引. Defaults to None.
+        user (Depends): 验证用户信息. Defaults to Depends(get_verified_user).
+    
+    Returns:
+        StreamingResponse: 聊天补全结果的流式响应
+    
+    Raises:
+        HTTPException: 当模型不存在或服务器连接错误时抛出异常
+    """
 
     if url_idx == None:
         model = form_data.model
 
+        print("generate_openai_chat_completion: model", model)
+        
         if ":" not in model:
             model = f"{model}:latest"
 

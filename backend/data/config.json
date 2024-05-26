@@ -52,7 +52,8 @@
 				],
 				"content": "Check the following sentence for grammar and clarity: \"[sentence]\". Rewrite it for better readability while maintaining its original meaning."
 			}
-		]
+		],
+		"default_models": "luchenyu/yi1.5-34b"
 	},
 	"openai": {
 		"api_base_urls": [

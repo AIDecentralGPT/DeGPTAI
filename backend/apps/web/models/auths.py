@@ -145,7 +145,7 @@ class AuthsTable:
                 # 如果没有找到匹配的Auth记录，返回None
                 return None
         except Exception as e:
-            print("authenticate_user Exception", e)
+            print("authenticate_user Exception：", e)
             # 如果发生异常，返回None
             return None
 
