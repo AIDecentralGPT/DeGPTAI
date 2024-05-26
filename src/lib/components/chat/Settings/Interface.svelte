@@ -284,7 +284,7 @@
 
 		<hr class=" dark:border-gray-700" />
 
-		<div>
+		<!-- <div>
 			<div class=" mb-2.5 text-sm font-medium">{$i18n.t('Set Title Auto-Generation Model')}</div>
 			<div class="flex w-full gap-2 pr-2">
 				<div class="flex-1">
@@ -332,7 +332,7 @@
 					rows="3"
 				/>
 			</div>
-		</div>
+		</div> -->
 
 		{#if $user.role === 'admin'}
 			<hr class=" dark:border-gray-700" />

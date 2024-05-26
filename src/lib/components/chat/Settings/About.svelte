@@ -129,7 +129,7 @@
 			</a>
 		</div>
 
-		<div class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+		<!-- <div class="mt-2 text-xs text-gray-400 dark:text-gray-500">
 			{#if !$WEBUI_NAME.includes('DeGPT')}
 				<span class=" text-gray-500 dark:text-gray-300 font-medium">{$WEBUI_NAME}</span> -
 			{/if}{$i18n.t('Created by')}
@@ -138,6 +138,6 @@
 				href="https://github.com/tjbck"
 				target="_blank">Timothy J. Baek</a
 			>
-		</div>
+		</div> -->
 	</div>
 </div>
