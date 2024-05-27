@@ -27,6 +27,7 @@
  */
 declare module '$env/static/private' {
 	export const NVM_INC: string;
+	export const alfred_theme_background: string;
 	export const MANPATH: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
@@ -40,6 +41,7 @@ declare module '$env/static/private' {
 	export const HOMEBREW_REPOSITORY: string;
 	export const npm_config_global_prefix: string;
 	export const TERM_PROGRAM_VERSION: string;
+	export const alfred_preferences_localhash: string;
 	export const MallocNanoZone: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const ZDOTDIR: string;
@@ -47,17 +49,23 @@ declare module '$env/static/private' {
 	export const npm_config_noproxy: string;
 	export const ZSH: string;
 	export const npm_config_local_prefix: string;
+	export const alfred_version_build: string;
 	export const USER: string;
 	export const NVM_DIR: string;
 	export const LS_COLORS: string;
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
+	export const alfred_version: string;
 	export const SSH_AUTH_SOCK: string;
+	export const alfred_preferences: string;
 	export const __CF_USER_TEXT_ENCODING: string;
+	export const alfred_theme_selection_background: string;
 	export const npm_execpath: string;
 	export const PAGER: string;
 	export const LSCOLORS: string;
+	export const alfred_theme_subtext: string;
 	export const PATH: string;
+	export const alfred_workflow_cache: string;
 	export const LaunchInstanceID: string;
 	export const _: string;
 	export const npm_package_json: string;
@@ -72,9 +80,11 @@ declare module '$env/static/private' {
 	export const npm_lifecycle_event: string;
 	export const LANG: string;
 	export const npm_package_name: string;
+	export const alfred_workflow_version: string;
 	export const XPC_FLAGS: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const npm_config_npm_version: string;
+	export const alfred_workflow_bundleid: string;
 	export const FORCE_COLOR: string;
 	export const npm_config_node_gyp: string;
 	export const XPC_SERVICE_NAME: string;
@@ -88,14 +98,19 @@ declare module '$env/static/private' {
 	export const LESS: string;
 	export const npm_config_cache: string;
 	export const npm_lifecycle_script: string;
+	export const LC_CTYPE: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
+	export const alfred_workflow_uid: string;
 	export const NVM_BIN: string;
 	export const npm_config_user_agent: string;
 	export const HOMEBREW_CELLAR: string;
 	export const INFOPATH: string;
 	export const GIT_ASKPASS: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
+	export const alfred_workflow_name: string;
 	export const SECURITYSESSIONID: string;
+	export const alfred_theme: string;
+	export const alfred_workflow_data: string;
 	export const COLORTERM: string;
 	export const npm_config_prefix: string;
 	export const npm_node_execpath: string;
@@ -130,6 +145,7 @@ declare module '$env/static/public' {
 declare module '$env/dynamic/private' {
 	export const env: {
 		NVM_INC: string;
+		alfred_theme_background: string;
 		MANPATH: string;
 		TERM_PROGRAM: string;
 		NODE: string;
@@ -143,6 +159,7 @@ declare module '$env/dynamic/private' {
 		HOMEBREW_REPOSITORY: string;
 		npm_config_global_prefix: string;
 		TERM_PROGRAM_VERSION: string;
+		alfred_preferences_localhash: string;
 		MallocNanoZone: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		ZDOTDIR: string;
@@ -150,17 +167,23 @@ declare module '$env/dynamic/private' {
 		npm_config_noproxy: string;
 		ZSH: string;
 		npm_config_local_prefix: string;
+		alfred_version_build: string;
 		USER: string;
 		NVM_DIR: string;
 		LS_COLORS: string;
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
+		alfred_version: string;
 		SSH_AUTH_SOCK: string;
+		alfred_preferences: string;
 		__CF_USER_TEXT_ENCODING: string;
+		alfred_theme_selection_background: string;
 		npm_execpath: string;
 		PAGER: string;
 		LSCOLORS: string;
+		alfred_theme_subtext: string;
 		PATH: string;
+		alfred_workflow_cache: string;
 		LaunchInstanceID: string;
 		_: string;
 		npm_package_json: string;
@@ -175,9 +198,11 @@ declare module '$env/dynamic/private' {
 		npm_lifecycle_event: string;
 		LANG: string;
 		npm_package_name: string;
+		alfred_workflow_version: string;
 		XPC_FLAGS: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		npm_config_npm_version: string;
+		alfred_workflow_bundleid: string;
 		FORCE_COLOR: string;
 		npm_config_node_gyp: string;
 		XPC_SERVICE_NAME: string;
@@ -191,14 +216,19 @@ declare module '$env/dynamic/private' {
 		LESS: string;
 		npm_config_cache: string;
 		npm_lifecycle_script: string;
+		LC_CTYPE: string;
 		VSCODE_GIT_IPC_HANDLE: string;
+		alfred_workflow_uid: string;
 		NVM_BIN: string;
 		npm_config_user_agent: string;
 		HOMEBREW_CELLAR: string;
 		INFOPATH: string;
 		GIT_ASKPASS: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
+		alfred_workflow_name: string;
 		SECURITYSESSIONID: string;
+		alfred_theme: string;
+		alfred_workflow_data: string;
 		COLORTERM: string;
 		npm_config_prefix: string;
 		npm_node_execpath: string;
