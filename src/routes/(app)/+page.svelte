@@ -18,7 +18,7 @@
 		showSidebar,
 		user
 	} from '$lib/stores';
-	import { copyToClipboard, splitStream } from '$lib/utils';
+	import { copyToClipboard, splitStream, addTextSlowly } from '$lib/utils';
 
 	import {
 		addTagById,
@@ -590,6 +590,7 @@
 		}
 	};
 
+
 	// De的openai走这里！
 	const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
@@ -704,7 +705,8 @@
 					if (responseMessage.content == '' && value == '\n') {
 						continue;
 					} else {
-						responseMessage.content += value;
+						// responseMessage.content += value;
+						responseMessage.content = await addTextSlowly(responseMessage.content, value);
 						messages = messages;
 					}
 

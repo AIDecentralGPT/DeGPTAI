@@ -17,7 +17,7 @@
 		tags as _tags,
 		showSidebar
 	} from '$lib/stores';
-	import { copyToClipboard, splitStream, convertMessagesToHistory } from '$lib/utils';
+	import { copyToClipboard, splitStream, convertMessagesToHistory, addTextSlowly } from '$lib/utils';
 
 	import { generateChatCompletion, cancelOllamaRequest } from '$lib/apis/ollama';
 	import { generateDeOpenAIChatCompletion, generateDeTitle } from '$lib/apis/de';
@@ -468,7 +468,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					if (responseMessage.content == '' && value == '\n') {
 						continue;
 					} else {
-						responseMessage.content += value;
+						// responseMessage.content += value;
+						responseMessage.content = await addTextSlowly(responseMessage.content, value);
 						messages = messages;
 					}
 

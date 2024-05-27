@@ -21,6 +21,9 @@
 	const BREAKPOINT = 768;
 
 	onMount(async () => {
+		localStorage.setItem("token", "public_token")
+
+
 		theme.set(localStorage.theme);
 
 		mobile.set(window.innerWidth < BREAKPOINT);
@@ -59,16 +62,18 @@
 						return null;
 					});
 
+					console.log("sessionUser", sessionUser);
+
 					if (sessionUser) {
 						// Save Session User to Store
 						await user.set(sessionUser);
 					} else {
 						// Redirect Invalid Session User to /auth Page
-						localStorage.removeItem('token');
-						await goto('/auth');
+						// localStorage.removeItem('token');
+						// await goto('/auth');
 					}
 				} else {
-					await goto('/auth');
+					// await goto('/auth');
 				}
 			}
 		} else {

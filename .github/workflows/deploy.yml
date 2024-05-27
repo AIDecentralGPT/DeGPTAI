@@ -12,9 +12,10 @@ on: # 定义触发工作流程的事件
       - main # 只有main分支的推送才会触发此工作流程
 
 jobs: # 定义需要执行的工作
-  # timeout-minutes: 30
   build: # 工作的标识符，这里是构建工作
     runs-on: ubuntu-latest # 指定运行环境为最新版本的Ubuntu虚拟环境
+    timeout-minutes: 40 # 设置超时时间为40分钟
+
     steps: # 定义执行的步骤
       - name: Checkout code # 步骤名称
         uses: actions/checkout@v2 # 使用GitHub Action官方提供的actions/checkout@v2动作，用于检出仓库代码
