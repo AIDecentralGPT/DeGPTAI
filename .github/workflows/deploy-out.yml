@@ -12,7 +12,7 @@ on: # 定义触发工作流程的事件
   push: # 当代码被推送时
     branches: # 指定触发工作流程的分支
       - out
-      - out-demo # 添加此行以包括 out-demo 分支
+      - demo-out # 添加此行以包括 out-demo 分支
 
 jobs: # 定义需要执行的工作
   # timeout-minutes: 30
