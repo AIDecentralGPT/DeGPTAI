@@ -27,6 +27,74 @@ export const getSessionUser = async (token: string) => {
 	return res;
 };
 
+
+// // 免登身份校验（根据设备id）
+// export const fingerprintSignIn = async (visiterId: string, ) => {
+// 	let error = null;
+
+// 	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/fingerprintSignIn`, {
+// 		method: 'POST',
+// 		headers: {
+// 			'Content-Type': 'application/json'
+// 		},
+// 		body: JSON.stringify({
+// 			// email: email,
+// 			// password: password
+// 			visitor_id: visiterId,
+// 		})
+// 	})
+// 		.then(async (res) => {
+// 			if (!res.ok) throw await res.json();
+// 			return res.json();
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+
+// 			error = err.detail;
+// 			return null;
+// 		});
+
+// 	if (error) {
+// 		throw error;
+// 	}
+
+// 	return res;
+// };
+
+
+// 免登身份校验（根据设备id）
+export const fingerprintSignIn = async (visiterId: string, ) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/signin`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			email: "",
+			password: "",
+			visiter_id :visiterId
+		})
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			console.log(err);
+
+			error = err.detail;
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
 export const userSignIn = async (email: string, password: string) => {
 	let error = null;
 
@@ -75,7 +143,8 @@ export const userSignUp = async (
 			name: name,
 			email: email,
 			password: password,
-			profile_image_url: profile_image_url
+			profile_image_url: profile_image_url,
+			id: localStorage.visitor_id
 		})
 	})
 		.then(async (res) => {
@@ -95,12 +164,28 @@ export const userSignUp = async (
 	return res;
 };
 
+export const printSignIn = async (
+) => {
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/printSignIn`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			id: localStorage.visitor_id
+		})
+	})
+
+	return await res.json();
+};
+
 export const addUser = async (
 	token: string,
 	name: string,
 	email: string,
 	password: string,
-	role: string = 'pending'
+	role: string = 'user'
 ) => {
 	let error = null;
 

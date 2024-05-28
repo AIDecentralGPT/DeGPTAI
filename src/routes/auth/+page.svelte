@@ -33,6 +33,7 @@
 			return null;
 		});
 
+		console.log("sessionUser", sessionUser);
 		await setSessionUser(sessionUser);
 	};
 

@@ -5,7 +5,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/auths';
+	import { getSessionUser, printSignIn } from '$lib/apis/auths';
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -14,6 +14,7 @@
 
 	import { WEBUI_BASE_URL } from '$lib/constants';
 	import i18n, { initI18n } from '$lib/i18n';
+	import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 	setContext('i18n', i18n);
 
@@ -21,7 +22,47 @@
 	const BREAKPOINT = 768;
 
 	onMount(async () => {
-		localStorage.setItem("token", "public_token")
+		// localStorage.setItem("token", "public_token")
+		
+
+		// // 加载 FingerprintJS 库
+		// await FingerprintJS.load().then(fp => {
+		// 		// 获取设备指纹
+		// 		fp.get().then(result => {
+		// 				// `result.visitorId` 是设备指纹 ID
+		// 				const visitorId = result.visitorId;
+		// 				console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
+		// 				// fingerprintSignIn(visitorId)
+		// 				localStorage.setItem('visitor_id', visitorId)
+
+
+		// 				printSignIn().then((res ) => {
+		// 					console.log(res);
+		// 					user.set(res)
+		// 				})
+
+		// 		});
+
+
+				
+		// });
+
+
+		// 加载 FingerprintJS 库
+		const fp = await FingerprintJS.load();
+		// 获取设备指纹
+		const result = await fp.get();
+		// `result.visitorId` 是设备指纹 ID
+		const visitorId = result.visitorId;
+		console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
+		localStorage.setItem('visitor_id', visitorId);
+
+		const res = await printSignIn();
+		console.log(res);
+		localStorage.token = res.token;
+			await user.set(res);
+
+
 
 
 		theme.set(localStorage.theme);

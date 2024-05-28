@@ -14,7 +14,8 @@
 
 	import { getDocs } from '$lib/apis/documents';
 	import { getAllChatTags } from '$lib/apis/chats';
-
+	import { getSessionUser, printSignIn } from '$lib/apis/auths';
+	import FingerprintJS from '@fingerprintjs/fingerprintjs';
 	import {
 		user,
 		showSettings,
@@ -66,6 +67,16 @@
 	};
 
 	onMount(async () => {
+
+		// localStorage.setItem("token", "public_token")
+		
+
+
+		console.log(
+			"$user", $user
+		);
+		
+
 		if ($user === undefined) {
 			// await goto('/auth');
 		} else if (['user', 'admin'].includes($user.role)) {
