@@ -35,7 +35,7 @@ RUN npm run build
 # 删除node_modules以减小镜像体积
 RUN rm -rf node_modules
 # 清理构建中生成的临时文件
-RUN rm -rf /app/src /app/public /app/tests /app/*.js  /app/*.md
+RUN rm -rf /app/src /app/public /app/tests /app/*.js 
 
 
 
@@ -132,6 +132,8 @@ RUN apt-get update && \
     # cleanup
     rm -rf /var/lib/apt/lists/*; 
 # 根据USE_OLLAMA的值安装相应的依赖
+
+
 
 # 安装Python依赖
 COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
