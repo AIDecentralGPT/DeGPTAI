@@ -141,9 +141,13 @@ def get_current_user(
     # print("auth_token.id",  auth_token.id)
 
     try:
+        user =  User(user_dict)
+
         if auth_token.credentials == "public_token":
-            user =  User(user_dict)
             return user
+        print('auth_token.credentials ！== "public_token"')
+        return user
+
     except Exception as e:
             print("auth_token.credentials", e)
 
