@@ -107,9 +107,9 @@
 				</button>
 			{/if}
 
-			<hr class=" dark:border-gray-800 my-2 p-0" />
+			<!-- <hr class=" dark:border-gray-800 my-2 p-0" /> -->
 
-			<button
+			<!-- <button
 				class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
 				on:click={() => {
 					// localStorage.removeItem('token');
@@ -137,7 +137,7 @@
 					</svg>
 				</div>
 				<div class=" self-center font-medium">{$i18n.t('Sign Out')}</div>
-			</button>
+			</button> -->
 
 			<!-- <DropdownMenu.Item class="flex items-center px-3 py-2 text-sm  font-medium">
 				<div class="flex items-center">Profile</div>
