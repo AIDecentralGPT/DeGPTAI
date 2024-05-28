@@ -35,7 +35,7 @@ RUN npm run build
 # 删除node_modules以减小镜像体积
 RUN rm -rf node_modules
 # 清理构建中生成的临时文件
-RUN rm -rf /app/src /app/public /app/tests /app/*.js /app/*.json /app/*.md
+RUN rm -rf /app/src /app/public /app/tests /app/*.js  /app/*.md
 
 
 
