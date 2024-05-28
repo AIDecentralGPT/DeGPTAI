@@ -141,7 +141,7 @@ COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 #     else \
 #     pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir; \
 #     fi
-
+RUN pip3 install uv 
 # 安装 Python 依赖
 COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 RUN uv pip install --system -r requirements.txt --no-cache-dir
