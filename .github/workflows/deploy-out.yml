@@ -12,6 +12,7 @@ on: # 定义触发工作流程的事件
   push: # 当代码被推送时
     branches: # 指定触发工作流程的分支
       - out # 只有main分支的推送才会触发此工作流程
+      - fingerprintAuth-out # 发到他们服务器的版本（指纹自动登录）
 
 jobs: # 定义需要执行的工作
   # timeout-minutes: 30
@@ -36,29 +37,29 @@ jobs: # 定义需要执行的工作
           tags: dianbobo202311/open-webui:out-latest # 设置镜像的标签
 
 
-      - name: Deploy to Server # 步骤名称
-        uses: appleboy/ssh-action@master # 使用appleboy/ssh-action@master动作，用于通过SSH连接到服务器
-        with: # 传递给动作的参数
-          host: ${{ secrets.SERVER_HOST }} # 服务器的IP地址或域名
-          username: ${{ secrets.SERVER_USER }} # SSH登录用户名
-          password: ${{ secrets.SERVER_PASSWORD }} # SSH登录密码
-          script: | # 通过SSH执行的脚本
+      # - name: Deploy to Server # 步骤名称
+      #   uses: appleboy/ssh-action@master # 使用appleboy/ssh-action@master动作，用于通过SSH连接到服务器
+      #   with: # 传递给动作的参数
+      #     host: ${{ secrets.SERVER_HOST }} # 服务器的IP地址或域名
+      #     username: ${{ secrets.SERVER_USER }} # SSH登录用户名
+      #     password: ${{ secrets.SERVER_PASSWORD }} # SSH登录密码
+      #     script: | # 通过SSH执行的脚本
 
-            # docker pull dianbobo202311/open-webui:out-latest # 拉取最新的Docker镜像
-            # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
-            # docker run -p 3000:3000 -d  --rm  --name open-webui dianbobo202311/open-webui:out-latest # 运行Docker容器
-            # docker logs open-webui
-            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
-            docker pull dianbobo202311/open-webui:out-latest # 拉取最新的Docker镜像
-            # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
-            if [ "$(docker ps -q -f name=open-webui)" ]; then
-              docker stop open-webui # 停止运行中的容器
-              docker rm open-webui  # 删除容器
+      #       # docker pull dianbobo202311/open-webui:out-latest # 拉取最新的Docker镜像
+      #       # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
+      #       # docker run -p 3000:3000 -d  --rm  --name open-webui dianbobo202311/open-webui:out-latest # 运行Docker容器
+      #       # docker logs open-webui
+      #       echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
+      #       docker pull dianbobo202311/open-webui:out-latest # 拉取最新的Docker镜像
+      #       # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
+      #       if [ "$(docker ps -q -f name=open-webui)" ]; then
+      #         docker stop open-webui # 停止运行中的容器
+      #         docker rm open-webui  # 删除容器
 
-            fi
+      #       fi
 
-            docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:out-latest # 运行Docker容器
-            # docker images -q | tail -n +4 | xargs docker rmi # 删除除前三个以外的所有Docker镜像
+      #       docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:out-latest # 运行Docker容器
+      #       # docker images -q | tail -n +4 | xargs docker rmi # 删除除前三个以外的所有Docker镜像
 
 
 # 注释解释
