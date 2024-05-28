@@ -4,9 +4,9 @@ import { promptTemplate } from '$lib/utils';
 
 
 function transformModelData(input) {
-	const models = input.data.map(model => {
+	const models = input?.data?.map(model => {
 			return {
-					"name": model.id,
+					"name": model.id.replace("luchenyu/", ""),
 					"model": model.id,
 					"modified_at": new Date(model.created * 1000).toISOString(),
 					"size": 0, // 需要根据实际数据填充
@@ -44,7 +44,7 @@ export const getDeModels = async (token: string = '') => {
 		}
 	})
 		.then(async (res) => {
-			console.log(123, res);
+			// console.log(123, await res.json());
 			
 			// if (!res.ok) throw await res.json();
 			// console.log("res.json();", res.json(), res);
