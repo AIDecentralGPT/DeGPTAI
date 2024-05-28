@@ -92,7 +92,7 @@ def get_http_authorization_cred(auth_header: str):
 class User:
     def __init__(self, user_dict):
         self.id = user_dict.get("id", "d611cc24-11c8-4935-88aa-e275607947f4")
-        self.name = user_dict.get("name", "3")
+        self.name = user_dict.get("name", "Jack")
         self.email = user_dict.get("email", "3@qq.com")
         self.role = user_dict.get("role", "user")
         self.profile_image_url = user_dict.get("profile_image_url", "")
