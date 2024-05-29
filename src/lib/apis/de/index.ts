@@ -54,8 +54,8 @@ export const getDeModels = async (token: string = '') => {
 				},
 				"expires_at": "0001-01-01T00:00:00Z",
 				"urls": [
-						// "https://chat.degpt.ai/llama3-8b/v1"
-						"http://122.99.183.51:7080/v1"
+						"https://chat.degpt.ai/llama3-8b/v1"
+						// "http://122.99.183.51:7080/v1"
 					]
 		},
 		{
@@ -74,8 +74,8 @@ export const getDeModels = async (token: string = '') => {
 			},
 			"expires_at": "0001-01-01T00:00:00Z",
 			"urls": [
-					// "https://chat.degpt.ai/yi15-34b/v1"
-					"http://122.99.183.51:6080/v1"
+					"https://chat.degpt.ai/yi15-34b/v1"
+					// "http://122.99.183.51:6080/v1"
 
 
 			]
@@ -96,8 +96,8 @@ export const getDeModels = async (token: string = '') => {
 		},
 		"expires_at": "0001-01-01T00:00:00Z",
 		"urls": [
-				// "https://chat.degpt.ai/llama3-70b/v1"
-				"http://122.99.183.53:1042/v1"
+				"https://chat.degpt.ai/llama3-70b/v1"
+				// "http://122.99.183.53:1042/v1"
 		]
 },
 
@@ -123,8 +123,8 @@ export const getDeModels = async (token: string = '') => {
 	},
 	"expires_at": "0001-01-01T00:00:00Z",
 	"urls": [
-		// "https://chat.degpt.ai/qwen1.5-110b/v1"
-		"http://122.99.183.52:1042/v1"
+		"https://chat.degpt.ai/qwen1.5-110b/v1"
+		// "http://122.99.183.52:1042/v1"
 	]
 },
 
