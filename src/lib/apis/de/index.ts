@@ -30,48 +30,99 @@ function transformModelData(input) {
 }
 
 
-
 // 获取De的所有模型列表
 export const getDeModels = async (token: string = '') => {
 	let error = null;
 
-	const res = await fetch(`${DE_API_BASE_URL}/models`, {
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			...(token && { authorization: `Bearer ${token}` })
-		}
-	})
-		.then(async (res) => {
-			// console.log(123, await res.json());
-			
-			// if (!res.ok) throw await res.json();
-			// console.log("res.json();", res.json(), res);
-			
-			return res.json();
-		
-		})
-		.catch((err) => {
-			console.log(err);
-			if ('detail' in err) {
-				error = err.detail;
-			} else {
-				error = 'Server connection failed';
-			}
-			return null;
-		});
 
-		console.log("res", res);
+	const format_res = {
+
+		models: [
+	// 		{
+	// 			"name": "llama3-8b",
+	// 			"model": "llama3-8b",
+	// 			"modified_at": new Date().toISOString(),
+	// 			"size": 0, // 需要根据实际数据填充
+	// 			"digest": "", // 需要根据实际数据填充
+	// 			"details": {
+	// 					"parent_model": "",
+	// 					"format": "", // 需要根据实际数据填充
+	// 					"family": "",
+	// 					"families": [],
+	// 					"parameter_size": "",
+	// 					"quantization_level": ""
+	// 			},
+	// 			"expires_at": "0001-01-01T00:00:00Z",
+	// 			"urls": [
+	// 					"https://chat.degpt.ai/llama3-8b"
+	// 			]
+	// 	},
+	// 	{
+	// 		"name": "yi15-34b",
+	// 		"model": "yi15-34b",
+	// 		"modified_at": new Date().toISOString(),
+	// 		"size": 0, // 需要根据实际数据填充
+	// 		"digest": "", // 需要根据实际数据填充
+	// 		"details": {
+	// 				"parent_model": "",
+	// 				"format": "", // 需要根据实际数据填充
+	// 				"family": "",
+	// 				"families": [],
+	// 				"parameter_size": "",
+	// 				"quantization_level": ""
+	// 		},
+	// 		"expires_at": "0001-01-01T00:00:00Z",
+	// 		"urls": [
+	// 				"https://chat.degpt.ai/yi15-34b/v1"
+	// 		]
+	// },
+	{
+		"name": "Llama3-70B",
+		"model": "Llama3-70B",
+		"modified_at": new Date().toISOString(),
+		"size": 0, // 需要根据实际数据填充
+		"digest": "", // 需要根据实际数据填充
+		"details": {
+				"parent_model": "",
+				"format": "", // 需要根据实际数据填充
+				"family": "",
+				"families": [],
+				"parameter_size": "",
+				"quantization_level": ""
+		},
+		"expires_at": "0001-01-01T00:00:00Z",
+		"urls": [
+				"https://chat.degpt.ai/llama3-70b/v1"
+		]
+},
+
+
+// {
+// 	"name": "luchenyu/yi1.5-34b",
+// 	"model": "luchenyu/yi1.5-34b",
+// 	"modified_at": new Date().toISOString(),
+// 	"size": 0, // 需要根据实际数据填充
+// 	"digest": "", // 需要根据实际数据填充
+// 	"details": {
+// 			"parent_model": "",
+// 			"format": "", // 需要根据实际数据填充
+// 			"family": "",
+// 			"families": [],
+// 			"parameter_size": "",
+// 			"quantization_level": ""
+// 	},
+// 	"expires_at": "0001-01-01T00:00:00Z",
+// 	"urls": [
+// 		0
+// 	]
+// },
+
+		]
+	}
 		
 
-	const format_res = transformModelData(res)
-	console.log(format_res);
 	
 
-	if (error) {
-		throw error;
-	}
 
 	return (format_res?.models ?? [])
 		.map((model) => ({ id: model.model, name: model.name ?? model.model, ...model }))
@@ -79,6 +130,55 @@ export const getDeModels = async (token: string = '') => {
 			return a.name.localeCompare(b.name);
 		});
 };
+
+// // 获取De的所有模型列表
+// export const getDeModels = async (token: string = '') => {
+// 	let error = null;
+
+// 	const res = await fetch(`${DE_API_BASE_URL}/models`, {
+// 		method: 'GET',
+// 		headers: {
+// 			Accept: 'application/json',
+// 			'Content-Type': 'application/json',
+// 			...(token && { authorization: `Bearer ${token}` })
+// 		}
+// 	})
+// 		.then(async (res) => {
+// 			// console.log(123, await res.json());
+			
+// 			// if (!res.ok) throw await res.json();
+// 			// console.log("res.json();", res.json(), res);
+			
+// 			return res.json();
+		
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+// 			if ('detail' in err) {
+// 				error = err.detail;
+// 			} else {
+// 				error = 'Server connection failed';
+// 			}
+// 			return null;
+// 		});
+
+// 		console.log("res", res);
+		
+
+// 	const format_res = transformModelData(res)
+// 	console.log(format_res);
+	
+
+// 	if (error) {
+// 		throw error;
+// 	}
+
+// 	return (format_res?.models ?? [])
+// 		.map((model) => ({ id: model.model, name: model.name ?? model.model, ...model }))
+// 		.sort((a, b) => {
+// 			return a.name.localeCompare(b.name);
+// 		});
+// };
 
 
 
@@ -103,7 +203,8 @@ export const generateDeOpenAIChatCompletion = async (
 		},
 		body: JSON.stringify({
 			...body,
-			stream: true
+			stream: true,
+			
 		})
 	}).catch((err) => {
 		console.log(err);

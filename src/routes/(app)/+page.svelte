@@ -670,6 +670,8 @@
 								  })
 						})),
 			},
+			model?.urls?.[0]
+			
 			);
 
 			// Wait until history/message have been updated
@@ -1056,6 +1058,8 @@
 					) + ' {{prompt}}',
 				titleModelId,
 				userPrompt,
+				model?.urls?.[0]
+
 			);
 
 			return title;
