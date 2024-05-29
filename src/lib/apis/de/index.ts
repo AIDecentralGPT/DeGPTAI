@@ -38,44 +38,48 @@ export const getDeModels = async (token: string = '') => {
 	const format_res = {
 
 		models: [
-	// 		{
-	// 			"name": "llama3-8b",
-	// 			"model": "llama3-8b",
-	// 			"modified_at": new Date().toISOString(),
-	// 			"size": 0, // 需要根据实际数据填充
-	// 			"digest": "", // 需要根据实际数据填充
-	// 			"details": {
-	// 					"parent_model": "",
-	// 					"format": "", // 需要根据实际数据填充
-	// 					"family": "",
-	// 					"families": [],
-	// 					"parameter_size": "",
-	// 					"quantization_level": ""
-	// 			},
-	// 			"expires_at": "0001-01-01T00:00:00Z",
-	// 			"urls": [
-	// 					"https://chat.degpt.ai/llama3-8b"
-	// 			]
-	// 	},
-	// 	{
-	// 		"name": "yi15-34b",
-	// 		"model": "yi15-34b",
-	// 		"modified_at": new Date().toISOString(),
-	// 		"size": 0, // 需要根据实际数据填充
-	// 		"digest": "", // 需要根据实际数据填充
-	// 		"details": {
-	// 				"parent_model": "",
-	// 				"format": "", // 需要根据实际数据填充
-	// 				"family": "",
-	// 				"families": [],
-	// 				"parameter_size": "",
-	// 				"quantization_level": ""
-	// 		},
-	// 		"expires_at": "0001-01-01T00:00:00Z",
-	// 		"urls": [
-	// 				"https://chat.degpt.ai/yi15-34b/v1"
-	// 		]
-	// },
+			{
+				"name": "Llama3-8B",
+				"model": "Llama3-8B",
+				"modified_at": new Date().toISOString(),
+				"size": 0, // 需要根据实际数据填充
+				"digest": "", // 需要根据实际数据填充
+				"details": {
+						"parent_model": "",
+						"format": "", // 需要根据实际数据填充
+						"family": "",
+						"families": [],
+						"parameter_size": "",
+						"quantization_level": ""
+				},
+				"expires_at": "0001-01-01T00:00:00Z",
+				"urls": [
+						// "https://chat.degpt.ai/llama3-8b/v1"
+						"http://122.99.183.51:7080/v1"
+					]
+		},
+		{
+			"name": "Yi1.5-34B",
+			"model": "Yi1.5-34B",
+			"modified_at": new Date().toISOString(),
+			"size": 0, // 需要根据实际数据填充
+			"digest": "", // 需要根据实际数据填充
+			"details": {
+					"parent_model": "",
+					"format": "", // 需要根据实际数据填充
+					"family": "",
+					"families": [],
+					"parameter_size": "",
+					"quantization_level": ""
+			},
+			"expires_at": "0001-01-01T00:00:00Z",
+			"urls": [
+					// "https://chat.degpt.ai/yi15-34b/v1"
+					"http://122.99.183.51:6080/v1"
+
+
+			]
+	},
 	{
 		"name": "Llama3-70B",
 		"model": "Llama3-70B",
@@ -92,30 +96,37 @@ export const getDeModels = async (token: string = '') => {
 		},
 		"expires_at": "0001-01-01T00:00:00Z",
 		"urls": [
-				"https://chat.degpt.ai/llama3-70b/v1"
+				// "https://chat.degpt.ai/llama3-70b/v1"
+				"http://122.99.183.53:1042/v1"
 		]
 },
 
 
-// {
-// 	"name": "luchenyu/yi1.5-34b",
-// 	"model": "luchenyu/yi1.5-34b",
-// 	"modified_at": new Date().toISOString(),
-// 	"size": 0, // 需要根据实际数据填充
-// 	"digest": "", // 需要根据实际数据填充
-// 	"details": {
-// 			"parent_model": "",
-// 			"format": "", // 需要根据实际数据填充
-// 			"family": "",
-// 			"families": [],
-// 			"parameter_size": "",
-// 			"quantization_level": ""
-// 	},
-// 	"expires_at": "0001-01-01T00:00:00Z",
-// 	"urls": [
-// 		0
-// 	]
-// },
+// 122.99.183.53:1042  llama3-70b
+// 122.99.183.51:6080 yi15-34b
+// 122.99.183.51:7080 llama3-8b
+// 122.99.183.52:1042 qwen15-110b
+
+{
+	"name": "Qwen1.5-110B",
+	"model": "Qwen1.5-110B",
+	"modified_at": new Date().toISOString(),
+	"size": 0, // 需要根据实际数据填充
+	"digest": "", // 需要根据实际数据填充
+	"details": {
+			"parent_model": "",
+			"format": "", // 需要根据实际数据填充
+			"family": "",
+			"families": [],
+			"parameter_size": "",
+			"quantization_level": ""
+	},
+	"expires_at": "0001-01-01T00:00:00Z",
+	"urls": [
+		// "https://chat.degpt.ai/qwen1.5-110b/v1"
+		"http://122.99.183.52:1042/v1"
+	]
+},
 
 		]
 	}
