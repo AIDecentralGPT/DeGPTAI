@@ -81,7 +81,6 @@
 		let backendConfig = null;
 		try {
 			backendConfig = await getBackendConfig();
-			console.log('Backend config:', backendConfig);
 		} catch (error) {
 			console.error('Error loading backend config:', error);
 		}
@@ -102,8 +101,6 @@
 						toast.error(error);
 						return null;
 					});
-
-					console.log("sessionUser", sessionUser);
 
 					if (sessionUser) {
 						// Save Session User to Store

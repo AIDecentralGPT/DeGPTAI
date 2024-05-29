@@ -14,7 +14,8 @@
 
 	const dispatch = createEventDispatcher();
 
-	import { config, settings } from '$lib/stores';
+	import { config, settings, models } from '$lib/stores';
+
 	import { synthesizeOpenAISpeech } from '$lib/apis/audio';
 	import { imageGenerations } from '$lib/apis/images';
 	import {
@@ -329,6 +330,15 @@
 		await tick();
 		renderStyling();
 	});
+
+	// 格式化模型名字
+	const formatModelName = (model) => {
+		// console.log("models", $models);
+		const modelName = $models.filter((item) => item.model === model)?.[0]?.name || model
+		
+		return modelName
+	}
+
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
@@ -344,11 +354,12 @@
 		/>
 
 		<div class="w-full overflow-hidden pl-1">
+			<!-- {console.log("modelfiles", modelfiles, message)} -->
 			<Name>
 				{#if message.model in modelfiles}
 					{modelfiles[message.model]?.title}
 				{:else}
-					{message.model ? ` ${message.model}` : ''}
+					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
 
 				{#if message.timestamp}
