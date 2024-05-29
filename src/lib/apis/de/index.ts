@@ -107,26 +107,26 @@ export const getDeModels = async (token: string = '') => {
 // 122.99.183.51:7080 llama3-8b
 // 122.99.183.52:1042 qwen15-110b
 
-{
-	"name": "Qwen1.5-110B",
-	"model": "Qwen1.5-110B",
-	"modified_at": new Date().toISOString(),
-	"size": 0, // 需要根据实际数据填充
-	"digest": "", // 需要根据实际数据填充
-	"details": {
-			"parent_model": "",
-			"format": "", // 需要根据实际数据填充
-			"family": "",
-			"families": [],
-			"parameter_size": "",
-			"quantization_level": ""
-	},
-	"expires_at": "0001-01-01T00:00:00Z",
-	"urls": [
-		"https://chat.degpt.ai/qwen1.5-110b/v1"
-		// "http://122.99.183.52:1042/v1"
-	]
-},
+// {
+// 	"name": "Qwen1.5-110B",
+// 	"model": "Qwen1.5-110B",
+// 	"modified_at": new Date().toISOString(),
+// 	"size": 0, // 需要根据实际数据填充
+// 	"digest": "", // 需要根据实际数据填充
+// 	"details": {
+// 			"parent_model": "",
+// 			"format": "", // 需要根据实际数据填充
+// 			"family": "",
+// 			"families": [],
+// 			"parameter_size": "",
+// 			"quantization_level": ""
+// 	},
+// 	"expires_at": "0001-01-01T00:00:00Z",
+// 	"urls": [
+// 		"https://chat.degpt.ai/qwen1.5-110b/v1"
+// 		// "http://122.99.183.52:1042/v1"
+// 	]
+// },
 
 		]
 	}
