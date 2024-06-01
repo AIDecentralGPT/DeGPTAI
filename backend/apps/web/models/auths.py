@@ -139,7 +139,7 @@ class AuthsTable:
         try:
             # 根据邮箱和活动状态查询Auth表中的记录
             auth = Auth.get(Auth.email == email, Auth.active == True)
-            print("auth", auth)
+            # print("auth", auth)
             if auth:
                 # 如果找到了匹配的Auth记录
                 # 验证密码是否正确

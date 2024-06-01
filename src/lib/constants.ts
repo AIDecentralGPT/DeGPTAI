@@ -96,3 +96,11 @@ export const SUPPORTED_FILE_EXTENSIONS = [
 // This feature, akin to $env/static/private, exclusively incorporates environment variables
 // that are prefixed with config.kit.env.publicPrefix (usually set to PUBLIC_).
 // Consequently, these variables can be securely exposed to client-side code.
+
+
+
+export const  DefaultCurrentWalletData = ({
+	pair: null,
+	balance: null,
+	dlcBalance: null,
+})

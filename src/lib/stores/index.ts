@@ -1,4 +1,4 @@
-import { APP_NAME } from '$lib/constants';
+import { APP_NAME, DefaultCurrentWalletData } from '$lib/constants';
 import { type Writable, writable } from 'svelte/store';
 
 // Backend
@@ -42,6 +42,30 @@ export const showSidebar = writable(false);
 export const showSettings = writable(false);
 export const showArchivedChats = writable(false);
 export const showChangelog = writable(false);
+
+
+
+
+
+
+
+
+// ###########
+// 钱包相关
+export const showNewWalletModal = writable(false);
+export const showOpenWalletModal = writable(false);
+
+
+export const showExportWalletJsonModal = writable(false);
+
+
+
+// 钱包数据
+export let currentWalletData = writable(DefaultCurrentWalletData)
+
+
+// ###########
+
 
 type Model = OpenAIModel | OllamaModel;
 

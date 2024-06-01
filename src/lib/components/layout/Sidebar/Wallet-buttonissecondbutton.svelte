@@ -1,0 +1,151 @@
+<script lang="ts">
+  import { DropdownMenu } from "bits-ui";
+  import { createEventDispatcher, getContext } from "svelte";
+
+  import { flyAndScale } from "$lib/utils/transitions";
+  import { goto } from "$app/navigation";
+  import ArchiveBox from "$lib/components/icons/ArchiveBox.svelte";
+  import {
+    showSettings,
+    showNewWalletModal,
+    showOpenWalletModal,
+  } from "$lib/stores";
+  import { fade, slide } from "svelte/transition";
+  import {
+    GetApi,
+    createAccountFromSeed,
+    dbcPriceOcw,
+  } from "$lib/utils/wallet/dbc";
+  import DbcAccountDetail from "$lib/components/wallet/DbcAccountDetail.svelte";
+
+  const i18n = getContext("i18n");
+
+  export let show = false;
+  export let role = "";
+  export let className = "max-w-[240px]";
+
+  const dispatch = createEventDispatcher();
+</script>
+
+<div name="content">
+  <hr class=" dark:border-gray-800 my-2 p-0" />
+
+  <div class="flex flex-col gap-2">
+    <button
+      class="px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex "
+      on:click={async () => {
+        // localStorage.removeItem('token');
+        // location.href = '/auth';
+        // show = false;
+        // GetApi()
+        // console.log("createAccount在这里");
+        // const res = await createAccountFromSeed()
+        // // const res = await dbcPriceOcw()
+        // console.log("res", res);
+      }}
+    >
+      <div class=" self-center mr-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1.4em"
+          height="1.4em"
+          viewBox="0 0 48 48"
+          ><g
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="4"
+            ><path
+              d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8m2 30a6 6 0 1 0 0-12a6 6 0 0 0 0 12m28 2a6 6 0 1 0 0-12a6 6 0 0 0 0 12M22 28a8 8 0 1 0 0-16a8 8 0 0 0 0 16m12-16a4 4 0 1 0 0-8a4 4 0 0 0 0 8"
+              clip-rule="evenodd"
+            /><path d="m11 11l4 4m15-3l-2 2m6 19.5L28 26m-14 5l4-4" /></g
+          ></svg
+        >
+      </div>
+      <div class=" self-center font-medium">{$i18n.t("Connect WALLET")}</div>
+    </button>
+
+    <button
+      class="px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex "
+      on:click={async () => {
+        // // localStorage.removeItem('token');
+        // // location.href = '/auth';
+        // // show = false;
+        // // GetApi()
+        // console.log("createAccount在这里");
+
+        // const res = await createAccountFromSeed()
+
+        // // const res = await dbcPriceOcw()
+        // console.log("res", res);
+        $showNewWalletModal = true;
+      }}
+    >
+      <div class=" self-center mr-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1.4em"
+          height="1.4em"
+          viewBox="0 0 24 24"
+          ><path
+            fill="currentColor"
+            d="M20 6h-8l-2-2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2m0 12H4V6h5.17l2 2H20zm-8-4h2v2h2v-2h2v-2h-2v-2h-2v2h-2z"
+          /></svg
+        >
+      </div>
+      <div class=" self-center font-medium">{$i18n.t("Create WALLET")}</div>
+    </button>
+
+    <button
+      class="px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex "
+      on:click={async () => {
+        // localStorage.removeItem('token');
+        // location.href = '/auth';
+        // show = false;
+        // GetApi()
+        // console.log("createAccount在这里");
+
+        // const res = await createAccountFromSeed()
+
+        // // const res = await dbcPriceOcw()
+        // console.log("res", res);
+
+        $showOpenWalletModal = true;
+      }}
+    >
+      <div class=" self-center mr-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1.4em"
+          height="1.4em"
+          viewBox="0 0 512 512"
+          ><rect
+            width="416"
+            height="288"
+            x="48"
+            y="144"
+            fill="none"
+            stroke="currentColor"
+            stroke-linejoin="round"
+            stroke-width="32"
+            rx="48"
+            ry="48"
+          /><path
+            fill="none"
+            stroke="currentColor"
+            stroke-linejoin="round"
+            stroke-width="32"
+            d="M411.36 144v-30A50 50 0 0 0 352 64.9L88.64 109.85A50 50 0 0 0 48 159v49"
+          /><path
+            fill="currentColor"
+            d="M368 320a32 32 0 1 1 32-32a32 32 0 0 1-32 32"
+          /></svg
+        >
+      </div>
+      <div class=" self-center font-medium">{$i18n.t("Open WALLET")}</div>
+    </button>
+  </div>
+
+  <!-- <DbcAccountDetail /> -->
+</div>
