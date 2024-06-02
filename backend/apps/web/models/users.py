@@ -95,7 +95,9 @@ class UsersTable:
     # 根据id获取用户
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
+            print("开始根据id获取用户")
             user = User.get(User.id == id)  # 查询数据库中的用户
+            print("根据id获取完了用户")
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
         except:
             return None  # 如果查询失败，返回None

@@ -575,7 +575,8 @@ export const addTextSlowly = async (target, text) => {
   for (const char of text) {
     target += char;
     // 这里可以设置一个适当的延迟来模拟逐字符显示
-    await new Promise(resolve => setTimeout(resolve, 50)); 
+    await new Promise(resolve => setTimeout(resolve, 25));  // 每秒35个字符
+
     // 更新界面或进行其他操作
   }
   return target;

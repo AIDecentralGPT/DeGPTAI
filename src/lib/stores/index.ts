@@ -54,9 +54,11 @@ export const showChangelog = writable(false);
 // 钱包相关
 export const showNewWalletModal = writable(false);
 export const showOpenWalletModal = writable(false);
-
-
 export const showExportWalletJsonModal = writable(false);
+export const showTransferModal = writable(false);
+export const showPriceModal = writable(false);
+export const showBuyCoinModal = writable(false);
+export const showShareModal = writable(false);
 
 
 

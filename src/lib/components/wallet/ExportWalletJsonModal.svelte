@@ -28,6 +28,9 @@
   let showPassword = false;
   let password = "";
   let loading = false;
+
+  $: buttonStyle = loading ? "background: rgba(184, 142, 86, 0.6)" : "";
+
 </script>
 
 <Modal bind:show>
@@ -35,6 +38,7 @@
   <div
     class="text-gray-700 dark:text-gray-100
 	"
+  
   >
     <div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
       <div class=" text-lg font-medium self-center">
@@ -93,31 +97,37 @@
         </div>
       </div>
 
+          <!-- style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""} -->
+
       <div class="flex justify-end">
         <button
           disabled={loading}
           class={
             " px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
           }
-          style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
-          on:click={() => {
+                style={buttonStyle}
+
+          on:click={async () => {
             if (!password) {
               toast.error(`Please enter the password!`);
 
               return;
             }
+            // loading= true
+
 
             try {
               if ($currentWalletData?.pair && password) {
-              loading= true
-              console.log("loading", loading);
+              // console.log("loading", loading);
 
-              exportAccountForKeystore($currentWalletData?.pair, password);
-              loading= false
-              console.log("loading", loading);
+               exportAccountForKeystore($currentWalletData?.pair, password); // 这是同步方法
+              // loading= false
+              show = false
+              // console.log("loading", loading);
             }
             } catch (error) {
               loading= false
+              toast.error(error?.message)
               
             }
           

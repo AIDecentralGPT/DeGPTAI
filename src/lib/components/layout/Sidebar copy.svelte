@@ -14,9 +14,7 @@
     showOpenWalletModal,
 		showExportWalletJsonModal,
     showTransferModal,
-    showPriceModal,
-    showBuyCoinModal,
-    showShareModal
+    showPriceModal
   } from "$lib/stores";
   import { onMount, getContext } from "svelte";
 
@@ -47,8 +45,6 @@
   import ExportWalletJsonModal from "../wallet/ExportWalletJsonModal.svelte";
   import TransferModal from "../wallet/TransferModal.svelte";
   import PriceModal from "../wallet/PriceModal.svelte";
-  import BuyCoinModal from "../wallet/BuyCoinModal.svelte";
-  import ShareModal from "../wallet/ShareModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -234,8 +230,6 @@
 <ExportWalletJsonModal bind:show={$showExportWalletJsonModal} />
 <TransferModal bind:show={$showTransferModal} />
 <PriceModal bind:show={$showPriceModal} />
-<BuyCoinModal bind:show={$showBuyCoinModal} />
-<ShareModal bind:show={$showShareModal} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 
@@ -248,7 +242,7 @@
   />
 {/if}
 
-<div
+<!-- <div
 	bind:this={navElement}
 	id="sidebar"
 	class="h-screen max-h-[100dvh] min-h-screen select-none {$showSidebar
@@ -256,8 +250,8 @@
 		: '-translate-x-[340px] w-[0px]'} bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-200 text-sm transition fixed z-50 top-0 left-0 rounded-r-2xl
         "
 	data-state={$showSidebar}
->
-<!-- <div
+> -->
+<div
   bind:this={navElement}
   id="sidebar"
   class="h-screen max-h-[100dvh] min-h-screen select-none {$showSidebar
@@ -265,7 +259,7 @@
     : '-translate-x-[340px] w-[0px]'} bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-200 text-sm transition fixed z-50 top-0 left-0 rounded-r-2xl
         "
   data-state={$showSidebar}
-> -->
+>
   <!-- <div
 		class="py-2.5 my-auto flex flex-col justify-between h-screen max-h-[100dvh] w-[340px] z-50 {$showSidebar
 			? ''

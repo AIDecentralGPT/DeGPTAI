@@ -27,7 +27,7 @@
 
   let showPassword = false;
   let password = "123";
-  let loading = false
+  let loading = false;
   let passwordError = "";
   let walletCreatedData = null; // 创建钱包返回的数据
   let filesInputElement;
@@ -169,10 +169,8 @@
       {#if pair}
         <div class="flex justify-end">
           <button
-          disabled={loading}
-            class={
-              " px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-            }
+            disabled={loading}
+            class={" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"}
             style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
             type="submit"
             on:click={async () => {
@@ -181,20 +179,27 @@
               //   console.log("Unlock DLC result:", result);
               // });
 
-              loading = true
-              
+              loading = true;
+
               const balance = await onGetBalance(pair?.address);
-              const dlcBalance =  await onGetDLCBalance(pair?.address);
+              const dlcBalance = await onGetDLCBalance(pair?.address);
               console.log("balance", balance, pair);
               console.log("dlcBalance", dlcBalance);
-              $currentWalletData.pair = pair
-              $currentWalletData.balance = balance
-              $currentWalletData.dlcBalance = dlcBalance
+              // $currentWalletData.pair = pair
+              // $currentWalletData.balance = balance
+              // $currentWalletData.dlcBalance = dlcBalance
 
-              loading = false
-              show=false
+              currentWalletData.update((data) => {
+                return {
+                  ...data,
+                  pair,
+                  balance,
+                  dlcBalance,
+                };
+              });
 
-              
+              loading = false;
+              show = false;
             }}
           >
             {$i18n.t("  Unlock  ")}
@@ -202,13 +207,7 @@
         </div>
       {/if}
 
-
-
-
-        <div>
-
-        </div>
-
+      <div />
     </div>
   </div>
 </Modal>

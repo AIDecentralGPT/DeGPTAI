@@ -203,7 +203,7 @@
 	</DropdownMenu.Trigger>
 
 	<DropdownMenu.Content
-		class=" z-40 {$mobile
+		class=" z-[90] {$mobile
 			? `w-full`
 			: `${className}`} max-w-[calc(100vw-1rem)] justify-start rounded-xl  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
 		transition={flyAndScale}

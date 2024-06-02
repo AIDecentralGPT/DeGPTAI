@@ -376,6 +376,8 @@ export const onGetBlockNumber = async () => {
  */
 export const dbcPriceOcw = async () => {
   await GetApi();
+  console.log("api.query", api.query);
+  
   let de = await api.query.dbcPriceOCW.avgPrice();
   console.log("de", de);
   return de.toJSON();

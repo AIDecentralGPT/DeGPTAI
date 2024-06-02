@@ -124,6 +124,10 @@ input[type='number'] {
 	background-color: rgb(205 150 75)
 }
 
+.primaryText {
+  color: rgba(184, 142, 86, 1);
+
+}
 
 
 

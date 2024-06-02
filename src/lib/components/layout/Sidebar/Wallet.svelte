@@ -80,7 +80,7 @@
 <div name="content">
   <hr class=" dark:border-gray-800 my-2 p-0" />
   <!-- 创建，连接，打开钱包，三个按钮 -->
-  {#if !$currentWalletData.balance}
+  {#if !$currentWalletData.pair}
     <div>
       <button
         class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"

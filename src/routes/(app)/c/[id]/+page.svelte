@@ -1174,7 +1174,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 {#if loaded}
 	<div
 		class="min-h-screen max-h-screen {$showSidebar
-			? 'md:max-w-[calc(100%-260px)]'
+			? 'md:max-w-[calc(100%-340px)]'
 			: ''} w-full max-w-full flex flex-col"
 	>
 		<Navbar
