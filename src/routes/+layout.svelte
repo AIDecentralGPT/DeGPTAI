@@ -59,11 +59,15 @@
 		console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
 		localStorage.setItem('visitor_id', visitorId);
 
-		const res = await printSignIn();
-		console.log(res);
-		localStorage.token = res.token;
-			await user.set(res);
-
+		// const res = await printSignIn();
+		// console.log(res);
+		// localStorage.token = res.token;
+		// await user.set(res);
+		printSignIn() .then((res) => {
+					console.log(res);
+						localStorage.token = res.token;
+						user.set(res);
+		})
 
 
 
