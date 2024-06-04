@@ -1,6 +1,4 @@
-翻译：
-NEW DBC WALLET 
-Create
+
 
 
 多种语言的兼容
@@ -22,3 +20,9 @@ dbcPriceOCW获取dbc价格，那dlc呢？
 换掉邀请链接
 
 调试通钱包账户登录
+
+三方钱包的连接
+
+
+
+dlc改名dgc

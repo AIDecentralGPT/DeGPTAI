@@ -57,32 +57,17 @@
 
   reconnect(config);
   // 3. Create modal
-
-
-
-
   const modal = createWeb3Modal({
     wagmiConfig: config,
     projectId,
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
     enableOnramp: true, // Optional - false as default
-    themeVariables: {
-    // '--w3m-color-mix': '#00BB7F',
-    // '--w3m-color-mix-strength': 40,
-    // --wui-color-accent-base-100
-    "--w3m-accent": 'transport'
-  }
-,
-    themeMode: 'dark'
-
   });
 
-  let threesideAccount = getAccount(config);
-    console.log("三方钱包数据threesideAccount", threesideAccount);
+  let threesideAccount = getAccount(config)
 
   function connect() {
     console.log("三方钱包数据", threesideAccount);
-    // disconnect(config);
 
     if (getAccount(config).isConnected) {
       disconnect(config);
@@ -92,58 +77,14 @@
   }
 
   // ---------------------
-
-  const btnEl = document.getElementById("btn");
-  const userEl = document.getElementById("user");
-
-  watchAccount(config, {
-    onChange(account) {
-      console.log("1", account);
-      threesideAccount = account
-    },
-  });
-
-
-  // watchAccount(config, {
-  //   onChange(account) {
-  //     userEl.innerText = account?.address ?? "";
-  //     if (account.isConnected) {
-  //       btnEl.innerText = "Disconnect";
-  //     } else {
-  //       btnEl.innerText = "Connect";
-  //     }
-  //   },
-  // });
 </script>
 
 <div name="content">
-  
-  <!-- <w3m-connect-button class="bg-red-500 text-black" /> -->
-  <!-- <button id="btn">Connect</button> -->
-  <span id="user" />
-
-
-
-  <!-- <span
-  on:click={ () => {
-    console.log("测试", threesideAccount);
-    
-  }}
-  
-  >测试</span> -->
-
   <hr class=" dark:border-gray-800 my-2 p-0" />
-
-  <!-- 三方钱包账号展示 -->
-  {#if threesideAccount?.address}
-  <w3m-button  />
-  {/if}
-
   <!-- 创建，连接，打开钱包，三个按钮 -->
-  {#if (!$currentWalletData.pair && !threesideAccount?.address)}
+  {#if !$currentWalletData.pair}
     <div>
       <button
-        id="btn"
         class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
         on:click={async () => {
           connect();
@@ -266,13 +207,7 @@
   {/if}
 
   <!-- 钱包数据面板 -->
-  {#if ($currentWalletData.pair )}
+  {#if $currentWalletData.pair}
     <DbcAccountDetail />
   {/if}
 </div>
-
-<style>
-  .w3m-button {
-
-  }
-</style>

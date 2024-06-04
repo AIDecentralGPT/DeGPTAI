@@ -9,6 +9,8 @@
 
 	import '../tailwind.css';
 	import '../app.css';
+	import VConsole from 'vconsole';
+	const vConsole = new VConsole();
 
 	import 'tippy.js/dist/tippy.css';
 
@@ -61,6 +63,7 @@
 		console.log(res);
 		localStorage.token = res.token;
 			await user.set(res);
+
 
 
 
@@ -131,6 +134,7 @@
 </script>
 
 <svelte:head>
+
 	<title>{$WEBUI_NAME}</title>
 	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
 
