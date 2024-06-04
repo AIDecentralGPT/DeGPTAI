@@ -175,9 +175,9 @@
             type="submit"
             on:click={async () => {
               const lockIndex = 0; // 锁定索引
-              // unlockDLC(password, lockIndex, (result) => {
-              //   console.log("Unlock DLC result:", result);
-              // });
+              unlockDLC(password, lockIndex, (result) => {
+                console.log("Unlock DLC result:", result);
+              });
 
               loading = true;
 

@@ -1,4 +1,6 @@
 <script>
+	import '../polyfills'; // 必须在其他代码之前引入
+
 	import { onMount, tick, setContext } from 'svelte';
 	import { config, user, theme, WEBUI_NAME, mobile } from '$lib/stores';
 	import { goto } from '$app/navigation';
