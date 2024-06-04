@@ -1,34 +1,49 @@
-import { ApiPromise, WsProvider, Keyring } from '@polkadot/api';
-import { cryptoWaitReady, blake2AsHex, randomAsU8a, mnemonicGenerate, mnemonicToMiniSecret } from '@polkadot/util-crypto';
-import { formatBalance, BN_TEN, isHex, stringToU8a, u8aToHex, hexToU8a, stringToHex, hexToString } from '@polkadot/util';
-import BN from 'bn.js';
-import FileSaver from 'file-saver';
-import { DefaultCurrentWalletData } from '$lib/constants';
+import { ApiPromise, WsProvider, Keyring } from "@polkadot/api";
+import {
+  cryptoWaitReady,
+  blake2AsHex,
+  randomAsU8a,
+  mnemonicGenerate,
+  mnemonicToMiniSecret,
+} from "@polkadot/util-crypto";
+import {
+  formatBalance,
+  BN_TEN,
+  isHex,
+  stringToU8a,
+  u8aToHex,
+  hexToU8a,
+  stringToHex,
+  hexToString,
+} from "@polkadot/util";
+import BN from "bn.js";
+import FileSaver from "file-saver";
+import { DefaultCurrentWalletData } from "$lib/constants";
 import {
   showSettings,
   showNewWalletModal,
   showOpenWalletModal,
   currentWalletData,
-  
 } from "$lib/stores";
+	import { v4 as uuidv4 } from 'uuid';
 
 const node = {
-  dbc: 'wss://info1.dbcwallet.io', // 公链正式链
-  dbctest: 'wss://infotest.dbcwallet.io:7780'
+  dbc: "wss://info1.dbcwallet.io", // 公链正式链
+  dbctest: "wss://infotest.dbcwallet.io:7780",
 };
 let api = null;
-const keyring = new Keyring({ type: 'sr25519' });
+const keyring = new Keyring({ type: "sr25519" });
 
 let CallBack_data = {
   index: 0,
-  msg:'',
-  section:'',
-  success: false
-} 
+  msg: "",
+  section: "",
+  success: false,
+};
 let CallBack_data1 = {
-  msg:'',
-  success: false
-}
+  msg: "",
+  success: false,
+};
 
 // 初始化与区块链节点的连接
 /**
@@ -56,7 +71,7 @@ export const createAccountFromSeed = async () => {
     const pair = keyring.addFromUri(seed);
     return {
       seed, // 密钥
-      pair  // 账户对
+      pair, // 账户对
     };
   }
   return null;
@@ -73,7 +88,7 @@ export const createAccountFromMnemonic = async () => {
   console.log(`Generated mnemonic: ${mnemonic}`); // 输出生成的助记词
   return {
     mnemonic, // 返回生成的助记词
-    pair // 返回账户对
+    pair, // 返回账户对
   };
 };
 
@@ -127,15 +142,13 @@ export const importAccountFromJson = (json) => {
  * @returns {object}
  */
 export const initFromLocalstorage = () => {
-  const jsonStr = localStorage.getItem('pair');
+  const jsonStr = localStorage.getItem("pair");
   if (keyring && jsonStr) {
     const json = JSON.parse(jsonStr);
     return importAccountFromJson(json);
   }
   return null;
 };
-
-
 
 // 导出账户
 
@@ -145,17 +158,13 @@ export const initFromLocalstorage = () => {
  * @param {string} password - 密码
  */
 export const exportAccountForKeystore = (pair, password) => {
-  let jsonStr = localStorage.getItem('pair');
+  let jsonStr = localStorage.getItem("pair");
   if (!jsonStr) {
     jsonStr = JSON.stringify(pair.toJson(password));
   }
-  const blob = new Blob([jsonStr], { type: 'application/json; charset=utf-8' });
+  const blob = new Blob([jsonStr], { type: "application/json; charset=utf-8" });
   FileSaver.saveAs(blob, `${pair.address}.json`);
 };
-
-
-
-
 
 // 账户信息
 
@@ -167,7 +176,7 @@ export const exportAccountForKeystore = (pair, password) => {
 export const savePair = (pair, password) => {
   const jsonString = JSON.stringify(pair.toJson(password));
   console.log("jsonString", jsonString);
-  localStorage.setItem('pair', jsonString);
+  localStorage.setItem("pair", jsonString);
 };
 
 /**
@@ -206,7 +215,7 @@ export const getCurrentPair = () => {
  */
 export const removePair = (address) => {
   keyring.removePair(address);
-  localStorage.removeItem('pair');
+  localStorage.removeItem("pair");
 };
 
 // 余额相关
@@ -223,13 +232,17 @@ export const onGetBalance = async (address) => {
   let returnData = balance.toJSON();
   let reserved = getFloat(returnData.data.reserved); // 保留
   let feeFrozen = getFloat(returnData.data.feeFrozen); // 冻结
-  let transfer = getFloat(Number(returnData.data.free) - Number(returnData.data.feeFrozen)); // 可转账
-  let count = getFloat(Number(returnData.data.free) + Number(returnData.data.reserved)); // 全部
+  let transfer = getFloat(
+    Number(returnData.data.free) - Number(returnData.data.feeFrozen)
+  ); // 可转账
+  let count = getFloat(
+    Number(returnData.data.free) + Number(returnData.data.reserved)
+  ); // 全部
   return {
     transfer,
     reserved,
     feeFrozen,
-    count
+    count,
   };
 };
 
@@ -246,20 +259,26 @@ export const onGetDLCBalance = async (address) => {
   const DLCBalanceData = DLCBalance.toJSON();
   const DLCBalanceLockData = DLCBalanceLock.toJSON();
   const DLCBalanceTotalLockData = DLCBalanceTotalLock.toJSON();
-  const total_dlc = (DLCBalanceData ? Number(DLCBalanceData.balance) : 0) + DLCBalanceTotalLockData;
+  const total_dlc =
+    (DLCBalanceData ? Number(DLCBalanceData.balance) : 0) +
+    DLCBalanceTotalLockData;
   let lockArr = [];
   if (DLCBalanceLockData) {
     for (let item in DLCBalanceLockData) {
       let data = DLCBalanceLockData[item];
-      data.balance = data.balance ? (data.balance / Math.pow(10, 8)).toFixed(4) : 0;
+      data.balance = data.balance
+        ? (data.balance / Math.pow(10, 8)).toFixed(4)
+        : 0;
       data.lockIndex = item;
       lockArr.push(data);
     }
   }
   return {
-    balance: DLCBalanceData ? (DLCBalanceData.balance / Math.pow(10, 8)).toFixed(4) : 0,
+    balance: DLCBalanceData
+      ? (DLCBalanceData.balance / Math.pow(10, 8)).toFixed(4)
+      : 0,
     total_balance: total_dlc ? (total_dlc / Math.pow(10, 8)).toFixed(4) : 0,
-    lockedList: lockArr
+    lockedList: lockArr,
   };
 };
 
@@ -273,15 +292,18 @@ export const getBalanceInfo = async (wallet) => {
   await GetApi();
   const balance = await api.query.system.account(wallet);
   const returnData = balance.toJSON();
-  const transfer = getFloat(Number(returnData.data.free) - Number(returnData.data.feeFrozen)); // 可转账DBC
+  const transfer = getFloat(
+    Number(returnData.data.free) - Number(returnData.data.feeFrozen)
+  ); // 可转账DBC
   const DLCBalance = await api.query.assets.account(88, wallet); // 可转账DLC
   const DLCBalanceData = DLCBalance.toJSON();
   return {
-    dlc_balance: DLCBalanceData ? Number((DLCBalanceData.balance / Math.pow(10, 8)).toFixed(4)) : 0,
-    dbc_balance: Number(transfer)
+    dlc_balance: DLCBalanceData
+      ? Number((DLCBalanceData.balance / Math.pow(10, 8)).toFixed(4))
+      : 0,
+    dbc_balance: Number(transfer),
   };
 };
-
 
 // 转账
 /**
@@ -301,7 +323,7 @@ export const transferDBC = async (address, num, password, callback) => {
   } catch (e) {
     CallBack_data1 = {
       msg: e.message,
-      success: false
+      success: false,
     };
     callback(CallBack_data1);
     return;
@@ -315,7 +337,7 @@ export const transferDBC = async (address, num, password, callback) => {
     .catch((res) => {
       CallBack_data1 = {
         msg: res.message,
-        success: false
+        success: false,
       };
       callback(CallBack_data1);
     });
@@ -337,7 +359,7 @@ export const transferDLC = async (address, num, password, callback) => {
   } catch (e) {
     CallBack_data1 = {
       msg: e.message,
-      success: false
+      success: false,
     };
     callback(CallBack_data1);
     return;
@@ -351,12 +373,11 @@ export const transferDLC = async (address, num, password, callback) => {
     .catch((res) => {
       CallBack_data1 = {
         msg: res.message,
-        success: false
+        success: false,
       };
       callback(CallBack_data1);
     });
 };
-
 
 // 获取当前块高
 /**
@@ -377,17 +398,13 @@ export const onGetBlockNumber = async () => {
 export const dbcPriceOcw = async () => {
   await GetApi();
   console.log("api.query", api.query);
-  
+
   let de = await api.query.dbcPriceOCW.avgPrice();
   console.log("de", de);
   return de.toJSON();
 };
 
-
-
-
 // 转账相关
-
 
 // 回调函数
 
@@ -399,19 +416,26 @@ export const dbcPriceOcw = async () => {
  */
 const returnFun = (status, events, callback) => {
   if (status.isInBlock) {
-    events.forEach(({ event: { method, data: [error] } }) => {
-      if (method == 'ExtrinsicFailed') {
-        let returnError = error;
-        const decoded = api.registry.findMetaError(returnError.asModule);
-        CallBack_data.msg = decoded.method;
-        CallBack_data.success = false;
-        CallBack_data.index = decoded.index;
-        CallBack_data.section = decoded.section;
-      } else if (method == 'ExtrinsicSuccess') {
-        CallBack_data.msg = method;
-        CallBack_data.success = true;
+    events.forEach(
+      ({
+        event: {
+          method,
+          data: [error],
+        },
+      }) => {
+        if (method == "ExtrinsicFailed") {
+          let returnError = error;
+          const decoded = api.registry.findMetaError(returnError.asModule);
+          CallBack_data.msg = decoded.method;
+          CallBack_data.success = false;
+          CallBack_data.index = decoded.index;
+          CallBack_data.section = decoded.section;
+        } else if (method == "ExtrinsicSuccess") {
+          CallBack_data.msg = method;
+          CallBack_data.success = true;
+        }
       }
-    });
+    );
     if (callback) {
       callback(CallBack_data);
     }
@@ -430,10 +454,6 @@ const getFloat = (number) => {
   return number;
 };
 
-
-
-
-
 // 登录相关
 
 /**
@@ -449,9 +469,9 @@ export const unlockDLC = async (password, lockIndex, callback) => {
     kering.unlock(password);
     console.log("已解锁");
   } catch (e) {
-     CallBack_data1 = {
+    CallBack_data1 = {
       msg: e.message,
-      success: false
+      success: false,
     };
     callback(CallBack_data1);
     return;
@@ -470,9 +490,6 @@ export const unlockDLC = async (password, lockIndex, callback) => {
   //     callback(CallBack_data1);
   //   });
 };
-
-
-
 
 // 工具函数
 
@@ -498,20 +515,20 @@ export const inputToBn = (input, siPower, basePower) => {
   let result;
 
   if (isDecimalValue) {
-    const div = new BN(input.replace(/\.\d*$/, ''));
-    const modString = input.replace(/^\d+\./, '').substr(0, api?.registry.chainDecimals[0]);
+    const div = new BN(input.replace(/\.\d*$/, ""));
+    const modString = input
+      .replace(/^\d+\./, "")
+      .substr(0, api?.registry.chainDecimals[0]);
     const mod = new BN(modString);
     result = div
       .mul(BN_TEN.pow(siPower))
       .add(mod.mul(BN_TEN.pow(new BN(basePower - modString.length))));
   } else {
-    result = new BN(input.replace(/[^\d]/g, ''))
-      .mul(BN_TEN.pow(siPower));
+    result = new BN(input.replace(/[^\d]/g, "")).mul(BN_TEN.pow(siPower));
   }
 
   return result;
 };
-
 
 // 创建签名
 /**
@@ -521,11 +538,19 @@ export const inputToBn = (input, siPower, basePower) => {
  * @param {string} password - 密码
  * @param {string} type - 类型
  * @returns {object}
+ * 
+ * nonce 是一个随机数，它用于确保每次签名都是唯一的，以防止重放攻击。
+  data 是你要签名的数据。这可以是任何数据，但通常是交易的一部分。
+  password 是用于解锁账户密钥的密码。这是为了确保只有知道密码的人才能签名。
+  type 参数是用来指定data参数的类型。如果type为 "seed"，那么data参数应该是一个种子，将用于通过keyring.addFromUri(data)方法创建一个新的密钥对。如果type不是 "seed"，那么data参数应该是一个账户对，它将被转换为JSON格式，并通过keyring.addFromJson(jsonStr)方法导入。
+
  */
-export const CreateSignature = async (nonce, data, password, type) => {
+// export const CreateSignature = async (nonce, data, password, type) => {
+export const CreateSignature = async (data, password, type) => {
+  const nonce = uuidv4()
   let signUrl;
   await cryptoWaitReady();
-  if (type == 'seed') {
+  if (type == "seed") {
     signUrl = keyring.addFromUri(data);
   } else {
     let jsonStr = JSON.parse(JSON.stringify(data.toJson(password)));
@@ -533,10 +558,7 @@ export const CreateSignature = async (nonce, data, password, type) => {
     signUrl.unlock(password);
   }
   const signature = signUrl.sign(nonce);
+  console.log("signature", signature);
+  
   return { nonce, signature: u8aToHex(signature) };
 };
-
-
-
-
-

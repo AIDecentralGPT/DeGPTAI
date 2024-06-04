@@ -117,7 +117,7 @@
 			getWebAPIVoices();
 		}
 
-		if ($user.role === 'admin') {
+		if ($user?.role === 'admin') {
 			const res = await getAudioConfig(localStorage.token);
 
 			if (res) {
@@ -133,7 +133,7 @@
 <form
 	class="flex flex-col h-full justify-between space-y-3 text-sm"
 	on:submit|preventDefault={async () => {
-		if ($user.role === 'admin') {
+		if ($user?.role === 'admin') {
 			await updateConfigHandler();
 		}
 		saveSettings({
@@ -243,7 +243,7 @@
 				</div>
 			</div> -->
 
-			{#if $user.role === 'admin'}
+			{#if $user?.role === 'admin'}
 				{#if TTSEngine === 'openai'}
 					<div class="mt-1 flex gap-2 mb-1">
 						<input

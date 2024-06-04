@@ -209,7 +209,7 @@
 					<div class=" self-center">{$i18n.t('Audio')}</div>
 				</button>
 
-				{#if $user.role === 'admin'}
+				{#if $user?.role === 'admin'}
 					<button
 						class="px-2.5 py-2.5 min-w-fit rounded-lg flex-1 md:flex-none flex text-right transition {selectedTab ===
 						'images'

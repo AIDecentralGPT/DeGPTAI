@@ -13,6 +13,7 @@
   } from "$lib/stores";
   import { fade, slide } from "svelte/transition";
   import {
+    CreateSignature,
     GetApi,
     createAccountFromSeed,
     dbcPriceOcw,
@@ -32,9 +33,15 @@
   // ---------------------
   // 连接三方钱包
   import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi";
+
   import { mainnet, arbitrum } from "viem/chains";
   import { reconnect } from "@wagmi/core";
-  import { watchAccount, disconnect, getAccount } from "@wagmi/core";
+  import {
+    watchAccount,
+    disconnect,
+    getAccount,
+    signMessage,
+  } from "@wagmi/core";
 
   // 1. Your WalletConnect Cloud project ID
   const projectId = "a365ccf6c502136ee70fd89768611fc2";
@@ -58,27 +65,22 @@
   reconnect(config);
   // 3. Create modal
 
-
-
-
   const modal = createWeb3Modal({
     wagmiConfig: config,
     projectId,
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
     enableOnramp: true, // Optional - false as default
     themeVariables: {
-    // '--w3m-color-mix': '#00BB7F',
-    // '--w3m-color-mix-strength': 40,
-    // --wui-color-accent-base-100
-    "--w3m-accent": 'transport'
-  }
-,
-    themeMode: 'dark'
-
+      // '--w3m-color-mix': '#00BB7F',
+      // '--w3m-color-mix-strength': 40,
+      // --wui-color-accent-base-100
+      "--w3m-accent": "transport",
+    },
+    themeMode: "dark",
   });
 
   let threesideAccount = getAccount(config);
-    console.log("三方钱包数据threesideAccount", threesideAccount);
+  console.log("三方钱包数据threesideAccount", threesideAccount);
 
   function connect() {
     console.log("三方钱包数据", threesideAccount);
@@ -99,10 +101,26 @@
   watchAccount(config, {
     onChange(account) {
       console.log("1", account);
-      threesideAccount = account
+      // if (isConnected) {
+      //   signMessage(config, { message: "hello world" }).then((res) => {
+      //     console.log(123, res);
+      //   });
+      // }
+
+      // CreateSignature($currentWalletData.pair,"123", undefined  )
+
+      threesideAccount = account;
     },
   });
 
+  // signMessage只在threesideAccount改变时执行一次。（reactive）
+  // let signedMessage;
+  // $: if (threesideAccount && !signedMessage) {
+  //   signMessage(config, { message: 'hello world' }).then((res) => {
+  //     console.log(123, res);
+  //     signedMessage = res;
+  //   });
+  // }
 
   // watchAccount(config, {
   //   onChange(account) {
@@ -117,12 +135,9 @@
 </script>
 
 <div name="content">
-  
   <!-- <w3m-connect-button class="bg-red-500 text-black" /> -->
   <!-- <button id="btn">Connect</button> -->
   <span id="user" />
-
-
 
   <!-- <span
   on:click={ () => {
@@ -136,11 +151,11 @@
 
   <!-- 三方钱包账号展示 -->
   {#if threesideAccount?.address}
-  <w3m-button  />
+    <w3m-button />
   {/if}
 
   <!-- 创建，连接，打开钱包，三个按钮 -->
-  {#if (!$currentWalletData.pair && !threesideAccount?.address)}
+  {#if !$currentWalletData.pair && !threesideAccount?.address}
     <div>
       <button
         id="btn"
@@ -266,13 +281,12 @@
   {/if}
 
   <!-- 钱包数据面板 -->
-  {#if ($currentWalletData.pair )}
+  {#if $currentWalletData.pair}
     <DbcAccountDetail />
   {/if}
 </div>
 
 <style>
   .w3m-button {
-
   }
 </style>
