@@ -51,7 +51,7 @@
         on:click={() => {
           show = false;
           loading= false
-          password=false
+          password=""
         }}
       >
         <svg

@@ -26,7 +26,7 @@
   export let show = false;
 
   let showPassword = false;
-  let password = "123";
+  let password = "";
   let loading = false;
   let passwordError = "";
   let walletCreatedData = null; // 创建钱包返回的数据
@@ -71,6 +71,7 @@
         class="self-center"
         on:click={() => {
           show = false;
+          password=""
         }}
       >
         <svg
@@ -174,32 +175,43 @@
             style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
             type="submit"
             on:click={async () => {
+                  loading = true;
+
               const lockIndex = 0; // 锁定索引
-              unlockDLC(password, lockIndex, (result) => {
+              unlockDLC(password, lockIndex, async (result) => {
                 console.log("Unlock DLC result:", result);
+                // 解锁失败
+                if (result && !result?.success) {
+                  toast.error(result?.msg);
+                  loading = false;
+                  return;
+                }
+
+                // 解锁成功
+                if (result && result?.success) {
+
+                  const balance = await onGetBalance(pair?.address);
+                  const dlcBalance = await onGetDLCBalance(pair?.address);
+                  console.log("balance", balance, pair);
+                  console.log("dlcBalance", dlcBalance);
+                  // $currentWalletData.pair = pair
+                  // $currentWalletData.balance = balance
+                  // $currentWalletData.dlcBalance = dlcBalance
+
+                  currentWalletData.update((data) => {
+                    return {
+                      ...data,
+                      pair,
+                      balance,
+                      dlcBalance,
+                    };
+                  });
+
+                  loading = false;
+                  show = false;
+                  password=""
+                }
               });
-
-              loading = true;
-
-              const balance = await onGetBalance(pair?.address);
-              const dlcBalance = await onGetDLCBalance(pair?.address);
-              console.log("balance", balance, pair);
-              console.log("dlcBalance", dlcBalance);
-              // $currentWalletData.pair = pair
-              // $currentWalletData.balance = balance
-              // $currentWalletData.dlcBalance = dlcBalance
-
-              currentWalletData.update((data) => {
-                return {
-                  ...data,
-                  pair,
-                  balance,
-                  dlcBalance,
-                };
-              });
-
-              loading = false;
-              show = false;
             }}
           >
             {$i18n.t("  Unlock  ")}

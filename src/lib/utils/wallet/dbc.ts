@@ -319,8 +319,10 @@ export const transferDBC = async (address, num, password, callback) => {
   const bob = inputToBn(String(num), siPower, 15);
   let kering = getCurrentPair();
   try {
-    kering.unlock(password);
+    kering?.unlock(password);
   } catch (e) {
+    console.log("transferDBC方法", e);
+    
     CallBack_data1 = {
       msg: e.message,
       success: false,
@@ -335,6 +337,8 @@ export const transferDBC = async (address, num, password, callback) => {
       returnFun(status, events, callback);
     })
     .catch((res) => {
+      console.log("transferDBC方法", res);
+
       CallBack_data1 = {
         msg: res.message,
         success: false,
@@ -463,33 +467,50 @@ const getFloat = (number) => {
  * @param {function} callback - 回调函数
  */
 export const unlockDLC = async (password, lockIndex, callback) => {
+  // 调用 GetApi 函数
   await GetApi();
+  // 获取当前配对
   let kering = getCurrentPair();
   try {
+    // 本地密码解锁
     kering.unlock(password);
     console.log("已解锁");
+    callback({
+      success: true
+    }) 
   } catch (e) {
+
+    // 设置错误回调数据
     CallBack_data1 = {
       msg: e.message,
       success: false,
     };
+    // 调用回调函数并传入错误回调数据
     callback(CallBack_data1);
     return;
   }
-  await cryptoWaitReady();
+  // 等待加密操作准备就绪
+  // await cryptoWaitReady();
+
+  // 联网解锁，解锁资产
   // await api.tx.assets
   //   .unlock(88, lockIndex)
   //   .signAndSend(kering, ({ events = [], status }) => {
+  //     // 调用 returnFun 函数处理结果
   //     returnFun(status, events, callback);
   //   })
   //   .catch((res) => {
-  //      CallBack_data1 = {
+  //   console.log(222);
+  //   // 设置错误回调数据
+  //   CallBack_data1 = {
   //       msg: res.message,
   //       success: false
   //     };
+  //     // 调用回调函数并传入错误回调数据
   //     callback(CallBack_data1);
   //   });
 };
+
 
 // 工具函数
 

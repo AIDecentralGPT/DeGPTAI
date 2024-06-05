@@ -93,7 +93,7 @@
         </p>
         <button
           on:click={async () => {
-            const res = await copyToClipboard("1");
+            const res = await copyToClipboard($currentWalletData?.pair?.address);
             if (res) {
               toast.success($i18n.t("Copying to clipboard was successful!"));
             }
@@ -101,35 +101,7 @@
           type="button"
           class="absolute inset-y-0 right-0 px-3 py-2 text-sm dark:text-gray-300 dark:bg-gray-850 rounded-md"
         >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="copy" clip-path="url(#clip0_0_29)">
-              <path
-                id="Vector"
-                d="M0.75 10.6875V5.0625C0.75 4.75183 1.00184 4.5 1.3125 4.5H4.6875H6.9375C7.24817 4.5 7.5 4.75183 7.5 5.0625V7.3125V10.6875C7.5 10.9982 7.24817 11.25 6.9375 11.25H1.3125C1.00184 11.25 0.75 10.9982 0.75 10.6875Z"
-                stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                id="Vector_2"
-                d="M7.875 7.5H10.6875C10.9982 7.5 11.25 7.24817 11.25 6.9375V1.3125C11.25 1.00184 10.9982 0.75 10.6875 0.75H5.0625C4.75183 0.75 4.5 1.00184 4.5 1.3125V4.125"
-                stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </g>
-            <defs>
-              <clipPath id="clip0_0_29">
-                <rect width="12" height="12" fill="white" />
-              </clipPath>
-            </defs>
-          </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><rect width="336" height="336" x="128" y="128" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" rx="57" ry="57"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/></svg>
         </button>
       </div>
     </div>

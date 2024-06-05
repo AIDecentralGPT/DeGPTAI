@@ -59,14 +59,15 @@
         const transferMethod = transferType === "dbc" ? transferDBC : transferDLC; // 根据 transferType 选择方法
         try {
           await transferMethod(
-            $currentWalletData?.pair?.address,
+            // $currentWalletData?.pair?.address,
+            address,
             amount,
             password,
             (res) => {
               loading = false;
               if (res?.msg) {
                 toast.error(res?.msg);
-                throw new Error("111");
+                // throw new Error("111");
               } else {
                 show = false;
                 toast.success($i18n.t("Transfer successful!"));
@@ -195,11 +196,13 @@
         </label>
         <div class="flex flex-col w-full">
           <input
+            type="number"
             bind:value={amount}
-            type="text"
             class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
             placeholder={$i18n.t("Enter Amount")}
             required
+            min="0.001"
+            step="0.001"
           />
         </div>
         {#if showError.amount}
