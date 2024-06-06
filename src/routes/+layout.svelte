@@ -70,7 +70,7 @@
 
         console.log("pair", pair);
         // 展示打开钱包modal
-        $showOpenWalletModal = true;
+        // $showOpenWalletModal = true;
 
 
         // // 获取钱包面板数据

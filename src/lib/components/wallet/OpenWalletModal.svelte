@@ -226,6 +226,9 @@
                     signature,
                     id: localStorage.visitor_id,
                   });
+
+                  localStorage.removeItem("token")
+
                   localStorage.token = walletSignInResult.token;
 
                   if(walletSignInResult.token) {
