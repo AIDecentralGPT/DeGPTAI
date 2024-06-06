@@ -16,7 +16,6 @@ on: # 定义触发工作流程的事件
 jobs: # 定义需要执行的工作
   build: # 工作的标识符，这里是构建工作
     runs-on: ubuntu-latest # 指定运行环境为最新版本的Ubuntu虚拟环境
-    timeout-minutes: 40 # 设置超时时间为40分钟
 
     steps: # 定义执行的步骤
       - name: Checkout code # 步骤名称
@@ -38,6 +37,7 @@ jobs: # 定义需要执行的工作
 
 
       - name: Deploy to Server # 步骤名称
+        timeout-minutes: 40 # 设置超时时间为40分钟
         uses: appleboy/ssh-action@master # 使用appleboy/ssh-action@master动作，用于通过SSH连接到服务器
         with: # 传递给动作的参数
           host: ${{ secrets.SERVER_HOST }} # 服务器的IP地址或域名
