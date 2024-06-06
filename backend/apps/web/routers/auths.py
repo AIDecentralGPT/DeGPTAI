@@ -329,9 +329,9 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
 
             if user:
                 # 这里先不做事情，后面会返回用户
-                print("User found:", user['id'])
+                print("User found:", user.id)
                  # 删除所有聊天记录
-                result = Chats.delete_chats_by_user_id(user['id'])
+                result = Chats.delete_chats_by_user_id(user.id)
                 print("删除所有聊天记录", result)   
                 
 
@@ -351,7 +351,7 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 print("Auths.insert_new_auth执行完毕")
 
                 user = Users.get_user_by_id(form_data.id)
-                print("New user created:", user['id'], user)
+                print("New user created:", user.id, user)
     
             token = create_token(
             data={"id": user.id},

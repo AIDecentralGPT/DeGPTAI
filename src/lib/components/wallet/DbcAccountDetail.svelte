@@ -172,12 +172,12 @@
         localStorage.removeItem("token");
         $chats = [];
 
-        // // 触发重新渲染新会话组件
-        // $pageUpdateNumber = $pageUpdateNumber + 1;
-        // goto("/");
+        // 触发重新渲染新会话组件
+        $pageUpdateNumber = $pageUpdateNumber + 1;
+        goto("/");
 
 
-        window.location.href = '/'
+        // window.location.href = '/'
       }}
     >
       {$i18n.t(" Close Wallet ")}
