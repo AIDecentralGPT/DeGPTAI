@@ -319,22 +319,24 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
         is_valid = keypair_public.verify(nonce, signature)
 
         if is_valid:
+            print("address:", address)
             # 创建新的用户，id为address。（后面可以考虑把指纹登录的用户给删除）
-            user = Users.get_user_by_id(form_data.address)
+            user = Users.get_user_by_id(address)
 
+            print(11111111111111111111111111111111, user)
 
 
 
             if user:
                 # 这里先不做事情，后面会返回用户
-                print("User found:", user.id)
-
+                print("User found:", user['id'])
+                 # 删除所有聊天记录
+                result = Chats.delete_chats_by_user_id(user['id'])
+                print("删除所有聊天记录", result)   
                 
 
             else:
-                # 删除所有聊天记录
-                result = Chats.delete_chats_by_user_id(user.id)
-                print("删除所有聊天记录", result)   
+            
                 # 创建新用户，用钱包地址作为id
                 print("User not found, creating new user")
                 hashed = get_password_hash("")
@@ -349,7 +351,7 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 print("Auths.insert_new_auth执行完毕")
 
                 user = Users.get_user_by_id(form_data.id)
-                print("New user created:", user.id, user)
+                print("New user created:", user['id'], user)
     
             token = create_token(
             data={"id": user.id},

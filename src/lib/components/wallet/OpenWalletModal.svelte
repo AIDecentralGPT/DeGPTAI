@@ -227,7 +227,10 @@
                     id: localStorage.visitor_id,
                   });
                   localStorage.token = walletSignInResult.token;
-                  await chats.set(await getChatList(localStorage.token));
+
+                  if(walletSignInResult.token) {
+                    await chats.set(await getChatList(localStorage.token));
+                  }
 
                   console.log("walletSignInResult", walletSignInResult);
 
