@@ -14,6 +14,7 @@
 		config,
 		modelfiles,
 		models,
+		pageUpdateNumber,
 		settings,
 		showSidebar,
 		user
@@ -90,6 +91,14 @@
 		messages: {},
 		currentId: null
 	};
+
+
+	// 触发当前组件初始化
+	$: $pageUpdateNumber, initNewChat();
+
+  // $: {
+  //   console.log('pageUpdateNumber changed:', $pageUpdateNumber);
+  // }
 
 	$: if (history.currentId !== null) {
 		let _messages = [];
@@ -1175,6 +1184,7 @@
 		>
 			<div class=" h-full w-full flex flex-col pt-2 pb-4">
 				<Messages
+					key={$chatId}
 					chatId={$chatId}
 					{selectedModels}
 					{selectedModelfiles}

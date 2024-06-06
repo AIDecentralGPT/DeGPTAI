@@ -93,6 +93,9 @@
 		currentId: null
 	};
 
+
+
+
 	$: if (history.currentId !== null) {
 		let _messages = [];
 

@@ -158,7 +158,7 @@
               value="dlc"
               required
             />
-            DLC
+            DGC
           </label>
         </div>
         {#if showError.transferType}

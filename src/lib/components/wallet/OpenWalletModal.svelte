@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { importAccountFromKeystore } from "./../../utils/wallet/dbc.js";
+  import { getChatList } from "$lib/apis/chats";
+  import {
+    importAccountFromKeystore,
+    savePair,
+    signData,
+  } from "./../../utils/wallet/dbc.js";
   import {
     exportAccountForKeystore,
     createAccountFromMnemonic,
@@ -7,7 +12,7 @@
   import { createAccountFromSeed } from "$lib/utils/wallet/dbc.js";
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
-  import { currentWalletData, models, settings, user } from "$lib/stores";
+  import { chats, currentWalletData, models, settings, user } from "$lib/stores";
 
   import { getModels as _getModels } from "$lib/utils";
   import {
@@ -20,6 +25,7 @@
   import { unlockDLC } from "$lib/utils/wallet/dbc.js";
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
+  import { walletSignIn } from "$lib/apis/auths/index.js";
 
   const i18n = getContext("i18n");
 
@@ -33,6 +39,17 @@
   let filesInputElement;
   let inputFiles;
   let pair = null; //
+
+  $: if (!show) {
+    (async () => {
+      console.log("show", show);
+
+      password = "";
+      showPassword = false;
+      inputFiles = null;
+      pair = null;
+    })();
+  }
 
   async function uploadJson(file) {
     const res = await importAccountFromKeystore(file);
@@ -71,7 +88,7 @@
         class="self-center"
         on:click={() => {
           show = false;
-          password=""
+          password = "";
         }}
       >
         <svg
@@ -175,11 +192,12 @@
             style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
             type="submit"
             on:click={async () => {
-                  loading = true;
+              loading = true;
 
               const lockIndex = 0; // 锁定索引
               unlockDLC(password, lockIndex, async (result) => {
-                console.log("Unlock DLC result:", result);
+                console.log("Unlock DGC result:", result);
+
                 // 解锁失败
                 if (result && !result?.success) {
                   toast.error(result?.msg);
@@ -189,27 +207,56 @@
 
                 // 解锁成功
                 if (result && result?.success) {
+                  // 存储本地密码
+                  savePair(pair, password);
 
-                  const balance = await onGetBalance(pair?.address);
-                  const dlcBalance = await onGetDLCBalance(pair?.address);
-                  console.log("balance", balance, pair);
-                  console.log("dlcBalance", dlcBalance);
-                  // $currentWalletData.pair = pair
-                  // $currentWalletData.balance = balance
-                  // $currentWalletData.dlcBalance = dlcBalance
+                  // ----------------
+                  // 请求服务端登录钱包账户
 
-                  currentWalletData.update((data) => {
-                    return {
-                      ...data,
-                      pair,
-                      balance,
-                      dlcBalance,
-                    };
+                  const { nonce, signature } = await signData(
+                    pair,
+                    password,
+                    undefined
+                  );
+
+                  const walletSignInResult = await walletSignIn({
+                    address: pair?.address,
+                    nonce,
+                    // data: pair,
+                    signature,
+                    id: localStorage.visitor_id,
                   });
+                  localStorage.token = walletSignInResult.token;
+                  await chats.set(await getChatList(localStorage.token));
+
+                  console.log("walletSignInResult", walletSignInResult);
+
+                  if (walletSignInResult.id) {
+                    // ----------------
+
+                    // 获取钱包面板数据
+
+                    const balance = await onGetBalance(pair?.address);
+                    const dlcBalance = await onGetDLCBalance(pair?.address);
+                    console.log("balance", balance, pair);
+                    console.log("dlcBalance", dlcBalance);
+                    // $currentWalletData.pair = pair
+                    // $currentWalletData.balance = balance
+                    // $currentWalletData.dlcBalance = dlcBalance
+
+                    currentWalletData.update((data) => {
+                      return {
+                        ...data,
+                        pair,
+                        balance,
+                        dlcBalance,
+                      };
+                    });
+                  }
 
                   loading = false;
                   show = false;
-                  password=""
+                  password = "";
                 }
               });
             }}

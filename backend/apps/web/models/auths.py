@@ -63,6 +63,9 @@ class SigninResponse(Token, UserResponse):
     pass
 
 
+
+
+
 class FingerprintSigninResponse(Token, UserResponse):
     pass
 
@@ -70,6 +73,19 @@ class SigninForm(BaseModel):
     email: str
     password: str
     visiter_id: Optional[str] = None
+
+
+class WalletSigninForm(BaseModel):
+    # email: str
+    # password: str
+    # visiter_id: Optional[str] = None
+    address: str
+    nonce:str
+    signature: str
+    id: str
+
+            # 将签名从十六进制转换为字节
+
 
 
 class FingerprintSignInForm(BaseModel):
@@ -214,6 +230,24 @@ class AuthsTable:
                 return False
         except:
             return False
+        
+
+    def update_user_id(self, old_id: str, new_id: str) -> bool:
+        try:
+            # 更新Auth表中的用户ID
+            query = Auth.update(id=new_id).where(Auth.id == old_id)
+            result = query.execute()
+
+            # 更新Users表中的用户ID
+            if result == 1:
+                user_update_result = Users.update_user_id(old_id, new_id)
+                return user_update_result
+            else:
+                return False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+
 
 
 Auths = AuthsTable(DB)

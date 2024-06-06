@@ -73,7 +73,8 @@
 					{#if modelfile}
 						{modelfile.title}
 					{:else}
-						{$i18n.t('Hello, {{name}}', { name: $user?.name })}
+						<!-- {$i18n.t('Hello, {{name}}', { name: $user?.name })} -->
+						{$i18n.t('Hello')}
 					{/if}
 				</div>
 

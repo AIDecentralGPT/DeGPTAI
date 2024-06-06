@@ -10,10 +10,11 @@
     showNewWalletModal,
     showOpenWalletModal,
     currentWalletData,
+    chatId,
+    pageUpdateNumber,
   } from "$lib/stores";
   import { fade, slide } from "svelte/transition";
   import {
-    CreateSignature,
     GetApi,
     createAccountFromSeed,
     dbcPriceOcw,
@@ -212,6 +213,8 @@
           // // const res = await dbcPriceOcw()
           // console.log("res", res);
           $showNewWalletModal = true;
+
+
         }}
       >
         <div class=" self-center mr-3">

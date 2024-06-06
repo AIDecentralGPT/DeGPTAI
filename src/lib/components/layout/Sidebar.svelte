@@ -12,12 +12,20 @@
     showArchivedChats,
     showNewWalletModal,
     showOpenWalletModal,
-		showExportWalletJsonModal,
+    showExportWalletJsonModal,
     showTransferModal,
     showPriceModal,
     showBuyCoinModal,
-    showShareModal
+    showShareModal,
+    currentWalletData as walletDataStore,
   } from "$lib/stores";
+  import {
+    exportAccountForKeystore,
+    createAccountFromMnemonic,
+    createAccountFromSeed,
+    getCurrentPair,
+    savePair,
+  } from "./../../utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
 
   const i18n = getContext("i18n");
@@ -49,6 +57,9 @@
   import PriceModal from "../wallet/PriceModal.svelte";
   import BuyCoinModal from "../wallet/BuyCoinModal.svelte";
   import ShareModal from "../wallet/ShareModal.svelte";
+  import SocialMedia from "../socialmedia/SocialMedia.svelte";
+  import { onGetBalance } from "$lib/utils/wallet/dbc.js";
+  import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
 
   const BREAKPOINT = 768;
 
@@ -72,7 +83,7 @@
 
   let filteredChatList = [];
 
-  $: filteredChatList = $chats.filter((chat) => {
+  $: filteredChatList = $chats?.filter((chat) => {
     if (search === "") {
       return true;
     } else {
@@ -106,6 +117,28 @@
   };
 
   onMount(async () => {
+    // 登录账号
+    const pair = await getCurrentPair();
+    if (pair) {
+      const balance = await onGetBalance(pair?.address);
+      const dlcBalance = await onGetDLCBalance(pair?.address);
+      console.log("balance", balance, pair);
+      console.log("dlcBalance", dlcBalance);
+      // $currentWalletData.pair = pair
+      // $currentWalletData.balance = balance
+      // $currentWalletData.dlcBalance = dlcBalance
+
+      walletDataStore.update((data) => {
+        return {
+          ...data,
+          pair,
+          balance,
+          dlcBalance,
+        };
+      });
+    }
+
+    // -----------------------原带的逻辑
     mobile.subscribe((e) => {
       if ($showSidebar && e) {
         showSidebar.set(false);
@@ -249,15 +282,15 @@
 {/if}
 
 <div
-	bind:this={navElement}
-	id="sidebar"
-	class="h-screen max-h-[100dvh] min-h-screen select-none {$showSidebar
-		? 'md:relative w-[340px]'
-		: '-translate-x-[340px] w-[0px]'} bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-200 text-sm transition fixed z-50 top-0 left-0 rounded-r-2xl
+  bind:this={navElement}
+  id="sidebar"
+  class="h-screen max-h-[100dvh] min-h-screen select-none {$showSidebar
+    ? 'md:relative w-[340px]'
+    : '-translate-x-[340px] w-[0px]'} bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-200 text-sm transition fixed z-50 top-0 left-0 rounded-r-2xl
         "
-	data-state={$showSidebar}
+  data-state={$showSidebar}
 >
-<!-- <div
+  <!-- <div
   bind:this={navElement}
   id="sidebar"
   class="h-screen max-h-[100dvh] min-h-screen select-none {$showSidebar
@@ -771,6 +804,9 @@
 				{/if}
 			</div> -->
 
+      <!-- 社媒 -->
+      <SocialMedia />
+      <!-- 钱包 -->
       <Wallet>123</Wallet>
     </div>
   </div>

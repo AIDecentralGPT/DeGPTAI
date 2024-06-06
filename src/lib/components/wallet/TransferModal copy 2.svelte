@@ -98,7 +98,7 @@
               value="dlc"
               required
             />
-            DLC
+            DGC
           </label>
         </div>
       </div>

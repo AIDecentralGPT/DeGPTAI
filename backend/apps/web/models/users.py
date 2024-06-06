@@ -220,6 +220,18 @@ class UsersTable:
             return user.api_key  # 返回用户的api_key
         except:
             return None  # 如果查询失败，返回None
+        
+
+
+    def update_user_id(old_id: str, new_id: str) -> bool:
+        try:
+            query = UserModel.update(id=new_id).where(UserModel.id == old_id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+
 
 # 实例化UsersTable类
 Users = UsersTable(DB)

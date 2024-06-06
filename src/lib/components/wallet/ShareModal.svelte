@@ -32,7 +32,7 @@
   
       <div class="  p-6 shadow-md sm:mt-4 mt-0 flex-1">
         <div class="text-center">
-          <h2 class="text-2xl font-bold mb-4">{$i18n.t('Invite Friends to Earn DLC Rewards')}</h2>
+          <h2 class="text-2xl font-bold mb-4">{$i18n.t('Invite Friends to Earn DGC Rewards')}</h2>
         </div>
         <div class="flex flex-col md:flex-row justify-between space-x-0 md:space-x-4 items-stretch max-h-[50vh] overflow-y-auto">
           <div
@@ -57,7 +57,7 @@
             </div>
             <h3 class="text-lg font-bold mb-2">01</h3>
             <p class="text-sm text-gray-600">
-              {$i18n.t('Invite friends to download DeepLink and create a wallet to earn 500 DLC rewards. Your friends will also earn 500 DLC rewards.')}
+              {$i18n.t('Invite friends to download DeepLink and create a wallet to earn 500 DGC rewards. Your friends will also earn 500 DGC rewards.')}
             </p>
           </div>
           <div class=" flex flex-col justify-center items-center">
@@ -94,7 +94,7 @@
             </div>
             <h3 class="text-lg font-bold mb-2">02</h3>
             <p class="text-sm text-gray-600">
-              {$i18n.t('If your friends purchase NFTs on DeepLink, you will receive a 10% DLC commission reward.')}
+              {$i18n.t('If your friends purchase NFTs on DeepLink, you will receive a 10% DGC commission reward.')}
             </p>
           </div>
           <div class=" flex flex-col justify-center items-center">
@@ -119,12 +119,12 @@
             </div>
             <h3 class="text-lg font-bold mb-2">03</h3>
             <p class="text-sm text-gray-600">
-              {$i18n.t('If your friends purchase DLC on DeepLink, you will receive a 10% DLC commission reward.')}
+              {$i18n.t('If your friends purchase DGC on DeepLink, you will receive a 10% DGC commission reward.')}
             </p>
           </div>
         </div>
   
-        <div class="text-center mt-8 flex justify-between items-center flex-col md:flex-row">
+        <div class="text-center mt-8 flex justify-center gap-4 items-center flex-col md:flex-row">
           <p
             class="
             hidden sm:block
@@ -132,12 +132,12 @@
                     pr-[35px]
                     px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
           >
-            https://download.deeplink.cloud/DeeplinkSetup.exe?invite=Cruj9oS5NO
+            https://www.degpt.ai?invite=Cruj9oS5NO
           </p>
           <button
             on:click={async () => {
               const res = await copyToClipboard(
-                "https://download.deeplink.cloud/DeeplinkSetup.exe?invite=Cruj9oS5NO"
+                "https://www.degpt.ai?invite=Cruj9oS5NO"
               );
               if (res) {
                 toast.success($i18n.t("Copying to clipboard was successful!"));

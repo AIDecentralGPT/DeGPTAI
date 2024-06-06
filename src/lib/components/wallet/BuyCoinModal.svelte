@@ -63,11 +63,11 @@
           <input
             type="radio"
             bind:group={coinType}
-            value="DLC"
+            value="DGC"
             required
             class="mr-1.5 cursor-pointer"
           />
-          DLC
+          DGC
         </label>
       </div>
     </div>
@@ -128,7 +128,7 @@
         </div>
       </div>
     {/if}
-    {#if coinType === "DLC"}
+    {#if coinType === "DGC"}
       <div class="flex justify-center">
         <button
           class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"

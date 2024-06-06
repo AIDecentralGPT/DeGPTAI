@@ -188,7 +188,7 @@ export const updateUserById = async (token: string, userId: string, user: UserUp
 		body: JSON.stringify({
 			profile_image_url: user.profile_image_url,
 			email: user.email,
-			name: user.name,
+			name: user.name, // 存放钱包地址
 			password: user.password !== '' ? user.password : undefined
 		})
 	})

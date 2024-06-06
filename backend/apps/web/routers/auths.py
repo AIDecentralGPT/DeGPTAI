@@ -8,11 +8,48 @@ from pydantic import BaseModel
 import re
 import uuid
 import csv
+from apps.web.models.chats import (
+    ChatModel,
+    ChatResponse,
+    ChatTitleForm,
+    ChatForm,
+    ChatTitleIdResponse,
+    Chats,
+)
+
+
+# --------钱包相关--------
+from substrateinterface import Keypair, KeypairType
+from substrateinterface.utils.ss58 import ss58_decode
+from substrateinterface.utils.hasher import blake2_256
+import json
+
+# https://chatgpt.com/c/ea2b63e6-234f-45ad-8e32-a338f3c76737
+
+
+
+
+# # 假设前端传递的数据格式如下：
+# data = {
+#     "address": "5FHneW46xGXgs5mUiveU4sbTyGBzmtoZygMnNrpHRT7Pu8oB",
+#     "nonce": "some-random-nonce",
+#     "message": "The message to be signed",
+#     "signature": "0x38d5724ace9f5fbd..."
+# }
+
+
+
+
+
+
+
+# ————————————————————————
 
 
 from apps.web.models.auths import (
     SigninForm,
     FingerprintSignInForm,
+    WalletSigninForm,
     SignupForm,
     AddUserForm,
     UpdateProfileForm,
@@ -21,6 +58,7 @@ from apps.web.models.auths import (
     SigninResponse,
     Auths,
     ApiKey,
+    
 )
 from apps.web.models.users import Users
 from apps.web.models.visitors import visitors_table
@@ -243,22 +281,139 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         "role": user.role,
         "profile_image_url": user.profile_image_url,
     }
-    print("Returning response:", response)  # 打印日志
+    # print("Returning response:", response)  # 打印日志
     return response
 
 
-# @router.post("/printSignIn", response_model=None)
-# async def printSignIn(request: Request, form_data: FingerprintSignInForm):
-#     print(111)
-#     try:
 
+
+
+
+# 钱包登录，校验钱包数据(可以用，就是结果是false)
+# https://polkascan.github.io/py-substrate-interface/usage/keypair-creation-and-signing/?h=verify#verify-generated-signature-with-public-address
+@router.post("/walletSignIn")
+async def walletSignIn(request: Request, form_data: WalletSigninForm):
+    print("Received Data:", form_data)
+    
+    address = form_data.address
+    nonce = form_data.nonce
+    signature_hex = form_data.signature
+    try:
+
+        # 检查并去除0x前缀
+        if signature_hex.startswith("0x"):
+            signature_hex = signature_hex[2:]
+
+        # 验证签名格式
+        if not re.fullmatch(r'[0-9a-fA-F]+', signature_hex):
+            raise HTTPException(status_code=400, detail="Invalid signature format")
+
+        print("form_data", address, nonce, signature_hex)
+
+        # 将签名从十六进制转换为字节
+        signature = bytes.fromhex(signature_hex)
+
+
+        # 创建Keypair对象
+        keypair_public = Keypair(ss58_address=address, crypto_type=KeypairType.SR25519)
+        is_valid = keypair_public.verify(nonce, signature)
+
+        if is_valid:
+            # 创建新的用户，id为address。（后面可以考虑把指纹登录的用户给删除）
+            user = Users.get_user_by_id(form_data.address)
+
+
+
+
+            if user:
+                # 这里先不做事情，后面会返回用户
+                print("User found:", user.id)
+
+                
+
+            else:
+                # 删除所有聊天记录
+                result = Chats.delete_chats_by_user_id(user.id)
+                print("删除所有聊天记录", result)   
+                # 创建新用户，用钱包地址作为id
+                print("User not found, creating new user")
+                hashed = get_password_hash("")
+                Auths.insert_new_auth(
+                    "",
+                    hashed,
+                    "visitor",
+                    "data:image/jpeg;base64,...",
+                    "user",
+                    form_data.address,
+                )
+                print("Auths.insert_new_auth执行完毕")
+
+                user = Users.get_user_by_id(form_data.id)
+                print("New user created:", user.id, user)
+    
+            token = create_token(
+            data={"id": user.id},
+            expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+            )
+            response = {
+                "token": token,
+                "token_type": "Bearer",
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "role": user.role,
+                "profile_image_url": user.profile_image_url,
+            }
+            return response
+
+
+        # #   更新表格的name为address
+        #     id = form_data.id
+        #     updated_user = Users.update_user_by_id(
+        #         id,
+        #         {
+        #             "name": form_data.address,
+        #         },
+        #     )
+        #     print("updated_user", updated_user)
+
+        #     return {
+        #             "is_valid": is_valid,
+        #             "userData": updated_user
+        #         }
+
+        else :
+            raise HTTPException(status_code=400, detail="Sign is error")
+
+
+
+        # return {
+        #     "is_valid": is_valid
+        # }
+
+    except ValueError as e:
+        print(f"ValueError: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+    except Exception as e:
+        print(f"Exception: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+
+# @router.post("/walletSignIn", response_model=None)
+# async def walletSignIn(request: Request, form_data: FingerprintSignInForm):
+#     print("walletSignIn执行")
+#     try:
 #         user  = Users.get_user_by_id(form_data.id)
 #     except Exception as e:
 #         print("Users.get_user_by_id(form_data.id)", e.message)
 
-#     if Users.get_user_by_id(form_data.id):
+#     if user:
 #         # print("有此访客", user, user.id)
 #         print("有此访客", )
+#         # Auths.update_user_id(user.id, form_data.id)
+
 
 #     else: 
 #         print(222)

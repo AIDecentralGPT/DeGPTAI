@@ -6,13 +6,20 @@
     getCurrentPair,
     savePair,
   } from "./../../utils/wallet/dbc.js";
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import { toast } from "svelte-sonner";
-  import { models, settings, user } from "$lib/stores";
 
   import { getModels as _getModels } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
+  import { onGetBalance } from "$lib/utils/wallet/dbc.js";
+  import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
+  import {
+    currentWalletData as walletDataStore,
+    models,
+    settings,
+    user,
+  } from "$lib/stores";
 
   const i18n = getContext("i18n");
 
@@ -164,14 +171,40 @@
                 walletCreatedData = res;
 
                 // const pair = await getCurrentPair(); // 这里没必要
-                const pair = walletCreatedData?.pair
+                const pair = walletCreatedData?.pair;
                 console.log("pair", pair);
-                
+
                 // 存储本地密码
                 savePair(pair, password);
 
                 // const res1 = await createAccountFromMnemonic(); // 创建新账户
                 // console.log("createAccountFromMnemonic", res1);
+
+                // 登录账号
+                const balance = await onGetBalance(pair?.address);
+                const dlcBalance = await onGetDLCBalance(pair?.address);
+                console.log("balance", balance, pair);
+                console.log("dlcBalance", dlcBalance);
+                // $currentWalletData.pair = pair
+                // $currentWalletData.balance = balance
+                // $currentWalletData.dlcBalance = dlcBalance
+
+
+
+
+
+
+
+// ----------------
+// 更新钱包面板
+                walletDataStore.update((data) => {
+                  return {
+                    ...data,
+                    pair,
+                    balance,
+                    dlcBalance,
+                  };
+                });
               }}
             >
               {$i18n.t("Create")}

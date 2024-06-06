@@ -143,6 +143,8 @@ export const importAccountFromJson = (json) => {
  */
 export const initFromLocalstorage = () => {
   const jsonStr = localStorage.getItem("pair");
+  console.log("从本地获取的jsonStr", jsonStr);
+  
   if (keyring && jsonStr) {
     const json = JSON.parse(jsonStr);
     return importAccountFromJson(json);
@@ -230,6 +232,10 @@ export const onGetBalance = async (address) => {
   await GetApi();
   const balance = await api.query.system.account(address);
   let returnData = balance.toJSON();
+
+  console.log("余额呀returnData", returnData);
+  
+
   let reserved = getFloat(returnData.data.reserved); // 保留
   let feeFrozen = getFloat(returnData.data.feeFrozen); // 冻结
   let transfer = getFloat(
@@ -552,23 +558,46 @@ export const inputToBn = (input, siPower, basePower) => {
 };
 
 // 创建签名
-/**
- * 创建签名
- * @param {string} nonce - 随机数
- * @param {string} data - 数据
- * @param {string} password - 密码
- * @param {string} type - 类型
- * @returns {object}
- * 
- * nonce 是一个随机数，它用于确保每次签名都是唯一的，以防止重放攻击。
-  data 是你要签名的数据。这可以是任何数据，但通常是交易的一部分。
-  password 是用于解锁账户密钥的密码。这是为了确保只有知道密码的人才能签名。
-  type 参数是用来指定data参数的类型。如果type为 "seed"，那么data参数应该是一个种子，将用于通过keyring.addFromUri(data)方法创建一个新的密钥对。如果type不是 "seed"，那么data参数应该是一个账户对，它将被转换为JSON格式，并通过keyring.addFromJson(jsonStr)方法导入。
+// /**
+//  * 创建签名
+//  * @param {string} nonce - 随机数
+//  * @param {string} data - 数据
+//  * @param {string} password - 密码
+//  * @param {string} type - 类型
+//  * @returns {object}
+//  * 
+//  * nonce 是一个随机数，它用于确保每次签名都是唯一的，以防止重放攻击。
+//   data 是你要签名的数据。这可以是任何数据，但通常是交易的一部分。
+//   password 是用于解锁账户密钥的密码。这是为了确保只有知道密码的人才能签名。
+//   type 参数是用来指定data参数的类型。如果type为 "seed"，那么data参数应该是一个种子，将用于通过keyring.addFromUri(data)方法创建一个新的密钥对。如果type不是 "seed"，那么data参数应该是一个账户对，它将被转换为JSON格式，并通过keyring.addFromJson(jsonStr)方法导入。
 
- */
-// export const CreateSignature = async (nonce, data, password, type) => {
-export const CreateSignature = async (data, password, type) => {
-  const nonce = uuidv4()
+//  */
+// // export const CreateSignature = async (nonce, data, password, type) => {
+// export const signData = async (data, password, type) => {
+//   const nonce = uuidv4()
+//   // const nonce = stringToU8a(uuidv4());  // 转换为 Uint8Array
+
+//   let signUrl;
+//   await cryptoWaitReady();
+//   if (type == "seed") {
+//     signUrl = keyring.addFromUri(data);
+//   } else {
+//     let jsonStr = JSON.parse(JSON.stringify(data.toJson(password)));
+//     signUrl = keyring.addFromJson(jsonStr);
+//     signUrl.unlock(password);
+//   }
+//   const signature = signUrl.sign(nonce);
+//   console.log("signature", signature, u8aToHex(signature) );
+  
+//   return { nonce, signature: u8aToHex(signature) };
+// };
+
+
+// 创建签名
+export const signData = async (data, password, type) => {
+  // const nonce = uuidv4();
+  const nonce = "test";
+  const nonceU8a = stringToU8a(nonce); // 转换为 Uint8Array
   let signUrl;
   await cryptoWaitReady();
   if (type == "seed") {
@@ -578,8 +607,9 @@ export const CreateSignature = async (data, password, type) => {
     signUrl = keyring.addFromJson(jsonStr);
     signUrl.unlock(password);
   }
-  const signature = signUrl.sign(nonce);
-  console.log("signature", signature);
-  
-  return { nonce, signature: u8aToHex(signature) };
+  // const signature = signUrl.sign(nonceU8a);
+  const signature = signUrl.sign(nonceU8a);
+  console.log("signature", signature, u8aToHex(signature));
+
+  return { nonce, signature: u8aToHex(signature) }; // nonce 作为字符串返回
 };

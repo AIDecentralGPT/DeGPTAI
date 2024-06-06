@@ -12,9 +12,13 @@
     showPriceModal,
     showBuyCoinModal,
     showShareModal,
+    chats,
+    chatId,
+    pageUpdateNumber,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
   import { dbcPriceOcw, removePair } from "$lib/utils/wallet/dbc";
+  import { goto } from "$app/navigation";
   const i18n = getContext("i18n");
 
   const fetchPrice = async () => {
@@ -93,7 +97,9 @@
         </p>
         <button
           on:click={async () => {
-            const res = await copyToClipboard($currentWalletData?.pair?.address);
+            const res = await copyToClipboard(
+              $currentWalletData?.pair?.address
+            );
             if (res) {
               toast.success($i18n.t("Copying to clipboard was successful!"));
             }
@@ -101,7 +107,31 @@
           type="button"
           class="absolute inset-y-0 right-0 px-3 py-2 text-sm dark:text-gray-300 dark:bg-gray-850 rounded-md"
         >
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><rect width="336" height="336" x="128" y="128" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" rx="57" ry="57"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em"
+            viewBox="0 0 512 512"
+            ><rect
+              width="336"
+              height="336"
+              x="128"
+              y="128"
+              fill="none"
+              stroke="currentColor"
+              stroke-linejoin="round"
+              stroke-width="32"
+              rx="57"
+              ry="57"
+            /><path
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="32"
+              d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+            /></svg
+          >
         </button>
       </div>
     </div>
@@ -138,6 +168,16 @@
         removePair($currentWalletData?.pair?.address);
         console.log($currentWalletData, DefaultCurrentWalletData);
         currentWalletData.set({});
+
+        localStorage.removeItem("token");
+        $chats = [];
+
+        // // 触发重新渲染新会话组件
+        // $pageUpdateNumber = $pageUpdateNumber + 1;
+        // goto("/");
+
+
+        window.location.href = '/'
       }}
     >
       {$i18n.t(" Close Wallet ")}
@@ -150,18 +190,31 @@
   <!-- ------------ -->
   <!-- 钱包余额 -->
   <!-- 标题 -->
-  <div class="flex justify-between items-end">
+  <div class="flex justify-between items-center">
     <div class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal">
       Wallet Balance
     </div>
 
     <button
       class="flex gap-2 items-center cursor-pointer"
-      on:click={()=>{
-        $showShareModal = true
+      on:click={() => {
+        $showShareModal = true;
       }}
     >
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4m-8-2l8-8m0 0v5m0-5h-5"/></svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1em"
+        height="1em"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4m-8-2l8-8m0 0v5m0-5h-5"
+        /></svg
+      >
 
       <span> Share to Obtain DGC </span>
     </button>
@@ -175,7 +228,7 @@
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          DLC
+          DGC
         </div>
         <div
           class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
@@ -195,7 +248,7 @@
       <div
         class="opacity-50 text-right text-xs font-medium font-['Gilroy'] leading-normal"
       >
-        DLC price ＄{Number($currentWalletData?.price?.dlc).toFixed(4)}
+        DGC price ＄{Number($currentWalletData?.price?.dlc).toFixed(4)}
       </div>
     </div>
 

@@ -66,6 +66,27 @@ export const showShareModal = writable(false);
 export let currentWalletData = writable(DefaultCurrentWalletData)
 
 
+
+
+export let pageUpdateNumber = writable(0)
+
+
+
+// 初始化
+
+// export const initNewChat = async () => {
+
+	
+// 	// 重置聊天ID和浏览器历史记录
+// 	window.history.replaceState(history.state, '', `/`);
+// 	chatId.set('');
+
+
+
+// };
+
+
+
 // ###########
 
 

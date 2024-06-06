@@ -25,6 +25,8 @@
 
 	export let items = [{ value: 'mango', label: 'Mango' }];
 
+	export let selectedList: any = []
+
 	export let className = 'w-[30rem]';
 
 	let show = false;
@@ -35,9 +37,21 @@
 	let searchValue = '';
 	let ollamaVersion = null;
 
-	$: filteredItems = searchValue
-		? items.filter((item) => item.value.toLowerCase().includes(searchValue.toLowerCase()))
-		: items;
+	// $: filteredItems = searchValue
+	// 	? items.filter((item) => item.value.toLowerCase().includes(searchValue.toLowerCase()))
+	// 	: items;
+
+	console.log("1value", value);
+	
+
+		$: if (true) {
+			console.log("selectedList", selectedList, items);
+		
+		
+		}
+
+		$: filteredItems = items.filter((item) => !selectedList.includes(item.label))
+	
 
 	const pullModelHandler = async () => {
 		const sanitizedModelTag = searchValue.trim().replace(/^ollama\s+(run|pull)\s+/, '');

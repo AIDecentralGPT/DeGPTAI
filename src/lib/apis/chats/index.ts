@@ -1,5 +1,7 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 import { getTimeRange } from '$lib/utils';
+import { printSignIn } from '../auths';
+import { config, user, theme, WEBUI_NAME, mobile, currentWalletData, showOpenWalletModal } from "$lib/stores";
 
 export const createNewChat = async (token: string, chat: object) => {
 	let error = null;
@@ -34,6 +36,20 @@ export const createNewChat = async (token: string, chat: object) => {
 
 export const getChatList = async (token: string = '') => {
 	let error = null;
+
+	console.log("token", token);
+	
+	
+	if(!token || token === 'undefined') {
+		// 如果没有token，则重新指纹登录
+		await printSignIn().then((res) => {
+			console.log(res);
+			localStorage.token = res.token;
+			user.set(res);
+		});
+
+		return 
+	}
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/chats/`, {
 		method: 'GET',
