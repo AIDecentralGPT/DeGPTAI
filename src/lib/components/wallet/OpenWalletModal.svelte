@@ -10,7 +10,7 @@
     createAccountFromMnemonic,
   } from "../../utils/wallet/dbc.js";
   import { createAccountFromSeed } from "$lib/utils/wallet/dbc.js";
-  import { getContext } from "svelte";
+  import { getContext, tick } from "svelte";
   import { toast } from "svelte-sonner";
   import {
     chats,
@@ -199,7 +199,10 @@
             style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
             type="submit"
             on:click={async () => {
+              
               loading = true;
+              await tick()
+              console.log("变色了要", loading);
 
               const lockIndex = 0; // 锁定索引
               unlockDLC(password, lockIndex, async (result) => {
@@ -209,6 +212,8 @@
                 if (result && !result?.success) {
                   toast.error(result?.msg);
                   loading = false;
+                  await tick(); // 确保状态更新立即生效
+
                   return;
                 }
 
@@ -222,6 +227,8 @@
                   await handleWalletSignIn(pair, password);
 
                   loading = false;
+              await tick()
+
                   show = false;
                   password = "";
                 }

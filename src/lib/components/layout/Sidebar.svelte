@@ -17,7 +17,7 @@
     showPriceModal,
     showBuyCoinModal,
     showShareModal,
-    currentWalletData as walletDataStore,
+    currentWalletData,
     pageUpdateNumber,
   } from "$lib/stores";
   import {
@@ -61,6 +61,7 @@
   import SocialMedia from "../socialmedia/SocialMedia.svelte";
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
+  import { showWallet, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
 
   const BREAKPOINT = 768;
 
@@ -122,40 +123,32 @@
   //   console.log(
   //     "请求了chatlist"
   //   );
-    
+
   //   updateChats();
   // }
 
-  $: $pageUpdateNumber, updateChats()
+  $: $pageUpdateNumber, updateChats();
 
   async function updateChats() {
     console.log("updateChats");
-    
+
     const chatList = await getChatList(localStorage.token);
     chats.set(chatList);
-    tags.set([])
+    tags.set([]);
   }
 
   onMount(async () => {
     // 登录账号
     const pair = await getCurrentPair();
+    console.log("sidebar组件获取pair ", pair);
+    
     if (pair) {
-      const balance = await onGetBalance(pair?.address);
-      const dlcBalance = await onGetDLCBalance(pair?.address);
-      console.log("balance", balance, pair);
-      console.log("dlcBalance", dlcBalance);
-      // $currentWalletData.pair = pair
-      // $currentWalletData.balance = balance
-      // $currentWalletData.dlcBalance = dlcBalance
 
-      walletDataStore.update((data) => {
-        return {
-          ...data,
-          pair,
-          balance,
-          dlcBalance,
-        };
-      });
+      // showWallet(pair)
+
+
+      // 获取钱包面板数据
+      updateWalletData(pair);
     }
 
     // -----------------------原带的逻辑

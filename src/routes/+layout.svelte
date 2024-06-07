@@ -31,7 +31,7 @@
   import FingerprintJS from "@fingerprintjs/fingerprintjs";
   import { getCurrentPair, signData } from "$lib/utils/wallet/dbc";
   import { updateUserById } from "$lib/apis/users";
-  import { handleSignin } from "$lib/utils/wallet/walletUtils";
+  import { handleSigninAsIntialStatus } from "$lib/utils/wallet/walletUtils";
 
   setContext("i18n", i18n);
 
@@ -86,6 +86,8 @@
       if ($config) {
         // 如果$config存在，则执行以下操作
 
+
+
         console.log("localStorage.token", localStorage.token);
         if (localStorage.token) {
           // 如果localStorage中存在token，则获取会话用户信息
@@ -100,11 +102,17 @@
 
           console.log("sessionUser", sessionUser);
 
+          // 如果当前用户id和钱包不匹配，那么清空本地的pair
+          const pair = await getCurrentPair();
+          if(sessionUser?.id !== pair?.address) {
+            localStorage.removeItem('pair')
+          }
+
           if (sessionUser) {
             // 如果sessionUser存在，将其保存到Store中
             await user.set(sessionUser);
           } else {
-            handleSignin()
+            handleSigninAsIntialStatus()
 
             // // 如果sessionUser不存在，则进行浏览器指纹登录
             // await printSignIn().then((res) => {
@@ -124,7 +132,7 @@
             // await goto('/auth');
           }
         } else {
-          handleSignin()
+            handleSigninAsIntialStatus()
           // 如果localStorage中不存在token，则重定向到/auth页面
           // await goto('/auth');
 

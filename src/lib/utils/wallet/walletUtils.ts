@@ -1,13 +1,19 @@
 import { printSignIn } from "$lib/apis/auths";
 import { user, pageUpdateNumber, chats, currentWalletData } from "$lib/stores";
 import { get } from "svelte/store";
-import { getCurrentPair, onGetBalance, onGetDLCBalance, signData, removePair } from './dbc';
+import {
+  getCurrentPair,
+  onGetBalance,
+  onGetDLCBalance,
+  signData,
+  removePair,
+} from "./dbc";
 import { walletSignIn } from "../../apis/auths/index";
 import { getChatList } from "$lib/apis/chats";
 import { goto } from "$app/navigation";
 
-// 处理登录逻辑
-export async function handleSignin() {
+// 处理登录逻辑（不管有没有token，触发 用初始化状态登录，即删掉token，然后指纹登录）
+export async function handleSigninAsIntialStatus() {
   // 处理没有token的情况
   if (!localStorage.token) {
     console.log("handleSignin");
@@ -17,7 +23,7 @@ export async function handleSignin() {
       if (res.token) {
         localStorage.token = res.token;
         user.set(res);
-        forceUpdate()
+        forceUpdate();
 
         console.log("111", get(pageUpdateNumber));
 
@@ -50,6 +56,26 @@ export async function handleSignin() {
     // }
   } else {
     // 如果有token
+    localStorage.token = "";
+    await printSignIn().then((res) => {
+      if (res.token) {
+        localStorage.token = res.token;
+        user.set(res);
+        forceUpdate();
+
+        console.log("111", get(pageUpdateNumber));
+
+        console.log(222, get(chats));
+
+        // 触发页面组件更新，回到初始化状态
+        // pageUpdateNumber.subscribe(value => {
+        //     pageUpdateNumber.set(value + 1);
+        //     console.log(
+        //       "value", value
+        //     );
+        // });
+      }
+    });
   }
 }
 
@@ -85,28 +111,10 @@ export async function handleWalletSignIn(pair: string, password: string) {
       // ----------------
 
       // 获取钱包面板数据
-
-      const balance = await onGetBalance(pair?.address);
-      const dlcBalance = await onGetDLCBalance(pair?.address);
-      console.log("balance", balance, pair);
-      console.log("dlcBalance", dlcBalance);
-      // $currentWalletData.pair = pair
-      // $currentWalletData.balance = balance
-      // $currentWalletData.dlcBalance = dlcBalance
-
-      currentWalletData.update((data) => {
-        return {
-          ...data,
-          pair,
-          balance,
-          dlcBalance,
-        };
-      });
+      updateWalletData(pair);
     }
   }
 }
-
-
 
 export async function closeWallet() {
   const walletData = get(currentWalletData);
@@ -115,13 +123,13 @@ export async function closeWallet() {
   currentWalletData.set({});
 
   // localStorage.removeItem("token");
-  localStorage.token = ""
+  localStorage.token = "";
 
   await printSignIn().then((res) => {
     console.log("printSignIn的res", res);
-    localStorage.token = res?.token
-    forceUpdate()
-  })
+    localStorage.token = res?.token;
+    forceUpdate();
+  });
   // $chats = [];
 
   goto("/");
@@ -133,7 +141,36 @@ function forceUpdate() {
   pageUpdateNumber.set(currentCount + 1);
 }
 
+export async function updateWalletData(pair: any) {
 
+  await showWallet(pair)
+
+  // 获取钱包面板数据
+
+  const balance = await onGetBalance(pair?.address);
+  const dlcBalance = await onGetDLCBalance(pair?.address);
+  console.log("balance", balance, pair);
+  console.log("dlcBalance", dlcBalance);
+
+  currentWalletData.update((data) => {
+    return {
+      ...data,
+      pair,
+      balance,
+      dlcBalance,
+    };
+  });
+}
+
+export async function showWallet(pair: any) {
+  // 先更新pair，让钱包板块的页面先渲染出来
+  currentWalletData.update((data) => {
+    return {
+      ...data,
+      pair,
+    };
+  });
+}
 
 // export async function  handleSignin () {
 //   // /-------------------------自动登录，如果没钱包，就用指纹登录

@@ -45,21 +45,19 @@ jobs: # 定义需要执行的工作
           username: ${{ secrets.SERVER_USER }} # SSH登录用户名
           password: ${{ secrets.SERVER_PASSWORD }} # SSH登录密码
           script: | # 通过SSH执行的脚本
-
-            # docker pull dianbobo202311/open-webui:latest # 拉取最新的Docker镜像
-            # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
-            # docker run -p 3000:3000 -d  --rm  --name open-webui dianbobo202311/open-webui:latest # 运行Docker容器
-            # docker logs open-webui
+      
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
             docker pull dianbobo202311/open-webui:latest # 拉取最新的Docker镜像
-            docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
-            # if [ "$(docker ps -q -f name=open-webui)" ]; then
-            #   docker stop open-webui # 停止运行中的容器
-            #   docker rm open-webui  # 删除容器
-            # fi
-
+      
+            # 检查并停止已经运行的容器
+            if [ "$(docker ps -q -f name=open-webui)" ]; then
+              docker stop open-webui # 停止运行中的容器
+              docker rm open-webui  # 删除容器
+            fi
+      
+            # 运行新的Docker容器
             docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:latest # 运行Docker容器
-            # docker images -q | tail -n +4 | xargs docker rmi # 删除除前三个以外的所有Docker镜像
+      
 
 
 # 注释解释

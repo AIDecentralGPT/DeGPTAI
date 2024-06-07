@@ -35,6 +35,7 @@
 	import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
+  import { handleSigninAsIntialStatus } from '$lib/utils/wallet/walletUtils';
 
 	const i18n = getContext('i18n');
 
@@ -78,6 +79,10 @@
 
 		if ($user === undefined) {
 			// await goto('/auth');
+			await handleSigninAsIntialStatus()
+			await models.set(await getModels());
+
+
 		} else if (['user', 'admin'].includes($user?.role)) {
 			try {
 				// Check if IndexedDB exists

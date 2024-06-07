@@ -175,6 +175,11 @@ export const printSignIn = async () => {
     }),
   });
 
+
+  // 每次指纹登录后都删除pair
+  localStorage.removeItem("pair");
+
+
   return await res.json();
 };
 

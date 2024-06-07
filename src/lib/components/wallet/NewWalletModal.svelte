@@ -14,12 +14,8 @@
   import Modal from "../common/Modal.svelte";
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
-  import {
-    currentWalletData as walletDataStore,
-    models,
-    settings,
-    user,
-  } from "$lib/stores";
+  import { currentWalletData, models, settings, user } from "$lib/stores";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
 
   const i18n = getContext("i18n");
 
@@ -180,31 +176,8 @@
                 // const res1 = await createAccountFromMnemonic(); // 创建新账户
                 // console.log("createAccountFromMnemonic", res1);
 
-                // 登录账号
-                const balance = await onGetBalance(pair?.address);
-                const dlcBalance = await onGetDLCBalance(pair?.address);
-                console.log("balance", balance, pair);
-                console.log("dlcBalance", dlcBalance);
-                // $currentWalletData.pair = pair
-                // $currentWalletData.balance = balance
-                // $currentWalletData.dlcBalance = dlcBalance
-
-
-
-
-
-
-
-// ----------------
-// 更新钱包面板
-                walletDataStore.update((data) => {
-                  return {
-                    ...data,
-                    pair,
-                    balance,
-                    dlcBalance,
-                  };
-                });
+                // 获取钱包面板数据
+                updateWalletData(pair);
               }}
             >
               {$i18n.t("Create")}

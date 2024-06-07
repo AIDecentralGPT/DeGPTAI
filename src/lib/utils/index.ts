@@ -26,6 +26,9 @@ export const getModels = async (token: string) => {
 	
 	]);
 
+	console.log("models", models);
+	
+
 	models = models.filter((models) => models).reduce((a, e, i, arr) => a.concat(e), []);
 
 
