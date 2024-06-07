@@ -18,6 +18,7 @@
     showBuyCoinModal,
     showShareModal,
     currentWalletData as walletDataStore,
+    pageUpdateNumber,
   } from "$lib/stores";
   import {
     exportAccountForKeystore,
@@ -115,6 +116,25 @@
       showSidebar.set(false);
     }
   };
+
+  // // 监听pageUpdateNumber变化， 触发当前组件初始化
+  // $: if ($pageUpdateNumber !== undefined) {
+  //   console.log(
+  //     "请求了chatlist"
+  //   );
+    
+  //   updateChats();
+  // }
+
+  $: $pageUpdateNumber, updateChats()
+
+  async function updateChats() {
+    console.log("updateChats");
+    
+    const chatList = await getChatList(localStorage.token);
+    chats.set(chatList);
+    tags.set([])
+  }
 
   onMount(async () => {
     // 登录账号
@@ -499,7 +519,7 @@
         </div>
       </div>
 
-      {#if $tags.length > 0}
+      {#if $tags?.length > 0}
         <div class="px-2.5 mb-2 flex gap-1 flex-wrap">
           <button
             class="px-2.5 text-xs font-medium bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 transition rounded-full"
@@ -533,242 +553,246 @@
       <div
         class="pl-2 my-2 flex-1 flex flex-col space-y-1 overflow-y-auto scrollbar-hidden"
       >
-        {#each filteredChatList as chat, idx}
-          {#if idx === 0 || (idx > 0 && chat.time_range !== filteredChatList[idx - 1].time_range)}
-            <div
-              class="w-full pl-2.5 text-xs text-gray-500 dark:text-gray-500 font-medium {idx ===
-              0
-                ? ''
-                : 'pt-5'} pb-0.5"
-            >
-              {$i18n.t(chat.time_range)}
-              <!-- localisation keys for time_range to be recognized from the i18next parser (so they don't get automatically removed):
-							{$i18n.t('Today')}
-							{$i18n.t('Yesterday')}
-							{$i18n.t('Previous 7 days')}
-							{$i18n.t('Previous 30 days')}
-							{$i18n.t('January')}
-							{$i18n.t('February')}
-							{$i18n.t('March')}
-							{$i18n.t('April')}
-							{$i18n.t('May')}
-							{$i18n.t('June')}
-							{$i18n.t('July')}
-							{$i18n.t('August')}
-							{$i18n.t('September')}
-							{$i18n.t('October')}
-							{$i18n.t('November')}
-							{$i18n.t('December')}
-							-->
-            </div>
-          {/if}
-
-          <div class=" w-full pr-2 relative group">
-            {#if chatTitleEditId === chat.id}
+        {#if filteredChatList?.length > 0}
+          {#each filteredChatList as chat, idx}
+            {#if idx === 0 || (idx > 0 && chat.time_range !== filteredChatList[idx - 1].time_range)}
               <div
-                class=" w-full flex justify-between rounded-xl px-3 py-2 {chat.id ===
-                  $chatId ||
-                chat.id === chatTitleEditId ||
-                chat.id === chatDeleteId
-                  ? 'bg-gray-200 dark:bg-gray-900'
-                  : chat.id === selectedChatId
-                  ? 'bg-gray-100 dark:bg-gray-950'
-                  : 'group-hover:bg-gray-100 dark:group-hover:bg-gray-950'}  whitespace-nowrap text-ellipsis"
+                class="w-full pl-2.5 text-xs text-gray-500 dark:text-gray-500 font-medium {idx ===
+                0
+                  ? ''
+                  : 'pt-5'} pb-0.5"
               >
-                <input
-                  bind:value={chatTitle}
-                  class=" bg-transparent w-full outline-none mr-10"
-                />
+                {$i18n.t(chat.time_range)}
+                <!-- localisation keys for time_range to be recognized from the i18next parser (so they don't get automatically removed):
+          {$i18n.t('Today')}
+          {$i18n.t('Yesterday')}
+          {$i18n.t('Previous 7 days')}
+          {$i18n.t('Previous 30 days')}
+          {$i18n.t('January')}
+          {$i18n.t('February')}
+          {$i18n.t('March')}
+          {$i18n.t('April')}
+          {$i18n.t('May')}
+          {$i18n.t('June')}
+          {$i18n.t('July')}
+          {$i18n.t('August')}
+          {$i18n.t('September')}
+          {$i18n.t('October')}
+          {$i18n.t('November')}
+          {$i18n.t('December')}
+          -->
               </div>
-            {:else}
-              <a
-                class=" w-full flex justify-between rounded-xl px-3 py-2 {chat.id ===
-                  $chatId ||
-                chat.id === chatTitleEditId ||
-                chat.id === chatDeleteId
-                  ? 'bg-gray-200 dark:bg-gray-900'
-                  : chat.id === selectedChatId
-                  ? 'bg-gray-100 dark:bg-gray-950'
-                  : ' group-hover:bg-gray-100 dark:group-hover:bg-gray-950'}  whitespace-nowrap text-ellipsis"
-                href="/c/{chat.id}"
-                on:click={() => {
-                  selectedChatId = chat.id;
-                  if ($mobile) {
-                    showSidebar.set(false);
-                  }
-                }}
-                draggable="false"
-              >
-                <div class=" flex self-center flex-1 w-full">
-                  <div
-                    class=" text-left self-center overflow-hidden w-full h-[20px]"
-                  >
-                    {chat.title}
-                  </div>
-                </div>
-              </a>
             {/if}
 
-            <div
-              class="
-
-							{chat.id === $chatId || chat.id === chatTitleEditId || chat.id === chatDeleteId
-                ? 'from-gray-200 dark:from-gray-900'
-                : chat.id === selectedChatId
-                ? 'from-gray-100 dark:from-gray-950'
-                : 'invisible group-hover:visible from-gray-100 dark:from-gray-950'}
-								absolute right-[10px] top-[10px] pr-2 pl-5 bg-gradient-to-l from-80%
-
-								  to-transparent"
-            >
+            <div class=" w-full pr-2 relative group">
               {#if chatTitleEditId === chat.id}
-                <div class="flex self-center space-x-1.5 z-10">
-                  <button
-                    class=" self-center dark:hover:text-white transition"
-                    on:click={() => {
-                      editChatTitle(chat.id, chatTitle);
-                      chatTitleEditId = null;
-                      chatTitle = "";
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="w-4 h-4"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    class=" self-center dark:hover:text-white transition"
-                    on:click={() => {
-                      chatTitleEditId = null;
-                      chatTitle = "";
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="w-4 h-4"
-                    >
-                      <path
-                        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              {:else if chatDeleteId === chat.id}
-                <div class="flex self-center space-x-1.5 z-10">
-                  <button
-                    class=" self-center dark:hover:text-white transition"
-                    on:click={() => {
-                      deleteChat(chat.id);
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="w-4 h-4"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    class=" self-center dark:hover:text-white transition"
-                    on:click={() => {
-                      chatDeleteId = null;
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="w-4 h-4"
-                    >
-                      <path
-                        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-                      />
-                    </svg>
-                  </button>
+                <div
+                  class=" w-full flex justify-between rounded-xl px-3 py-2 {chat.id ===
+                    $chatId ||
+                  chat.id === chatTitleEditId ||
+                  chat.id === chatDeleteId
+                    ? 'bg-gray-200 dark:bg-gray-900'
+                    : chat.id === selectedChatId
+                    ? 'bg-gray-100 dark:bg-gray-950'
+                    : 'group-hover:bg-gray-100 dark:group-hover:bg-gray-950'}  whitespace-nowrap text-ellipsis"
+                >
+                  <input
+                    bind:value={chatTitle}
+                    class=" bg-transparent w-full outline-none mr-10"
+                  />
                 </div>
               {:else}
-                <div class="flex self-center space-x-1 z-10">
-                  <ChatMenu
-                    chatId={chat.id}
-                    shareHandler={() => {
-                      shareChatId = selectedChatId;
-                      showShareChatModal = true;
-                    }}
-                    archiveChatHandler={() => {
-                      archiveChatHandler(chat.id);
-                    }}
-                    renameHandler={() => {
-                      chatTitle = chat.title;
-                      chatTitleEditId = chat.id;
-                    }}
-                    deleteHandler={() => {
-                      chatDeleteId = chat.id;
-                    }}
-                    onClose={() => {
-                      selectedChatId = null;
-                    }}
-                  >
+                <a
+                  class=" w-full flex justify-between rounded-xl px-3 py-2 {chat.id ===
+                    $chatId ||
+                  chat.id === chatTitleEditId ||
+                  chat.id === chatDeleteId
+                    ? 'bg-gray-200 dark:bg-gray-900'
+                    : chat.id === selectedChatId
+                    ? 'bg-gray-100 dark:bg-gray-950'
+                    : ' group-hover:bg-gray-100 dark:group-hover:bg-gray-950'}  whitespace-nowrap text-ellipsis"
+                  href="/c/{chat.id}"
+                  on:click={() => {
+                    selectedChatId = chat.id;
+                    if ($mobile) {
+                      showSidebar.set(false);
+                    }
+                  }}
+                  draggable="false"
+                >
+                  <div class=" flex self-center flex-1 w-full">
+                    <div
+                      class=" text-left self-center overflow-hidden w-full h-[20px]"
+                    >
+                      {chat.title}
+                    </div>
+                  </div>
+                </a>
+              {/if}
+
+              <div
+                class="
+
+          {chat.id === $chatId ||
+                chat.id === chatTitleEditId ||
+                chat.id === chatDeleteId
+                  ? 'from-gray-200 dark:from-gray-900'
+                  : chat.id === selectedChatId
+                  ? 'from-gray-100 dark:from-gray-950'
+                  : 'invisible group-hover:visible from-gray-100 dark:from-gray-950'}
+            absolute right-[10px] top-[10px] pr-2 pl-5 bg-gradient-to-l from-80%
+
+              to-transparent"
+              >
+                {#if chatTitleEditId === chat.id}
+                  <div class="flex self-center space-x-1.5 z-10">
                     <button
-                      aria-label="Chat Menu"
                       class=" self-center dark:hover:text-white transition"
                       on:click={() => {
-                        selectedChatId = chat.id;
+                        editChatTitle(chat.id, chatTitle);
+                        chatTitleEditId = null;
+                        chatTitle = "";
                       }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
+                        viewBox="0 0 20 20"
                         fill="currentColor"
                         class="w-4 h-4"
                       >
                         <path
-                          d="M2 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM6.5 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM12.5 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
+                          fill-rule="evenodd"
+                          d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                          clip-rule="evenodd"
                         />
                       </svg>
                     </button>
-                  </ChatMenu>
-
-                  {#if chat.id === $chatId}
                     <button
-                      id="delete-chat-button"
-                      class="hidden"
+                      class=" self-center dark:hover:text-white transition"
                       on:click={() => {
+                        chatTitleEditId = null;
+                        chatTitle = "";
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        class="w-4 h-4"
+                      >
+                        <path
+                          d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                {:else if chatDeleteId === chat.id}
+                  <div class="flex self-center space-x-1.5 z-10">
+                    <button
+                      class=" self-center dark:hover:text-white transition"
+                      on:click={() => {
+                        deleteChat(chat.id);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        class="w-4 h-4"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      class=" self-center dark:hover:text-white transition"
+                      on:click={() => {
+                        chatDeleteId = null;
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        class="w-4 h-4"
+                      >
+                        <path
+                          d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                {:else}
+                  <div class="flex self-center space-x-1 z-10">
+                    <ChatMenu
+                      chatId={chat.id}
+                      shareHandler={() => {
+                        shareChatId = selectedChatId;
+                        showShareChatModal = true;
+                      }}
+                      archiveChatHandler={() => {
+                        archiveChatHandler(chat.id);
+                      }}
+                      renameHandler={() => {
+                        chatTitle = chat.title;
+                        chatTitleEditId = chat.id;
+                      }}
+                      deleteHandler={() => {
                         chatDeleteId = chat.id;
                       }}
+                      onClose={() => {
+                        selectedChatId = null;
+                      }}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        class="w-4 h-4"
+                      <button
+                        aria-label="Chat Menu"
+                        class=" self-center dark:hover:text-white transition"
+                        on:click={() => {
+                          selectedChatId = chat.id;
+                        }}
                       >
-                        <path
-                          d="M2 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM6.5 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM12.5 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
-                        />
-                      </svg>
-                    </button>
-                  {/if}
-                </div>
-              {/if}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                          class="w-4 h-4"
+                        >
+                          <path
+                            d="M2 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM6.5 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM12.5 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
+                          />
+                        </svg>
+                      </button>
+                    </ChatMenu>
+
+                    {#if chat.id === $chatId}
+                      <button
+                        id="delete-chat-button"
+                        class="hidden"
+                        on:click={() => {
+                          chatDeleteId = chat.id;
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                          class="w-4 h-4"
+                        >
+                          <path
+                            d="M2 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM6.5 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM12.5 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
+                          />
+                        </svg>
+                      </button>
+                    {/if}
+                  </div>
+                {/if}
+              </div>
             </div>
-          </div>
-        {/each}
+          {/each}
+        {/if}
       </div>
     </div>
 

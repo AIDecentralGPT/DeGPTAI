@@ -34,32 +34,34 @@ export const createNewModelfile = async (token: string, modelfile: object) => {
 export const getModelfiles = async (token: string = '') => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/modelfiles/`, {
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			authorization: `Bearer ${token}`
-		}
-	})
-		.then(async (res) => {
-			if (!res.ok) throw await res.json();
-			return res.json();
-		})
-		.then((json) => {
-			return json;
-		})
-		.catch((err) => {
-			error = err;
-			console.log(err);
-			return null;
-		});
+	return []
 
-	if (error) {
-		throw error;
-	}
+	// const res = await fetch(`${WEBUI_API_BASE_URL}/modelfiles/`, {
+	// 	method: 'GET',
+	// 	headers: {
+	// 		Accept: 'application/json',
+	// 		'Content-Type': 'application/json',
+	// 		authorization: `Bearer ${token}`
+	// 	}
+	// })
+	// 	.then(async (res) => {
+	// 		if (!res.ok) throw await res.json();
+	// 		return res.json();
+	// 	})
+	// 	.then((json) => {
+	// 		return json;
+	// 	})
+	// 	.catch((err) => {
+	// 		error = err;
+	// 		console.log(err);
+	// 		return null;
+	// 	});
 
-	return res.map((modelfile) => modelfile.modelfile);
+	// if (error) {
+	// 	throw error;
+	// }
+
+	// return res.map((modelfile) => modelfile.modelfile);
 };
 
 export const getModelfileByTagName = async (token: string, tagName: string) => {

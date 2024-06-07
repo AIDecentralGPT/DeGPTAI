@@ -44,11 +44,6 @@
 	console.log("1value", value);
 	
 
-		$: if (true) {
-			console.log("selectedList", selectedList, items);
-		
-		
-		}
 
 		$: filteredItems = items.filter((item) => !selectedList.includes(item.label))
 	

@@ -2,13 +2,22 @@
   import "../polyfills"; // 必须在其他代码之前引入
 
   import { onMount, tick, setContext } from "svelte";
-  import { config, user, theme, WEBUI_NAME, mobile, currentWalletData, showOpenWalletModal } from "$lib/stores";
+  import {
+    config,
+    user,
+    theme,
+    WEBUI_NAME,
+    mobile,
+    currentWalletData,
+    showOpenWalletModal,
+    chats,
+  } from "$lib/stores";
   import { goto } from "$app/navigation";
   import { Toaster, toast } from "svelte-sonner";
 
   import { getBackendConfig } from "$lib/apis";
   import { getSessionUser, printSignIn, walletSignIn } from "$lib/apis/auths";
-  import { onGetBalance, onGetDLCBalance } from "$lib/utils/wallet/dbc";
+  import { onGetBalance, onGetDLCBalance, removePair } from "$lib/utils/wallet/dbc";
 
   import "../tailwind.css";
   import "../app.css";
@@ -22,6 +31,7 @@
   import FingerprintJS from "@fingerprintjs/fingerprintjs";
   import { getCurrentPair, signData } from "$lib/utils/wallet/dbc";
   import { updateUserById } from "$lib/apis/users";
+  import { handleSignin } from "$lib/utils/wallet/walletUtils";
 
   setContext("i18n", i18n);
 
@@ -29,111 +39,13 @@
   const BREAKPOINT = 768;
 
   onMount(async () => {
-    // localStorage.setItem("token", "public_token")
-
-    // // 加载 FingerprintJS 库
-    // await FingerprintJS.load().then(fp => {
-    // 		// 获取设备指纹
-    // 		fp.get().then(result => {
-    // 				// `result.visitorId` 是设备指纹 ID
-    // 				const visitorId = result.visitorId;
-    // 				console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
-    // 				// fingerprintSignIn(visitorId)
-    // 				localStorage.setItem('visitor_id', visitorId)
-
-    // 				printSignIn().then((res ) => {
-    // 					console.log(res);
-    // 					user.set(res)
-    // 				})
-
-    // 		});
-
-    // });
+    // 加载 FingerprintJS 库，获取指纹
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    const visitorId = result.visitorId;
+    localStorage.setItem("visitor_id", visitorId);
 
 
-            // 加载 FingerprintJS 库
-            const fp = await FingerprintJS.load();
-        // 获取设备指纹
-        const result = await fp.get();
-        // `result.visitorId` 是设备指纹 ID
-        const visitorId = result.visitorId;
-        console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
-        localStorage.setItem("visitor_id", visitorId);
-
-    // /-------------------------自动登录，如果没钱包，就用指纹登录
-    if (!localStorage.token) {
-      const pair = await getCurrentPair();
-      if (pair) {
-        // walletSignIn(pair?.address).then((res) => {
-        //   console.log(res);
-        // });
-
-        console.log("pair", pair);
-        // 展示打开钱包modal
-        // $showOpenWalletModal = true;
-
-
-        // // 获取钱包面板数据
-
-        // const balance = await onGetBalance(pair?.address);
-        // const dlcBalance = await onGetDLCBalance(pair?.address);
-        // console.log("balance", balance, pair);
-        // console.log("dlcBalance", dlcBalance);
-
-        // currentWalletData.update((data) => {
-        //   return {
-        //     ...data,
-        //     pair,
-        //     balance,
-        //     dlcBalance,
-        //   };
-        // });
-
-        //                 const { nonce, signature } = await signData(
-        //                   pair,
-        //                   password,
-        //                   undefined
-        //                 );
-
-
-        // --------------------------------
-
-        //     walletSignIn({
-        //       address: pair?.address,
-        // nonce: string,
-        // data?: any,
-        // signature: string,
-        // id: string
-        //     }).then((res) => {
-        //       console.log(res);
-        //       localStorage.token = res.token;
-        //       user.set(res);
-        //     });
-
-        // const a = await signData(pair, "123", undefined)
-        // console.log("签名", a);
-
-        // 更新用户id,行不通，要改好多表
-        // 	const res = await updateUserById(localStorage.token, pair?.address, {
-        // 		name: pair?.address,
-        // 		// password:
-        // 	}).catch((error) => {
-        // 	toast.error(error);
-        // });
-      } else {
-
-
-        await printSignIn().then((res) => {
-          console.log("printSignIn res", res);
-
-          if(res.token) {
-            localStorage.token = res.token;
-          user.set(res);
-          }
-
-        });
-      }
-    }
 
     // -----------------
 
@@ -160,36 +72,67 @@
     // so `/error` can show something that's not `undefined`.
     initI18n(backendConfig?.default_locale);
 
+    console.log("backendConfig", backendConfig);
+
     if (backendConfig) {
-      // Save Backend Status to Store
+      // 如果backendConfig存在，则执行以下操作
+
+      // 将Backend的状态保存到Store中
       await config.set(backendConfig);
 
+      // 设置WEBUI_NAME为backendConfig中的name
       await WEBUI_NAME.set(backendConfig.name);
 
       if ($config) {
+        // 如果$config存在，则执行以下操作
+
+        console.log("localStorage.token", localStorage.token);
         if (localStorage.token) {
-          // Get Session User Info
+          // 如果localStorage中存在token，则获取会话用户信息
+
           const sessionUser = await getSessionUser(localStorage.token).catch(
             (error) => {
-              toast.error(error);
+              // 如果获取会话用户信息失败，则显示错误信息
+              // toast.error(error + "35");
               return null;
             }
           );
 
+          console.log("sessionUser", sessionUser);
+
           if (sessionUser) {
-            // Save Session User to Store
+            // 如果sessionUser存在，将其保存到Store中
             await user.set(sessionUser);
           } else {
-            // Redirect Invalid Session User to /auth Page
+            handleSignin()
+
+            // // 如果sessionUser不存在，则进行浏览器指纹登录
+            // await printSignIn().then((res) => {
+            //   console.log("printSignIn res", res);
+
+            //   $chats = []
+            //   if (res.token) {
+            //     localStorage.token = res.token;
+            //     if($currentWalletData?.pair?.address) {
+            //       removePair($currentWalletData?.pair?.address);
+            //     }
+            //     user.set(res);
+            //   }
+            // });
+            // 如果sessionUser不存在，则重定向无效会话用户到/auth页面
             // localStorage.removeItem('token');
             // await goto('/auth');
           }
         } else {
+          handleSignin()
+          // 如果localStorage中不存在token，则重定向到/auth页面
           // await goto('/auth');
+
+
         }
       }
     } else {
-      // Redirect to /error when Backend Not Detected
+      // 如果没有检测到Backend，则重定向到/error页面
       await goto(`/error`);
     }
 

@@ -14,8 +14,7 @@
 
 	import { getDocs } from '$lib/apis/documents';
 	import { getAllChatTags } from '$lib/apis/chats';
-	import { getSessionUser, printSignIn } from '$lib/apis/auths';
-	import FingerprintJS from '@fingerprintjs/fingerprintjs';
+
 	import {
 		user,
 		showSettings,

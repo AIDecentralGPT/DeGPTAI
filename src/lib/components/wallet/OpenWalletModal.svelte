@@ -12,7 +12,13 @@
   import { createAccountFromSeed } from "$lib/utils/wallet/dbc.js";
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
-  import { chats, currentWalletData, models, settings, user } from "$lib/stores";
+  import {
+    chats,
+    currentWalletData,
+    models,
+    settings,
+    user,
+  } from "$lib/stores";
 
   import { getModels as _getModels } from "$lib/utils";
   import {
@@ -26,6 +32,7 @@
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import { walletSignIn } from "$lib/apis/auths/index.js";
+  import { handleWalletSignIn } from "$lib/utils/wallet/walletUtils.js";
 
   const i18n = getContext("i18n");
 
@@ -212,53 +219,7 @@
 
                   // ----------------
                   // 请求服务端登录钱包账户
-
-                  const { nonce, signature } = await signData(
-                    pair,
-                    password,
-                    undefined
-                  );
-
-                  const walletSignInResult = await walletSignIn({
-                    address: pair?.address,
-                    nonce,
-                    // data: pair,
-                    signature,
-                    id: localStorage.visitor_id,
-                  });
-
-                  localStorage.removeItem("token")
-
-                  localStorage.token = walletSignInResult.token;
-
-                  if(walletSignInResult.token) {
-                    await chats.set(await getChatList(localStorage.token));
-                  }
-
-                  console.log("walletSignInResult", walletSignInResult);
-
-                  if (walletSignInResult.id) {
-                    // ----------------
-
-                    // 获取钱包面板数据
-
-                    const balance = await onGetBalance(pair?.address);
-                    const dlcBalance = await onGetDLCBalance(pair?.address);
-                    console.log("balance", balance, pair);
-                    console.log("dlcBalance", dlcBalance);
-                    // $currentWalletData.pair = pair
-                    // $currentWalletData.balance = balance
-                    // $currentWalletData.dlcBalance = dlcBalance
-
-                    currentWalletData.update((data) => {
-                      return {
-                        ...data,
-                        pair,
-                        balance,
-                        dlcBalance,
-                      };
-                    });
-                  }
+                  await handleWalletSignIn(pair, password);
 
                   loading = false;
                   show = false;

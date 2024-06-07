@@ -19,6 +19,7 @@
   import { DefaultCurrentWalletData } from "$lib/constants.js";
   import { dbcPriceOcw, removePair } from "$lib/utils/wallet/dbc";
   import { goto } from "$app/navigation";
+  import { closeWallet } from "$lib/utils/wallet/walletUtils";
   const i18n = getContext("i18n");
 
   const fetchPrice = async () => {
@@ -163,21 +164,7 @@
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
       type="submit"
       on:click={async () => {
-        // $currentWalletData = DefaultCurrentWalletData
-
-        removePair($currentWalletData?.pair?.address);
-        console.log($currentWalletData, DefaultCurrentWalletData);
-        currentWalletData.set({});
-
-        localStorage.removeItem("token");
-        $chats = [];
-
-        // 触发重新渲染新会话组件
-        $pageUpdateNumber = $pageUpdateNumber + 1;
-        goto("/");
-
-
-        // window.location.href = '/'
+        closeWallet()
       }}
     >
       {$i18n.t(" Close Wallet ")}

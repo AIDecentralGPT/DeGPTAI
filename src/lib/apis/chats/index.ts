@@ -40,16 +40,16 @@ export const getChatList = async (token: string = '') => {
 	console.log("token", token);
 	
 	
-	if(!token || token === 'undefined') {
-		// 如果没有token，则重新指纹登录
-		await printSignIn().then((res) => {
-			console.log(res);
-			localStorage.token = res.token;
-			user.set(res);
-		});
+	// if(!token || token === 'undefined') {
+	// 	// 如果没有token，则重新指纹登录
+	// 	await printSignIn().then((res) => {
+	// 		console.log(res);
+	// 		localStorage.token = res.token;
+	// 		user.set(res);
+	// 	});
 
-		return 
-	}
+	// 	return 
+	// }
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/chats/`, {
 		method: 'GET',

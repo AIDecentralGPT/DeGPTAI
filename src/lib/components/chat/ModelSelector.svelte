@@ -34,7 +34,6 @@
 
 	$: if (selectedModels.length > 0 && $models.length > 0) {
 
-		console.log("$models", $models, selectedModels);
 		
 
 		selectedModels = selectedModels.map((model) =>{
@@ -48,7 +47,6 @@
 			
 		}
 		);
-		console.log("selectedModels", selectedModels);
 		
 
 		//  modelsList  = $models?.filter((item) => !selectedModels.includes(item.name)  )
