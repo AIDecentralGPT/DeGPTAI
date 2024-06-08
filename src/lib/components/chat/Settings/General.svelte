@@ -130,6 +130,27 @@
 		}
 		applyTheme(_theme);
 	};
+
+
+
+
+
+	let isMobile = false;
+
+const checkUserAgent = () => {
+	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+	// 检测常见的移动设备标识
+	isMobile = /android|iphone|ipad|iPod|blackberry|opera mini|iemobile|wpdesktop/i.test(userAgent);
+	if(isMobile) {
+		themeChangeHandler("dark")
+	}
+};
+
+onMount(() => {
+	checkUserAgent();
+});
+
+
 </script>
 
 <div class="flex flex-col h-full justify-between text-sm">
@@ -137,6 +158,7 @@
 		<div class="">
 			<div class=" mb-1 text-sm font-medium">{$i18n.t('WebUI Settings')}</div>
 
+			{#if !isMobile}
 			<div class="flex w-full justify-between">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Theme')}</div>
 				<div class="flex items-center relative">
@@ -155,6 +177,7 @@
 					</select>
 				</div>
 			</div>
+			{/if}
 
 			<div class=" flex w-full justify-between">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Language')}</div>
