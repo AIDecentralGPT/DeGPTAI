@@ -64,7 +64,7 @@ jobs: # 定义需要执行的工作
       
             # 运行新的Docker容器
             docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:latest # 运行Docker容器
-      
+            docker images -q | tail -n +3 | xargs docker rmi # 删除除前2个以外的所有Docker镜像
 
 
 # 注释解释
