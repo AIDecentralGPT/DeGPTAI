@@ -16,7 +16,14 @@ MiniCPM-Llama3-V 2.5
 Qwen2-72B
 yi1.5-34B
 Falcon2 11B
-9. 
+9. 邀请奖励规则，在rewards里显示已邀请成功链接。避免羊毛乱领奖励，所以应该有个机制限制同一台电脑活IP多次领取奖励1.邀请好友创建钱包成功，获得500个DGC奖励，好友获得500个DGC
+奖励2.好友在DeepLink购买NFT，可获得10%DGC佣金奖励3.好友在DeepLink购买DGC，可获得10%DGC佣金奖励
+10. DGC购买plus会员后逻辑，右侧对应文案要改下，后面加几个…以后还会更新前四个模型都是免费的，后面2个是plus会员
+yi1.5-34B
+_lama3 70BQwen2-72BMiniCPM-Llama3-V 2.5
+lama3 400B
+
+Falcon2 11B
    
 
 

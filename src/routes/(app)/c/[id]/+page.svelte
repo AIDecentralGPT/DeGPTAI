@@ -1175,6 +1175,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 </svelte:head>
 
 {#if loaded}
+
 	<div
 		class="min-h-screen max-h-screen {$showSidebar
 			? 'md:max-w-[calc(100%-340px)]'
@@ -1225,6 +1226,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			</div>
 		</div>
 	</div>
+
+
+
 
 	<MessageInput
 		bind:files

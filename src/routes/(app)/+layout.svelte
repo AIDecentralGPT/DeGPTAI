@@ -83,7 +83,7 @@
 			await models.set(await getModels());
 
 
-		} else if (['user', 'admin'].includes($user?.role)) {
+		} else if (['user', 'admin', 'walletUser'].includes($user?.role)) {
 			try {
 				// Check if IndexedDB exists
 				DB = await openDB('Chats', 1);

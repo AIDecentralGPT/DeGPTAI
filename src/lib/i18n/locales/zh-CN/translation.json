@@ -506,8 +506,8 @@
 
 
 	"Join Our Community": "加入我们的社区",
-	"Connect WALLET": "连接钱包",
-	"Create WALLET": "创建钱包",
+	"Connect Wallet": "连接钱包",
+	"Create Wallet": "创建钱包",
 	"Open Wallet": "打开钱包",
 	"Wallet Address": "钱包地址",
 	"Transfer": "转账",
@@ -568,7 +568,8 @@
   "Upgrade to Plus": "升级到Plus",
   "Everything in Free": "所有免费功能",
   "Access to Llama 400B": "访问Llama 400B",
-	"Hello": "你好"
+	"Hello": "你好",
+	"Get smarter replies, upload files and pictures, and enjoy more features.":"获取更智能的回复、上传文件和图片，并享受更多功能。"
 
 
 }

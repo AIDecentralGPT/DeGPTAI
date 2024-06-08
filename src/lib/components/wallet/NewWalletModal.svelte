@@ -15,7 +15,7 @@
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import { currentWalletData, models, settings, user } from "$lib/stores";
-  import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
+  import { handleWalletSignIn, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
 
   const i18n = getContext("i18n");
 
@@ -32,6 +32,10 @@
     } else {
       passwordError = "";
     }
+  }
+
+  $: if(!show) {
+    walletCreatedData = null
   }
 </script>
 
@@ -179,6 +183,10 @@
 
                 // 获取钱包面板数据
                 updateWalletData(pair);
+
+
+                  // 请求服务端登录钱包账户
+                  await handleWalletSignIn(pair, password);
               }}
             >
               {$i18n.t("Create")}

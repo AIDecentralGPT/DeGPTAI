@@ -195,7 +195,7 @@
           >
         </div>
         <div class=" self-center font-medium">
-          {$i18n.t("Connect WALLET")}
+          {$i18n.t("Connect Wallet")}
           <!-- <WalletConnect /> -->
         </div>
       </button>
@@ -230,7 +230,7 @@
             /></svg
           >
         </div>
-        <div class=" self-center font-medium">{$i18n.t("Create WALLET")}</div>
+        <div class=" self-center font-medium">{$i18n.t("Create Wallet")}</div>
       </button>
 
       <button
