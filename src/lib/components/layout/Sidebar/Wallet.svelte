@@ -279,7 +279,7 @@
             /></svg
           >
         </div>
-        <div class=" self-center font-medium">{$i18n.t("Open WALLET")}</div>
+        <div class=" self-center font-medium">{$i18n.t("Open Wallet")}</div>
       </button>
     </div>
   {/if}

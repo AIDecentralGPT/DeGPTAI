@@ -42,7 +42,7 @@
   >
     <div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
       <div class=" text-lg font-medium self-center">
-        {$i18n.t("Export Wallet ")}
+        {$i18n.t("Export Wallet")}
       </div>
 
       <!-- X 关闭键 -->

@@ -7,7 +7,7 @@
   <hr class="dark:border-gray-800 my-2 p-0" />
 
   <div class="flex flex-start gap-6 px-3">
-    <div class=" text-lg leading-6">Join Our Community:</div>
+    <div class=" text-lg leading-6">{$i18n.t('Join Our Community')}:</div>
 
     <div class="flex gap-4 items-center">
       <a

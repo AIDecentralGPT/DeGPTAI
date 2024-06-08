@@ -37,16 +37,16 @@
       </button>
     </div>
 
-    <p class=" mt-4 mb-1" style="color: rgba(184, 142, 86, 1);">
-      <strong>Note:</strong> DBC is a type of digital asset. The price is always
-      fluctuating. Please be aware of the risks!
+    <p class="mt-4 mb-1" style="color: rgba(184, 142, 86, 1);">
+      <strong>{$i18n.t("Note:")}</strong> {$i18n.t("DBC is a type of digital asset. The price is always fluctuating. Please be aware of the risks!")}
     </p>
+    
 
     <!-- --------------- -->
     <!-- 选择购买类型 -->
     <div class="mb-6 pt-0.5 flex justify-start items-center">
       <label class="flex items-center gap-1 mr-4">
-        {$i18n.t("Select purchase type: ")}
+        {$i18n.t("Select purchase type")}:
       </label>
       <div class="flex">
         <label class="mr-4 flex items-center cursor-pointer">
@@ -76,10 +76,10 @@
     {#if coinType === "DBC"}
       <div class="flex flex-col sm:flex-row sm:justify-between">
         <div
-          class="bg-gray-200 dark:bg-gray-700 rounded-md px-4 py-2 text-center mb-4 sm:mb-0 sm:mx-2"
+          class="bg-gray-200 dark:bg-gray-700 rounded-md px-4 py-2 text-center mb-4 sm:mb-0 sm:mx-2 flex-1"
         >
           <h3 class="text-xl mb-2">01</h3>
-          <p class="mb-4">From Huobi Exchange</p>
+          <p class="mb-4"> {$i18n.t("From Huobi Exchange")}</p>
           <button
             class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
             type="submit"
@@ -90,14 +90,14 @@
               );
             }}
           >
-            {$i18n.t(" Buy Now ")}
+            {$i18n.t("Buy Now")}
           </button>
         </div>
         <div
-          class="bg-gray-200 dark:bg-gray-700 rounded-md px-4 py-2 text-center mb-4 sm:mb-0 sm:mx-2"
+          class="bg-gray-200 dark:bg-gray-700 rounded-md px-4 py-2 text-center mb-4 sm:mb-0 sm:mx-2 flex-1"
         >
           <h3 class="text-xl mb-2">02</h3>
-          <p class="mb-4">From Gate Exchange</p>
+          <p class="mb-4"> {$i18n.t("From Gate Exchange")}</p>
           <button
             class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
             type="submit"
@@ -105,14 +105,14 @@
               window.open("https://www.gate.tv/zh/trade/DBC_USDT", "_blank");
             }}
           >
-            {$i18n.t(" Buy Now ")}
+            {$i18n.t("Buy Now")}
           </button>
         </div>
         <div
-          class="bg-gray-200 dark:bg-gray-700 rounded-md px-4 py-2 text-center sm:mx-2"
+          class="bg-gray-200 dark:bg-gray-700 rounded-md px-4 py-2 text-center sm:mx-2 flex-1"
         >
           <h3 class="text-xl mb-2">03</h3>
-          <p class="mb-4">From Bitmart Exchange</p>
+          <p class="mb-4"> {$i18n.t("From Bitmart Exchange")}</p>
           <button
             class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
             type="submit"
@@ -123,7 +123,7 @@
               );
             }}
           >
-            {$i18n.t(" Buy Now ")}
+            {$i18n.t("Buy Now")}
           </button>
         </div>
       </div>

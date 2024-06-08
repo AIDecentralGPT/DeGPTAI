@@ -87,7 +87,7 @@
   >
     <div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
       <div class=" text-lg font-medium self-center">
-        {$i18n.t("Open Wallet ")}
+        {$i18n.t("Open Wallet")}
       </div>
 
       <!-- X 关闭键 -->
@@ -114,16 +114,6 @@
     <!-- 主体 -->
     <!-- flex flex-col md:space-x-4 -->
     <div class=" w-full p-4 px-8">
-      <!-- <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-        on:click={async () => {
-          show = false;
-        }}
-      >
-        {$i18n.t("  FINISHED  ")}
-      </button>
-      <button> Select Wallet File </button> -->
-
       <button
         class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
         type="button"
@@ -131,7 +121,7 @@
           filesInputElement.click();
         }}
       >
-        {$i18n.t(" Select Wallet File ")}
+        {$i18n.t("Select Wallet File")}
       </button>
 
       <input
@@ -199,9 +189,8 @@
             style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
             type="submit"
             on:click={async () => {
-              
               loading = true;
-              await tick()
+              await tick();
               console.log("变色了要", loading);
 
               const lockIndex = 0; // 锁定索引
@@ -227,7 +216,7 @@
                   await handleWalletSignIn(pair, password);
 
                   loading = false;
-              await tick()
+                  await tick();
 
                   show = false;
                   password = "";
@@ -235,7 +224,11 @@
               });
             }}
           >
-            {$i18n.t("  Unlock  ")}
+            {#if loading}
+              <span>{$i18n.t("Unlocking")}</span>
+            {:else}
+              <span>{$i18n.t("Unlock")}</span>
+            {/if}
           </button>
         </div>
       {/if}

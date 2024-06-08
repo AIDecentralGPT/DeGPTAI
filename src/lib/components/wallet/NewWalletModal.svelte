@@ -72,8 +72,9 @@
       {#if !walletCreatedData}
         <div>
           <p class="text-md mb-4">
-            You must remember your password, do not lose it, You need this
-            password and your private key file to unlock the wallet
+            {$i18n.t(
+              "You must remember your password, do not lose it, You need this password and your private key file to unlock the wallet"
+            )}
           </p>
           <div class="pt-0.5 max-w-[300px]">
             <div class="flex flex-col w-full">
@@ -190,8 +191,8 @@
       {#if walletCreatedData}
         <div>
           <p>
-            Save your private key file in a safe place, such as writing it down
-            and putting it in a safe.
+            {$i18n.t("Save your private key file in a safe place, such as writing it down and putting it in a safe")}
+       
           </p>
 
           <button
@@ -209,16 +210,23 @@
               // console.log("exportAccountForKeystore", json);
             }}
           >
-            {$i18n.t(" Key DOWNLOAD ENCRYPTED KEY ")}
+            {$i18n.t("Key DOWNLOAD ENCRYPTED KEY")}
           </button>
 
           <p>
-            <b>Do not lose it!</b>If lost it can not be retrieved<br />
-            Do not share it. Do not send it to anyone on WeChat, QQ, Facebook, Line,
-            KakaoTalk, WhatsApp or any other communication softwareIf you use this
-            document on a malicious phishing website your asset will be stolen!<br
-            />You must have a back-up!Treat it as if one day if could be worth
-            millions of USD
+            <b>
+              {$i18n.t("Do not lose it!")}
+            </b>
+            {$i18n.t("If lost it can not be retrieved")}
+            <br />
+            {$i18n.t("Do not lose it!")}
+            {$i18n.t(
+              "Do not share it. Do not send it to anyone on WeChat, QQ, Facebook, Line, KakaoTalk, WhatsApp or any other communication software. If you use this document on a malicious phishing website your asset will be stolen!"
+            )}
+            <br />
+            {$i18n.t(
+              "You must have a back-up! Treat it as if one day if could be worth millions of USD"
+            )}
           </p>
 
           <div class="flex justify-end mt-4">

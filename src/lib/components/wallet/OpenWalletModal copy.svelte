@@ -66,17 +66,6 @@
 
     <!-- 主体 -->
     <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-      <!-- <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-        on:click={async () => {
-          show = false;
-        }}
-      >
-        {$i18n.t("  FINISHED  ")}
-      </button>
-      <button> Select Wallet File </button> -->
-
-
       <button
       class="bg-gray-50 hover:bg-gray-100 text-gray-800 dark:bg-gray-850 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
       type="button"

@@ -53,6 +53,13 @@ jobs: # 定义需要执行的工作
             if [ "$(docker ps -q -f name=open-webui)" ]; then
               docker stop open-webui # 停止运行中的容器
               docker rm open-webui  # 删除容器
+              
+              # 等待容器完全删除
+              while [ "$(docker ps -a -f name=open-webui -q)" ]; do
+                echo "Waiting for open-webui container to be removed..."
+                sleep 2
+              done
+
             fi
       
             # 运行新的Docker容器

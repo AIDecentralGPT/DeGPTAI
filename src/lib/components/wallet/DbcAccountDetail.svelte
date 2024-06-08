@@ -82,7 +82,8 @@
 
   <!-- 地址展示 -->
   <div class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal">
-    Wallet Address
+    
+    {$i18n.t("Wallet Address")}
   </div>
 
   <div class="pt-0.5">
@@ -147,7 +148,7 @@
         $showTransferModal = true;
       }}
     >
-      {$i18n.t(" Transfer ")}
+      {$i18n.t("Transfer")}
     </button>
     <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
@@ -158,7 +159,7 @@
         $showExportWalletJsonModal = true;
       }}
     >
-      {$i18n.t(" Export Wallet ")}
+      {$i18n.t("Export Wallet")}
     </button>
     <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
@@ -167,7 +168,7 @@
         closeWallet()
       }}
     >
-      {$i18n.t(" Close Wallet ")}
+      {$i18n.t("Close Wallet")}
     </button>
   </div>
   <!-- ------------ -->
@@ -179,7 +180,8 @@
   <!-- 标题 -->
   <div class="flex justify-between items-center">
     <div class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal">
-      Wallet Balance
+      {$i18n.t("Wallet Balance")}
+
     </div>
 
     <button
@@ -203,7 +205,8 @@
         /></svg
       >
 
-      <span> Share to Obtain DGC </span>
+      <span>     {$i18n.t("Share to Obtain DGC")}
+      </span>
     </button>
   </div>
   <!-- 余额详情 -->
@@ -235,7 +238,7 @@
       <div
         class="opacity-50 text-right text-xs font-medium font-['Gilroy'] leading-normal"
       >
-        DGC price ＄{Number($currentWalletData?.price?.dlc).toFixed(4)}
+        DGC {$i18n.t("price")} ＄{Number($currentWalletData?.price?.dlc).toFixed(4)}
       </div>
     </div>
 
@@ -264,7 +267,8 @@
       <div
         class="opacity-50 text-right text-xs font-medium font-['Gilroy'] leading-normal"
       >
-        DBC price ＄{Number($currentWalletData?.price?.dbc).toFixed(4)}
+        DBC     {$i18n.t("price")}
+        ＄{Number($currentWalletData?.price?.dbc).toFixed(4)}
       </div>
     </div>
   </div>
@@ -278,14 +282,14 @@
         $showBuyCoinModal = true;
       }}
     >
-      {$i18n.t(" Buy ")}
+      {$i18n.t("Buy")}
     </button>
     <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
       type="submit"
       on:click={async () => {}}
     >
-      {$i18n.t(" Rewards ")}
+      {$i18n.t("Rewards")}
     </button>
   </div>
 </div>
