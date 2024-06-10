@@ -19,12 +19,12 @@ class User(Model):
     email = CharField()  # 定义字符字段email
     role = CharField()  # 定义字符字段role
     profile_image_url = TextField()  # 定义文本字段profile_image_url
-
     last_active_at = BigIntegerField()  # 定义大整数字段last_active_at
     updated_at = BigIntegerField()  # 定义大整数字段updated_at
     created_at = BigIntegerField()  # 定义大整数字段created_at
-
     api_key = CharField(null=True, unique=True)  # 定义可为空且唯一的字符字段api_key
+    inviter_id = CharField(null=True)  # 邀请人id
+    # phone_number = CharField(null=True, unique=True)  # 定义可为空，唯一的字符字段phone_number
 
     class Meta:
         database = DB  # 指定数据库
@@ -42,6 +42,8 @@ class UserModel(BaseModel):
     created_at: int  # 定义created_at字段，类型为整型，表示epoch时间戳
 
     api_key: Optional[str] = None  # 定义可选的api_key字段，类型为字符串，默认值为None
+    inviter_id: Optional[str] = None
+    # phone_number: Optional[str]   # 定义phone_number字段，类型为可选字符串
 
 ####################
 # Forms
@@ -71,6 +73,7 @@ class UsersTable:
         id: str,
         name: str,
         email: str,
+        inviter_id: str ,
         profile_image_url: str = "/user.png",
         role: str = "user",
     ) -> Optional[UserModel]:
@@ -84,6 +87,7 @@ class UsersTable:
                 "last_active_at": int(time.time()),
                 "created_at": int(time.time()),
                 "updated_at": int(time.time()),
+                "inviter_id": inviter_id
             }
         )  # 创建UserModel实例
         result = User.create(**user.model_dump())  # 在数据库中创建新用户
@@ -99,7 +103,8 @@ class UsersTable:
             user = User.get(User.id == id)  # 查询数据库中的用户
             print("根据id获取完了用户")
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
-        except:
+        except Exception as e:
+            print(f"get_user_by_id补货错误: {e}")
             return None  # 如果查询失败，返回None
 
     # 根据api_key获取用户

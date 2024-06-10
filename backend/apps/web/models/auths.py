@@ -83,6 +83,9 @@ class WalletSigninForm(BaseModel):
     nonce:str
     signature: str
     id: str
+    device_id: str
+    inviter_id: Optional[str] = None
+
 
             # 将签名从十六进制转换为字节
 
@@ -130,18 +133,20 @@ class AuthsTable:
         name: str,
         profile_image_url: str = "/user.png",
         role: str = "user",
-        id: str = None
+        id: str = None,
+        inviter_id: str = None
     ) -> Optional[UserModel]:
-        log.info("insert_new_auth")
+        print("insert_new_auth:1", role, inviter_id)
 
         # id = str(uuid.uuid4())
+
 
         auth = AuthModel(
             **{"id": id, "email": email, "password": password, "active": True}
         )
         result = Auth.create(**auth.model_dump())
 
-        user = Users.insert_new_user(id, name, email, profile_image_url, role)
+        user = Users.insert_new_user(id, name, email, profile_image_url, role, inviter_id)
 
         if result and user:
             return user

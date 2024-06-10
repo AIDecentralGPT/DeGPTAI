@@ -11,6 +11,9 @@ from apps.web.routers import (
     configs,
     memories,
     utils,
+    device,
+    ip_log,
+    rewards
 )
 from config import (
     WEBUI_VERSION,
@@ -51,6 +54,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 app.include_router(auths.router, prefix="/auths", tags=["auths"])
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(chats.router, prefix="/chats", tags=["chats"])
@@ -64,6 +68,10 @@ app.include_router(memories.router, prefix="/memories", tags=["memories"])
 app.include_router(configs.router, prefix="/configs", tags=["configs"])
 app.include_router(utils.router, prefix="/utils", tags=["utils"])
 
+
+app.include_router(device.router, prefix="/devices", tags=["devices"])
+app.include_router(ip_log.router, prefix="/ip_logs", tags=["ip_logs"])
+app.include_router(rewards.router, prefix="/rewards", tags=["rewards"])
 
 @app.get("/")
 async def get_status():

@@ -88,6 +88,7 @@ export async function handleWalletSignIn(pair: string, password: string) {
   const walletSignInResult = await walletSignIn({
     address: pair?.address,
     nonce,
+    device_id: localStorage.visitor_id ,
     // data: pair,
     signature,
     id: localStorage.visitor_id,

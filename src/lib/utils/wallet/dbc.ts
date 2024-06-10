@@ -595,8 +595,8 @@ export const inputToBn = (input, siPower, basePower) => {
 
 // 创建签名
 export const signData = async (data, password, type) => {
-  // const nonce = uuidv4();
-  const nonce = "test";
+  const nonce = uuidv4();
+  // const nonce = "test";
   const nonceU8a = stringToU8a(nonce); // 转换为 Uint8Array
   let signUrl;
   await cryptoWaitReady();
