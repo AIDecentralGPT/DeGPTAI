@@ -48,6 +48,8 @@
 	let showShortcuts = false;
 
 	const getModels = async () => {
+		// console.log("_getModels(localStorage.token)", _getModels(localStorage.token));
+		
 		return _getModels(localStorage.token);
 	};
 
@@ -79,7 +81,7 @@
 
 		if ($user === undefined) {
 			// await goto('/auth');
-		} else if (['user', 'admin'].includes($user.role)) {
+		} else if (['user', 'admin', 'visitor'].includes($user.role)) {
 			try {
 				// Check if IndexedDB exists
 				DB = await openDB('Chats', 1);
