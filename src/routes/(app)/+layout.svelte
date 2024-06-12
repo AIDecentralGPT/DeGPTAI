@@ -211,7 +211,8 @@
 		class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row"
 	>
 		{#if loaded}
-			{#if !['user', 'admin'].includes($user.role)}
+			<!-- {#if !['user', 'admin'].includes($user.role)} -->
+			{#if false}
 				<div class="fixed w-full h-full flex z-[999]">
 					<div
 						class="absolute w-full h-full backdrop-blur-lg bg-white/10 dark:bg-gray-900/50 flex justify-center"
