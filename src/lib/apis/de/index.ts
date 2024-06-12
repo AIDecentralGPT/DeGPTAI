@@ -39,6 +39,29 @@ export const getDeModels = async (token: string = '') => {
 
 		models: [
 			{
+				"name": "Qwen2-72B",
+				"model": "Qwen2-72B",
+				"modified_at": new Date().toISOString(),
+				"size": 0, // 需要根据实际数据填充
+				"digest": "", // 需要根据实际数据填充
+				"details": {
+						"parent_model": "",
+						"format": "", // 需要根据实际数据填充
+						"family": "",
+						"families": [],
+						"parameter_size": "",
+						"quantization_level": ""
+				},
+				"expires_at": "0001-01-01T00:00:00Z",
+				"urls": [
+						"https://chat.degpt.ai/qwen2-72b/v1"
+						// "http://122.99.183.53:1042/v1"
+				],
+				"source": 'Multi-language support, lightweight model selection, and high-efficiency inference performance.'
+				
+			},
+			
+			{
 				"name": "Llama3-8B",
 				"model": "Llama3-8B",
 				"modified_at": new Date().toISOString(),
@@ -56,8 +79,32 @@ export const getDeModels = async (token: string = '') => {
 				"urls": [
 						"https://chat.degpt.ai/llama3-8b/v1"
 						// "http://122.99.183.51:7080/v1"
-					]
+					],
+						"source": 'Multimodal capabilities, wide applicability, excellent performance, and developer-friendly design.'
+					// info?.source
 		},
+		{
+			"name": "Llama3-70B",
+			"model": "Llama3-70B",
+			"modified_at": new Date().toISOString(),
+			"size": 0, // 需要根据实际数据填充
+			"digest": "", // 需要根据实际数据填充
+			"details": {
+					"parent_model": "",
+					"format": "", // 需要根据实际数据填充
+					"family": "",
+					"families": [],
+					"parameter_size": "",
+					"quantization_level": ""
+			},
+			"expires_at": "0001-01-01T00:00:00Z",
+			"urls": [
+					"https://chat.degpt.ai/llama3-70b/v1"
+					// "http://122.99.183.53:1042/v1"
+			],
+			"source": 'Exemplary performance,low error rate,diverse responses.'
+			
+	},
 		{
 			"name": "Yi1.5-34B",
 			"model": "Yi1.5-34B",
@@ -76,30 +123,11 @@ export const getDeModels = async (token: string = '') => {
 			"urls": [
 					"https://chat.degpt.ai/yi15-34b/v1"
 					// "http://122.99.183.51:6080/v1"
+			],
+			"source": 'Provides excellent support for the Chinese language, boasting strong capabilities in coding, mathematics, reasoning, and instruction tracing.'
 
-
-			]
 	},
-	{
-		"name": "Llama3-70B",
-		"model": "Llama3-70B",
-		"modified_at": new Date().toISOString(),
-		"size": 0, // 需要根据实际数据填充
-		"digest": "", // 需要根据实际数据填充
-		"details": {
-				"parent_model": "",
-				"format": "", // 需要根据实际数据填充
-				"family": "",
-				"families": [],
-				"parameter_size": "",
-				"quantization_level": ""
-		},
-		"expires_at": "0001-01-01T00:00:00Z",
-		"urls": [
-				"https://chat.degpt.ai/llama3-70b/v1"
-				// "http://122.99.183.53:1042/v1"
-		]
-},
+
 
 
 // 122.99.183.53:1042  llama3-70b
@@ -137,9 +165,9 @@ export const getDeModels = async (token: string = '') => {
 
 	return (format_res?.models ?? [])
 		.map((model) => ({ id: model.model, name: model.name ?? model.model, ...model }))
-		.sort((a, b) => {
-			return a.name.localeCompare(b.name);
-		});
+		// .sort((a, b) => {
+		// 	return a.name.localeCompare(b.name);
+		// });
 };
 
 // // 获取De的所有模型列表

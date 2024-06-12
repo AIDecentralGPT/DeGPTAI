@@ -110,7 +110,7 @@ export async function handleWalletSignIn(pair: string, password: string) {
 
     if (walletSignInResult.id) {
       // ----------------
-
+      await chats.set([]) 
       // 获取钱包面板数据
       updateWalletData(pair);
     }

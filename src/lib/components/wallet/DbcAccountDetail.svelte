@@ -17,7 +17,7 @@
     pageUpdateNumber,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
-  import { dbcPriceOcw, removePair } from "$lib/utils/wallet/dbc";
+  import { dbcPriceOcw, getCurrentPair, removePair } from "$lib/utils/wallet/dbc";
   import { goto } from "$app/navigation";
   import { closeWallet } from "$lib/utils/wallet/walletUtils";
   const i18n = getContext("i18n");
@@ -187,7 +187,15 @@
     <button
       class="flex gap-2 items-center cursor-pointer"
       on:click={() => {
-        $showShareModal = true;
+        const pair = getCurrentPair()
+        console.log("pair?.address", pair?.address);
+        
+        if(!pair?.address) {
+          toast.error($i18n.t("Please log in to your wallet first"))
+        }
+        else {
+          $showShareModal = true;
+        }
       }}
     >
       <svg
@@ -211,7 +219,7 @@
   </div>
   <!-- 余额详情 -->
   <div class="flex flex-col gap-2">
-    <div
+    <!-- <div
       class="flex justify-between px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
     >
       <div class="flex gap-1">
@@ -240,7 +248,7 @@
       >
         DGC {$i18n.t("price")} ＄{Number($currentWalletData?.price?.dlc).toFixed(4)}
       </div>
-    </div>
+    </div> -->
 
     <div
       class="flex justify-between px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
@@ -287,7 +295,9 @@
     <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
       type="submit"
-      on:click={async () => {}}
+      on:click={async () => {
+        toast.warning("Coming soon")
+      }}
     >
       {$i18n.t("Rewards")}
     </button>

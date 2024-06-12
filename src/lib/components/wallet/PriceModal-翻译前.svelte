@@ -87,7 +87,7 @@
                 <p class="text-sm leading-6 text-gray-400">per user, billed monthly</p>
                 <button 
                 on:click={() => {
-                    toast.warning("Stay tuned...")
+                    toast.warning("Coming soon...")
                 }}
                 href="#" aria-describedby="tier-plus" class="mt-6 px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full">Upgrade to Plus</button>
                 <!-- <button href="#" aria-describedby="tier-plus" class="w-full mt-6 block rounded-md py-2 px-3 text-center text-sm  primaryButton">Upgrade to Plus</button> -->

@@ -157,6 +157,7 @@
               bind:group={transferType}
               value="dlc"
               required
+              disabled
             />
             DGC
           </label>

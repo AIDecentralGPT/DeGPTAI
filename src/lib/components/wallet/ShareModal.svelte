@@ -4,7 +4,12 @@
     export let show = false;
     import { onMount, getContext } from "svelte";
     import { copyToClipboard } from "$lib/utils";
+  import { getCurrentPair } from "$lib/utils/wallet/dbc";
     const i18n = getContext("i18n");
+
+
+    export const currentPair = getCurrentPair()
+
   </script>
   
   <Modal bind:show size="lg">
@@ -128,23 +133,22 @@
           <p
             class="
             hidden sm:block
+            flex-1
                     text-ellipsis overflow-hidden whitespace-nowrap
                     pr-[35px]
                     px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
           >
-            https://www.degpt.ai?invite=Cruj9oS5NO
+            {`https://www.degpt.ai?invite=${currentPair?.address}`}
           </p>
           <button
             on:click={async () => {
-              const res = await copyToClipboard(
-                "https://www.degpt.ai?invite=Cruj9oS5NO"
-              );
+              const res = await copyToClipboard(`https://www.degpt.ai?invite=${currentPair?.address}`);
               if (res) {
                 toast.success($i18n.t("Copying to clipboard was successful!"));
               }
             }}
             type="button"
-            class="primaryButton rounded-3xl flex gap-1 items-center p-6 py-2 flex-1-1 mt-4 md:mt-0"
+            class="primaryButton rounded-3xl flex gap-1 items-center p-6 py-2 ] mt-4 md:mt-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

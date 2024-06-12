@@ -1,5 +1,5 @@
 <script>
-  import "../polyfills"; // 必须在其他代码之前引入
+	import '../polyfills'; // 必须在其他代码之前引入
 
   import { onMount, tick, setContext } from "svelte";
   import {
@@ -173,4 +173,4 @@
   <slot />
 {/if}
 
-<Toaster richColors position="top-center" />
+<Toaster richColors position="top-center" class="flex"  />

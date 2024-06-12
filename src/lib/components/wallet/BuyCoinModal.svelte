@@ -66,6 +66,7 @@
             value="DGC"
             required
             class="mr-1.5 cursor-pointer"
+            disabled
           />
           DGC
         </label>

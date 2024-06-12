@@ -146,7 +146,8 @@ class AuthsTable:
         )
         result = Auth.create(**auth.model_dump())
 
-        user = Users.insert_new_user(id, name, email, profile_image_url, role, inviter_id)
+
+        user = Users.insert_new_user(id, name, email, inviter_id, role=role, profile_image_url=profile_image_url)
 
         if result and user:
             return user
