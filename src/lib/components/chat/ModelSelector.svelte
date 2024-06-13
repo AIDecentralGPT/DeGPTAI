@@ -11,6 +11,7 @@
 	const i18n = getContext('i18n');
 
 	export let selectedModels = [''];
+	export let modelsList= [''];
 	export let disabled = false;
 
 	export let showSetDefault = true;
@@ -24,7 +25,7 @@
 		settings.set({ ...$settings, models: selectedModels });
 		localStorage.setItem('settings', JSON.stringify($settings));
 
-		if ($user.role === 'admin') {
+		if ($user?.role === 'admin') {
 			console.log('setting default models globally');
 			await setDefaultModels(localStorage.token, selectedModels.join(','));
 		}
@@ -32,13 +33,33 @@
 	};
 
 	$: if (selectedModels.length > 0 && $models.length > 0) {
-		selectedModels = selectedModels.map((model) =>
-			$models.map((m) => m.id).includes(model) ? model : ''
+
+		console.log("$models", $models, selectedModels);
+		
+
+		selectedModels = selectedModels.map((model) =>{
+			console.log("model", model);
+			if(selectedModels.length === 1) {
+				return selectedModels[0] ==='' ? $models[0]?.name : model
+			}
+			else {
+				return 	$models.map((m) => m.id).includes(model) ? model : ''
+			}
+			
+		}
 		);
+		console.log("selectedModels", selectedModels);
+		
+
+		//  modelsList  = $models?.filter((item) => !selectedModels.includes(item.name)  )
+
+		// console.log("$modelsList", $models, modelsList);
+
 	}
 </script>
 
 <div class="flex flex-col w-full items-center md:items-start">
+	<!-- {#each modelsList as selectedModel, selectedModelIdx} -->
 	{#each selectedModels as selectedModel, selectedModelIdx}
 		<div class="flex w-full max-w-fit">
 			<div class="overflow-hidden w-full">
@@ -52,14 +73,15 @@
 								label: model.name,
 								info: model
 							}))}
+						selectedList = {selectedModels}
 						bind:value={selectedModel}
 					/>
 				</div>
 			</div>
 
-			{#if selectedModelIdx === 0}
+			{#if (selectedModelIdx === selectedModels?.length -1 && selectedModels?.length !== $models.length)}
 				<div class="  self-center mr-2 disabled:text-gray-600 disabled:hover:text-gray-600">
-					<Tooltip content={$i18n.t('Add Model,supports multiple models to answer questions simultaneously.')}>
+					<Tooltip content={$i18n.t('Add Model')}>
 						<button
 							class=" "
 							{disabled}

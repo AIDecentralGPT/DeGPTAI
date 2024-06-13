@@ -208,7 +208,7 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
     print(111)
     user  = Users.get_user_by_id(form_data.id)
     if Users.get_user_by_id(form_data.id):
-        print("有此访客", user, user.id)
+        print("有此访客",  user.id)
     else: 
         print(222)
         hashed = get_password_hash("")
