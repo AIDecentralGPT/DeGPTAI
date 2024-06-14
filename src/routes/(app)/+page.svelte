@@ -12,10 +12,12 @@
 		chatId,
 		chats,
 		config,
+		inviterId,
 		modelfiles,
 		models,
 		pageUpdateNumber,
 		settings,
+		showNewWalletModal,
 		showSidebar,
 		user
 	} from '$lib/stores';
@@ -48,6 +50,8 @@
 		WEBUI_BASE_URL
 	} from '$lib/constants';
 	import { RAGTemplate } from '$lib/utils/rag';
+
+	let inviter = '';
 
 	const i18n = getContext('i18n');
 
@@ -115,6 +119,21 @@
 	}
 
 	onMount(async () => {
+
+
+
+
+		const queryParams = new URLSearchParams($page.url.search);
+		inviter = queryParams.get('inviter');
+		console.log("inviter", inviter);
+		if(inviter) {
+			$showNewWalletModal = true;
+			$inviterId = inviter
+		}
+			
+
+
+
 		await initNewChat();
 	});
 

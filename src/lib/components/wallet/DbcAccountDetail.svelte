@@ -15,11 +15,13 @@
     chats,
     chatId,
     pageUpdateNumber,
+    showRewardsModal,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
   import { dbcPriceOcw, getCurrentPair, removePair } from "$lib/utils/wallet/dbc";
   import { goto } from "$app/navigation";
   import { closeWallet } from "$lib/utils/wallet/walletUtils";
+  import { getUsersInvited } from "$lib/apis/users";
   const i18n = getContext("i18n");
 
   const fetchPrice = async () => {
@@ -296,7 +298,10 @@
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
       type="submit"
       on:click={async () => {
-        toast.warning("Coming soon")
+        // toast.warning("Coming soon")
+
+       $showRewardsModal = true
+
       }}
     >
       {$i18n.t("Rewards")}

@@ -305,6 +305,7 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
     signature_hex = form_data.signature
     device_id = form_data.device_id
     ip_address = request.client.host
+    # inviterId = form_data.inviter_id
 
     try:
         # 检查并去除0x前缀
@@ -328,9 +329,11 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
             print("address:", address)
             # 查找用户
             user = Users.get_user_by_id(address)
-            print(11111111111111111111111111111111, user)
 
             if user:
+                print(11111111111111111111111111111111)
+                # print(11111111111111111111111111111111, user['id'], user['inviter_id'])
+
                 print("User found:", user.id)
             else:
                 print("User not found, creating new user")
@@ -342,7 +345,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     USER_CONSTANTS.AVATOR_IMAGE,
                     "walletUser",
                     form_data.address,
-                    form_data.inviter_id
+                    form_data.inviter_id,
+                    
                 )
                 print("Auths.insert_new_auth执行完毕")
                 print("New user created:", user.id, user)
@@ -352,6 +356,9 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 device = devices_table.insert_new_device(user_id=user.id, device_id=device_id )
             else:
                 log.info(f"没传device_id！")
+
+
+
 
             ip_log = ip_logs_table.insert_new_ip_log(user_id=user.id, ip_address=ip_address)
             print("Device logged:", device)
@@ -515,6 +522,9 @@ async def signin(request: Request, form_data: SigninForm):
         # 如果认证失败，则打印日志并返回错误提示
         print(3)
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
+    
+
+
 
 
 ############################

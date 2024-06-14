@@ -1,7 +1,7 @@
 from fastapi import Response, Request
 from fastapi import Depends, FastAPI, HTTPException, status
 from datetime import datetime, timedelta
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Any
 
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -18,6 +18,14 @@ from constants import ERROR_MESSAGES
 
 from config import SRC_LOG_LEVELS
 
+from utils.utils import (
+    get_password_hash,
+    get_current_user,
+    get_admin_user,
+    create_token,
+    create_api_key,
+)
+
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
@@ -31,6 +39,57 @@ router = APIRouter()
 @router.get("/", response_model=List[UserModel])
 async def get_users(skip: int = 0, limit: int = 50, user=Depends(get_admin_user)):
     return Users.get_users(skip, limit)
+
+
+############################
+# 获取搜有邀请用户
+############################
+@router.get("/invited", response_model=List[UserModel])
+async def get_users_invited(
+    session_user=Depends(get_current_user)
+):
+    # print("开始111")
+    
+    # session_user = get_current_user()
+    print("session_user获取到啦111")
+    
+    if session_user:
+        print("session_user", session_user.id)
+        try:
+            # 在这里添加你的业务逻辑，比如查询数据库
+            users = Users.get_users_invited(session_user.id)
+            print("users", users)
+            return users
+        except Exception as e:
+            print("获取所有邀请用户时发生错误", e)
+            raise HTTPException(400, detail="Error retrieving invited users")
+    else:
+        raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
+
+
+# @router.get("/users/invited", response_model=List[UserModel])
+# async def get_users_invited(
+#     session_user=Depends(get_current_user)
+# ):
+#     print("session_user获取到啦111")
+    
+#     print("session_user获取到啦", session_user.id)
+#     if session_user:
+#         try:
+#             print("session_user", session_user.id)
+#             # users = Users.get_users_invited(session_user.id)
+#             # print("users", users)
+#             return []
+#         except Exception as e:
+#             print("获取搜有邀请用户", e)
+#         # if users:
+#         #     return users
+#         else:
+#             raise HTTPException(400, detail=ERROR_MESSAGES.DEFAULT())
+#     else:
+#         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
+
+
 
 
 ############################

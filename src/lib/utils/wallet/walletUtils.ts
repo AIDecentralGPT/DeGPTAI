@@ -80,7 +80,7 @@ export async function handleSigninAsIntialStatus() {
 }
 
 // 用钱包登录
-export async function handleWalletSignIn(pair: string, password: string) {
+export async function handleWalletSignIn(pair: string, password: string, inviterId?:string) {
   const { nonce, signature } = await signData(pair, password, undefined);
 
   console.log("pair, password", pair, password);
@@ -92,6 +92,7 @@ export async function handleWalletSignIn(pair: string, password: string) {
     // data: pair,
     signature,
     id: localStorage.visitor_id,
+    inviter_id: inviterId
   });
 
   if (walletSignInResult?.token) {

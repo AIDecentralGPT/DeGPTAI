@@ -7,8 +7,12 @@
   import { getCurrentPair } from "$lib/utils/wallet/dbc";
     const i18n = getContext("i18n");
 
+  let  currentPair = ""
 
-    export const currentPair = getCurrentPair()
+    $: if(show){
+      currentPair  = getCurrentPair()
+    }
+
 
   </script>
   
@@ -138,11 +142,11 @@
                     pr-[35px]
                     px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
           >
-            {`https://www.degpt.ai?invite=${currentPair?.address}`}
+            {`${location.host}?inviter=${currentPair?.address}`}
           </p>
           <button
             on:click={async () => {
-              const res = await copyToClipboard(`https://www.degpt.ai?invite=${currentPair?.address}`);
+              const res = await copyToClipboard(`${location.host}?inviter=${currentPair?.address}`);
               if (res) {
                 toast.success($i18n.t("Copying to clipboard was successful!"));
               }

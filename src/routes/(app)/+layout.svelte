@@ -37,6 +37,11 @@
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
   import { handleSigninAsIntialStatus } from '$lib/utils/wallet/walletUtils';
 
+
+	
+
+
+
 	const i18n = getContext('i18n');
 
 	let ollamaVersion = '';
@@ -82,8 +87,10 @@
 			await handleSigninAsIntialStatus()
 			await models.set(await getModels());
 
+			
 
-		} else if (['user', 'admin', 'walletUser'].includes($user?.role)) {
+
+		} else if (['user', 'admin', 'walletUser', 'visitor'].includes($user?.role)) {
 			try {
 				// Check if IndexedDB exists
 				DB = await openDB('Chats', 1);

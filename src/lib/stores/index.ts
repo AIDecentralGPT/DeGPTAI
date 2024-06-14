@@ -59,6 +59,7 @@ export const showTransferModal = writable(false);
 export const showPriceModal = writable(false);
 export const showBuyCoinModal = writable(false);
 export const showShareModal = writable(false);
+export const showRewardsModal = writable(false);
 
 
 
@@ -69,6 +70,11 @@ export let currentWalletData = writable(DefaultCurrentWalletData)
 
 
 export let pageUpdateNumber = writable(0)
+
+
+// 邀请人id
+export let inviterId = writable("")
+
 
 
 

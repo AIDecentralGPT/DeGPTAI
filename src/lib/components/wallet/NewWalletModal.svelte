@@ -14,7 +14,7 @@
   import Modal from "../common/Modal.svelte";
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
-  import { currentWalletData, models, settings, user } from "$lib/stores";
+  import { currentWalletData, models, settings, user, inviterId } from "$lib/stores";
   import { handleWalletSignIn, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
 
   const i18n = getContext("i18n");
@@ -105,6 +105,9 @@
                   />
                 {/if}
 
+
+              
+
                 <button
                   type="button"
                   class="absolute inset-y-0 right-0 px-3 py-2 text-sm dark:text-gray-300 dark:bg-gray-850 rounded-md"
@@ -159,7 +162,20 @@
                 <p class="text-red-500 text-sm mt-1">{passwordError}</p>
               {/if}
             </div>
+
+
+            <input
+            bind:value={$inviterId}
+            type="text"
+            class="mt-4 px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+            placeholder={$i18n.t("Enter the inviter id here")}
+            autocomplete="current-password"
+            on:input={validatePassword}
+            required
+          />
           </div>
+
+       
 
           <!-- 提交按钮 -->
           <div class="flex justify-end my-4">
@@ -186,7 +202,7 @@
 
 
                   // 请求服务端登录钱包账户
-                  await handleWalletSignIn(pair, password);
+                  await handleWalletSignIn(pair, password, $inviterId);
               }}
             >
               {$i18n.t("Create")}

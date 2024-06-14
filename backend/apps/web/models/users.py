@@ -100,12 +100,38 @@ class UsersTable:
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
             print("开始根据id获取用户")
-            user = User.get(User.id == id)  # 查询数据库中的用户
-            print("根据id获取完了用户")
-            return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
+            # user = User.get(User.id == id)  # 查询数据库中的用户
+            user = User.get_or_none(User.id == id)  # 查询数据库中的用户
+            # print("根据id获取完了用户", user)
+            if user is None:
+                return None
+            else:
+                user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+                # print("用户字典：", user_dict)
+                user_model = UserModel(**user_dict)  # 将字典转换为Pydantic模型
+                print("获取完毕用户")
+                # print("用户模型：", user_model)
+                return user_model
+
+                # return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
         except Exception as e:
             print(f"get_user_by_id补货错误: {e}")
             return None  # 如果查询失败，返回None
+        
+
+    # 获取邀请的所有用户
+    def get_users_invited(self, inviter_id: str) -> List[UserModel]:
+        try:
+            print("开始根据inviter_id获取所有用户")
+            users = User.select().where(User.inviter_id == inviter_id)  # 查询数据库中的用户
+            user_list = [UserModel(**model_to_dict(user)) for user in users]  # 将数据库对象转换为字典并转换为Pydantic模型
+            print("获取到的用户模型列表：", user_list)
+            return user_list
+        except Exception as e:
+            print(f"get_users_invited捕获错误: {e}")
+            return []  # 如果查询失败，返回空列表
+
+
 
     # 根据api_key获取用户
     def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
@@ -172,12 +198,19 @@ class UsersTable:
     # 根据id更新用户的last_active_at
     def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
         try:
+            print("update_user_last_active_by_id")
             query = User.update(last_active_at=int(time.time())).where(User.id == id)  # 更新用户的last_active_at
             query.execute()  # 执行更新操作
+            # print("update_user_last_active_by_id222222")
 
             user = User.get(User.id == id)  # 查询更新后的用户
+            # print("update_user_last_active_by_id33333", user)
+            # print(4444, UserModel(**model_to_dict(user)))
+
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
-        except:
+        except Exception as e:
+            print("update_user_last_active_by_id error", e)
+            
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户信息
