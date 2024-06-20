@@ -6,6 +6,7 @@
     modelfiles,
     settings,
     showNewWalletModal,
+    showOpenWalletModal,
     showSidebar,
   } from "$lib/stores";
   import { blobToFile, calculateSHA256, findWordIndices } from "$lib/utils";
@@ -595,14 +596,26 @@
             )}
           </span>
 
-          <button
+          <div class="flex gap-2">
+            <button
             class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
             on:click={async () => {
-              $showNewWalletModal = true;
+              $showOpenWalletModal = true;
             }}
           >
-              {$i18n.t("Connect Wallet")}
+              {$i18n.t("Open Wallet")}
           </button>
+
+          <button
+          class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+          on:click={async () => {
+            $showNewWalletModal = true;
+          }}
+        >
+            {$i18n.t("Create Wallet")}
+        </button>
+          </div>
+         
         </div>
         {/if}
 

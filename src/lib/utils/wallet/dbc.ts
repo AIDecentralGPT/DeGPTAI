@@ -159,7 +159,11 @@ export const initFromLocalstorage = () => {
  * @param {object} pair - 账户对
  * @param {string} password - 密码
  */
-export const exportAccountForKeystore = (pair, password) => {
+export const exportAccountForKeystore = (pair, password = "") => {
+  console.log("password", password);
+  console.log("pair", pair);
+  
+  
   let jsonStr = localStorage.getItem("pair");
   if (!jsonStr) {
     jsonStr = JSON.stringify(pair.toJson(password));

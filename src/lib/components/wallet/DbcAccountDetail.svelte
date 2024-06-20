@@ -18,7 +18,7 @@
     showRewardsModal,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
-  import { dbcPriceOcw, getCurrentPair, removePair } from "$lib/utils/wallet/dbc";
+  import { dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair } from "$lib/utils/wallet/dbc";
   import { goto } from "$app/navigation";
   import { closeWallet } from "$lib/utils/wallet/walletUtils";
   import { getUsersInvited } from "$lib/apis/users";
@@ -157,8 +157,10 @@
       type="submit"
       on:click={async () => {
         console.log("showExportWalletJsonModal", $showExportWalletJsonModal);
+        const pair = getCurrentPair()
+        exportAccountForKeystore(pair)
 
-        $showExportWalletJsonModal = true;
+        // $showExportWalletJsonModal = true;
       }}
     >
       {$i18n.t("Export Wallet")}

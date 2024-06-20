@@ -277,9 +277,11 @@
 <!-- 钱包相关的几个弹窗 -->
 <NewWalletModal bind:show={$showNewWalletModal} />
 
+{#if showOpenWalletModal} 
 <OpenWalletModal bind:show={$showOpenWalletModal} />
+{/if}
 
-<ExportWalletJsonModal bind:show={$showExportWalletJsonModal} />
+<!-- <ExportWalletJsonModal bind:show={$showExportWalletJsonModal} /> -->
 <TransferModal bind:show={$showTransferModal} />
 <PriceModal bind:show={$showPriceModal} />
 <BuyCoinModal bind:show={$showBuyCoinModal} />

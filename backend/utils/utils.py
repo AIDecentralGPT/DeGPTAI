@@ -181,7 +181,7 @@ def get_current_user(
         # 根据id获取用户
         user = Users.get_user_by_id(data["id"])
 
-        print("get_current_user -  user", user)
+        # print("get_current_user -  user", user)
 
         # 如果用户不存在
         if user is None:
@@ -198,7 +198,7 @@ def get_current_user(
                 print("get_current_user - user-error", e)
                 
             
-        print("最终的user", user)
+        # print("最终的user", user)
         # 返回当前用户
         return user
 
