@@ -37,9 +37,8 @@
 		
 
 		selectedModels = selectedModels.map((model) =>{
-			console.log("model", model);
 			if(selectedModels.length === 1) {
-				return selectedModels[0] ==='' ? $models[0]?.name : model
+				return selectedModels[0] ==='' ? $models[0]?.model : model
 			}
 			else {
 				return 	$models.map((m) => m.id).includes(model) ? model : ''
