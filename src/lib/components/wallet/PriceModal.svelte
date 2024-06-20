@@ -67,7 +67,8 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                {$i18n.t('Access to Llama3-8B, Llama 70B, Qwen1.5-110B, yi1.5-34B')}
+                
+                {$i18n.t('Access to Qwen2-72B, Llama 70B, Llama3-8B, yi1.5-34B')}
               </li>
               <li class="flex gap-x-3">
                 <svg class="h-6 w-5 flex-none text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

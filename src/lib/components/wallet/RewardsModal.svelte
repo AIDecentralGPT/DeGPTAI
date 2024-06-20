@@ -27,7 +27,6 @@ let currentPair
     mounted = true;
 
     const pair = getCurrentPair();
-		currentPair = getCurrentPair();
     console.log("pair?.address", pair?.address);
     users = await getUsersInvited(localStorage.token, pair?.address);
     console.log("users", users);
@@ -42,6 +41,10 @@ let currentPair
       document.body.style.overflow = "unset";
     }
   }
+
+	$: if(show) {
+		currentPair = getCurrentPair();
+	}
 </script>
 
 {#if show}
