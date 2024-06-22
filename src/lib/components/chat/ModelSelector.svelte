@@ -34,13 +34,11 @@
 
 	$: if (selectedModels.length > 0 && $models.length > 0) {
 
-		console.log("$models", $models, selectedModels);
 		
 
 		selectedModels = selectedModels.map((model) =>{
-			console.log("model", model);
 			if(selectedModels.length === 1) {
-				return selectedModels[0] ==='' ? $models[0]?.name : model
+				return selectedModels[0] ==='' ? $models[0]?.model : model
 			}
 			else {
 				return 	$models.map((m) => m.id).includes(model) ? model : ''
@@ -48,7 +46,6 @@
 			
 		}
 		);
-		console.log("selectedModels", selectedModels);
 		
 
 		//  modelsList  = $models?.filter((item) => !selectedModels.includes(item.name)  )
@@ -81,7 +78,7 @@
 
 			{#if (selectedModelIdx === selectedModels?.length -1 && selectedModels?.length !== $models.length)}
 				<div class="  self-center mr-2 disabled:text-gray-600 disabled:hover:text-gray-600">
-					<Tooltip content={$i18n.t('Add Model')}>
+					<Tooltip content={$i18n.t('Add Model,supports multiple models to answer questions simultaneously.')}>
 						<button
 							class=" "
 							{disabled}

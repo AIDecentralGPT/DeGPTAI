@@ -39,7 +39,7 @@ export const getDeModels = async (token: string = '') => {
 
 		models: [
 			{
-				"name": "Qwen2-72B",
+				"name": "Qwen2-72B (General Large Model)",
 				"model": "Qwen2-72B",
 				"modified_at": new Date().toISOString(),
 				"size": 0, // 需要根据实际数据填充
@@ -57,12 +57,12 @@ export const getDeModels = async (token: string = '') => {
 						"https://chat.degpt.ai/qwen2-72b/v1"
 						// "http://122.99.183.53:1042/v1"
 				],
-				"source": 'Multi-language support, lightweight model selection, and high-efficiency inference performance.'
+				"source": '27 language support, surpport long texts of up to 128 tokens.'
 				
 			},
 			
 			{
-				"name": "Llama3-8B",
+				"name": "Llama3-8B (General Large Model)",
 				"model": "Llama3-8B",
 				"modified_at": new Date().toISOString(),
 				"size": 0, // 需要根据实际数据填充
@@ -84,7 +84,7 @@ export const getDeModels = async (token: string = '') => {
 					// info?.source
 		},
 		{
-			"name": "Llama3-70B",
+			"name": "LIama3 70B (General Large Model)",
 			"model": "Llama3-70B",
 			"modified_at": new Date().toISOString(),
 			"size": 0, // 需要根据实际数据填充
@@ -106,7 +106,7 @@ export const getDeModels = async (token: string = '') => {
 			
 	},
 		{
-			"name": "Yi1.5-34B",
+			"name": "Yi1.5-34B (General Large Model)",
 			"model": "Yi1.5-34B",
 			"modified_at": new Date().toISOString(),
 			"size": 0, // 需要根据实际数据填充
@@ -124,8 +124,7 @@ export const getDeModels = async (token: string = '') => {
 					"https://chat.degpt.ai/yi15-34b/v1"
 					// "http://122.99.183.51:6080/v1"
 			],
-			"source": 'Provides excellent support for the Chinese language, boasting strong capabilities in coding, mathematics, reasoning, and instruction tracing.'
-
+			"source": 'Powerful encoding, and instruction-following capabilities.'
 	},
 
 
