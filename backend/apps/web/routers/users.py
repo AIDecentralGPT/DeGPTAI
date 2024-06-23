@@ -28,10 +28,11 @@ router = APIRouter()
 ############################
 
 
-@router.get("/", response_model=List[UserModel])
-async def get_users(skip: int = 0, limit: int = 50, user=Depends(get_admin_user)):
-    return Users.get_users(skip, limit)
-
+# @router.get("/", response_model=List[UserModel])
+@router.get("/", response_model=dict)
+async def get_users(skip: int = 0, limit: int = 50, role: str = "", search: str = "", user=Depends(get_admin_user)):
+    print("skip", skip, "limit", limit)
+    return Users.get_users(skip, limit, role, search)
 
 ############################
 # User Permissions

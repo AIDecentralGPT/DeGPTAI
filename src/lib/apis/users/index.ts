@@ -88,16 +88,17 @@ export const updateUserRole = async (token: string, id: string, role: string) =>
 	return res;
 };
 
-export const getUsers = async (token: string) => {
+export const getUsers = async (token: string,page:number, role: string = "", search: string = "") => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		}
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users?skip=${page}&limit=10&role=${role}&search=${search}`, {
+			method: 'GET',
+			headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`
+			}
 	})
+
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();
 			return res.json();
