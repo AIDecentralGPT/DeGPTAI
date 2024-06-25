@@ -126,6 +126,23 @@
 		document.getElementById('splash-screen')?.remove();
 		loaded = true;
 
+
+    // 创建并插入Google Analytics的script标签
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2';
+    script.async = true;
+    document.head.appendChild(script);
+
+    // 初始化Google Analytics
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ELT9ER83T2');
+    };
+
+
+
 		return () => {
 			window.removeEventListener('resize', onResize);
 		};
