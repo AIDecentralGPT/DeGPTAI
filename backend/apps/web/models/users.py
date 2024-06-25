@@ -117,12 +117,28 @@ class UsersTable:
             return None  # 如果查询失败，返回None
 
     # 获取用户列表
-    def get_users(self, skip: int = 0, limit: int = 50) -> List[UserModel]:
-        return [
+    def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "") -> List[UserModel]:
+        query = User.select()
+
+        # 角色筛选
+        if role:
+            query = query.where(User.role == role)
+
+        # 搜索
+        if search:
+            query = query.where((User.name.contains(search)) | (User.id.contains(search)))
+
+        # 获取总记录数
+        total = query.count()
+
+        # 获取当前页的记录
+        users = [
             UserModel(**model_to_dict(user))
-            for user in User.select()
-            # .limit(limit).offset(skip)  # 限制查询结果的数量和偏移量
+            for user in query.limit(10).offset((skip - 1)*10)  # 限制查询结果的数量和偏移量
         ]
+
+        # 返回结果
+        return {'total': total, 'users': users}
 
     # 获取用户数量
     def get_num_users(self) -> Optional[int]:

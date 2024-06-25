@@ -365,6 +365,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		console.log("$settings.system", $settings.system, );
 		
 		try {
+			console.log("model", model);
+			
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
@@ -429,6 +431,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					// docs: docs.length > 0 ? docs : undefined,
 					// citations: docs.length > 0
 				},
+				model?.urls?.[0]
 				// model?.source?.toLowerCase() === 'litellm'
 				// 	? `${LITELLM_API_BASE_URL}/v1`
 				// 	: `${OPENAI_API_BASE_URL}`
@@ -1099,11 +1102,13 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					) + ' {{prompt}}',
 				titleModelId,
 				userPrompt,
-				titleModel?.external ?? false
-					? titleModel?.source?.toLowerCase() === 'litellm'
-						? `${LITELLM_API_BASE_URL}/v1`
-						: `${OPENAI_API_BASE_URL}`
-					: `${OLLAMA_API_BASE_URL}/v1`
+				model?.urls?.[0]
+
+				// titleModel?.external ?? false
+				// 	? titleModel?.source?.toLowerCase() === 'litellm'
+				// 		? `${LITELLM_API_BASE_URL}/v1`
+				// 		: `${OPENAI_API_BASE_URL}`
+				// 	: `${OLLAMA_API_BASE_URL}/v1`
 			);
 
 			return title;

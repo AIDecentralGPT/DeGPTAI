@@ -177,7 +177,7 @@ def get_current_user(
         # 根据id获取用户
         user = Users.get_user_by_id(data["id"])
 
-        print("user", user)
+        # print("user", user)
 
         # 如果用户不存在
         if user is None:
