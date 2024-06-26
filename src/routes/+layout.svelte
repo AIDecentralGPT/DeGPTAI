@@ -46,7 +46,6 @@
 			// Redirect to /error when Backend Not Detected
 			await goto(`/error`);
 		}
-		loaded = true;
 
 
 		
@@ -60,9 +59,11 @@
 		localStorage.setItem('visitor_id', visitorId);
 
 		const res = await printSignIn();
+		await user.set(res);
+		loaded = true;
+
 		console.log(res);
 		localStorage.token = res.token;
-			await user.set(res);
 
 
 
