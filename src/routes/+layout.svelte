@@ -23,33 +23,33 @@
 	let loaded = false;
 	const BREAKPOINT = 768;
 
-	onMount(async () => {
-		// localStorage.setItem("token", "public_token")
+	async function initData (){
 		
+		let backendConfig = null;
+		try {
+			backendConfig = await getBackendConfig();
+		} catch (error) {
+			console.error('Error loading backend config:', error);
+		}
+		// Initialize i18n even if we didn't get a backend config,
+		// so `/error` can show something that's not `undefined`.
+		initI18n(backendConfig?.default_locale);
 
-		// // 加载 FingerprintJS 库
-		// await FingerprintJS.load().then(fp => {
-		// 		// 获取设备指纹
-		// 		fp.get().then(result => {
-		// 				// `result.visitorId` 是设备指纹 ID
-		// 				const visitorId = result.visitorId;
-		// 				console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
-		// 				// fingerprintSignIn(visitorId)
-		// 				localStorage.setItem('visitor_id', visitorId)
+		if (backendConfig) {
+			// Save Backend Status to Store
+			await config.set(backendConfig);
+
+			await WEBUI_NAME.set(backendConfig.name);
+
+			
+		} else {
+			// Redirect to /error when Backend Not Detected
+			await goto(`/error`);
+		}
+		loaded = true;
 
 
-		// 				printSignIn().then((res ) => {
-		// 					console.log(res);
-		// 					user.set(res)
-		// 				})
-
-		// 		});
-
-
-				
-		// });
-
-
+		
 		// 加载 FingerprintJS 库
 		const fp = await FingerprintJS.load();
 		// 获取设备指纹
@@ -80,51 +80,10 @@
 
 		window.addEventListener('resize', onResize);
 
-		let backendConfig = null;
-		try {
-			backendConfig = await getBackendConfig();
-		} catch (error) {
-			console.error('Error loading backend config:', error);
-		}
-		// Initialize i18n even if we didn't get a backend config,
-		// so `/error` can show something that's not `undefined`.
-		initI18n(backendConfig?.default_locale);
 
-		if (backendConfig) {
-			// Save Backend Status to Store
-			await config.set(backendConfig);
 
-			await WEBUI_NAME.set(backendConfig.name);
-
-			if ($config) {
-				if (localStorage.token) {
-					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
-						toast.error(error);
-						return null;
-					});
-
-					if (sessionUser) {
-						// Save Session User to Store
-						await user.set(sessionUser);
-					} else {
-						// Redirect Invalid Session User to /auth Page
-						// localStorage.removeItem('token');
-						// await goto('/auth');
-					}
-				} else {
-					// await goto('/auth');
-				}
-			}
-		} else {
-			// Redirect to /error when Backend Not Detected
-			await goto(`/error`);
-		}
-
-		await tick();
 
 		document.getElementById('splash-screen')?.remove();
-		loaded = true;
 
 
     // 创建并插入Google Analytics的script标签
@@ -146,7 +105,9 @@
 		return () => {
 			window.removeEventListener('resize', onResize);
 		};
-	});
+	}
+
+	onMount(initData);
 </script>
 
 <svelte:head>
