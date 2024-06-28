@@ -35,11 +35,13 @@ export const getDeModels = async (token: string = '') => {
 	let error = null;
 
 
+
+
 	const format_res = {
 
 		models: [
 			{
-				"name": "Qwen2-72B (General Large Model)",
+				"name": "Ali General Large Model (Qwen2-72B)",
 				"model": "Qwen2-72B",
 				"modified_at": new Date().toISOString(),
 				"size": 0, // 需要根据实际数据填充
@@ -62,7 +64,7 @@ export const getDeModels = async (token: string = '') => {
 			},
 			
 			{
-				"name": "Llama3-8B (General Large Model)",
+				"name": "Meta General Large Model (Llama3-8B)",
 				"model": "Llama3-8B",
 				"modified_at": new Date().toISOString(),
 				"size": 0, // 需要根据实际数据填充
@@ -84,7 +86,8 @@ export const getDeModels = async (token: string = '') => {
 					// info?.source
 		},
 		{
-			"name": "LIama3 70B (General Large Model)",
+			"name": "Meta General Large Model (LIama3 70B)",
+
 			"model": "Llama3-70B",
 			"modified_at": new Date().toISOString(),
 			"size": 0, // 需要根据实际数据填充
@@ -106,7 +109,7 @@ export const getDeModels = async (token: string = '') => {
 			
 	},
 		{
-			"name": "Yi1.5-34B (General Large Model)",
+			"name": "General Large Model (Yi1.5-34B)",
 			"model": "Yi1.5-34B",
 			"modified_at": new Date().toISOString(),
 			"size": 0, // 需要根据实际数据填充
@@ -126,6 +129,8 @@ export const getDeModels = async (token: string = '') => {
 			],
 			"source": 'Powerful encoding, and instruction-following capabilities.'
 	},
+	// Google通用大模型(Gemma2)代码大模型(Codestral)
+
 
 
 
