@@ -45,7 +45,7 @@ router = APIRouter()
 async def get_session_user_chat_list(
     user=Depends(get_current_user), skip: int = 0, limit: int = 50
 ):
-    print("Chats.get_chat_list_by_user_id(user_id, skip, limit)", Chats.get_chat_list_by_user_id(user.id, skip, limit))
+    # print("Chats.get_chat_list_by_user_id(user_id, skip, limit)", Chats.get_chat_list_by_user_id(user.id, skip, limit))
     return Chats.get_chat_list_by_user_id(user.id, skip, limit)
 
 

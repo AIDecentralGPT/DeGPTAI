@@ -25,6 +25,17 @@ export default defineConfig({
 	},
 	optimizeDeps: {
     include: ['core-js']
-  }
+  },
+	server: {
+    proxy: {
+      '/modelapi': {
+        target: 'http://8.219.75.114:8081',  // 代理目标地址
+        // target: 'http://10.0.20.43:7801',  // 代理目标地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/modelapi/, '\/api'),  // 重写路径，如果需要的话
+      },
+    },
+  },
+
 
 });

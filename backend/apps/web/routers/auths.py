@@ -46,7 +46,6 @@ router = APIRouter()
 
 @router.get("/", response_model=UserResponse)
 async def get_session_user(user=Depends(get_current_user)):
-    print("get_session_user 的 user:" , user.id, user)
     return {
         "id": user.id,
         "email": user.email,

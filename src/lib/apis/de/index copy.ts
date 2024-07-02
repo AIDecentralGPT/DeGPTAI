@@ -34,13 +34,12 @@ function transformModelData(input) {
 export const getDeModels = async (token: string = '') => {
 	let error = null;
 
-// const host = "http://8.219.75.114:8081"
-const host = ""
+
 	const format_res = {
 
 		models: [
 			{
-				"name": "Ali General Large Model (Qwen2-72B)",
+				"name": "Qwen2-72B (General Large Model)",
 				"model": "Qwen2-72B",
 				"modified_at": new Date().toISOString(),
 				"size": 0, // 需要根据实际数据填充
@@ -56,7 +55,7 @@ const host = ""
 				"expires_at": "0001-01-01T00:00:00Z",
 				"urls": [
 						// "https://chat.degpt.ai/qwen2-72b/v1"
-					host+	"/modelapi"
+				 window.location.host +"/modelapi/v0/chat/completion/proxy"
 						// "http://122.99.183.53:1042/v1"
 				],
 				"source": '27 language support, surpport long texts of up to 128 tokens.'
@@ -64,7 +63,7 @@ const host = ""
 			},
 			
 			{
-				"name": "Meta General Large Model (Llama3-8B)",
+				"name": "Llama3-8B (General Large Model)",
 				"model": "Llama3-8B",
 				"modified_at": new Date().toISOString(),
 				"size": 0, // 需要根据实际数据填充
@@ -80,15 +79,14 @@ const host = ""
 				"expires_at": "0001-01-01T00:00:00Z",
 				"urls": [
 						// "https://chat.degpt.ai/llama3-8b/v1"
-					host+	"/modelapi"
+						window.location.host +"/modelapi/v0/chat/completion/proxy"
 						// "http://122.99.183.51:7080/v1"
 					],
 						"source": 'Multimodal capabilities, wide applicability, excellent performance, and developer-friendly design.'
 					// info?.source
 		},
 		{
-			"name": "Meta General Large Model (LIama3 70B)",
-
+			"name": "LIama3 70B (General Large Model)",
 			"model": "Llama3-70B",
 			"modified_at": new Date().toISOString(),
 			"size": 0, // 需要根据实际数据填充
@@ -104,14 +102,14 @@ const host = ""
 			"expires_at": "0001-01-01T00:00:00Z",
 			"urls": [
 					// "https://chat.degpt.ai/llama3-70b/v1"
-					host+	"/modelapi"
+						window.location.host + "/modelapi/v0/chat/completion/proxy"
 					// "http://122.99.183.53:1042/v1"
 			],
 			"source": 'Exemplary performance,low error rate,diverse responses.'
 			
 	},
 		{
-			"name": "General Large Model (Yi1.5-34B)",
+			"name": "Yi1.5-34B (General Large Model)",
 			"model": "Yi1.5-34B",
 			"modified_at": new Date().toISOString(),
 			"size": 0, // 需要根据实际数据填充
@@ -127,13 +125,11 @@ const host = ""
 			"expires_at": "0001-01-01T00:00:00Z",
 			"urls": [
 					// "https://chat.degpt.ai/yi15-34b/v1"
-					host+	"/modelapi"
+						window.location.host +"/modelapi/v0/chat/completion/proxy"
 					// "http://122.99.183.51:6080/v1"
 			],
 			"source": 'Powerful encoding, and instruction-following capabilities.'
 	},
-	// Google通用大模型(Gemma2)代码大模型(Codestral)
-
 
 
 
@@ -237,41 +233,24 @@ export const generateDeOpenAIChatCompletion = async (
 	const controller = new AbortController();
 	let error = null;
 
-	console.log("generateDeOpenAIChatCompletion url:", url,`${url}/v0/chat/completion`, body);
+	console.log("generateDeOpenAIChatCompletion url:", url, body);
 	
-	debugger
 
-	const res = await fetch(`${url}/v0/chat/completion`, {
+	const res = await fetch(`${url}`, {
 		signal: controller.signal,
 		method: 'POST',
 		headers: {
-			// Authorization: `Bearer ${token}`,
+			Authorization: `Bearer ${token}`,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
 			...body,
 			project: 'DecentralGPT',
-			node_id: "16Uiu2HAm5cygUrKCBxtNSMKKvgdr1saPM6XWcgnPyTvK4sdrARGL",
-			stream: true,
-
-				// "node_id": "16Uiu2HAm5cygUrKCBxtNSMKKvgdr1saPM6XWcgnPyTvK4sdrARGL",
-				// "project": "DecentralGPT",
-				// "model": "Llama3-70B",
-				// "messages": [
-				// 	{
-				// 		"role": "system",
-				// 		"content": "You are a helpful assistant."
-				// 	},
-				// 	{
-				// 		"role": "user",
-				// 		"content": "Hello"
-				// 	}
-				// ],
-				// "stream": true
+			// stream: true,
 			
 		})
 	}).catch((err) => {
-		console.log("err", err);
+		console.log(err);
 		error = err;
 		return null;
 	});
@@ -295,9 +274,9 @@ export const generateDeTitle = async (
 
 	template = promptTemplate(template, prompt);
 
-	console.log("generateDeTitle", url, );
+	console.log(template);
 
-	const res = await fetch(`${url}/v0/chat/completion`, {
+	const res = await fetch(`${url}/chat/completions`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
