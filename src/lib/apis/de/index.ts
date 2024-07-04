@@ -35,7 +35,8 @@ export const getDeModels = async (token: string = '') => {
 	let error = null;
 
 // const host = "http://8.219.75.114:8081"
-const host = ""
+
+const host = window.location.hostname === 'localhost' ? "":window.location.hostname
 	const format_res = {
 
 		models: [
