@@ -345,17 +345,20 @@ export const generateDeTitle = async (
 			return item?.model === model
 		})?.[0]?.nodeList
 
+    console.log("generateDeTitle 222", nodeList);
+    
+
   const res = await fetch(`${url}/v0/chat/completion`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      node_id: nodeList?.[0],
 
       // Authorization: `Bearer ${token}`
     },
     body: JSON.stringify({
       model: model,
+      node_id: nodeList?.[0],
       messages: [
         {
           role: "user",
