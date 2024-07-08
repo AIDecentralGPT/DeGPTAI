@@ -366,12 +366,13 @@ export const generateDeTitle = async (
         },
       ],
       stream: false,
+      project: "DecentralGPT",
       // Restricting the max tokens to 50 to avoid long titles
       max_tokens: 50,
     }),
   })
     .then(async (res) => {
-      if (!res.ok) throw await res.json();
+      // if (!res.ok) throw await res.json();
       return res.json();
     })
     .catch((err) => {
@@ -386,7 +387,7 @@ export const generateDeTitle = async (
     throw error;
   }
 
-  return res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat";
+  return res?.data?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat";
 };
 
 export const getDeModelNodeList = async (
