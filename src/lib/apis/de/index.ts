@@ -338,6 +338,7 @@ export const generateDeTitle = async (
   template = promptTemplate(template, prompt);
 
   console.log("generateDeTitle", url);
+  
 
 		/**获取node列表 */
 		const globalModelsSetted = get(models)
