@@ -1,181 +1,221 @@
-import { DE_API_BASE_URL } from '$lib/constants';
-import { promptTemplate } from '$lib/utils';
-
+import { DE_API_BASE_URL } from "$lib/constants";
+import { promptTemplate } from "$lib/utils";
+import { models , settings, user } from '$lib/stores';
+import { get } from 'svelte/store';
 
 
 function transformModelData(input) {
-	const models = input?.data?.map(model => {
-			return {
-					"name": model.id.replace("luchenyu/", ""),
-					"model": model.id,
-					"modified_at": new Date(model.created * 1000).toISOString(),
-					"size": 0, // 需要根据实际数据填充
-					"digest": "", // 需要根据实际数据填充
-					"details": {
-							"parent_model": model.parent,
-							"format": "", // 需要根据实际数据填充
-							"family": "",
-							"families": [],
-							"parameter_size": "",
-							"quantization_level": ""
-					},
-					"expires_at": "0001-01-01T00:00:00Z",
-					"urls": [
-							0 // 需要根据实际数据填充
-					]
-			};
-	});
+  const models = input?.data?.map((model) => {
+    return {
+      name: model.id.replace("luchenyu/", ""),
+      model: model.id,
+      modified_at: new Date(model.created * 1000).toISOString(),
+      size: 0, // 需要根据实际数据填充
+      digest: "", // 需要根据实际数据填充
+      details: {
+        parent_model: model.parent,
+        format: "", // 需要根据实际数据填充
+        family: "",
+        families: [],
+        parameter_size: "",
+        quantization_level: "",
+      },
+      expires_at: "0001-01-01T00:00:00Z",
+      urls: [
+        0, // 需要根据实际数据填充
+      ],
+    };
+  });
 
-	return { models };
+  return { models };
 }
 
-
 // 获取De的所有模型列表
-export const getDeModels = async (token: string = '') => {
-	let error = null;
+export const getDeModels = async (token: string = "") => {
+  let error = null;
 
-// const host = "http://8.219.75.114:8081"
+  // const host = "http://8.219.75.114:8081"
 
-const host = window.location.hostname === 'localhost' ? "":"http://"+window.location.hostname
-	const format_res = {
+  const host =
+    window.location.hostname === "localhost"
+      ? ""
+      : "http://" + window.location.hostname;
+  const format_res = {
+    models: [
+      // 		{
+      // 			"name": "Ali General Large Model (Qwen2-72B)",
+      // 			"model": "Qwen2-72B",
+      // 			"modified_at": new Date().toISOString(),
+      // 			"size": 0, // 需要根据实际数据填充
+      // 			"digest": "", // 需要根据实际数据填充
+      // 			"details": {
+      // 					"parent_model": "",
+      // 					"format": "", // 需要根据实际数据填充
+      // 					"family": "",
+      // 					"families": [],
+      // 					"parameter_size": "",
+      // 					"quantization_level": ""
+      // 			},
+      // 			"expires_at": "0001-01-01T00:00:00Z",
+      // 			"urls": [
+      // 					// "https://chat.degpt.ai/qwen2-72b/v1"
+      // 				host+	"/modelapi"
+      // 					// "http://122.99.183.53:1042/v1"
+      // 			],
+      // 			"source": '27 language support, surpport long texts of up to 128 tokens.'
 
-		models: [
-			{
-				"name": "Ali General Large Model (Qwen2-72B)",
-				"model": "Qwen2-72B",
-				"modified_at": new Date().toISOString(),
-				"size": 0, // 需要根据实际数据填充
-				"digest": "", // 需要根据实际数据填充
-				"details": {
-						"parent_model": "",
-						"format": "", // 需要根据实际数据填充
-						"family": "",
-						"families": [],
-						"parameter_size": "",
-						"quantization_level": ""
-				},
-				"expires_at": "0001-01-01T00:00:00Z",
-				"urls": [
-						// "https://chat.degpt.ai/qwen2-72b/v1"
-					host+	"/modelapi"
-						// "http://122.99.183.53:1042/v1"
-				],
-				"source": '27 language support, surpport long texts of up to 128 tokens.'
-				
-			},
-			
-			{
-				"name": "Meta General Large Model (Llama3-8B)",
-				"model": "Llama3-8B",
-				"modified_at": new Date().toISOString(),
-				"size": 0, // 需要根据实际数据填充
-				"digest": "", // 需要根据实际数据填充
-				"details": {
-						"parent_model": "",
-						"format": "", // 需要根据实际数据填充
-						"family": "",
-						"families": [],
-						"parameter_size": "",
-						"quantization_level": ""
-				},
-				"expires_at": "0001-01-01T00:00:00Z",
-				"urls": [
-						// "https://chat.degpt.ai/llama3-8b/v1"
-					host+	"/modelapi"
-						// "http://122.99.183.51:7080/v1"
-					],
-						"source": 'Multimodal capabilities, wide applicability, excellent performance, and developer-friendly design.'
-					// info?.source
-		},
-		{
-			"name": "Meta General Large Model (LIama3 70B)",
+      // 		},
 
-			"model": "Llama3-70B",
-			"modified_at": new Date().toISOString(),
-			"size": 0, // 需要根据实际数据填充
-			"digest": "", // 需要根据实际数据填充
-			"details": {
-					"parent_model": "",
-					"format": "", // 需要根据实际数据填充
-					"family": "",
-					"families": [],
-					"parameter_size": "",
-					"quantization_level": ""
-			},
-			"expires_at": "0001-01-01T00:00:00Z",
-			"urls": [
-					// "https://chat.degpt.ai/llama3-70b/v1"
-					host+	"/modelapi"
-					// "http://122.99.183.53:1042/v1"
-			],
-			"source": 'Exemplary performance,low error rate,diverse responses.'
-			
-	},
-		{
-			"name": "General Large Model (Yi1.5-34B)",
-			"model": "Yi1.5-34B",
-			"modified_at": new Date().toISOString(),
-			"size": 0, // 需要根据实际数据填充
-			"digest": "", // 需要根据实际数据填充
-			"details": {
-					"parent_model": "",
-					"format": "", // 需要根据实际数据填充
-					"family": "",
-					"families": [],
-					"parameter_size": "",
-					"quantization_level": ""
-			},
-			"expires_at": "0001-01-01T00:00:00Z",
-			"urls": [
-					// "https://chat.degpt.ai/yi15-34b/v1"
-					host+	"/modelapi"
-					// "http://122.99.183.51:6080/v1"
-			],
-			"source": 'Powerful encoding, and instruction-following capabilities.'
-	},
-	// Google通用大模型(Gemma2)代码大模型(Codestral)
+      // 		{
+      // 			"name": "Meta General Large Model (Llama3-8B)",
+      // 			"model": "Llama3-8B",
+      // 			"modified_at": new Date().toISOString(),
+      // 			"size": 0, // 需要根据实际数据填充
+      // 			"digest": "", // 需要根据实际数据填充
+      // 			"details": {
+      // 					"parent_model": "",
+      // 					"format": "", // 需要根据实际数据填充
+      // 					"family": "",
+      // 					"families": [],
+      // 					"parameter_size": "",
+      // 					"quantization_level": ""
+      // 			},
+      // 			"expires_at": "0001-01-01T00:00:00Z",
+      // 			"urls": [
+      // 					// "https://chat.degpt.ai/llama3-8b/v1"
+      // 				host+	"/modelapi"
+      // 					// "http://122.99.183.51:7080/v1"
+      // 				],
+      // 					"source": 'Multimodal capabilities, wide applicability, excellent performance, and developer-friendly design.'
+      // 				// info?.source
+      // 	},
+      // 	{
+      // 		"name": "Meta General Large Model (LIama3 70B)",
 
+      // 		"model": "Llama3-70B",
+      // 		"modified_at": new Date().toISOString(),
+      // 		"size": 0, // 需要根据实际数据填充
+      // 		"digest": "", // 需要根据实际数据填充
+      // 		"details": {
+      // 				"parent_model": "",
+      // 				"format": "", // 需要根据实际数据填充
+      // 				"family": "",
+      // 				"families": [],
+      // 				"parameter_size": "",
+      // 				"quantization_level": ""
+      // 		},
+      // 		"expires_at": "0001-01-01T00:00:00Z",
+      // 		"urls": [
+      // 				// "https://chat.degpt.ai/llama3-70b/v1"
+      // 				host+	"/modelapi"
+      // 				// "http://122.99.183.53:1042/v1"
+      // 		],
+      // 		"source": 'Exemplary performance,low error rate,diverse responses.'
 
+      // },
+      // 	{
+      // 		"name": "General Large Model (Yi1.5-34B)",
+      // 		"model": "Yi1.5-34B",
+      // 		"modified_at": new Date().toISOString(),
+      // 		"size": 0, // 需要根据实际数据填充
+      // 		"digest": "", // 需要根据实际数据填充
+      // 		"details": {
+      // 				"parent_model": "",
+      // 				"format": "", // 需要根据实际数据填充
+      // 				"family": "",
+      // 				"families": [],
+      // 				"parameter_size": "",
+      // 				"quantization_level": ""
+      // 		},
+      // 		"expires_at": "0001-01-01T00:00:00Z",
+      // 		"urls": [
+      // 				// "https://chat.degpt.ai/yi15-34b/v1"
+      // 				host+	"/modelapi"
+      // 				// "http://122.99.183.51:6080/v1"
+      // 		],
+      // 		"source": 'Powerful encoding, and instruction-following capabilities.'
+      // },
 
+      {
+        name: "Code Large Model (Codestral-22B-v0.1)",
+        model: "Codestral-22B-v0.1",
+        modified_at: new Date().toISOString(),
+        size: 0, // 需要根据实际数据填充
+        digest: "", // 需要根据实际数据填充
+        details: {
+          parent_model: "",
+          format: "", // 需要根据实际数据填充
+          family: "",
+          families: [],
+          parameter_size: "",
+          quantization_level: "",
+        },
+        expires_at: "0001-01-01T00:00:00Z",
+        urls: [host + "/modelapi"],
+        source: "Code completion and generation, error detection and repair.",
+      },
 
-// 122.99.183.53:1042  llama3-70b
-// 122.99.183.51:6080 yi15-34b
-// 122.99.183.51:7080 llama3-8b
-// 122.99.183.52:1042 qwen15-110b
+      // Google通用大模型(Gemma2)代码大模型(Codestral)
 
-// {
-// 	"name": "Qwen1.5-110B",
-// 	"model": "Qwen1.5-110B",
-// 	"modified_at": new Date().toISOString(),
-// 	"size": 0, // 需要根据实际数据填充
-// 	"digest": "", // 需要根据实际数据填充
-// 	"details": {
-// 			"parent_model": "",
-// 			"format": "", // 需要根据实际数据填充
-// 			"family": "",
-// 			"families": [],
-// 			"parameter_size": "",
-// 			"quantization_level": ""
-// 	},
-// 	"expires_at": "0001-01-01T00:00:00Z",
-// 	"urls": [
-// 		"https://chat.degpt.ai/qwen1.5-110b/v1"
-// 		// "http://122.99.183.52:1042/v1"
-// 	]
-// },
+      // 122.99.183.53:1042  llama3-70b
+      // 122.99.183.51:6080 yi15-34b
+      // 122.99.183.51:7080 llama3-8b
+      // 122.99.183.52:1042 qwen15-110b
 
-		]
-	}
+      // {
+      // 	"name": "Qwen1.5-110B",
+      // 	"model": "Qwen1.5-110B",
+      // 	"modified_at": new Date().toISOString(),
+      // 	"size": 0, // 需要根据实际数据填充
+      // 	"digest": "", // 需要根据实际数据填充
+      // 	"details": {
+      // 			"parent_model": "",
+      // 			"format": "", // 需要根据实际数据填充
+      // 			"family": "",
+      // 			"families": [],
+      // 			"parameter_size": "",
+      // 			"quantization_level": ""
+      // 	},
+      // 	"expires_at": "0001-01-01T00:00:00Z",
+      // 	"urls": [
+      // 		"https://chat.degpt.ai/qwen1.5-110b/v1"
+      // 		// "http://122.99.183.52:1042/v1"
+      // 	]
+      // },
+    ],
+  };
+
+const nodes = await Promise.all(format_res?.models?.map(async (item) => {
+	console.log(item);
+	const {urls, model} = item
+	
+	console.log(1111, urls[0], model);
+	
+	const node = await getDeModelNodeList(urls[0], model).catch((error) => {
+		console.error(error);
 		
+		return null
+	}); // Handle error or non-existent chat gracefully
+
+	item.nodeList = node?.data
+
+	return node?.data;
+}))
+
+
+// console.log("res11", nodes, format_res?.models);
 
 	
 
 
-	return (format_res?.models ?? [])
-		.map((model) => ({ id: model.model, name: model.name ?? model.model, ...model }))
-		// .sort((a, b) => {
-		// 	return a.name.localeCompare(b.name);
-		// });
+  return (format_res?.models ?? []).map((model) => ({
+    id: model.model,
+    name: model.name ?? model.model,
+    ...model,
+  }));
+  // .sort((a, b) => {
+  // 	return a.name.localeCompare(b.name);
+  // });
 };
 
 // // 获取De的所有模型列表
@@ -192,12 +232,12 @@ const host = window.location.hostname === 'localhost' ? "":"http://"+window.loca
 // 	})
 // 		.then(async (res) => {
 // 			// console.log(123, await res.json());
-			
+
 // 			// if (!res.ok) throw await res.json();
 // 			// console.log("res.json();", res.json(), res);
-			
+
 // 			return res.json();
-		
+
 // 		})
 // 		.catch((err) => {
 // 			console.log(err);
@@ -210,11 +250,9 @@ const host = window.location.hostname === 'localhost' ? "":"http://"+window.loca
 // 		});
 
 // 		console.log("res", res);
-		
 
 // 	const format_res = transformModelData(res)
 // 	console.log(format_res);
-	
 
 // 	if (error) {
 // 		throw error;
@@ -227,112 +265,165 @@ const host = window.location.hostname === 'localhost' ? "":"http://"+window.loca
 // 		});
 // };
 
-
-
 // 和De的模型对话
 export const generateDeOpenAIChatCompletion = async (
-	token: string = '',
-	body: object,
-	url: string = DE_API_BASE_URL
+  token: string = "",
+  body: object,
+  url: string = DE_API_BASE_URL
 ): Promise<[Response | null, AbortController]> => {
-	const controller = new AbortController();
-	let error = null;
+  const controller = new AbortController();
+  let error = null;
 
-	console.log("generateDeOpenAIChatCompletion url:", url,`${url}/v0/chat/completion`, body);
+  // console.log("generateDeOpenAIChatCompletion url:", url,`${url}/v0/chat/completion`, body);
+
+
+	/**获取node列表 */
+	const model = body?.model
+	const globalModelsSetted = get(models)
+	const nodeList = globalModelsSetted?.filter((item) => {
+		return item?.model === model
+	})?.[0]?.nodeList
 	
-	debugger
 
-	const res = await fetch(`${url}/v0/chat/completion`, {
-		signal: controller.signal,
-		method: 'POST',
-		headers: {
-			// Authorization: `Bearer ${token}`,
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			...body,
-			project: 'DecentralGPT',
-			node_id: "16Uiu2HAm5cygUrKCBxtNSMKKvgdr1saPM6XWcgnPyTvK4sdrARGL",
-			stream: true,
+  const res = await fetch(`${url}/v0/chat/completion`, {
+    signal: controller.signal,
+    method: "POST",
+    headers: {
+      // Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...body,
+      project: "DecentralGPT",
+      node_id: nodeList?.[0],
+      stream: true,
 
-				// "node_id": "16Uiu2HAm5cygUrKCBxtNSMKKvgdr1saPM6XWcgnPyTvK4sdrARGL",
-				// "project": "DecentralGPT",
-				// "model": "Llama3-70B",
-				// "messages": [
-				// 	{
-				// 		"role": "system",
-				// 		"content": "You are a helpful assistant."
-				// 	},
-				// 	{
-				// 		"role": "user",
-				// 		"content": "Hello"
-				// 	}
-				// ],
-				// "stream": true
-			
-		})
-	}).catch((err) => {
-		console.log("err", err);
-		error = err;
-		return null;
-	});
+      // "node_id": "16Uiu2HAm5cygUrKCBxtNSMKKvgdr1saPM6XWcgnPyTvK4sdrARGL",
+      // "project": "DecentralGPT",
+      // "model": "Llama3-70B",
+      // "messages": [
+      // 	{
+      // 		"role": "system",
+      // 		"content": "You are a helpful assistant."
+      // 	},
+      // 	{
+      // 		"role": "user",
+      // 		"content": "Hello"
+      // 	}
+      // ],
+      // "stream": true
+    }),
+  }).catch((err) => {
+    console.log("err", err);
+    error = err;
+    return null;
+  });
 
-	if (error) {
-		throw error;
-	}
+  if (error) {
+    throw error;
+  }
 
-	return [res, controller];
+  return [res, controller];
 };
 
-
 export const generateDeTitle = async (
-	token: string = '',
-	template: string,
-	model: string,
-	prompt: string,
-	url: string = DE_API_BASE_URL
+  token: string = "",
+  template: string,
+  model: string,
+  prompt: string,
+  url: string = DE_API_BASE_URL
 ) => {
-	let error = null;
+  let error = null;
 
-	template = promptTemplate(template, prompt);
+  template = promptTemplate(template, prompt);
 
-	console.log("generateDeTitle", url, );
+  console.log("generateDeTitle", url);
 
-	const res = await fetch(`${url}/v0/chat/completion`, {
-		method: 'POST',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			// Authorization: `Bearer ${token}`
-		},
-		body: JSON.stringify({
-			model: model,
-			messages: [
-				{
-					role: 'user',
-					content: template
-				}
-			],
-			stream: false,
-			// Restricting the max tokens to 50 to avoid long titles
-			max_tokens: 50
-		})
-	})
-		.then(async (res) => {
-			if (!res.ok) throw await res.json();
-			return res.json();
-		})
-		.catch((err) => {
-			console.log(err);
-			if ('detail' in err) {
-				error = err.detail;
-			}
-			return null;
-		});
+		/**获取node列表 */
+		const globalModelsSetted = get(models)
+		const nodeList = globalModelsSetted?.filter((item) => {
+			return item?.model === model
+		})?.[0]?.nodeList
 
-	if (error) {
-		throw error;
-	}
+  const res = await fetch(`${url}/v0/chat/completion`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      node_id: nodeList?.[0],
 
-	return res?.choices[0]?.message?.content.replace(/["']/g, '') ?? 'New Chat';
+      // Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      model: model,
+      messages: [
+        {
+          role: "user",
+          content: template,
+        },
+      ],
+      stream: false,
+      // Restricting the max tokens to 50 to avoid long titles
+      max_tokens: 50,
+    }),
+  })
+    .then(async (res) => {
+      if (!res.ok) throw await res.json();
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      if ("detail" in err) {
+        error = err.detail;
+      }
+      return null;
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat";
+};
+
+export const getDeModelNodeList = async (
+  url: string = DE_API_BASE_URL,
+  modelId
+) => {
+  let error = null;
+
+  console.log("getDeModelNodeList", url);
+
+  const res = await fetch(`${url}/v0/ai/projects/peers`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      project: "DecentralGPT",
+      // "model": "Codestral-22B-v0.1"
+      model: modelId,
+    }),
+  })
+    .then(async (res) => {
+      if (!res.ok) throw await res.json();
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      if ("detail" in err) {
+        error = err.detail;
+      }
+      return null;
+    });
+
+  if (error) {
+    throw error;
+  }
+
+	console.log("res", res?.data);
+	
+
+  return res
 };
