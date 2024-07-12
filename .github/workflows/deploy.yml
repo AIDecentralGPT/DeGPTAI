@@ -53,7 +53,9 @@ jobs: # 定义需要执行的工作
             # docker stop open-webui || true # 停止运行中的容器，如果容器不存在则忽略错误
             if [ "$(docker ps -q -f name=open-webui)" ]; then
               docker stop open-webui # 停止运行中的容器
-              docker rm open-webui  # 删除容器
+              # docker rm open-webui  # 删除容器
+              sleep 2
+
 
             fi
 
