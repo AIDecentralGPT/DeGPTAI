@@ -34,85 +34,94 @@ function transformModelData(input) {
 export const getDeModels = async (token: string = "") => {
   let error = null;
 
-  // const host = "http://8.219.75.114:8081"
+  // const host = "https://chat.degpt.ai"
 
   const host =
     window.location.hostname === "localhost"
-      ? ""
-      : "http://" + window.location.hostname;
+      ? "/modelapi"
+      :"https://chat.degpt.ai";
+
+      // Ali通用大模型 Qwen2-72B
+      // Meta通用大模型 LIama3 70B
+      // Google通用大模型Gemma2
+      // 代码大模型 Codestral
+
   const format_res = {
     models: [
-      // 		{
-      // 			"name": "Ali General Large Model (Qwen2-72B)",
-      // 			"model": "Qwen2-72B",
-      // 			"modified_at": new Date().toISOString(),
-      // 			"size": 0, // 需要根据实际数据填充
-      // 			"digest": "", // 需要根据实际数据填充
-      // 			"details": {
-      // 					"parent_model": "",
-      // 					"format": "", // 需要根据实际数据填充
-      // 					"family": "",
-      // 					"families": [],
-      // 					"parameter_size": "",
-      // 					"quantization_level": ""
-      // 			},
-      // 			"expires_at": "0001-01-01T00:00:00Z",
-      // 			"urls": [
-      // 					// "https://chat.degpt.ai/qwen2-72b/v1"
-      // 				host+	"/modelapi"
-      // 					// "http://122.99.183.53:1042/v1"
-      // 			],
-      // 			"source": '27 language support, surpport long texts of up to 128 tokens.'
+      		{
+      			"name": "Ali General Large Model (Qwen2-72B)",
+      			"model": "Qwen2-72B",
+      			"modified_at": new Date().toISOString(),
+      			"size": 0, // 需要根据实际数据填充
+      			"digest": "", // 需要根据实际数据填充
+      			"details": {
+      					"parent_model": "",
+      					"format": "", // 需要根据实际数据填充
+      					"family": "",
+      					"families": [],
+      					"parameter_size": "",
+      					"quantization_level": ""
+      			},
+      			"expires_at": "0001-01-01T00:00:00Z",
+      			"urls": [
+      					// "https://chat.degpt.ai/qwen2-72b/v1"
+      				host+	"/api"
+      					// "http://122.99.183.53:1042/v1"
+      			],
+      			"source": '27 language support, surpport long texts of up to 128 tokens.'
 
-      // 		},
+      		},
 
-      // 		{
-      // 			"name": "Meta General Large Model (Llama3-8B)",
-      // 			"model": "Llama3-8B",
-      // 			"modified_at": new Date().toISOString(),
-      // 			"size": 0, // 需要根据实际数据填充
-      // 			"digest": "", // 需要根据实际数据填充
-      // 			"details": {
-      // 					"parent_model": "",
-      // 					"format": "", // 需要根据实际数据填充
-      // 					"family": "",
-      // 					"families": [],
-      // 					"parameter_size": "",
-      // 					"quantization_level": ""
-      // 			},
-      // 			"expires_at": "0001-01-01T00:00:00Z",
-      // 			"urls": [
-      // 					// "https://chat.degpt.ai/llama3-8b/v1"
-      // 				host+	"/modelapi"
-      // 					// "http://122.99.183.51:7080/v1"
-      // 				],
-      // 					"source": 'Multimodal capabilities, wide applicability, excellent performance, and developer-friendly design.'
-      // 				// info?.source
-      // 	},
-      // 	{
-      // 		"name": "Meta General Large Model (LIama3 70B)",
 
-      // 		"model": "Llama3-70B",
-      // 		"modified_at": new Date().toISOString(),
-      // 		"size": 0, // 需要根据实际数据填充
-      // 		"digest": "", // 需要根据实际数据填充
-      // 		"details": {
-      // 				"parent_model": "",
-      // 				"format": "", // 需要根据实际数据填充
-      // 				"family": "",
-      // 				"families": [],
-      // 				"parameter_size": "",
-      // 				"quantization_level": ""
-      // 		},
-      // 		"expires_at": "0001-01-01T00:00:00Z",
-      // 		"urls": [
-      // 				// "https://chat.degpt.ai/llama3-70b/v1"
-      // 				host+	"/modelapi"
-      // 				// "http://122.99.183.53:1042/v1"
-      // 		],
-      // 		"source": 'Exemplary performance,low error rate,diverse responses.'
+      	{
+      		"name": "Meta General Large Model (LIama3 70B)",
 
-      // },
+      		"model": "Llama3-70B",
+      		"modified_at": new Date().toISOString(),
+      		"size": 0, // 需要根据实际数据填充
+      		"digest": "", // 需要根据实际数据填充
+      		"details": {
+      				"parent_model": "",
+      				"format": "", // 需要根据实际数据填充
+      				"family": "",
+      				"families": [],
+      				"parameter_size": "",
+      				"quantization_level": ""
+      		},
+      		"expires_at": "0001-01-01T00:00:00Z",
+      		"urls": [
+      				// "https://chat.degpt.ai/llama3-70b/v1"
+      				host+	"/api"
+      				// "http://122.99.183.53:1042/v1"
+      		],
+      		"source": 'Exemplary performance,low error rate,diverse responses.'
+
+      },
+
+      {
+        "name": "Google Universal Large Model (Gemma-2-27B)",
+
+        "model": "Gemma-2-27B",
+        "modified_at": new Date().toISOString(),
+        "size": 0, // 需要根据实际数据填充
+        "digest": "", // 需要根据实际数据填充
+        "details": {
+            "parent_model": "",
+            "format": "", // 需要根据实际数据填充
+            "family": "",
+            "families": [],
+            "parameter_size": "",
+            "quantization_level": ""
+        },
+        "expires_at": "0001-01-01T00:00:00Z",
+        "urls": [
+            // "https://chat.degpt.ai/llama3-70b/v1"
+            host+	"/api"
+            // "http://122.99.183.53:1042/v1"
+        ],
+        "source": 'Exemplary performance,low error rate,diverse responses.'
+
+    },
       // 	{
       // 		"name": "General Large Model (Yi1.5-34B)",
       // 		"model": "Yi1.5-34B",
@@ -130,7 +139,7 @@ export const getDeModels = async (token: string = "") => {
       // 		"expires_at": "0001-01-01T00:00:00Z",
       // 		"urls": [
       // 				// "https://chat.degpt.ai/yi15-34b/v1"
-      // 				host+	"/modelapi"
+      // 				host+	"/api"
       // 				// "http://122.99.183.51:6080/v1"
       // 		],
       // 		"source": 'Powerful encoding, and instruction-following capabilities.'
@@ -151,7 +160,7 @@ export const getDeModels = async (token: string = "") => {
           quantization_level: "",
         },
         expires_at: "0001-01-01T00:00:00Z",
-        urls: [host + "/modelapi"],
+        urls: [host + "/api"],
         source: "Code completion and generation, error detection and repair.",
       },
 

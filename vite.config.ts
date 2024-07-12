@@ -29,13 +29,15 @@ export default defineConfig({
 	server: {
     proxy: {
       '/modelapi': {
-        target: 'http://8.219.75.114:8081',  // 代理目标地址
+        target: 'https://chat.degpt.ai',  // 代理目标地址
         // target: 'http://10.0.20.43:7801',  // 代理目标地址
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/modelapi/, '\/api'),  // 重写路径，如果需要的话
+        rewrite: (path) => path.replace(/^\/modelapi/, ''),  // 重写路径，如果需要的话
       },
     },
   },
+
+  
 
 
 });
