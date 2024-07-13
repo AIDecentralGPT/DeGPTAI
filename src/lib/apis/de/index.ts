@@ -1,8 +1,7 @@
 import { DE_API_BASE_URL } from "$lib/constants";
 import { promptTemplate } from "$lib/utils";
-import { models , settings, user } from '$lib/stores';
-import { get } from 'svelte/store';
-
+import { models, settings, user } from "$lib/stores";
+import { get } from "svelte/store";
 
 function transformModelData(input) {
   const models = input?.data?.map((model) => {
@@ -39,111 +38,88 @@ export const getDeModels = async (token: string = "") => {
   const host =
     window.location.hostname === "localhost"
       ? "/modelapi"
-      :"https://chat.degpt.ai";
+      : "https://chat.degpt.ai";
 
-      // Ali通用大模型 Qwen2-72B
-      // Meta通用大模型 LIama3 70B
-      // Google通用大模型Gemma2
-      // 代码大模型 Codestral
+  // Ali通用大模型 Qwen2-72B
+  // Meta通用大模型 LIama3 70B
+  // Google通用大模型Gemma2
+  // 代码大模型 Codestral
 
   const format_res = {
     models: [
-      		{
-      			"name": "Ali General Large Model (Qwen2-72B)",
-      			"model": "Qwen2-72B",
-      			"modified_at": new Date().toISOString(),
-      			"size": 0, // 需要根据实际数据填充
-      			"digest": "", // 需要根据实际数据填充
-      			"details": {
-      					"parent_model": "",
-      					"format": "", // 需要根据实际数据填充
-      					"family": "",
-      					"families": [],
-      					"parameter_size": "",
-      					"quantization_level": ""
-      			},
-      			"expires_at": "0001-01-01T00:00:00Z",
-      			"urls": [
-      					// "https://chat.degpt.ai/qwen2-72b/v1"
-      				host+	"/api"
-      					// "http://122.99.183.53:1042/v1"
-      			],
-      			"source": '27 language support, surpport long texts of up to 128 tokens.'
-
-      		},
-
-
-      	{
-      		"name": "Meta General Large Model (LIama3 70B)",
-
-      		"model": "Llama3-70B",
-      		"modified_at": new Date().toISOString(),
-      		"size": 0, // 需要根据实际数据填充
-      		"digest": "", // 需要根据实际数据填充
-      		"details": {
-      				"parent_model": "",
-      				"format": "", // 需要根据实际数据填充
-      				"family": "",
-      				"families": [],
-      				"parameter_size": "",
-      				"quantization_level": ""
-      		},
-      		"expires_at": "0001-01-01T00:00:00Z",
-      		"urls": [
-      				// "https://chat.degpt.ai/llama3-70b/v1"
-      				host+	"/api"
-      				// "http://122.99.183.53:1042/v1"
-      		],
-      		"source": 'Exemplary performance,low error rate,diverse responses.'
-
+      {
+        name: "Ali General Large Model (Qwen2-72B)",
+        model: "Qwen2-72B",
+        modified_at: new Date().toISOString(),
+        size: 0, // 需要根据实际数据填充
+        digest: "", // 需要根据实际数据填充
+        details: {
+          parent_model: "",
+          format: "", // 需要根据实际数据填充
+          family: "",
+          families: [],
+          parameter_size: "",
+          quantization_level: "",
+        },
+        expires_at: "0001-01-01T00:00:00Z",
+        urls: [
+          // "https://chat.degpt.ai/qwen2-72b/v1"
+          host + "/api",
+          // "http://122.99.183.53:1042/v1"
+        ],
+        source: "27 language support, surpport long texts of up to 128 tokens.",
+        nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
       },
 
       {
-        "name": "Google Universal Large Model (Gemma-2-27B)",
+        name: "Meta General Large Model (LIama3 70B)",
 
-        "model": "Gemma-2-27B",
-        "modified_at": new Date().toISOString(),
-        "size": 0, // 需要根据实际数据填充
-        "digest": "", // 需要根据实际数据填充
-        "details": {
-            "parent_model": "",
-            "format": "", // 需要根据实际数据填充
-            "family": "",
-            "families": [],
-            "parameter_size": "",
-            "quantization_level": ""
+        model: "Llama3-70B",
+        modified_at: new Date().toISOString(),
+        size: 0, // 需要根据实际数据填充
+        digest: "", // 需要根据实际数据填充
+        details: {
+          parent_model: "",
+          format: "", // 需要根据实际数据填充
+          family: "",
+          families: [],
+          parameter_size: "",
+          quantization_level: "",
         },
-        "expires_at": "0001-01-01T00:00:00Z",
-        "urls": [
-            // "https://chat.degpt.ai/llama3-70b/v1"
-            host+	"/api"
-            // "http://122.99.183.53:1042/v1"
+        expires_at: "0001-01-01T00:00:00Z",
+        urls: [
+          // "https://chat.degpt.ai/llama3-70b/v1"
+          host + "/api",
+          // "http://122.99.183.53:1042/v1"
         ],
-        "source": 'Exemplary performance,low error rate,diverse responses.'
+        source: "Exemplary performance,low error rate,diverse responses.",
+        nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
+      },
 
-    },
-      // 	{
-      // 		"name": "General Large Model (Yi1.5-34B)",
-      // 		"model": "Yi1.5-34B",
-      // 		"modified_at": new Date().toISOString(),
-      // 		"size": 0, // 需要根据实际数据填充
-      // 		"digest": "", // 需要根据实际数据填充
-      // 		"details": {
-      // 				"parent_model": "",
-      // 				"format": "", // 需要根据实际数据填充
-      // 				"family": "",
-      // 				"families": [],
-      // 				"parameter_size": "",
-      // 				"quantization_level": ""
-      // 		},
-      // 		"expires_at": "0001-01-01T00:00:00Z",
-      // 		"urls": [
-      // 				// "https://chat.degpt.ai/yi15-34b/v1"
-      // 				host+	"/api"
-      // 				// "http://122.99.183.51:6080/v1"
-      // 		],
-      // 		"source": 'Powerful encoding, and instruction-following capabilities.'
-      // },
+      {
+        name: "Google Universal Large Model (Gemma-2-27B)",
+
+        model: "Gemma-2-27B",
+        modified_at: new Date().toISOString(),
+        size: 0, // 需要根据实际数据填充
+        digest: "", // 需要根据实际数据填充
+        details: {
+          parent_model: "",
+          format: "", // 需要根据实际数据填充
+          family: "",
+          families: [],
+          parameter_size: "",
+          quantization_level: "",
+        },
+        expires_at: "0001-01-01T00:00:00Z",
+        urls: [
+          // "https://chat.degpt.ai/llama3-70b/v1"
+          host + "/api",
+          // "http://122.99.183.53:1042/v1"
+        ],
+        source: "Exemplary performance,low error rate,diverse responses.",
+        nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
+      },
 
       {
         name: "Code Large Model (Codestral-22B-v0.1)",
@@ -162,60 +138,31 @@ export const getDeModels = async (token: string = "") => {
         expires_at: "0001-01-01T00:00:00Z",
         urls: [host + "/api"],
         source: "Code completion and generation, error detection and repair.",
+        nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
       },
-
-      // Google通用大模型(Gemma2)代码大模型(Codestral)
-
-      // 122.99.183.53:1042  llama3-70b
-      // 122.99.183.51:6080 yi15-34b
-      // 122.99.183.51:7080 llama3-8b
-      // 122.99.183.52:1042 qwen15-110b
-
-      // {
-      // 	"name": "Qwen1.5-110B",
-      // 	"model": "Qwen1.5-110B",
-      // 	"modified_at": new Date().toISOString(),
-      // 	"size": 0, // 需要根据实际数据填充
-      // 	"digest": "", // 需要根据实际数据填充
-      // 	"details": {
-      // 			"parent_model": "",
-      // 			"format": "", // 需要根据实际数据填充
-      // 			"family": "",
-      // 			"families": [],
-      // 			"parameter_size": "",
-      // 			"quantization_level": ""
-      // 	},
-      // 	"expires_at": "0001-01-01T00:00:00Z",
-      // 	"urls": [
-      // 		"https://chat.degpt.ai/qwen1.5-110b/v1"
-      // 		// "http://122.99.183.52:1042/v1"
-      // 	]
-      // },
     ],
   };
 
-const nodes = await Promise.all(format_res?.models?.map(async (item) => {
-	console.log(item);
-	const {urls, model} = item
-	
-	console.log(1111, urls[0], model);
-	
-	const node = await getDeModelNodeList(urls[0], model).catch((error) => {
-		console.error(error);
-		
-		return null
-	}); // Handle error or non-existent chat gracefully
+  // const nodes = await Promise.all(format_res?.models?.map(async (item) => {
+  // 	console.log(item);
+  // 	const {urls, model} = item
 
-	item.nodeList = node?.data
+  // 	console.log(1111, urls[0], model);
 
-	return node?.data;
-}))
+  // 	const node = await getDeModelNodeList(urls[0], model).catch((error) => {
+  // 		console.error(error);
 
+  // 		return null
+  // 	}); // Handle error or non-existent chat gracefully
 
-// console.log("res11", nodes, format_res?.models);
+  // 	item.nodeList = node?.data
 
-	
+  // 	return node?.data;
+  // }))
 
+  // console.log("format_res?.models", format_res?.models);
+
+  // console.log("res11", nodes, format_res?.models);
 
   return (format_res?.models ?? []).map((model) => ({
     id: model.model,
@@ -285,14 +232,12 @@ export const generateDeOpenAIChatCompletion = async (
 
   // console.log("generateDeOpenAIChatCompletion url:", url,`${url}/v0/chat/completion`, body);
 
-
-	/**获取node列表 */
-	const model = body?.model
-	const globalModelsSetted = get(models)
-	const nodeList = globalModelsSetted?.filter((item) => {
-		return item?.model === model
-	})?.[0]?.nodeList
-	
+  /**获取node列表 */
+  const model = body?.model;
+  const globalModelsSetted = get(models);
+  const nodeList = globalModelsSetted?.filter((item) => {
+    return item?.model === model;
+  })?.[0]?.nodeList;
 
   const res = await fetch(`${url}/v0/chat/completion`, {
     signal: controller.signal,
@@ -347,16 +292,14 @@ export const generateDeTitle = async (
   template = promptTemplate(template, prompt);
 
   console.log("generateDeTitle", url);
-  
 
-		/**获取node列表 */
-		const globalModelsSetted = get(models)
-		const nodeList = globalModelsSetted?.filter((item) => {
-			return item?.model === model
-		})?.[0]?.nodeList
+  /**获取node列表 */
+  const globalModelsSetted = get(models);
+  const nodeList = globalModelsSetted?.filter((item) => {
+    return item?.model === model;
+  })?.[0]?.nodeList;
 
-    console.log("generateDeTitle 222", nodeList);
-    
+  console.log("generateDeTitle 222", nodeList);
 
   const res = await fetch(`${url}/v0/chat/completion`, {
     method: "POST",
@@ -397,7 +340,9 @@ export const generateDeTitle = async (
     throw error;
   }
 
-  return res?.data?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat";
+  return (
+    res?.data?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
+  );
 };
 
 export const getDeModelNodeList = async (
@@ -436,8 +381,7 @@ export const getDeModelNodeList = async (
     throw error;
   }
 
-	console.log("res", res?.data);
-	
+  console.log("res", res?.data);
 
-  return res
+  return res;
 };
