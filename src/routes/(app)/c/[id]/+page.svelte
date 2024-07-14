@@ -92,6 +92,8 @@
 		messages: {},
 		currentId: null
 	};
+	let firstResAlready = false // 已经有了第一个响应
+
 
 	$: if (history.currentId !== null) {
 		let _messages = [];
@@ -341,10 +343,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					} else {
 						toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
+					
 				}
 			)
 		);
 
+		firstResAlready = false // 所有模型响应结束后，还原firstResAlready为初始状态false
 		await chats.set(await getChatList(localStorage.token));
 	};
 
@@ -436,6 +440,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				// 	? `${LITELLM_API_BASE_URL}/v1`
 				// 	: `${OPENAI_API_BASE_URL}`
 			);
+
+			if(!firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+			}
 
 			// Wait until history/message have been updated
 			await tick();

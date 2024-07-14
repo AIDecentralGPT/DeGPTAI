@@ -35,7 +35,15 @@
 	<div class="m-auto w-full max-w-6xl px-8 lg:px-24 pb-16">
 		<div class="flex justify-start">
 			<div class="flex -space-x-4 mb-1" in:fade={{ duration: 200 }}>
-				{#each models as model, modelIdx}
+
+				<img
+				crossorigin="anonymous"
+				src={`${WEBUI_BASE_URL}/static/favicon.png`}
+				alt="modelfile"
+				class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none"
+				draggable="false"
+			/>
+				<!-- {#each models as model, modelIdx}
 					<button
 						on:click={() => {
 							selectedModelIdx = modelIdx;
@@ -61,7 +69,7 @@
 							/>
 						{/if}
 					</button>
-				{/each}
+				{/each} -->
 			</div>
 		</div>
 
