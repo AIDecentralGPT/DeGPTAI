@@ -20,6 +20,10 @@
     exportAccountForKeystore,
     createAccountFromMnemonic,
   } from "$lib/utils/wallet/dbc";
+  import {
+    downloadKeyStore,
+    storeWallet,
+  } from "$lib/utils/wallet/ether/utils.js";
 
   const i18n = getContext("i18n");
 
@@ -30,7 +34,6 @@
   let loading = false;
 
   $: buttonStyle = loading ? "background: rgba(184, 142, 86, 0.6)" : "";
-
 </script>
 
 <Modal bind:show>
@@ -38,7 +41,6 @@
   <div
     class="text-gray-700 dark:text-gray-100
 	"
-  
   >
     <div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
       <div class=" text-lg font-medium self-center">
@@ -50,8 +52,8 @@
         class="self-center"
         on:click={() => {
           show = false;
-          loading= false
-          password=""
+          loading = false;
+          password = "";
         }}
       >
         <svg
@@ -97,16 +99,13 @@
         </div>
       </div>
 
-          <!-- style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""} -->
+      <!-- style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""} -->
 
       <div class="flex justify-end">
         <button
           disabled={loading}
-          class={
-            " px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-          }
-                style={buttonStyle}
-
+          class={" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"}
+          style={buttonStyle}
           on:click={async () => {
             if (!password) {
               toast.error(`Please enter the password!`);
@@ -115,22 +114,25 @@
             }
             // loading= true
 
-
             try {
-              if ($currentWalletData?.pair && password) {
-              // console.log("loading", loading);
+              if ($currentWalletData?.walletInfo && password) {
+                // console.log("loading", loading);
 
-               exportAccountForKeystore($currentWalletData?.pair, password); // 这是同步方法
-              // loading= false
-              show = false
-              // console.log("loading", loading);
-            }
+                // 设置密码以加密Keystore文件
+                const keystore = await storeWallet(
+                  $currentWalletData?.walletInfo,
+                  password
+                );
+                downloadKeyStore(keystore);
+
+                // loading= false
+                show = false;
+                // console.log("loading", loading);
+              }
             } catch (error) {
-              loading= false
-              toast.error(error?.message)
-              
+              loading = false;
+              toast.error(error?.message);
             }
-          
           }}
         >
           <span class="relative">{$i18n.t("Export")}</span>

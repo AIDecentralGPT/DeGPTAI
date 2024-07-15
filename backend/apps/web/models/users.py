@@ -12,6 +12,11 @@ from apps.web.models.chats import Chats  # 导入Chats模型
 # User DB Schema
 ####################
 
+# 定义Pydantic模型UserRoleUpdateProForm
+class UserRoleUpdateProForm(BaseModel):
+    tx: str  # 定义id字段，类型为字符串
+    amount: int  # 定义role字段，类型为字符串
+
 # 定义User模型
 class User(Model):
     id = CharField(unique=True)  # 定义唯一的字符字段id

@@ -12,6 +12,7 @@
     currentWalletData,
     chatId,
     pageUpdateNumber,
+    threesideAccount,
   } from "$lib/stores";
   import { fade, slide } from "svelte/transition";
   import {
@@ -31,174 +32,35 @@
 
   const dispatch = createEventDispatcher();
 
-  // ---------------------
-  // 连接三方钱包
-  import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi";
 
-  import { mainnet, arbitrum } from "viem/chains";
-  import { reconnect } from "@wagmi/core";
-  import {
-    watchAccount,
-    disconnect,
-    getAccount,
-    signMessage,
-  } from "@wagmi/core";
 
-  // 1. Your WalletConnect Cloud project ID
-  const projectId = "a365ccf6c502136ee70fd89768611fc2";
 
-  // 2. Create a metadata object
-  const metadata = {
-    name: "degpt-demo",
-    description: "Web3Modal Example",
-    url: "https://web3modal.com", // origin must match your domain & subdomain
-    icons: ["https://avatars.githubusercontent.com/u/37784886"],
-  };
+  // createWalletConnect()
 
-  // 3. Create wagmiConfig
-  const chains = [mainnet, arbitrum];
-  const config = defaultWagmiConfig({
-    chains,
-    projectId,
-    metadata,
-  });
 
-  reconnect(config);
-  // 3. Create modal
-
-  const modal = createWeb3Modal({
-    wagmiConfig: config,
-    projectId,
-    enableAnalytics: true, // Optional - defaults to your Cloud configuration
-    enableOnramp: true, // Optional - false as default
-    themeVariables: {
-      // '--w3m-color-mix': '#00BB7F',
-      // '--w3m-color-mix-strength': 40,
-      // --wui-color-accent-base-100
-      "--w3m-accent": "transport",
-    },
-    themeMode: "dark",
-  });
-
-  let threesideAccount = getAccount(config);
-  console.log("三方钱包数据threesideAccount", threesideAccount);
-
-  function connect() {
-    console.log("三方钱包数据", threesideAccount);
-    // disconnect(config);
-
-    if (getAccount(config).isConnected) {
-      disconnect(config);
-    } else {
-      modal.open();
-    }
-  }
-
-  // ---------------------
-
-  const btnEl = document.getElementById("btn");
-  const userEl = document.getElementById("user");
-
-  watchAccount(config, {
-    onChange(account) {
-      console.log("1", account);
-      // if (isConnected) {
-      //   signMessage(config, { message: "hello world" }).then((res) => {
-      //     console.log(123, res);
-      //   });
-      // }
-
-      // CreateSignature($currentWalletData.pair,"123", undefined  )
-
-      threesideAccount = account;
-    },
-  });
-
-  // signMessage只在threesideAccount改变时执行一次。（reactive）
-  // let signedMessage;
-  // $: if (threesideAccount && !signedMessage) {
-  //   signMessage(config, { message: 'hello world' }).then((res) => {
-  //     console.log(123, res);
-  //     signedMessage = res;
-  //   });
-  // }
-
-  // watchAccount(config, {
-  //   onChange(account) {
-  //     userEl.innerText = account?.address ?? "";
-  //     if (account.isConnected) {
-  //       btnEl.innerText = "Disconnect";
-  //     } else {
-  //       btnEl.innerText = "Connect";
-  //     }
-  //   },
-  // });
 </script>
 
 <div name="content">
-  <!-- <w3m-connect-button class="bg-red-500 text-black" /> -->
-  <!-- <button id="btn">Connect</button> -->
-  <span id="user" />
 
-  <!-- <span
-  on:click={ () => {
-    console.log("测试", threesideAccount);
-    
-  }}
-  
-  >测试</span> -->
+
+
+
 
   <hr class=" dark:border-gray-800 my-2 p-0" />
 
 
-  <!-- 三方钱包账号展示 -->
-  {#if threesideAccount?.address}
-    <w3m-button />
-  {/if}
+<!-- {console.log(
+  "currentWalletData.walletInfo", $currentWalletData.walletInfo,
+  "threesideAccount?.address", $threesideAccount?.address,
+
+)} -->
+
+<WalletConnect></WalletConnect>
+
 
   <!-- 创建，连接，打开钱包，三个按钮 -->
-  {#if !$currentWalletData.pair && !threesideAccount?.address}
+  {#if !$currentWalletData.walletInfo && !$threesideAccount?.address}
     <div>
-      <button
-        id="btn"
-        class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-        on:click={async () => {
-          connect();
-          // connectThreeSide()
-          // localStorage.removeItem('token');
-          // location.href = '/auth';
-          // show = false;
-          // GetApi()
-          // console.log("createAccount在这里");
-          // const res = await createAccountFromSeed()
-          // // const res = await dbcPriceOcw()
-          // console.log("res", res);
-        }}
-      >
-        <div class=" self-center mr-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1.4em"
-            height="1.4em"
-            viewBox="0 0 48 48"
-            ><g
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="4"
-              ><path
-                d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8m2 30a6 6 0 1 0 0-12a6 6 0 0 0 0 12m28 2a6 6 0 1 0 0-12a6 6 0 0 0 0 12M22 28a8 8 0 1 0 0-16a8 8 0 0 0 0 16m12-16a4 4 0 1 0 0-8a4 4 0 0 0 0 8"
-                clip-rule="evenodd"
-              /><path d="m11 11l4 4m15-3l-2 2m6 19.5L28 26m-14 5l4-4" /></g
-            ></svg
-          >
-        </div>
-        <div class=" self-center font-medium">
-          {$i18n.t("Connect Wallet")}
-          <!-- <WalletConnect /> -->
-        </div>
-      </button>
 
       <button
         class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
@@ -285,7 +147,7 @@
   {/if}
 
   <!-- 钱包数据面板 -->
-  {#if $currentWalletData.pair}
+  {#if $currentWalletData.walletInfo }
     <DbcAccountDetail />
   {/if}
 </div>

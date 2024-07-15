@@ -58,6 +58,7 @@ log_sources = [
     "OPENAI",
     "RAG",
     "WEBHOOK",
+    "VIP"
 ]
 
 SRC_LOG_LEVELS = {}

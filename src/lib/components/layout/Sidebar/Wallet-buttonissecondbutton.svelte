@@ -14,7 +14,6 @@
   import {
     GetApi,
     createAccountFromSeed,
-    dbcPriceOcw,
   } from "$lib/utils/wallet/dbc";
   import DbcAccountDetail from "$lib/components/wallet/DbcAccountDetail.svelte";
 

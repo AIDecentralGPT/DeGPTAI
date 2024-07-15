@@ -16,6 +16,7 @@
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import { currentWalletData, models, settings, user, inviterId } from "$lib/stores";
   import { handleWalletSignIn, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
+  import { createAccount, downloadKeyStore } from "$lib/utils/wallet/ether/utils.js";
 
   const i18n = getContext("i18n");
 
@@ -25,6 +26,7 @@
   let password = "";
   let passwordError = "";
   let walletCreatedData = null; // 创建钱包返回的数据
+  let keystoreJson: string | null = null;
 
   function validatePassword() {
     if (password.length < 8) {
@@ -183,26 +185,45 @@
               class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
               type="submit"
               on:click={async () => {
-                const res = await createAccountFromSeed(); // 创建新账户
-                console.log("createAccountFromSeed", res);
-                walletCreatedData = res;
-
-                // const pair = await getCurrentPair(); // 这里没必要
-                const pair = walletCreatedData?.pair;
-                console.log("pair", pair);
-
-                // 存储本地密码
-                savePair(pair, password);
-
-                // const res1 = await createAccountFromMnemonic(); // 创建新账户
-                // console.log("createAccountFromMnemonic", res1);
-
-                // 获取钱包面板数据
-                updateWalletData(pair);
+                // const res = await createAccountFromSeed(); // 创建新账户
+                // walletCreatedData = res;
+                // const pair = walletCreatedData?.pair;
+                // // 存储本地密码
+                // savePair(pair, password);
+                // // 获取钱包面板数据
+                // updateWalletData(pair);
+                // // 请求服务端登录钱包账户
+                // await handleWalletSignIn(pair, password, $inviterId);
 
 
-                  // 请求服务端登录钱包账户
-                  await handleWalletSignIn(pair, password, $inviterId);
+
+                // 1. 创建钱包
+                const {wallet, keystore} = await createAccount(password)
+                console.log("wallet", wallet);
+                keystoreJson = keystore
+
+                // 2. 展示钱包面板数据
+                walletCreatedData = wallet;
+                updateWalletData(
+                  wallet
+                
+                // {
+                //   address: wallet.address,
+                //   // publicKey: wallet.publicKey,
+                //   // privateKey: wallet.privateKey,
+                //   // mnemonic: wallet.mnemonic,
+            
+                // }
+              );
+
+
+                
+
+
+
+
+
+
               }}
             >
               {$i18n.t("Create")}
@@ -224,10 +245,19 @@
             type="submit"
             on:click={async () => {
               // 进行下载动作
-              const json = await exportAccountForKeystore(
-                walletCreatedData?.pair,
-                password
-              );
+              // const json = await exportAccountForKeystore(
+              //   walletCreatedData?.pair,
+              //   password
+              // );
+              if(keystoreJson) {
+                console.log("keystoreJson", keystoreJson);
+                
+              // 下载keystore文件
+              downloadKeyStore(keystoreJson);
+              }
+
+              
+
 
               // 保存账户对
 

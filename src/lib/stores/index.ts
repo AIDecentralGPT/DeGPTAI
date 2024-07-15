@@ -65,7 +65,7 @@ export const showRewardsModal = writable(false);
 
 // 钱包数据
 export let currentWalletData = writable(DefaultCurrentWalletData)
-
+export let threesideAccount = writable({})
 
 
 
@@ -200,4 +200,5 @@ type SessionUser = {
 	name: string;
 	role: string;
 	profile_image_url: string;
+	isPro: false
 };

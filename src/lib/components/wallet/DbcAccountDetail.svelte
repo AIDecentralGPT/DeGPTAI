@@ -18,34 +18,52 @@
     showRewardsModal,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
-  import { dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair } from "$lib/utils/wallet/dbc";
+  import { 
+    
+    // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair 
+
+
+
+  } from "$lib/utils/wallet/dbc";
   import { goto } from "$app/navigation";
   import { closeWallet } from "$lib/utils/wallet/walletUtils";
   import { getUsersInvited } from "$lib/apis/users";
   const i18n = getContext("i18n");
 
-  const fetchPrice = async () => {
-    try {
-      const dbcPriceData = await dbcPriceOcw();
-      console.log("dbcPriceData", dbcPriceData);
-      // $currentWalletData.price.dbc = priceData / 1000000
+  // const fetchPrice = async () => {
+  //   try {
 
-      currentWalletData.update((data) => {
-        return {
-          ...data,
-          price: {
-            dbc: dbcPriceData / 1000000,
-            dlc: dbcPriceData / 1000000,
-          },
-        };
-      });
-    } catch (error) {
-      console.error("Failed to fetch DBC price:", error);
-    }
-  };
+
+
+  //     const dbcPriceData = await dbcPriceOcw();
+  //     console.log("dbcPriceData", dbcPriceData);
+  //     // $currentWalletData.price.dbc = priceData / 1000000
+
+  //     currentWalletData.update((data) => {
+  //       return {
+  //         ...data,
+  //         price: {
+  //           dbc: dbcPriceData / 1000000,
+  //           dlc: dbcPriceData / 1000000,
+  //         },
+  //       };
+  //     });
+  //   } catch (error) {
+  //     console.error("Failed to fetch DBC price:", error);
+  //   }
+  // };
+
+
+  function floorToFixed(num, digits) {
+    let pow = Math.pow(10, digits);
+    return (Math.floor(num * pow) / pow).toFixed(digits);
+}
+
 
   onMount(() => {
-    fetchPrice();
+    // fetchPrice();
+
+
     // const interval = setInterval(fetchPrice, 5000); // 每5秒获取一次价格数据
     // return () => clearInterval(interval);
   });
@@ -97,12 +115,12 @@
           pr-[35px]
           px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
         >
-          {$currentWalletData?.pair?.address}
+          {$currentWalletData?.walletInfo?.address}
         </p>
         <button
           on:click={async () => {
             const res = await copyToClipboard(
-              $currentWalletData?.pair?.address
+              $currentWalletData?.walletInfo?.address
             );
             if (res) {
               toast.success($i18n.t("Copying to clipboard was successful!"));
@@ -157,10 +175,11 @@
       type="submit"
       on:click={async () => {
         console.log("showExportWalletJsonModal", $showExportWalletJsonModal);
-        const pair = getCurrentPair()
-        exportAccountForKeystore(pair)
+        // const pair = getCurrentPair()
+        // exportAccountForKeystore(pair)
 
-        // $showExportWalletJsonModal = true;
+        $showExportWalletJsonModal = true;
+        
       }}
     >
       {$i18n.t("Export Wallet")}
@@ -191,15 +210,17 @@
     <button
       class="flex gap-2 items-center cursor-pointer"
       on:click={() => {
-        const pair = getCurrentPair()
-        console.log("pair?.address", pair?.address);
+        // const pair = getCurrentPair()
+        // console.log("pair?.address", pair?.address);
         
-        if(!pair?.address) {
-          toast.error($i18n.t("Please log in to your wallet first"))
-        }
-        else {
-          $showShareModal = true;
-        }
+        // if(!pair?.address) {
+        //   toast.error($i18n.t("Please log in to your wallet first"))
+        // }
+        // else {
+        //   $showShareModal = true;
+        // }
+
+        $showShareModal = true;
       }}
     >
       <svg
@@ -230,43 +251,12 @@
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          DGC
-        </div>
-        <div
-          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          {Number($currentWalletData?.dlcBalance?.balance).toFixed(4) ||
-            "0.0000"}
-        </div>
-        <div
-          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          ≈ ＄{Number(
-            $currentWalletData?.dlcBalance?.balance *
-              $currentWalletData?.price?.dlc
-          ).toFixed(4)}
-        </div>
-      </div>
-      <div
-        class="opacity-50 text-right text-xs font-medium font-['Gilroy'] leading-normal"
-      >
-        DGC {$i18n.t("price")} ＄{Number($currentWalletData?.price?.dlc).toFixed(4)}
-      </div>
-    </div> -->
-
-    <div
-      class="flex justify-between px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-    >
-      <div class="flex gap-1">
-        <div
-          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
           DBC
         </div>
         <div
           class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          {Number($currentWalletData?.balance?.count).toFixed(4)}
+          {Number($currentWalletData?.dbcBalance).toFixed(4)}
         </div>
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
@@ -282,7 +272,41 @@
         DBC     {$i18n.t("price")}
         ＄{Number($currentWalletData?.price?.dbc).toFixed(4)}
       </div>
+    </div> -->
+
+
+    <div
+    class="flex justify-between px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+  >
+    <div class="flex gap-1">
+      <div
+        class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
+      >
+        DBC: 
+      </div>
+      <div
+        class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+      >
+        <!-- {Number($currentWalletData?.dbcBalance).toFixed(4)} -->
+        {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+      </div>
+      
     </div>
+    <div class="flex gap-1">
+      <div
+        class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
+      >
+        DGC: 
+      </div>
+      <div
+        class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+      >
+        {floorToFixed(Number($currentWalletData?.dgcBalance), 2)}
+      </div>
+      
+    </div>
+   
+  </div>
   </div>
 
   <!-- 二级按钮 -->

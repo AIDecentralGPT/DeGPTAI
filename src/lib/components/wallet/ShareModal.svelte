@@ -4,14 +4,10 @@
     export let show = false;
     import { onMount, getContext } from "svelte";
     import { copyToClipboard } from "$lib/utils";
-  import { getCurrentPair } from "$lib/utils/wallet/dbc";
     const i18n = getContext("i18n");
+    import { currentWalletData } from "$lib/stores";
 
-  let  currentPair = ""
 
-    $: if(show){
-      currentPair  = getCurrentPair()
-    }
 
 
   </script>
@@ -142,11 +138,11 @@
                     pr-[35px]
                     px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
           >
-            {`${location.host}?inviter=${currentPair?.address}`}
+            {`${location.host}?inviter=${$currentWalletData?.walletInfo?.address}`}
           </p>
           <button
             on:click={async () => {
-              const res = await copyToClipboard(`${location.host}?inviter=${currentPair?.address}`);
+              const res = await copyToClipboard(`${location.host}?inviter=${$currentWalletData?.walletInfo?.address}`);
               if (res) {
                 toast.success($i18n.t("Copying to clipboard was successful!"));
               }

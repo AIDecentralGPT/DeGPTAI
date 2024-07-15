@@ -102,7 +102,8 @@ export const getDeModels = async (token: string = '') => {
 					"https://chat.degpt.ai/llama3-70b/v1"
 					// "http://122.99.183.53:1042/v1"
 			],
-			"source": 'Exemplary performance,low error rate,diverse responses.'
+			"source": 'Exemplary performance,low error rate,diverse responses.',
+			"isProModel": true
 			
 	},
 		{
@@ -124,7 +125,9 @@ export const getDeModels = async (token: string = '') => {
 					"https://chat.degpt.ai/yi15-34b/v1"
 					// "http://122.99.183.51:6080/v1"
 			],
-			"source": 'Powerful encoding, and instruction-following capabilities.'
+			"source": 'Powerful encoding, and instruction-following capabilities.',
+			"isProModel": true
+
 	},
 
 

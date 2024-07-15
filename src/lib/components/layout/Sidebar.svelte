@@ -281,7 +281,7 @@
 <OpenWalletModal bind:show={$showOpenWalletModal} />
 {/if}
 
-<!-- <ExportWalletJsonModal bind:show={$showExportWalletJsonModal} /> -->
+<ExportWalletJsonModal bind:show={$showExportWalletJsonModal} />
 <TransferModal bind:show={$showTransferModal} />
 <PriceModal bind:show={$showPriceModal} />
 <BuyCoinModal bind:show={$showBuyCoinModal} />

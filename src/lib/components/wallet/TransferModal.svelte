@@ -1,10 +1,15 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { afterUpdate, getContext } from "svelte";
   import { toast } from "svelte-sonner";
   import { currentWalletData } from "$lib/stores";
   import { transferDBC, transferDLC } from "$lib/utils/wallet/dbc"; // 导入 transferDLC 方法
 
   import Modal from "../common/Modal.svelte";
+  import { transferDbc } from "$lib/utils/wallet/ether/dbc";
+  import { transferDgc } from "$lib/utils/wallet/ether/dgc";
+  import { provider } from "$lib/utils/wallet/ether/utils";
+  import { ethers } from "ethers";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
 
   const i18n = getContext("i18n");
 
@@ -15,10 +20,15 @@
   let address = "";
   let password = "";
   let transferType = "dbc";
+  let gas = {
+    gasPrice: 0,
+    maxFeePerGas: 0,
+    maxPriorityFeePerGas: 0,
+  };
   let showError = {
     amount: false,
     address: false,
-    password: false,
+    // password: false,
     transferType: false,
   };
 
@@ -33,52 +43,75 @@
     showError = {
       amount: false,
       address: false,
-      password: false,
+      // password: false,
       transferType: false,
     };
   }
 
+  function handleAmountChange(data) {
+    console.log("data1", data);
+
+    if (amount) {
+      // 在这里调用 provider.getFeeData()
+      provider.getFeeData().then((data) => {
+        console.log("data", data);
+        gas = data; // 更新 gas 变量
+      });
+    }
+  }
 
   async function handleTransfer() {
     showError = {
       amount: !amount,
       address: !address,
-      password: !password,
+      // password: !password,
       transferType: !transferType,
     };
 
-    if (!amount || !address || !password || !transferType) {
+    if (!amount || !address || !transferType) {
       toast.error($i18n.t("All fields are required!"));
       return;
     }
 
     try {
-      if ($currentWalletData?.pair) {
+      if ($currentWalletData?.walletInfo) {
         loading = true;
 
-        const transferMethod = transferType === "dbc" ? transferDBC : transferDLC; // 根据 transferType 选择方法
+        const transferMethod =
+          transferType === "dbc" ? transferDbc : transferDgc; // 根据 transferType 选择方法
+
+        console.log(
+          "currentWalletData?.walletInfo?.privateKey",
+          $currentWalletData?.walletInfo?.privateKey
+        );
+
         try {
           await transferMethod(
             // $currentWalletData?.pair?.address,
             address,
             amount,
-            password,
-            (res) => {
-              loading = false;
-              if (res?.msg) {
-                toast.error(res?.msg);
-                // throw new Error("111");
-              } else {
-                show = false;
-                toast.success($i18n.t("Transfer successful!"));
-                console.log(res);
-              }
-            }
+            $currentWalletData?.walletInfo?.privateKey
+            // (res) => {
+            //   loading = false;
+            //   if (res?.msg) {
+            //     toast.error(res?.msg);
+            //     // throw new Error("111");
+            //   } else {
+            //     show = false;
+            //     toast.success($i18n.t("Transfer successful!"));
+            //     console.log(res);
+            //   }
+            // }
           );
         } catch (error) {
           loading = false;
           toast.error(error?.message);
         }
+        loading = false;
+
+        show = false;
+        toast.success($i18n.t("Transfer successful!"));
+        updateWalletData($currentWalletData?.walletInfo)
 
         // try {
         //   await transferDBC(
@@ -155,9 +188,8 @@
             <input
               type="radio"
               bind:group={transferType}
-              value="dlc"
+              value="dgc"
               required
-              disabled
             />
             DGC
           </label>
@@ -202,6 +234,7 @@
             class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
             placeholder={$i18n.t("Enter Amount")}
             required
+            on:input={handleAmountChange}
             min="0.001"
             step="0.001"
           />
@@ -211,9 +244,24 @@
             {$i18n.t("Amount is required!")}
           </div>
         {/if}
+
+        {#if gas}
+          <div class="">
+            {$i18n.t("")}
+            估算的燃料费：
+
+            {`${ethers.formatUnits(gas?.gasPrice)} < ${ethers.formatUnits(
+              gas?.maxFeePerGas
+            )} DBC `}
+
+            <div>
+              {`最大费用：< ${ethers.formatUnits(gas?.maxFeePerGas)} DBC`}
+            </div>
+          </div>
+        {/if}
       </div>
 
-      <div class="mb-6 pt-0.5 max-w-[300px]">
+      <!-- <div class="mb-6 pt-0.5 max-w-[300px]">
         <label class="flex items-center gap-1 mb-2">
           <span class="text-red-500 flex items-center">*</span>
           {$i18n.t("Enter Password")}
@@ -232,7 +280,7 @@
             {$i18n.t("Password is required!")}
           </div>
         {/if}
-      </div>
+      </div> -->
 
       <div class="flex justify-end">
         <button

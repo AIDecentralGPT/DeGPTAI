@@ -11,6 +11,9 @@ import {
 import { walletSignIn } from "../../apis/auths/index";
 import { getChatList } from "$lib/apis/chats";
 import { goto } from "$app/navigation";
+import { getDbcBalance } from "./ether/dbc";
+import { getDgcBalance } from "./ether/dgc";
+import { DefaultCurrentWalletData } from "$lib/constants";
 
 // 处理登录逻辑（不管有没有token，触发 用初始化状态登录，即删掉token，然后指纹登录）
 export async function handleSigninAsIntialStatus() {
@@ -120,12 +123,13 @@ export async function handleWalletSignIn(pair: string, password: string, inviter
 
 export async function closeWallet() {
   const walletData = get(currentWalletData);
+  currentWalletData.update(() => DefaultCurrentWalletData)
 
-  removePair(walletData?.pair?.address);
-  currentWalletData.set({});
+  // removePair(walletData?.pair?.address);
+  // currentWalletData.set({});
 
-  // localStorage.removeItem("token");
-  localStorage.token = "";
+  // // localStorage.removeItem("token");
+  // localStorage.token = "";
 
   await printSignIn().then((res) => {
     console.log("printSignIn的res", res);
@@ -143,33 +147,39 @@ function forceUpdate() {
   pageUpdateNumber.set(currentCount + 1);
 }
 
-export async function updateWalletData(pair: any) {
+export async function updateWalletData(walletInfo: any) {
+  const walletAdress = walletInfo?.address;
 
-  await showWallet(pair)
+  await showWallet(walletInfo)
 
   // 获取钱包面板数据
 
-  const balance = await onGetBalance(pair?.address);
-  const dlcBalance = await onGetDLCBalance(pair?.address);
-  console.log("balance", balance, pair);
-  console.log("dlcBalance", dlcBalance);
+  // const balance = await onGetBalance(pair?.address);
+  // const dlcBalance = await onGetDLCBalance(pair?.address);
+
+  const dbcBalance = await getDbcBalance(walletAdress);
+  const dgcBalance = await getDgcBalance(walletAdress);
+
+
+
+
 
   currentWalletData.update((data) => {
     return {
       ...data,
-      pair,
-      balance,
-      dlcBalance,
+      walletInfo,
+      dbcBalance,
+dgcBalance
     };
   });
 }
 
-export async function showWallet(pair: any) {
+export async function showWallet(walletInfo: any) {
   // 先更新pair，让钱包板块的页面先渲染出来
   currentWalletData.update((data) => {
     return {
       ...data,
-      pair,
+      walletInfo,
     };
   });
 }

@@ -25,6 +25,12 @@ from substrateinterface import Keypair, KeypairType
 from substrateinterface.utils.ss58 import ss58_decode
 from substrateinterface.utils.hasher import blake2_256
 import json
+from web3 import Web3
+w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
+from web3.auto import w3
+from eth_account.messages import encode_defunct, _hash_eip191_message
+
+
 
 # https://chatgpt.com/c/ea2b63e6-234f-45ad-8e32-a338f3c76737
 
@@ -291,49 +297,31 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
 
 
 
-
-
-
-# 钱包登录，校验钱包数据(可以用，就是结果是false)
-# https://polkascan.github.io/py-substrate-interface/usage/keypair-creation-and-signing/?h=verify#verify-generated-signature-with-public-address
 @router.post("/walletSignIn")
 async def walletSignIn(request: Request, form_data: WalletSigninForm):
     print("Received Data:", form_data)
     
     address = form_data.address
-    nonce = form_data.nonce
-    signature_hex = form_data.signature
+    message = form_data.nonce
+    signature = form_data.signature
     device_id = form_data.device_id
     ip_address = request.client.host
-    # inviterId = form_data.inviter_id
 
     try:
-        # 检查并去除0x前缀
-        if signature_hex.startswith("0x"):
-            signature_hex = signature_hex[2:]
+        # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
+        prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
+        encoded_message = encode_defunct(text=message)
+        
+        # 从签名中恢复地址
+        address_signed = w3.eth.account.recover_message(encoded_message, signature=signature)
 
-        # 验证签名格式
-        if not re.fullmatch(r'[0-9a-fA-F]+', signature_hex):
-            raise HTTPException(status_code=400, detail="Invalid signature format")
+        print("address_signed:", address_signed)
+        print("address:", address)
 
-        print("form_data", address, nonce, signature_hex)
-
-        # 将签名从十六进制转换为字节
-        signature = bytes.fromhex(signature_hex)
-
-        # 创建Keypair对象
-        keypair_public = Keypair(ss58_address=address, crypto_type=KeypairType.SR25519)
-        is_valid = keypair_public.verify(nonce, signature)
-
-        if is_valid:
-            print("address:", address)
-            # 查找用户
+        if address_signed.lower() == address.lower():  # 忽略大小写进行比较
             user = Users.get_user_by_id(address)
 
             if user:
-                print(11111111111111111111111111111111)
-                # print(11111111111111111111111111111111, user['id'], user['inviter_id'])
-
                 print("User found:", user.id)
             else:
                 print("User not found, creating new user")
@@ -346,23 +334,15 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     "walletUser",
                     form_data.address,
                     form_data.inviter_id,
-                    
                 )
-                print("Auths.insert_new_auth执行完毕")
-                print("New user created:", user.id, user)
 
             # 记录设备ID和IP地址
             if device_id:
-                device = devices_table.insert_new_device(user_id=user.id, device_id=device_id )
+                device = devices_table.insert_new_device(user_id=user.id, device_id=device_id)
             else:
-                log.info(f"没传device_id！")
-
-
-
+                log.info("未传递device_id！")
 
             ip_log = ip_logs_table.insert_new_ip_log(user_id=user.id, ip_address=ip_address)
-            print("Device logged:", device)
-            print("IP logged:", ip_log)
 
             token = create_token(
                 data={"id": user.id},
@@ -379,14 +359,136 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
             }
             return response
         else:
-            raise HTTPException(status_code=400, detail="Sign is error")
+            raise HTTPException(status_code=400, detail="签名验证失败")
 
     except ValueError as e:
         print(f"ValueError: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(status_code=500, detail="内部服务器错误")
     except Exception as e:
         print(f"Exception: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(status_code=500, detail="内部服务器错误")
+
+
+
+
+# # 钱包登录，校验钱包数据(可以用，就是结果是false)
+# # https://polkascan.github.io/py-substrate-interface/usage/keypair-creation-and-signing/?h=verify#verify-generated-signature-with-public-address
+# @router.post("/walletSignIn")
+# async def walletSignIn(request: Request, form_data: WalletSigninForm):
+#     print("Received Data:", form_data)
+    
+#     address = form_data.address
+#     message = form_data.nonce
+#     signature = form_data.signature
+#     device_id = form_data.device_id
+#     ip_address = request.client.host
+#     # inviterId = form_data.inviter_id
+
+#     try:
+
+
+      
+#         # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
+#         prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
+#         encoded_message = encode_defunct(text=prefixed_message)
+#         print("encoded_message:", encoded_message)
+#         print("prefixed_message:", prefixed_message)
+        
+#         # 从签名中恢复地址
+#         address_signed = w3.eth.account.recover_message(encoded_message, signature=signature)
+
+
+
+
+#         if address_signed:
+#             print("address_signed:", address_signed)
+    
+
+
+
+#         # # 检查并去除0x前缀
+#         # if signature_hex.startswith("0x"):
+#         #     signature_hex = signature_hex[2:]
+
+#         # # 验证签名格式
+#         # if not re.fullmatch(r'[0-9a-fA-F]+', signature_hex):
+#         #     raise HTTPException(status_code=400, detail="Invalid signature format")
+
+#         # print("form_data", address, nonce, signature_hex)
+
+#         # # 将签名从十六进制转换为字节
+#         # signature = bytes.fromhex(signature_hex)
+
+#         # # 创建Keypair对象
+#         # keypair_public = Keypair(ss58_address=address, crypto_type=KeypairType.SR25519)
+#         # is_valid = keypair_public.verify(nonce, signature)
+
+
+
+
+
+#         if address_signed == address:
+#             print("address:", address)
+#             # 查找用户
+#             user = Users.get_user_by_id(address)
+
+#             if user:
+#                 print(11111111111111111111111111111111)
+#                 # print(11111111111111111111111111111111, user['id'], user['inviter_id'])
+
+#                 print("User found:", user.id)
+#             else:
+#                 print("User not found, creating new user")
+#                 hashed = get_password_hash("")
+#                 user = Auths.insert_new_auth(
+#                     "",
+#                     hashed,
+#                     address,
+#                     USER_CONSTANTS.AVATOR_IMAGE,
+#                     "walletUser",
+#                     form_data.address,
+#                     form_data.inviter_id,
+                    
+#                 )
+#                 print("Auths.insert_new_auth执行完毕")
+#                 print("New user created:", user.id, user)
+
+#             # 记录设备ID和IP地址
+#             if device_id:
+#                 device = devices_table.insert_new_device(user_id=user.id, device_id=device_id )
+#             else:
+#                 log.info(f"没传device_id！")
+
+
+
+
+#             ip_log = ip_logs_table.insert_new_ip_log(user_id=user.id, ip_address=ip_address)
+#             print("Device logged:", device)
+#             print("IP logged:", ip_log)
+
+#             token = create_token(
+#                 data={"id": user.id},
+#                 expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+#             )
+#             response = {
+#                 "token": token,
+#                 "token_type": "Bearer",
+#                 "id": user.id,
+#                 "email": user.email,
+#                 "name": user.name,
+#                 "role": user.role,
+#                 "profile_image_url": user.profile_image_url,
+#             }
+#             return response
+#         else:
+#             raise HTTPException(status_code=400, detail="Sign is error")
+
+#     except ValueError as e:
+#         print(f"ValueError: {e}")
+#         raise HTTPException(status_code=500, detail="Internal Server Error")
+#     except Exception as e:
+#         print(f"Exception: {e}")
+#         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 # @router.post("/walletSignIn", response_model=None)

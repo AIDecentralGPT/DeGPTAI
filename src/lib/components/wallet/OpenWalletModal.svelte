@@ -2,7 +2,6 @@
   import { getChatList } from "$lib/apis/chats";
   import {
     importAccountFromKeystore,
-    savePair,
     signData,
   } from "./../../utils/wallet/dbc.js";
   import {
@@ -32,7 +31,9 @@
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import { walletSignIn } from "$lib/apis/auths/index.js";
-  import { handleWalletSignIn } from "$lib/utils/wallet/walletUtils.js";
+  import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils.js";
+  import { importWallet } from "$lib/utils/wallet/ether/utils.js";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
 
   const i18n = getContext("i18n");
 
@@ -45,7 +46,7 @@
   let walletCreatedData = null; // 创建钱包返回的数据
   let filesInputElement;
   let inputFiles;
-  let pair = null; //
+  let encryptedJson = null; //
 
   $: if (!show) {
     (async () => {
@@ -54,28 +55,32 @@
       password = "";
       showPassword = false;
       inputFiles = null;
-      pair = null;
+      encryptedJson = null;
     })();
   }
 
   async function uploadJson(file) {
-    const res = await importAccountFromKeystore(file);
-    console.log("uploadJson", res);
-    pair = res; // 获取json文件中的账户对
+    // const res = await importAccountFromKeystore(file);
+    // console.log("uploadJson", res);
+    // encryptedJson = res; // 获取json文件中的账户对
 
-    // unlockDLC(password, lockIndex, callback)
+    console.log("file", file);
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = (e) => {
+      const fileText = e.target?.result;
+      if (fileText) {
+         encryptedJson = JSON.parse(String(fileText));
 
-    // try {
-    //   const reader = new FileReader();
-    //   reader.onload = (event) => {
-    //     const jsonContent = event.target.result;
-    //     // 在这里处理 JSON 文件内容，例如上传到服务器
-    //     console.log("JSON content:", jsonContent);
-    //   };
-    //   reader.readAsText(file);
-    // } catch (error) {
-    //   toast.error($i18n.t(`Error uploading JSON file: ${error.message}`));
-    // }
+
+// console.log("encryptedJson", encryptedJson,"password", password );
+
+
+//         importWallet(encryptedJson, password)
+      }
+    };
+
+
   }
 </script>
 
@@ -154,7 +159,7 @@
       <!-- ------ -->
 
       <!-- 输入密码 -->
-      {#if pair}
+      {#if encryptedJson}
         <div class="mb-6 pt-0.5 max-w-[300px]">
           <div class="flex flex-col w-full">
             <div class="flex-1 relative">
@@ -181,7 +186,7 @@
           </div>
         </div>
       {/if}
-      {#if pair}
+      {#if encryptedJson}
         <div class="flex justify-end">
           <button
             disabled={loading}
@@ -193,35 +198,57 @@
               await tick();
               console.log("变色了要", loading);
 
-              const lockIndex = 0; // 锁定索引
-              unlockDLC(password, lockIndex, async (result) => {
-                console.log("Unlock DGC result:", result);
+              try {
+             const walletImported = await importWallet(encryptedJson, password)
+             console.log("walletImported", walletImported);
 
-                // 解锁失败
-                if (result && !result?.success) {
-                  toast.error(result?.msg);
-                  loading = false;
-                  await tick(); // 确保状态更新立即生效
+             updateWalletData(walletImported)
 
-                  return;
-                }
+                               // 请求服务端登录钱包账户
+                  await handleWalletSignIn(walletImported, password);
 
-                // 解锁成功
-                if (result && result?.success) {
-                  // 存储本地密码
-                  savePair(pair, password);
-
-                  // ----------------
-                  // 请求服务端登录钱包账户
-                  await handleWalletSignIn(pair, password);
-
-                  loading = false;
-                  await tick();
-
-                  show = false;
+               show = false;
                   password = "";
-                }
-              });
+                
+              } catch (error) {
+                console.log("error, ", error, error.message);
+                toast.error(error.message);
+
+                
+              }
+              loading = false;
+
+             
+              
+              const lockIndex = 0; // 锁定索引
+              // unlockDLC(password, lockIndex, async (result) => {
+              //   console.log("Unlock DGC result:", result);
+
+              //   // 解锁失败
+              //   if (result && !result?.success) {
+              //     toast.error(result?.msg);
+              //     loading = false;
+              //     await tick(); // 确保状态更新立即生效
+
+              //     return;
+              //   }
+
+              //   // 解锁成功
+              //   if (result && result?.success) {
+              //     // 存储本地密码
+              //     saveencryptedJson(encryptedJson, password);
+
+              //     // ----------------
+              //     // 请求服务端登录钱包账户
+              //     await handleWalletSignIn(encryptedJson, password);
+
+              //     loading = false;
+              //     await tick();
+
+              //     show = false;
+              //     password = "";
+              //   }
+              // });
             }}
           >
             {#if loading}

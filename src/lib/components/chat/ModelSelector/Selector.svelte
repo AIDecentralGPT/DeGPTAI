@@ -46,7 +46,6 @@
 	// 	? items.filter((item) => item.value.toLowerCase().includes(searchValue.toLowerCase()))
 	// 	: items;
 
-	console.log("1value", value);
 	
 
 
@@ -207,6 +206,7 @@
   };
 </script>
 
+
 <DropdownMenu.Root
   bind:open={show}
   onOpenChange={async () => {
@@ -261,9 +261,15 @@
             aria-label="model-item"
             class="flex w-full text-left font-medium line-clamp-1 select-none items-center rounded-button py-2 pl-3 pr-1.5 text-sm text-gray-700 dark:text-gray-100 outline-none transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer data-[highlighted]:bg-muted"
             on:click={() => {
-              value = item.value;
 
+              if(item && item?.info?.isProModel) {
+toast.warning('This is an exclusive service for pro users. \n Please upgrade your pro permissions first!')
+              }
+              else {
+                value = item.value;
               show = false;
+            }
+
             }}
           >
             <div class="flex items-center gap-2">
@@ -277,7 +283,7 @@
               </div>
 
               <!-- {JSON.stringify(item.info)} -->
-              <Tooltip content={item.info?.source}>
+              <Tooltip content={item.info?.source}  >
                 <div class=" mr-2">
 									<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -285,7 +291,9 @@
 									viewBox="0 0 24 24"
 									stroke-width="1.5"
 									stroke="currentColor"
-									class="w-4 h-4"
+									class={
+                    `w-4 h-4 ${item?.info?.isProModel ? "text-yellow-600": ""} `
+                  }
 								>
 									<path
 										stroke-linecap="round"
@@ -295,6 +303,12 @@
 								</svg>
                 </div>
               </Tooltip>
+
+
+              <!-- {#if item?.info?.isProModel}
+                <span>Free 5 times</span>
+              {/if} -->
+
               <!-- {#if item.info.external}
 								<Tooltip content={item.info?.source ?? 'External'}>
 									<div class=" mr-2">

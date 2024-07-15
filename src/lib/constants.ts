@@ -102,20 +102,9 @@ export const SUPPORTED_FILE_EXTENSIONS = [
 // Consequently, these variables can be securely exposed to client-side code.
 
 export const DefaultCurrentWalletData = {
-  pair: null,
-  // balance: null,
-  // dlcBalance: null,
-  balance: {
-    transfer: "0.0000",
-    reserved: "0.0000",
-    feeFrozen: "0.0000",
-    count: "0.0000",
-  },
-  dlcBalance: {
-    balance: 0,
-    lockedList: [],
-    total_balance: 0,
-  },
+  walletInfo: null,
+  dbcBalance: "0",
+  dgcBalance: "0",
   price: {
     dbc: 0,
     dlc: 0,
