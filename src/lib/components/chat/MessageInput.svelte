@@ -729,7 +729,7 @@
 						{/if}
 
 						<div class=" flex">
-							{#if fileUploadEnabled}
+							<!-- {#if fileUploadEnabled}
 								<div class=" self-end mb-2 ml-1">
 									<Tooltip content={$i18n.t('Upload files')}>
 										<button
@@ -752,7 +752,7 @@
 										</button>
 									</Tooltip>
 								</div>
-							{/if}
+							{/if} -->
 
 							<textarea
 								id="chat-textarea"
