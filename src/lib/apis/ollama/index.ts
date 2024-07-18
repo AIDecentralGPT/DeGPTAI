@@ -69,7 +69,8 @@ export const updateOllamaUrls = async (token: string = '', urls: string[]) => {
 };
 
 export const getOllamaVersion = async (token: string = '') => {
-	// let error = null;
+	let error = null;
+	return '';
 
 	// const res = await fetch(`${OLLAMA_API_BASE_URL}/api/version`, {
 	// 	method: 'GET',
@@ -98,7 +99,6 @@ export const getOllamaVersion = async (token: string = '') => {
 	// }
 
 	// return res?.version ?? '';
-	return ""
 };
 
 export const getOllamaModels = async (token: string = '') => {

@@ -16,7 +16,7 @@
   import { Toaster, toast } from "svelte-sonner";
 
   import { getBackendConfig } from "$lib/apis";
-  import { getSessionUser, printSignIn, walletSignIn } from "$lib/apis/auths";
+  import { getSessionUser, printSignIn,  } from "$lib/apis/auths";
   import { onGetBalance, onGetDLCBalance, removePair } from "$lib/utils/wallet/dbc";
 
   import "../tailwind.css";
@@ -30,20 +30,63 @@
   import i18n, { initI18n } from "$lib/i18n";
   import FingerprintJS from "@fingerprintjs/fingerprintjs";
   import { getCurrentPair, signData } from "$lib/utils/wallet/dbc";
-  import { updateUserById } from "$lib/apis/users";
+  import { getUserInfo, updateUserById } from "$lib/apis/users";
   import { handleSigninAsIntialStatus } from "$lib/utils/wallet/walletUtils";
 
   setContext("i18n", i18n);
-
   let loaded = false;
   const BREAKPOINT = 768;
 
-  onMount(async () => {
-    // 加载 FingerprintJS 库，获取指纹
-    const fp = await FingerprintJS.load();
-    const result = await fp.get();
-    const visitorId = result.visitorId;
-    localStorage.setItem("visitor_id", visitorId);
+
+	async function initData (){
+		
+		let backendConfig = null;
+		try {
+			backendConfig = await getBackendConfig();
+		} catch (error) {
+			console.error('Error loading backend config:', error);
+		}
+		// Initialize i18n even if we didn't get a backend config,
+		// so `/error` can show something that's not `undefined`.
+		initI18n(backendConfig?.default_locale);
+
+		if (backendConfig) {
+			// Save Backend Status to Store
+			await config.set(backendConfig);
+
+			await WEBUI_NAME.set(backendConfig.name);
+
+			
+		} else {
+			// Redirect to /error when Backend Not Detected
+			await goto(`/error`);
+		}
+
+
+		
+		// 加载 FingerprintJS 库
+		const fp = await FingerprintJS.load();
+		// 获取设备指纹
+		const result = await fp.get();
+		// `result.visitorId` 是设备指纹 ID
+		const visitorId = result.visitorId;
+		console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
+		localStorage.setItem('visitor_id', visitorId);
+
+
+    let res = {}
+    if(localStorage.token) {
+      res = await getUserInfo(localStorage.token);
+    }
+    else {
+       res = await printSignIn();
+    }
+
+		await user.set(res);
+		loaded = true;
+
+		console.log(res);
+		localStorage.token = res.token;
 
 
 
@@ -62,97 +105,35 @@
 
     window.addEventListener("resize", onResize);
 
-    let backendConfig = null;
-    try {
-      backendConfig = await getBackendConfig();
-    } catch (error) {
-      console.error("Error loading backend config:", error);
-    }
-    // Initialize i18n even if we didn't get a backend config,
-    // so `/error` can show something that's not `undefined`.
-    initI18n(backendConfig?.default_locale);
-
-    console.log("backendConfig", backendConfig);
-
-    if (backendConfig) {
-      // 如果backendConfig存在，则执行以下操作
-
-      // 将Backend的状态保存到Store中
-      await config.set(backendConfig);
-
-      // 设置WEBUI_NAME为backendConfig中的name
-      await WEBUI_NAME.set(backendConfig.name);
-
-      if ($config) {
-        // 如果$config存在，则执行以下操作
 
 
 
-        console.log("localStorage.token", localStorage.token);
-        if (localStorage.token) {
-          // 如果localStorage中存在token，则获取会话用户信息
-
-          const sessionUser = await getSessionUser(localStorage.token).catch(
-            (error) => {
-              // 如果获取会话用户信息失败，则显示错误信息
-              // toast.error(error + "35");
-              return null;
-            }
-          );
-
-          console.log("sessionUser", sessionUser);
-
-          // 如果当前用户id和钱包不匹配，那么清空本地的pair
-          const pair = await getCurrentPair();
-          if(sessionUser?.id !== pair?.address) {
-            localStorage.removeItem('pair')
-          }
-
-          if (sessionUser) {
-            // 如果sessionUser存在，将其保存到Store中
-            await user.set(sessionUser);
-          } else {
-            handleSigninAsIntialStatus()
-
-            // // 如果sessionUser不存在，则进行浏览器指纹登录
-            // await printSignIn().then((res) => {
-            //   console.log("printSignIn res", res);
-
-            //   $chats = []
-            //   if (res.token) {
-            //     localStorage.token = res.token;
-            //     if($currentWalletData?.pair?.address) {
-            //       removePair($currentWalletData?.pair?.address);
-            //     }
-            //     user.set(res);
-            //   }
-            // });
-            // 如果sessionUser不存在，则重定向无效会话用户到/auth页面
-            // localStorage.removeItem('token');
-            // await goto('/auth');
-          }
-        } else {
-            handleSigninAsIntialStatus()
-          // 如果localStorage中不存在token，则重定向到/auth页面
-          // await goto('/auth');
+		document.getElementById('splash-screen')?.remove();
 
 
-        }
-      }
-    } else {
-      // 如果没有检测到Backend，则重定向到/error页面
-      await goto(`/error`);
-    }
+    // 创建并插入Google Analytics的script标签
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2';
+    script.async = true;
+    document.head.appendChild(script);
 
-    await tick();
-
-    document.getElementById("splash-screen")?.remove();
-    loaded = true;
-
-    return () => {
-      window.removeEventListener("resize", onResize);
+    // 初始化Google Analytics
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ELT9ER83T2');
     };
-  });
+
+
+
+		return () => {
+			window.removeEventListener('resize', onResize);
+      
+		};
+	}
+
+	onMount(initData);
 </script>
 
 <svelte:head>

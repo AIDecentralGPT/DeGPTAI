@@ -15,26 +15,28 @@
     watchAccount,
   } from "@wagmi/core";
   import { ethers } from "ethers";
-  import { provider } from "$lib/utils/wallet/ether/utils";
+  import { handleWalletSignIn, provider } from "$lib/utils/wallet/ether/utils";
   import {
     showPriceModal,
     showRewardsModal,
     showShareModal,
     threesideAccount,
     currentWalletData,
+    user,
   } from "$lib/stores";
   import DbcThreeSideWalletDetail from "./DbcThreeSideWalletDetail.svelte";
-  import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
+  import {
+    config,
+    projectId,
+    walletconnectSignMessage,
+  } from "$lib/utils/wallet/walletconnect/index";
+  import { printSignIn } from "$lib/apis/auths";
   const i18n = getContext("i18n");
 
   // 定义存储
   const walletAddress = writable("");
   const walletBalance = writable(0);
   let modal = null;
-
-
-
-
 
   const getBalance = async (address) => {
     try {
@@ -61,7 +63,12 @@
   const initConnection = async () => {
     try {
       console.log("initConnection");
-      const res = await reconnect(config);
+      let res = [];
+
+      if ($user?.id && $user?.address_type === "threeSide") {
+        res = await reconnect(config);
+      }
+
       console.log("reconnect res", res);
       if (res.length) {
         const address = res[0].accounts[0];
@@ -106,7 +113,7 @@
   });
 
   watchAccount(config, {
-    onChange(account) {
+    async onChange(account) {
       console.log("1", account);
       // if (isConnected) {
       //   signMessage(config, { message: "hello world" }).then((res) => {
@@ -117,6 +124,19 @@
       // CreateSignature($currentWalletData.pair,"123", undefined  )
 
       $threesideAccount = account;
+
+      if (account.status === "connected" && !localStorage.token) {
+        handleWalletSignIn({
+          walletImported: {
+            address: account?.address,
+          },
+          address_type: "threeSide",
+        });
+      }
+      if (account.status === "disconnected") {
+        localStorage.removeItem("token");
+        printSignIn();
+      }
     },
   });
 
@@ -135,7 +155,7 @@
 <div class="walletConnect flex flex-col gap-4">
   <!-- <button on:click={connect}>connect wallet </button> -->
 
-  {#if !$currentWalletData.walletInfo && !$threesideAccount?.address}
+  {#if !($user?.id && $user?.id?.startsWith("0x"))}
     <button
       id="btn"
       class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
@@ -170,7 +190,7 @@
 
   <!-- <w3m-button id="web3button" label="链接钱包"  style="width: 100%;" /> -->
 
-  {#if $threesideAccount?.address}
+  {#if $user?.id?.startsWith("0x") && $user?.address_type === "threeSide"}
     <!-- <div class="py-2 px-3"> -->
     <!-- 升级计划 -->
     <button

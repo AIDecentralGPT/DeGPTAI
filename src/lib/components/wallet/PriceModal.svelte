@@ -4,43 +4,51 @@
   export let show = false;
   import { onMount, getContext } from "svelte";
   import { transferDgc } from "$lib/utils/wallet/ether/dgc";
-  import { currentWalletData, threesideAccount } from "$lib/stores";
-  import { walletconnectSendTransaction } from "$lib/utils/wallet/walletconnect/index";
+  import { currentWalletData, user } from "$lib/stores";
+  import { walletconnectSendDGCTransaction, walletconnectSendTransaction } from "$lib/utils/wallet/walletconnect/index";
   const i18n = getContext("i18n");
 
   const upgradePrice = 5;
 
   async function handleUpgrade() {
-    console.log("handleUpgrade", upgradePrice,
-    $currentWalletData?.walletInfo?.privateKey);
-
-    if($currentWalletData?.walletInfo) {
-      const res =  await transferDgc(
-      // $currentWalletData?.walletInfo?.address,
-      // "0xde184A6809898D81186DeF5C0823d2107c001Da2",
-      "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808",
+    console.log(
+      "handleUpgrade",
+      $currentWalletData,
       upgradePrice,
-      $currentWalletData?.walletInfo?.privateKey
+      $currentWalletData?.walletInfo?.privateKey,
+      $user
     );
-    console.log("transferDgc", res);
-  }
-if($threesideAccount?.address) {
-  const res = await walletconnectSendTransaction(
-  {
-    value: upgradePrice
-  }
-  );
 
-  if(res) {
-      toast.success("Congratulations on successfully upgrading pro!")
-      show = false
-    }
-}
-
+    if ($user?.address_type === 'dbc') {
+      const res = await transferDgc(
+        // $currentWalletData?.walletInfo?.address,
+        // "0xde184A6809898D81186DeF5C0823d2107c001Da2",
+        "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808",
+        upgradePrice,
+        $currentWalletData?.walletInfo?.privateKey
+      );
+      console.log("transferDgc", res);
+      // const res = await openProServices(localStorage.token, tx, value);
 
     }
+    if ($user?.address_type === 'threeSide') {
+      console.log(111);
 
-  
+      // const res = await walletconnectSendTransaction({
+      //   value: upgradePrice,
+      // });
+
+      const res = await walletconnectSendDGCTransaction(upgradePrice);
+
+      console.log(222);
+      
+
+      if (res) {
+        toast.success("Congratulations on successfully upgrading pro!");
+        show = false;
+      }
+    }
+  }
 </script>
 
 <Modal bind:show size="lg">
@@ -167,7 +175,8 @@ if($threesideAccount?.address) {
             {$i18n.t("Plus")}
           </h3>
           <p class="mt-6 flex items-baseline gap-x-1">
-            <span class="text-4xl font-bold tracking-tight">{upgradePrice}</span>
+            <span class="text-4xl font-bold tracking-tight">{upgradePrice}</span
+            >
             <span class="text-sm font-semibold leading-6 text-gray-400"
               >DGC</span
             >

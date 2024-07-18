@@ -8,7 +8,7 @@
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
-  import { currentWalletData } from "$lib/stores";
+  import { currentWalletData, user, } from "$lib/stores";
   const i18n = getContext("i18n");
 
   export let show = true;
@@ -266,12 +266,12 @@
 												pr-[35px]
 												px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
                 >
-                  {`${location.host}?inviter=${$currentWalletData?.walletInfo?.address}`}
+                  {`${location.host}?inviter=${ $user?.id}`}
                 </p>
                 <button
                   on:click={async () => {
                     const res = await copyToClipboard(
-                      `${location.host}?inviter=${$currentWalletData?.walletInfo?.address}`
+                      `${location.host}?inviter=${ $user?.id}`
                     );
                     if (res) {
                       toast.success(

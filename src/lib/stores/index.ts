@@ -60,6 +60,8 @@ export const showPriceModal = writable(false);
 export const showBuyCoinModal = writable(false);
 export const showShareModal = writable(false);
 export const showRewardsModal = writable(false);
+export const showRewardsHistoryModal = writable(false);
+
 
 
 
@@ -201,4 +203,5 @@ type SessionUser = {
 	role: string;
 	profile_image_url: string;
 	isPro: false
+	address_type: string
 };

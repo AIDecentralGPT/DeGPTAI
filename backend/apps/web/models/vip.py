@@ -24,6 +24,21 @@ from config import (
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["VIP"])
 
+
+# --------钱包相关--------
+from substrateinterface import Keypair, KeypairType
+from substrateinterface.utils.ss58 import ss58_decode
+from substrateinterface.utils.hasher import blake2_256
+import json
+from web3 import Web3
+w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
+# from web3.auto import w3
+from eth_account.messages import encode_defunct, _hash_eip191_message
+from eth_account import Account
+
+
+
+
 class VIPStatus(Model):
     id = CharField(primary_key=True, default=str(uuid.uuid4))
     user_id = CharField()
@@ -95,5 +110,8 @@ class VIPStatusTable:
         except Exception as e:
             log.error(f"is_vip_active: {e}")
             return False
+        
+
+
 
 VIPStatuses = VIPStatusTable(DB)

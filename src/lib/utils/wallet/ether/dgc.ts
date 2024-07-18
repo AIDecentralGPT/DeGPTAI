@@ -3,6 +3,8 @@
 import { ethers } from "ethers";
 import { provider, signData, getCurrencyPrice, getGas } from "./utils";
 import ABI from "./abi.json";
+import { getDbcBalance } from "./dbc";
+import { toast } from "svelte-sonner";
 
 console.log("ABI", typeof ABI);
 
@@ -21,7 +23,7 @@ const DGC_TOKEN_CONTRACT_ADDRESS = '0xE9E985E88232F12F2780955f0c0b99541Aa3cf37';
 
 
 // 创建 DGC 合约实例
-const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, ABI?.abi, provider);
+export const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, ABI?.abi, provider);
 
 // 查询 DGC 余额
 export async function getDgcBalance(address) {
@@ -43,6 +45,32 @@ export async function transferDgc(toAddress, amountDgc, privateKey) {
 
   const { gasLimit, gasPrice  } = await getGas();
 
+  console.log("wallet:", wallet, gasLimit, gasPrice);
+  
+
+  // 获取钱包余额
+  const dbcBalance = await getDbcBalance(wallet?.address);
+  
+  
+  // if(gasPrice > dbcBalance) {
+  //   toast.error("The balance is not enough to pay for gas!")
+  // }
+
+  const gasNumber = ethers.formatEther(gasPrice);
+
+
+  console.log("balance gasCost ", gasPrice, dbcBalance, gasNumber);
+
+  
+
+
+    // 比较余额和gas费用
+    if (gasNumber > dbcBalance) {
+      toast.error("The balance is not enough to pay for gas!");
+      return;
+    }
+  
+
 
   const tx = {
     to: DGC_TOKEN_CONTRACT_ADDRESS,
@@ -51,7 +79,7 @@ export async function transferDgc(toAddress, amountDgc, privateKey) {
     // gasLimit: gasLimit,
     // gasPrice: gasPrice,
 
-    gasPrice: ethers.parseUnits('50', 'gwei'), // 设置燃气价格
+    gasPrice: gasPrice, // 设置燃气价格
     // gasLimit: ethers.hexlify(21000) // 设置燃气限制
 
   };
@@ -66,6 +94,9 @@ export async function transferDgc(toAddress, amountDgc, privateKey) {
     throw error;
   }
 }
+
+
+
 
 // 获取 DGC 的实时价格
 export async function getDgcPrice() {

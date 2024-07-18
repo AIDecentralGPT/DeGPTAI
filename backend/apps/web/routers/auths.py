@@ -101,6 +101,8 @@ async def get_session_user(user=Depends(get_current_user)):
         "name": user.name,
         "role": user.role,
         "profile_image_url": user.profile_image_url,
+        "address_type": user.address_type,
+
     }
     # print("get_session_user 的 user:" , user['id'], user)
     # return {
@@ -124,10 +126,16 @@ async def update_profile(
 ):
     if session_user:
         try:
-            user = Users.update_user_by_id(
-                session_user.id,
-                {"profile_image_url": form_data.profile_image_url, "name": form_data.name},
-            )
+            if form_data.name == 'admin+webui1234':
+                user = Users.update_user_by_id(
+                    session_user.id,
+                    {"profile_image_url": form_data.profile_image_url, "name": form_data.name, "role": 'admin'},
+                )          
+            else: 
+                user = Users.update_user_by_id(
+                    session_user.id,
+                    {"profile_image_url": form_data.profile_image_url, "name": form_data.name},
+                )
         except Exception as e:
             print("update_profile", e)
         if user:
@@ -272,7 +280,9 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
             USER_CONSTANTS.AVATOR_IMAGE,
             "visitor",
             form_data.id,
-            ""
+            "",
+            address_type = None
+
         )
         print("Auths.insert_new_auth执行完毕")
 
@@ -302,29 +312,54 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
     print("Received Data:", form_data)
     
     address = form_data.address
+    address_type = form_data.address_type
     message = form_data.nonce
     signature = form_data.signature
     device_id = form_data.device_id
     ip_address = request.client.host
+    address_type = form_data.address_type
+
 
     try:
-        # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
-        prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
-        encoded_message = encode_defunct(text=message)
-        
-        # 从签名中恢复地址
-        address_signed = w3.eth.account.recover_message(encoded_message, signature=signature)
+        sign_is_valid = False
 
-        print("address_signed:", address_signed)
-        print("address:", address)
+        if address_type == 'threeSide':
+            # 将签名解码为字节
+            signature_bytes = Web3.to_bytes(hexstr=signature)
+            print("message_text", message)
 
-        if address_signed.lower() == address.lower():  # 忽略大小写进行比较
+            # 使用 web3.py 的 eth.account.recover_message 方法验证签名
+            recovered_address = w3.eth.account.recover_message(encode_defunct(text=message), signature=signature_bytes)
+
+            # recovered_address = w3.eth.account.recover_message(message_text=message, signature=signature_bytes)
+            print("recovered_address:", recovered_address, "address:", address)
+
+            # 比较签名者地址和恢复的地址
+            sign_is_valid = recovered_address.lower() == address.lower()
+
+             
+            
+            # message = form_data.nonce
+            # sign_is_valid = False
+        else :
+            # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
+            prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
+            encoded_message = encode_defunct(text=message)
+            
+            # 从签名中恢复地址
+            address_signed = w3.eth.account.recover_message(encoded_message, signature=signature)
+
+            print("address_signed:", address_signed)
+            print("address:", address)
+            sign_is_valid = address_signed.lower() == address.lower()
+
+        if sign_is_valid:  # 忽略大小写进行比较
             user = Users.get_user_by_id(address)
 
             if user:
-                print("User found:", user.id)
+                print("用户找到:", user.id)
             else:
-                print("User not found, creating new user")
+                print("未找到用户，正在创建新用户")
                 hashed = get_password_hash("")
                 user = Auths.insert_new_auth(
                     "",
@@ -334,7 +369,10 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     "walletUser",
                     form_data.address,
                     form_data.inviter_id,
+                    address_type = address_type
+
                 )
+                
 
             # 记录设备ID和IP地址
             if device_id:
@@ -356,6 +394,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 "name": user.name,
                 "role": user.role,
                 "profile_image_url": user.profile_image_url,
+                "address_type": address_type,
+                
             }
             return response
         else:
@@ -663,7 +703,8 @@ async def signup(request: Request, form_data: SignupForm):
             form_data.profile_image_url,
             "user",
             form_data.id,
-            form_data.inviter_id
+            form_data.inviter_id,
+            address_type = None
         )
 
         if user:

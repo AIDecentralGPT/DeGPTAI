@@ -4,7 +4,6 @@
   import { mainnet, bsc,  } from '@wagmi/core/chains';
   import { reconnect, http, watchConnections } from '@wagmi/core';
   import { writable } from 'svelte/store';
-  import { threesideAccount } from '$lib/stores';
 
   // Define stores
   const connectWallet = writable('');

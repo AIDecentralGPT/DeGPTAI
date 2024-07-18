@@ -13,6 +13,7 @@
     chatId,
     pageUpdateNumber,
     threesideAccount,
+    user,
   } from "$lib/stores";
   import { fade, slide } from "svelte/transition";
   import {
@@ -32,36 +33,23 @@
 
   const dispatch = createEventDispatcher();
 
-
-
-
   // createWalletConnect()
-
-
 </script>
 
 <div name="content">
-
-
-
-
-
   <hr class=" dark:border-gray-800 my-2 p-0" />
 
-
-<!-- {console.log(
+  <!-- {console.log(
   "currentWalletData.walletInfo", $currentWalletData.walletInfo,
   "threesideAccount?.address", $threesideAccount?.address,
 
 )} -->
 
-<WalletConnect></WalletConnect>
-
+  <WalletConnect />
 
   <!-- 创建，连接，打开钱包，三个按钮 -->
-  {#if !$currentWalletData.walletInfo && !$threesideAccount?.address}
+  {#if !($user?.id && $user?.id?.startsWith('0x'))}
     <div>
-
       <button
         class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
         on:click={async () => {
@@ -76,8 +64,6 @@
           // // const res = await dbcPriceOcw()
           // console.log("res", res);
           $showNewWalletModal = true;
-
-
         }}
       >
         <div class=" self-center mr-3">
@@ -147,7 +133,7 @@
   {/if}
 
   <!-- 钱包数据面板 -->
-  {#if $currentWalletData.walletInfo }
+  {#if $user?.id?.startsWith('0x') && $user?.address_type === 'dbc'}
     <DbcAccountDetail />
   {/if}
 </div>

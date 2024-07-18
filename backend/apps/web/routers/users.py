@@ -27,6 +27,7 @@ from utils.utils import (
     create_api_key,
 )
 
+from utils.misc import parse_duration, validate_email_format
 
 
 # --------钱包相关--------
@@ -52,10 +53,11 @@ router = APIRouter()
 ############################
 
 
-@router.get("/", response_model=List[UserModel])
-async def get_users(skip: int = 0, limit: int = 50, user=Depends(get_admin_user)):
-    return Users.get_users(skip, limit)
-
+# @router.get("/", response_model=List[UserModel])
+@router.get("/", response_model=dict)
+async def get_users(skip: int = 0, limit: int = 50, role: str = "", search: str = "", user=Depends(get_admin_user)):
+    print("skip", skip, "limit", limit)
+    return Users.get_users(skip, limit, role, search)
 
 ############################
 # 获取搜有邀请用户
@@ -330,6 +332,8 @@ def update_user_vip(user_id, tx_hash):
         raise HTTPException(400, detail="update_user_vip error")
 
 
+
+# 升级为pro
 @router.post("/pro", response_model=bool)
 async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_current_user)):
 
@@ -411,3 +415,34 @@ async def isPro( session_user=Depends(get_current_user)):
             print("判断是否为vip", e)
             raise HTTPException(400, detail="Error is_pro")
             
+
+
+
+
+@router.post("/get_user_info",response_model=None)
+async def get_user_info(request: Request,  user=Depends(get_current_user)):
+    # print("isPro session_user", session_user)
+    if user:
+        try:
+            token = create_token(
+                    data={"id": user.id},
+                    expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+            )
+            response = {
+                "token": token,
+                "token_type": "Bearer",
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "role": user.role,
+                "profile_image_url": user.profile_image_url,
+                "address_type": user.address_type,
+            }
+            return response
+                    
+        except Exception as e:
+            print("获取用户信息报错", e)
+            raise HTTPException(400, detail="Error get_user_info")
+            
+
+

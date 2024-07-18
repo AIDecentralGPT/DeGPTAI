@@ -18,22 +18,16 @@
     showRewardsModal,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
-  import { 
-    
-    // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair 
+  import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
 
-
-
-  } from "$lib/utils/wallet/dbc";
+  "$lib/utils/wallet/dbc";
   import { goto } from "$app/navigation";
-  import { closeWallet } from "$lib/utils/wallet/walletUtils";
+  import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getUsersInvited } from "$lib/apis/users";
   const i18n = getContext("i18n");
 
   // const fetchPrice = async () => {
   //   try {
-
-
 
   //     const dbcPriceData = await dbcPriceOcw();
   //     console.log("dbcPriceData", dbcPriceData);
@@ -53,17 +47,13 @@
   //   }
   // };
 
-
   function floorToFixed(num, digits) {
     let pow = Math.pow(10, digits);
     return (Math.floor(num * pow) / pow).toFixed(digits);
-}
-
+  }
 
   onMount(() => {
     // fetchPrice();
-
-
     // const interval = setInterval(fetchPrice, 5000); // 每5秒获取一次价格数据
     // return () => clearInterval(interval);
   });
@@ -102,7 +92,6 @@
 
   <!-- 地址展示 -->
   <div class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal">
-    
     {$i18n.t("Wallet Address")}
   </div>
 
@@ -179,7 +168,6 @@
         // exportAccountForKeystore(pair)
 
         $showExportWalletJsonModal = true;
-        
       }}
     >
       {$i18n.t("Export Wallet")}
@@ -188,7 +176,7 @@
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
       type="submit"
       on:click={async () => {
-        closeWallet()
+        closeWallet();
       }}
     >
       {$i18n.t("Close Wallet")}
@@ -202,9 +190,10 @@
   <!-- 钱包余额 -->
   <!-- 标题 -->
   <div class="flex justify-between items-center">
-    <div class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal">
+    <div
+      class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal flex items-center"
+    >
       {$i18n.t("Wallet Balance")}
-
     </div>
 
     <button
@@ -212,7 +201,7 @@
       on:click={() => {
         // const pair = getCurrentPair()
         // console.log("pair?.address", pair?.address);
-        
+
         // if(!pair?.address) {
         //   toast.error($i18n.t("Please log in to your wallet first"))
         // }
@@ -238,9 +227,24 @@
         /></svg
       >
 
-      <span>     {$i18n.t("Share to Obtain DGC")}
-      </span>
+      <span> {$i18n.t("Share to Obtain DGC")} </span>
     </button>
+
+    <button
+      on:click={() => {
+        updateWalletData($currentWalletData?.walletInfo);
+      }}
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1em"
+        height="1em"
+        viewBox="0 0 24 24"
+        ><path
+          fill="currentColor"
+          d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
+        /></svg
+      ></button
+    >
   </div>
   <!-- 余额详情 -->
   <div class="flex flex-col gap-2">
@@ -274,39 +278,35 @@
       </div>
     </div> -->
 
-
     <div
-    class="flex justify-between px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-  >
-    <div class="flex gap-1">
-      <div
-        class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-      >
-        DBC: 
+      class="flex justify-between px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+    >
+      <div class="flex gap-1">
+        <div
+          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          DBC:
+        </div>
+        <div
+          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          <!-- {Number($currentWalletData?.dbcBalance).toFixed(4)} -->
+          {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+        </div>
       </div>
-      <div
-        class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-      >
-        <!-- {Number($currentWalletData?.dbcBalance).toFixed(4)} -->
-        {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+      <div class="flex gap-1">
+        <div
+          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          DGC:
+        </div>
+        <div
+          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          {floorToFixed(Number($currentWalletData?.dgcBalance), 2)}
+        </div>
       </div>
-      
     </div>
-    <div class="flex gap-1">
-      <div
-        class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-      >
-        DGC: 
-      </div>
-      <div
-        class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-      >
-        {floorToFixed(Number($currentWalletData?.dgcBalance), 2)}
-      </div>
-      
-    </div>
-   
-  </div>
   </div>
 
   <!-- 二级按钮 -->
@@ -326,8 +326,7 @@
       on:click={async () => {
         // toast.warning("Coming soon")
 
-       $showRewardsModal = true
-
+        $showRewardsModal = true;
       }}
     >
       {$i18n.t("Rewards")}

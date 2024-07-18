@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { WEBUI_BASE_URL } from '$lib/constants';
-	import { user } from '$lib/stores';
+	import { threesideAccount, user } from '$lib/stores';
 	import { onMount, getContext } from 'svelte';
 
 	import { blur, fade } from 'svelte/transition';
 
 	import Suggestions from '../MessageInput/Suggestions.svelte';
+  import GetRewards from '$lib/components/wallet/GetRewards.svelte';
 
 	const i18n = getContext('i18n');
 
@@ -34,8 +35,23 @@
 {#key mounted}
 	<div class="m-auto w-full max-w-6xl px-8 lg:px-24 pb-16">
 		<div class="flex justify-start">
-			<div class="flex -space-x-4 mb-1" in:fade={{ duration: 200 }}>
-				{#each models as model, modelIdx}
+			<div class="flex space-x-4 mb-1" in:fade={{ duration: 200 }}>
+
+				<img
+				crossorigin="anonymous"
+				src={`${WEBUI_BASE_URL}/static/favicon.png`}
+				alt="modelfile"
+				class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none"
+				draggable="false"
+			/>
+
+			{#if $user?.address_type === 'threeSide'}
+				<w3m-button id="web3button" label="链接钱包"/>
+			{/if}
+
+
+
+				<!-- {#each models as model, modelIdx}
 					<button
 						on:click={() => {
 							selectedModelIdx = modelIdx;
@@ -61,11 +77,11 @@
 							/>
 						{/if}
 					</button>
-				{/each}
+				{/each} -->
 			</div>
 		</div>
 
-		<div
+		<!-- <div
 			class=" mt-2 mb-4 text-3xl text-gray-800 dark:text-gray-100 font-semibold text-left flex items-center gap-4"
 		>
 			<div>
@@ -73,10 +89,11 @@
 					{#if modelfile}
 						{modelfile.title}
 					{:else}
-						<!-- {$i18n.t('Hello, {{name}}', { name: $user?.name })} -->
-						{$i18n.t('Hello')}
+						{$i18n.t('Hello, {{name}}', { name: $user?.name })}
 					{/if}
 				</div>
+
+				
 
 				<div in:fade={{ duration: 200, delay: 200 }}>
 					{#if modelfile}
@@ -97,7 +114,11 @@
 					{/if}
 				</div>
 			</div>
-		</div>
+		</div> -->
+
+<GetRewards />
+
+
 
 		<div class=" w-full" in:fade={{ duration: 200, delay: 300 }}>
 			<Suggestions {suggestionPrompts} {submitPrompt} />

@@ -30,7 +30,6 @@
   import { unlockDLC } from "$lib/utils/wallet/dbc.js";
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
-  import { walletSignIn } from "$lib/apis/auths/index.js";
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils.js";
   import { importWallet } from "$lib/utils/wallet/ether/utils.js";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
@@ -70,17 +69,13 @@
     reader.onload = (e) => {
       const fileText = e.target?.result;
       if (fileText) {
-         encryptedJson = JSON.parse(String(fileText));
+        encryptedJson = JSON.parse(String(fileText));
 
+        // console.log("encryptedJson", encryptedJson,"password", password );
 
-// console.log("encryptedJson", encryptedJson,"password", password );
-
-
-//         importWallet(encryptedJson, password)
+        //         importWallet(encryptedJson, password)
       }
     };
-
-
   }
 </script>
 
@@ -199,27 +194,31 @@
               console.log("变色了要", loading);
 
               try {
-             const walletImported = await importWallet(encryptedJson, password)
-             console.log("walletImported", walletImported);
+                const walletImported = await importWallet(
+                  encryptedJson,
+                  password
+                );
+                console.log("walletImported", walletImported);
 
-             updateWalletData(walletImported)
+                // 请求服务端登录钱包账户
+                await handleWalletSignIn({
+                  walletImported,
+                  password,
+                  address_type: "dbc",
+                });
+                updateWalletData(walletImported);
 
-                               // 请求服务端登录钱包账户
-                  await handleWalletSignIn(walletImported, password);
+                await tick();
+                loading = false;
 
-               show = false;
-                  password = "";
-                
+                show = false;
+                password = "";
               } catch (error) {
                 console.log("error, ", error, error.message);
                 toast.error(error.message);
-
-                
               }
               loading = false;
 
-             
-              
               const lockIndex = 0; // 锁定索引
               // unlockDLC(password, lockIndex, async (result) => {
               //   console.log("Unlock DGC result:", result);

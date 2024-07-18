@@ -8,7 +8,6 @@ import {
   signData,
   removePair,
 } from "./dbc";
-import { walletSignIn } from "../../apis/auths/index";
 import { getChatList } from "$lib/apis/chats";
 import { goto } from "$app/navigation";
 import { getDbcBalance } from "./ether/dbc";
@@ -82,48 +81,50 @@ export async function handleSigninAsIntialStatus() {
   }
 }
 
-// 用钱包登录
-export async function handleWalletSignIn(pair: string, password: string, inviterId?:string) {
-  const { nonce, signature } = await signData(pair, password, undefined);
+// // 用钱包登录
+// export async function handleWalletSignIn(pair: string, password: string, inviterId?:string) {
+//   const { nonce, signature } = await signData(pair, password, undefined);
 
-  console.log("pair, password", pair, password);
+//   console.log("pair, password", pair, password);
 
-  const walletSignInResult = await walletSignIn({
-    address: pair?.address,
-    nonce,
-    device_id: localStorage.visitor_id ,
-    // data: pair,
-    signature,
-    id: localStorage.visitor_id,
-    inviter_id: inviterId
-  });
+//   const walletSignInResult = await walletSignIn({
+//     address: pair?.address,
+//     nonce,
+//     device_id: localStorage.visitor_id ,
+//     // data: pair,
+//     signature,
+//     id: localStorage.visitor_id,
+//     inviter_id: inviterId
+//   });
 
-  if (walletSignInResult?.token) {
-    localStorage.removeItem("token");
+//   if (walletSignInResult?.token) {
+//     localStorage.removeItem("token");
 
-    localStorage.token = walletSignInResult.token;
+//     localStorage.token = walletSignInResult.token;
 
-    console.log("钱包登录后获得的用户信息", walletSignInResult);
-    user.set(walletSignInResult);
+//     console.log("钱包登录后获得的用户信息", walletSignInResult);
+//     user.set(walletSignInResult);
 
-    if (walletSignInResult.token) {
-      await chats.set(await getChatList(localStorage.token));
-    }
+//     if (walletSignInResult.token) {
+//       await chats.set(await getChatList(localStorage.token));
+//     }
 
-    console.log("walletSignInResult", walletSignInResult);
+//     console.log("walletSignInResult", walletSignInResult);
 
-    if (walletSignInResult.id) {
-      // ----------------
-      await chats.set([]) 
-      // 获取钱包面板数据
-      updateWalletData(pair);
-    }
-  }
-}
+//     if (walletSignInResult.id) {
+//       // ----------------
+//       await chats.set([]) 
+//       // 获取钱包面板数据
+//       updateWalletData(pair);
+//     }
+//   }
+// }
 
 export async function closeWallet() {
   const walletData = get(currentWalletData);
   currentWalletData.update(() => DefaultCurrentWalletData)
+
+  localStorage.removeItem("token")
 
   // removePair(walletData?.pair?.address);
   // currentWalletData.set({});

@@ -34,13 +34,22 @@
 
 	$: if (selectedModels.length > 0 && $models.length > 0) {
 
-		
-
+		    
+    
 		selectedModels = selectedModels.map((model) =>{
 			if(selectedModels.length === 1) {
 				return selectedModels[0] ==='' ? $models[0]?.model : model
 			}
 			else {
+
+				// if($user?.isPro) {
+				// 	return  $models.map((m) => m.id).includes(model) ? model : ''
+				// }
+				// else {
+				// 	return  $models.map((m) => m.id).includes(model) ? model : ''
+				// }
+
+
 				return 	$models.map((m) => m.id).includes(model) ? model : ''
 			}
 			

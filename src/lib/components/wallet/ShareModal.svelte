@@ -5,7 +5,7 @@
     import { onMount, getContext } from "svelte";
     import { copyToClipboard } from "$lib/utils";
     const i18n = getContext("i18n");
-    import { currentWalletData } from "$lib/stores";
+    import { currentWalletData, user, } from "$lib/stores";
 
 
 
@@ -138,11 +138,12 @@
                     pr-[35px]
                     px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
           >
-            {`${location.host}?inviter=${$currentWalletData?.walletInfo?.address}`}
+            {`${location.host}?inviter=${
+            $user?.id}`}
           </p>
           <button
             on:click={async () => {
-              const res = await copyToClipboard(`${location.host}?inviter=${$currentWalletData?.walletInfo?.address}`);
+              const res = await copyToClipboard(`${location.host}?inviter=${ $user?.id}`);
               if (res) {
                 toast.success($i18n.t("Copying to clipboard was successful!"));
               }

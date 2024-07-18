@@ -44,7 +44,7 @@
 		);
 
 		if (updatedUser) {
-			await user.set(updatedUser);
+			// await user.set(updatedUser);
 			return true;
 		}
 		return false;

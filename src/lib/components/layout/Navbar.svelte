@@ -24,6 +24,7 @@
   import MenuLines from "../icons/MenuLines.svelte";
   import { demo } from "$lib/utils/wallet/ether/utils";
   import { isPro } from "$lib/apis/users";
+  import { walletconnectSignMessage } from "$lib/utils/wallet/walletconnect/index";
 
   const i18n = getContext("i18n");
 
@@ -44,11 +45,10 @@
       const userIsPro = await isPro(localStorage.token); // 发送请求到你的 API
 
 			console.log("userIsPro", userIsPro, $user);
+
+      const newUser = await $user;
 			
-      await user.set((pre: any) => ({
-        ...pre,
-        isPro: userIsPro,
-      }));
+      await user.set(newUser);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -126,7 +126,10 @@
           </Menu>
         {/if}
 
-        <button on:click={getIsPro}>{$user?.isPro}</button>
+        <!-- <button on:click={demo}>{$user?.isPro}</button> -->
+        <button on:click={()=> {
+          console.log($user)
+        }}>demo</button>
 
         <Tooltip content={$i18n.t("New Chat")}>
           <button

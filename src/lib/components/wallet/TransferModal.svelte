@@ -103,6 +103,8 @@
             //   }
             // }
           );
+          toast.success($i18n.t("Transfer successful!"));
+
         } catch (error) {
           loading = false;
           toast.error(error?.message);
@@ -110,7 +112,6 @@
         loading = false;
 
         show = false;
-        toast.success($i18n.t("Transfer successful!"));
         updateWalletData($currentWalletData?.walletInfo)
 
         // try {
@@ -245,20 +246,7 @@
           </div>
         {/if}
 
-        {#if gas}
-          <div class="">
-            {$i18n.t("")}
-            估算的燃料费：
 
-            {`${ethers.formatUnits(gas?.gasPrice)} < ${ethers.formatUnits(
-              gas?.maxFeePerGas
-            )} DBC `}
-
-            <div>
-              {`最大费用：< ${ethers.formatUnits(gas?.maxFeePerGas)} DBC`}
-            </div>
-          </div>
-        {/if}
       </div>
 
       <!-- <div class="mb-6 pt-0.5 max-w-[300px]">
@@ -281,6 +269,20 @@
           </div>
         {/if}
       </div> -->
+
+      {#if amount && gas}
+      <div class="-mt-2">
+        {$i18n.t("Estimated fuel costs:")}
+
+        {`${ethers.formatUnits(gas?.gasPrice)} < ${ethers.formatUnits(
+          gas?.maxFeePerGas
+        )} DBC `}
+
+        <div>
+          {`Maximum cost: < ${ethers.formatUnits(gas?.maxFeePerGas)} DBC`}
+        </div>
+      </div>
+    {/if}
 
       <div class="flex justify-end">
         <button

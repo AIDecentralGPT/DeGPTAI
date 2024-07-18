@@ -1,3 +1,99 @@
+新建钱包后，unlocking完要等walletsignin执行完毕
+领取奖励的操作，要有message和success文案
+转账失败，也报 转账成功了。要修改
+登录面板两个都有，要看一下咋回事
+
+
+Clock In的时候加上loading
+为什么奖励里面有两次 new wallet
+Creating的时候，加上 灰色背景
+
+
+
+
+测试邀请，能否得到奖励
+
+自定义钱包，转账有问题，（购买的时候）
+购买的时候加上loading
+
+transferDgc和walletconnectSendDGCTransaction，现在购买订阅pro的请求，逻辑还没做完
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. 模型选择，vip选择后，如何还原？是还原还是怎么办
+
+2. 邀请链接进去的时候，自动登录了三方钱包。（检测到是邀请链接，不要自动登录三方钱包）
+3. 邀请后没生效？没在列表中
+
+ async function handleWalletSignIn(walletImported: any, password: string, inviterId?:string) {
+  // const { nonce, signature } = await signData(pair, password, undefined);
+
+  // console.log("pair, password", pair, password);
+
+    const signature = await signChallenge(walletImported, prefixedMessage);
+  console.log("Signature:", signature);
+  
+  const walletSignInResult = await walletSignIn({
+    address: walletImported?.address,
+    nonce: prefixedMessage,
+    device_id: localStorage.visitor_id ,
+    // data: pair,
+    signature,
+    id: localStorage.visitor_id,
+    inviter_id: inviterId
+  });
+
+这里有问题，在三方钱包登录的时候，不能这么签名是不是，好像也可以
+
+
+
+4. 这里添加邀请人的时候，扯到新逻辑（要交互之类的）。 可以先本地存一下localstorage，然后发请求的时候，判断一下，然后发送添加邀请请求
+
+5. 登录多个钱包。如何处理？
+
+6. 加上首页的各个按钮
+
+8. 钱包登录的时候，现在的逻辑不适应于 三方钱包
+
+
+
+
+
+
+
+7. 奖励的是dbc现在
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 问题：
 问产品： 不需要查看转账记录吗

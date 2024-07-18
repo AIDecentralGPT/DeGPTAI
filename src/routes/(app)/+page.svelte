@@ -103,6 +103,7 @@
   // $: {
   //   console.log('pageUpdateNumber changed:', $pageUpdateNumber);
   // }
+	let firstResAlready = false // 已经有了第一个响应
 
 	$: if (history.currentId !== null) {
 		let _messages = [];
@@ -290,7 +291,7 @@
 
 		await Promise.all(
 			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
-				async (modelId) => {
+				async (modelId, index) => {
 					console.log('modelId', modelId);
 					const model = $models.filter((m) => m.id === modelId).at(0);
 
@@ -311,6 +312,7 @@
 						// Add message to history and Set currentId to messageId
 						history.messages[responseMessageId] = responseMessage;
 						history.currentId = responseMessageId;
+
 
 						// Append messageId to childrenIds of parent message
 						if (parentId !== null) {
@@ -351,6 +353,8 @@
 
 						await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
 
+
+		
 						// if (model?.external) {
 						// 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
 						// } else if (model) {
@@ -362,6 +366,8 @@
 				}
 			)
 		);
+
+		firstResAlready = false // 所有模型响应结束后，还原firstResAlready为初始状态false
 
 		await chats.set(await getChatList(localStorage.token));
 	};
@@ -701,6 +707,12 @@
 			model?.urls?.[0]
 			
 			);
+
+			if(!firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+			}
+
 
 			// Wait until history/message have been updated
 			await tick();
@@ -1214,7 +1226,7 @@
 					bind:prompt
 					bottomPadding={files.length > 0}
 					suggestionPrompts={selectedModelfile?.suggestionPrompts ??
-						$config.default_prompt_suggestions}
+						$config?.default_prompt_suggestions}
 					{sendPrompt}
 					{continueGeneration}
 					{regenerateResponse}

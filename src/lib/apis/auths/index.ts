@@ -1,4 +1,5 @@
 import { WEBUI_API_BASE_URL } from "$lib/constants";
+import { user } from "$lib/stores";
 
 export const getSessionUser = async (token: string) => {
   let error = null;
@@ -17,6 +18,9 @@ export const getSessionUser = async (token: string) => {
     .catch((err) => {
       console.log(err);
       error = err.detail;
+      localStorage.removeItem('token')
+      printSignIn()
+
       return null;
     });
 
@@ -176,17 +180,22 @@ export const printSignIn = async () => {
   });
 
 
-  // 每次指纹登录后都删除pair
-  localStorage.removeItem("pair");
 
+  // // 每次指纹登录后都删除pair
+  // localStorage.removeItem("pair");
 
-  return await res.json();
+  const userInfo = await res.json()
+
+  user.set(userInfo)
+
+  return userInfo;
 };
 
 // 登录钱包
 export const walletSignIn = async (payload: {
 	address: string,
   nonce: string,
+  address_type: string,
   data?: any,
   signature: string,
   id: string,

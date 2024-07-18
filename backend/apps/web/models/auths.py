@@ -57,6 +57,7 @@ class UserResponse(BaseModel):
     name: str
     role: str
     profile_image_url: str
+    address_type: str
 
 
 class SigninResponse(Token, UserResponse):
@@ -80,9 +81,10 @@ class WalletSigninForm(BaseModel):
     # password: str
     # visiter_id: Optional[str] = None
     address: str
+    address_type: str
     nonce:str
     signature: str
-    id: str
+    # id: str
     device_id: str
     inviter_id: Optional[str] = None
 
@@ -134,9 +136,10 @@ class AuthsTable:
         profile_image_url: str = "/user.png",
         role: str = "user",
         id: str = None,
-        inviter_id: str = None
+        inviter_id: str = None,
+        address_type: str = None,
     ) -> Optional[UserModel]:
-        print("insert_new_auth:1", role, inviter_id)
+        print("insert_new_auth:1", role, inviter_id, address_type)
 
         # id = str(uuid.uuid4())
 
@@ -144,10 +147,10 @@ class AuthsTable:
         auth = AuthModel(
             **{"id": id, "email": email, "password": password, "active": True}
         )
-        result = Auth.create(**auth.model_dump())
+        result = Auth.create(**auth.dict())
 
 
-        user = Users.insert_new_user(id, name, email, inviter_id, role=role, profile_image_url=profile_image_url)
+        user = Users.insert_new_user(id, name, email, inviter_id, address_type=address_type, role=role, profile_image_url=profile_image_url)
 
         if result and user:
             return user

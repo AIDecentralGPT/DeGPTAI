@@ -14,13 +14,24 @@
   import Modal from "../common/Modal.svelte";
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
-  import { currentWalletData, models, settings, user, inviterId } from "$lib/stores";
-  import { handleWalletSignIn, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
-  import { createAccount, downloadKeyStore } from "$lib/utils/wallet/ether/utils.js";
+  import {
+    currentWalletData,
+    models,
+    settings,
+    user,
+    inviterId,
+  } from "$lib/stores";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
+  import {
+    createAccount,
+    downloadKeyStore,
+    handleWalletSignIn,
+  } from "$lib/utils/wallet/ether/utils.js";
 
   const i18n = getContext("i18n");
 
   export let show = false;
+  let loading = false;
 
   let showPassword = false;
   let password = "";
@@ -36,8 +47,8 @@
     }
   }
 
-  $: if(!show) {
-    walletCreatedData = null
+  $: if (!show) {
+    walletCreatedData = null;
   }
 </script>
 
@@ -107,9 +118,6 @@
                   />
                 {/if}
 
-
-              
-
                 <button
                   type="button"
                   class="absolute inset-y-0 right-0 px-3 py-2 text-sm dark:text-gray-300 dark:bg-gray-850 rounded-md"
@@ -165,26 +173,26 @@
               {/if}
             </div>
 
-
             <input
-            bind:value={$inviterId}
-            type="text"
-            class="mt-4 px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-            placeholder={$i18n.t("Enter the inviter id here")}
-            autocomplete="current-password"
-            on:input={validatePassword}
-            required
-          />
+              bind:value={$inviterId}
+              type="text"
+              class="mt-4 px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+              placeholder={$i18n.t("Enter the inviter id here")}
+              autocomplete="current-password"
+              on:input={validatePassword}
+              required
+            />
           </div>
-
-       
 
           <!-- 提交按钮 -->
           <div class="flex justify-end my-4">
             <button
+              disabled={loading}
               class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+              style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
               type="submit"
               on:click={async () => {
+                loading = true;
                 // const res = await createAccountFromSeed(); // 创建新账户
                 // walletCreatedData = res;
                 // const pair = walletCreatedData?.pair;
@@ -195,38 +203,32 @@
                 // // 请求服务端登录钱包账户
                 // await handleWalletSignIn(pair, password, $inviterId);
 
-
-
                 // 1. 创建钱包
-                const {wallet, keystore} = await createAccount(password)
+                const { wallet, keystore } = await createAccount(password);
                 console.log("wallet", wallet);
-                keystoreJson = keystore
+                keystoreJson = keystore;
 
-                // 2. 展示钱包面板数据
+                // 2. 请求服务端登录钱包账户
+                await handleWalletSignIn({
+                  walletImported: wallet,
+                  password,
+                  address_type: "dbc",
+                  inviterId: $inviterId
+
+                });
+
+                loading = false;
+
+                // 3. 展示钱包面板数据
                 walletCreatedData = wallet;
-                updateWalletData(
-                  wallet
-                
-                // {
-                //   address: wallet.address,
-                //   // publicKey: wallet.publicKey,
-                //   // privateKey: wallet.privateKey,
-                //   // mnemonic: wallet.mnemonic,
-            
-                // }
-              );
-
-
-                
-
-
-
-
-
-
+                updateWalletData(wallet);
               }}
             >
-              {$i18n.t("Create")}
+              {#if loading}
+                <span>{$i18n.t("Creating")}</span>
+              {:else}
+                <span>{$i18n.t("Create")}</span>
+              {/if}
             </button>
           </div>
         </div>
@@ -236,8 +238,9 @@
       {#if walletCreatedData}
         <div>
           <p>
-            {$i18n.t("Save your private key file in a safe place, such as writing it down and putting it in a safe")}
-       
+            {$i18n.t(
+              "Save your private key file in a safe place, such as writing it down and putting it in a safe"
+            )}
           </p>
 
           <button
@@ -249,15 +252,12 @@
               //   walletCreatedData?.pair,
               //   password
               // );
-              if(keystoreJson) {
+              if (keystoreJson) {
                 console.log("keystoreJson", keystoreJson);
-                
-              // 下载keystore文件
-              downloadKeyStore(keystoreJson);
+
+                // 下载keystore文件
+                downloadKeyStore(keystoreJson);
               }
-
-              
-
 
               // 保存账户对
 

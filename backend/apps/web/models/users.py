@@ -7,6 +7,8 @@ from utils.misc import get_gravatar_url  # 导入获取Gravatar URL的方法
 
 from apps.web.internal.db import DB  # 导入数据库实例DB
 from apps.web.models.chats import Chats  # 导入Chats模型
+from apps.web.models.rewards import RewardsTableInstance
+from fastapi import APIRouter, Depends, HTTPException, Request
 
 ####################
 # User DB Schema
@@ -29,6 +31,7 @@ class User(Model):
     created_at = BigIntegerField()  # 定义大整数字段created_at
     api_key = CharField(null=True, unique=True)  # 定义可为空且唯一的字符字段api_key
     inviter_id = CharField(null=True)  # 邀请人id
+    address_type = CharField(null=True)
     # phone_number = CharField(null=True, unique=True)  # 定义可为空，唯一的字符字段phone_number
 
     class Meta:
@@ -48,6 +51,7 @@ class UserModel(BaseModel):
 
     api_key: Optional[str] = None  # 定义可选的api_key字段，类型为字符串，默认值为None
     inviter_id: Optional[str] = None
+    address_type: Optional[str] = None
     # phone_number: Optional[str]   # 定义phone_number字段，类型为可选字符串
 
 ####################
@@ -72,6 +76,11 @@ class UsersTable:
         self.db = db  # 初始化数据库实例
         self.db.create_tables([User])  # 创建User表
 
+    # 判断 result 是否是以0x开头的钱包地址
+    def is_ethereum_address(address):
+        print("验证是不是钱包地址" ,isinstance(address, str) , address.startswith("0x"))
+        return isinstance(address, str) and address.startswith("0x")
+
     # 插入新用户
     def insert_new_user(
         self,
@@ -81,6 +90,7 @@ class UsersTable:
         inviter_id: str ,
         profile_image_url: str = "/user.png",
         role: str = "user",
+        address_type: str = None,
     ) -> Optional[UserModel]:
         user = UserModel(
             **{
@@ -92,14 +102,36 @@ class UsersTable:
                 "last_active_at": int(time.time()),
                 "created_at": int(time.time()),
                 "updated_at": int(time.time()),
-                "inviter_id": inviter_id
+                "inviter_id": inviter_id,
+                "address_type": address_type
             }
         )  # 创建UserModel实例
+
+
         result = User.create(**user.model_dump())  # 在数据库中创建新用户
-        if result:
+
+        print("User.create result", result.id, user)
+
+        # 在这里给新钱包发送奖励
+        if result and UsersTable.is_ethereum_address(result.id):
+            print("开始给新钱包发送奖励")
+            # 发送创建钱包奖励
+            reward_type = "new_wallet"  # 创建钱包奖励
+            new_wallet_success = RewardsTableInstance.send_reward(user.id, 200, reward_type)
+
+
+        # if inviter_id:
+        #     print("开始给邀请人发送奖励")
+        #     # 发送创建钱包奖励
+        #     reward_type2 = "friend_invite"  # 创建钱包奖励
+        #     invite_reward_success = RewardsTableInstance.send_reward(user.id, 100, reward_type2, invitee=inviter_id)
+        
+        # if invite_reward_success and new_wallet_success:
             return user  # 返回创建的用户
         else:
-            return None  # 如果创建失败，返回None
+            raise HTTPException(status_code=500, detail="Failed to send reward")
+        
+   
 
     # 根据id获取用户
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
@@ -155,12 +187,28 @@ class UsersTable:
             return None  # 如果查询失败，返回None
 
     # 获取用户列表
-    def get_users(self, skip: int = 0, limit: int = 50) -> List[UserModel]:
-        return [
+    def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "") -> List[UserModel]:
+        query = User.select()
+
+        # 角色筛选
+        if role:
+            query = query.where(User.role == role)
+
+        # 搜索
+        if search:
+            query = query.where((User.name.contains(search)) | (User.id.contains(search)))
+
+        # 获取总记录数
+        total = query.count()
+
+        # 获取当前页的记录
+        users = [
             UserModel(**model_to_dict(user))
-            for user in User.select()
-            # .limit(limit).offset(skip)  # 限制查询结果的数量和偏移量
+            for user in query.limit(10).offset((skip - 1)*10)  # 限制查询结果的数量和偏移量
         ]
+
+        # 返回结果
+        return {'total': total, 'users': users}
 
     # 获取用户数量
     def get_num_users(self) -> Optional[int]:

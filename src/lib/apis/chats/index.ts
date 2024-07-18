@@ -1,6 +1,5 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 import { getTimeRange } from '$lib/utils';
-import { printSignIn } from '../auths';
 import { config, user, theme, WEBUI_NAME, mobile, currentWalletData, showOpenWalletModal } from "$lib/stores";
 
 export const createNewChat = async (token: string, chat: object) => {

@@ -1,11 +1,13 @@
 // utils.js
 
-import { ethers } from "ethers";
+import { ethers, uuidV4 } from "ethers";
+
 import ABI from "./abi.json";
 import { walletSignIn } from "$lib/apis/auths";
 import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
+import { walletconnectSignMessage } from "../walletconnect/index";
 
 // 定义 RPC URL 和 Chain ID
 const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
@@ -35,19 +37,18 @@ export async function getCurrencyPrice(currency) {
 // 加密钱包并保存到 localStorage
 export async function storeWallet(wallet, password) {
   console.log("wallet", wallet, password);
-  
+
   const keystore = await wallet.encrypt(password);
-  console.log('加密后的Keystore文件:', keystore);
-  return keystore
+  console.log("加密后的Keystore文件:", keystore);
+  return keystore;
 
   // // 将加密后的Keystore文件存储到LocalStorage（一般不这么干，黑客入侵容易被盗）
   // localStorage.setItem('keystore', keystore);
 }
 
-
 // 从 localStorage 中加载并解密钱包
 export async function loadWallet(password) {
-  const json = localStorage.getItem('ethereum_wallet');
+  const json = localStorage.getItem("ethereum_wallet");
   const wallet = await ethers.Wallet.fromEncryptedJson(json, password);
   return wallet;
 }
@@ -55,8 +56,6 @@ export async function loadWallet(password) {
 // loadWallet('your_password').then(wallet => {
 //   console.log('Address:', wallet.address);
 // });
-
-
 
 // 创建一个新的 钱包 账户
 export async function createAccount(password: string) {
@@ -72,10 +71,6 @@ export async function createAccount(password: string) {
 
   //       // const ethValue = ethers.formatEther(balance);
   //       console.log("链上余额", balance);
-        
-
-
-
 
   // 设置密码以加密Keystore文件
   const keystore = await storeWallet(wallet, password);
@@ -87,24 +82,23 @@ export async function createAccount(password: string) {
 }
 
 // 下载钱包Json
-export function downloadKeyStore(keyStoreStr:string) {
+export function downloadKeyStore(keyStoreStr: string) {
   console.log("keyStoreStr", keyStoreStr);
-  
 
-    const blob = new Blob([JSON.stringify(keyStoreStr)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-  
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "keystore.json";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  
-    // console.log("Generated Wallet:", json);
-  
+  const blob = new Blob([JSON.stringify(keyStoreStr)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "keystore.json";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // console.log("Generated Wallet:", json);
 }
-
 
 // ----------导出和导入JSON文件-------------
 // // 导出为加密 JSON keystore 文件
@@ -128,47 +122,38 @@ export function downloadKeyStore(keyStoreStr:string) {
 
 // 从加密 JSON keystore 文件导入
 async function importFromEncryptedJson(json, password) {
-
-
   const wallet = await ethers.Wallet.fromEncryptedJson(json, password);
-  console.log('Imported Wallet Address:', wallet.address);
+  console.log("Imported Wallet Address:", wallet.address);
   return wallet;
 }
-
 
 // 签名消息
 async function signMessage(wallet, message) {
   const signature = await wallet.signMessage(message);
-  console.log('Signature:', signature);
+  console.log("Signature:", signature);
   return signature;
 }
 
 // 验证签名
 function verifyMessage(message, signature) {
   const recoveredAddress = ethers.utils.verifyMessage(message, signature);
-  console.log('Recovered Address:', recoveredAddress);
+  console.log("Recovered Address:", recoveredAddress);
   return recoveredAddress;
 }
 
-
-
 // --------钱包登录------------
-
-
-
-
-
-
 
 // 模拟的随机挑战或数据
 const message = "demo";
-const prefixedMessage = "\x19Ethereum Signed Message:\n" + message.length + message;
-
-
+const prefixedMessage =
+  "\x19Ethereum Signed Message:\n" + message.length + message;
 
 // 用户签名挑战
 export async function signChallenge(wallet, challenge) {
-  const walletWithProvider = new ethers.Wallet(wallet.privateKey, new ethers.JsonRpcProvider());
+  const walletWithProvider = new ethers.Wallet(
+    wallet.privateKey,
+    new ethers.JsonRpcProvider()
+  );
   const signature = await walletWithProvider.signMessage(challenge);
   return signature;
 }
@@ -179,7 +164,6 @@ export async function verifySignature(wallet, challenge, signature) {
   return recoveredAddress === wallet.address;
 }
 
-
 // 使用助记词恢复钱包
 function restoreWallet(mnemonic) {
   const wallet = ethers.Wallet.fromMnemonic(mnemonic);
@@ -187,7 +171,6 @@ function restoreWallet(mnemonic) {
   console.log("Address:", wallet.address);
   return wallet;
 }
-
 
 // 使用示例
 async function demo(params) {
@@ -197,26 +180,26 @@ async function demo(params) {
   console.log("Private Key:", wallet.privateKey);
   console.log("Mnemonic:", wallet.mnemonic.phrase); // 提示用户备份这个助记词
 
-
   // const signature = await signChallenge(wallet, message);
   // console.log("Signature:", signature);
 
   // const isValid = await verifySignature(wallet, message, signature);
   // console.log("Signature Valid:", isValid);
 
+  // 用户备份助记词后，可以用以下代码恢复钱包
+  const restoredWallet = restoreWallet(wallet.mnemonic.phrase);
 
+  // 签名挑战
+  const signature = await signChallenge(restoredWallet, message);
+  console.log("Signature:", signature);
 
-    // 用户备份助记词后，可以用以下代码恢复钱包
-    const restoredWallet = restoreWallet(wallet.mnemonic.phrase);
-
-    // 签名挑战
-    const signature = await signChallenge(restoredWallet, message);
-    console.log("Signature:", signature);
-  
-    // 验证签名
-    const isValid = await verifySignature(restoredWallet.address, message, signature);
-    console.log("Signature Valid:", isValid);
-  
+  // 验证签名
+  const isValid = await verifySignature(
+    restoredWallet.address,
+    message,
+    signature
+  );
+  console.log("Signature Valid:", isValid);
 }
 
 // 通过keystore和password 导入钱包
@@ -225,51 +208,88 @@ async function importWallet(encryptedJson, password) {
   const importedWallet = await importFromEncryptedJson(encryptedJson, password);
   console.log("importedWallet", importedWallet);
   return importedWallet;
-  
 }
-
 
 async function unLockWithJsonAndPwdDemo() {
   const wallet = ethers.Wallet.createRandom();
 
+  const password = "your_password";
 
-
-  const password = 'your_password';
-  
   // 导出加密 JSON keystore 文件
   const encryptedJson = await exportEncryptedJson(wallet, password);
-  
+
   // 从加密 JSON keystore 文件导入钱包
   const importedWallet = await importFromEncryptedJson(encryptedJson, password);
-  
+
   // 签名和验证消息
-  const message = 'Hello, Ethereum!';
+  const message = "Hello, Ethereum!";
   const signature = await signMessage(importedWallet, message);
   const isValid = verifyMessage(message, signature) === importedWallet.address;
-  
-  console.log('Signature Valid:', isValid);
+
+  console.log("Signature Valid:", isValid);
+}
+
+// Generate a random message
+function generateRandomMessage(length) {
+  const randomBytes = new Uint8Array(length);
+  crypto.getRandomValues(randomBytes);
+  return ethers.hexlify(randomBytes);
 }
 
 
 
 // 登录钱包
- async function handleWalletSignIn(walletImported: any, password: string, inviterId?:string) {
-  // const { nonce, signature } = await signData(pair, password, undefined);
+async function handleWalletSignIn({
+  walletImported,
+  address_type,
+  inviterId,
+}: {
+  walletImported: any;
+  address_type: string;
+  inviterId?: string;
+  signature?: string;
+}) {
+  let walletSignInResult = {};
 
-  // console.log("pair, password", pair, password);
+  if (address_type === "threeSide") {
+    // Example: Generate a random message of 32 bytes (256 bits)
+    const randomMessage = generateRandomMessage(32);
+    // const signature = threeSideSignature;
+    const signature = await walletconnectSignMessage(randomMessage)
+
+    if (signature) {
+      walletSignInResult = await walletSignIn({
+        address: walletImported?.address,
+        nonce: randomMessage,
+        device_id: localStorage.visitor_id || '',
+        address_type: address_type || "dbc",
+        // data: pair,
+        signature,
+        id: localStorage.visitor_id || '',
+        inviter_id: inviterId,
+      });
+    }
+  }
+
+  if (address_type === "dbc") {
+    // const { nonce, signature } = await signData(pair, password, undefined);
+
+    // console.log("pair, password", pair, password);
 
     const signature = await signChallenge(walletImported, prefixedMessage);
-  console.log("Signature:", signature);
-  
-  const walletSignInResult = await walletSignIn({
-    address: walletImported?.address,
-    nonce: prefixedMessage,
-    device_id: localStorage.visitor_id ,
-    // data: pair,
-    signature,
-    id: localStorage.visitor_id,
-    inviter_id: inviterId
-  });
+    console.log("Signature:", signature);
+
+    walletSignInResult = await walletSignIn({
+      address: walletImported?.address,
+      nonce: prefixedMessage,
+      device_id: localStorage.visitor_id,
+      address_type: address_type || "dbc",
+      // data: pair,
+      signature,
+      id: localStorage.visitor_id,
+      inviter_id: inviterId,
+    });
+  }
 
   if (walletSignInResult?.token) {
     localStorage.removeItem("token");
@@ -285,29 +305,27 @@ async function unLockWithJsonAndPwdDemo() {
 
     console.log("walletSignInResult", walletSignInResult);
 
+
     if (walletSignInResult.id) {
       // ----------------
-      await chats.set([]) 
+      await chats.set([]);
       // 获取钱包面板数据
       updateWalletData(walletImported);
     }
   }
 }
 
-
-export { provider, demo,  importWallet, handleWalletSignIn, getGas };
-
+export { provider, demo, importWallet, handleWalletSignIn, getGas };
 
 async function getGas() {
-    // 获取当前推荐的 gas price
-    const gasPrice = (await provider.getFeeData()).gasPrice
-  
+  // 获取当前推荐的 gas price
+  const gasPrice = (await provider.getFeeData()).gasPrice;
 
-    // 设置 gasLimit，可以根据具体情况设定一个合理的值
-    const gasLimit = 21000; // 这里假设转账交易的 gasLimit
+  // 设置 gasLimit，可以根据具体情况设定一个合理的值
+  const gasLimit = 21000; // 这里假设转账交易的 gasLimit
 
-    return {
-      gasPrice: gasPrice,
-      gasLimit: gasLimit
-    }
+  return {
+    gasPrice: gasPrice,
+    gasLimit: gasLimit,
+  };
 }

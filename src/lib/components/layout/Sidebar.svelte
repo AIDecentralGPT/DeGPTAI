@@ -20,6 +20,7 @@
     showRewardsModal,
     currentWalletData,
     pageUpdateNumber,
+    showRewardsHistoryModal,
   } from "$lib/stores";
   import {
     exportAccountForKeystore,
@@ -64,6 +65,7 @@
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import { showWallet, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
   import RewardsModal from "../wallet/RewardsModal.svelte";
+  import RewardsHistoryModal from "../wallet/RewardsHistoryModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -287,6 +289,7 @@
 <BuyCoinModal bind:show={$showBuyCoinModal} />
 <ShareModal bind:show={$showShareModal} />
 <RewardsModal bind:show={$showRewardsModal} />
+<RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 

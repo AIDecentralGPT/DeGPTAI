@@ -36,6 +36,7 @@
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
   import { handleSigninAsIntialStatus } from '$lib/utils/wallet/walletUtils';
+  import { getSessionUser } from '$lib/apis/auths';
 
 
 	
@@ -53,6 +54,8 @@
 	let showShortcuts = false;
 
 	const getModels = async () => {
+		// console.log("_getModels(localStorage.token)", _getModels(localStorage.token));
+		
 		return _getModels(localStorage.token);
 	};
 
@@ -71,10 +74,33 @@
 		}
 	};
 
-	onMount(async () => {
+
+
+	onMount( async () => {
+
+
 
 		// localStorage.setItem("token", "public_token")
-		
+		if ($config) {
+				if (localStorage.token) {
+					// Get Session User Info
+					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
+						toast.error(error);
+						return null;
+					});
+
+					if (sessionUser) {
+						// Save Session User to Store
+						await user.set(sessionUser);
+					} else {
+						// Redirect Invalid Session User to /auth Page
+						// localStorage.removeItem('token');
+						// await goto('/auth');
+					}
+				} else {
+					// await goto('/auth');
+				}
+			}
 
 
 		console.log(
@@ -84,7 +110,7 @@
 
 		if ($user === undefined) {
 			// await goto('/auth');
-			await handleSigninAsIntialStatus()
+			// await handleSigninAsIntialStatus()
 			await models.set(await getModels());
 
 			
@@ -112,15 +138,15 @@
 			await models.set(await getModels());
 			await settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
 
-			await modelfiles.set(await getModelfiles(localStorage.token));
-			await prompts.set(await getPrompts(localStorage.token));
-			await documents.set(await getDocs(localStorage.token));
-			await tags.set(await getAllChatTags(localStorage.token));
+			// await modelfiles.set(await getModelfiles(localStorage.token));
+			// await prompts.set(await getPrompts(localStorage.token));
+			// await documents.set(await getDocs(localStorage.token));
+			// await tags.set(await getAllChatTags(localStorage.token));
 
-			modelfiles.subscribe(async () => {
-				// should fetch models
-				await models.set(await getModels());
-			});
+			// modelfiles.subscribe(async () => {
+			// 	// should fetch models
+			// 	await models.set(await getModels());
+			// });
 
 			document.addEventListener('keydown', function (event) {
 				const isCtrlPressed = event.ctrlKey || event.metaKey; // metaKey is for Cmd key on Mac
@@ -191,7 +217,6 @@
 				showChangelog.set(localStorage.version !== $config.version);
 			}
 
-			await tick();
 		}
 
 		loaded = true;
@@ -219,6 +244,7 @@
 
 <div class="app relative">
 	<div
+
 		class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row"
 	>
 		{#if loaded}
