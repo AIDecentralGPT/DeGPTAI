@@ -33,12 +33,12 @@ function transformModelData(input) {
 export const getDeModels = async (token: string = "") => {
   let error = null;
 
-  // const host = "https://chat.degpt.ai"
+  const host = "https://chat.degpt.ai"
 
-  const host =
-    window.location.hostname === "localhost"
-      ? "/modelapi"
-      : "https://chat.degpt.ai";
+  // const host =
+  //   window.location.hostname === "localhost"
+  //     ? "/modelapi"
+  //     : "https://chat.degpt.ai";
 
   // Ali通用大模型 Qwen2-72B
   // Meta通用大模型 LIama3 70B
