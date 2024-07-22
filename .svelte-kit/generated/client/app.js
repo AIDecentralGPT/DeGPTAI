@@ -21,7 +21,8 @@ export const nodes = [
 	() => import('./nodes/17'),
 	() => import('./nodes/18'),
 	() => import('./nodes/19'),
-	() => import('./nodes/20')
+	() => import('./nodes/20'),
+	() => import('./nodes/21')
 ];
 
 export const server_loads = [];
@@ -29,21 +30,22 @@ export const server_loads = [];
 export const dictionary = {
 		"/(app)": [4,[2]],
 		"/(app)/admin": [5,[2]],
-		"/auth": [16],
+		"/auth": [17],
+		"/(app)/crypto": [7,[2]],
 		"/(app)/c/[id]": [6,[2]],
-		"/error": [17],
-		"/modelfiles/create": [18],
-		"/prompts/create": [19],
-		"/s/[id]": [20],
-		"/(app)/workspace": [7,[2,3]],
-		"/(app)/workspace/documents": [8,[2,3]],
-		"/(app)/workspace/modelfiles": [9,[2,3]],
-		"/(app)/workspace/modelfiles/create": [10,[2,3]],
-		"/(app)/workspace/modelfiles/edit": [11,[2,3]],
-		"/(app)/workspace/playground": [12,[2,3]],
-		"/(app)/workspace/prompts": [13,[2,3]],
-		"/(app)/workspace/prompts/create": [14,[2,3]],
-		"/(app)/workspace/prompts/edit": [15,[2,3]]
+		"/error": [18],
+		"/modelfiles/create": [19],
+		"/prompts/create": [20],
+		"/s/[id]": [21],
+		"/(app)/workspace": [8,[2,3]],
+		"/(app)/workspace/documents": [9,[2,3]],
+		"/(app)/workspace/modelfiles": [10,[2,3]],
+		"/(app)/workspace/modelfiles/create": [11,[2,3]],
+		"/(app)/workspace/modelfiles/edit": [12,[2,3]],
+		"/(app)/workspace/playground": [13,[2,3]],
+		"/(app)/workspace/prompts": [14,[2,3]],
+		"/(app)/workspace/prompts/create": [15,[2,3]],
+		"/(app)/workspace/prompts/edit": [16,[2,3]]
 	};
 
 export const hooks = {

@@ -15,7 +15,7 @@
     watchAccount,
   } from "@wagmi/core";
   import { ethers } from "ethers";
-  import { handleWalletSignIn, provider } from "$lib/utils/wallet/ether/utils";
+  import { handleWalletSignIn, provider, signOut } from "$lib/utils/wallet/ether/utils";
   import {
     showPriceModal,
     showRewardsModal,
@@ -113,8 +113,8 @@
   });
 
   watchAccount(config, {
-    async onChange(account) {
-      console.log("1", account);
+    async onChange(account, prevAccount) {
+      console.log("1", account, prevAccount);
       // if (isConnected) {
       //   signMessage(config, { message: "hello world" }).then((res) => {
       //     console.log(123, res);
@@ -125,7 +125,7 @@
 
       $threesideAccount = account;
 
-      if (account.status === "connected" && !localStorage.token) {
+      if (account.status === "connected" ) {
         handleWalletSignIn({
           walletImported: {
             address: account?.address,
@@ -133,19 +133,20 @@
           address_type: "threeSide",
         });
       }
-      if (account.status === "disconnected") {
-        localStorage.removeItem("token");
-        printSignIn();
+      if(account.status ==="disconnected" ) {
+        signOut();
       }
+
     },
   });
 
   function connect() {
-    console.log("三方钱包数据", threesideAccount);
+    console.log("三方钱包数据", getAccount(config), $user);
     // disconnect(config);
 
-    if (getAccount(config).isConnected) {
+    if ($user?.id?.startsWith('0x') && getAccount(config).isConnected) {
       disconnect(config);
+        signOut();
     } else {
       modal.open();
     }
@@ -188,7 +189,6 @@
     </button>
   {/if}
 
-  <!-- <w3m-button id="web3button" label="链接钱包"  style="width: 100%;" /> -->
 
   {#if $user?.id?.startsWith("0x") && $user?.address_type === "threeSide"}
     <!-- <div class="py-2 px-3"> -->

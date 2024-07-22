@@ -12,7 +12,7 @@ import {
   switchChain,
 } from "@wagmi/core";
 import { defaultWagmiConfig } from "@web3modal/wagmi";
-import { mainnet, bsc } from "@wagmi/core/chains";
+import { mainnet, bsc , } from "@wagmi/core/chains";
 import { openProServices } from "$lib/apis/users";
 import { toast } from "svelte-sonner";
 
@@ -168,37 +168,110 @@ export const walletconnectSendDGCTransaction = async (value:number) => {
 
 
   // 定义常量
- export  const projectId = "a365ccf6c502136ee70fd89768611fc2";
+//  export  const projectId = "59443aa943b8865491317c04a19a8be3";
 
+//   const metadata = {
+//     name: "degpt",
+//     description: "Web3Modal Example",
+//     url: "https://web3modal.com",
+//     icons: ["https://avatars.githubusercontent.com/u/37784886"],
+//   };
+
+  // const dbcTestnet = {
+  //   id: 19850818,
+  //   name: "dbcTestnet",
+  //   network: "dbcTestnet",
+  //   rpcUrls: {
+  //     default: "https://rpc-testnet.dbcwallet.io",
+  //   },
+  //   nativeCurrency: {
+  //     name: "DBC",
+  //     symbol: "DBC",
+  //     decimals: 18,
+  //   },
+  //   blockExplorers: {
+  //     default: {
+  //       name: "Blockscout",
+  //       url: "https://blockscout-testnet.dbcscan.io",
+  //     },
+  //   },
+  //   testnet: true,
+  // };
+
+  // const chains = [dbcTestnet, mainnet, bsc];
+
+  // export const config = defaultWagmiConfig({
+  //   chains,
+  //   projectId,
+  //   metadata,
+  //   transports: {
+  //     [mainnet.id]: http(),
+  //     [bsc.id]: http(),
+  //     [dbcTestnet.id]: http(),
+  //   },
+  // });
+
+
+
+    // 1. Define constants
+    export   const projectId = '59443aa943b8865491317c04a19a8be3'
+    // 2. Create wagmiConfig
   const metadata = {
-    name: "degpt-demo",
+    name: "degpt",
     description: "Web3Modal Example",
     url: "https://web3modal.com",
     icons: ["https://avatars.githubusercontent.com/u/37784886"],
-  };
+  };  
+
+
+
+  // export const dbcTestnet =({
+  //   id: 19850818,
+  //   name: 'dbcTestnet',
+  //   nativeCurrency: {
+  //     decimals: 18,
+  //     name: 'BNB',
+  //     symbol: 'BNB',
+  //   },
+  //   rpcUrls: {
+  //     default: { http: ['https://rpc-testnet.dbcwallet.io'] },
+  //   },
+  //   blockExplorers: {
+  //     default: {
+  //       name: 'BscScan',
+  //       url: 'https://bscscan.com',
+  //       apiUrl: 'https://api.bscscan.com/api',
+  //     },
+  //   },
+   
+  // })
 
   const dbcTestnet = {
     id: 19850818,
     name: "dbcTestnet",
-    network: "dbcTestnet",
-    rpcUrls: {
-      default: "https://rpc-testnet.dbcwallet.io",
-    },
     nativeCurrency: {
       name: "DBC",
       symbol: "DBC",
       decimals: 18,
     },
+    // network: "dbcTestnet",
+    rpcUrls: {
+      default: { http: ['https://rpc-testnet.dbcwallet.io'] },
+    },
+
     blockExplorers: {
       default: {
         name: "Blockscout",
         url: "https://blockscout-testnet.dbcscan.io",
       },
     },
-    testnet: true,
+    // testnet: true,
   };
 
-  const chains = [dbcTestnet, mainnet, bsc];
+  
+  
+
+  const chains = [ mainnet, bsc,dbcTestnet,];
 
   export const config = defaultWagmiConfig({
     chains,

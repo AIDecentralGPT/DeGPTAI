@@ -208,9 +208,20 @@
 			$models.map((m) => m.id).includes(modelId) ? modelId : ''
 		);
 
-		if (selectedModels.includes('')) {
-			toast.error($i18n.t('Model not selected'));
-		} else if (messages.length != 0 && messages.at(-1).done != true) {
+
+console.log("selectedModels", selectedModels);
+
+
+		// const selectedModelsValid = selectedModels 
+if(selectedModels.length  <1) {
+	toast.error($i18n.t('Model not selected'));
+}
+		// if (selectedModels.includes('')) {
+		// 	// 如果是‘’，就去掉。只要有选中的就行
+		// 	toast.error($i18n.t('Model not selected'));
+		// }
+		
+		else if (messages.length != 0 && messages.at(-1).done != true) {
 			// Response not done
 			console.log('wait');
 		} else if (
@@ -361,7 +372,9 @@
 						// 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
 						// }
 					} else {
-						toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+console.error($i18n.t(`Model {{modelId}} not found`, { }));
+						
+						// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
 				}
 			)
@@ -1074,7 +1087,8 @@
 				// 	);
 			}
 		} else {
-			toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+console.error($i18n.t(`Model {{modelId}} not found`, { }));
+// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 		}
 	};
 

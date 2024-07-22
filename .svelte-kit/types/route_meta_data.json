@@ -12,6 +12,9 @@
 	"/auth": [
 		"src/routes/+layout.js"
 	],
+	"/(app)/crypto": [
+		"src/routes/+layout.js"
+	],
 	"/(app)/c/[id]": [
 		"src/routes/+layout.js"
 	],

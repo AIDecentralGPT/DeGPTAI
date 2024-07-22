@@ -61,6 +61,8 @@ export const showBuyCoinModal = writable(false);
 export const showShareModal = writable(false);
 export const showRewardsModal = writable(false);
 export const showRewardsHistoryModal = writable(false);
+export const showRewardDetailModal = writable(false);
+
 
 
 

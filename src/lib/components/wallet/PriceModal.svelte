@@ -136,7 +136,7 @@
                 />
               </svg>
 
-              {$i18n.t("Access to Qwen2-72B, Llama 70B, Llama3-8B, yi1.5-34B")}
+              {$i18n.t("Access to Qwen2-72B, Llama3-70B, Gemma-2-27B, Codestral-22B-v0.1")}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -227,7 +227,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("Access to Llama 400B")}
+              {$i18n.t("Access to Gemma-2-27B, Codestral-22B-v0.1")}
             </li>
             <li class="flex gap-x-3">
               <svg

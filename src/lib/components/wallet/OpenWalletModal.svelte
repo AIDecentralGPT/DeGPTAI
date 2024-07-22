@@ -30,7 +30,7 @@
   import { unlockDLC } from "$lib/utils/wallet/dbc.js";
   import { onGetBalance } from "$lib/utils/wallet/dbc.js";
   import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
-  import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils.js";
+  import { handleWalletSignIn, unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils.js";
   import { importWallet } from "$lib/utils/wallet/ether/utils.js";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
 
@@ -46,12 +46,15 @@
   let filesInputElement;
   let inputFiles;
   let encryptedJson = null; //
+  let privateKey = null;
+  let openWalletType = "privateKey";
 
   $: if (!show) {
     (async () => {
       console.log("show", show);
 
       password = "";
+      privateKey = ""
       showPassword = false;
       inputFiles = null;
       encryptedJson = null;
@@ -114,42 +117,77 @@
     <!-- 主体 -->
     <!-- flex flex-col md:space-x-4 -->
     <div class=" w-full p-4 px-8">
-      <button
-        class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-        type="button"
-        on:click={() => {
-          filesInputElement.click();
-        }}
-      >
-        {$i18n.t("Select Wallet File")}
-      </button>
+      <div class="flex w-full">
+        <label class="mr-4">
+          <input
+            type="radio"
+            bind:group={openWalletType}
+            value="privateKey"
+            required
+          />
+          PrivateKey
+        </label>
+        <label>
+          <input
+            type="radio"
+            bind:group={openWalletType}
+            value="keyStore"
+            required
+          />
+          KeyStore
+        </label>
+      </div>
+
+      {#if openWalletType === "privateKey"}
 
       <input
-        bind:this={filesInputElement}
-        bind:files={inputFiles}
-        type="file"
-        hidden
-        accept=".json"
-        on:change={async () => {
-          if (inputFiles && inputFiles.length > 0) {
-            const file = inputFiles[0]; // 假设只上传一个文件
-            if (
-              file.type === "application/json" ||
-              file.name.split(".").pop().toLowerCase() === "json"
-            ) {
-              uploadJson(file);
-              inputFiles = null;
-              filesInputElement.value = "";
-            } else {
-              toast.error(
-                $i18n.t(`Unsupported file type, please upload a JSON file.`)
-              );
-            }
-          } else {
-            toast.error($i18n.t(`File not found.`));
-          }
-        }}
+        bind:value={privateKey}
+        type="text"
+        class="my-4  px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+        placeholder={$i18n.t("Enter Your privateKey")}
+        required
       />
+      {/if}
+
+      {#if openWalletType === "keyStore"}
+        <button
+          class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+          type="button"
+          on:click={() => {
+            filesInputElement.click();
+          }}
+        >
+          {$i18n.t("Select Wallet File")}
+        </button>
+
+        <input
+          bind:this={filesInputElement}
+          bind:files={inputFiles}
+          type="file"
+          hidden
+          accept=".json"
+          on:change={async () => {
+            if (inputFiles && inputFiles.length > 0) {
+              const file = inputFiles[0]; // 假设只上传一个文件
+              if (
+                file.type === "application/json" ||
+                file.name.split(".").pop().toLowerCase() === "json"
+              ) {
+                uploadJson(file);
+                inputFiles = null;
+                filesInputElement.value = "";
+              } else {
+                toast.error(
+                  $i18n.t(`Unsupported file type, please upload a JSON file.`)
+                );
+              }
+            } else {
+              toast.error($i18n.t(`File not found.`));
+            }
+          }}
+        />
+      {/if}
+
 
       <!-- ------ -->
 
@@ -257,6 +295,57 @@
             {/if}
           </button>
         </div>
+      {/if}
+      {#if openWalletType === "privateKey"}
+      <div class="flex justify-end">
+        <button
+          disabled={loading}
+          class={" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"}
+          style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+          type="submit"
+          on:click={async () => {
+            loading = true;
+            await tick();
+            console.log("变色了要", loading);
+
+            try {
+              const walletImported = await unlockWalletWithPrivateKey(
+                privateKey
+              );
+
+              
+
+              console.log("walletImported", walletImported);
+
+              // 请求服务端登录钱包账户
+              await handleWalletSignIn({
+                walletImported,
+                password,
+                address_type: "dbc",
+              });
+              updateWalletData(walletImported);
+
+              await tick();
+              loading = false;
+
+              show = false;
+              password = "";
+            } catch (error) {
+              console.log("error, ", error, error.message);
+              toast.error(error.message);
+            }
+            loading = false;
+
+         
+          }}
+        >
+          {#if loading}
+            <span>{$i18n.t("Unlocking")}</span>
+          {:else}
+            <span>{$i18n.t("Unlock")}</span>
+          {/if}
+        </button>
+      </div>
       {/if}
 
       <div />

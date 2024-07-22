@@ -3,7 +3,7 @@
 import { ethers, uuidV4 } from "ethers";
 
 import ABI from "./abi.json";
-import { walletSignIn } from "$lib/apis/auths";
+import { printSignIn, walletSignIn } from "$lib/apis/auths";
 import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
@@ -78,6 +78,7 @@ export async function createAccount(password: string) {
   return {
     wallet, // 钱包对象
     keystore, // 加密后的Keystore文件
+    accountPrivateKey: wallet.privateKey
   };
 }
 
@@ -210,6 +211,24 @@ async function importWallet(encryptedJson, password) {
   return importedWallet;
 }
 
+/**
+ * 使用私钥解锁钱包
+ * @param {string} privateKey - 用户的钱包私钥
+ * @returns {object} wallet - 解锁后的钱包对象
+ */
+export async function unlockWalletWithPrivateKey(privateKey) {
+  try {
+    // 使用私钥和 provider 创建钱包对象
+    const wallet = new ethers.Wallet(privateKey, provider);
+    console.log("钱包地址:", wallet.address);
+    return wallet;
+  } catch (error) {
+    console.error("解锁钱包失败:", error);
+    throw error;
+  }
+}
+
+
 async function unLockWithJsonAndPwdDemo() {
   const wallet = ethers.Wallet.createRandom();
 
@@ -315,7 +334,18 @@ async function handleWalletSignIn({
   }
 }
 
-export { provider, demo, importWallet, handleWalletSignIn, getGas };
+
+async function signOut() {
+  localStorage.removeItem('token')
+  user.set({})
+  await printSignIn().then((res) => {
+    console.log("指纹登录了", res);
+    localStorage.token = res.token;
+
+  });
+}
+
+export { provider, demo, importWallet, handleWalletSignIn, getGas, signOut , };
 
 async function getGas() {
   // 获取当前推荐的 gas price

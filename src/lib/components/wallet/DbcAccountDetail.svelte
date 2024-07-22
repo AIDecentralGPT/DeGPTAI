@@ -16,6 +16,7 @@
     chatId,
     pageUpdateNumber,
     showRewardsModal,
+    user,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
   import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
@@ -104,12 +105,16 @@
           pr-[35px]
           px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
         >
-          {$currentWalletData?.walletInfo?.address}
+          <!-- {$currentWalletData?.walletInfo?.address} -->
+          {$user?.id}
+
         </p>
         <button
           on:click={async () => {
             const res = await copyToClipboard(
-              $currentWalletData?.walletInfo?.address
+              // $currentWalletData?.walletInfo?.address
+              $user?.id
+
             );
             if (res) {
               toast.success($i18n.t("Copying to clipboard was successful!"));

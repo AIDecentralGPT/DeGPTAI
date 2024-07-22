@@ -3,40 +3,34 @@
 
 
 
-// export const openProServices = async (
-// 	tx: string,
-// 	amount: number,
-// ) => {
-// 	let error = null;
+export const getTransactions = async (
+	address: string
+) => {
+	let error = null;
 
-// 	const res = await fetch(`${WEBUI_API_BASE_URL}/walletInfo`, {
-// 		method: 'POST',
-// 		headers: {
-// 			Accept: 'application/json',
-// 			'Content-Type': 'application/json',
-// 			authorization: `Bearer ${token}`
-// 		},
-// 		body: JSON.stringify({
-// 			command: `/${command}`,
-// 			title: title,
-// 			content: content
-// 		})
-// 	})
-// 		.then(async (res) => {
-// 			if (!res.ok) throw await res.json();
-// 			return res.json();
-// 		})
-// 		.then((json) => {
-// 			return json;
-// 		})
-// 		.catch((err) => {
-// 			console.log(err);
-// 			return null;
-// 		});
+	const res = await fetch(`https://blockscout-testnet.dbcscan.io/api/v2/addresses/${address}/transactions`, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		},
+	
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
 
-// 	if (error) {
-// 		throw error;
-// 	}
+	if (error) {
+		throw error;
+	}
 
-// 	return res;
-// };
+	return res;
+};

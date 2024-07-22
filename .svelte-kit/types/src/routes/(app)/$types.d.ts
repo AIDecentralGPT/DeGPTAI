@@ -12,7 +12,7 @@ type EnsureDefined<T> = T extends null | undefined ? {} : T;
 type OptionalUnion<U extends Record<string, any>, A extends keyof U = U extends U ? keyof U : never> = U extends unknown ? { [P in Exclude<A, keyof U>]?: never } & U : never;
 export type Snapshot<T = any> = Kit.Snapshot<T>;
 type PageParentData = Omit<EnsureDefined<import('../$types.js').LayoutData>, keyof LayoutData> & EnsureDefined<LayoutData>;
-type LayoutRouteId = RouteId | "/(app)" | "/(app)/admin" | "/(app)/c/[id]" | "/(app)/workspace" | "/(app)/workspace/documents" | "/(app)/workspace/modelfiles" | "/(app)/workspace/modelfiles/create" | "/(app)/workspace/modelfiles/edit" | "/(app)/workspace/playground" | "/(app)/workspace/prompts" | "/(app)/workspace/prompts/create" | "/(app)/workspace/prompts/edit"
+type LayoutRouteId = RouteId | "/(app)" | "/(app)/admin" | "/(app)/c/[id]" | "/(app)/crypto" | "/(app)/workspace" | "/(app)/workspace/documents" | "/(app)/workspace/modelfiles" | "/(app)/workspace/modelfiles/create" | "/(app)/workspace/modelfiles/edit" | "/(app)/workspace/playground" | "/(app)/workspace/prompts" | "/(app)/workspace/prompts/create" | "/(app)/workspace/prompts/edit"
 type LayoutParams = RouteParams & { id?: string }
 type LayoutParentData = EnsureDefined<import('../$types.js').LayoutData>;
 

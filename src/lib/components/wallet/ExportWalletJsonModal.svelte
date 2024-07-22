@@ -5,7 +5,7 @@
   import { toast } from "svelte-sonner";
   import { currentWalletData, models, settings, user } from "$lib/stores";
 
-  import { getModels as _getModels } from "$lib/utils";
+  import { getModels as _getModels, copyToClipboard } from "$lib/utils";
   import {
     SUPPORTED_FILE_TYPE,
     SUPPORTED_FILE_EXTENSIONS,
@@ -99,6 +99,72 @@
         </div>
       </div>
 
+
+<!-- 私钥 -->
+
+<div class="mb-4">
+  <div class="mb-2">
+    {$i18n.t("You can copy the private key below:")}
+  </div>
+  
+
+
+
+  <div class="flex-1 relative">
+    <p
+      class="
+      text-ellipsis overflow-hidden whitespace-nowrap
+      pr-[35px]
+      px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+    >
+      {$currentWalletData?.walletInfo?.privateKey}
+
+    </p>
+    <button
+      on:click={async () => {
+        const res = await copyToClipboard(
+          // $currentWalletData?.walletInfo?.address
+          $user?.id
+
+        );
+        if (res) {
+          toast.success($i18n.t("Copying to clipboard was successful!"));
+        }
+      }}
+      type="button"
+      class="absolute inset-y-0 right-0 px-3 py-2 text-sm dark:text-gray-300 dark:bg-gray-850 rounded-md"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1em"
+        height="1em"
+        viewBox="0 0 512 512"
+        ><rect
+          width="336"
+          height="336"
+          x="128"
+          y="128"
+          fill="none"
+          stroke="currentColor"
+          stroke-linejoin="round"
+          stroke-width="32"
+          rx="57"
+          ry="57"
+        /><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="32"
+          d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+        /></svg
+      >
+    </button>
+  </div>
+
+</div>
+
+<!--  -->
       <!-- style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""} -->
 
       <div class="flex justify-end">
@@ -138,6 +204,9 @@
           <span class="relative">{$i18n.t("Export")}</span>
         </button>
       </div>
+
+
+      
 
       <div />
     </div>

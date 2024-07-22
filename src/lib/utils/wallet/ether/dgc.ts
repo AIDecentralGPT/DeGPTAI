@@ -1,7 +1,10 @@
 // dgc.js
 
 import { ethers } from "ethers";
-import { provider, signData, getCurrencyPrice, getGas } from "./utils";
+import {
+  //  provider,
+  
+  signData, getCurrencyPrice, getGas } from "./utils";
 import ABI from "./abi.json";
 import { getDbcBalance } from "./dbc";
 import { toast } from "svelte-sonner";
@@ -20,6 +23,12 @@ const DGC_TOKEN_CONTRACT_ADDRESS = '0xE9E985E88232F12F2780955f0c0b99541Aa3cf37';
 //   "function decimals() view returns (uint8)"
 //   // 其他你可能需要的 ERC-20 方法
 // ];
+// 定义 RPC URL 和 Chain ID
+const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
+const chainId = 19850818; // 或者 DGC 的 Chain ID
+
+// 创建 provider
+const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 
 // 创建 DGC 合约实例

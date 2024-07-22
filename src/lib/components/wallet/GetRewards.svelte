@@ -25,6 +25,7 @@
     showShareModal,
     showRewardsHistoryModal,
     showNewWalletModal,
+    showRewardDetailModal,
   } from "$lib/stores";
 
   import {
@@ -35,13 +36,12 @@
 
   const i18n = getContext("i18n");
 
-
-  let clockLoading= false
+  let clockLoading = false;
 
   const items = [
     {
       id: "new_wallet",
-      text: "New Wallet",
+      text: "Create Wallet",
       reward: "2000DGCs",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6 20q-1.65 0-2.825-1.175T2 16V8q0-1.65 1.175-2.825T6 4h12q1.65 0 2.825 1.175T22 8v8q0 1.65-1.175 2.825T18 20zM6 8h12q.55 0 1.05.125t.95.4V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8v.525q.45-.275.95-.4T6 8m-1.85 3.25l11.125 2.7q.225.05.45 0t.425-.2l3.475-2.9q-.275-.375-.7-.612T18 10H6q-.65 0-1.137.338t-.713.912"/></svg>',
     },
@@ -79,7 +79,7 @@
     }
   }
 
-  $: if ($user?.id?.startsWith('0x')) {
+  $: if ($user?.id?.startsWith("0x")) {
     getCount();
   }
 </script>
@@ -87,9 +87,11 @@
 <hr class=" dark:border-gray-800" />
 
 <div class="flex gap-3 items-center my-4 flex-wrap">
-  <span class="text-xl"> 40000+ DGCs Rewards Task </span>
+  <span class="text-xl"> 40000+ DGC Tokens Reward Task </span>
 
-  <div class="flex gap-1 items-center cursor-pointer">
+  <div class="flex gap-1 items-center cursor-pointer" on:click={() => {
+    $showRewardDetailModal = true;
+  }}>
     <svg
       class="primaryText cursor-pointer"
       xmlns="http://www.w3.org/2000/svg"
@@ -104,11 +106,15 @@
     <span> Rewards Details </span>
   </div>
 
+
+  {#if $user?.id?.startsWith("0x")} 
+  <button
+  on:click={() => {
+    // $showRewardsModal = true;
+    $showRewardsHistoryModal = true;
+  }}
+>
   <svg
-    on:click={() => {
-      // $showRewardsModal = true;
-      $showRewardsHistoryModal = true;
-    }}
     class="primaryText cursor-pointer"
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
@@ -119,66 +125,66 @@
       d="M13.26 3C8.17 2.86 4 6.95 4 12H2.21c-.45 0-.67.54-.35.85l2.79 2.8c.2.2.51.2.71 0l2.79-2.8a.5.5 0 0 0-.36-.85H6c0-3.9 3.18-7.05 7.1-7c3.72.05 6.85 3.18 6.9 6.9c.05 3.91-3.1 7.1-7 7.1c-1.61 0-3.1-.55-4.28-1.48a.994.994 0 0 0-1.32.08c-.42.42-.39 1.13.08 1.49A8.858 8.858 0 0 0 13 21c5.05 0 9.14-4.17 9-9.26c-.13-4.69-4.05-8.61-8.74-8.74m-.51 5c-.41 0-.75.34-.75.75v3.68c0 .35.19.68.49.86l3.12 1.85c.36.21.82.09 1.03-.26c.21-.36.09-.82-.26-1.03l-2.88-1.71v-3.4c0-.4-.34-.74-.75-.74"
     /></svg
   >
+</button>
+{/if}
+
 </div>
 
-
-<div class="flex flex-wrap lg:justify-between  ">
+<div class="flex flex-wrap lg:justify-between">
   {#each items as item, index}
-    {#if 
-    (item.text !== "New Wallet" && $user?.id?.startsWith('0x')) ||
-    (item.text === "New Wallet" && !$user?.id.startsWith('0x'))
-    }
+    {#if (item.text !== "Create Wallet" && $user?.id?.startsWith("0x")) || (item.text === "Create Wallet" && !$user?.id.startsWith("0x"))}
       <div
-        class="flex justify-between items-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2"
+        class="flex justify-between items-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2 text-xs lg:text-base	"
       >
-        <div class="flex justify-start items-center gap-2 w-[110px] lg:w-auto">
+        <div class="flex justify-start items-center gap-2 w-[180px] lg:w-auto">
           {@html item.icon}
 
           <span>{item.text}</span>
         </div>
         <div
-          class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[280px] flex justify-between items-center"
+          class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[280px] flex justify-between items-center "
         >
           <span class="relative">{item.reward}</span>
           <button
-          disabled = {clockLoading}
-            class={
-              "px-4 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg "+
-              `${clockLoading ? "" : ""}`
-            }
+            disabled={clockLoading}
+            class={"px-2 lg:px-4 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg " +
+              `${clockLoading ? "" : ""}`}
             on:click={async () => {
               if (item.text === "Share") {
                 $showShareModal = true;
               }
 
               if (item.text === "Clock In") {
-                clockLoading = true
-                await clockIn(localStorage.token).then((res) => {
-                  console.log("Clock In  res", res);
-                  
-                  getCount();
-                  if(res?.ok) {
-                    toast.success("Congratulations on your successful clocking in!")
-                  }
-                  if(res?.detail) {
-                    toast.warning(res?.detail)
-                  }
-                }).catch((res) => {
-                  console.log("Clock In  error", res);
+                clockLoading = true;
+                await clockIn(localStorage.token)
+                  .then((res) => {
+                    console.log("Clock In  res", res);
 
-              
-                })
+                    getCount();
+                    if (res?.ok) {
+                      toast.success(
+                        "Congratulations on your successful clocking in!"
+                      );
+                    }
+                    if (res?.detail) {
+                      toast.warning(res?.detail);
+                    }
+                  })
+                  .catch((res) => {
+                    console.log("Clock In  error", res);
+                  });
 
-                clockLoading = false
-
+                clockLoading = false;
               }
 
-              if (item.text === "New Wallet") {
-                $showNewWalletModal = true
+              if (item.text === "Create Wallet") {
+                $showNewWalletModal = true;
               }
             }}
           >
-            {($user?.id?.startsWith('0x')  && rewardsCount[item.id] || 0) > 0 ? "Done" : "Get Now!"}
+            {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
+              ? "Done"
+              : "Get Now!"}
           </button>
         </div>
       </div>

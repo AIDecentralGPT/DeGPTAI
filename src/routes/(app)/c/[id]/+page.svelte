@@ -344,7 +344,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
 
 					} else {
-						toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+console.error($i18n.t(`Model {{modelId}} not found`, { }));
+
+						// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
 					
 				}
@@ -1091,7 +1093,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				);
 			}
 		} else {
-			toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+console.error($i18n.t(`Model {{modelId}} not found`, { }));
+// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 		}
 	};
 

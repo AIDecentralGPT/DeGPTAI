@@ -16,7 +16,7 @@
   import { Toaster, toast } from "svelte-sonner";
 
   import { getBackendConfig } from "$lib/apis";
-  import { getSessionUser, printSignIn,  } from "$lib/apis/auths";
+  import {  printSignIn,  } from "$lib/apis/auths";
   import { onGetBalance, onGetDLCBalance, removePair } from "$lib/utils/wallet/dbc";
 
   import "../tailwind.css";
@@ -76,13 +76,16 @@
 
     let res = {}
     if(localStorage.token) {
-      res = await getUserInfo(localStorage.token);
+      // res = await getUserInfo(localStorage.token);
+
+      // 获取用户信息？可以通过auth/接口
+
     }
     else {
        res = await printSignIn();
     }
 
-		await user.set(res);
+		// await user.set(res);
 		loaded = true;
 
 		console.log(res);

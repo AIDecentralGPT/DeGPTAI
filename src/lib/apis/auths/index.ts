@@ -1,5 +1,6 @@
 import { WEBUI_API_BASE_URL } from "$lib/constants";
 import { user } from "$lib/stores";
+import { signOut } from "$lib/utils/wallet/ether/utils";
 
 export const getSessionUser = async (token: string) => {
   let error = null;
@@ -15,11 +16,11 @@ export const getSessionUser = async (token: string) => {
       if (!res.ok) throw await res.json();
       return res.json();
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(async (err) => {
+      console.log(111111, err, err.code, err.message);
       error = err.detail;
-      localStorage.removeItem('token')
-      printSignIn()
+      await signOut();
+      // window.location.reload();
 
       return null;
     });
@@ -167,8 +168,6 @@ export const userSignUp = async (
 };
 
 export const printSignIn = async () => {
-
-  
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/printSignIn`, {
     method: "POST",
     headers: {
@@ -179,28 +178,29 @@ export const printSignIn = async () => {
     }),
   });
 
-
-
   // // 每次指纹登录后都删除pair
   // localStorage.removeItem("pair");
 
-  const userInfo = await res.json()
+  const userInfo = await res.json();
+  console.log("userInfo", res, res.code, userInfo);
 
-  user.set(userInfo)
+  localStorage.token = userInfo?.token;
+
+  await user.set(userInfo);
 
   return userInfo;
 };
 
 // 登录钱包
 export const walletSignIn = async (payload: {
-	address: string,
-  nonce: string,
-  address_type: string,
-  data?: any,
-  signature: string,
-  id: string,
-  device_id: string,
-  inviter_id?:string
+  address: string;
+  nonce: string;
+  address_type: string;
+  data?: any;
+  signature: string;
+  id: string;
+  device_id: string;
+  inviter_id?: string;
 }) => {
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/walletSignIn`, {
     method: "POST",

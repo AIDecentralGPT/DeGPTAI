@@ -20,6 +20,7 @@
     showRewardsModal,
     currentWalletData,
     pageUpdateNumber,
+    showRewardDetailModal,
     showRewardsHistoryModal,
   } from "$lib/stores";
   import {
@@ -66,6 +67,7 @@
   import { showWallet, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
   import RewardsModal from "../wallet/RewardsModal.svelte";
   import RewardsHistoryModal from "../wallet/RewardsHistoryModal.svelte";
+  import RewardDetailModal from "../wallet/RewardDetailModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -290,6 +292,8 @@
 <ShareModal bind:show={$showShareModal} />
 <RewardsModal bind:show={$showRewardsModal} />
 <RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
+<RewardDetailModal bind:show={$showRewardDetailModal} />
+
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 

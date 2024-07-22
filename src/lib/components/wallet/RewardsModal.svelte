@@ -164,7 +164,7 @@
                   <h3 class="text-lg font-bold mb-2">01</h3>
                   <p class="text-sm text-gray-600">
                     {$i18n.t(
-                      "Invite friends to download DeepLink and create a wallet to earn 500 DGC rewards. Your friends will also earn 500 DGC rewards."
+                      "Invite friends to create a wallet to earn 1000 DGCs rewards,your friends will also earn 1000 DGCs rewards."
                     )}
                   </p>
                 </div>
@@ -202,7 +202,7 @@
                   <h3 class="text-lg font-bold mb-2">02</h3>
                   <p class="text-sm text-gray-600">
                     {$i18n.t(
-                      "If your friends purchase NFTs on DeepLink, you will receive a 10% DGC commission reward."
+                      "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGCs per day."
                     )}
                   </p>
                 </div>

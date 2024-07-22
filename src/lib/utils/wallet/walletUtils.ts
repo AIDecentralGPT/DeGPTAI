@@ -134,7 +134,6 @@ export async function closeWallet() {
 
   await printSignIn().then((res) => {
     console.log("printSignIn的res", res);
-    localStorage.token = res?.token;
     forceUpdate();
   });
   // $chats = [];
