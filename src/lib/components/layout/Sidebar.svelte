@@ -22,6 +22,7 @@
     pageUpdateNumber,
     showRewardDetailModal,
     showRewardsHistoryModal,
+    showTransactionsModal
   } from "$lib/stores";
   import {
     exportAccountForKeystore,
@@ -68,6 +69,7 @@
   import RewardsModal from "../wallet/RewardsModal.svelte";
   import RewardsHistoryModal from "../wallet/RewardsHistoryModal.svelte";
   import RewardDetailModal from "../wallet/RewardDetailModal.svelte";
+  import TransactionsModal from "../wallet/TransactionsModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -293,7 +295,7 @@
 <RewardsModal bind:show={$showRewardsModal} />
 <RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
 <RewardDetailModal bind:show={$showRewardDetailModal} />
-
+<TransactionsModal bind:show={$showTransactionsModal} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 

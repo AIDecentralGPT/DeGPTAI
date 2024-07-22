@@ -17,6 +17,7 @@
     pageUpdateNumber,
     showRewardsModal,
     user,
+    showTransactionsModal,
   } from "$lib/stores";
   import { DefaultCurrentWalletData } from "$lib/constants.js";
   import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
@@ -336,6 +337,16 @@
     >
       {$i18n.t("Rewards")}
     </button>
+
+    <button
+    class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+    type="submit"
+    on:click={async () => {
+      $showTransactionsModal = true;
+    }}
+  >
+    {$i18n.t("Transactions")}
+  </button>
   </div>
 </div>
 
