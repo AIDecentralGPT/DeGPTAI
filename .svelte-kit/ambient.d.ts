@@ -30,6 +30,7 @@ declare module '$env/static/private' {
 	export const alfred_theme_background: string;
 	export const MANPATH: string;
 	export const TERM_PROGRAM: string;
+	export const FNM_LOGLEVEL: string;
 	export const NODE: string;
 	export const NVM_CD_FLAGS: string;
 	export const INIT_CWD: string;
@@ -37,6 +38,7 @@ declare module '$env/static/private' {
 	export const TERM: string;
 	export const HOMEBREW_API_DOMAIN: string;
 	export const HOMEBREW_BOTTLE_DOMAIN: string;
+	export const FNM_NODE_DIST_MIRROR: string;
 	export const TMPDIR: string;
 	export const HOMEBREW_REPOSITORY: string;
 	export const npm_config_global_prefix: string;
@@ -50,6 +52,7 @@ declare module '$env/static/private' {
 	export const ZSH: string;
 	export const npm_config_local_prefix: string;
 	export const alfred_version_build: string;
+	export const FNM_COREPACK_ENABLED: string;
 	export const USER: string;
 	export const NVM_DIR: string;
 	export const LS_COLORS: string;
@@ -63,7 +66,9 @@ declare module '$env/static/private' {
 	export const npm_execpath: string;
 	export const PAGER: string;
 	export const LSCOLORS: string;
+	export const FNM_VERSION_FILE_STRATEGY: string;
 	export const alfred_theme_subtext: string;
+	export const FNM_ARCH: string;
 	export const PATH: string;
 	export const alfred_workflow_cache: string;
 	export const LaunchInstanceID: string;
@@ -83,6 +88,7 @@ declare module '$env/static/private' {
 	export const alfred_workflow_version: string;
 	export const XPC_FLAGS: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
+	export const FNM_MULTISHELL_PATH: string;
 	export const npm_config_npm_version: string;
 	export const alfred_workflow_bundleid: string;
 	export const FORCE_COLOR: string;
@@ -94,6 +100,7 @@ declare module '$env/static/private' {
 	export const SHLVL: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const HOMEBREW_PREFIX: string;
+	export const FNM_DIR: string;
 	export const LOGNAME: string;
 	export const LESS: string;
 	export const npm_config_cache: string;
@@ -102,6 +109,7 @@ declare module '$env/static/private' {
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const alfred_workflow_uid: string;
 	export const NVM_BIN: string;
+	export const FNM_RESOLVE_ENGINES: string;
 	export const npm_config_user_agent: string;
 	export const HOMEBREW_CELLAR: string;
 	export const INFOPATH: string;
@@ -148,6 +156,7 @@ declare module '$env/dynamic/private' {
 		alfred_theme_background: string;
 		MANPATH: string;
 		TERM_PROGRAM: string;
+		FNM_LOGLEVEL: string;
 		NODE: string;
 		NVM_CD_FLAGS: string;
 		INIT_CWD: string;
@@ -155,6 +164,7 @@ declare module '$env/dynamic/private' {
 		TERM: string;
 		HOMEBREW_API_DOMAIN: string;
 		HOMEBREW_BOTTLE_DOMAIN: string;
+		FNM_NODE_DIST_MIRROR: string;
 		TMPDIR: string;
 		HOMEBREW_REPOSITORY: string;
 		npm_config_global_prefix: string;
@@ -168,6 +178,7 @@ declare module '$env/dynamic/private' {
 		ZSH: string;
 		npm_config_local_prefix: string;
 		alfred_version_build: string;
+		FNM_COREPACK_ENABLED: string;
 		USER: string;
 		NVM_DIR: string;
 		LS_COLORS: string;
@@ -181,7 +192,9 @@ declare module '$env/dynamic/private' {
 		npm_execpath: string;
 		PAGER: string;
 		LSCOLORS: string;
+		FNM_VERSION_FILE_STRATEGY: string;
 		alfred_theme_subtext: string;
+		FNM_ARCH: string;
 		PATH: string;
 		alfred_workflow_cache: string;
 		LaunchInstanceID: string;
@@ -201,6 +214,7 @@ declare module '$env/dynamic/private' {
 		alfred_workflow_version: string;
 		XPC_FLAGS: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
+		FNM_MULTISHELL_PATH: string;
 		npm_config_npm_version: string;
 		alfred_workflow_bundleid: string;
 		FORCE_COLOR: string;
@@ -212,6 +226,7 @@ declare module '$env/dynamic/private' {
 		SHLVL: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		HOMEBREW_PREFIX: string;
+		FNM_DIR: string;
 		LOGNAME: string;
 		LESS: string;
 		npm_config_cache: string;
@@ -220,6 +235,7 @@ declare module '$env/dynamic/private' {
 		VSCODE_GIT_IPC_HANDLE: string;
 		alfred_workflow_uid: string;
 		NVM_BIN: string;
+		FNM_RESOLVE_ENGINES: string;
 		npm_config_user_agent: string;
 		HOMEBREW_CELLAR: string;
 		INFOPATH: string;
