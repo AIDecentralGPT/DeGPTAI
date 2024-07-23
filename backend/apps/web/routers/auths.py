@@ -94,25 +94,22 @@ router = APIRouter()
 
 @router.get("/", response_model=UserResponse)
 async def get_session_user(user=Depends(get_current_user)):
-    # print("get_session_user 的 user:" , user.id, user)
-    return {
-        "id": user.id,
-        "email": user.email,
-        "name": user.name,
-        "role": user.role,
-        "profile_image_url": user.profile_image_url,
-        "address_type": user.address_type,
-
-    }
-    # print("get_session_user 的 user:" , user['id'], user)
-    # return {
-    #     "id": user['id'],
-    #     "email": user['email'],
-    #     "name": user.name,
-    #     "role": user.role,
-    #     "profile_image_url": user.profile_image_url,
-    # }
-
+    try:
+        # print("audo get_session_user 的 user:", user.id, user)
+        return {
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "role": user.role,
+            "profile_image_url": user.profile_image_url,
+            "address_type": user.address_type,
+        }
+    except AttributeError as e:
+        print("AttributeError: ", e)
+        return {"error": "An error occurred while fetching user details"}
+    except Exception as e:
+        print("Exception: ", e)
+        return {"error": "An internal server error occurred"}
 
 
 ############################

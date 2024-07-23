@@ -57,7 +57,7 @@ class UserResponse(BaseModel):
     name: str
     role: str
     profile_image_url: str
-    address_type: str
+    address_type: Optional[str] = None
 
 
 class SigninResponse(Token, UserResponse):
