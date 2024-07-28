@@ -147,6 +147,8 @@
     href="{WEBUI_BASE_URL}/static/favicon.png"
   />
 
+  <script type="text/javascript" src="https://hkwebcdn.yuncloudauth.com/cdn/jsvm_all.js"></script>
+
   <!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
   <!-- feel free to make a PR to fix if anyone wants to see it return -->
   <!-- <link rel="stylesheet" type="text/css" href="/themes/rosepine.css" />

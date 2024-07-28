@@ -225,6 +225,13 @@
                 // 3. 展示钱包面板数据
                 walletCreatedData = wallet;
                 updateWalletData(wallet);
+
+                // 4. 自动下载json文件
+                if (keystore) {
+                  downloadKeyStore(keystore);
+                  toast.success("The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key");
+
+                }
               }}
             >
               {#if loading}

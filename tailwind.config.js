@@ -18,8 +18,15 @@ export default {
 					850: '#262626',
 					900: 'var(--color-gray-900, #171717)',
 					950: 'var(--color-gray-950, #0d0d0d)'
-				}
+				},
+				primary: {
+					DEFAULT: 'rgba(184, 142, 86, 1)',  // 你可以根据需要更改默认颜色
+					light: 'rgba(184, 142, 86, 1)',
+					dark: 'rgba(184, 142, 86, 1)',
 			},
+			},
+
+
 			typography: {
 				DEFAULT: {
 					css: {

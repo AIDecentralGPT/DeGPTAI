@@ -22,7 +22,8 @@
     pageUpdateNumber,
     showRewardDetailModal,
     showRewardsHistoryModal,
-    showTransactionsModal
+    showTransactionsModal,
+    showUserVerifyModal
   } from "$lib/stores";
   import {
     exportAccountForKeystore,
@@ -70,6 +71,7 @@
   import RewardsHistoryModal from "../wallet/RewardsHistoryModal.svelte";
   import RewardDetailModal from "../wallet/RewardDetailModal.svelte";
   import TransactionsModal from "../wallet/TransactionsModal.svelte";
+  import UserVerifyModal from "../wallet/UserVerifyModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -86,6 +88,9 @@
   let chatDeleteId = null;
   let chatTitleEditId = null;
   let chatTitle = "";
+
+  let showModal = true;
+
 
   let showShareChatModal = false;
   let showDropdown = false;
@@ -296,6 +301,9 @@
 <RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
 <RewardDetailModal bind:show={$showRewardDetailModal} />
 <TransactionsModal bind:show={$showTransactionsModal} />
+<UserVerifyModal bind:show={$showUserVerifyModal} />
+<UserVerifyModal bind:show={showModal} />
+
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 

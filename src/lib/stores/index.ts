@@ -63,7 +63,7 @@ export const showRewardsModal = writable(false);
 export const showRewardsHistoryModal = writable(false);
 export const showRewardDetailModal = writable(false);
 export const showTransactionsModal = writable(false);
-
+export const showUserVerifyModal = writable(false);
 
 
 

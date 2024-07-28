@@ -30,11 +30,11 @@ transferDgc和walletconnectSendDGCTransaction，现在购买订阅pro的请求�
 
 2.8  考虑增加转账记录，包括接收和发送。
 
-根据frank提供的接口和链接，可以查找某个钱包地址的转入和转出记录。正在对接接口。
 
 
 
 
+0xf8480ef111cfee4049410b0ad15411ada0d999121b96f8fbdc6212cd11fbb11d
 
 
 

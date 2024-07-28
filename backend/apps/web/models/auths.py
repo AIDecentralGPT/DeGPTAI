@@ -122,6 +122,23 @@ class SignupForm(BaseModel):
 class AddUserForm(SignupForm):
     role: Optional[str] = "user"
 
+class SendCodeForm(BaseModel):
+    email: str
+
+class FaceCompareForm(BaseModel):
+    sourceFacePictureBase64: str
+    targetFacePictureBase64: str
+
+class MetaInfo(BaseModel):
+    bioMetaInfo: str
+    deviceType: str
+    ua: str
+
+
+class FaceLivenessRequest(BaseModel):
+    metaInfo: MetaInfo
+
+
 
 class AuthsTable:
     def __init__(self, db):

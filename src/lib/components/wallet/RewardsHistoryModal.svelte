@@ -68,13 +68,39 @@
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <Modal bind:show size="lg">
+
+
+    <div class=" flex justify-between items-center dark:text-gray-300 px-5 pt-4 pb-1">
+      <h1 class="text-xl font-semibold ">{$i18n.t("view reward")}</h1>
+
+      <button
+        class="self-center"
+        on:click={() => {
+          show = false;
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    
     <div
       class=" m-auto rounded-2xl max-w-full mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4"
       on:mousedown={(e) => {
         e.stopPropagation();
       }}
     >
-      <h1 class="text-xl font-semibold mb-4">{$i18n.t("view reward")}</h1>
+
+
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
           <thead>

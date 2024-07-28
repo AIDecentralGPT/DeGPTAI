@@ -1,3 +1,6 @@
+
+
+
 <script lang="ts">
   import { getContext, onMount } from "svelte";
   import { toast } from "svelte-sonner";
@@ -22,7 +25,7 @@
   import { page } from "$app/stores";
   import UserMenu from "./Sidebar/UserMenu.svelte";
   import MenuLines from "../icons/MenuLines.svelte";
-  import { demo } from "$lib/utils/wallet/ether/utils";
+  // import { demo } from "$lib/utils/wallet/ether/utils";
   import { isPro } from "$lib/apis/users";
   import { walletconnectSignMessage } from "$lib/utils/wallet/walletconnect/index";
 
@@ -56,8 +59,33 @@
 
   onMount(() => {
 		getIsPro()
+
+
+
 	});
+
+
+	const demo = async () => {
+
+    // 在调用服务端初始化请求时需要传入该MetaInfo值
+    const MetaInfo = window.getMetaInfo();
+
+    console.log("MetaInfo:", MetaInfo);
+
+    
+    
+
+    // 接下来您进行调用服务端初始化请求获取TransactionUrl
+    const TransactionUrl = ''; // 此处值应为调用服务端初始化接口返回的TransactionUrl
+
+    // // 接下来直接跳转TransactionUrl即可开始服务
+    // window.location.href = TransactionUrl;
+
+}
+
 </script>
+
+
 
 <ShareChatModal bind:show={showShareChatModal} chatId={$chatId} />
 <nav id="nav" class=" sticky py-2.5 top-0 flex flex-row justify-center z-30">
@@ -128,7 +156,7 @@
 
         <!-- <button on:click={demo}>{$user?.isPro}</button> -->
         <button on:click={()=> {
-          console.log($user)
+          demo()
         }}>demo</button>
 
         <Tooltip content={$i18n.t("New Chat")}>

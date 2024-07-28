@@ -8,6 +8,7 @@ import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
 import { walletconnectSignMessage } from "../walletconnect/index";
+import { toast } from "svelte-sonner";
 
 // 定义 RPC URL 和 Chain ID
 const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
@@ -97,6 +98,7 @@ export function downloadKeyStore(keyStoreStr: string) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+
 
   // console.log("Generated Wallet:", json);
 }
