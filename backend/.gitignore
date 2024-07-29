@@ -14,3 +14,5 @@ Pipfile
 
 !data/config.json
 .webui_secret_key
+
+venv
