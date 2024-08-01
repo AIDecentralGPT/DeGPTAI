@@ -103,7 +103,7 @@
             //   }
             // }
           );
-          toast.success($i18n.t("Transfer successful!"));
+          toast.success($i18n.t("Transfer successful,please be patient!"));
 
         } catch (error) {
           loading = false;

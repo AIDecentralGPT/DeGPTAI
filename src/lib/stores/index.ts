@@ -64,6 +64,7 @@ export const showRewardsHistoryModal = writable(false);
 export const showRewardDetailModal = writable(false);
 export const showTransactionsModal = writable(false);
 export const showUserVerifyModal = writable(false);
+export const showConfirmUpgradeModal = writable(false);
 
 
 
@@ -205,6 +206,7 @@ type SessionUser = {
 	name: string;
 	role: string;
 	profile_image_url: string;
-	isPro: false
+	isPro: boolean
 	address_type: string
+	verified: boolean
 };

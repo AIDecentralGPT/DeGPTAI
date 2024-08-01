@@ -1,4 +1,4 @@
-from peewee import Model, CharField, DateTimeField  # 导入Peewee中的Model、CharField和DateTimeField
+from peewee import Model, CharField, DateTimeField, fn  # 导入Peewee中的Model、CharField和DateTimeField
 from apps.web.internal.db import DB  # 导入数据库实例DB
 from pydantic import BaseModel  # 导入Pydantic中的BaseModel
 from typing import Optional  # 导入类型提示
@@ -10,7 +10,6 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import uuid
-
 
 
 
@@ -27,7 +26,7 @@ class EmailCodeTable(Model):
     id = CharField(primary_key=True, unique=True)  # 定义唯一的主键字符字段id
     email = CharField(index=True)  # 定义索引字符字段email
     code = CharField()  # 定义字符字段code
-    created_at = DateTimeField(default=datetime.utcnow)  # 定义默认值为当前时间的日期时间字段created_at
+    created_at = DateTimeField(default=datetime.now)  # 定义默认值为当前时间的日期时间字段created_at
 
     class Meta:
         database = DB  # 指定数据库
@@ -54,11 +53,18 @@ class EmailCodeOperations:
         return ''.join(secrets.choice(characters) for _ in range(length))
 
     def is_expired(self, created_at: datetime) -> bool:
-        return datetime.utcnow() > created_at + timedelta(minutes=10)
+        print("is_expired ", datetime.now() , created_at, created_at + timedelta(minutes=10))
+        return datetime.now() > created_at + timedelta(minutes=10)
 
     def get_by_email(self, email: str) -> Optional[EmailCodeModel]:
         try:
-            code_record = EmailCodeTable.get(EmailCodeTable.email == email)  # 查询数据库中的记录
+            # code_record = EmailCodeTable.get(EmailCodeTable.email == email)  # 查询数据库中的记录
+            code_record = (EmailCodeTable
+                .select()
+                .where(EmailCodeTable.email == email)
+                .order_by(EmailCodeTable.created_at.desc())
+                .get())
+            
             return EmailCodeModel(**model_to_dict(code_record))  # 将数据库对象转换为Pydantic模型并返回
         except EmailCodeTable.DoesNotExist:
             return None  # 如果查询失败，返回None
@@ -69,7 +75,7 @@ class EmailCodeOperations:
             id=str(uuid.uuid4()),  # 这里使用email作为id，只是为了示例，实际情况可能需要使用UUID或其他唯一标识符
             email=email,
             code=code,
-            created_at=datetime.utcnow()
+            created_at=datetime.now()
         )
         result = EmailCodeTable.create(**code_record.dict())  # 在数据库中创建新记录
         if result:
@@ -87,11 +93,13 @@ class EmailCodeOperations:
         
         if self.server is None:
             print("无法发送邮件，SMTP连接不可用")
+            self.send_email(to_email, subject, body)  # 确保连接有效
+            
             return
 
 
         msg = MIMEMultipart()  # message结构体初始化
-        from_email = 'dianbobo202311@163.com'
+        from_email = 'degpt'
         msg['From'] = from_email
         msg['To'] = to_email
         msg['Subject'] = subject
@@ -119,7 +127,7 @@ class EmailCodeOperations:
         # 连接tls
         server.starttls()
         # server.login('service@decentralgpt.org', 'degpt@2049DE')
-        server.login('dianbobo202311@163.com', 'GCHPBADDNOTPWXFS')
+        server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')
         # server.login('471037624@qq.com', 'hgseyhgutfetcabj')
         return server
 
@@ -132,7 +140,6 @@ class EmailCodeOperations:
     #     # 连接tls
     #     server.starttls()
     #     # server.login('service@decentralgpt.org', 'degpt@2049DE')
-    #     server.login('dianbobo202311@163.com', 'GCHPBADDNOTPWXFS')
     #     # server.login('471037624@qq.com', 'hgseyhgutfetcabj')
 
     def connect(self):
@@ -140,15 +147,19 @@ class EmailCodeOperations:
         if self.server:
             self.server.quit()  # 如果已经有连接，先关闭
         try:
-            self.server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
-            self.server.starttls()
-            self.server.login('dianbobo202311@163.com', 'GCHPBADDNOTPWXFS')
+            self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=10)  # 更改为Gmail的SMTP服务器和端口
+            self.server.starttls()  # 启动TLS加密
+            self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')  # 登录Gmail账号
+
+            # self.server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
+            # self.server.starttls()
         except Exception as e:
             print(f"连接SMTP服务器失败: {e}")
             self.server = None
 
     def ensure_connection(self):
         """确保SMTP连接可用，如果不可用则尝试重连"""
+        print("ensure_connection server", self.server)
         if self.server is None:
             print("SMTP连接已丢失，尝试重新连接...")
             self.connect()

@@ -32,6 +32,8 @@ class User(Model):
     api_key = CharField(null=True, unique=True)  # 定义可为空且唯一的字符字段api_key
     inviter_id = CharField(null=True)  # 邀请人id
     address_type = CharField(null=True)
+    verified= CharField(null=False)
+    
     # phone_number = CharField(null=True, unique=True)  # 定义可为空，唯一的字符字段phone_number
 
     class Meta:
@@ -52,6 +54,7 @@ class UserModel(BaseModel):
     api_key: Optional[str] = None  # 定义可选的api_key字段，类型为字符串，默认值为None
     inviter_id: Optional[str] = None
     address_type: Optional[str] = None
+    verified: Optional[bool] = False
     # phone_number: Optional[str]   # 定义phone_number字段，类型为可选字符串
 
 ####################
@@ -91,6 +94,7 @@ class UsersTable:
         profile_image_url: str = "/user.png",
         role: str = "user",
         address_type: str = None,
+        verified: bool = False,
     ) -> Optional[UserModel]:
         user = UserModel(
             **{
@@ -103,7 +107,8 @@ class UsersTable:
                 "created_at": int(time.time()),
                 "updated_at": int(time.time()),
                 "inviter_id": inviter_id,
-                "address_type": address_type
+                "address_type": address_type,
+                "verified":  verified
             }
         )  # 创建UserModel实例
 
@@ -322,6 +327,17 @@ class UsersTable:
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
+        
+    # 更新用户是否完成活体检测认证
+    def update_user_verified(self, id: str, verified: bool) -> bool:
+        try:
+            query = User.update(verified=verified).where(User.id == id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+
 
 
 # 实例化UsersTable类

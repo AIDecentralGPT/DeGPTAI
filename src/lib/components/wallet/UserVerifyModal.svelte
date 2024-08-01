@@ -1,12 +1,19 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import Modal from "../common/Modal.svelte";
   import Image from "../common/Image.svelte";
-  import { sendCode, verifyCode } from "$lib/apis/auths";
-	import { user } from '$lib/stores';
+  import {
+    faceliveness,
+    facelivenessRes,
+    sendCode,
+    verifyCode,
+  } from "$lib/apis/auths";
+  import { user } from "$lib/stores";
   import { WEBUI_BASE_URL } from "$lib/constants";
 
-  import { toast } from 'svelte-sonner';
+  import { toast } from "svelte-sonner";
+  import QRCode from "qrcode";
+  import { goto } from "$app/navigation";
 
   const i18n = getContext("i18n");
 
@@ -62,26 +69,34 @@
     }, 1000);
   }
 
-  function nextStep() {
+  let qrcodeUrl = "";
+
+  function getQrCode(url) {
+    QRCode.toDataURL(url, function (err, url) {
+      console.log(url);
+      qrcodeUrl = url;
+    });
+  }
+
+  async function nextStep() {
     let valid = true;
 
     if (current === 1) {
       if (!validateEmail(email)) {
         toast.error("Please enter a valid email address.");
         valid = false;
-        return 
+        return;
       }
       if (!code) {
         toast.error("Please enter the verification code.");
         valid = false;
-        return 
+        return;
       }
 
+      await verifyCode(email, code).then((res) => {
+        console.log("verifyCode res", res);
 
-      verifyCode(email, code).then((res) => {
-        console.log("verifyCode res", verifyCode);
-        
-        if (res.data.success) {
+        if (true) {
           // setUser({
           //   email: email,
           //   name: name,
@@ -89,18 +104,28 @@
           // });
 
           email = email;
-          current = (current + 1);
+          current = current + 1;
+          faceLiveness();
         } else {
-          toast.error(res.data.message);
+          toast.error(res.detail);
         }
-      });
-
-    } else if (current === 2) {
-      if (!uploadedImage) {
-        toast.error("Please upload an image.");
+      }).catch((error) => {
+        console.log(error);
+        toast.error(error);
         valid = false;
-        return 
-      }
+
+      })
+    } else if (current === 2) {
+      // if (!uploadedImage) {
+      //   toast.error("Please upload an image.");
+      //   valid = false;
+      //   return;
+      // }
+
+
+      // 这里可以开始异步检查唯一性了，调异步服务任务
+      show = false
+
     }
 
     if (valid && current < 2) {
@@ -113,22 +138,82 @@
       current -= 1;
     }
   }
+
+  let faceLivenessInitialData = {
+    merchant_biz_id: "",
+    transaction_id: "",
+    transaction_url: "",
+  };
+
+  let MetaInfo = {};
+  function faceLiveness() {
+    const MetaInfo = window.getMetaInfo();
+    faceliveness(MetaInfo).then(async (res) => {
+      console.log(res);
+      faceLivenessInitialData = res;
+      if (res.transaction_url) {
+        toast.success("活体检测成功");
+
+        if (isMobile) {
+          await goto(res.transaction_url);
+        } else {
+          getQrCode(res.transaction_url);
+        }
+      } else {
+        toast.error(res.data.message);
+      }
+    });
+  }
+
+  function getFaceRes() {
+    facelivenessRes({
+      transaction_id: faceLivenessInitialData.transaction_id,
+      merchant_biz_id: faceLivenessInitialData.merchant_biz_id,
+    }).then((res) => {
+      console.log(res);
+    });
+  }
+
+  let isMobile = false;
+
+  onMount(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // 检查是否为移动端设备
+    isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
+  });
 </script>
 
 <Modal bind:show size="lg">
+  <!-- <button on:click={getQrCode}> show qrcode </button> -->
+
+  <!-- <button on:click={faceLiveness}> 2. 活体检测 </button> -->
+
   <div class="text-gray-700 dark:text-gray-100 px-5 pt-4 pb-4 relative">
     <div class="flex justify-between dark:text-gray-300">
       <div class="text-lg font-medium self-center">
-        {$i18n.t("Purchase Digital Coins")}
+        {$i18n.t("User Authentication")}
       </div>
-      <button class="self-center" on:click={() => { show = false; }}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/>
+      <button
+        class="self-center"
+        on:click={() => {
+          show = false;
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+          />
         </svg>
       </button>
     </div>
 
-    <div class="flex flex-col gap-4 mt-4 px-2 h-[400px]">
+    <div class="flex flex-col gap-4 mt-4 px-2 h-[460px]">
       <div class=" border-primary border-2 rounded-lg p-4">
         <div>
           <strong>{$i18n.t("Authenticated wallet address:")}</strong>
@@ -138,22 +223,40 @@
       </div>
 
       {#if current === 2}
-      <div class=" border-primary border-2 rounded-lg p-4">
-        <div>
-          <strong>{$i18n.t("Authenticated eamil address:")}</strong>
-          <span class="text-primary">{email}</span>
+        <div class=" border-primary border-2 rounded-lg p-4">
+          <div>
+            <strong>{$i18n.t("Authenticated eamil address:")}</strong>
+            <span class="text-primary">{email}</span>
+          </div>
         </div>
-      </div>
       {/if}
-
 
       {#if current === 1}
         <div class="w-4/5 flex flex-col">
           <div class="mb-6 pt-0.5 flex justify-start items-center w-full">
-            <label for="email" class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]">Email:</label>
+            <label
+              for="email"
+              class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
+              >Email:</label
+            >
             <div class="flex items-center justify-around flex-1 space-x-4">
-              <input aria-label="email" id="emailInput" type="email" placeholder="Enter email address" bind:value={email} class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"/>
-              <button class="w-[90px] px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex items-center justify-center {countdown > 0 ? 'opacity-50 cursor-not-allowed' : ''}" type="button" on:click={sendVerificationCode} disabled={countdown > 0}>
+              <input
+                aria-label="email"
+                id="emailInput"
+                type="email"
+                placeholder="Enter email address"
+                bind:value={email}
+                class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"
+              />
+              <button
+                class="w-[90px] px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex items-center justify-center {countdown >
+                0
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''}"
+                type="button"
+                on:click={sendVerificationCode}
+                disabled={countdown > 0}
+              >
                 {#if countdown > 0}
                   {countdown}s
                 {/if}
@@ -164,15 +267,34 @@
             </div>
           </div>
           <div class="mb-6 pt-0.5 w-full flex justify-start items-center">
-            <label for="code" class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]">Code:</label>
-            <input aria-label="code" id="verificationCodeInput" type="text" placeholder="Enter verification code" bind:value={code} class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"/>
+            <label
+              for="code"
+              class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
+              >Code:</label
+            >
+            <input
+              aria-label="code"
+              id="verificationCodeInput"
+              type="text"
+              placeholder="Enter verification code"
+              bind:value={code}
+              class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"
+            />
           </div>
         </div>
       {/if}
 
       {#if current === 2}
-        <div class="flex justify-start items-center gap-4">
-          <div class="bg-primary pt-0.5 flex justify-center cursor-pointer items-center w-[160px] h-[160px] text-gray-100 transition rounded-lg">
+        <div class="flex flex-col justify-start items-center gap-4">
+          {#if qrcodeUrl}
+            <p>Please use your mobile phone to scan the QR code below for identity verification</p>
+            <img class="w-[160px]" src={qrcodeUrl} alt="" />
+            <!-- <button on:click={getFaceRes}> 
+              I have completed the face scanning certification
+            </button> -->
+          {/if}
+
+          <!-- <div class="bg-primary pt-0.5 flex justify-center cursor-pointer items-center w-[160px] h-[160px] text-gray-100 transition rounded-lg">
             <input id="imageInput" type="file" accept="image/*" on:change={handleImageUpload} style="display: none;"/>
             <button class="max-w-full max-h-full" type="button" on:click={triggerImageUpload}>
               <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="120px" viewBox="0 0 24 24"><path fill="currentColor" d="M11.5 15.577v-8.65l-2.33 2.33l-.708-.718L12 5l3.539 3.539l-.708.719L12.5 6.927v8.65zM5 19v-4.038h1V18h12v-3.038h1V19z"/></svg>
@@ -180,13 +302,19 @@
           </div>
           <div class="flex justify-center w-[160px] h-[160px] items-center overflow-hidden rounded-lg">
             <Image src={imageUrl} alt="Uploaded Image" className=" max-w-full max-h-full rounded-lg"/>
-          </div>
+          </div> -->
         </div>
       {/if}
 
-      <div class="flex justify-end gap-4 absolute bottom-8 right-2 ">
-        <button class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]" on:click={previousStep}>Previous</button>
-        <button class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]" on:click={nextStep}>Next</button>
+      <div class="flex justify-end gap-4 absolute bottom-8 right-2">
+        <button
+          class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+          on:click={previousStep}>Previous</button
+        >
+        <button
+          class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+          on:click={nextStep}>Next</button
+        >
       </div>
     </div>
   </div>

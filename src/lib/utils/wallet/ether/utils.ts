@@ -9,6 +9,7 @@ import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
 import { walletconnectSignMessage } from "../walletconnect/index";
 import { toast } from "svelte-sonner";
+import { isPro } from "$lib/apis/users";
 
 // 定义 RPC URL 和 Chain ID
 const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
@@ -79,7 +80,7 @@ export async function createAccount(password: string) {
   return {
     wallet, // 钱包对象
     keystore, // 加密后的Keystore文件
-    accountPrivateKey: wallet.privateKey
+    accountPrivateKey: wallet.privateKey,
   };
 }
 
@@ -98,7 +99,6 @@ export function downloadKeyStore(keyStoreStr: string) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-
 
   // console.log("Generated Wallet:", json);
 }
@@ -145,11 +145,6 @@ function verifyMessage(message, signature) {
 }
 
 // --------钱包登录------------
-
-// 模拟的随机挑战或数据
-const message = "demo";
-const prefixedMessage =
-  "\x19Ethereum Signed Message:\n" + message.length + message;
 
 // 用户签名挑战
 export async function signChallenge(wallet, challenge) {
@@ -230,7 +225,6 @@ export async function unlockWalletWithPrivateKey(privateKey) {
   }
 }
 
-
 async function unLockWithJsonAndPwdDemo() {
   const wallet = ethers.Wallet.createRandom();
 
@@ -257,8 +251,6 @@ function generateRandomMessage(length) {
   return ethers.hexlify(randomBytes);
 }
 
-
-
 // 登录钱包
 async function handleWalletSignIn({
   walletImported,
@@ -271,22 +263,35 @@ async function handleWalletSignIn({
   signature?: string;
 }) {
   let walletSignInResult = {};
+  const randomMessage = generateRandomMessage(32);
 
   if (address_type === "threeSide") {
     // Example: Generate a random message of 32 bytes (256 bits)
-    const randomMessage = generateRandomMessage(32);
     // const signature = threeSideSignature;
-    const signature = await walletconnectSignMessage(randomMessage)
+    const signature = await walletconnectSignMessage(randomMessage);
+
+    // 将消息转换为十六进制字符串
+    const messageHex = ethers.hexlify(ethers.toUtf8Bytes(randomMessage));
+    console.log("Message Hex:", messageHex);
+    console.log(
+      "因吹斯汀要的数据",
+
+      {
+        wallet: walletImported?.address,
+        signature: signature,
+        hash: messageHex,
+      }
+    );
 
     if (signature) {
       walletSignInResult = await walletSignIn({
         address: walletImported?.address,
         nonce: randomMessage,
-        device_id: localStorage.visitor_id || '',
+        device_id: localStorage.visitor_id || "",
         address_type: address_type || "dbc",
         // data: pair,
         signature,
-        id: localStorage.visitor_id || '',
+        id: localStorage.visitor_id || "",
         inviter_id: inviterId,
       });
     }
@@ -296,9 +301,25 @@ async function handleWalletSignIn({
     // const { nonce, signature } = await signData(pair, password, undefined);
 
     // console.log("pair, password", pair, password);
+    // 模拟的随机挑战或数据
+    const message = randomMessage;
+    const prefixedMessage =
+      "\x19Ethereum Signed Message:\n" + message.length + message;
 
     const signature = await signChallenge(walletImported, prefixedMessage);
-    console.log("Signature:", signature);
+
+    // 将消息转换为十六进制字符串
+    const messageHex = ethers.hexlify(ethers.toUtf8Bytes(message));
+    console.log("Message Hex:", messageHex);
+    console.log(
+      "因吹斯汀要的数据",
+
+      {
+        wallet: walletImported?.address,
+        signature: signature,
+        hash: messageHex,
+      }
+    );
 
     walletSignInResult = await walletSignIn({
       address: walletImported?.address,
@@ -326,7 +347,6 @@ async function handleWalletSignIn({
 
     console.log("walletSignInResult", walletSignInResult);
 
-
     if (walletSignInResult.id) {
       // ----------------
       await chats.set([]);
@@ -334,20 +354,26 @@ async function handleWalletSignIn({
       updateWalletData(walletImported);
     }
   }
+
+  const userIsPro: boolean = await isPro(localStorage.token); // 发送请求到你的 API
+  if (userIsPro) {
+    user.set({
+      ...walletSignInResult,
+      isPro: userIsPro,
+    });
+  }
 }
 
-
 async function signOut() {
-  localStorage.removeItem('token')
-  user.set({})
+  localStorage.removeItem("token");
+  user.set({});
   await printSignIn().then((res) => {
     console.log("指纹登录了", res);
     localStorage.token = res.token;
-
   });
 }
 
-export { provider, demo, importWallet, handleWalletSignIn, getGas, signOut , };
+export { provider, demo, importWallet, handleWalletSignIn, getGas, signOut };
 
 async function getGas() {
   // 获取当前推荐的 gas price

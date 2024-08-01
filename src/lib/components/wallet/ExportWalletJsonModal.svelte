@@ -124,7 +124,7 @@
       on:click={async () => {
         const res = await copyToClipboard(
           // $currentWalletData?.walletInfo?.address
-          $user?.id
+          $currentWalletData?.walletInfo?.privateKey
 
         );
         if (res) {

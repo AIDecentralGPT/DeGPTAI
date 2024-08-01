@@ -5,16 +5,20 @@ import {
   watchConnections,
   sendTransaction,
   signMessage,
-  disconnect,
+  disconnect,getConnections,
   getAccount,
   watchAccount,
   getChainId,
   switchChain,
 } from "@wagmi/core";
+import { parseEther } from 'viem'
+import { defaultWagmiConfig } from "@web3modal/wagmi";
+
 import { writeContract } from "@wagmi/core";
 
-import { defaultWagmiConfig } from "@web3modal/wagmi";
-import { mainnet, bsc } from "@wagmi/core/chains";
+import {  } from '@wagmi/core/chains'
+
+import { mainnet, bsc, sepolia } from "@wagmi/core/chains";
 import { openProServices } from "$lib/apis/users";
 import { user, showSidebar } from "$lib/stores";
 import { get } from "svelte/store";
@@ -28,7 +32,12 @@ const provider = new ethers.JsonRpcProvider(rpcUrl);
 import ABI from "../ether/abi.json";
 import { transferDLC } from "../dbc";
 const DGC_TOKEN_CONTRACT_ADDRESS = "0xE9E985E88232F12F2780955f0c0b99541Aa3cf37"; // 请替换为实际地址
-
+// 创建 DGC 合约实例
+const dgcContract = new ethers.Contract(
+  DGC_TOKEN_CONTRACT_ADDRESS,
+  ABI?.abi,
+  provider
+);
 const signer = new ethers.JsonRpcSigner(provider, DGC_TOKEN_CONTRACT_ADDRESS);
 const dgcSignerContract = new ethers.Contract(
   DGC_TOKEN_CONTRACT_ADDRESS,
@@ -36,9 +45,14 @@ const dgcSignerContract = new ethers.Contract(
   signer
 );
 
+const signer1 = provider.getSigner();
+console.log("signer", signer, signer1);
 
-
-
+const erc20_rw = new ethers.Contract(
+  DGC_TOKEN_CONTRACT_ADDRESS,
+  ABI?.abi,
+  signer
+);
 
 export const walletconnectSignMessage = async (message: string) => {
   try {
@@ -67,8 +81,6 @@ const connectToTestnet = async () => {
   }
 };
 
-
-
 // 定义发送 DGC 的函数
 export const walletconnectSendDGCTransaction = async (value: number) => {
   // 在应用启动时调用
@@ -88,73 +100,24 @@ export const walletconnectSendDGCTransaction = async (value: number) => {
     userInfo.id,
     transactionParameters.to
   );
+  const connections = getConnections(config)
 
-
-  const recipient = "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808";
-  const amountBalance = ethers.parseUnits(String(value), "ether");
-
-  const provider = new ethers.BrowserProvider(window.ethereum);
-
-
-
-
-  // try {
-  //   const transactionParameters = {
-  //     to: "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808", // 替换为实际接收方地址
-  //     value: BigInt(ethers.parseUnits(String(value), "ether").toString()), // 发送的金额，单位是ether
-  //   };
-
-
-    console.log( "address_from",userInfo.id, transactionParameters.to, DGC_TOKEN_CONTRACT_ADDRESS );
-
-    try {
-      const result1 = await writeContract(config, {
-        abi: ABI?.abi,
-        address: DGC_TOKEN_CONTRACT_ADDRESS,
-        functionName: 'approve',
-        args: [
-          userInfo.id,
-          BigInt(ethers.parseUnits(String(value), "ether").toString()),
+  console.log("connections[0]?.connector",connections,  connections[0]?.connector);
   
-        ],
-      })
+
+  const result = await sendTransaction(config, {
+    connector: connections[0]?.connector, 
+    to: '0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808',
+    value: parseEther('0.01'),
+  })
+
+  console.log("result", result);
   
-      console.log("result1", result1);
-    } catch (error) {
-      console.log('error', error);
-      
-    }
+  
 
 
+  
 
-    const result = await writeContract(config, {
-      abi: ABI?.abi,
-      address: DGC_TOKEN_CONTRACT_ADDRESS,
-      functionName: 'transferFrom',
-      args: [
-        userInfo.id,
-        transactionParameters.to,
-        BigInt(ethers.parseUnits(String(value), "ether").toString()),
-      ],
-    })
-
-
-
-    console.log("result", result);
-    return result
-
-  //   // const tx = await dgcContract.transfer(transactionParameters.to, ethers.parseUnits(String(value), 18));
-  //   // console.log("Transaction:", tx);
-
-  //   // const receipt = await tx.wait();
-  //   // console.log("Transaction receipt:", receipt);
-
-  //   // const res = await openProServices(localStorage.token, tx, value);
-  //   // console.log("openProServices res", res);
-  //   // return res;
-  // } catch (error) {
-  //   console.error("Send DGC Transaction Error:", error);
-  // }
 };
 
 // 1. Define constants
@@ -199,8 +162,13 @@ export const config = defaultWagmiConfig({
   projectId,
   metadata,
   transports: {
+    [mainnet.id]: http(),
+    // [sepolia.id]: http(),
+
     // [mainnet.id]: http(),
     // [bsc.id]: http(),
-    [dbcTestnet.id]: http("https://rpc-testnet.dbcwallet.io"),
+    // [dbcTestnet.id]: http("https://rpc-testnet.dbcwallet.io"),
+    // [dbcTestnet.id]: http(),
+    
   },
 });

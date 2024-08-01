@@ -45,13 +45,25 @@
 
 	const getIsPro = async () => {
     try {
-      const userIsPro = await isPro(localStorage.token); // 发送请求到你的 API
+      // const userIsPro = await isPro(localStorage.token); // 发送请求到你的 API
 
-			console.log("userIsPro", userIsPro, $user);
+			// console.log("userIsPro", userIsPro, $user);
+
+      const userIsPro:boolean = await isPro(localStorage.token); // 发送请求到你的 API
+        // if(userIsPro){
+        //   user.set({
+        //     ...$user,
+        //     isPro: userIsPro,
+        //   });
+        // }
 
       const newUser = await $user;
 			
-      await user.set(newUser);
+      await user.set({
+        ...newUser,
+        isPro: userIsPro,
+      });
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -71,7 +83,7 @@
     const MetaInfo = window.getMetaInfo();
 
     console.log("MetaInfo:", MetaInfo);
-
+toast.success(JSON.stringify(MetaInfo))
     
     
 

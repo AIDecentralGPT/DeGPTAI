@@ -47,7 +47,7 @@ export async function getDgcBalance(address) {
 }
 
 // 转账 DGC 到指定账户
-export async function transferDgc(toAddress, amountDgc, privateKey) {
+export async function transferDgc(toAddress:string, amountDgc, privateKey) {
   const wallet = new ethers.Wallet(privateKey, provider);
   const amountWei = ethers.parseUnits(amountDgc.toString());
 
@@ -82,7 +82,8 @@ export async function transferDgc(toAddress, amountDgc, privateKey) {
 
 
   const tx = {
-    to: DGC_TOKEN_CONTRACT_ADDRESS,
+    // to: DGC_TOKEN_CONTRACT_ADDRESS,
+    to: toAddress,
     value: 0,
     data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
     // gasLimit: gasLimit,

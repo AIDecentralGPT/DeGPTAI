@@ -26,6 +26,7 @@ class Auth(Model):
     password = TextField()
     active = BooleanField()
 
+
     class Meta:
         database = DB
 
@@ -137,6 +138,20 @@ class MetaInfo(BaseModel):
 
 class FaceLivenessRequest(BaseModel):
     metaInfo: MetaInfo
+
+
+class FaceLivenessResponse(BaseModel):
+    merchant_biz_id: str
+    transaction_id: str
+    transaction_url: str
+    
+class FaceLivenessCheckRequest(BaseModel):
+    merchant_biz_id: str
+    transaction_id: str
+    
+class FaceLivenessCheckResponse(BaseModel):
+    passed: bool
+
 
 
 

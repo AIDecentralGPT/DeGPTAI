@@ -16,6 +16,7 @@ from apps.web.models.chats import (
     ChatTitleIdResponse,
     Chats,
 )
+from fastapi.responses import RedirectResponse
 
 from apps.web.models.email_codes import (
     email_code_operations,
@@ -77,7 +78,11 @@ from apps.web.models.auths import (
     ApiKey,
     SendCodeForm,
     FaceCompareForm,
-    FaceLivenessRequest
+    FaceLivenessRequest,
+    FaceLivenessResponse,
+    FaceLivenessCheckRequest,
+    FaceLivenessCheckResponse,
+    MetaInfo
     
 )
 from apps.web.models.users import Users
@@ -405,6 +410,7 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 "role": user.role,
                 "profile_image_url": user.profile_image_url,
                 "address_type": address_type,
+                "verified": user.verified
                 
             }
             return response
@@ -714,7 +720,47 @@ async def send_code(email_request: EmailRequest):
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
     if result:
-        email_body = f"您的验证码是: {code}. 请在10分钟内使用。"
+        # email_body = f"您的验证码是: {code}. 请在10分钟内使用。"
+        email_body = f"""
+    <h1>Confirm your email address</h1>
+    <p>Let’s make sure this is the right email address for you. Please enter this verification code to continue using DeGPT: </p>
+    <p><strong>{code}</strong></p>
+    <p>Verification codes expire after two hours.</p>
+    <p>Thanks.</p>
+    <hr />
+    <p>Best regards</p>
+    <a href="https://www.decentralgpt.org/" style="
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+">
+    DecentralGPT ORG
+    
+            <img 
+            
+             style="width: 300px;display: inline-block;border-radius: 6px;"
+            
+            src="http://43.242.202.166:8080/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
+    
+    </a>
+
+    <p><strong>DecentralGPT = AI + DePIN + AGI</strong></p>
+    <p>DecentralGPT supports a variety of open-source large language models. It is committed to building a safe, privacy-protective, democratic, transparent, open-source, and universally accessible AGI.  </p>
+    <a href="https://www.degpt.ai/"
+    style="
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+"
+    >Website
+            <img
+             style="width: 300px;display: inline-block;border-radius: 6px;"
+               src="http://43.242.202.166:8080/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
+    
+    </a>
+    
+"""
+
         email_code_operations.send_email(email, "验证码", email_body)  # 发送邮件
         return {"message": "验证码已发送"}
     else:
@@ -733,6 +779,7 @@ async def verify_code(verify_code_request: VerifyCodeRequest):
     if email_code_operations.is_expired(record.created_at):
         raise HTTPException(status_code=400, detail="验证码已过期")
     
+    print("record.code", record.code, "code", code)
     if record.code == code:
         return {"message": "验证码验证成功"}
     else:
@@ -770,15 +817,22 @@ async def face_compare_handle(    form_data: FaceCompareForm):
 
 
 # get api key
-@router.post("/face_liveness", response_model=bool)
+@router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest):
         # 获取查询参数
     form_data
-    print("Query Parameters:", form_data.metaInfo)
+    print("Query Parameters:", form_data.metaInfo, )
 
     if True:
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
-        response = face_compare.face_liveness(form_data.metaInfo)
+        response = face_compare.face_liveness({
+                       "deviceType": form_data.metaInfo.deviceType,
+            "ua":form_data.metaInfo.ua,
+            "bioMetaInfo": form_data.metaInfo.bioMetaInfo
+            
+        })
+   
+
         print("face compare success", response)
 
         # return {
@@ -788,6 +842,69 @@ async def face_liveness(form_data: FaceLivenessRequest):
         #     "passed": response.body.result.passed,
         #     "sub_code": response.body.result.sub_code
         # }
-        return True
+        # return True
+        
+        # 如果需要重定向到另一个URL
+        
+        merchant_biz_id = response["merchant_biz_id"]
+        transaction_id = response["transaction_id"]
+        transaction_url = response["transaction_url"]
+        # return RedirectResponse(url=redirect_url)
+        
+        return {
+            "merchant_biz_id":merchant_biz_id,
+            "transaction_id": transaction_id,
+            "transaction_url":transaction_url
+   
+        }
+
+    else:
+        raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+
+
+
+
+# get api key
+@router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
+async def faceliveness_check(form_data: FaceLivenessCheckRequest,user=Depends(get_current_user)):
+        # 获取查询参数
+    form_data
+    print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
+
+    if True:
+        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
+        # response = face_compare.check_result({
+        #     "transaction_id": form_data.transaction_id,
+        #     "merchant_biz_id":form_data.merchant_biz_id,
+        # })
+        response = face_compare.check_result(
+            transaction_id= form_data.transaction_id,
+            merchant_biz_id=form_data.merchant_biz_id,
+        )
+   
+
+        print("face compare success", response, response.body)
+        
+        
+        if response.body.result.passed:
+            user_update_result = Users.update_user_verified(user.id, True)
+            # return user_update_result
+            print("user_update_result", user_update_result)
+            
+
+
+        
+        return {
+                    "passed": response.body.result.passed
+        # 'Message': 'success',
+        # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+        # 'Result': {
+        #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+        #     'Passed': 'Y',
+        #     'SubCode': '200'
+        # }
+
+        }
+
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)

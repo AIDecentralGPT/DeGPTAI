@@ -194,6 +194,9 @@
               style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
               type="submit"
               on:click={async () => {
+                if(!password) {
+                  toast.error("Please enter your password");
+                }
                 loading = true;
                 // const res = await createAccountFromSeed(); // 创建新账户
                 // walletCreatedData = res;
@@ -204,7 +207,7 @@
                 // updateWalletData(pair);
                 // // 请求服务端登录钱包账户
                 // await handleWalletSignIn(pair, password, $inviterId);
-
+                
                 // 1. 创建钱包
                 const { wallet, keystore, accountPrivateKey } = await createAccount(password);
                 console.log("wallet", wallet);
@@ -300,7 +303,7 @@
                     on:click={async () => {
                       const res = await copyToClipboard(
                         // $currentWalletData?.walletInfo?.address
-                        $user?.id
+                        $currentWalletData?.walletInfo?.privateKey
           
                       );
                       if (res) {

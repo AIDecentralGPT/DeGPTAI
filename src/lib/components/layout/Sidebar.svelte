@@ -302,7 +302,7 @@
 <RewardDetailModal bind:show={$showRewardDetailModal} />
 <TransactionsModal bind:show={$showTransactionsModal} />
 <UserVerifyModal bind:show={$showUserVerifyModal} />
-<UserVerifyModal bind:show={showModal} />
+<!-- <UserVerifyModal bind:show={showModal} /> -->
 
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->

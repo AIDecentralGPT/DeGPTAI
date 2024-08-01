@@ -105,7 +105,7 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th
+              <!-- <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
               >
                 {$i18n.t("user ID")}
@@ -114,7 +114,7 @@
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
               >
                 {$i18n.t("transfer hash")}
-              </th>
+              </th> -->
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
               >
@@ -137,19 +137,14 @@
           >
             {#each rewardsHistory as historyItem}
               <tr>
-                <td class="px-6 py-4 whitespace-nowrap flex items-center">
-                  <!-- <img
-                    src={historyItem.profile_image_url}
-                    alt="profile"
-                    class="w-6 h-6 rounded-full mr-2"
-                  /> -->
+                <!-- <td class="px-6 py-4 whitespace-nowrap flex items-center">
                   {historyItem.user_id}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap"
                   >{historyItem.transfer_hash}</td
-                >
+                > -->
                 <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.reward_amount}</td
+                  >{historyItem.reward_amount} dgc</td
                 >
                 <td class="px-6 py-4 whitespace-nowrap">
                   {dayjs(historyItem.reward_date).format("YYYY-MM-DD")}

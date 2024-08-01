@@ -4,51 +4,53 @@
   export let show = false;
   import { onMount, getContext } from "svelte";
   import { transferDgc } from "$lib/utils/wallet/ether/dgc";
-  import { currentWalletData, user } from "$lib/stores";
-  import { walletconnectSendDGCTransaction, walletconnectSendTransaction } from "$lib/utils/wallet/walletconnect/index";
+  import { currentWalletData, user, showConfirmUpgradeModal } from "$lib/stores";
+  import { walletconnectSendDGCTransaction,  } from "$lib/utils/wallet/walletconnect/index";
+  import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
   const i18n = getContext("i18n");
 
   const upgradePrice = 5;
 
-  async function handleUpgrade() {
-    console.log(
-      "handleUpgrade",
-      $currentWalletData,
-      upgradePrice,
-      $currentWalletData?.walletInfo?.privateKey,
-      $user
-    );
 
-    if ($user?.address_type === 'dbc') {
-      const res = await transferDgc(
-        // $currentWalletData?.walletInfo?.address,
-        // "0xde184A6809898D81186DeF5C0823d2107c001Da2",
-        "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808",
-        upgradePrice,
-        $currentWalletData?.walletInfo?.privateKey
-      );
-      console.log("transferDgc", res);
-      // const res = await openProServices(localStorage.token, tx, value);
+  // async function handleUpgrade() {
+  //   console.log(
+  //     "handleUpgrade",
+  //     $currentWalletData,
+  //     upgradePrice,
+  //     $currentWalletData?.walletInfo?.privateKey,
+  //     $user
+  //   );
 
-    }
-    if ($user?.address_type === 'threeSide') {
-      console.log(111);
+  //   if ($user?.address_type === 'dbc') {
+  //     const res = await transferDgc(
+  //       // $currentWalletData?.walletInfo?.address,
+  //       // "0xde184A6809898D81186DeF5C0823d2107c001Da2",
+  //       "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808",
+  //       upgradePrice,
+  //       $currentWalletData?.walletInfo?.privateKey
+  //     );
+  //     console.log("transferDgc", res);
+  //     // const res = await openProServices(localStorage.token, tx, value);
 
-      // const res = await walletconnectSendTransaction({
-      //   value: upgradePrice,
-      // });
+  //   }
+  //   if ($user?.address_type === 'threeSide') {
+  //     console.log(111);
 
-      const res = await walletconnectSendDGCTransaction(upgradePrice);
+  //     // const res = await walletconnectSendTransaction({
+  //     //   value: upgradePrice,
+  //     // });
 
-      console.log(222);
+  //     const res = await walletconnectSendDGCTransaction(upgradePrice);
+
+  //     console.log(222);
       
 
-      if (res) {
-        toast.success("Congratulations on successfully upgrading pro!");
-        show = false;
-      }
-    }
-  }
+  //     if (res) {
+  //       toast.success("Congratulations on successfully upgrading pro!");
+  //       show = false;
+  //     }
+  //   }
+  // }
 </script>
 
 <Modal bind:show size="lg">
@@ -186,8 +188,9 @@
           </p>
           <button
             on:click={() => {
-              handleUpgrade();
+              // handleUpgrade();
               // toast.warning("Coming soon...");
+              $showConfirmUpgradeModal = true;
             }}
             href="#"
             aria-describedby="tier-plus"
@@ -265,6 +268,8 @@
     </div>
   </div>
 </Modal>
+
+<ConfirmUpgradeModal bind:show={$showConfirmUpgradeModal} />
 
 <style>
 </style>

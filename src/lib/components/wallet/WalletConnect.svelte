@@ -66,7 +66,7 @@
       let res = [];
 
       if ($user?.id && $user?.address_type === "threeSide") {
-        res = await reconnect(config);
+        // res = await reconnect(config);
       }
 
       console.log("reconnect res", res);
