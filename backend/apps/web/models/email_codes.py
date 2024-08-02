@@ -120,10 +120,10 @@ class EmailCodeOperations:
     @staticmethod
     def connect_smtp():
         # 这里是smtp网站的连接，可以通过谷歌邮箱查看
-        server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
+        # server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
 
         # server = smtplib.SMTP('smtp.163.com', 465, timeout=3000)
-        # server = smtplib.SMTP('smtp.gmail.com', 587, timeout=3000)
+        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=3000)
         # 连接tls
         server.starttls()
         # server.login('service@decentralgpt.org', 'degpt@2049DE')
