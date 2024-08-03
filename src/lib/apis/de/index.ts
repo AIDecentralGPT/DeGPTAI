@@ -33,7 +33,7 @@ function transformModelData(input) {
 export const getDeModels = async (token: string = "") => {
   let error = null;
 
-  const host = "https://chat.degpt.ai"
+  const host = "https://chat.degpt.ai";
 
   // const host =
   //   window.location.hostname === "localhost"
@@ -45,15 +45,35 @@ export const getDeModels = async (token: string = "") => {
   // Google通用大模型Gemma2
   // 代码大模型 Codestral
 
-
-
-
-
-
   const format_res = {
     models: [
+      // Meta LLM(LIama3.1-405B)
       {
-        name: "Ali General Large Model (Qwen2-72B)",
+        name: "Meta LLM (Llama-3.1-405B)",
+
+        model: "Llama-3.1-405B",
+        modified_at: new Date().toISOString(),
+        size: 0, // 需要根据实际数据填充
+        digest: "", // 需要根据实际数据填充
+        details: {
+          parent_model: "",
+          format: "", // 需要根据实际数据填充
+          family: "",
+          families: [],
+          parameter_size: "",
+          quantization_level: "",
+        },
+        expires_at: "0001-01-01T00:00:00Z",
+        urls: [
+          // "https://chat.degpt.ai/llama3-70b/v1"
+          host + "/api",
+          // "http://122.99.183.53:1042/v1"
+        ],
+        source: "Exemplary performance,low error rate,diverse responses.",
+        nodeList: ["16Uiu2HAmPPXUCZEfnF4sQyBW2pLEtZacPAuGNkKwRExfbzDSg3yV"],
+      },
+      {
+        name: "Ali LLM (Qwen2-72B)",
         model: "Qwen2-72B",
         modified_at: new Date().toISOString(),
         size: 0, // 需要根据实际数据填充
@@ -77,7 +97,7 @@ export const getDeModels = async (token: string = "") => {
       },
 
       {
-        name: "Google Universal Large Model (Gemma-2-27B)",
+        name: "Google LLM (Gemma-2-27B)",
 
         model: "Gemma-2-27B",
         modified_at: new Date().toISOString(),
@@ -101,38 +121,9 @@ export const getDeModels = async (token: string = "") => {
         nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
       },
 
-
-      
-      // Meta LLM(LIama3.1-405B)
-      {
-        name: "Meta General Large Model (Llama-3.1-405B)",
-
-        model: "Llama-3.1-405B",
-        modified_at: new Date().toISOString(),
-        size: 0, // 需要根据实际数据填充
-        digest: "", // 需要根据实际数据填充
-        details: {
-          parent_model: "",
-          format: "", // 需要根据实际数据填充
-          family: "",
-          families: [],
-          parameter_size: "",
-          quantization_level: "",
-        },
-        expires_at: "0001-01-01T00:00:00Z",
-        urls: [
-          // "https://chat.degpt.ai/llama3-70b/v1"
-          host + "/api",
-          // "http://122.99.183.53:1042/v1"
-        ],
-        source: "Exemplary performance,low error rate,diverse responses.",
-        nodeList: ["16Uiu2HAmPPXUCZEfnF4sQyBW2pLEtZacPAuGNkKwRExfbzDSg3yV"],
-      },
-
-     
       // Mistral LLM(Large2-123B)
       {
-        name: "Code Large Model (Codestral-22B-v0.1)",
+        name: "Code LLM (Codestral-22B-v0.1)",
         model: "Codestral-22B-v0.1",
         modified_at: new Date().toISOString(),
         size: 0, // 需要根据实际数据填充
