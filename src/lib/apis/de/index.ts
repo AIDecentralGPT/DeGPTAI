@@ -45,6 +45,11 @@ export const getDeModels = async (token: string = "") => {
   // Google通用大模型Gemma2
   // 代码大模型 Codestral
 
+
+
+
+
+
   const format_res = {
     models: [
       {
@@ -68,31 +73,6 @@ export const getDeModels = async (token: string = "") => {
           // "http://122.99.183.53:1042/v1"
         ],
         source: "27 language support, surpport long texts of up to 128 tokens.",
-        nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
-      },
-
-      {
-        name: "Meta General Large Model (LIama3 70B)",
-
-        model: "Llama3-70B",
-        modified_at: new Date().toISOString(),
-        size: 0, // 需要根据实际数据填充
-        digest: "", // 需要根据实际数据填充
-        details: {
-          parent_model: "",
-          format: "", // 需要根据实际数据填充
-          family: "",
-          families: [],
-          parameter_size: "",
-          quantization_level: "",
-        },
-        expires_at: "0001-01-01T00:00:00Z",
-        urls: [
-          // "https://chat.degpt.ai/llama3-70b/v1"
-          host + "/api",
-          // "http://122.99.183.53:1042/v1"
-        ],
-        source: "Exemplary performance,low error rate,diverse responses.",
         nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
       },
 
@@ -121,6 +101,36 @@ export const getDeModels = async (token: string = "") => {
         nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
       },
 
+
+      
+      // Meta LLM(LIama3.1-405B)
+      {
+        name: "Meta General Large Model (Llama-3.1-405B)",
+
+        model: "Llama-3.1-405B",
+        modified_at: new Date().toISOString(),
+        size: 0, // 需要根据实际数据填充
+        digest: "", // 需要根据实际数据填充
+        details: {
+          parent_model: "",
+          format: "", // 需要根据实际数据填充
+          family: "",
+          families: [],
+          parameter_size: "",
+          quantization_level: "",
+        },
+        expires_at: "0001-01-01T00:00:00Z",
+        urls: [
+          // "https://chat.degpt.ai/llama3-70b/v1"
+          host + "/api",
+          // "http://122.99.183.53:1042/v1"
+        ],
+        source: "Exemplary performance,low error rate,diverse responses.",
+        nodeList: ["16Uiu2HAmPPXUCZEfnF4sQyBW2pLEtZacPAuGNkKwRExfbzDSg3yV"],
+      },
+
+     
+      // Mistral LLM(Large2-123B)
       {
         name: "Code Large Model (Codestral-22B-v0.1)",
         model: "Codestral-22B-v0.1",
