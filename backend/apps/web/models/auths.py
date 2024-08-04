@@ -151,9 +151,11 @@ class FaceLivenessCheckRequest(BaseModel):
     
 class FaceLivenessCheckResponse(BaseModel):
     passed: bool
+    message:  Optional[str] = ""
 
 
-
+class SearchFormRequest(BaseModel):
+    face_img: str
 
 class AuthsTable:
     def __init__(self, db):

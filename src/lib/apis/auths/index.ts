@@ -637,11 +637,14 @@ export const verifyCode = async (email: string, code: string) => {
 export const faceliveness = async (metaInfo: any) => {
   let error = null;
 
+  console.log("faceliveness", metaInfo);
+  debugger
+
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/face_liveness`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${localStorage.token}`,
     },
     body: JSON.stringify({
       metaInfo: {
@@ -680,7 +683,7 @@ export const facelivenessRes = async (data: any) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.token}`,
     },
-    body: JSON.stringify(data),
+    // body: JSON.stringify(data),
   })
     .then(async (res) => {
       if (!res.ok) throw await res.json();

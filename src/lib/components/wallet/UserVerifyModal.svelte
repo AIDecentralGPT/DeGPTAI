@@ -82,6 +82,7 @@
     let valid = true;
 
     if (current === 1) {
+
       if (!validateEmail(email)) {
         toast.error("Please enter a valid email address.");
         valid = false;
@@ -92,6 +93,7 @@
         valid = false;
         return;
       }
+
 
       await verifyCode(email, code).then((res) => {
         console.log("verifyCode res", res);
@@ -109,6 +111,8 @@
         } else {
           toast.error(res.detail);
         }
+
+        
       }).catch((error) => {
         console.log(error);
         toast.error(error);
@@ -145,14 +149,14 @@
     transaction_url: "",
   };
 
-  let MetaInfo = {};
   function faceLiveness() {
     const MetaInfo = window.getMetaInfo();
+    console.log("进入faceliveness", MetaInfo);
+    
     faceliveness(MetaInfo).then(async (res) => {
       console.log(res);
       faceLivenessInitialData = res;
       if (res.transaction_url) {
-        toast.success("活体检测成功");
 
         if (isMobile) {
           await goto(res.transaction_url);
@@ -167,10 +171,17 @@
 
   function getFaceRes() {
     facelivenessRes({
-      transaction_id: faceLivenessInitialData.transaction_id,
-      merchant_biz_id: faceLivenessInitialData.merchant_biz_id,
+      // transaction_id: faceLivenessInitialData.transaction_id,
+      // merchant_biz_id: faceLivenessInitialData.merchant_biz_id,
     }).then((res) => {
       console.log(res);
+      if(res?.passed) {
+        toast.success("Congratulations on passing the verification!")
+        show=false
+
+      }else {
+        toast.error("Verification failed, the system detects that your face has been used!")
+      }
     });
   }
 
@@ -311,10 +322,21 @@
           class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
           on:click={previousStep}>Previous</button
         >
+
+
+        {#if current === 2}
         <button
-          class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
-          on:click={nextStep}>Next</button
-        >
+        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+        on:click={getFaceRes}> Finish</button
+      >
+        {/if}
+        {#if current !== 2}
+        <button
+        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+        on:click={nextStep}>Next</button
+      >
+        {/if}
+       
       </div>
     </div>
   </div>

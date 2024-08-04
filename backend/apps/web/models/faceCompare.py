@@ -21,6 +21,17 @@ class FaceCompare:
             access_key_secret='JjmtIgPze7r86dn89d8p3i2FMCfhHH',
             endpoint="cloudauth-intl.cn-hongkong.aliyuncs.com"
         )
+        
+        
+#         AccessKey ID
+# LTAI5tKRwDnNYRAjF9SkeFv6
+# LTAI5tQC7rgovBXLJK9nAh9H
+
+# AccessKey Secret
+# 6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde
+# y41BCjq6yck32Mw050vGkdMNO8nPqF
+
+
         self.client = CloudauthClient(self.config)
 
     def compare_faces(self, source_face_base64: str, target_face_base64: str):
@@ -54,7 +65,7 @@ class FaceCompare:
             meta_info=str(metaInfo), # 动态，传入
 
             # return_url="https://www.aliyun.com",
-            return_url="http://43.242.202.166:5173",
+            return_url="http://43.242.202.166:3000",
             product_code="FACE_LIVENESS",
             security_level="02",
             # languageConfig="****",
@@ -73,7 +84,8 @@ class FaceCompare:
         # 构建结果检查请求
         request = cloudauth_models.CheckResultRequest(
             transaction_id=transaction_id,
-            merchant_biz_id=merchant_biz_id
+            merchant_biz_id=merchant_biz_id,
+            is_return_image="Y"
         )
   
         # 调用结果检查API

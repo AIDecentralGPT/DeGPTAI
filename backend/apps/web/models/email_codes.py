@@ -93,9 +93,17 @@ class EmailCodeOperations:
         
         if self.server is None:
             print("无法发送邮件，SMTP连接不可用")
-            self.send_email(to_email, subject, body)  # 确保连接有效
-            
+            try:
+                self.send_email(to_email, subject, body)  # 确保连接有效
+            except Exception as e:
+                print(e)
+                print("send_email error")
+                self.connect()
+                self.send_email(to_email, subject, body)  # 确保连接有效
+                
             return
+        else:
+            print("发送邮件", self.server)
 
 
         msg = MIMEMultipart()  # message结构体初始化
@@ -111,6 +119,8 @@ class EmailCodeOperations:
         except Exception as e:
             print(e)
             print("send_email error")
+            self.server.sendmail(from_email, to_email, msg.as_string())
+            
         # finally:
         #     self.server.quit()  # Close the connection
 
@@ -147,7 +157,7 @@ class EmailCodeOperations:
         if self.server:
             self.server.quit()  # 如果已经有连接，先关闭
         try:
-            self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=10)  # 更改为Gmail的SMTP服务器和端口
+            self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)  # 更改为Gmail的SMTP服务器和端口
             self.server.starttls()  # 启动TLS加密
             self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')  # 登录Gmail账号
 

@@ -33,6 +33,9 @@ class User(Model):
     inviter_id = CharField(null=True)  # 邀请人id
     address_type = CharField(null=True)
     verified= CharField(null=False)
+    face_id = CharField(null=True)
+    merchant_biz_id= CharField(null=True)
+    transaction_id= CharField(null=True)
     
     # phone_number = CharField(null=True, unique=True)  # 定义可为空，唯一的字符字段phone_number
 
@@ -55,6 +58,10 @@ class UserModel(BaseModel):
     inviter_id: Optional[str] = None
     address_type: Optional[str] = None
     verified: Optional[bool] = False
+    face_id: Optional[str] = None
+    merchant_biz_id: Optional[str] = None
+    transaction_id: Optional[str] = None
+        
     # phone_number: Optional[str]   # 定义phone_number字段，类型为可选字符串
 
 ####################
@@ -95,6 +102,9 @@ class UsersTable:
         role: str = "user",
         address_type: str = None,
         verified: bool = False,
+        face_id: str = None,
+        merchant_biz_id: str = None,
+        transaction_id: str = None,
     ) -> Optional[UserModel]:
         user = UserModel(
             **{
@@ -108,7 +118,10 @@ class UsersTable:
                 "updated_at": int(time.time()),
                 "inviter_id": inviter_id,
                 "address_type": address_type,
-                "verified":  verified
+                "verified":  verified,
+                "face_id": face_id,
+                "merchant_biz_id": merchant_biz_id,
+                "transaction_id": transaction_id,
             }
         )  # 创建UserModel实例
 
@@ -317,7 +330,15 @@ class UsersTable:
         except:
             return None  # 如果查询失败，返回None
         
-
+    # 根据face_id获取user_id
+    def get_user_id_by_face_id(self, face_id: str) -> Optional[str]:
+        try:
+            user = User.get(User.face_id == face_id)  # 查询用户
+            print("user", user)
+            return user.id  # 返回用户的id
+        except:
+            return None  # 如果查询失败，返回None
+        
 
     def update_user_id(old_id: str, new_id: str) -> bool:
         try:
@@ -328,10 +349,23 @@ class UsersTable:
             print(f"update_user_id Exception: {e}")
             return False
         
-    # 更新用户是否完成活体检测认证
-    def update_user_verified(self, id: str, verified: bool) -> bool:
+        
+        
+    # 更新用户的transaction_id和merchant_biz_id
+    def update_user_verify_info(self, id: str, transaction_id: str, merchant_biz_id: str) -> bool:
         try:
-            query = User.update(verified=verified).where(User.id == id)
+            query = User.update(transaction_id=transaction_id, merchant_biz_id =merchant_biz_id).where(User.id == id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+
+    
+    # 更新用户是否完成活体检测认证
+    def update_user_verified(self, id: str, verified: bool, face_id: str) -> bool:
+        try:
+            query = User.update(verified=verified, face_id =face_id).where(User.id == id)
             result = query.execute()
             return True if result == 1 else False
         except Exception as e:

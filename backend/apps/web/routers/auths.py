@@ -16,6 +16,10 @@ from apps.web.models.chats import (
     ChatTitleIdResponse,
     Chats,
 )
+
+from apps.web.models.faceLib import (
+   face_lib,
+)
 from fastapi.responses import RedirectResponse
 
 from apps.web.models.email_codes import (
@@ -37,7 +41,6 @@ from web3 import Web3
 w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
 from web3.auto import w3
 from eth_account.messages import encode_defunct, _hash_eip191_message
-
 
 
 # -----------------------------------------------------------------
@@ -82,7 +85,8 @@ from apps.web.models.auths import (
     FaceLivenessResponse,
     FaceLivenessCheckRequest,
     FaceLivenessCheckResponse,
-    MetaInfo
+    MetaInfo,
+    SearchFormRequest
     
 )
 from apps.web.models.users import Users
@@ -740,7 +744,7 @@ async def send_code(email_request: EmailRequest):
             
              style="width: 300px;display: inline-block;border-radius: 6px;"
             
-            src="http://43.242.202.166:8080/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
+            src="http://43.242.202.166:3000/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
     
     </a>
 
@@ -755,7 +759,7 @@ async def send_code(email_request: EmailRequest):
     >Website
             <img
              style="width: 300px;display: inline-block;border-radius: 6px;"
-               src="http://43.242.202.166:8080/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
+               src="http://43.242.202.166:3000/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
     
     </a>
     
@@ -818,9 +822,8 @@ async def face_compare_handle(    form_data: FaceCompareForm):
 
 # get api key
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
-async def face_liveness(form_data: FaceLivenessRequest):
+async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
         # 获取查询参数
-    form_data
     print("Query Parameters:", form_data.metaInfo, )
 
     if True:
@@ -851,6 +854,10 @@ async def face_liveness(form_data: FaceLivenessRequest):
         transaction_url = response["transaction_url"]
         # return RedirectResponse(url=redirect_url)
         
+        
+        # 存储该用户的验证信息
+        Users.update_user_verify_info(user.id, transaction_id,merchant_biz_id, )
+        
         return {
             "merchant_biz_id":merchant_biz_id,
             "transaction_id": transaction_id,
@@ -866,10 +873,13 @@ async def face_liveness(form_data: FaceLivenessRequest):
 
 # get api key
 @router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
-async def faceliveness_check(form_data: FaceLivenessCheckRequest,user=Depends(get_current_user)):
+async def faceliveness_check(user=Depends(get_current_user)):
         # 获取查询参数
-    form_data
-    print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
+    # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
+    merchant_biz_id = user.merchant_biz_id
+    transaction_id = user.transaction_id
+    
+    print("form_data.", merchant_biz_id, transaction_id)
 
     if True:
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
@@ -878,16 +888,32 @@ async def faceliveness_check(form_data: FaceLivenessCheckRequest,user=Depends(ge
         #     "merchant_biz_id":form_data.merchant_biz_id,
         # })
         response = face_compare.check_result(
-            transaction_id= form_data.transaction_id,
-            merchant_biz_id=form_data.merchant_biz_id,
+            transaction_id= transaction_id,
+            merchant_biz_id=merchant_biz_id,
         )
    
 
-        print("face compare success", response, response.body)
+        # print("face compare success", response, response.body.result.ext_face_info, response.body)
+        # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
         
+        faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
         
+        # face_lib.add_face_data(faceImg)
+        face_id = face_lib.search_face(faceImg)
+        print("face_id", face_id)
+        
+        user_id = Users.get_user_id_by_face_id(face_id)
+        print("user_id",face_id, user_id)
+        if user_id  is not None :
+            return {
+                "passed": False,
+                "message": "Face has been verified"
+            }
+            
+        
+        # 判断该face_id是否有过
         if response.body.result.passed:
-            user_update_result = Users.update_user_verified(user.id, True)
+            user_update_result = Users.update_user_verified(user.id, True, face_id)
             # return user_update_result
             print("user_update_result", user_update_result)
             
@@ -908,3 +934,23 @@ async def faceliveness_check(form_data: FaceLivenessCheckRequest,user=Depends(ge
 
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+
+
+
+@router.post("/create_face_db")
+async def create_face_db():
+    return face_lib.create_face_db()
+
+@router.post("/add_face_sample")
+async def add_face_sample():
+    return face_lib.add_face_sample()
+
+@router.post("/add_face_data")
+# async def add_face_data():
+#     return face_lib.add_face_data()
+
+@router.post("/search_face")
+
+async def search_face(    form_data: SearchFormRequest):
+    face_img = form_data.face_img
+    return face_lib.search_face( face_img, )

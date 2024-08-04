@@ -26,6 +26,9 @@ Required-by: alibabacloud-cloudauth-intl20220809
 
 
 
+点击完成校验，merchant_biz_id和tra。的存储，校验
+校验时候对 face_id的查重
+人脸完成后跳转页面
 
 
 
