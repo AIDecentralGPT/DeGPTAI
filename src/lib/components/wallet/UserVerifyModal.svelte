@@ -244,7 +244,12 @@
 
       {#if current === 1}
         <div class="w-4/5 flex flex-col">
-          <div class="mb-6 pt-0.5 flex justify-start items-center w-full">
+          <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
+
+          <div class="mb-6 pt-0.5 flex justify-start  w-full 
+          flex-col  gap-2 items-baseline md:items-center md:flex-row
+
+          ">
             <label
               for="email"
               class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
@@ -277,7 +282,11 @@
               </button>
             </div>
           </div>
-          <div class="mb-6 pt-0.5 w-full flex justify-start items-center">
+          <div class="mb-6 pt-0.5 w-full flex justify-start 
+          
+          flex-col  gap-2 items-baseline md:items-center md:flex-row
+          
+          ">
             <label
               for="code"
               class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"

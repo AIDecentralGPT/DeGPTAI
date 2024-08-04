@@ -93,13 +93,13 @@ class EmailCodeOperations:
         
         if self.server is None:
             print("无法发送邮件，SMTP连接不可用")
-            try:
-                self.send_email(to_email, subject, body)  # 确保连接有效
-            except Exception as e:
-                print(e)
-                print("send_email error")
-                self.connect()
-                self.send_email(to_email, subject, body)  # 确保连接有效
+            # try:
+            self.send_email(to_email, subject, body)  # 确保连接有效
+            # except Exception as e:
+            #     print(e)
+            #     print("send_email error")
+            #     self.connect()
+            #     self.send_email(to_email, subject, body)  # 确保连接有效
                 
             return
         else:
@@ -119,7 +119,8 @@ class EmailCodeOperations:
         except Exception as e:
             print(e)
             print("send_email error")
-            self.server.sendmail(from_email, to_email, msg.as_string())
+            self.connect()
+            self.send_email(to_email, subject, body)  # 确保连接有效
             
         # finally:
         #     self.server.quit()  # Close the connection

@@ -28,6 +28,7 @@
   // import { demo } from "$lib/utils/wallet/ether/utils";
   import { isPro } from "$lib/apis/users";
   import { walletconnectSignMessage } from "$lib/utils/wallet/walletconnect/index";
+  import { slice } from "viem";
 
   const i18n = getContext("i18n");
 
@@ -167,9 +168,9 @@ toast.success(JSON.stringify(MetaInfo))
         {/if}
 
         <!-- <button on:click={demo}>{$user?.isPro}</button> -->
-        <button on:click={()=> {
+        <!-- <button on:click={()=> {
           demo()
-        }}>demo</button>
+        }}>demo</button> -->
 
         <Tooltip content={$i18n.t("New Chat")}>
           <button
@@ -199,7 +200,7 @@ toast.success(JSON.stringify(MetaInfo))
           </button>
         </Tooltip>
 
-        {#if $user !== undefined}
+        {#if $user !== undefined && $user?.id.startsWith('0x')}
           <UserMenu
             className="max-w-[200px]"
             role={$user?.role}
@@ -214,12 +215,18 @@ toast.success(JSON.stringify(MetaInfo))
               aria-label="User Menu"
             >
               <div class=" self-center">
-                <img
+                <!-- <img
                   src={$user.profile_image_url}
                   class="size-6 object-cover rounded-full"
                   alt="User profile"
                   draggable="false"
-                />
+                /> -->
+                <div
+                class="size-6 object-cover rounded-full bg-primary"
+
+                >
+{$user.id?.slice(2,4)}
+                </div>
               </div>
             </button>
           </UserMenu>

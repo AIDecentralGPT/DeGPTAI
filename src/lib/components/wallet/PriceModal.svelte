@@ -9,7 +9,7 @@
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
   const i18n = getContext("i18n");
 
-  const upgradePrice = 5;
+  const upgradePrice = 3;
 
 
   // async function handleUpgrade() {
@@ -137,8 +137,11 @@
                   clip-rule="evenodd"
                 />
               </svg>
+<div>
 
-              {$i18n.t("Access to Qwen2-72B, Llama3-70B, Gemma-2-27B, Codestral-22B-v0.1")}
+  {$i18n.t("Access to ")}
+  <span class=" dark:text-gray-100 text-zinc-950">Llama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span>
+</div>
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -170,6 +173,21 @@
               </svg>
               {$i18n.t("Access on web, iOS, Android")}
             </li>
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none text-gray-500"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("The usage limit for the model is 100 calls per day.")}
+            </li>
           </ul>
         </div>
         <div class="rounded-3xl p-8 ring-1 xl:p-10 ring-gray-200 m-4">
@@ -177,7 +195,7 @@
             {$i18n.t("Plus")}
           </h3>
           <p class="mt-6 flex items-baseline gap-x-1">
-            <span class="text-4xl font-bold tracking-tight">{upgradePrice}</span
+            <span class="text-4xl font-bold tracking-tight">${upgradePrice}</span
             >
             <span class="text-sm font-semibold leading-6 text-gray-400"
               >DGC</span
@@ -230,7 +248,11 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("Access to Gemma-2-27B, Codestral-22B-v0.1")}
+              <div>
+
+                {$i18n.t("Access to ")}
+                <span class=" dark:text-gray-100 text-zinc-950">LIama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span>
+              </div>
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -247,6 +269,8 @@
               </svg>
               {$i18n.t("Regular model updates")}
             </li>
+
+            
             <li class="flex gap-x-3">
               <svg
                 class="h-6 w-5 flex-none primaryText"
@@ -261,6 +285,22 @@
                 />
               </svg>
               {$i18n.t("Access on web, iOS, Android")}
+            </li>
+
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("The usage limit for the model is 500 calls per day.")}
             </li>
           </ul>
         </div>
