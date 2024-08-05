@@ -180,7 +180,7 @@
             <input
               type="radio"
               bind:group={transferType}
-              value="dbc"
+              value="DBC"
               required
             />
             DBC
@@ -189,7 +189,7 @@
             <input
               type="radio"
               bind:group={transferType}
-              value="dgc"
+              value="DGC"
               required
             />
             DGC

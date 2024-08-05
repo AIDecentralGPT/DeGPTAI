@@ -83,47 +83,90 @@ class EmailCodeOperations:
         else:
             return None  # 如果创建失败，返回None
 
-    def send_email(self, to_email: str, subject: str, body: str):
+    # def send_email(self, to_email: str, subject: str, body: str):
 
-        if not to_email or to_email == '':
-            return
+    #     if not to_email or to_email == '':
+    #         return
 
-
-        self.ensure_connection()  # 确保连接有效
-        
-        if self.server is None:
-            print("无法发送邮件，SMTP连接不可用")
-            # try:
-            self.send_email(to_email, subject, body)  # 确保连接有效
-            # except Exception as e:
-            #     print(e)
-            #     print("send_email error")
-            #     self.connect()
-            #     self.send_email(to_email, subject, body)  # 确保连接有效
+    #     if self.server is None:
+    #         print("SMTP连接已丢失，尝试重新连接")
+    #         # try:
+    #         self.connect()
+    #         self.send_email(to_email, subject, body)  # 确保连接有效
+    #         # except Exception as e:
+    #         #     print(e)
+    #         #     print("send_email error")
+    #         #     self.connect()
+    #         #     self.send_email(to_email, subject, body)  # 确保连接有效
                 
+    #         return
+    #     else:
+    #         print("发送邮件", self.server)
+    #         msg = MIMEMultipart()  # message结构体初始化
+    #         from_email = 'degpt'
+    #         msg['From'] = from_email
+    #         msg['To'] = to_email
+    #         msg['Subject'] = subject
+    #         try:
+    #             msg.attach(MIMEText(body, 'html', "utf-8"))
+                
+    #             self.server.sendmail(from_email, to_email, msg.as_string())
+    #             print(f"邮件发送成功：{to_email}")
+    #         except Exception as e:
+    #             print(e)
+    #             print("send_email error")
+    #             self.connect()
+    #             self.send_email(to_email, subject, body)  # 确保连接有效
+            
+    #     # finally:
+    #     #     self.server.quit()  # Close the connection
+
+
+    def connect(self):
+        try:
+           
+            
+            self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=3000)
+            self.server.starttls()  # 启动TLS加密
+            self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')
+            print("SMTP连接成功")
+            
+        except Exception as e:
+            print(f"SMTP连接失败: {e}")
+            self.server = None
+
+    def send_email(self, to_email: str, subject: str, body: str):
+        if not to_email:
             return
-        else:
-            print("发送邮件", self.server)
 
-
-        msg = MIMEMultipart()  # message结构体初始化
+        if not self.server:
+            print("SMTP连接已丢失，尝试重新连接")
+            self.connect()
+            print("邮件服务对象", self.server)
+            
+        print("邮件服务对象", self.server)
+        msg = MIMEMultipart()
         from_email = 'degpt'
         msg['From'] = from_email
         msg['To'] = to_email
         msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'html', "utf-8"))
+        
+
         try:
-            msg.attach(MIMEText(body, 'html', "utf-8"))
-            
             self.server.sendmail(from_email, to_email, msg.as_string())
             print(f"邮件发送成功：{to_email}")
-        except Exception as e:
-            print(e)
-            print("send_email error")
+        except smtplib.SMTPException as e:
+            print(f"发送邮件失败: {e}")
+            self.server = None  # 使连接失效，以便重新连接
             self.connect()
-            self.send_email(to_email, subject, body)  # 确保连接有效
-            
-        # finally:
-        #     self.server.quit()  # Close the connection
+
+            if self.server:
+                try:
+                    self.server.sendmail(from_email, to_email, msg.as_string())
+                    print(f"邮件重新发送成功：{to_email}")
+                except smtplib.SMTPException as e:
+                    print(f"邮件重新发送失败: {e}")
 
 
 
@@ -153,20 +196,20 @@ class EmailCodeOperations:
     #     # server.login('service@decentralgpt.org', 'degpt@2049DE')
     #     # server.login('471037624@qq.com', 'hgseyhgutfetcabj')
 
-    def connect(self):
-        """建立与SMTP服务器的连接"""
-        if self.server:
-            self.server.quit()  # 如果已经有连接，先关闭
-        try:
-            self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)  # 更改为Gmail的SMTP服务器和端口
-            self.server.starttls()  # 启动TLS加密
-            self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')  # 登录Gmail账号
+    # def connect(self):
+    #     """建立与SMTP服务器的连接"""
+    #     if self.server:
+    #         self.server.quit()  # 如果已经有连接，先关闭
+    #     try:
+    #         self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)  # 更改为Gmail的SMTP服务器和端口
+    #         self.server.starttls()  # 启动TLS加密
+    #         self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')  # 登录Gmail账号
 
-            # self.server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
-            # self.server.starttls()
-        except Exception as e:
-            print(f"连接SMTP服务器失败: {e}")
-            self.server = None
+    #         # self.server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
+    #         # self.server.starttls()
+    #     except Exception as e:
+    #         print(f"连接SMTP服务器失败: {e}")
+    #         self.server = None
 
     def ensure_connection(self):
         """确保SMTP连接可用，如果不可用则尝试重连"""
