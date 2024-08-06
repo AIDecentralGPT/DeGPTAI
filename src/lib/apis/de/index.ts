@@ -70,7 +70,7 @@ export const getDeModels = async (token: string = "") => {
           // "http://122.99.183.53:1042/v1"
         ],
         source: "Exemplary performance,low error rate,diverse responses.",
-        nodeList: ["16Uiu2HAmPPXUCZEfnF4sQyBW2pLEtZacPAuGNkKwRExfbzDSg3yV"],
+        nodeList: ["16Uiu2HAmBcP2Zv51z4VA8UnHRNRjatyHcv4TSuU6pXixLELP1U7F"],
       },
       {
         name: "Ali LLM (Qwen2-72B)",
