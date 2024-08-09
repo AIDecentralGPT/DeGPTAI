@@ -102,7 +102,7 @@
               {$i18n.t('You can invite up to 10 friends per day, with a maximum reward of 10,000 DGCs per day.')}
             </p>
           </div>
-          <div class=" flex flex-col justify-center items-center">
+          <!-- <div class=" flex flex-col justify-center items-center">
             <svg
             class="rotate-90 sm:rotate-0"
               xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +126,7 @@
             <p class="text-sm text-gray-600">
               {$i18n.t('If your friends purchase DGC on DeepLink, you will receive a 10% DGC commission reward.')}
             </p>
-          </div>
+          </div> -->
         </div>
   
         <div class="text-center mt-8 flex justify-center gap-4 items-center flex-col md:flex-row">

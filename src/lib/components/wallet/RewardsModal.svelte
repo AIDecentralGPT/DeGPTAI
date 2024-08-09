@@ -230,7 +230,7 @@
                     )}
                   </p>
                 </div>
-                <div class=" flex flex-col justify-center items-center">
+                <!-- <div class=" flex flex-col justify-center items-center">
                   <svg
                     class="rotate-90 sm:rotate-0"
                     xmlns="http://www.w3.org/2000/svg"
@@ -276,7 +276,7 @@
                       "If your friends purchase DGC on DeepLink, you will receive a 10% DGC commission reward."
                     )}
                   </p>
-                </div>
+                </div> -->
               </div>
 
               <div
