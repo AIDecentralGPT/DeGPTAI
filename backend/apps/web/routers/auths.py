@@ -1,6 +1,7 @@
 import logging
+from typing import List, Dict
 
-from fastapi import Request, UploadFile, File
+from fastapi import Request, UploadFile, File, WebSocket, WebSocketDisconnect
 from fastapi import Depends, HTTPException, status
 from pydantic import EmailStr
 from fastapi import APIRouter
@@ -824,19 +825,20 @@ async def face_compare_handle(    form_data: FaceCompareForm):
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
         # 获取查询参数
-    print("Query Parameters:", form_data.metaInfo, )
+    print("face_liveness Query Parameters:", user.id)
 
     if True:
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         response = face_compare.face_liveness({
                        "deviceType": form_data.metaInfo.deviceType,
             "ua":form_data.metaInfo.ua,
-            "bioMetaInfo": form_data.metaInfo.bioMetaInfo
+            "bioMetaInfo": form_data.metaInfo.bioMetaInfo,
+            "user_id": user.id
             
         })
    
 
-        print("face compare success", response)
+        print("face_liveness success", response)
 
         # return {
         #     "status_code": response.status_code,
@@ -954,3 +956,137 @@ async def add_face_sample():
 async def search_face(    form_data: SearchFormRequest):
     face_img = form_data.face_img
     return face_lib.search_face( face_img, )
+
+
+
+
+
+
+
+
+
+async def faceliveness_check_for_ws(id: str):
+    
+    try:
+
+        user = Users.get_user_by_id((id))
+        # print("faceliveness_check_for_ws user.", user, user)
+        
+            # 获取查询参数
+        # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
+        merchant_biz_id = user.merchant_biz_id
+        transaction_id = user.transaction_id
+        
+        print("faceliveness_check_for_ws .merchant_biz_id", merchant_biz_id, transaction_id)
+
+        if True:
+            # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
+            # response = face_compare.check_result({
+            #     "transaction_id": form_data.transaction_id,
+            #     "merchant_biz_id":form_data.merchant_biz_id,
+            # })
+            response = face_compare.check_result(
+                transaction_id= transaction_id,
+                merchant_biz_id=merchant_biz_id,
+            )
+    
+
+            # print("face compare success", response, response.body.result.ext_face_info, response.body)
+            # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
+            
+            faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+            
+            # face_lib.add_face_data(faceImg)
+            face_id = face_lib.search_face(faceImg)
+            print("face_id", face_id)
+            
+            user_id = Users.get_user_id_by_face_id(face_id)
+            print("user_id",face_id, user_id)
+            if user_id  is not None :
+                return {
+                    "passed": False,
+                    "message": "Face has been verified"
+                }
+                
+            
+            # 判断该face_id是否有过
+            if response.body.result.passed:
+                user_update_result = Users.update_user_verified(user.id, True, face_id)
+                # return user_update_result
+                print("user_update_result", user_update_result)
+                
+
+
+            
+            return {
+                        "passed": response.body.result.passed
+            # 'Message': 'success',
+            # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+            # 'Result': {
+            #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+            #     'Passed': 'Y',
+            #     'SubCode': '200'
+            # }
+
+            }
+    except Exception as e:
+        print(f"Error in faceliveness_check_for_ws: {e}")
+        # 根据需要执行错误处理，例如记录日志或通知客户端
+
+
+
+
+
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, List[WebSocket]] = {}
+
+    async def connect(self, websocket: WebSocket, user_id: str):
+        await websocket.accept()
+        if user_id not in self.active_connections:
+            self.active_connections[user_id] = []
+        self.active_connections[user_id].append(websocket)
+
+    def disconnect(self, websocket: WebSocket, user_id: str):
+        self.active_connections[user_id].remove(websocket)
+        if not self.active_connections[user_id]:
+            del self.active_connections[user_id]
+
+    async def broadcast(self, message: str, user_id: str):
+        connections = self.active_connections.get(user_id, [])
+        for connection in connections:
+            await connection.send_text(message)
+
+manager = ConnectionManager()
+
+# @router.websocket("/ws/{user_id}")
+# async def websocket_endpoint(websocket: WebSocket, user_id: str):
+#     await manager.connect(websocket, user_id)
+#     try:
+#         while True:
+#             data = await websocket.receive_text()
+#             # await manager.broadcast(f"User {user_id} says: {data}", user_id)
+            
+#             await faceliveness_check_for_ws()
+            
+#             await manager.broadcast(f"服务端接收到{user_id}", user_id)
+#     except WebSocketDisconnect:
+#         manager.disconnect(websocket, user_id)
+
+
+@router.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+    await manager.connect(websocket, user_id)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
+            print("passed", passedInfo['passed'])
+            await manager.broadcast(f"{passedInfo['passed']}", user_id)
+            # await manager.broadcast(f"服务端接收到{user_id}", user_id)
+    except WebSocketDisconnect:
+        
+        manager.disconnect(websocket, user_id)
+    except Exception as e:
+        print(f"WebSocket connection error: {e}")
+        await websocket.close(code=1000)  # 优雅地关闭连接

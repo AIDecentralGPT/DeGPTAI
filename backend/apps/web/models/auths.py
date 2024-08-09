@@ -134,6 +134,7 @@ class MetaInfo(BaseModel):
     bioMetaInfo: str
     deviceType: str
     ua: str
+    user_id:   Optional[str] = ""
 
 
 class FaceLivenessRequest(BaseModel):

@@ -168,9 +168,9 @@ toast.success(JSON.stringify(MetaInfo))
         {/if}
 
         <!-- <button on:click={demo}>{$user?.isPro}</button> -->
-        <!-- <button on:click={()=> {
+        <button on:click={()=> {
           demo()
-        }}>demo</button> -->
+        }}>demo</button>
 
         <Tooltip content={$i18n.t("New Chat")}>
           <button

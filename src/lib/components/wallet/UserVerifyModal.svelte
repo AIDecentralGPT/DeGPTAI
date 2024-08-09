@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, onMount } from "svelte";
+  import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
   import Image from "../common/Image.svelte";
   import {
@@ -16,6 +16,54 @@
   import { goto } from "$app/navigation";
 
   const i18n = getContext("i18n");
+
+
+  let socket;
+  let messages = [];
+  onMount(() => {
+    // 创建 WebSocket 连接
+    socket = new WebSocket('ws://43.242.202.166:8080/api/v1/auths/ws');
+
+    // 监听 WebSocket 连接打开事件
+    socket.addEventListener('open', () => {
+      console.log('WebSocket 连接已打开');
+    });
+
+    // 监听 WebSocket 消息事件
+    socket.addEventListener('message', (event) => {
+      // 将收到的消息添加到 messages 列表中
+      messages = [...messages, event.data];
+    });
+
+    // 监听 WebSocket 连接关闭事件
+    socket.addEventListener('close', () => {
+      console.log('WebSocket 连接已关闭');
+    });
+
+    // 监听 WebSocket 错误事件
+    socket.addEventListener('error', (error) => {
+      console.error('WebSocket 发生错误:', error);
+    });
+
+ 
+  });
+
+     // 在组件卸载时关闭 WebSocket 连接
+     onDestroy(() => {
+      socket.close();
+    });
+
+  // 向服务器发送消息的函数
+  function sendMessage() {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send('Hello Server!');
+    } else {
+      console.error('WebSocket 连接不可用');
+    }
+  }
+
+
+
 
   export let show = false;
 
@@ -196,6 +244,9 @@
 </script>
 
 <Modal bind:show size="lg">
+  <button on:click={sendMessage}>发送消息</button>
+
+
   <!-- <button on:click={getQrCode}> show qrcode </button> -->
 
   <!-- <button on:click={faceLiveness}> 2. 活体检测 </button> -->

@@ -30,6 +30,9 @@
 	"/s/[id]": [
 		"src/routes/+layout.js"
 	],
+	"/userVerifying": [
+		"src/routes/+layout.js"
+	],
 	"/(app)/workspace": [
 		"src/routes/+layout.js",
 		"src/routes/+layout.js"
