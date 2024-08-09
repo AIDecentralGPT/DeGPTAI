@@ -257,7 +257,7 @@
           </p>
 
           <button
-            class="my-4 px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+            class="my-4 px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
             type="submit"
             on:click={async () => {
               // 进行下载动作
@@ -289,12 +289,12 @@
 
 
 
-                <div class="flex-1 relative">
+                <div class="flex-1 relative primaryButton rounded-md">
                   <p
                     class="
                     text-ellipsis overflow-hidden whitespace-nowrap
                     pr-[35px]
-                    px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+                    px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none"
                   >
                     {privateKey}
           
@@ -311,7 +311,7 @@
                       }
                     }}
                     type="button"
-                    class="absolute inset-y-0 right-0 px-3 py-2 text-sm dark:text-gray-300 dark:bg-gray-850 rounded-md"
+                    class="absolute inset-y-0 right-0 px-3 py-2 text-sm primaryButton rounded-md"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
