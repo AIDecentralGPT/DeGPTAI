@@ -94,8 +94,11 @@
     <div
       class="flex gap-1 items-center cursor-pointer"
       on:click={() => {
-        // $showRewardsModal = true;
-        $showRewardsHistoryModal = true;
+        if ($user?.verified) {
+          $showRewardsHistoryModal = true;
+        } else {
+          $showUserVerifyModal = true;
+        }
       }}
     >
       <svg
