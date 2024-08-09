@@ -140,7 +140,7 @@
   {#each items as item, index}
     {#if (item.text !== "Create Wallet" && $user?.id?.startsWith("0x")) || (item.text === "Create Wallet" && !$user?.id.startsWith("0x"))}
       <div
-        class="flex justify-between items-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2 text-xs lg:text-base break-words"
+        class="flex justify-between items-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
       >
         <div class="flex justify-start items-center gap-2 w-[180px] lg:w-auto">
           {@html item.icon}
@@ -153,7 +153,7 @@
           <span class="relative">{item.reward}</span>
           <button
             disabled={clockLoading}
-            class={"px-2 lg:px-4 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words" +
+            class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words" +
               `${clockLoading ? "" : ""}`}
             on:click={async () => {
               console.log("user info ", $user);
