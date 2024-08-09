@@ -31,7 +31,7 @@
 
 <Modal bind:show size="lg">
   <div class="max-h-[80vh] xs:h-auto flex flex-col">
-    <div class=" flex justify-end dark:text-gray-300 px-5 pt-4 pb-1">
+    <div class="flex justify-end dark:text-gray-300 px-5 pt-4 pb-1">
         <button
           class="self-center"
           on:click={() => {
@@ -51,7 +51,7 @@
         </button>
       </div>
 
-    <div class="  p-6 pt-0 shadow-md mt-0 flex-1">
+    <div class="p-6 pt-0 shadow-md mt-0 flex-1">
       <div>
         <h1>Rewards Details</h1>
         {#each rewards as reward}
