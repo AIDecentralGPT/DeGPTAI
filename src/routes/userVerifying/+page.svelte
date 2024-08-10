@@ -14,7 +14,7 @@
     const params = new URLSearchParams(window.location.search);
     const userId = params.get("user_id");
 
-    ws = new WebSocket(`ws://172.20.10.4:8080/api/v1/auths/ws/${userId}`);
+    ws = new WebSocket(`ws://43.242.202.166:8080/api/v1/auths/ws/${userId}`);
 
     ws.onopen = () => {
       console.log("WebSocket connection established");

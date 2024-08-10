@@ -745,7 +745,7 @@ async def send_code(email_request: EmailRequest):
             
              style="width: 300px;display: inline-block;border-radius: 6px;"
             
-            src="http://172.20.10.4:5173/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
+            src="http://43.242.202.166:3000/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
     
     </a>
 
@@ -760,7 +760,7 @@ async def send_code(email_request: EmailRequest):
     >Website
             <img
              style="width: 300px;display: inline-block;border-radius: 6px;"
-               src="http://172.20.10.4:5173/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
+               src="http://43.242.202.166:3000/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
     
     </a>
     
