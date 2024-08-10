@@ -34,6 +34,13 @@ Required-by: alibabacloud-cloudauth-intl20220809
 
 
 
+172.0.0.1:8080
+172.20.10.4:8080
+43.242.202.166:8080
+
+
+172.20.10.4:5173
+43.242.202.166:3000
 
 
 
@@ -45,7 +52,7 @@ Required-by: alibabacloud-cloudauth-intl20220809
 
 
 
-0xfa419592Eb6E61aAA113D078276f022eE0B57292
+0xfa419592Eb6E61aAA113D078276f022eE0B57292  (用这个通过活体检测)
 0xfc86cf668c2c9b5defd9f6c5859af5ac3abe27c61ec44ed3bf8a742b166d54dd
 0 0
 

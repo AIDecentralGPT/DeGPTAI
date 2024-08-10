@@ -49,7 +49,7 @@ class FaceLib:
 
         self.runtime_option = RuntimeOptions()
         self.create_face_db_request = CreateFaceDbRequest(
-                    name='Face1'
+                    name='Face'
                 )
         
         
@@ -71,14 +71,14 @@ class FaceLib:
             # tips: 可通过error.__dict__查看属性名称
 
                 
-    def add_face_sample(self):
+    def add_face_sample(self, user_id: str):
         try:
             # 初始化Client
             client = Client(self.config)
             add_face_entity_request = AddFaceEntityRequest(
                 db_name='Face1',
-                entity_id='Entity_id' # 这是userid
-                    )
+                entity_id= user_id # 这是userid
+            )
             response = client.add_face_entity_with_options(add_face_entity_request, self.runtime_option)
             # 获取整体结果
             print(response.body)

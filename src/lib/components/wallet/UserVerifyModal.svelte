@@ -17,53 +17,47 @@
 
   const i18n = getContext("i18n");
 
-
   let socket;
   let messages = [];
   onMount(() => {
     // 创建 WebSocket 连接
-    socket = new WebSocket('ws://43.242.202.166:8080/api/v1/auths/ws');
+    socket = new WebSocket("ws://172.20.10.4:8080/api/v1/auths/ws");
 
     // 监听 WebSocket 连接打开事件
-    socket.addEventListener('open', () => {
-      console.log('WebSocket 连接已打开');
+    socket.addEventListener("open", () => {
+      console.log("WebSocket 连接已打开");
     });
 
     // 监听 WebSocket 消息事件
-    socket.addEventListener('message', (event) => {
+    socket.addEventListener("message", (event) => {
       // 将收到的消息添加到 messages 列表中
       messages = [...messages, event.data];
     });
 
     // 监听 WebSocket 连接关闭事件
-    socket.addEventListener('close', () => {
-      console.log('WebSocket 连接已关闭');
+    socket.addEventListener("close", () => {
+      console.log("WebSocket 连接已关闭");
     });
 
     // 监听 WebSocket 错误事件
-    socket.addEventListener('error', (error) => {
-      console.error('WebSocket 发生错误:', error);
+    socket.addEventListener("error", (error) => {
+      console.error("WebSocket 发生错误:", error);
     });
-
- 
   });
 
-     // 在组件卸载时关闭 WebSocket 连接
-     onDestroy(() => {
-      socket.close();
-    });
+  // 在组件卸载时关闭 WebSocket 连接
+  onDestroy(() => {
+    socket.close();
+  });
 
   // 向服务器发送消息的函数
   function sendMessage() {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send('Hello Server!');
+      socket.send("Hello Server!");
     } else {
-      console.error('WebSocket 连接不可用');
+      console.error("WebSocket 连接不可用");
     }
   }
-
-
-
 
   export let show = false;
 
@@ -130,7 +124,6 @@
     let valid = true;
 
     if (current === 1) {
-
       if (!validateEmail(email)) {
         toast.error("Please enter a valid email address.");
         valid = false;
@@ -142,31 +135,29 @@
         return;
       }
 
+      await verifyCode(email, code)
+        .then((res) => {
+          console.log("verifyCode res", res);
 
-      await verifyCode(email, code).then((res) => {
-        console.log("verifyCode res", res);
+          if (true) {
+            // setUser({
+            //   email: email,
+            //   name: name,
+            //   image: uploadedImage,
+            // });
 
-        if (true) {
-          // setUser({
-          //   email: email,
-          //   name: name,
-          //   image: uploadedImage,
-          // });
-
-          email = email;
-          current = current + 1;
-          faceLiveness();
-        } else {
-          toast.error(res.detail);
-        }
-
-        
-      }).catch((error) => {
-        console.log(error);
-        toast.error(error);
-        valid = false;
-
-      })
+            email = email;
+            current = current + 1;
+            faceLiveness();
+          } else {
+            toast.error(res.detail);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error(error);
+          valid = false;
+        });
     } else if (current === 2) {
       // if (!uploadedImage) {
       //   toast.error("Please upload an image.");
@@ -174,10 +165,8 @@
       //   return;
       // }
 
-
       // 这里可以开始异步检查唯一性了，调异步服务任务
-      show = false
-
+      show = false;
     }
 
     if (valid && current < 2) {
@@ -200,12 +189,11 @@
   function faceLiveness() {
     const MetaInfo = window.getMetaInfo();
     console.log("进入faceliveness", MetaInfo);
-    
+
     faceliveness(MetaInfo).then(async (res) => {
       console.log(res);
       faceLivenessInitialData = res;
       if (res.transaction_url) {
-
         if (isMobile) {
           await goto(res.transaction_url);
         } else {
@@ -223,12 +211,13 @@
       // merchant_biz_id: faceLivenessInitialData.merchant_biz_id,
     }).then((res) => {
       console.log(res);
-      if(res?.passed) {
-        toast.success("Congratulations on passing the verification!")
-        show=false
-
-      }else {
-        toast.error("Verification failed, the system detects that your face has been used!")
+      if (res?.passed) {
+        toast.success("Congratulations on passing the verification!");
+        show = false;
+      } else {
+        toast.error(
+          "Verification failed, the system detects that your face has been used!"
+        );
       }
     });
   }
@@ -245,7 +234,6 @@
 
 <Modal bind:show size="lg">
   <button on:click={sendMessage}>发送消息</button>
-
 
   <!-- <button on:click={getQrCode}> show qrcode </button> -->
 
@@ -297,10 +285,12 @@
         <div class="w-4/5 flex flex-col">
           <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
 
-          <div class="mb-6 pt-0.5 flex justify-start  w-full 
-          flex-col  gap-2 items-baseline md:items-center md:flex-row
+          <div
+            class="mb-6 pt-0.5 flex justify-start w-full
+          flex-col gap-2 items-baseline md:items-center md:flex-row
 
-          ">
+          "
+          >
             <label
               for="email"
               class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
@@ -333,11 +323,13 @@
               </button>
             </div>
           </div>
-          <div class="mb-6 pt-0.5 w-full flex justify-start 
+          <div
+            class="mb-6 pt-0.5 w-full flex justify-start
           
-          flex-col  gap-2 items-baseline md:items-center md:flex-row
+          flex-col gap-2 items-baseline md:items-center md:flex-row
           
-          ">
+          "
+          >
             <label
               for="code"
               class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
@@ -357,13 +349,31 @@
 
       {#if current === 2}
         <div class="flex flex-col justify-start items-center gap-4">
-          {#if qrcodeUrl}
-            <p>Please use your mobile phone to scan the QR code below for identity verification</p>
-            <img class="w-[160px]" src={qrcodeUrl} alt="" />
-            <!-- <button on:click={getFaceRes}> 
+          {#if !isMobile}
+            <div
+              class=" bg-white p-6 rounded-lg shadow-lg flex flex-col items-center h-[248px] justify-end"
+            >
+              <div class="">
+                {#if qrcodeUrl}
+                  <img class="w-[160px]" src={qrcodeUrl} alt="" />
+                {:else}
+                  <div
+                    class="w-[160px] h-[160px] flex justify-center items-center text-white bg-gray-400 rounded-md"
+                  >
+                    <span class="animate-pulse">Loading...</span>
+                  </div>
+                {/if}
+              </div>
+              <p class="mt-4 text-center text-gray-700">Scan this QR code!</p>
+            </div>
+          {/if}
+          {#if isMobile}
+            <p>Preparing to jump to the face verification page</p>
+          {/if}
+
+          <!-- <button on:click={getFaceRes}> 
               I have completed the face scanning certification
             </button> -->
-          {/if}
 
           <!-- <div class="bg-primary pt-0.5 flex justify-center cursor-pointer items-center w-[160px] h-[160px] text-gray-100 transition rounded-lg">
             <input id="imageInput" type="file" accept="image/*" on:change={handleImageUpload} style="display: none;"/>
@@ -383,20 +393,20 @@
           on:click={previousStep}>Previous</button
         >
 
-
         {#if current === 2}
-        <button
-        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
-        on:click={getFaceRes}> Finish</button
-      >
+          <button
+            class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+            on:click={getFaceRes}
+          >
+            Finish</button
+          >
         {/if}
         {#if current !== 2}
-        <button
-        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
-        on:click={nextStep}>Next</button
-      >
+          <button
+            class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+            on:click={nextStep}>Next</button
+          >
         {/if}
-       
       </div>
     </div>
   </div>

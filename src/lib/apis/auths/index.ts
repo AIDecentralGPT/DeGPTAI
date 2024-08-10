@@ -638,7 +638,6 @@ export const faceliveness = async (metaInfo: any) => {
   let error = null;
 
   console.log("faceliveness", metaInfo);
-  debugger
 
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/face_liveness`, {
     method: "POST",

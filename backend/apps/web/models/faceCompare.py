@@ -66,8 +66,8 @@ class FaceCompare:
             meta_info=str(metaInfo), # 动态，传入
 
             # return_url="https://www.aliyun.com",
-            return_url="http://43.242.202.166:3000?user_id=" + metaInfo['user_id'],
-            # return_url="http://43.242.202.166:3000" ,
+            return_url="http://172.20.10.4:5173/userVerifying?user_id=" + metaInfo['user_id'],
+            # return_url="http://172.20.10.4:5173" ,
             product_code="FACE_LIVENESS",
             security_level="02",
             # languageConfig="****",
@@ -77,7 +77,7 @@ class FaceCompare:
 
         # 调用初始化API
         response = self.client.initialize(request)
-        print("initialize_response", response, "http://43.242.202.166:3000?user_id=" + metaInfo['user_id'])
+        print("initialize_response", response, "http://172.20.10.4:5173/userVerifying?user_id=" + metaInfo['user_id'])
         return response
 
     def check_result(self, transaction_id: str, merchant_biz_id: str):

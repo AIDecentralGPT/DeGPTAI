@@ -745,7 +745,7 @@ async def send_code(email_request: EmailRequest):
             
              style="width: 300px;display: inline-block;border-radius: 6px;"
             
-            src="http://43.242.202.166:3000/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
+            src="http://172.20.10.4:5173/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
     
     </a>
 
@@ -760,7 +760,7 @@ async def send_code(email_request: EmailRequest):
     >Website
             <img
              style="width: 300px;display: inline-block;border-radius: 6px;"
-               src="http://43.242.202.166:3000/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
+               src="http://172.20.10.4:5173/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
     
     </a>
     
@@ -909,7 +909,7 @@ async def faceliveness_check(user=Depends(get_current_user)):
         if user_id  is not None :
             return {
                 "passed": False,
-                "message": "Face has been verified"
+                "message": "Your face has been used"
             }
             
         
@@ -943,9 +943,12 @@ async def faceliveness_check(user=Depends(get_current_user)):
 async def create_face_db():
     return face_lib.create_face_db()
 
-@router.post("/add_face_sample")
-async def add_face_sample():
-    return face_lib.add_face_sample()
+
+
+# # 增加人脸样本
+# @router.post("/add_face_sample")
+# async def add_face_sample():
+#     return face_lib.add_face_sample()
 
 @router.post("/add_face_data")
 # async def add_face_data():
@@ -964,7 +967,7 @@ async def search_face(    form_data: SearchFormRequest):
 
 
 
-
+# 检查人脸是否通过
 async def faceliveness_check_for_ws(id: str):
     
     try:
@@ -977,14 +980,17 @@ async def faceliveness_check_for_ws(id: str):
         merchant_biz_id = user.merchant_biz_id
         transaction_id = user.transaction_id
         
-        print("faceliveness_check_for_ws .merchant_biz_id", merchant_biz_id, transaction_id)
+        print("faceliveness_check_for_ws", merchant_biz_id, transaction_id)
 
-        if True:
+        if merchant_biz_id is not None and transaction_id is not None:
             # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
             # response = face_compare.check_result({
             #     "transaction_id": form_data.transaction_id,
             #     "merchant_biz_id":form_data.merchant_biz_id,
             # })
+            
+            
+            # 1. 获取人脸检测返回的信息（照片啥的
             response = face_compare.check_result(
                 transaction_id= transaction_id,
                 merchant_biz_id=merchant_biz_id,
@@ -994,18 +1000,26 @@ async def faceliveness_check_for_ws(id: str):
             # print("face compare success", response, response.body.result.ext_face_info, response.body)
             # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
             
+            
+            # 2. 获取人脸照片
             faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
             
             # face_lib.add_face_data(faceImg)
+            
+            
+            
+            # 3. 搜索该人脸照片在库中是否存在
             face_id = face_lib.search_face(faceImg)
             print("face_id", face_id)
             
             user_id = Users.get_user_id_by_face_id(face_id)
             print("user_id",face_id, user_id)
+            
+            # 4. 存在就告诉你，该人脸已经被检测过了！
             if user_id  is not None :
                 return {
                     "passed": False,
-                    "message": "Face has been verified"
+                    "message": "Your face has been used"
                 }
                 
             
@@ -1015,6 +1029,8 @@ async def faceliveness_check_for_ws(id: str):
                 # return user_update_result
                 print("user_update_result", user_update_result)
                 
+                if response.body.result.passed:
+                     face_lib.add_face_sample(user.id)
 
 
             
@@ -1029,6 +1045,14 @@ async def faceliveness_check_for_ws(id: str):
             # }
 
             }
+            
+            
+        else:
+            return {
+                "passed": False,
+                "message": "We haven't started live testing yet"
+            }
+        
     except Exception as e:
         print(f"Error in faceliveness_check_for_ws: {e}")
         # 根据需要执行错误处理，例如记录日志或通知客户端
@@ -1081,11 +1105,11 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
         while True:
             data = await websocket.receive_text()
             passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
-            print("passed", passedInfo['passed'])
-            await manager.broadcast(f"{passedInfo['passed']}", user_id)
+            print("passed",passedInfo,  passedInfo['passed'])
+            await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id)
             # await manager.broadcast(f"服务端接收到{user_id}", user_id)
     except WebSocketDisconnect:
-        
+        print("WebSocketDisconnect了")
         manager.disconnect(websocket, user_id)
     except Exception as e:
         print(f"WebSocket connection error: {e}")

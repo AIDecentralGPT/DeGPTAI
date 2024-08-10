@@ -1,9 +1,12 @@
 <script>
-  import { onMount } from "svelte";
-	import { goto } from '$app/navigation';
+  import { onMount, getContext } from 'svelte';
+  import { goto } from '$app/navigation';
+  const i18n = getContext('i18n');
 
-  let message = "正在验证中...";
+  let message = $i18n.t('Verifying the effectiveness of face detection');
+  
   let ws;
+  let status = null;
 
   // 在组件挂载时打开 WebSocket 连接
   onMount(() => {
@@ -11,17 +14,18 @@
     const params = new URLSearchParams(window.location.search);
     const userId = params.get("user_id");
 
-    ws = new WebSocket(`ws://43.242.202.166:8080/api/v1/auths/ws/${userId}`);
+    ws = new WebSocket(`ws://172.20.10.4:8080/api/v1/auths/ws/${userId}`);
 
     ws.onopen = () => {
       console.log("WebSocket connection established");
       // 连接成功后立即发送验证请求
-      sendMessage("开始验证");
+      sendMessage($i18n.t('start_verification'));
     };
 
     ws.onerror = (error) => {
       console.error("WebSocket error: ", error);
-      message = "连接错误，请稍后重试。";
+      message = $i18n.t('connection_error');
+      status = 'error';
     };
 
     // 监听 WebSocket 消息事件
@@ -29,21 +33,16 @@
       // 将收到的消息添加到 messages 列表中
       console.log("Received:", event.data);
 
-			if (event.data === "True") {
-				message = "验证成功，请返回 OllamaHub 继续操作。";
-			}
-			 else if (event.data === "False") {
-				message = "验证失败，请重新验证。";
-				goto("/");
-
-			}
-			
-			else {
-				message = "验证中...";
-			}
-
-      
-      // messages = [...messages, event.data];
+      if (event.data.startsWith("True")) {
+        message = $i18n.t('verification_success');
+        status = 'success';
+        goto("/?verifyAgain=true");
+      } else if (event.data.startsWith("False")) {
+        message = event.data.substring(6);
+        status = 'fail';
+      } else {
+        message = $i18n.t('Verifying the effectiveness of face detection');
+      }
     });
 
     ws.onclose = () => {
@@ -63,44 +62,29 @@
 
   // 示例：当用户点击按钮时发送消息
   function handleSendVerification() {
-    sendMessage("验证请求数据");
-    message = "验证请求已发送，请稍等...";
+    sendMessage($i18n.t('verification_request_data'));
+    message = $i18n.t('verification_request_sent');
+        goto("/?verifyAgain=true");
   }
 </script>
 
 <div class="container">
   <p>{message}</p>
-  <button on:click={handleSendVerification}>发送验证请求</button>
+
+  {#if status==='success'}
+    <button on:click={handleSendVerification}>{$i18n.t('return_home')}</button>
+  {/if}
+  {#if status==='fail'}
+    <button
+      class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+      on:click={handleSendVerification}>{$i18n.t('try_again')}</button>
+  {/if}
+  {#if status==='error'}
+    <button 
+      class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+      on:click={handleSendVerification}>{$i18n.t('try_again')}</button>
+  {/if}
 </div>
-
-<!-- <script lang="ts">
-
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-
-	onMount(async () => {
-		window.addEventListener('message', async (event) => {
-			if (
-				![
-					'https://ollamahub.com',
-					'https://www.ollamahub.com',
-					'https://openwebui.com',
-					'https://www.openwebui.com',
-					'http://localhost:5173'
-				].includes(event.origin)
-			)
-				return;
-			const prompts = JSON.parse(event.data);
-			sessionStorage.modelfile = JSON.stringify(prompts);
-
-			goto('/workspace/prompts/create');
-		});
-
-		if (window.opener ?? false) {
-			window.opener.postMessage('loaded', '*');
-		}
-	});
-</script> -->
 
 <style>
   .container {
@@ -118,3 +102,4 @@
     font-size: 1rem;
   }
 </style>
+

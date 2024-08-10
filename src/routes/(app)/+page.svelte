@@ -19,6 +19,7 @@
 		settings,
 		showNewWalletModal,
 		showSidebar,
+		showUserVerifyModal,
 		user
 	} from '$lib/stores';
 	import { copyToClipboard, splitStream, addTextSlowly } from '$lib/utils';
@@ -131,7 +132,10 @@
 			$showNewWalletModal = true;
 			$inviterId = inviter
 		}
-			
+		const verifyAgain = queryParams.get('verifyAgain');
+		if(verifyAgain && $user?.id) {
+			$showUserVerifyModal = true;
+		}
 
 
 
