@@ -192,6 +192,10 @@
 // 2. 点击提交按钮，触发检查
 const submitPrompt = async (userPrompt, _user = null) => {
 	console.log('submitPrompt', $chatId);
+	console.log("点击了", firstResAlready);
+			
+	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
+	await tick()
 
 	if (selectedModels.includes('')) {
 		toast.error($i18n.t('Model not selected'));
@@ -354,6 +358,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		// 对话DeGpt
 		const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
+			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = messages
 			.filter((message) => message?.files ?? null)
@@ -441,10 +446,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				// 	: `${OPENAI_API_BASE_URL}`
 			);
 
-			if(!firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
-				firstResAlready = true;
-				history.currentId = responseMessageId;
-			}
+
 
 			// Wait until history/message have been updated
 			await tick();
@@ -476,6 +478,17 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						responseMessage.citations = citations;
 						continue;
 					}
+
+
+
+			if(!firstResAlready && responseMessage.content.length > 0) { // 第一次响应的时候，把当前的id设置为当前响应的id
+				console.log("模型调用完毕？", res, model.id, firstResAlready, responseMessageId, responseMessage.content);
+				
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+				await tick();
+
+			}
 
 					if (responseMessage.content == '' && value == '\n') {
 						continue;

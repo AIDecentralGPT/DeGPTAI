@@ -681,10 +681,7 @@
 			
 			);
 
-			if(!firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
-				firstResAlready = true;
-				history.currentId = responseMessageId;
-			}
+
 
 
 			// Wait until history/message have been updated
@@ -694,7 +691,7 @@
 
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
-
+				console.log("textStream", textStream);
 				for await (const update of textStream) {
 					const { value, done, citations, error } = update;
 					if (error) {
@@ -716,6 +713,17 @@
 						responseMessage.citations = citations;
 						continue;
 					}
+
+			
+
+			if(!firstResAlready && responseMessage.content.length > 0) { // 第一次响应的时候，把当前的id设置为当前响应的id
+				console.log("模型调用完毕？", res, model.id, firstResAlready, responseMessageId, responseMessage.content);
+				
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+				await tick();
+
+			}
 
 					if (responseMessage.content == '' && value == '\n') {
 						continue;
@@ -746,12 +754,17 @@
 					}
 				}
 
+
+				console.log("history", history, $chatId , _chatId);
+				
+
 				if ($chatId == _chatId) {
 					if ($settings.saveChatHistory ?? true) {
 						chat = await updateChatById(localStorage.token, _chatId, {
 							messages: messages,
 							history: history
 						});
+						await tick()
 						await chats.set(await getChatList(localStorage.token));
 					}
 				}
