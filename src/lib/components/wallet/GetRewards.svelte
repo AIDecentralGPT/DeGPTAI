@@ -80,6 +80,49 @@
     }
   }
 
+  async function handleItemClick(item: any) {
+    console.log("user info ", $user);
+
+    if (item.text === "Create Wallet") {
+      $showNewWalletModal = true;
+      return
+    }
+
+    // 领取奖励时再做活体检测
+    // if (!$user.verified) {
+    //   toast.warning("Please do identification first!");
+    //   $showUserVerifyModal = true;
+    //   return 
+    // }
+
+    if (item.text === "Share") {
+      $showShareModal = true;
+    }
+
+    if (item.text === "Clock In") {
+      clockLoading = true;
+      await clockIn(localStorage.token)
+        .then((res) => {
+          console.log("Clock In  res", res);
+
+          getCount();
+          if (res?.ok) {
+            toast.success(
+              "Congratulations on your successful clocking in!"
+            );
+          }
+          if (res?.detail) {
+            toast.warning(res?.detail);
+          }
+        })
+        .catch((res) => {
+          console.log("Clock In  error", res);
+        });
+
+      clockLoading = false;
+    }
+  }
+
   $: if ($user?.id?.startsWith("0x")) {
     getCount();
   }
@@ -145,59 +188,17 @@
         <div class="flex justify-start items-center gap-2 w-[180px] lg:w-auto">
           {@html item.icon}
 
-          <span>{item.text}</span>
+          <span class="hover:cursor-pointer" on:click={handleItemClick}>{item.text}</span>
         </div>
         <div
           class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[280px] flex justify-between items-center"
         >
-          <span class="relative">{item.reward}</span>
+          <span class="relative hover:cursor-pointer">{item.reward}</span>
           <button
             disabled={clockLoading}
             class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words" +
               `${clockLoading ? "" : ""}`}
-            on:click={async () => {
-              console.log("user info ", $user);
-
-              if (item.text === "Create Wallet") {
-                $showNewWalletModal = true;
-                return
-              }
-
-              if (!$user.verified) {
-                toast.warning("Please do identification first!");
-                $showUserVerifyModal = true;
-                return 
-              }
-
-              if (item.text === "Share") {
-                $showShareModal = true;
-              }
-
-              if (item.text === "Clock In") {
-                clockLoading = true;
-                await clockIn(localStorage.token)
-                  .then((res) => {
-                    console.log("Clock In  res", res);
-
-                    getCount();
-                    if (res?.ok) {
-                      toast.success(
-                        "Congratulations on your successful clocking in!"
-                      );
-                    }
-                    if (res?.detail) {
-                      toast.warning(res?.detail);
-                    }
-                  })
-                  .catch((res) => {
-                    console.log("Clock In  error", res);
-                  });
-
-                clockLoading = false;
-              }
-
-
-            }}
+            on:click={handleItemClick}
           >
             {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
               ? "Done"
