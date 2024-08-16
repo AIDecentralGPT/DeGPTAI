@@ -48,7 +48,6 @@ declare module '$env/static/private' {
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const ZDOTDIR: string;
 	export const COLOR: string;
-	export const npm_config_registry: string;
 	export const npm_config_noproxy: string;
 	export const ZSH: string;
 	export const npm_config_local_prefix: string;
@@ -175,7 +174,6 @@ declare module '$env/dynamic/private' {
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		ZDOTDIR: string;
 		COLOR: string;
-		npm_config_registry: string;
 		npm_config_noproxy: string;
 		ZSH: string;
 		npm_config_local_prefix: string;
