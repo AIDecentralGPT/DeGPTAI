@@ -36,7 +36,7 @@ class User(Model):
     face_id = CharField(null=True)
     merchant_biz_id= CharField(null=True)
     transaction_id= CharField(null=True)
-    
+    private_key = CharField(null=True)
     # phone_number = CharField(null=True, unique=True)  # 定义可为空，唯一的字符字段phone_number
 
     class Meta:
@@ -61,7 +61,7 @@ class UserModel(BaseModel):
     face_id: Optional[str] = None
     merchant_biz_id: Optional[str] = None
     transaction_id: Optional[str] = None
-        
+    private_key: Optional[str] = None
     # phone_number: Optional[str]   # 定义phone_number字段，类型为可选字符串
 
 ####################
@@ -105,6 +105,7 @@ class UsersTable:
         face_id: str = None,
         merchant_biz_id: str = None,
         transaction_id: str = None,
+        private_key: str = None,
     ) -> Optional[UserModel]:
         user = UserModel(
             **{
@@ -122,6 +123,7 @@ class UsersTable:
                 "face_id": face_id,
                 "merchant_biz_id": merchant_biz_id,
                 "transaction_id": transaction_id,
+                "private_key": private_key,
             }
         )  # 创建UserModel实例
 
@@ -371,6 +373,9 @@ class UsersTable:
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
+        
+    def get_user_count(self) -> int:
+        return User.select().count()  # 查询用户数量
 
 
 

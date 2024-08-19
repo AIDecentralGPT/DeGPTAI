@@ -30,7 +30,7 @@ export async function main() {
   const address = '0xde184A6809898D81186DeF5C0823d2107c001Da2'; // 这是一个示例地址，请替换为实际地址
 
   // DBC 和 DGC 的合约地址
-  const TOKEN_CONTRACT_ADDRESS = '0xE9E985E88232F12F2780955f0c0b99541Aa3cf37'; // 请替换为实际地址
+  const TOKEN_CONTRACT_ADDRESS = '0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1'; // 请替换为实际地址
 
   // ERC-20 ABI
   const ERC20_ABI = [

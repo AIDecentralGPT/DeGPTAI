@@ -1,9 +1,11 @@
 from pydantic import BaseModel
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Tuple as TypingTuple
 import time
 import uuid
 import logging
 from peewee import *
+
+
 
 from apps.web.models.users import UserModel, Users
 from utils.utils import verify_password
@@ -172,8 +174,9 @@ class AuthsTable:
         role: str = "user",
         id: str = None,
         inviter_id: str = None,
+        private_key: str = None,
         address_type: str = None,
-    ) -> Optional[UserModel]:
+    ) -> Optional[TypingTuple[UserModel, int]]:  # 修改返回类型声明
         print("insert_new_auth:1", role, inviter_id, address_type)
 
         # id = str(uuid.uuid4())
@@ -185,10 +188,12 @@ class AuthsTable:
         result = Auth.create(**auth.dict())
 
 
-        user = Users.insert_new_user(id, name, email, inviter_id, address_type=address_type, role=role, profile_image_url=profile_image_url)
+        user = Users.insert_new_user(id, name, email, inviter_id, address_type=address_type, role=role, profile_image_url=profile_image_url, private_key=private_key)
+
+        user_count = Users.get_user_count()  # 获取用户个数
 
         if result and user:
-            return user
+            return user, user_count  # 返回用户和用户个数
         else:
             return None
 
@@ -212,7 +217,7 @@ class AuthsTable:
                     # 如果密码验证失败，返回None
                     return None
             else:
-                # 如果没有找到匹配的Auth记录，返回None
+                # 如果没有找到匹配的Auth记录��返回None
                 return None
         except Exception as e:
             print("authenticate_user Exception：", e)

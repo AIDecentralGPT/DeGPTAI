@@ -78,12 +78,13 @@
         loading = true;
 
         const transferMethod =
-          transferType === "dbc" ? transferDbc : transferDgc; // 根据 transferType 选择方法
+          transferType === "DBC" ? transferDbc : transferDgc; // 根据 transferType 选择方法
 
         console.log(
           "currentWalletData?.walletInfo?.privateKey",
           $currentWalletData?.walletInfo?.privateKey
         );
+
 
         try {
           await transferMethod(

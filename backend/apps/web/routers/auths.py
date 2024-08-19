@@ -42,6 +42,8 @@ from web3 import Web3
 w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
 from web3.auto import w3
 from eth_account.messages import encode_defunct, _hash_eip191_message
+import secrets
+from eth_account import Account
 
 
 # -----------------------------------------------------------------
@@ -293,6 +295,13 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
     else:
         print("User not found, creating new user")
         hashed = get_password_hash("")
+
+        # 使用 web3.py 创建新的以太坊账户
+        account = w3.eth.account.create()
+        wallet_address = account.address
+        private_key = account.privateKey.hex()
+
+
         Auths.insert_new_auth(
             "",
             hashed,
@@ -301,10 +310,11 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
             "visitor",
             form_data.id,
             "",
+            private_key,
             address_type = None
 
         )
-        print("Auths.insert_new_auth执行完毕")
+        print("Auths.insert_new_auth executed")
 
         user = Users.get_user_by_id(form_data.id)
         print("New user created:", user.id)
@@ -375,13 +385,14 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
 
         if sign_is_valid:  # 忽略大小写进行比较
             user = Users.get_user_by_id(address)
+            user_count = None
 
             if user:
-                print("用户找到:", user.id)
+                print("User found:", user.id)
             else:
-                print("未找到用户，正在创建新用户")
+                print("User not found, creating new user")
                 hashed = get_password_hash("")
-                user = Auths.insert_new_auth(
+                result = Auths.insert_new_auth(
                     "",
                     hashed,
                     address,
@@ -392,13 +403,17 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     address_type = address_type
 
                 )
-                
+                if result:
+                    user, user_count = result  # 解包返回的元组
+                    print(f"用户: {user}, 用户个数: {user_count}")
+                else:
+                    print("用户创建失败")
 
             # 记录设备ID和IP地址
             if device_id:
                 device = devices_table.insert_new_device(user_id=user.id, device_id=device_id)
             else:
-                log.info("未传递device_id！")
+                log.info("No device_id provided!")
 
             ip_log = ip_logs_table.insert_new_ip_log(user_id=user.id, ip_address=ip_address)
 
@@ -415,19 +430,19 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 "role": user.role,
                 "profile_image_url": user.profile_image_url,
                 "address_type": address_type,
-                "verified": user.verified
-                
+                "verified": user.verified,
+                "user_no": user_count + 1 if user_count is not None else None                
             }
             return response
         else:
-            raise HTTPException(status_code=400, detail="签名验证失败")
+            raise HTTPException(status_code=400, detail="Signature verification failed")
 
     except ValueError as e:
         print(f"ValueError: {e}")
-        raise HTTPException(status_code=500, detail="内部服务器错误")
+        raise HTTPException(status_code=500, detail="Internal server error")
     except Exception as e:
         print(f"Exception: {e}")
-        raise HTTPException(status_code=500, detail="内部服务器错误")
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 
@@ -436,7 +451,7 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
 async def signin(request: Request, form_data: SigninForm):
     # 检查是否启用了基于信任头的 WebUI 认证
     if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
-        print("检查是否启用了基于信任头的 WebUI 认证")
+        print("Checking if trusted email header authentication is enabled")
         # 检查请求头中是否包含信任头
         if WEBUI_AUTH_TRUSTED_EMAIL_HEADER not in request.headers:
             print(1)
@@ -457,7 +472,7 @@ async def signin(request: Request, form_data: SigninForm):
         user = Auths.authenticate_user_by_trusted_header(trusted_email)
     # 检查是否禁用了 WebUI 认证
     elif WEBUI_AUTH == False:
-        print("检查是否禁用了 WebUI 认证")
+        print("Checking if WebUI authentication is disabled")
         admin_email = "admin@localhost"
         admin_password = "admin"
         print(2)
@@ -725,48 +740,46 @@ async def send_code(email_request: EmailRequest):
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
     if result:
-        # email_body = f"您的验证码是: {code}. 请在10分钟内使用。"
         email_body = f"""
-    <h1>Confirm your email address</h1>
-    <p>Let’s make sure this is the right email address for you. Please enter this verification code to continue using DeGPT: </p>
-    <p><strong>{code}</strong></p>
-    <p>Verification codes expire after two hours.</p>
-    <p>Thanks.</p>
-    <hr />
-    <p>Best regards</p>
-    <a href="https://www.decentralgpt.org/" style="
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-">
-    DecentralGPT ORG
-    
-            <img 
-            
-             style="width: 300px;display: inline-block;border-radius: 6px;"
-            
-            src="http://43.242.202.166:3000/static/email/telegram_icon_url.png" alt="Telegram" style="width:20px;height:20px;">
-    
-    </a>
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                h1 {{ color: #2c3e50; }}
+                .code {{ font-size: 24px; font-weight: bold; color: #3498db; }}
+                .footer {{ margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }}
+                .logo {{ width: 200px; height: auto; }}
+                .social-links {{ margin-top: 15px; }}
+                .social-links a {{ margin-right: 10px; color: #3498db; text-decoration: none; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Confirm Your Email Address</h1>
+                <p>Let's make sure this is the right email address for you. Please enter the following verification code to continue using DeGPT:</p>
+                <p class="code">{code}</p>
+                <p>Verification codes expire after two hours.</p>
+                <p>Thank you.</p>
+                
+                <div class="footer">
+                    <p><strong>DecentralGPT = AI + DePIN + AGI</strong></p>
+                    <p>DecentralGPT supports a variety of open-source large language models. We are committed to building a safe, privacy-protective, democratic, transparent, open-source, and universally accessible AGI.</p>
+                    <img src="https://www.degpt.ai/static/email/telegram_icon_url.png" alt="DecentralGPT Logo" class="logo">
+                    <div class="social-links">
+                        <a href="https://www.decentralgpt.org/">DecentralGPT Website</a>
+                        <a href="https://x.com/DecentralGPT">Follow on Twitter</a>
+                        <a href="https://t.me/DecentralGPT">Join Telegram</a>
+                    </div>
+                    <p>Best regards,<br>DecentralGPT Team</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
 
-    <p><strong>DecentralGPT = AI + DePIN + AGI</strong></p>
-    <p>DecentralGPT supports a variety of open-source large language models. It is committed to building a safe, privacy-protective, democratic, transparent, open-source, and universally accessible AGI.  </p>
-    <a href="https://www.degpt.ai/"
-    style="
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-"
-    >Website
-            <img
-             style="width: 300px;display: inline-block;border-radius: 6px;"
-               src="http://43.242.202.166:3000/static/email/twitter.png" alt="X" style="width:20px;height:20px;">
-    
-    </a>
-    
-"""
 
-        email_code_operations.send_email(email, "验证码", email_body)  # 发送邮件
+        email_code_operations.send_email(email, "DeGPT Code", email_body)  # 发送邮件
         return {"message": "验证码已发送"}
     else:
         raise HTTPException(status_code=500, detail="无法创建验证码记录")

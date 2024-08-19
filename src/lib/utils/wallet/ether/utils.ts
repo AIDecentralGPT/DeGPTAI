@@ -67,7 +67,7 @@ export async function createAccount(password: string) {
   console.log("Private Key:", wallet.privateKey);
   console.log("Mnemonic 助记词:", wallet.mnemonic.phrase); // 提示用户备份这个助记词
 
-  // const ethAddress = '0xE9E985E88232F12F2780955f0c0b99541Aa3cf37';
+  // const ethAddress = '0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1';
   // const balance = await provider.getBalance(ethAddress);
   // const ethValue = ethers.formatEther(balance);
 

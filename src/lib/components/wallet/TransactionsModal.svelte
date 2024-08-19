@@ -35,29 +35,36 @@
   async function fetchData() {
     const address = currentWalletData?.walletInfo?.address;
     const res = await getTransactions($user?.id);
-    transactionsList =   res?.items?.map((item) => {
+    console.log("transactions", res);
+    // 合并两个 items 数组
+    const mergedItems = [...res[0].items, ...res[1].items];
 
-      // historyItem.tx_types.join(", ")
+    // 按时间排序
+    mergedItems.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-      const coinType  = item?.coin_transfer?.tx_types?.[0] === "coin_transfer" ? 'DBC' : 'DGC';
+    console.log(mergedItems);
 
+    transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
+      const coinType = item?.tx_types?.[0] === "coin_transfer" ? "DBC" : "DGC";
+
+      console.log("item.value", item.value);
+      
       return {
-        ...item, 
+        ...item,
         coinType,
-        coinAmount: ethers.formatUnits(item.value, 'ether'),
-      }
-    })
+        coinAmount: ethers.formatUnits(item.value, "ether"),
+      };
+    });
     console.log("transactionsList", transactionsList);
   }
-
-
 </script>
 
 {#if show}
   <Modal bind:show size="lg">
-
-    <div class=" flex justify-between items-center dark:text-gray-300 px-5 pt-4 pb-1">
-      <h1 class="text-xl font-semibold ">{$i18n.t("Transactions")}</h1>
+    <div
+      class=" flex justify-between items-center dark:text-gray-300 px-5 pt-4 pb-1"
+    >
+      <h1 class="text-xl font-semibold">{$i18n.t("Transactions")}</h1>
 
       <button
         class="self-center"
@@ -78,30 +85,56 @@
       </button>
     </div>
 
-
-    <div class="m-auto rounded-2xl max-w-full mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4">
+    <div
+      class="m-auto rounded-2xl max-w-full mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4"
+    >
       <!-- <h1 class="text-xl font-semibold mb-4">{$i18n.t("Transactions")}</h1> -->
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Token</th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+                >Token</th
+              >
               <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Token ID</th> -->
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Txn hash</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">From</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">To</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Value</th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+                >Txn hash</th
+              >
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+                >From</th
+              >
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+                >To</th
+              >
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+                >Value</th
+              >
             </tr>
           </thead>
-          <tbody class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs">
+          <tbody
+            class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs"
+          >
             {#each transactionsList as historyItem}
               <tr>
-                <td class="px-6 py-4 whitespace-nowrap">{historyItem.coinType}</td>
+                <td class="px-6 py-4 whitespace-nowrap"
+                  >{historyItem.coinType}</td
+                >
                 <!-- <td class="px-6 py-4 whitespace-nowrap">{historyItem.token_transfers ? historyItem.token_transfers.token_id : "N/A"}</td> -->
                 <td class="px-6 py-4 whitespace-nowrap">{historyItem.hash}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{historyItem.from.hash}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{historyItem.to.hash}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{historyItem.coinAmount}</td>
+                <td class="px-6 py-4 whitespace-nowrap"
+                  >{historyItem.from.hash}</td
+                >
+                <td class="px-6 py-4 whitespace-nowrap"
+                  >{historyItem.to.hash}</td
+                >
+                <td class="px-6 py-4 whitespace-nowrap"
+                  >{historyItem.coinAmount}</td
+                >
               </tr>
             {/each}
           </tbody>
