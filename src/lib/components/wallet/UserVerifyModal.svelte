@@ -21,7 +21,7 @@
   let messages = [];
   onMount(() => {
     // 创建 WebSocket 连接
-    socket = new WebSocket("ws://43.242.202.166:3000/api/v1/auths/ws");
+    socket = new WebSocket("ws://test.degpt.ai//api/v1/auths/ws");
 
     // 监听 WebSocket 连接打开事件
     socket.addEventListener("open", () => {

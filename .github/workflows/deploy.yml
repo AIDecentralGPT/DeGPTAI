@@ -44,7 +44,9 @@ jobs: # 定义需要执行的工作
         with: # 传递给动作的参数
           host: ${{ secrets.SERVER_HOST }} # 服务器的IP地址或域名
           username: ${{ secrets.SERVER_USER }} # SSH登录用户名
-          password: ${{ secrets.SERVER_PASSWORD }} # SSH登录密码
+          # password: ${{ secrets.SERVER_PASSWORD }} # SSH登录密码
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # SSH私钥
+
           script: | # 通过SSH执行的脚本
       
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
