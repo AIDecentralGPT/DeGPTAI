@@ -298,8 +298,15 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
 
         # 使用 web3.py 创建新的以太坊账户
         account = w3.eth.account.create()
+        print("111:", account)
         wallet_address = account.address
-        private_key = account.privateKey.hex()
+        print("wallet_address:", wallet_address)
+        # private_key = account.key.hex()
+        private_key=w3.to_hex(account.key)
+        # python -c "from web3 import Web3; w3 = Web3(); acc = w3.eth.account.create(); print(f'private key={w3.to_hex(acc.key)}, account={acc.address}')"
+
+        print("private_key:", private_key)
+
 
 
         Auths.insert_new_auth(

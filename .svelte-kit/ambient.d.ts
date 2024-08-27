@@ -78,8 +78,8 @@ declare module '$env/static/private' {
 	export const LANG: string;
 	export const npm_package_name: string;
 	export const XPC_FLAGS: string;
-	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const FNM_MULTISHELL_PATH: string;
+	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const npm_config_npm_version: string;
 	export const FORCE_COLOR: string;
 	export const npm_config_node_gyp: string;
@@ -99,10 +99,10 @@ declare module '$env/static/private' {
 	export const NVM_BIN: string;
 	export const FNM_RESOLVE_ENGINES: string;
 	export const npm_config_user_agent: string;
-	export const GIT_ASKPASS: string;
-	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const HOMEBREW_CELLAR: string;
 	export const INFOPATH: string;
+	export const GIT_ASKPASS: string;
+	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const SECURITYSESSIONID: string;
 	export const COLORTERM: string;
 	export const npm_config_prefix: string;
@@ -189,8 +189,8 @@ declare module '$env/dynamic/private' {
 		LANG: string;
 		npm_package_name: string;
 		XPC_FLAGS: string;
-		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		FNM_MULTISHELL_PATH: string;
+		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		npm_config_npm_version: string;
 		FORCE_COLOR: string;
 		npm_config_node_gyp: string;
@@ -210,10 +210,10 @@ declare module '$env/dynamic/private' {
 		NVM_BIN: string;
 		FNM_RESOLVE_ENGINES: string;
 		npm_config_user_agent: string;
-		GIT_ASKPASS: string;
-		VSCODE_GIT_ASKPASS_NODE: string;
 		HOMEBREW_CELLAR: string;
 		INFOPATH: string;
+		GIT_ASKPASS: string;
+		VSCODE_GIT_ASKPASS_NODE: string;
 		SECURITYSESSIONID: string;
 		COLORTERM: string;
 		npm_config_prefix: string;
