@@ -14,7 +14,7 @@
     const params = new URLSearchParams(window.location.search);
     const userId = params.get("user_id");
 
-    ws = new WebSocket(`ws://test.degpt.ai/api/v1/auths/ws/${userId}`);
+    ws = new WebSocket(`wss://test.degpt.ai/api/v1/auths/ws/${userId}`);
 
     ws.onopen = () => {
       console.log("WebSocket connection established");
