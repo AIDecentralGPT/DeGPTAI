@@ -128,6 +128,11 @@
             </p>
           </div> -->
         </div>
+
+        <p class="text-center text-sm text-primary mb-4"  >
+          Invite at least 2 friends for invitation rewards
+        </p>
+
   
         <div class="text-center mt-8 flex justify-center gap-4 items-center flex-col md:flex-row">
           <p

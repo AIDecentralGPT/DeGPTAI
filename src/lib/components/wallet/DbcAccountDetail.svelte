@@ -376,7 +376,9 @@
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
       type="submit"
       on:click={async () => {
-        $showBuyCoinModal = true;
+        // $showBuyCoinModal = true;
+        // 用新标签打开
+        window.open("https://www.drcpad.io/project?name=DeGPT", "_blank");
       }}
     >
       {$i18n.t("Buy")}

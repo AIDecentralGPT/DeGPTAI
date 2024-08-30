@@ -1,3 +1,58 @@
+cookie如下：
+[
+    {
+        "domain": ".degpt.ai",
+        "expirationDate": 1759574258.848172,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "_ga",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "GA1.1.302287857.1719481050"
+    },
+    {
+        "domain": ".degpt.ai",
+        "expirationDate": 1759574258.853168,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "_ga_ELT9ER83T2",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "GS1.1.1725014258.78.0.1725014258.0.0.0"
+    }
+]
+
+
+
+
+storage如下：
+{
+    "lang": "zh-CN",
+    "locale": "en-US",
+    "isWhitelist": "false",
+    "visitor_id": "ad1348b3a0276c860013509bcac7b9fd",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkMTM0OGIzYTAyNzZjODYwMDEzNTA5YmNhYzdiOWZkIiwiZXhwIjoxNzI1NjE5MDU4fQ.E-tEBm9ldSWAjQmdvUhMi9na6kHKcO-2HeeiapvhhiE"
+}
+
+
+
+SessionStorage如下：
+{
+    "sveltekit:scroll": "{\"1725014256622\":{\"x\":0,\"y\":0}}",
+    "sveltekit:snapshot": "{}"
+}
+
+
+
+
+
+
 新建钱包后，unlocking完要等walletsignin执行完毕
 领取奖励的操作，要有message和success文案
 转账失败，也报 转账成功了。要修改
