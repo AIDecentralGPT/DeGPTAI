@@ -394,21 +394,21 @@
 
 		window.addEventListener('keydown', handleKeyDown);
 
-		dropZone?.addEventListener('dragover', onDragOver);
-		dropZone?.addEventListener('drop', onDrop);
+		// dropZone?.addEventListener('dragover', onDragOver);
+		// dropZone?.addEventListener('drop', onDrop);
 		dropZone?.addEventListener('dragleave', onDragLeave);
 
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
 
-			dropZone?.removeEventListener('dragover', onDragOver);
-			dropZone?.removeEventListener('drop', onDrop);
+			// dropZone?.removeEventListener('dragover', onDragOver);
+			// dropZone?.removeEventListener('drop', onDrop);
 			dropZone?.removeEventListener('dragleave', onDragLeave);
 		};
 	});
 </script>
 
-{#if dragged}
+<!-- {#if dragged}
 	<div
 		class="fixed {$showSidebar
 			? 'left-0 md:left-[260px] md:w-[calc(100%-260px)]'
@@ -425,7 +425,7 @@
 			</div>
 		</div>
 	</div>
-{/if}
+{/if} -->
 
 <div class="fixed bottom-0 {$showSidebar ? 'left-0 md:left-[260px]' : 'left-0'} right-0">
 	<div class="w-full">
@@ -900,24 +900,24 @@
 									const clipboardData = e.clipboardData || window.clipboardData;
 
 									if (clipboardData && clipboardData.items) {
-										for (const item of clipboardData.items) {
-											if (item.type.indexOf('image') !== -1) {
-												const blob = item.getAsFile();
-												const reader = new FileReader();
+										// for (const item of clipboardData.items) {
+										// 	if (item.type.indexOf('image') !== -1) {
+										// 		const blob = item.getAsFile();
+										// 		const reader = new FileReader();
 
-												reader.onload = function (e) {
-													files = [
-														...files,
-														{
-															type: 'image',
-															url: `${e.target.result}`
-														}
-													];
-												};
+										// 		reader.onload = function (e) {
+										// 			files = [
+										// 				...files,
+										// 				{
+										// 					type: 'image',
+										// 					url: `${e.target.result}`
+										// 				}
+										// 			];
+										// 		};
 
-												reader.readAsDataURL(blob);
-											}
-										}
+										// 		reader.readAsDataURL(blob);
+										// 	}
+										// }
 									}
 								}}
 							/>
