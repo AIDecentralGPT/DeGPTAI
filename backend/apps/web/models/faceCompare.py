@@ -82,6 +82,15 @@ class FaceCompare:
 
     def check_result(self, transaction_id: str, merchant_biz_id: str):
         print("transaction_id: str, merchant_biz_id", transaction_id, merchant_biz_id,)
+
+
+#         faceliveness_check_for_ws c2371516-d114-4872-8de0-b9d2a42f9f7c hks7ac9a85eb8a57caa1044f5778cca6
+# transaction_id: str, merchant_biz_id hks7ac9a85eb8a57caa1044f5778cca6 c2371516-d114-4872-8de0-b9d2a42f9f7c
+# [<alibabacloud_facebody20191230.models.SearchFaceResponseBodyDataMatchList object at 0x7b970617e010>] 181945249
+# face_id 181945249
+# user 0xde184A6809898D81186DeF5C0823d2107c001Da2
+# user_id 181945249 0xde184A6809898D81186DeF5C0823d2107c001Da2
+# passed {'passed': False, 'message': 'Your face has been used'} False
         
         # 构建结果检查请求
         request = cloudauth_models.CheckResultRequest(
@@ -92,6 +101,7 @@ class FaceCompare:
   
         # 调用结果检查API
         response = self.client.check_result(request)
+        print("response.body.request_id", response.body.request_id)
         return response
 
     def face_liveness(self, metaInfo: MetaInfo):
