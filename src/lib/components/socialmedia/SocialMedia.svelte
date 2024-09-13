@@ -37,8 +37,8 @@
             /></g
           ></g
         ></svg
-      ></a
-    ><a
+      ></a>
+      <a
       class=""
       href="https://t.me/DecentralGPT"
       target="_blank"
@@ -65,8 +65,8 @@
             /></g
           ></g
         ></svg
-      ></a
-    ><a
+      ></a>
+      <a
       class=""
       href="https://medium.com/@DecentralGPT"
       target="_blank"
@@ -93,8 +93,7 @@
             /></g
           ></g
         ></svg
-      ></a
-    >
+      ></a>
     </div>
   </div>
 </section>

@@ -844,7 +844,7 @@
 			</div> -->
 
       <!-- 社媒 -->
-      <SocialMedia />
+      <!-- <SocialMedia /> -->
       <!-- 钱包 -->
       <Wallet>123</Wallet>
     </div>

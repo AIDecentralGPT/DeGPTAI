@@ -37,13 +37,12 @@
 		<div class="flex justify-start">
 			<div class="flex space-x-4 mb-1" in:fade={{ duration: 200 }}>
 
-				<img
+				<!-- <img
 				crossorigin="anonymous"
 				src={`${WEBUI_BASE_URL}/static/favicon.png`}
 				alt="modelfile"
 				class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none"
-				draggable="false"
-			/>
+				draggable="false"/> -->
 
 			{#if $user?.address_type === 'threeSide'}
 				<w3m-button id="web3button" label="链接钱包"/>
@@ -116,12 +115,18 @@
 			</div>
 		</div> -->
 
-<GetRewards />
+		<GetRewards/>
 
 
 
-		<div class=" w-full" in:fade={{ duration: 200, delay: 300 }}>
+		<div class="w-full bg-1e1e1e padding-10" in:fade={{ duration: 200, delay: 300 }}>
 			<Suggestions {suggestionPrompts} {submitPrompt} />
 		</div>
 	</div>
 {/key}
+
+<style>
+.padding-10 {
+	padding: 10px;
+}
+</style>

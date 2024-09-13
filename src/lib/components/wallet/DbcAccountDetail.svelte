@@ -83,14 +83,25 @@
   // });
 </script>
 
-<div class="py-2 flex flex-col gap-2">
+<div class="flex flex-col gap-2 padding-l-r-10">
   <!-- <div class="py-2 px-3"> -->
+  <div class="mt6 mb10 align-r">
+    <button
+      class="fs20 "
+      type="submit"
+      on:click={async () => {
+        closeWallet();
+      }}
+    >
+      ×
+    </button>
+  </div>
   <!-- 升级计划 -->
   <button
     on:click={() => {
       $showPriceModal = true;
     }}
-    class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+    class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mb-5"
   >
     <span class="relative">{$i18n.t("Upgrade Plan")}</span>
   </button>
@@ -104,10 +115,8 @@
     <div class="flex flex-col w-full">
       <div class="flex-1 relative">
         <p
-          class="
-          text-ellipsis overflow-hidden whitespace-nowrap
-          pr-[35px]
-          px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+          class="text-ellipsis overflow-hidden whitespace-nowrap pr-[35px] opacity-50
+          px-5 py-3 rounded-md w-full text-sm-12 outline-none border dark:border-none dark:bg-gray-850 fs12"
         >
           <!-- {$currentWalletData?.walletInfo?.address} -->
           {$user?.id}
@@ -125,7 +134,7 @@
             }
           }}
           type="button"
-          class="absolute inset-y-0 right-0 px-3 py-2 text-sm dark:text-gray-300 dark:bg-gray-850 rounded-md"
+          class="absolute inset-y-0 right-0 px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -158,9 +167,9 @@
   </div>
 
   <!-- 二级按钮 -->
-  <div class="flex justify-between">
+  <div class="flex justify-start gap-2 mt6 mb10">
     <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
       on:click={async () => {
         $showTransferModal = true;
@@ -169,7 +178,7 @@
       {$i18n.t("Transfer")}
     </button>
     <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
       on:click={async () => {
         console.log("showExportWalletJsonModal", $showExportWalletJsonModal);
@@ -182,7 +191,7 @@
       {$i18n.t("Export Wallet")}
     </button>
     <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
       on:click={async () => {
         closeWallet();
@@ -206,7 +215,7 @@
     </div>
 
     <button
-      class="flex gap-2 items-center cursor-pointer"
+      class="flex gap-2 items-center cursor-pointer opacity-50 fs12"
       on:click={() => {
         // const pair = getCurrentPair()
         // console.log("pair?.address", pair?.address);
@@ -239,7 +248,7 @@
       <span> {$i18n.t("Share to Obtain DGC")} </span>
     </button>
 
-    <button
+    <!-- <button
       on:click={() => {
         updateWalletData($currentWalletData?.walletInfo);
       }}
@@ -252,8 +261,7 @@
           fill="currentColor"
           d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
         /></svg
-      ></button
-    >
+      ></button> -->
   </div>
   <!-- 余额详情 -->
   <div class="flex flex-col gap-2">
@@ -288,9 +296,9 @@
     </div> -->
 
     <div
-      class="flex justify-between px-5 py-3 pe-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+      class="flex justify-between px-5 py-2 pe-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
     >
-      <div class="flex gap-1">
+      <!-- <div class="flex gap-1">
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
         >
@@ -300,7 +308,6 @@
         <div
           class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          <!-- {Number($currentWalletData?.dbcBalance).toFixed(4)} -->
           {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
         </div>
         {:else}
@@ -310,14 +317,19 @@
           *****
         </div>
         {/if}
-      </div>
+      </div> -->
       <div class="flex gap-1">
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          DGC:
+          DLC 
         </div>
-        {#if showPrice == true}
+        <div
+          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          {floorToFixed(Number($currentWalletData?.dgcBalance), 2)}
+        </div>
+        <!-- {#if showPrice == true}
         <div
           class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
         >
@@ -329,10 +341,14 @@
         >
           *****
         </div>
-        {/if}
+        {/if} -->
+      </div>
+
+      <div class="opacity-50 leading-normal fs12">
+        DLC price $0.05
       </div>
       
-      <div on:click={()=>showPrice=!showPrice}>
+      <!-- <div on:click={()=>showPrice=!showPrice}>
         {#if showPrice === true}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -365,15 +381,47 @@
             />
           </svg>
         {/if}
-      </div>
+      </div> -->
      
+    </div>
+    <div
+      class="flex justify-between px-5 py-2 pe-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+    >
+      <div class="flex gap-1">
+        <div
+          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          DBC 
+        </div>
+        <div
+          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+        </div>
+        <!-- {#if showPrice == true}
+        <div
+          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+        </div>
+        {:else}
+        <div
+          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
+        >
+          *****
+        </div>
+        {/if} -->
+      </div>
+      <div class="opacity-50 leading-normal fs12">
+        DBC price $0.05
+      </div>
     </div>
   </div>
 
   <!-- 二级按钮 -->
-  <div class="flex justify-start gap-2">
+  <div class="flex justify-start gap-2 mt6 mb30">
     <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
       on:click={async () => {
         // $showBuyCoinModal = true;
@@ -384,7 +432,7 @@
       {$i18n.t("Buy")}
     </button>
     <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
       on:click={async () => {
         // toast.warning("Coming soon")
@@ -395,20 +443,18 @@
       {$i18n.t("Rewards")}
     </button>
 
-    <button
-    class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+    <!-- <button
+    class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
     type="submit"
     on:click={async () => {
       $showTransactionsModal = true;
     }}
   >
     {$i18n.t("Transactions")}
-  </button>
-
+  </button> -->
 
   </div>
-  <button
-  
+  <!-- <button
   class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
   type="submit"
   on:click={async () => {
@@ -416,8 +462,33 @@
   }}
   >
     showUserVerifyModal
-  </button>
+  </button> -->
 </div>
 
 <style>
+.padding-l-r-10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.text-sm-12 {
+  line-height: 12px;
+}
+.align-r {
+  text-align: right;
+}
+.fs12 {
+  font-size: 12px;
+}
+.fs20 {
+  font-size: 20px;
+}
+.mt6 {
+  margin-top: 6px;
+}
+.mb10 {
+  margin-bottom: 10px;
+}
+.mb30 {
+  margin-bottom: 30px;
+}
 </style>
