@@ -54,10 +54,12 @@
         checkQrResult = false; 
       } else if (event.data.startsWith("False")) {
         message = "Failed, try again";
+        qrCodeFinish = false;
         checkQrResult = true;
         clearInterval(countdownQrInterval);
       } else {
         message = "Failed, try again";
+        qrCodeFinish = false;
         checkQrResult = true;
         clearInterval(countdownQrInterval);
       }
@@ -134,6 +136,7 @@
       if (qrcountdown === 0) {
         clearInterval(countdownQrInterval);
         message = "Time expired, try again";
+        qrCodeFinish = false;
         checkQrResult = true;
       }
     }, 1000);
