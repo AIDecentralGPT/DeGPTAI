@@ -1045,6 +1045,7 @@ async def faceliveness_check_for_ws(id: str):
                 if response.body.result.passed:
                      face_lib.add_face_sample(user.id)
 
+            print(response.body.result)
             return {
                 "passed": response.body.result.passed
                 # 'Message': 'success',
