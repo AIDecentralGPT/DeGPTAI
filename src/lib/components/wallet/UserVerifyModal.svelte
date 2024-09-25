@@ -8,9 +8,8 @@
     sendCode,
     verifyCode,
   } from "$lib/apis/auths";
-  import { user } from "$lib/stores";
   import { WEBUI_BASE_URL } from "$lib/constants";
-
+  import { user } from "$lib/stores";
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
@@ -18,8 +17,9 @@
   const i18n = getContext("i18n");
 
   let socket;
-  let messages = [];
-  onMount(() => {
+  let message = "";
+
+  function initSocket() {
     // 创建 WebSocket 连接
     let socketUrl = '';
     if (WEBUI_API_BASE_URL.includes('https://')) {
@@ -27,68 +27,51 @@
     } else {
       socketUrl = WEBUI_API_BASE_URL.replace('http://', 'ws://')
     }
-    socket = new WebSocket(`${socketUrl}/auths/ws/${user.id}`);
+    socket = new WebSocket(`${socketUrl}/auths/ws/` + $user?.id);
 
     // 监听 WebSocket 连接打开事件
-    socket.addEventListener("open", () => {
-      console.log("WebSocket 连接已打开");
-    });
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    // 监听 WebSocket 错误事件
+    socket.onerror = (error) => {
+      console.error("WebSocket error: ", error);
+    };
+
+    // 监听 WebSocket 连接关闭事件
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
 
     // 监听 WebSocket 消息事件
     socket.addEventListener("message", (event) => {
       // 将收到的消息添加到 messages 列表中
-      console.log("===============", event.data);
-      messages = [...messages, event.data];
+      console.log("Received:", event.data);
+      if (event.data.startsWith("True")) {
+        message = "Success!";
+        qrCodeFinish = true;
+        checkQrResult = false; 
+      } else if (event.data.startsWith("False")) {
+        message = "Failed, try again";
+        checkQrResult = true;
+        clearInterval(countdownQrInterval);
+      } else {
+        message = "Failed, try again";
+        checkQrResult = true;
+        clearInterval(countdownQrInterval);
+      }
     });
 
-    // 监听 WebSocket 连接关闭事件
-    socket.addEventListener("close", () => {
-      console.log("WebSocket 连接已关闭");
-    });
-
-    // 监听 WebSocket 错误事件
-    socket.addEventListener("error", (error) => {
-      console.error("WebSocket 发生错误:", error);
-    });
-  });
-
-  // 在组件卸载时关闭 WebSocket 连接
-  onDestroy(() => {
-    socket.close();
-  });
-
-  // 向服务器发送消息的函数
-  // function sendMessage() {
-  //   if (socket && socket.readyState === WebSocket.OPEN) {
-  //     socket.send("Hello Server!");
-  //   } else {
-  //     console.error("WebSocket 连接不可用");
-  //   }
-  // }
+  }
 
   export let show = false;
-
-  // 用于存储上传的图片
-  let uploadedImage: File | null = null;
-  let imageUrl: string | undefined = `${WEBUI_BASE_URL}/static/example.png`;
 
   let current = 1;
   let email = "";
   let code = "";
   let countdown = 0;
   let countdownInterval: any = null;
-
-  function handleImageUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      uploadedImage = input.files[0];
-      imageUrl = URL.createObjectURL(uploadedImage);
-    }
-  }
-
-  function triggerImageUpload() {
-    document.getElementById("imageInput")?.click();
-  }
 
   function validateEmail(email: string) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -119,6 +102,8 @@
   }
 
   let qrcodeUrl = "";
+  let qrCodeFinish = false;
+  let checkQrResult = false;
 
   function getQrCode(url) {
     QRCode.toDataURL(url, function (err, url) {
@@ -146,6 +131,8 @@
       showQrTime = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
       if (qrcountdown === 0) {
         clearInterval(countdownQrInterval);
+        message = "Time expired, try again";
+        checkQrResult = true;
       }
     }, 1000);
   }
@@ -254,22 +241,38 @@
 
   let isMobile = false;
 
-  let qrCodeFinish = false;
-
   onMount(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
     // 检查是否为移动端设备
     isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
   });
+
+  // 显示初始化Socket
+  $: if (show) {
+    initSocket();
+  }
+
+  // 隐藏关闭Socket
+  $: if (!show) {
+    if (socket) {
+      socket.close();
+    }
+    if (countdownQrInterval) {
+      clearInterval(countdownQrInterval);
+    } 
+  }
+
+  // 在组件卸载时关闭 WebSocket 连接
+  onDestroy(() => {
+    if (scoket) {
+      socket.close();
+    }
+  });
+
 </script>
 
 <Modal bind:show size="lg">
-  <!-- <button on:click={sendMessage}>发送消息</button> -->
-
-  <!-- <button on:click={getQrCode}> show qrcode </button> -->
-
-  <!-- <button on:click={faceLiveness}> 2. 活体检测 </button> -->
 
   <div class="text-gray-700 dark:text-gray-100 px-5 pt-4 pb-4 relative">
     <div class="flex justify-between dark:text-gray-300">
@@ -389,18 +392,30 @@
                 {#if qrcodeUrl}
                   <p class="text-center text-gray-100">Please user your mobile phone to scan the QR code below for identity verification</p>
                   <img class="w-[160px] m-2" src={qrcodeUrl} alt="" />
-                  <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>
-                  <div class="flex flex-row items-center timesty">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                      class="icon" 
-                      viewBox="0 0 1024 1024" 
-                      version="1.1" 
-                      width="20" height="20">
-                      <path d="M512 53.333333C258.688 53.333333 53.333333 258.688 53.333333 512S258.688 970.666667 512 970.666667 970.666667 765.312 970.666667 512 765.312 53.333333 512 53.333333z m0 64c217.962667 0 394.666667 176.704 394.666667 394.666667S729.962667 906.666667 512 906.666667 117.333333 729.962667 117.333333 512 294.037333 117.333333 512 117.333333z" fill="#BD9257"/>
-                      <path d="M661.333333 554.666667a32 32 0 0 1 3.072 63.850666L661.333333 618.666667h-192a32 32 0 0 1-3.072-63.850667L469.333333 554.666667h192z" fill="#BD9257"/>
-                      <path d="M458.666667 288a32 32 0 0 1 31.850666 28.928L490.666667 320v256a32 32 0 0 1-63.850667 3.072L426.666667 576V320a32 32 0 0 1 32-32z" fill="#BD9257"/>
-                    </svg>&nbsp;&nbsp;{showQrTime}
-                  </div>
+                  {#if checkQrResult}
+                    <div class="flex flex-row items-center">
+                      {message}
+                    </div>
+                  {:else}
+                    {#if qrCodeFinish}
+                      <div class="flex flex-row items-center">
+                        {message}
+                      </div>
+                    {:else}
+                      <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>
+                      <div class="flex flex-row items-center timesty">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                          class="icon" 
+                          viewBox="0 0 1024 1024" 
+                          version="1.1" 
+                          width="20" height="20">
+                          <path d="M512 53.333333C258.688 53.333333 53.333333 258.688 53.333333 512S258.688 970.666667 512 970.666667 970.666667 765.312 970.666667 512 765.312 53.333333 512 53.333333z m0 64c217.962667 0 394.666667 176.704 394.666667 394.666667S729.962667 906.666667 512 906.666667 117.333333 729.962667 117.333333 512 294.037333 117.333333 512 117.333333z" fill="#BD9257"/>
+                          <path d="M661.333333 554.666667a32 32 0 0 1 3.072 63.850666L661.333333 618.666667h-192a32 32 0 0 1-3.072-63.850667L469.333333 554.666667h192z" fill="#BD9257"/>
+                          <path d="M458.666667 288a32 32 0 0 1 31.850666 28.928L490.666667 320v256a32 32 0 0 1-63.850667 3.072L426.666667 576V320a32 32 0 0 1 32-32z" fill="#BD9257"/>
+                        </svg>&nbsp;&nbsp;{showQrTime}
+                      </div>
+                    {/if}
+                  {/if}
                 {:else}
                   <div class="mt-6 w-[160px] h-[160px] flex justify-center items-center text-white bg-gray-400 rounded-md">
                     <span class="animate-pulse">Loading...</span>
