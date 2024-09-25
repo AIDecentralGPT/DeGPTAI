@@ -431,27 +431,25 @@
     >
       {$i18n.t("Rewards")}
     </button>
-
-    <!-- <button
-    class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
-    type="submit"
-    on:click={async () => {
-      $showTransactionsModal = true;
-    }}
-  >
-    {$i18n.t("Transactions")}
-  </button> -->
-
+    {#if $user?.verified}
+      <button
+        class=" px-4 py-2 primaryButton text-gray-800 transition rounded-lg fs12"
+        type="submit"
+      >
+        {$i18n.t("Authed KYC")}
+      </button>
+    {:else}
+      <button
+        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg fs12"
+        type="submit"
+        on:click={async () => {
+          $showUserVerifyModal = true;
+        }}
+      >
+        {$i18n.t("JOIN KYC")}
+      </button>
+    {/if}
   </div>
-  <!-- <button
-  class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-  type="submit"
-  on:click={async () => {
-    $showUserVerifyModal = true;
-  }}
-  >
-    showUserVerifyModal
-  </button> -->
 </div>
 
 <style>
