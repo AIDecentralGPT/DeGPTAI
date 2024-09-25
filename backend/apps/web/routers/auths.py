@@ -1044,17 +1044,22 @@ async def faceliveness_check_for_ws(id: str):
                 
                 if response.body.result.passed:
                      face_lib.add_face_sample(user.id)
-
-            print(response.body.result)
+            
+            # 'Message': 'success',
+            # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+            # 'Result': {
+            #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+            #     'Passed': 'Y',
+            #     'SubCode': '200'
+            # }
+            passed = False
+            message = "Fail"
+            if (response.body.result.passed == 'Y'):
+                passed = True
+                message = "Success"
             return {
-                "passed": response.body.result.passed
-                # 'Message': 'success',
-                # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
-                # 'Result': {
-                #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
-                #     'Passed': 'Y',
-                #     'SubCode': '200'
-                # }
+                "passed": passed,
+                "message": message
             }
             
             
