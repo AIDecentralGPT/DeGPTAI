@@ -301,7 +301,10 @@
 <RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
 <RewardDetailModal bind:show={$showRewardDetailModal} />
 <TransactionsModal bind:show={$showTransactionsModal} />
+
+{#if showUserVerifyModal} 
 <UserVerifyModal bind:show={$showUserVerifyModal} />
+{/if}
 <!-- <UserVerifyModal bind:show={showModal} /> -->
 
 
@@ -844,9 +847,9 @@
 			</div> -->
 
       <!-- 社媒 -->
-      <!-- <SocialMedia /> -->
+      <SocialMedia />
       <!-- 钱包 -->
-      <Wallet>123</Wallet>
+      <Wallet />
     </div>
   </div>
 

@@ -789,6 +789,7 @@ async def send_code(email_request: EmailRequest):
     else:
         raise HTTPException(status_code=500, detail="无法创建验证码记录")
 
+
 @router.post("/verify_code")
 async def verify_code(verify_code_request: VerifyCodeRequest):
     email = verify_code_request.email
@@ -807,12 +808,6 @@ async def verify_code(verify_code_request: VerifyCodeRequest):
         return {"message": "验证码验证成功"}
     else:
         raise HTTPException(status_code=400, detail="验证码无效")
-
-
-
-
-
-
 
 
 # get api key
@@ -993,7 +988,7 @@ async def faceliveness_check_for_ws(id: str):
         user = Users.get_user_by_id((id))
         # print("faceliveness_check_for_ws user.", user, user)
         
-            # 获取查询参数
+        # 获取查询参数
         # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
         merchant_biz_id = user.merchant_biz_id
         transaction_id = user.transaction_id
@@ -1074,7 +1069,10 @@ async def faceliveness_check_for_ws(id: str):
     except Exception as e:
         print(f"Error in faceliveness_check_for_ws: {e}")
         # 根据需要执行错误处理，例如记录日志或通知客户端
-
+        return {
+                "passed": False,
+                "message": "The identity proofing process is not completed"
+            }
 
 
 

@@ -85,23 +85,12 @@
 
 <div class="flex flex-col gap-2 padding-l-r-10">
   <!-- <div class="py-2 px-3"> -->
-  <div class="mt6 mb10 align-r">
-    <button
-      class="fs20 "
-      type="submit"
-      on:click={async () => {
-        closeWallet();
-      }}
-    >
-      ×
-    </button>
-  </div>
   <!-- 升级计划 -->
   <button
     on:click={() => {
       $showPriceModal = true;
     }}
-    class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mb-5"
+    class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt6 mb-5"
   >
     <span class="relative">{$i18n.t("Upgrade Plan")}</span>
   </button>
@@ -473,14 +462,8 @@
 .text-sm-12 {
   line-height: 12px;
 }
-.align-r {
-  text-align: right;
-}
 .fs12 {
   font-size: 12px;
-}
-.fs20 {
-  font-size: 20px;
 }
 .mt6 {
   margin-top: 6px;

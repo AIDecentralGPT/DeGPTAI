@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
-  import Image from "../common/Image.svelte";
+  import { WEBUI_API_BASE_URL } from "$lib/constants";
   import {
     faceliveness,
     facelivenessRes,
@@ -21,7 +21,13 @@
   let messages = [];
   onMount(() => {
     // 创建 WebSocket 连接
-    socket = new WebSocket("wss://test.degpt.ai/api/v1/auths/ws");
+    let socketUrl = '';
+    if (WEBUI_API_BASE_URL.includes('https://')) {
+      socketUrl = WEBUI_API_BASE_URL.replace('https://', 'wss://')
+    } else {
+      socketUrl = WEBUI_API_BASE_URL.replace('http://', 'ws://')
+    }
+    socket = new WebSocket(`${socketUrl}/auths/ws/${user.id}`);
 
     // 监听 WebSocket 连接打开事件
     socket.addEventListener("open", () => {
@@ -31,6 +37,7 @@
     // 监听 WebSocket 消息事件
     socket.addEventListener("message", (event) => {
       // 将收到的消息添加到 messages 列表中
+      console.log("===============", event.data);
       messages = [...messages, event.data];
     });
 
@@ -51,13 +58,13 @@
   });
 
   // 向服务器发送消息的函数
-  function sendMessage() {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send("Hello Server!");
-    } else {
-      console.error("WebSocket 连接不可用");
-    }
-  }
+  // function sendMessage() {
+  //   if (socket && socket.readyState === WebSocket.OPEN) {
+  //     socket.send("Hello Server!");
+  //   } else {
+  //     console.error("WebSocket 连接不可用");
+  //   }
+  // }
 
   export let show = false;
 
@@ -117,12 +124,35 @@
     QRCode.toDataURL(url, function (err, url) {
       console.log(url);
       qrcodeUrl = url;
+      startQrCountdown()
     });
+  }
+
+  // 二维码有效时长
+  let qrcountdown = 0;
+  let showQrTime = '05:00';
+  let countdownQrInterval: any = null;
+  function startQrCountdown() {
+    qrcountdown = 300;
+    // 不为空先清除计时器值
+    if (countdownQrInterval) {
+      showQrTime = '05:00';
+      clearInterval(countdownQrInterval);
+    }
+    countdownQrInterval = setInterval(() => {
+      qrcountdown -= 1;
+      let minute = Math.floor(qrcountdown / 60);
+      let second = qrcountdown % 60;
+      showQrTime = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
+      if (qrcountdown === 0) {
+        clearInterval(countdownQrInterval);
+      }
+    }, 1000);
   }
 
   async function nextStep() {
     let valid = true;
-
+    qrcodeUrl = "";
     if (current === 1) {
       if (!validateEmail(email)) {
         toast.error("Please enter a valid email address.");
@@ -224,6 +254,8 @@
 
   let isMobile = false;
 
+  let qrCodeFinish = false;
+
   onMount(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -233,7 +265,7 @@
 </script>
 
 <Modal bind:show size="lg">
-  <button on:click={sendMessage}>发送消息</button>
+  <!-- <button on:click={sendMessage}>发送消息</button> -->
 
   <!-- <button on:click={getQrCode}> show qrcode </button> -->
 
@@ -351,20 +383,30 @@
         <div class="flex flex-col justify-start items-center gap-4">
           {#if !isMobile}
             <div
-              class=" bg-white p-6 rounded-lg shadow-lg flex flex-col items-center h-[248px] justify-end"
+              class="rounded-lg flex flex-col items-center h-[288px]"
             >
-              <div class="">
+              <div class="flex flex-col items-center">
                 {#if qrcodeUrl}
-                  <img class="w-[160px]" src={qrcodeUrl} alt="" />
+                  <p class="text-center text-gray-100">Please user your mobile phone to scan the QR code below for identity verification</p>
+                  <img class="w-[160px] m-2" src={qrcodeUrl} alt="" />
+                  <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>
+                  <div class="flex flex-row items-center timesty">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                      class="icon" 
+                      viewBox="0 0 1024 1024" 
+                      version="1.1" 
+                      width="20" height="20">
+                      <path d="M512 53.333333C258.688 53.333333 53.333333 258.688 53.333333 512S258.688 970.666667 512 970.666667 970.666667 765.312 970.666667 512 765.312 53.333333 512 53.333333z m0 64c217.962667 0 394.666667 176.704 394.666667 394.666667S729.962667 906.666667 512 906.666667 117.333333 729.962667 117.333333 512 294.037333 117.333333 512 117.333333z" fill="#BD9257"/>
+                      <path d="M661.333333 554.666667a32 32 0 0 1 3.072 63.850666L661.333333 618.666667h-192a32 32 0 0 1-3.072-63.850667L469.333333 554.666667h192z" fill="#BD9257"/>
+                      <path d="M458.666667 288a32 32 0 0 1 31.850666 28.928L490.666667 320v256a32 32 0 0 1-63.850667 3.072L426.666667 576V320a32 32 0 0 1 32-32z" fill="#BD9257"/>
+                    </svg>&nbsp;&nbsp;{showQrTime}
+                  </div>
                 {:else}
-                  <div
-                    class="w-[160px] h-[160px] flex justify-center items-center text-white bg-gray-400 rounded-md"
-                  >
+                  <div class="mt-6 w-[160px] h-[160px] flex justify-center items-center text-white bg-gray-400 rounded-md">
                     <span class="animate-pulse">Loading...</span>
                   </div>
                 {/if}
               </div>
-              <p class="mt-4 text-center text-gray-700">Scan this QR code!</p>
             </div>
           {/if}
           {#if isMobile}
@@ -394,8 +436,8 @@
         >
 
         {#if current === 2}
-          <button
-            class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+          <button disabled={!qrCodeFinish} 
+            class="{qrCodeFinish ? 'text-gray-600' : 'text-gray-100'} px-4 py-2 primaryButton text-gray-800 transition rounded-lg w-[100px]"
             on:click={getFaceRes}
           >
             Finish</button
@@ -411,3 +453,10 @@
     </div>
   </div>
 </Modal>
+
+<style>
+.timesty{
+  color: #BD9257;
+  font-weight: bold;
+}
+</style>

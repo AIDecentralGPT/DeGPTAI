@@ -22,7 +22,7 @@
   import "../tailwind.css";
   import "../app.css";
   import VConsole from 'vconsole';
-  const vConsole = new VConsole();
+  //const vConsole = new VConsole();
 
   import "tippy.js/dist/tippy.css";
 

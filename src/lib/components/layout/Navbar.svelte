@@ -1,6 +1,3 @@
-
-
-
 <script lang="ts">
   import { getContext, onMount } from "svelte";
   import { toast } from "svelte-sonner";
@@ -44,6 +41,7 @@
   let showShareChatModal = false;
   let showDownloadChatModal = false;
 
+  // 获取用户信息
 	const getIsPro = async () => {
     try {
       // const userIsPro = await isPro(localStorage.token); // 发送请求到你的 API
@@ -72,9 +70,6 @@
 
   onMount(() => {
 		getIsPro()
-
-
-
 	});
 
 
@@ -84,10 +79,8 @@
     const MetaInfo = window.getMetaInfo();
 
     console.log("MetaInfo:", MetaInfo);
-toast.success(JSON.stringify(MetaInfo))
+    toast.success(JSON.stringify(MetaInfo))
     
-    
-
     // 接下来您进行调用服务端初始化请求获取TransactionUrl
     const TransactionUrl = ''; // 此处值应为调用服务端初始化接口返回的TransactionUrl
 
@@ -221,11 +214,8 @@ toast.success(JSON.stringify(MetaInfo))
                   alt="User profile"
                   draggable="false"
                 /> -->
-                <div
-                class="size-6 object-cover rounded-full bg-primary"
-
-                >
-{$user.id?.slice(2,4)}
+                <div class="size-6 object-cover rounded-full bg-primary">
+                  {$user.id?.slice(2,4)}
                 </div>
               </div>
             </button>

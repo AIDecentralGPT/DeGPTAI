@@ -1,9 +1,10 @@
 <script>
   import { onMount, getContext } from 'svelte';
   import { goto } from '$app/navigation';
+  import { WEBUI_API_BASE_URL } from "$lib/constants";
   const i18n = getContext('i18n');
 
-  let message = $i18n.t('Verifying the effectiveness of face detection');
+  let message = $i18n.t('Loading ...');
   
   let ws;
   let status = null;
@@ -13,8 +14,13 @@
     // 获取URL中的参数
     const params = new URLSearchParams(window.location.search);
     const userId = params.get("user_id");
-
-    ws = new WebSocket(`wss://test.degpt.ai/api/v1/auths/ws/${userId}`);
+    let socketUrl = '';
+    if (WEBUI_API_BASE_URL.includes('https://')) {
+      socketUrl = WEBUI_API_BASE_URL.replace('https://', 'wss://')
+    } else {
+      socketUrl = WEBUI_API_BASE_URL.replace('http://', 'ws://')
+    }
+    ws = new WebSocket(`${socketUrl}/auths/ws/${userId}`);
 
     ws.onopen = () => {
       console.log("WebSocket connection established");
