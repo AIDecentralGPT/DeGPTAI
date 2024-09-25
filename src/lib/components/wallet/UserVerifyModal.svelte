@@ -109,6 +109,8 @@
     QRCode.toDataURL(url, function (err, url) {
       console.log(url);
       qrcodeUrl = url;
+      qrCodeFinish = false;
+      checkQrResult = false;
       startQrCountdown()
     });
   }
@@ -391,14 +393,36 @@
               <div class="flex flex-col items-center">
                 {#if qrcodeUrl}
                   <p class="text-center text-gray-100">Please user your mobile phone to scan the QR code below for identity verification</p>
-                  <img class="w-[160px] m-2" src={qrcodeUrl} alt="" />
+                  <div class="flex justify-center items-center w-[200px] h-[180px] m-2 pos-rel">
+                    <img class="w-[160px]" src={qrcodeUrl} alt="" />
+                    {#if checkQrResult}
+                      <div class="w-[200px] h-[180px] model-styl">
+                        <button
+                          class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+                          on:click={faceLiveness}>Try again</button
+                        >
+                      </div>
+                    {/if}
+                    {#if qrCodeFinish}
+                      <div class="w-[200px] h-[180px] model-styl">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                          class="icon" viewBox="0 0 1024 1024" 
+                          version="1.1"  
+                          width="100" 
+                          height="100">
+                            <path d="M512 832c-176.448 0-320-143.552-320-320S335.552 192 512 192s320 143.552 320 320-143.552 320-320 320m0-704C300.256 128 128 300.256 128 512s172.256 384 384 384 384-172.256 384-384S723.744 128 512 128" fill="#4ECA70"></path>
+                            <path d="M619.072 429.088l-151.744 165.888-62.112-69.6a32 32 0 1 0-47.744 42.624l85.696 96a32 32 0 0 0 23.68 10.688h0.192c8.96 0 17.536-3.776 23.616-10.4l175.648-192a32 32 0 0 0-47.232-43.2" fill="#4ECA70"></path>
+                          </svg>
+                      </div>
+                    {/if}
+                  </div>  
                   {#if checkQrResult}
                     <div class="flex flex-row items-center">
                       {message}
                     </div>
                   {:else}
                     {#if qrCodeFinish}
-                      <div class="flex flex-row items-center">
+                      <div class="flex flex-row items-center success">
                         {message}
                       </div>
                     {:else}
@@ -473,5 +497,20 @@
 .timesty{
   color: #BD9257;
   font-weight: bold;
+}
+.success {
+  color: #4ECA70;
+}
+.model-styl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.5);
+}
+.pos-rel {
+  position: relative;
 }
 </style>
