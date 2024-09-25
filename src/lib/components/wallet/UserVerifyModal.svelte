@@ -135,9 +135,11 @@
       showQrTime = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
       if (qrcountdown === 0) {
         clearInterval(countdownQrInterval);
-        message = "Time expired, try again";
-        qrCodeFinish = false;
-        checkQrResult = true;
+        if (qrCodeFinish) {
+          message = "Time expired, try again";
+          qrCodeFinish = false;
+          checkQrResult = true;
+        } 
       }
     }, 1000);
   }
