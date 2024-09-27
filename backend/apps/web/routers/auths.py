@@ -695,7 +695,7 @@ async def update_token_expires_duration(
 ############################
 
 
-# create api key
+# 创建用户 api_key
 @router.post("/api_key", response_model=ApiKey)
 async def create_api_key_(user=Depends(get_current_user)):
     api_key = create_api_key()
@@ -708,13 +708,13 @@ async def create_api_key_(user=Depends(get_current_user)):
         raise HTTPException(500, detail=ERROR_MESSAGES.CREATE_API_KEY_ERROR)
 
 
-# delete api key
+# 删除用户 api_key
 @router.delete("/api_key", response_model=bool)
 async def delete_api_key(user=Depends(get_current_user)):
     success = Users.update_user_api_key_by_id(user.id, None)
     return success
 
-
+# 发送邮箱验证码
 @router.post("/send_code")
 async def send_code(email_request: EmailRequest):
     email = email_request.email
@@ -765,7 +765,7 @@ async def send_code(email_request: EmailRequest):
     else:
         raise HTTPException(status_code=500, detail="无法创建验证码记录")
 
-
+# 校验邮箱验证码
 @router.post("/verify_code")
 async def verify_code(verify_code_request: VerifyCodeRequest):
     email = verify_code_request.email
@@ -786,7 +786,13 @@ async def verify_code(verify_code_request: VerifyCodeRequest):
         raise HTTPException(status_code=400, detail="验证码无效")
 
 
-# get api key
+# 生成人脸识别库
+@router.get("/create_face")
+async def create_face():
+    # 生成人脸识别库
+    return face_lib.create_face_db()
+
+# 获取人脸识别连接
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
         # 获取查询参数
@@ -835,7 +841,7 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 
-# get api key
+# 人脸识别校验
 @router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
 async def faceliveness_check(user=Depends(get_current_user)):
         # 获取查询参数
@@ -881,19 +887,15 @@ async def faceliveness_check(user=Depends(get_current_user)):
             # return user_update_result
             print("user_update_result", user_update_result)
             
-
-
-        
         return {
-                    "passed": response.body.result.passed
-        # 'Message': 'success',
-        # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
-        # 'Result': {
-        #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
-        #     'Passed': 'Y',
-        #     'SubCode': '200'
-        # }
-
+            "passed": response.body.result.passed
+            # 'Message': 'success',
+            # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+            # 'Result': {
+            #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+            #     'Passed': 'Y',
+            #     'SubCode': '200'
+            # }
         }
 
     else:
@@ -995,8 +997,6 @@ async def faceliveness_check_for_ws(id: str):
                 "passed": False,
                 "message": "The identity proofing process is not completed"
             }
-
-
 
 
 class ConnectionManager:

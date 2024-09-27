@@ -42,17 +42,9 @@ class FaceLib:
             # 初始化Client
             client = Client(self.config)
             response = client.create_face_db_with_options(self.create_face_db_request, self.runtime_option)
-            # 获取整体结果
-            print(response, response.body)
-            # [1] {'RequestId': 'BFD1003C-A568-50DD-842C-61B52EA2447C'}
-            
-            # [1] {'headers': {'date': 'Fri, 02 Aug 2024 09:18:45 GMT', 'content-type': 'application/json;charset=utf-8', 'content-length': '52', 'connection': 'keep-alive', 'keep-alive': 'timeout=25', 'access-control-allow-origin': '*', 'access-control-expose-headers': '*', 'x-acs-request-id': '7F75E7B4-4636-53B4-A8DE-5FC4A9E1F876', 'x-acs-trace-id': 'e5c7f985e0afea44edef6f0ad984d3ab', 'etag': '5TMxmkRtXpXAdkf/r7rDdEA2'}, 'statusCode': 200, 'body': {'RequestId': '7F75E7B4-4636-53B4-A8DE-5FC4A9E1F876'}} {'RequestId': '7F75E7B4-4636-53B4-A8DE-5FC4A9E1F876'}
+            return response;
         except Exception as error:
-            # 获取整体报错信息
-            print("create_face_db", error)
-            # 获取单个字段
-            print(error.code)
-            # tips: 可通过error.__dict__查看属性名称
+            return error;
             
     # 添加人脸数据
     def add_face_data(self, base64_data, user_id):
@@ -70,7 +62,7 @@ class FaceLib:
         # 解码Base64数据
         img_data = base64.b64decode(base64_data)
         request.image_url_object = io.BytesIO(img_data)
-        request.db_name = 'face_tab'
+        request.db_name = 'dev_face'
         request.entity_id = user_id
         request.extra_data = 'degpt-face:' + user_id
         runtime_option = RuntimeOptions()
@@ -95,7 +87,7 @@ class FaceLib:
         
         search_face_request = SearchFaceAdvanceRequest()
         search_face_request.image_url_object = io.BytesIO(img_data)
-        search_face_request.db_name = 'face_tab'
+        search_face_request.db_name = 'dev_face'
         search_face_request.limit = 5
 
         try:
@@ -114,7 +106,7 @@ class FaceLib:
     def remove_face(self, face_id):
 
         deleteFaceRequest = DeleteFaceRequest()
-        deleteFaceRequest.db_name = "face_tab"
+        deleteFaceRequest.db_name = "dev_face"
         deleteFaceRequest.face_id = face_id
 
         runtime_option = RuntimeOptions()
