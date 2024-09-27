@@ -943,15 +943,15 @@ async def faceliveness_check_for_ws(id: str):
             face_id = face_lib.search_face(faceImg)
             print("face_id", face_id)
             
-            user_id = Users.get_user_id_by_face_id(face_id)
-            print("user_id",face_id, user_id)
-            
-            # 4. 存在就告诉你，该人脸已经被检测过了！
-            if user_id  is not None :
-                return {
-                    "passed": False,
-                    "message": "Your face has been used"
-                }
+            if face_id is not None:
+                user_id = Users.get_user_id_by_face_id(face_id)
+                print("user_id",face_id, user_id)
+                # 4. 存在就告诉你，该人脸已经被检测过了！
+                if user_id  is not None :
+                    return {
+                        "passed": False,
+                        "message": "Your face has been used"
+                    }
                 
             
             # 判断该face_id是否有过
