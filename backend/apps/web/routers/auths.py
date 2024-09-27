@@ -18,9 +18,7 @@ from apps.web.models.chats import (
     Chats,
 )
 
-from apps.web.models.faceLib import (
-   face_lib,
-)
+from apps.web.models.faceLib import ( face_lib )
 from fastapi.responses import RedirectResponse
 
 from apps.web.models.email_codes import (
@@ -44,28 +42,6 @@ from web3.auto import w3
 from eth_account.messages import encode_defunct, _hash_eip191_message
 import secrets
 from eth_account import Account
-
-
-# -----------------------------------------------------------------
-
-# https://chatgpt.com/c/ea2b63e6-234f-45ad-8e32-a338f3c76737
-
-
-
-
-# # 假设前端传递的数据格式如下：
-# data = {
-#     "address": "5FHneW46xGXgs5mUiveU4sbTyGBzmtoZygMnNrpHRT7Pu8oB",
-#     "nonce": "some-random-nonce",
-#     "message": "The message to be signed",
-#     "signature": "0x38d5724ace9f5fbd..."
-# }
-
-
-
-
-
-
 
 # ————————————————————————
 
@@ -811,30 +787,6 @@ async def verify_code(verify_code_request: VerifyCodeRequest):
 
 
 # get api key
-@router.post("/face_compare", response_model=bool)
-async def face_compare_handle(    form_data: FaceCompareForm):
-        # 获取查询参数
-    form_data
-    print("Query Parameters:", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
-
-    if True:
-        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
-        response = face_compare.compare_faces(form_data.sourceFacePictureBase64, form_data.targetFacePictureBase64)
-        print("face compare success", response)
-
-        # return {
-        #     "status_code": response.status_code,
-        #     "request_id": response.body.request_id,
-        #     "transaction_id": response.body.result.transaction_id,
-        #     "passed": response.body.result.passed,
-        #     "sub_code": response.body.result.sub_code
-        # }
-        return True
-    else:
-        raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
-
-
-# get api key
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
         # 获取查询参数
@@ -843,11 +795,10 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
     if True:
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         response = face_compare.face_liveness({
-                       "deviceType": form_data.metaInfo.deviceType,
+            "deviceType": form_data.metaInfo.deviceType,
             "ua":form_data.metaInfo.ua,
             "bioMetaInfo": form_data.metaInfo.bioMetaInfo,
             "user_id": user.id
-            
         })
    
 
@@ -882,8 +833,6 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
 
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
-
-
 
 
 # get api key
@@ -951,35 +900,6 @@ async def faceliveness_check(user=Depends(get_current_user)):
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 
-
-@router.post("/create_face_db")
-async def create_face_db():
-    return face_lib.create_face_db()
-
-
-
-# # 增加人脸样本
-# @router.post("/add_face_sample")
-# async def add_face_sample():
-#     return face_lib.add_face_sample()
-
-@router.post("/add_face_data")
-# async def add_face_data():
-#     return face_lib.add_face_data()
-
-@router.post("/search_face")
-
-async def search_face(    form_data: SearchFormRequest):
-    face_img = form_data.face_img
-    return face_lib.search_face( face_img, )
-
-
-
-
-
-
-
-
 # 检查人脸是否通过
 async def faceliveness_check_for_ws(id: str):
     
@@ -993,8 +913,6 @@ async def faceliveness_check_for_ws(id: str):
         merchant_biz_id = user.merchant_biz_id
         transaction_id = user.transaction_id
         
-        print("faceliveness_check_for_ws", merchant_biz_id, transaction_id)
-
         if merchant_biz_id is not None and transaction_id is not None:
             # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
             # response = face_compare.check_result({
@@ -1003,7 +921,7 @@ async def faceliveness_check_for_ws(id: str):
             # })
             
             
-            # 1. 获取人脸检测返回的信息（照片啥的
+            # 1. 获取人脸检测返回的信息（包含照片base64信息
             response = face_compare.check_result(
                 transaction_id= transaction_id,
                 merchant_biz_id=merchant_biz_id,
@@ -1018,8 +936,6 @@ async def faceliveness_check_for_ws(id: str):
             faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
             
             # face_lib.add_face_data(faceImg)
-            
-            
             
             # 3. 搜索该人脸照片在库中是否存在
             face_id = face_lib.search_face(faceImg)
@@ -1042,8 +958,10 @@ async def faceliveness_check_for_ws(id: str):
                 # return user_update_result
                 print("user_update_result", user_update_result)
                 
-                if response.body.result.passed:
-                     face_lib.add_face_sample(user.id)
+                # 更新成功添加到人脸库
+                if user_update_result:
+                    face_lib.add_face_data(faceImg, user.id)
+                     
             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
@@ -1052,6 +970,7 @@ async def faceliveness_check_for_ws(id: str):
             #     'Passed': 'Y',
             #     'SubCode': '200'
             # }
+            # 校验成功返回对应数据
             passed = False
             message = "Fail"
             if (response.body.result.passed == 'Y'):

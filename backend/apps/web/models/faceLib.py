@@ -1,24 +1,10 @@
-import os
 import io
 import base64
-from alibabacloud_facebody20191230.models import CreateFaceDbRequest
 from alibabacloud_tea_openapi.models import Config
-from alibabacloud_facebody20191230.client import Client
 from alibabacloud_tea_util.models import RuntimeOptions
-from urllib.request import urlopen
+from alibabacloud_facebody20191230.models import CreateFaceDbRequest, AddFaceAdvanceRequest, SearchFaceAdvanceRequest, DeleteFaceRequest
 from alibabacloud_facebody20191230.client import Client
-from alibabacloud_facebody20191230.models import AddFaceAdvanceRequest
-from alibabacloud_tea_util.models import RuntimeOptions
-from alibabacloud_facebody20191230.models import SearchFaceRequest
-
-from alibabacloud_facebody20191230.client import Client
-from alibabacloud_tea_util.models import RuntimeOptions
-from alibabacloud_facebody20191230.models import AddFaceEntityRequest
-from alibabacloud_facebody20191230.models import SearchFaceAdvanceRequest
 from viapi.fileutils import FileUtils
-
-import configparser
-import oss2
 
 from apps.web.models.users import Users
 
@@ -43,16 +29,14 @@ class FaceLib:
             # 访问的域名对应的region
             region_id='cn-shanghai'
         )
-        
-        self.file_utils = FileUtils('LTAI5tKRwDnNYRAjF9SkeFv6', '6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde')
-
 
         self.runtime_option = RuntimeOptions()
-        self.create_face_db_request = CreateFaceDbRequest(
-                    name='Face'
-                )
+        self.create_face_db_request = CreateFaceDbRequest( name='dev_face' )
+
+        # 阿里oss上传文件
+        self.file_utils = FileUtils('LTAI5tKRwDnNYRAjF9SkeFv6', '6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde')
         
-        
+    # 创建人脸数据库
     def create_face_db(self):
         try:
             # 初始化Client
@@ -65,35 +49,14 @@ class FaceLib:
             # [1] {'headers': {'date': 'Fri, 02 Aug 2024 09:18:45 GMT', 'content-type': 'application/json;charset=utf-8', 'content-length': '52', 'connection': 'keep-alive', 'keep-alive': 'timeout=25', 'access-control-allow-origin': '*', 'access-control-expose-headers': '*', 'x-acs-request-id': '7F75E7B4-4636-53B4-A8DE-5FC4A9E1F876', 'x-acs-trace-id': 'e5c7f985e0afea44edef6f0ad984d3ab', 'etag': '5TMxmkRtXpXAdkf/r7rDdEA2'}, 'statusCode': 200, 'body': {'RequestId': '7F75E7B4-4636-53B4-A8DE-5FC4A9E1F876'}} {'RequestId': '7F75E7B4-4636-53B4-A8DE-5FC4A9E1F876'}
         except Exception as error:
             # 获取整体报错信息
-            print("create_face_db",error)
-            # 获取单个字段
-            print(error.code)
-            # tips: 可通过error.__dict__查看属性名称
-
-                
-    def add_face_sample(self, user_id: str):
-        try:
-            # 初始化Client
-            client = Client(self.config)
-            add_face_entity_request = AddFaceEntityRequest(
-                db_name='Face1',
-                entity_id= user_id # 这是userid
-            )
-            response = client.add_face_entity_with_options(add_face_entity_request, self.runtime_option)
-            # 获取整体结果
-            print(response.body)
-        except Exception as error:
-            # 获取整体报错信息
-            print(error)
+            print("create_face_db", error)
             # 获取单个字段
             print(error.code)
             # tips: 可通过error.__dict__查看属性名称
             
-            
-    def add_face_data(self, base64_data):
-        request = AddFaceAdvanceRequest()
-        
-        
+    # 添加人脸数据
+    def add_face_data(self, base64_data, user_id):
+        request = AddFaceAdvanceRequest()  
 
         #场景一：文件在本地
         #stream = open(r'/tmp/AddFace.jpg', 'rb')
@@ -104,18 +67,12 @@ class FaceLib:
         # img = urlopen(url).read()
         # print('img', img)
         
-        
-        
-        
-        
         # 解码Base64数据
         img_data = base64.b64decode(base64_data)
-
-     
         request.image_url_object = io.BytesIO(img_data)
-        request.db_name = 'Face1'
-        request.entity_id = 'Entity_id'
-        request.extra_data = '小明'
+        request.db_name = 'face_tab'
+        request.entity_id = user_id
+        request.extra_data = 'degpt-face:' + user_id
         runtime_option = RuntimeOptions()
         try: 
             # 初始化Client
@@ -126,39 +83,19 @@ class FaceLib:
         except Exception as error:
             # 获取整体报错信息
             print(error)
-            # 获取单个字段
-            print(error.code)
-            # tips: 可通过error.__dict__查看属性名称
 
-
-    def uploadImg(self, base64_data):
-
-        # 读取配置文件
-        config = configparser.ConfigParser()
-        # 假设config.ini位于脚本同级目录下
-        config.read('config.ini')
-
-        # 从配置文件中获取Access Key ID和Access Key Secret
-        access_key_id = config.get('configName', 'alibaba_cloud_access_key_id')
-        access_key_secret = config.get('configName', 'alibaba_cloud_access_key_secret')
-
-        # 使用获取的RAM用户的访问密钥配置访问凭证
-        auth = oss2.AuthV4(access_key_id, access_key_secret)
-
-
-
-
-    def search_face(self,base64_data ):
+    # 检索人脸数据
+    def search_face(self, base64_data ):
         runtime_option = RuntimeOptions()
         
-                # 解码Base64数据
+        # 解码Base64数据
         img_data = base64.b64decode(base64_data)
      
         # request.image_url_object = io.BytesIO(img_data)
         
         search_face_request = SearchFaceAdvanceRequest()
         search_face_request.image_url_object = io.BytesIO(img_data)
-        search_face_request.db_name = 'Face1'
+        search_face_request.db_name = 'face_tab'
         search_face_request.limit = 5
 
         try:
@@ -173,8 +110,28 @@ class FaceLib:
             print("search_face error",error)
             # 获取单个字段
 
-    def search_face_user(self,face_id ):
-      
+    # 删除人脸数据
+    def remove_face(self, face_id):
+
+        deleteFaceRequest = DeleteFaceRequest()
+        deleteFaceRequest.db_name = "face_tab"
+        deleteFaceRequest.face_id = face_id
+
+        runtime_option = RuntimeOptions()
+
+        try:
+            # 初始化Client
+            client = Client(self.config)
+            response = client.delete_face_with_options_async(deleteFaceRequest, runtime_option)
+            # 获取整体结果
+            print(response.body)
+        except Exception as error:
+            # 获取整体报错信息
+            print(error)
+            # 获取单个字段
+
+    # 通过人脸ID检索用户信息
+    def search_face_user(self, face_id):   
         try:
             user_id = Users.get_user_id_by_face_id(face_id)
             return user_id

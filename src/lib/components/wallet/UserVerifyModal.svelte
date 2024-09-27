@@ -48,6 +48,8 @@
     socket.addEventListener("message", (event) => {
       // 将收到的消息添加到 messages 列表中
       console.log("Received:", event.data);
+      // 接收到消息停止倒计时
+      clearInterval(countdownQrInterval);
       if (event.data.startsWith("True")) {
         message = "Success!";
         qrCodeFinish = true;
@@ -55,13 +57,11 @@
       } else if (event.data.startsWith("False")) {
         message = "Failed, try again";
         qrCodeFinish = false;
-        checkQrResult = true;
-        clearInterval(countdownQrInterval);
+        checkQrResult = true;       
       } else {
         message = "Failed, try again";
         qrCodeFinish = false;
         checkQrResult = true;
-        clearInterval(countdownQrInterval);
       }
     });
 
@@ -135,11 +135,9 @@
       showQrTime = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
       if (qrcountdown === 0) {
         clearInterval(countdownQrInterval);
-        if (qrCodeFinish) {
-          message = "Time expired, try again";
-          qrCodeFinish = false;
-          checkQrResult = true;
-        } 
+        message = "Time expired, try again";
+        qrCodeFinish = false;
+        checkQrResult = true;
       }
     }, 1000);
   }

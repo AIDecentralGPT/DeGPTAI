@@ -121,6 +121,8 @@ declare module '$env/static/private' {
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
+	export const VIRTUAL_ENV: string;
+	export const VIRTUAL_ENV_PROMPT: string;
 	export const VS110COMNTOOLS: string;
 	export const VS120COMNTOOLS: string;
 	export const VS140COMNTOOLS: string;
@@ -256,6 +258,8 @@ declare module '$env/dynamic/private' {
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
+		VIRTUAL_ENV: string;
+		VIRTUAL_ENV_PROMPT: string;
 		VS110COMNTOOLS: string;
 		VS120COMNTOOLS: string;
 		VS140COMNTOOLS: string;

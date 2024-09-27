@@ -123,9 +123,7 @@ class EmailCodeOperations:
 
 
     def connect(self):
-        try:
-           
-            
+        try:   
             self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=3000)
             self.server.starttls()  # 启动TLS加密
             self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')
