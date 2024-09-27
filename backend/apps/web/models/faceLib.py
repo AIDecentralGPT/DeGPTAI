@@ -95,8 +95,11 @@ class FaceLib:
             client = Client(self.config)
             response = client.search_face_advance(search_face_request, runtime_option)
             # 获取整体结果
-            print(response.body.data.match_list, response.body.data.match_list[0].face_items[0].face_id)
-            return response.body.data.match_list[0].face_items[0].face_id
+            print("获取人脸匹配数据结果:", response.body.data)
+            if (len(response.body.data.match_list) == 0):
+                return response.body.data.match_list[0].face_items[0].face_id
+            else:
+                return None
         except Exception as error:
             # 获取整体报错信息
             print("search_face error",error)
