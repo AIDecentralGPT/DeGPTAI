@@ -952,18 +952,17 @@ async def faceliveness_check_for_ws(id: str):
                         "passed": False,
                         "message": "Your face has been used"
                     }
-                
+            else:
+                # 添加人脸样本
+                face_lib.add_face_sample(user.id)
+                # 在人脸样本添加对应的人脸数据
+                face_id = face_lib.add_face_data(faceImg, user.id)   
             
             # 判断该face_id是否有过
             if response.body.result.passed:
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
                 # return user_update_result
-                print("user_update_result", user_update_result)
-                
-                # 更新成功添加到人脸库
-                if user_update_result:
-                    face_lib.add_face_data(faceImg, user.id)
-                     
+                print("user_update_result", user_update_result)         
             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',

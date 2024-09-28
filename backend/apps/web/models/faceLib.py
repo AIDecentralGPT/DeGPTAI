@@ -2,7 +2,7 @@ import io
 import base64
 from alibabacloud_tea_openapi.models import Config
 from alibabacloud_tea_util.models import RuntimeOptions
-from alibabacloud_facebody20191230.models import CreateFaceDbRequest, AddFaceAdvanceRequest, SearchFaceAdvanceRequest, DeleteFaceRequest
+from alibabacloud_facebody20191230.models import CreateFaceDbRequest, AddFaceEntityRequest, AddFaceAdvanceRequest, SearchFaceAdvanceRequest, DeleteFaceRequest
 from alibabacloud_facebody20191230.client import Client
 from viapi.fileutils import FileUtils
 
@@ -45,36 +45,43 @@ class FaceLib:
             return response;
         except Exception as error:
             return error;
+
+    # 添加人脸样本 再 添加 人脸数据
+    def add_face_sample(self, user_id):
+        request = AddFaceEntityRequest()
+        request.db_name = "dev_face"
+        request.entity_id = user_id
+        request.labels = "face-sample"
+        try: 
+            # 初始化Client
+            client = Client(self.config)
+            response = client.add_face_entity_with_options_async(request, self.runtime_option)
+            # 获取整体结果
+            print(response.body)
+        except Exception as error:
+            # 获取整体报错信息
+            print(error)
             
     # 添加人脸数据
     def add_face_data(self, base64_data, user_id):
-        request = AddFaceAdvanceRequest()  
-
-        #场景一：文件在本地
-        #stream = open(r'/tmp/AddFace.jpg', 'rb')
-        #request.image_url_object = stream
-
-        #场景二：使用任意可访问的url
-        # url = 'https://viapi-test-bj.oss-cn-beijing.aliyuncs.com/viapi-3.0domepic/facebody/AddFace/AddFace.png'
-        # img = urlopen(url).read()
-        # print('img', img)
-        
+        request = AddFaceAdvanceRequest()       
         # 解码Base64数据
         img_data = base64.b64decode(base64_data)
         request.image_url_object = io.BytesIO(img_data)
         request.db_name = 'dev_face'
         request.entity_id = user_id
         request.extra_data = 'degpt-face:' + user_id
-        runtime_option = RuntimeOptions()
         try: 
             # 初始化Client
             client = Client(self.config)
-            response = client.add_face_advance(request, runtime_option)
+            response = client.add_face_advance(request, self.runtime_option)
             # 获取整体结果
             print(response.body)
+            return response.body.data.face_id
         except Exception as error:
             # 获取整体报错信息
             print(error)
+            return ""
 
     # 检索人脸数据
     def search_face(self, base64_data ):
