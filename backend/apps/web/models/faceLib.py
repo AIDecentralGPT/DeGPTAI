@@ -79,7 +79,7 @@ class FaceLib:
             response = client.add_face_advance(request, self.runtime_option)
             # 获取整体结果
             print(response.body)
-            return response.body.data.face_id
+            return response.body.data.FaceId
         except Exception as error:
             # 获取整体报错信息
             print(error)
