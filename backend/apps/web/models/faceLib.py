@@ -58,9 +58,11 @@ class FaceLib:
             response = client.add_face_entity_with_options_async(request, self.runtime_option)
             # 获取整体结果
             print(response)
+            return response
         except Exception as error:
             # 获取整体报错信息
             print(error)
+            return error
             
     # 添加人脸数据
     def add_face_data(self, base64_data, user_id):

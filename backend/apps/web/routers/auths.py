@@ -1,25 +1,12 @@
 import logging
 from typing import List, Dict
 
-from fastapi import Request, UploadFile, File, WebSocket, WebSocketDisconnect
+from fastapi import Request, WebSocket, WebSocketDisconnect
 from fastapi import Depends, HTTPException, status
-from pydantic import EmailStr
 from fastapi import APIRouter
 from pydantic import BaseModel
 import re
 import uuid
-import csv
-from apps.web.models.chats import (
-    ChatModel,
-    ChatResponse,
-    ChatTitleForm,
-    ChatForm,
-    ChatTitleIdResponse,
-    Chats,
-)
-
-from apps.web.models.faceLib import ( face_lib )
-from fastapi.responses import RedirectResponse
 
 from apps.web.models.email_codes import (
     email_code_operations,
@@ -32,16 +19,11 @@ import logging
 log = logging.getLogger(__name__)
 
 # --------钱包相关--------
-from substrateinterface import Keypair, KeypairType
-from substrateinterface.utils.ss58 import ss58_decode
-from substrateinterface.utils.hasher import blake2_256
 import json
 from web3 import Web3
 w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
 from web3.auto import w3
-from eth_account.messages import encode_defunct, _hash_eip191_message
-import secrets
-from eth_account import Account
+from eth_account.messages import encode_defunct
 
 # ————————————————————————
 
@@ -58,21 +40,15 @@ from apps.web.models.auths import (
     SigninResponse,
     Auths,
     ApiKey,
-    SendCodeForm,
-    FaceCompareForm,
     FaceLivenessRequest,
     FaceLivenessResponse,
-    FaceLivenessCheckRequest,
-    FaceLivenessCheckResponse,
-    MetaInfo,
-    SearchFormRequest
-    
+    FaceLivenessCheckResponse    
 )
 from apps.web.models.users import Users
-from apps.web.models.visitors import visitors_table
 from apps.web.models.ip_log import ip_logs_table
 from apps.web.models.device import devices_table
 from apps.web.models.faceCompare import face_compare
+from apps.web.models.faceLib import  face_lib
 
 from utils.utils import (
     get_password_hash,
@@ -806,25 +782,10 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
             "bioMetaInfo": form_data.metaInfo.bioMetaInfo,
             "user_id": user.id
         })
-   
-
-        print("face_liveness success", response)
-
-        # return {
-        #     "status_code": response.status_code,
-        #     "request_id": response.body.request_id,
-        #     "transaction_id": response.body.result.transaction_id,
-        #     "passed": response.body.result.passed,
-        #     "sub_code": response.body.result.sub_code
-        # }
-        # return True
-        
-        # 如果需要重定向到另一个URL
-        
+           
         merchant_biz_id = response["merchant_biz_id"]
         transaction_id = response["transaction_id"]
         transaction_url = response["transaction_url"]
-        # return RedirectResponse(url=redirect_url)
         
         
         # 存储该用户的验证信息
@@ -921,8 +882,7 @@ async def faceliveness_check_for_ws(id: str):
             #     "transaction_id": form_data.transaction_id,
             #     "merchant_biz_id":form_data.merchant_biz_id,
             # })
-            
-            
+                 
             # 1. 获取人脸检测返回的信息（包含照片base64信息
             response = face_compare.check_result(
                 transaction_id= transaction_id,
@@ -954,9 +914,9 @@ async def faceliveness_check_for_ws(id: str):
                     }
             else:
                 # 添加人脸样本
-                face_lib.add_face_sample(user.id)
+                await face_lib.add_face_sample(user.id)
                 # 在人脸样本添加对应的人脸数据
-                face_id = face_lib.add_face_data(faceImg, user.id)   
+                face_id = await face_lib.add_face_data(faceImg, user.id)   
             
             # 判断该face_id是否有过
             if response.body.result.passed:
