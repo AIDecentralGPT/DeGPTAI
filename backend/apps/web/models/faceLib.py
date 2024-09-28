@@ -106,7 +106,7 @@ class FaceLib:
             # 获取整体结果
             print("获取人脸匹配数据结果:", response.body.data)
             if (len(response.body.data.match_list) == 0):
-                return response.body.data.match_list[0].face_items[0].face_id
+                return response.body.data.match_list[0].face_items[0].FaceId
             else:
                 return None
         except Exception as error:
