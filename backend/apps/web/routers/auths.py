@@ -916,7 +916,7 @@ async def faceliveness_check_for_ws(id: str):
                 # 添加人脸样本
                 await face_lib.add_face_sample(user.id)
                 # 在人脸样本添加对应的人脸数据
-                face_id = await face_lib.add_face_data(faceImg, user.id)   
+                face_id = face_lib.add_face_data(faceImg, user.id)   
             
             # 判断该face_id是否有过
             if response.body.result.passed:
