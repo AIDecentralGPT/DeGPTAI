@@ -111,6 +111,7 @@ class FaceLib:
         search_face_request.image_url_object = io.BytesIO(img_data)
         search_face_request.db_name = 'dev_face'
         search_face_request.limit = 5
+        search_face_request.quality_score_threshold = 85.0
 
         try:
             # 初始化Client
