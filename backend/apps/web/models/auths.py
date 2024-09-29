@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Union, Optional, Tuple as TypingTuple
+from datetime import datetime
 import time
 import uuid
 import logging
@@ -147,6 +148,7 @@ class FaceLivenessResponse(BaseModel):
     merchant_biz_id: str
     transaction_id: str
     transaction_url: str
+    face_time: datetime
     
 class FaceLivenessCheckRequest(BaseModel):
     merchant_biz_id: str

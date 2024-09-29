@@ -69,6 +69,8 @@
 
   export let show = false;
 
+  let isMobile = false;
+
   let current = 1;
   let email = "";
   let code = "";
@@ -99,45 +101,6 @@
       countdown -= 1;
       if (countdown === 0) {
         clearInterval(countdownInterval);
-      }
-    }, 1000);
-  }
-
-  let qrcodeUrl = "";
-  let qrCodeFinish = false;
-  let checkQrResult = false;
-
-  function getQrCode(url) {
-    QRCode.toDataURL(url, function (err, url) {
-      console.log(url);
-      qrcodeUrl = url;
-      qrCodeFinish = false;
-      checkQrResult = false;
-      startQrCountdown()
-    });
-  }
-
-  // 二维码有效时长
-  let qrcountdown = 0;
-  let showQrTime = '05:00';
-  let countdownQrInterval: any = null;
-  function startQrCountdown() {
-    qrcountdown = 300;
-    // 不为空先清除计时器值
-    if (countdownQrInterval) {
-      showQrTime = '05:00';
-      clearInterval(countdownQrInterval);
-    }
-    countdownQrInterval = setInterval(() => {
-      qrcountdown -= 1;
-      let minute = Math.floor(qrcountdown / 60);
-      let second = qrcountdown % 60;
-      showQrTime = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
-      if (qrcountdown === 0) {
-        clearInterval(countdownQrInterval);
-        message = "Time expired, try again";
-        qrCodeFinish = false;
-        checkQrResult = true;
       }
     }, 1000);
   }
@@ -202,11 +165,10 @@
     }
   }
 
-  let faceLivenessInitialData = {
-    merchant_biz_id: "",
-    transaction_id: "",
-    transaction_url: "",
-  };
+  let qrcodeUrl = "";
+  let qrCodeFinish = false;
+  let checkQrResult = false;
+  let faceTime = new Date();
 
   function faceLiveness() {
     const MetaInfo = window.getMetaInfo();
@@ -219,12 +181,53 @@
         if (isMobile) {
           await goto(res.transaction_url);
         } else {
+          faceTime = new Date(res.face_time)
           getQrCode(res.transaction_url);
         }
       } else {
         toast.error(res.data.message);
       }
     });
+  }
+
+  function getQrCode(url) {
+    QRCode.toDataURL(url, function (err, url) {
+      console.log(url);
+      qrcodeUrl = url;
+      qrCodeFinish = false;
+      checkQrResult = false;
+      startQrCountdown()
+    });
+  }
+
+  // 二维码有效时长
+  let showQrTime = '05:00';
+  let countdownQrInterval: any = null;
+  function startQrCountdown() {
+    if (faceTime) {
+      console.log("faceTime==============", faceTime)
+      let comptime = Math.floor((new Date().getTime() - faceTime.getTime()) / 1000);
+      console.log("comptime==============", comptime)
+      let qrcountdown = 300 - comptime;
+      // 不为空先清除计时器值
+      if (countdownQrInterval) {
+        showQrTime = '05:00';
+        clearInterval(countdownQrInterval);
+      }
+      countdownQrInterval = setInterval(() => {
+        qrcountdown -= 1;
+        let minute = Math.floor(qrcountdown / 60);
+        let second = qrcountdown % 60;
+        showQrTime = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
+        if (qrcountdown <= 0) {
+          clearInterval(countdownQrInterval);
+          message = "Time expired, try again";
+          qrCodeFinish = false;
+          checkQrResult = true;
+        }
+      }, 1000);
+    }
+    
   }
 
   function getFaceRes() {
@@ -244,7 +247,11 @@
     });
   }
 
-  let isMobile = false;
+  let faceLivenessInitialData = {
+    merchant_biz_id: "",
+    transaction_id: "",
+    transaction_url: "",
+  };
 
   onMount(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;

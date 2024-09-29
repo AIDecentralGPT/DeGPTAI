@@ -3,12 +3,15 @@ from peewee import *  # 导入Peewee中的所有模块
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
 from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
+from datetime import datetime
+
 from utils.misc import get_gravatar_url  # 导入获取Gravatar URL的方法
 
 from apps.web.internal.db import DB  # 导入数据库实例DB
 from apps.web.models.chats import Chats  # 导入Chats模型
 from apps.web.models.rewards import RewardsTableInstance
 from fastapi import APIRouter, Depends, HTTPException, Request
+
 
 ####################
 # User DB Schema
@@ -37,7 +40,7 @@ class User(Model):
     merchant_biz_id= CharField(null=True)
     transaction_id= CharField(null=True)
     private_key = CharField(null=True)
-    # phone_number = CharField(null=True, unique=True)  # 定义可为空，唯一的字符字段phone_number
+    face_time = CharField(null=True)
 
     class Meta:
         database = DB  # 指定数据库
@@ -62,7 +65,7 @@ class UserModel(BaseModel):
     merchant_biz_id: Optional[str] = None
     transaction_id: Optional[str] = None
     private_key: Optional[str] = None
-    # phone_number: Optional[str]   # 定义phone_number字段，类型为可选字符串
+    face_time: Optional[datetime] = None
 
 ####################
 # Forms
@@ -354,9 +357,9 @@ class UsersTable:
         
         
     # 更新用户的transaction_id和merchant_biz_id
-    def update_user_verify_info(self, id: str, transaction_id: str, merchant_biz_id: str) -> bool:
+    def update_user_verify_info(self, id: str, transaction_id: str, merchant_biz_id: str, face_time: datetime) -> bool:
         try:
-            query = User.update(transaction_id=transaction_id, merchant_biz_id =merchant_biz_id).where(User.id == id)
+            query = User.update(transaction_id=transaction_id, merchant_biz_id =merchant_biz_id, face_time = face_time).where(User.id == id)
             result = query.execute()
             return True if result == 1 else False
         except Exception as e:

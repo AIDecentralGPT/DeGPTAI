@@ -73,10 +73,6 @@
       const fileText = e.target?.result;
       if (fileText) {
         encryptedJson = JSON.parse(String(fileText));
-
-        // console.log("encryptedJson", encryptedJson,"password", password );
-
-        //         importWallet(encryptedJson, password)
       }
     };
   }

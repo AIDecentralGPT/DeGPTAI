@@ -62,6 +62,8 @@ from utils.webhook import post_webhook
 from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
 from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
 
+from datetime import datetime
+
 router = APIRouter()
 
 ############################
@@ -789,13 +791,14 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         
         
         # 存储该用户的验证信息
-        Users.update_user_verify_info(user.id, transaction_id,merchant_biz_id, )
+        face_time = datetime.now()
+        Users.update_user_verify_info(user.id, transaction_id,merchant_biz_id, face_time)
         
         return {
-            "merchant_biz_id":merchant_biz_id,
+            "merchant_biz_id": merchant_biz_id,
             "transaction_id": transaction_id,
-            "transaction_url":transaction_url
-   
+            "transaction_url": transaction_url,
+            "face_time": face_time,
         }
 
     else:
