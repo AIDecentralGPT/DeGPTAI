@@ -39,7 +39,7 @@
     amount = "";
     address = "";
     password = "";
-    transferType = "dbc";
+    transferType = "DBC";
     showError = {
       amount: false,
       address: false,
@@ -186,7 +186,7 @@
             />
             DBC
           </label>
-          <label>
+          <!-- <label>
             <input
               type="radio"
               bind:group={transferType}
@@ -194,7 +194,7 @@
               required
             />
             DGC
-          </label>
+          </label> -->
         </div>
         {#if showError.transferType}
           <div class="text-red-500 text-sm">
