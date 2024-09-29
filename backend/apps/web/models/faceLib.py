@@ -2,7 +2,7 @@ import io
 import base64
 from alibabacloud_tea_openapi.models import Config
 from alibabacloud_tea_util.models import RuntimeOptions
-from alibabacloud_facebody20191230.models import CreateFaceDbRequest, AddFaceEntityRequest, AddFaceAdvanceRequest, SearchFaceAdvanceRequest, DeleteFaceRequest
+from alibabacloud_facebody20191230.models import CreateFaceDbRequest, AddFaceEntityRequest, GetFaceEntityRequest, AddFaceAdvanceRequest, SearchFaceAdvanceRequest, DeleteFaceRequest
 from alibabacloud_facebody20191230.client import Client
 from viapi.fileutils import FileUtils
 
@@ -61,6 +61,21 @@ class FaceLib:
         except Exception as error:
             # 获取整体报错信息
             print(error)
+
+    # 获取人脸样本
+    def get_face_sample(self, user_id):
+        request = GetFaceEntityRequest()
+        request.db_name = "dev_face"
+        request.entity_id = user_id
+        try: 
+            # 初始化Client
+            client = Client(self.config)
+            response = client.get_face_entity_with_options_async(request, self.runtime_option)
+            # 获取整体结果
+            print(response)
+        except Exception as error:
+            # 获取整体报错信息
+            print(error)
             
     # 添加人脸数据
     def add_face_data(self, base64_data, user_id):
@@ -77,7 +92,7 @@ class FaceLib:
             response = client.add_face_advance(request, self.runtime_option)
             # 获取整体结果
             print(response.body)
-            return response.body.data.FaceId
+            return response.body.data.face_id
         except Exception as error:
             # 获取整体报错信息
             print(error)
@@ -104,7 +119,7 @@ class FaceLib:
             # 获取整体结果
             print("获取人脸匹配数据结果:", response.body.data)
             if (len(response.body.data.match_list) == 0):
-                return response.body.data.match_list[0].face_items[0].FaceId
+                return response.body.data.match_list[0].face_items[0].face_id
             else:
                 return None
         except Exception as error:
