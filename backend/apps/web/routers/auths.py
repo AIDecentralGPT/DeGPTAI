@@ -929,7 +929,7 @@ async def faceliveness_check_for_ws(id: str):
                     }
             else:
                 # 添加人脸样本
-                await face_lib.add_face_sample(user.id)
+                face_lib.add_face_sample(user.id)
                 # 在人脸样本添加对应的人脸数据
                 face_id = face_lib.add_face_data(faceImg, user.id)   
             
