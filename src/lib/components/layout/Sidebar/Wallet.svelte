@@ -9,6 +9,7 @@
     showSettings,
     showNewWalletModal,
     showOpenWalletModal,
+    showPriceModal,
     currentWalletData,
     chatId,
     pageUpdateNumber,
@@ -39,11 +40,18 @@
 <div name="content">
   <hr class=" dark:border-gray-800 my-2 p-0" />
 
-  <!-- {console.log(
-  "currentWalletData.walletInfo", $currentWalletData.walletInfo,
-  "threesideAccount?.address", $threesideAccount?.address,
-
-)} -->
+  <div class="flex flex-col gap-2 padding-l-r-10">
+    <!-- 升级计划 -->
+    <button
+      on:click={() => {
+        $showPriceModal = true;
+      }}
+      class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
+    >
+      <span class="relative">{$i18n.t("Upgrade Plan")}</span>
+    </button>
+  </div>
+  
 
   <WalletConnect />
 
@@ -139,6 +147,5 @@
 </div>
 
 <style>
-  .w3m-button {
-  }
+
 </style>

@@ -85,15 +85,6 @@
 
 <div class="flex flex-col gap-2 padding-l-r-10">
   <!-- <div class="py-2 px-3"> -->
-  <!-- 升级计划 -->
-  <button
-    on:click={() => {
-      $showPriceModal = true;
-    }}
-    class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt6 mb-5"
-  >
-    <span class="relative">{$i18n.t("Upgrade Plan")}</span>
-  </button>
 
   <!-- 地址展示 -->
   <div class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal">
