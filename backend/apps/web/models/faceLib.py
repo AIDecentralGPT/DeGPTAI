@@ -118,8 +118,7 @@ class FaceLib:
             response = client.search_face_advance(search_face_request, runtime_option)
             # 获取整体结果
             print("获取人脸匹配数据结果:", response.body.data)
-            print("获取人脸匹配数据结果:", response.body.data.match_list[0].face_items[0].face_id)
-            if (len(response.body.data.match_list) == 0):
+            if (len(response.body.data.match_list) > 0):
                 return response.body.data.match_list[0].face_items[0].face_id
             else:
                 return None
