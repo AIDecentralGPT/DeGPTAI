@@ -880,7 +880,7 @@ async def faceliveness_check_for_ws(id: str):
 
         # 计算时间差
         time_difference = now_time - face_time
-        if (time_difference.total_seconds > 300):
+        if (time_difference.total_seconds() > 300):
             return {
                 "passed": False,
                 "message": "Time expired, try again"
