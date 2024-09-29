@@ -205,9 +205,7 @@
   let countdownQrInterval: any = null;
   function startQrCountdown() {
     if (faceTime) {
-      console.log("faceTime==============", faceTime)
       let comptime = Math.floor((new Date().getTime() - faceTime.getTime()) / 1000);
-      console.log("comptime==============", comptime)
       let qrcountdown = 300 - comptime;
       // 不为空先清除计时器值
       if (countdownQrInterval) {
