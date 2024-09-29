@@ -62,6 +62,7 @@ from utils.webhook import post_webhook
 from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
 from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
 
+import time
 from datetime import datetime
 
 router = APIRouter()
@@ -873,6 +874,10 @@ async def faceliveness_check_for_ws(id: str):
 
         user = Users.get_user_by_id((id))
         # print("faceliveness_check_for_ws user.", user, user)
+
+        # 校验时间是否超时
+        face_time = user.face_time
+        now_time = now_time
         
         # 获取查询参数
         # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
