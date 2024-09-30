@@ -1,35 +1,12 @@
 <script lang="ts">
   import { getChatList } from "$lib/apis/chats";
-  import {
-    importAccountFromKeystore,
-    signData,
-  } from "./../../utils/wallet/dbc.js";
-  import {
-    exportAccountForKeystore,
-    createAccountFromMnemonic,
-  } from "../../utils/wallet/dbc.js";
-  import { createAccountFromSeed } from "$lib/utils/wallet/dbc.js";
+  import { chats } from '$lib/stores';
   import { getContext, tick } from "svelte";
   import { toast } from "svelte-sonner";
-  import {
-    chats,
-    currentWalletData,
-    models,
-    settings,
-    user,
-  } from "$lib/stores";
 
   import { getModels as _getModels } from "$lib/utils";
-  import {
-    SUPPORTED_FILE_TYPE,
-    SUPPORTED_FILE_EXTENSIONS,
-    WEBUI_BASE_URL,
-  } from "$lib/constants";
 
   import Modal from "../common/Modal.svelte";
-  import { unlockDLC } from "$lib/utils/wallet/dbc.js";
-  import { onGetBalance } from "$lib/utils/wallet/dbc.js";
-  import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import { handleWalletSignIn, unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils.js";
   import { importWallet } from "$lib/utils/wallet/ether/utils.js";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
@@ -247,6 +224,7 @@
 
                 show = false;
                 password = "";
+                chats.set(await getChatList(localStorage.token));
               } catch (error) {
                 console.log("error, ", error, error.message);
                 toast.error(error.message);
@@ -326,6 +304,7 @@
 
               show = false;
               password = "";
+              chats.set(await getChatList(localStorage.token));
             } catch (error) {
               console.log("error, ", error, error.message);
               toast.error(error.message);

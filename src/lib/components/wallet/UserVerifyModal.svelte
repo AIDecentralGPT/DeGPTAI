@@ -259,6 +259,14 @@
     isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
   });
 
+  function initParam() {
+    current = 1;
+    email = "";
+    code = "";
+    countdown = 0;
+    countdownInterval = null;
+  }
+
   // 显示初始化Socket
   $: if (show) {
     initSocket();

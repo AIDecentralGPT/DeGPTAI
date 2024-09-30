@@ -1,27 +1,12 @@
 <script lang="ts">
-  import {
-    exportAccountForKeystore,
-    createAccountFromMnemonic,
-    createAccountFromSeed,
-    getCurrentPair,
-    savePair,
-  } from "./../../utils/wallet/dbc.js";
-  import { getContext, onMount } from "svelte";
+  import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
 
   import { getModels as _getModels } from "$lib/utils";
 
-  import Modal from "../common/Modal.svelte";
-  import { onGetBalance } from "$lib/utils/wallet/dbc.js";
-  import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import {
-    currentWalletData,
-    models,
-    settings,
+    chats,
     user,
-    inviterId,
-    showRewardsModal,
-    threesideAccount,
     showShareModal,
     showRewardsHistoryModal,
     showNewWalletModal,
@@ -29,10 +14,6 @@
     showUserVerifyModal,
   } from "$lib/stores";
 
-  import {
-    createAccount,
-    downloadKeyStore,
-  } from "$lib/utils/wallet/ether/utils.js";
   import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
 
   const i18n = getContext("i18n");
@@ -162,10 +143,11 @@
                   return
                 }
   
-                if (!$user.verified) {
-                  toast.warning("Please do identification first!");
-                  $showUserVerifyModal = true;
+                if ($chats.length > 0) {
+                  toast.success("You have received 500 DGC points !");
                   return 
+                } else {
+                  toast.warning("You need to complete a conversation to receive a reward ！");
                 }
   
                 if (item.text === "Share") {
