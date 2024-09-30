@@ -155,9 +155,7 @@
                         console.log("Clock In  res", res);
                         getCount();
                         if (res?.ok) {
-                          toast.success(
-                            "Congratulations on your successful clocking in!"
-                          );
+                          toast.success(res?.message);
                         }
                         if (res?.detail) {
                           toast.warning(res?.detail);
