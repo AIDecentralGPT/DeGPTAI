@@ -869,9 +869,8 @@ async def faceliveness_check(user=Depends(get_current_user)):
 async def faceliveness_check_for_ws(id: str):
     
     try:
-
+        # 获取用户信息
         user = Users.get_user_by_id((id))
-        # print("faceliveness_check_for_ws user.", user, user)
 
         # 校验时间是否超时
         face_time = user.face_time
@@ -886,17 +885,10 @@ async def faceliveness_check_for_ws(id: str):
             }
         
         # 获取查询参数
-        # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
         merchant_biz_id = user.merchant_biz_id
         transaction_id = user.transaction_id
         
         if merchant_biz_id is not None and transaction_id is not None:
-            # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
-            # response = face_compare.check_result({
-            #     "transaction_id": form_data.transaction_id,
-            #     "merchant_biz_id":form_data.merchant_biz_id,
-            # })
-                 
             # 1. 获取人脸检测返回的信息（包含照片base64信息
             response = face_compare.check_result(
                 transaction_id= transaction_id,
@@ -968,7 +960,7 @@ async def faceliveness_check_for_ws(id: str):
         # 根据需要执行错误处理，例如记录日志或通知客户端
         return {
                 "passed": False,
-                "message": "The identity proofing process is not completed"
+                "message": "The identity validate fail"
             }
 
 

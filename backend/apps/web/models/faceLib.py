@@ -55,7 +55,7 @@ class FaceLib:
         try: 
             # 初始化Client
             client = Client(self.config)
-            response = client.add_face_entity_with_options_async(request, self.runtime_option)
+            response = client.add_face_entity_with_options(request, self.runtime_option)
             # 获取整体结果
             print(response)
         except Exception as error:
@@ -70,7 +70,7 @@ class FaceLib:
         try: 
             # 初始化Client
             client = Client(self.config)
-            response = client.get_face_entity_with_options_async(request, self.runtime_option)
+            response = client.get_face_entity_with_options(request, self.runtime_option)
             # 获取整体结果
             print(response)
         except Exception as error:

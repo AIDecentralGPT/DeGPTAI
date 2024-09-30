@@ -160,20 +160,15 @@ class UsersTable:
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
             print("开始根据id获取用户")
-            # user = User.get(User.id == id)  # 查询数据库中的用户
             user = User.get_or_none(User.id == id)  # 查询数据库中的用户
-            # print("根据id获取完了用户", user)
             if user is None:
                 return None
             else:
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-                # print("用户字典：", user_dict)
                 user_model = UserModel(**user_dict)  # 将字典转换为Pydantic模型
                 print("获取完毕用户")
                 # print("用户模型：", user_model)
                 return user_model
-
-                # return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
         except Exception as e:
             print(f"get_user_by_id补货错误: {e}")
             return None  # 如果查询失败，返回None

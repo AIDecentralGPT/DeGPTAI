@@ -205,15 +205,14 @@
   let countdownQrInterval: any = null;
   function startQrCountdown() {
     if (faceTime) {
-      let comptime = Math.floor((new Date().getTime() - faceTime.getTime()) / 1000);
-      let qrcountdown = 300 - comptime;
       // 不为空先清除计时器值
       if (countdownQrInterval) {
         showQrTime = '05:00';
         clearInterval(countdownQrInterval);
       }
       countdownQrInterval = setInterval(() => {
-        qrcountdown -= 1;
+        let comptime = Math.floor((new Date().getTime() - faceTime.getTime()) / 1000);
+        let qrcountdown = 300 - comptime;
         let minute = Math.floor(qrcountdown / 60);
         let second = qrcountdown % 60;
         showQrTime = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
@@ -485,19 +484,18 @@
         {#if current === 2}
           {#if qrCodeFinish}
             <button
-              class="text-gray-600 px-4 py-2 primaryButton text-gray-800 transition rounded-lg w-[100px]"
+              class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
               on:click={getFaceRes}
             >
               Finish</button
             >
           {:else}
             <button disabled
-              class="text-gray-100 px-4 py-2 primaryButton text-gray-800 transition rounded-lg w-[100px]"
+              class="px-4 py-2 primaryButton text-gray-600 transition rounded-lg w-[100px]"
             >
               Finish</button
             >
-          {/if}
-          
+          {/if}     
         {/if}
         {#if current !== 2}
           <button
