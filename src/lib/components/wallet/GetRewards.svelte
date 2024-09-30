@@ -143,38 +143,35 @@
                   return
                 }
   
-                if ($chats.length > 0) {
-                  toast.success("You have received 500 DGC points !");
-                  return 
-                } else {
-                  toast.warning("You need to complete a conversation to receive a reward ！");
-                }
-  
                 if (item.text === "Share") {
                   $showShareModal = true;
                 }
   
                 if (item.text === "Clock In") {
-                  clockLoading = true;
-                  await clockIn(localStorage.token)
-                    .then((res) => {
-                      console.log("Clock In  res", res);
-  
-                      getCount();
-                      if (res?.ok) {
-                        toast.success(
-                          "Congratulations on your successful clocking in!"
-                        );
-                      }
-                      if (res?.detail) {
-                        toast.warning(res?.detail);
-                      }
-                    })
-                    .catch((res) => {
-                      console.log("Clock In  error", res);
-                    });
-  
-                  clockLoading = false;
+                  if ($chats.length > 0) {
+                    clockLoading = true;
+                    await clockIn(localStorage.token)
+                      .then((res) => {
+                        console.log("Clock In  res", res);
+                        getCount();
+                        if (res?.ok) {
+                          toast.success(
+                            "Congratulations on your successful clocking in!"
+                          );
+                        }
+                        if (res?.detail) {
+                          toast.warning(res?.detail);
+                        }
+                      })
+                      .catch((res) => {
+                        console.log("Clock In  error", res);
+                      }); 
+                    clockLoading = false;
+                  } else {
+                    toast.warning("You need to complete a conversation to receive a reward ！");
+                  }
+
+                  
                 }
   
   

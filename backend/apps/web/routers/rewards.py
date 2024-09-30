@@ -69,7 +69,8 @@ async def clock_in(request: Request, user=Depends(get_verified_user)):
     existing_rewards = RewardsTableInstance.get_rewards_by_user_id_and_date_and_reward_type(user.id, today, reward_type)
     if existing_rewards:
         raise HTTPException(status_code=400, detail="You have already received a reward today. Please try again tomorrow.")
-
+    else:
+        return {"message": "You have received 500 DGC points !"} 
 
     success = RewardsTableInstance.send_reward(user.id, 200, reward_type)
     if success:
