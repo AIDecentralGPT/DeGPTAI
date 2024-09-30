@@ -111,8 +111,7 @@ class FaceLib:
         search_face_request.image_url_object = io.BytesIO(img_data)
         search_face_request.db_name = 'dev_face'
         search_face_request.limit = 5
-        search_face_request.quality_score_threshold = 85.0
-
+        
         try:
             # 初始化Client
             client = Client(self.config)
@@ -121,9 +120,11 @@ class FaceLib:
             print("获取人脸匹配数据结果:", response.body.data)
             match_list = response.body.data.match_list
             if (len(match_list) > 0 and len(match_list[0].face_items) > 0):
-                return response.body.data.match_list[0].face_items[0].face_id
-            else:
-                return None
+                for item in match_list[0].face_items:
+                    if (item.score > 0.45):
+                        return item.face_id
+            # 没有返回face_id 返回None
+            return None
         except Exception as error:
             # 获取整体报错信息
             print("search_face error",error)
