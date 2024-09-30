@@ -838,28 +838,27 @@ async def faceliveness_check(user=Depends(get_current_user)):
         
         user_id = Users.get_user_id_by_face_id(face_id)
         print("user_id",face_id, user_id)
-        if user_id  is not None :
+        if user_id is None :
             return {
                 "passed": False,
-                "message": "Your face has been used"
+                "message": "Fail"
             }
             
-        
-        # 判断该face_id是否有过
-        if response.body.result.passed:
-            user_update_result = Users.update_user_verified(user.id, True, face_id)
-            # return user_update_result
-            print("user_update_result", user_update_result)
-            
+        # 'Message': 'success',
+        # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+        # 'Result': {
+        #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+        #     'Passed': 'Y',
+        #     'SubCode': '200'
+        # }
+        passed = False
+        message = "Fail"
+        if (response.body.result.passed == 'Y'):
+            passed = True
+            message = "Success"
         return {
-            "passed": response.body.result.passed
-            # 'Message': 'success',
-            # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
-            # 'Result': {
-            #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
-            #     'Passed': 'Y',
-            #     'SubCode': '200'
-            # }
+            "passed": passed,
+            "message": message
         }
 
     else:

@@ -483,12 +483,21 @@
         >
 
         {#if current === 2}
-          <button disabled={!qrCodeFinish} 
-            class="{qrCodeFinish ? 'text-gray-600' : 'text-gray-100'} px-4 py-2 primaryButton text-gray-800 transition rounded-lg w-[100px]"
-            on:click={getFaceRes}
-          >
-            Finish</button
-          >
+          {#if qrCodeFinish}
+            <button
+              class="text-gray-600 px-4 py-2 primaryButton text-gray-800 transition rounded-lg w-[100px]"
+              on:click={getFaceRes}
+            >
+              Finish</button
+            >
+          {:else}
+            <button disabled
+              class="text-gray-100 px-4 py-2 primaryButton text-gray-800 transition rounded-lg w-[100px]"
+            >
+              Finish</button
+            >
+          {/if}
+          
         {/if}
         {#if current !== 2}
           <button
