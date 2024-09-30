@@ -71,10 +71,11 @@ async def clock_in(request: Request, user=Depends(get_verified_user)):
         raise HTTPException(status_code=400, detail="You have already received a reward today. Please try again tomorrow.")
     
     success = RewardsTableInstance.send_reward(user.id, 200, reward_type)
-    if success:
-        return {"ok": True, "message": "You have received 500 DGC points !"}
-    else:
-        raise HTTPException(status_code=500, detail="Failed to received reward")
+    return {"ok": True, "message": "You have received 500 DGC points !"}
+    # if success:
+    #     return {"ok": True, "message": "You have received 500 DGC points !"}
+    # else:
+    #     raise HTTPException(status_code=500, detail="Failed to received reward")
     
 @router.get("/reward_count")
 async def get_reward_count(user=Depends(get_verified_user)):
