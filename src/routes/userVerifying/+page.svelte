@@ -42,7 +42,6 @@
       if (event.data.startsWith("True")) {
         message = $i18n.t('verification_success');
         status = 'success';
-        goto("/?verifyAgain=true");
       } else if (event.data.startsWith("False")) {
         message = event.data.substring(6);
         status = 'fail';
@@ -77,7 +76,7 @@
 <div class="container">
   <p>{message}</p>
 
-  {#if status==='success'}
+  <!-- {#if status==='success'}
     <button on:click={handleSendVerification}>{$i18n.t('return_home')}</button>
   {/if}
   {#if status==='fail'}
@@ -89,7 +88,7 @@
     <button 
       class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
       on:click={handleSendVerification}>{$i18n.t('try_again')}</button>
-  {/if}
+  {/if} -->
 </div>
 
 <style>

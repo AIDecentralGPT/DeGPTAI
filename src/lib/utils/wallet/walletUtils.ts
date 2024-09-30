@@ -169,7 +169,7 @@ export async function updateWalletData(walletInfo: any) {
       ...data,
       walletInfo,
       dbcBalance,
-dgcBalance
+      dgcBalance
     };
   });
 }

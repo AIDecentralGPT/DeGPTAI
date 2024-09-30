@@ -8,7 +8,6 @@
     sendCode,
     verifyCode,
   } from "$lib/apis/auths";
-  import { WEBUI_BASE_URL } from "$lib/constants";
   import { user } from "$lib/stores";
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
@@ -53,7 +52,10 @@
       if (event.data.startsWith("True")) {
         message = "Success!";
         qrCodeFinish = true;
-        checkQrResult = false; 
+        checkQrResult = false;
+        let newUser = JSON.parse(JSON.stringify($user));
+        newUser.verified = true;
+        user.set(newUser)
       } else if (event.data.startsWith("False")) {
         message = "Failed, try again";
         qrCodeFinish = false;
