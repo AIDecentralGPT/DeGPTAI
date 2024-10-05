@@ -415,8 +415,6 @@
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
       on:click={async () => {
-        // toast.warning("Coming soon")
-
         $showRewardsModal = true;
       }}
     >
