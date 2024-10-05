@@ -121,7 +121,7 @@ class FaceLib:
             match_list = response.body.data.match_list
             if (len(match_list) > 0 and len(match_list[0].face_items) > 0):
                 for item in match_list[0].face_items:
-                    if (item.score > 0.45):
+                    if (item.score > 0.65):
                         return item.face_id
             # 没有返回face_id 返回None
             return None

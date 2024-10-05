@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount, getContext } from 'svelte';
-  import { goto } from '$app/navigation';
   import { WEBUI_API_BASE_URL } from "$lib/constants";
   const i18n = getContext('i18n');
 
@@ -23,7 +22,7 @@
       socketUrl = WEBUI_API_BASE_URL.replace('http://', 'ws://')
     }
     ws = new WebSocket(`${socketUrl}/auths/ws/${userId}`);
-
+    
     ws.onopen = () => {
       console.log("WebSocket connection established");
       // 连接成功后立即发送验证请求
@@ -82,7 +81,7 @@
   function heartCheck() {
     heartInterval = setInterval(() => {
       sendMessage("heart");
-      if (countHeart == 6) {
+      if (countHeart == 10) {
         clearInterval(heartInterval);
         socketStatus = false;
       }
@@ -131,21 +130,6 @@
     class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
     on:click={refreshPage}>{$i18n.t('Refresh')}</button>
   {/if}
-  
-
-  <!-- {#if status==='success'}
-    <button on:click={handleSendVerification}>{$i18n.t('return_home')}</button>
-  {/if}
-  {#if status==='fail'}
-    <button
-      class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-      on:click={handleSendVerification}>{$i18n.t('try_again')}</button>
-  {/if}
-  {#if status==='error'}
-    <button 
-      class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-      on:click={handleSendVerification}>{$i18n.t('try_again')}</button>
-  {/if} -->
 </div>
 
 <style>
