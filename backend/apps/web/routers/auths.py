@@ -874,6 +874,12 @@ async def faceliveness_check_for_ws(id: str):
         # 获取用户信息
         user = Users.get_user_by_id((id))
 
+        if (user.verified):
+            return {
+                "passed": True,
+                "message": "Success"
+            }
+
         # 校验时间是否超时
         face_time = user.face_time
         now_time = datetime.now()
@@ -1010,10 +1016,13 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
     try:
         while True:
             data = await websocket.receive_text()
-            passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
-            print("passed",passedInfo,  passedInfo['passed'])
-            await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id)
-            # await manager.broadcast(f"服务端接收到{user_id}", user_id)
+            if (data == "heart"):
+               await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id) 
+            else:
+                passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
+                print("passed",passedInfo,  passedInfo['passed'])
+                await manager.broadcast("heart", user_id)
+                # await manager.broadcast(f"服务端接收到{user_id}", user_id)
     except WebSocketDisconnect:
         print("WebSocketDisconnect了")
         manager.disconnect(websocket, user_id)
