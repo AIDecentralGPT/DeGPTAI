@@ -8,6 +8,7 @@
   
   let ws;
   let status = null;
+  let loading = true;
 
   // 在组件挂载时打开 WebSocket 连接
   onMount(() => {
@@ -38,7 +39,7 @@
     ws.addEventListener("message", (event) => {
       // 将收到的消息添加到 messages 列表中
       console.log("Received:", event.data);
-
+      loading = false;
       if (event.data.startsWith("True")) {
         message = $i18n.t('verification_success');
         status = 'success';
@@ -74,7 +75,14 @@
 </script>
 
 <div class="container">
-  <p>{message}</p>
+  {#if loading}
+    <div class="loading-container">
+      <div class="loading"></div>
+      <div class="loading-tip">Loading...</div>
+    </div>
+  {:else}
+    <p>{message}</p>
+  {/if}
 
   <!-- {#if status==='success'}
     <button on:click={handleSendVerification}>{$i18n.t('return_home')}</button>
@@ -101,10 +109,36 @@
     font-size: 1.5rem;
     text-align: center;
   }
-  button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
+  .loading-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background: #9E9E9E;
+    border-radius: 10px;
+  }
+  .loading {
+    width: 80px;
+    height: 80px;
+    border: 10px solid #5F5F5F;
+    border-top: 10px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+    margin-top: 50px;
+    margin-left: 50px;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .loading-tip {
+    width: 200px;
+    text-align: center;
+    margin-top: 12px;
+    color: #393939;
+    font-size: 20px;
   }
 </style>
 
