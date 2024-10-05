@@ -867,7 +867,9 @@ async def faceliveness_check(user=Depends(get_current_user)):
 
 # 检查人脸是否通过
 async def faceliveness_check_for_ws(id: str):
-    
+
+    print("开始人脸校验-userId", id)
+
     try:
         # 获取用户信息
         user = Users.get_user_by_id((id))
