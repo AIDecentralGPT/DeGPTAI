@@ -114,16 +114,16 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 200px;
-    height: 200px;
+    width: 160px;
+    height: 160px;
     background: #9E9E9E;
     border-radius: 10px;
   }
   .loading {
-    width: 80px;
-    height: 80px;
-    border: 10px solid #5F5F5F;
-    border-top: 10px solid #ffffff;
+    width: 60px;
+    height: 60px;
+    border: 5px solid #5F5F5F;
+    border-top: 5px solid #ffffff;
     border-radius: 50%;
     animation: spin 2s linear infinite;
     margin-top: 50px;
@@ -134,11 +134,11 @@
     100% { transform: rotate(360deg); }
   }
   .loading-tip {
-    width: 200px;
+    width: 160px;
     text-align: center;
     margin-top: 12px;
     color: #393939;
-    font-size: 20px;
+    font-size: 16px;
   }
 </style>
 
