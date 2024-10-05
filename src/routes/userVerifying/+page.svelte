@@ -21,7 +21,8 @@
     } else {
       socketUrl = WEBUI_API_BASE_URL.replace('http://', 'ws://')
     }
-    ws = new WebSocket(`${socketUrl}/auths/ws/${userId}`);
+    // ws = new WebSocket(`${socketUrl}/auths/ws/${userId}`);
+    ws = new WebSocket(`${socketUrl}/auths/ws`);
 
     ws.onopen = () => {
       console.log("WebSocket connection established");
