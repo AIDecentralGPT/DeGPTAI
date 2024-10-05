@@ -22,7 +22,7 @@
       socketUrl = WEBUI_API_BASE_URL.replace('http://', 'ws://')
     }
     ws = new WebSocket(`${socketUrl}/auths/ws/${userId}`);
-    
+
     ws.onopen = () => {
       console.log("WebSocket connection established");
       // 连接成功后立即发送验证请求
@@ -126,9 +126,10 @@
       <p>{message}</p>
     {/if}
   {:else}
+    <p>{$i18n.t('WebSocket connection established')}</p>
     <button
-    class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-    on:click={refreshPage}>{$i18n.t('Refresh')}</button>
+      class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+      on:click={refreshPage}>{$i18n.t('Refresh')}</button>
   {/if}
 </div>
 
