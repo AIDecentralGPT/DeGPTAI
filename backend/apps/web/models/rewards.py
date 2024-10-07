@@ -41,10 +41,14 @@ class Rewards(Model):
     reward_type = CharField()
     transfer_hash = CharField()
     invitee = CharField(null=True)
+    status = CharField()
 
     class Meta:
         database = DB
         table_name = 'rewards'
+
+class RewardsRequest(BaseModel):
+    id: str
 
 # 定义 Rewards 的 Pydantic 模型
 class RewardsModel(BaseModel):
@@ -55,6 +59,7 @@ class RewardsModel(BaseModel):
     reward_type: str
     transfer_hash: str
     invitee: Optional[str] = None
+    status: bool
 
 # 定义 Rewards 操作类
 class RewardsTable:
@@ -62,7 +67,7 @@ class RewardsTable:
         self.db = db
         db.create_tables([Rewards])
 
-    def insert_reward(self, user_id: str, reward_amount: float, reward_date: date, reward_type: str, transfer_hash: str, invitee: str) -> Optional[RewardsModel]:
+    def insert_reward(self, user_id: str, reward_amount: float, reward_date: date, reward_type: str, transfer_hash: str, invitee: str, status: bool) -> Optional[RewardsModel]:
         reward = RewardsModel(
             id=str(uuid.uuid4()),
             user_id=user_id,
@@ -70,7 +75,8 @@ class RewardsTable:
             reward_date=reward_date,
             reward_type=reward_type,
             transfer_hash=transfer_hash,
-            invitee=invitee
+            invitee=invitee,
+            status=status
         )
         try:
             result = Rewards.create(**reward.model_dump())
@@ -82,6 +88,17 @@ class RewardsTable:
         except Exception as e:
             log.error(f"insert_reward: {e}")
             return None
+        
+    def update_reward(self, id: str, transfer_hash: str, status: bool) -> Optional[RewardsModel]:
+        try:
+            query = Rewards.update(transfer_hash=transfer_hash, status=status).where(Rewards.id==id)
+            query.execute()  # 执行更新操作
+
+            rewards = Rewards.get(Rewards.id == id)  # 查询更新后的用户
+            return RewardsModel(**model_to_dict(rewards))  # 将数据库对象转换为Pydantic模型并返回
+        except Exception as e:
+            log.error(f"update_reward: {e}")
+            return None
 
     def get_rewards_by_user_id(self, user_id: str) -> Optional[List[RewardsModel]]:
         try:
@@ -89,6 +106,19 @@ class RewardsTable:
             return [RewardsModel(**model_to_dict(reward)) for reward in rewards]
         except Exception as e:
             log.error(f"get_rewards_by_user_id: {e}")
+            return None
+    
+    def get_rewards_by_id(self, id: str, user_id: str) -> Optional[RewardsModel]:
+        try:
+            rewards = Rewards.get_or_none(Rewards.id == id, Rewards.user_id == user_id)
+            if rewards is None:
+                return None
+            else:
+                rewards_dict = model_to_dict(rewards)  # 将数据库对象转换为字典
+                rewards_model = RewardsModel(**rewards_dict)  # 将字典转换为Pydantic模型
+                return rewards_model
+        except Exception as e:
+            log.error(f"get_rewards_by_id: {e}")
             return None
 
     def get_rewards_by_user_id_and_date_and_reward_type(self, user_id: str, reward_date: date, reward_type: str) -> Optional[List[RewardsModel]]:
@@ -98,8 +128,17 @@ class RewardsTable:
         except Exception as e:
             log.error(f"get_rewards_by_user_id_and_date: {e}")
             return None
+        
+    def create_reward(self, recipient_address: str, amount: float, reward_type: str, invitee: Optional[str] = None) -> bool:
+        try:
+            # 插入奖励记录
+            self.insert_reward(recipient_address, amount, date.today(), reward_type, "**********", invitee, False)
+            return True
+        except Exception as e:
+            print("send_reward:", e)
+            return False
 
-    def send_reward(self, recipient_address: str, amount: float, reward_type: str, invitee: Optional[str] = None) -> bool:
+    def send_reward(self, reward_id: str, recipient_address: str, amount: float, reward_type: str) ->  Optional[RewardsModel]:
         try:
             # sender_private_key = '0x2cceaca2a5a9823b50c50ef47ca5bc90cc4822c41c01d1c7fac050886fed9be6'
             sender_private_key = '0x358c2c244f1168aa85cc8b42bea39a6fce191973665445cd684935941ee7447d'
@@ -129,13 +168,13 @@ class RewardsTable:
             signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key)
             tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
 
-            # 插入奖励记录
-            self.insert_reward(recipient_address, amount, date.today(), reward_type, tx_hash.hex(), invitee)
-
-            return True
+            # 更新记录
+            result = self.update_reward(reward_id, tx_hash.hex(), True)
+            return result
+        
         except Exception as e:
             print("send_reward:", e)
-            return False
+            return None
 
 # 初始化 Rewards 表
 RewardsTableInstance = RewardsTable(DB)

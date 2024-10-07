@@ -320,8 +320,8 @@
   bind:this={navElement}
   id="sidebar"
   class="h-screen max-h-[100dvh] min-h-screen select-none {$showSidebar
-    ? 'md:relative w-[386px]'
-    : '-translate-x-[386px] w-[0px]'} bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-200 text-sm transition fixed z-50 top-0 left-0 rounded-r-2xl
+    ? 'md:relative w-[400px]'
+    : '-translate-x-[400px] w-[0px]'} bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-200 text-sm transition fixed z-50 top-0 left-0 rounded-r-2xl
         "
   data-state={$showSidebar}
 >
@@ -340,7 +340,7 @@
 			: 'invisible'}"
 	> -->
   <div
-    class="py-2.5 my-auto flex flex-col justify-between h-screen max-h-[100dvh] w-[386px] z-50 {$showSidebar
+    class="py-2.5 my-auto flex flex-col justify-between h-screen max-h-[100dvh] w-[400px] z-50 {$showSidebar
       ? ''
       : 'invisible'}"
   >

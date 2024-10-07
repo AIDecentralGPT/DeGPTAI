@@ -9,6 +9,7 @@
   let status: any = null;
   let loading = true;
   let socketStatus = true;
+  let messageStatus = false;
 
   // 在组件挂载时打开 WebSocket 连接
   onMount(() => {
@@ -45,6 +46,7 @@
         countHeart = 0;
         return;
       }
+      messageStatus = true;
       loading = false;
       status = 'fail';
       if (event.data.startsWith("True")) {
@@ -78,14 +80,21 @@
   // 心跳检测
   let heartInterval: any = null;
   let countHeart = 0;
+  let messageCount = 0;
   function heartCheck() {
     heartInterval = setInterval(() => {
       sendMessage("heart");
-      if (countHeart == 10) {
+      if (countHeart == 6) {
         clearInterval(heartInterval);
         socketStatus = false;
       }
       countHeart ++;
+      if (messageCount == 12) {
+        refreshPage();
+      }
+      if (!messageStatus) {
+        messageCount ++;
+      }
     }, 1000);
   }
 

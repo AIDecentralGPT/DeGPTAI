@@ -7,8 +7,9 @@
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
-  import { currentWalletData,} from "$lib/stores";
-  import { getRewardsHistory } from "$lib/apis/rewards";
+  import { currentWalletData, user} from "$lib/stores";
+  import { getRewardsHistory, clockInCheck } from "$lib/apis/rewards";
+
   const i18n = getContext("i18n");
 
   export let show = true;
@@ -62,6 +63,30 @@
     console.log("rewardsHistory", rewardsHistory);
   }
 
+  async function updateReward(id) {
+    await clockInCheck(localStorage.token, id)
+      .then((res) => {
+        console.log("Clock In Check res", res);
+        if (res?.ok) {
+          const checkReward = res.data;
+          const index = rewardsHistory.findIndex(item => item.id === checkReward.id);
+          if (index !== -1) {
+            rewardsHistory[index] = { 
+              ...rewardsHistory[index], 
+              transfer_hash: checkReward.transfer_hash, 
+              status: checkReward.status 
+            };
+          }
+        }
+        if (res?.detail) {
+          toast.warning(res?.detail);
+        }
+      }).catch((res) => {
+        console.log("Clock In Check  error", res);
+      }); 
+    console.log("Clock In Check res update", rewardsHistory);
+  }
+
 </script>
 
 {#if show}
@@ -71,7 +96,7 @@
 
 
     <div class=" flex justify-between items-center dark:text-gray-300 px-5 pt-4 pb-1">
-      <h1 class="text-xl font-semibold ">{$i18n.t("view reward")}</h1>
+      <h1 class="text-xl font-semibold ">{$i18n.t("View Reward")}</h1>
 
       <button
         class="self-center"
@@ -109,12 +134,12 @@
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
               >
                 {$i18n.t("user ID")}
-              </th>
+              </th> -->
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
               >
                 {$i18n.t("transfer hash")}
-              </th> -->
+              </th>
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
               >
@@ -139,13 +164,29 @@
               <tr>
                 <!-- <td class="px-6 py-4 whitespace-nowrap flex items-center">
                   {historyItem.user_id}
-                </td>
+                </td> -->
                 <td class="px-6 py-4 whitespace-nowrap"
                   >{historyItem.transfer_hash}</td
-                > -->
-                <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.reward_amount} dgc</td
                 >
+                <td class="px-6 py-4 whitespace-nowrap">   
+                  {#if historyItem.status}
+                    {historyItem.reward_amount} DGC
+                  {:else}
+                    <div class="flex direction-column amount-styl">
+                      <div class="obtain-amount">{historyItem.reward_amount} DGC</div>
+                      <div class="obtain-styl cursor-pointer" 
+                        on:click={() => {
+                          if ($user.verified) {
+                            updateReward(historyItem.id)
+                          } else {
+                            toast.warning("Please complete the KYC verification to convert your points into cash");
+                          }
+                        }}
+                      >Obtain now</div>
+                    </div>
+                  {/if}
+                  
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   {dayjs(historyItem.reward_date).format("YYYY-MM-DD")}
                 </td>
@@ -192,5 +233,27 @@
     width: 1.5em;
     height: 1.5em;
     fill: white;
+  }
+
+  .direction-column {
+    flex-direction: column;
+  }
+  
+  .amount-styl {
+    background-color: #B88E56;
+    border-radius: 5px;
+    padding: 8px;
+  }
+
+  .obtain-amount {
+    padding: 6px;
+  }
+
+  .obtain-styl {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 6px;
+    text-align: center;
+    color: #000000;
   }
 </style>

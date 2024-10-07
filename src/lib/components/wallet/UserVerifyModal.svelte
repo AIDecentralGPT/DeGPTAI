@@ -89,7 +89,7 @@
       if (validateEmail(email)) {
         startCountdown();
         sendCode(email).then((res) => {
-          console.log(123321, res);
+          console.log("verification-code:", res);
         });
       } else {
         toast.error("Please enter a valid email address.");

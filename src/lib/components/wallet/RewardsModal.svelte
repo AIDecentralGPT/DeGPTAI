@@ -56,7 +56,7 @@
   <Modal bind:show size="lg">
 
     <div class=" flex justify-between items-center dark:text-gray-300 px-5 pt-4 pb-1">
-      <h1 class="text-xl font-semibold ">{$i18n.t("view reward")}</h1>
+      <h1 class="text-xl font-semibold ">{$i18n.t("View Reward")}</h1>
 
       <button
         class="self-center"

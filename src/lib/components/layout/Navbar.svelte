@@ -161,10 +161,12 @@
         {/if}
 
         <!-- <button on:click={demo}>{$user?.isPro}</button> -->
-        <button on:click={()=> {
-          demo()
-        }}>demo</button>
-
+        {#if $user?.role === "visitor"}
+          <button on:click={()=> {
+            demo()
+          }}>demo</button>
+        {/if}
+        
         <Tooltip content={$i18n.t("New Chat")}>
           <button
             id="new-chat-button"
