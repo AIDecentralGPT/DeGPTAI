@@ -193,55 +193,57 @@
     >
       {$i18n.t("Wallet Balance")}
     </div>
+    <div class="flex">
+      <button
+        class="flex gap-2 items-center cursor-pointer opacity-50 fs12 mr-2"
+        on:click={() => {
+          // const pair = getCurrentPair()
+          // console.log("pair?.address", pair?.address);
 
-    <button
-      class="flex gap-2 items-center cursor-pointer opacity-50 fs12"
-      on:click={() => {
-        // const pair = getCurrentPair()
-        // console.log("pair?.address", pair?.address);
+          // if(!pair?.address) {
+          //   toast.error($i18n.t("Please log in to your wallet first"))
+          // }
+          // else {
+          //   $showShareModal = true;
+          // }
 
-        // if(!pair?.address) {
-        //   toast.error($i18n.t("Please log in to your wallet first"))
-        // }
-        // else {
-        //   $showShareModal = true;
-        // }
-
-        $showShareModal = true;
-      }}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        ><path
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4m-8-2l8-8m0 0v5m0-5h-5"
-        /></svg
+          $showShareModal = true;
+        }}
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1em"
+          height="1em"
+          viewBox="0 0 24 24"
+          ><path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4m-8-2l8-8m0 0v5m0-5h-5"
+          /></svg
+        >
 
-      <span> {$i18n.t("Share to Obtain DGC")} </span>
-    </button>
+        <span> {$i18n.t("Share to Obtain DGC")} </span>
+      </button>
 
-    <!-- <button
-      on:click={() => {
-        updateWalletData($currentWalletData?.walletInfo);
-      }}
-      ><svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        ><path
-          fill="currentColor"
-          d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
-        /></svg
-      ></button> -->
+      <button
+        on:click={() => {
+          updateWalletData($currentWalletData?.walletInfo);
+        }}
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1em"
+          height="1em"
+          viewBox="0 0 24 24"
+          ><path
+            fill="currentColor"
+            d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
+          /></svg
+        >
+      </button>
+    </div>
   </div>
   <!-- 余额详情 -->
   <div class="flex flex-col gap-2">
