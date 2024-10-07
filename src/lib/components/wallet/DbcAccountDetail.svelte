@@ -247,36 +247,6 @@
   </div>
   <!-- 余额详情 -->
   <div class="flex flex-col gap-2">
-    <!-- <div
-      class="flex justify-between px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-    >
-      <div class="flex gap-1">
-        <div
-          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          DBC
-        </div>
-        <div
-          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          {Number($currentWalletData?.dbcBalance).toFixed(4)}
-        </div>
-        <div
-          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          ≈ ＄{Number(
-            $currentWalletData?.balance?.count * $currentWalletData?.price?.dbc
-          ).toFixed(4)}
-        </div>
-      </div>
-      <div
-        class="opacity-50 text-right text-xs font-medium font-['Gilroy'] leading-normal"
-      >
-        DBC     {$i18n.t("price")}
-        ＄{Number($currentWalletData?.price?.dbc).toFixed(4)}
-      </div>
-    </div> -->
-
     <div
       class="flex justify-between px-5 py-2 pe-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
     >
@@ -327,7 +297,7 @@
       </div>
 
       <div class="opacity-50 leading-normal fs12">
-        DGC price $0.05
+        DGC price ${floorToFixed(Number($currentWalletData?.dgcBalance) * 0.0005, 4)}
       </div>
       
       <!-- <div on:click={()=>showPrice=!showPrice}>
@@ -380,22 +350,9 @@
         >
           {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
         </div>
-        <!-- {#if showPrice == true}
-        <div
-          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
-        </div>
-        {:else}
-        <div
-          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          *****
-        </div>
-        {/if} -->
       </div>
       <div class="opacity-50 leading-normal fs12">
-        DBC price $0.05
+        DBC price ${floorToFixed(Number($currentWalletData?.dbcBalance) * 0.0005, 4)}
       </div>
     </div>
   </div>
