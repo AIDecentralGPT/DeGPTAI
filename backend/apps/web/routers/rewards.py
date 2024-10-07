@@ -70,7 +70,7 @@ async def clock_in(request: Request, user=Depends(get_verified_user)):
     if existing_rewards:
         raise HTTPException(status_code=400, detail="You have received 500 DGC points，you can convert your points into cash")
     
-    success = RewardsTableInstance.send_reward(user.id, 500, reward_type)
+    success = RewardsTableInstance.send_reward(user.id, 10, reward_type)
     if success:
         return {"ok": True, "message": "You have received 500 DGC points !"}
     else:

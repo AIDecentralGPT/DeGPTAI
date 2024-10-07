@@ -33,27 +33,32 @@
   });
 
   async function fetchData() {
-    const address = currentWalletData?.walletInfo?.address;
     const res = await getTransactions($user?.id);
-    console.log("transactions", res);
     // 合并两个 items 数组
     const mergedItems = [...res[0].items, ...res[1].items];
 
     // 按时间排序
     mergedItems.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-    console.log(mergedItems);
-
     transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
       const coinType = item?.tx_types?.[0] === "coin_transfer" ? "DBC" : "DGC";
-
-      console.log("item.value", item.value);
-      
-      return {
-        ...item,
-        coinType,
-        coinAmount: ethers.formatUnits(item.value, "ether"),
-      };
+      if (coinType === "DGC") {
+        const toHash = item.decoded_input.parameters[0].value;
+        return {
+          ...item,
+          coinType,
+          toHash,
+          coinAmount: ethers.formatUnits(item.decoded_input.parameters[1].value, "ether"),
+        };
+      } else {
+        const toHash = item.to.hash;
+        return {
+          ...item,
+          coinType,
+          toHash,
+          coinAmount: ethers.formatUnits(item.value, "ether"),
+        };
+      } 
     });
     console.log("transactionsList", transactionsList);
   }
@@ -130,7 +135,7 @@
                   >{historyItem.from.hash}</td
                 >
                 <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.to.hash}</td
+                  >{historyItem.toHash}</td
                 >
                 <td class="px-6 py-4 whitespace-nowrap"
                   >{historyItem.coinAmount}</td

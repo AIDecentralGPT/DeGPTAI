@@ -73,14 +73,10 @@ class RewardsTable:
             invitee=invitee
         )
         try:
-            print(111)
             result = Rewards.create(**reward.model_dump())
-            print(222)
 
             if result:
                 return reward
-                return None
-
             else:
               return None
         except Exception as e:
@@ -105,7 +101,8 @@ class RewardsTable:
 
     def send_reward(self, recipient_address: str, amount: float, reward_type: str, invitee: Optional[str] = None) -> bool:
         try:
-            sender_private_key = '0x2cceaca2a5a9823b50c50ef47ca5bc90cc4822c41c01d1c7fac050886fed9be6'
+            # sender_private_key = '0x2cceaca2a5a9823b50c50ef47ca5bc90cc4822c41c01d1c7fac050886fed9be6'
+            sender_private_key = '0x358c2c244f1168aa85cc8b42bea39a6fce191973665445cd684935941ee7447d'
             sender_address = Account.from_key(sender_private_key).address
 
             nonce = w3.eth.get_transaction_count(sender_address)
@@ -132,14 +129,11 @@ class RewardsTable:
             signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key)
             tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
 
-            print('Transaction sent:', tx_hash.hex(), tx_hash.hex())
-
             # 插入奖励记录
             self.insert_reward(recipient_address, amount, date.today(), reward_type, tx_hash.hex(), invitee)
 
             return True
         except Exception as e:
-            log.error(f"send_reward: {e}")
             print("send_reward:", e)
             return False
 

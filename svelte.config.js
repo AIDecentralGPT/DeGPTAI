@@ -19,9 +19,9 @@ const config = {
 	onwarn: (warning, handler) => {
 		const { code, _ } = warning;
 		if (code === 'css-unused-selector') return;
-
+		if (warning.code.startsWith('a11y-')) return;
 		handler(warning);
-	}
+	},
 };
 
 export default config;
