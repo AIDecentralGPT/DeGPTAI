@@ -140,6 +140,7 @@ class RewardsTable:
             return True
         except Exception as e:
             log.error(f"send_reward: {e}")
+            print("send_reward:", e)
             return False
 
 # 初始化 Rewards 表

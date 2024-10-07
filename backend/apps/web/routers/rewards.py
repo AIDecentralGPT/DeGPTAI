@@ -68,14 +68,13 @@ async def clock_in(request: Request, user=Depends(get_verified_user)):
     # 检查用户是否已经在今天获得过奖励
     existing_rewards = RewardsTableInstance.get_rewards_by_user_id_and_date_and_reward_type(user.id, today, reward_type)
     if existing_rewards:
-        raise HTTPException(status_code=400, detail="You have already received a reward today. Please try again tomorrow.")
+        raise HTTPException(status_code=400, detail="You have received 500 DGC points，you can convert your points into cash")
     
-    success = RewardsTableInstance.send_reward(user.id, 200, reward_type)
-    return {"ok": True, "message": "You have received 500 DGC points !"}
-    # if success:
-    #     return {"ok": True, "message": "You have received 500 DGC points !"}
-    # else:
-    #     raise HTTPException(status_code=500, detail="Failed to received reward")
+    success = RewardsTableInstance.send_reward(user.id, 500, reward_type)
+    if success:
+        return {"ok": True, "message": "You have received 500 DGC points !"}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to received reward")
     
 @router.get("/reward_count")
 async def get_reward_count(user=Depends(get_verified_user)):

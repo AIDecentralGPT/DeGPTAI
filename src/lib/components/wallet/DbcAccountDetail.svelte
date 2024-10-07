@@ -302,7 +302,7 @@
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          DLC 
+          DGC 
         </div>
         <div
           class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
@@ -325,7 +325,7 @@
       </div>
 
       <div class="opacity-50 leading-normal fs12">
-        DLC price $0.05
+        DGC price $0.05
       </div>
       
       <!-- <div on:click={()=>showPrice=!showPrice}>
@@ -419,6 +419,15 @@
       }}
     >
       {$i18n.t("Rewards")}
+    </button>
+    <button
+      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
+      type="submit"
+      on:click={async () => {
+        $showTransactionsModal = true;
+      }}
+    >
+      {$i18n.t("Transactions")}
     </button>
     {#if $user?.verified}
       <button
