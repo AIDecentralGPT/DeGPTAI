@@ -1,112 +1,54 @@
 <script lang="ts">
   import { onMount, getContext } from 'svelte';
   import { WEBUI_API_BASE_URL } from "$lib/constants";
+  import { facelivenessBindRes } from "$lib/apis/auths";
   const i18n = getContext('i18n');
-
-  let message = "";
   
-  let ws: any = null;
   let status: any = null;
   let loading = true;
-  let socketStatus = true;
-  let messageStatus = false;
+  let httpStatus = true;
+  let message = "";
+  
+  let userId = null;
 
-  // 在组件挂载时打开 WebSocket 连接
   onMount(() => {
     // 获取URL中的参数
     const params = new URLSearchParams(window.location.search);
-    const userId = params.get("user_id");
-    let socketUrl = '';
-    if (WEBUI_API_BASE_URL.includes('https://')) {
-      socketUrl = WEBUI_API_BASE_URL.replace('https://', 'wss://')
-    } else {
-      socketUrl = WEBUI_API_BASE_URL.replace('http://', 'ws://')
-    }
-    ws = new WebSocket(`${socketUrl}/auths/ws/${userId}`);
-
-    ws.onopen = () => {
-      console.log("WebSocket connection established");
-      // 连接成功后立即发送验证请求
-      sendMessage($i18n.t('start_verification'));
-      socketStatus = true;
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket error: ", error);
-      message = $i18n.t('connection_error');
-      status = 'error';
-      socketStatus = false;
-    };
-
-    // 监听 WebSocket 消息事件
-    ws.addEventListener("message", (event) => {
-      // 将收到的消息添加到 messages 列表中
-      console.log("Received:", event.data);
-      if (event.data === 'heart') {
-        countHeart = 0;
-        return;
-      }
-      messageStatus = true;
-      loading = false;
-      status = 'fail';
-      if (event.data.startsWith("True")) {
-        message = $i18n.t('verification_success');
-        status = 'success';
-      } else if (event.data.startsWith("False")) {
-        message = event.data.substring(6);
-      } else {
-        message = $i18n.t('Verifying the effectiveness of face detection');
-      }
-    });
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-    
-    // 心跳检测
-    heartCheck();
+    userId = params.get("user_id");
+    facelivenesdsBind();
   });
 
   // 用于发送消息的函数
-  function sendMessage(data) {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(data);
-      console.log("Sent:", data);
-    } else {
-      console.error("WebSocket is not open");
-    }
-  }
-
-  // 心跳检测
-  let heartInterval: any = null;
-  let countHeart = 0;
-  let messageCount = 0;
-  function heartCheck() {
-    heartInterval = setInterval(() => {
-      sendMessage("heart");
-      if (countHeart == 6) {
-        clearInterval(heartInterval);
-        socketStatus = false;
+  function facelivenesdsBind() {
+    facelivenessBindRes({user_id: userId}).then(async (res) => {
+      if (res) {
+        loading = false;
+        if (res.passed) {
+          status = 'success';
+          message = res.message;
+        } else {
+          status = 'fail';
+          message = res.message;
+        }
+      } else {
+        httpStatus = false;
       }
-      countHeart ++;
-      if (messageCount == 12) {
-        refreshPage();
-      }
-      if (!messageStatus) {
-        messageCount ++;
-      }
-    }, 1000);
+    })
   }
 
   // 重新加载页面
-  function refreshPage() {
-    location.reload();
+  function refreshBind() {
+    status = null;
+    loading = true;
+    httpStatus = true;
+    message = "";
+    facelivenesdsBind();
   }
 
 </script>
 
 <div class="container">
-  {#if socketStatus}
+  {#if httpStatus}
     {#if loading}
       <div class="loading-container">
         <div class="loading"></div>
@@ -135,10 +77,10 @@
       <p>{message}</p>
     {/if}
   {:else}
-    <p>{$i18n.t('WebSocket connection established')}</p>
+    <p>{$i18n.t('Request Exception, Please Retry')}</p>
     <button
       class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-      on:click={refreshPage}>{$i18n.t('Refresh')}</button>
+      on:click={refreshBind}>{$i18n.t('Refresh')}</button>
   {/if}
 </div>
 

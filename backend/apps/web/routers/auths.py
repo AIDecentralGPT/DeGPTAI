@@ -44,7 +44,7 @@ from apps.web.models.auths import (
     FaceLivenessResponse,
     FaceLivenessCheckResponse    
 )
-from apps.web.models.users import Users
+from apps.web.models.users import Users, UserRequest
 from apps.web.models.ip_log import ip_logs_table
 from apps.web.models.device import devices_table
 from apps.web.models.faceCompare import face_compare
@@ -804,6 +804,15 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
+# 人脸绑定
+@router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
+async def faceliveness_bind(user: UserRequest):
+    passedInfo = await faceliveness_check_for_ws(user.user_id)
+    if (passedInfo['passed']):
+        await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user.user_id) 
+    return passedInfo
+        
+
 
 # 人脸识别校验
 @router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
@@ -882,8 +891,13 @@ async def faceliveness_check_for_ws(id: str):
 
         # 校验时间是否超时
         face_time = user.face_time
+        if (face_time is None):
+            return {
+                "passed": False,
+                "message": "Time expired, try again"
+            }
+        
         now_time = datetime.now()
-
         # 计算时间差
         time_difference = now_time - face_time
         if (time_difference.total_seconds() > 300):
@@ -910,34 +924,26 @@ async def faceliveness_check_for_ws(id: str):
             
             # 2. 获取人脸照片
             faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
-            
-            # face_lib.add_face_data(faceImg)
-            
+                        
             # 3. 搜索该人脸照片在库中是否存在
-            # face_id = face_lib.search_face(faceImg)
-            # print("face_id", face_id)
+            face_id = face_lib.search_face(faceImg)
+            print("face_id", face_id)
             
-            # if face_id is not None:
-            #     user_id = Users.get_user_id_by_face_id(face_id)
-            #     print("user_id",face_id, user_id)
-            #     # 4. 存在就告诉你，该人脸已经被检测过了！
-            #     if user_id  is not None :
-            #         return {
-            #             "passed": False,
-            #             "message": "Your face has been used"
-            #         }
-            # else:
-            #     # 添加人脸样本
-            #     id_str = str(uuid.uuid4())
-            #     face_lib.add_face_sample(id_str)
-            #     # 在人脸样本添加对应的人脸数据
-            #     face_id = face_lib.add_face_data(faceImg, id_str)   
-
-            # 添加人脸样本
-            id_str = str(uuid.uuid4())
-            face_lib.add_face_sample(id_str)
-            # 在人脸样本添加对应的人脸数据
-            face_id = face_lib.add_face_data(faceImg, id_str)   
+            if face_id is not None:
+                user_id = Users.get_user_id_by_face_id(face_id)
+                print("user_id",face_id, user_id)
+                # 4. 存在就告诉你，该人脸已经被检测过了！
+                if user_id  is not None :
+                    return {
+                        "passed": False,
+                        "message": "Your face has been used"
+                    }
+            else:
+                # 添加人脸样本
+                id_str = str(uuid.uuid4())
+                face_lib.add_face_sample(id_str)
+                # 在人脸样本添加对应的人脸数据
+                face_id = face_lib.add_face_data(faceImg, id_str)
             
             # 判断该face_id是否有过
             if response.body.result.passed:
@@ -1001,34 +1007,20 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
-# @router.websocket("/ws/{user_id}")
-# async def websocket_endpoint(websocket: WebSocket, user_id: str):
-#     await manager.connect(websocket, user_id)
-#     try:
-#         while True:
-#             data = await websocket.receive_text()
-#             # await manager.broadcast(f"User {user_id} says: {data}", user_id)
-            
-#             await faceliveness_check_for_ws()
-            
-#             await manager.broadcast(f"服务端接收到{user_id}", user_id)
-#     except WebSocketDisconnect:
-#         manager.disconnect(websocket, user_id)
-
-
 @router.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
     await manager.connect(websocket, user_id)
     try:
         while True:
             data = await websocket.receive_text()
-            if (data == "heart"):
-               await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id) 
-            else:
-                passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
-                print("passed",passedInfo,  passedInfo['passed'])
-                await manager.broadcast("heart", user_id)
-                # await manager.broadcast(f"服务端接收到{user_id}", user_id)
+            print("socket接收到得信息", data)
+            # if (data == "heart"):
+            #    await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id) 
+            # else:
+            #     passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
+            #     print("passed",passedInfo,  passedInfo['passed'])
+            #     await manager.broadcast("heart", user_id)
+            #     # await manager.broadcast(f"服务端接收到{user_id}", user_id)
     except WebSocketDisconnect:
         print("WebSocketDisconnect了")
         manager.disconnect(websocket, user_id)

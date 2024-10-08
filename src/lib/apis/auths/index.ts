@@ -670,6 +670,21 @@ export const faceliveness = async (metaInfo: any) => {
   return res;
 };
 
+// 做活体检数据校验绑定
+export const facelivenessBindRes = async (data: any) => {
+  const res = await fetch(`${WEBUI_API_BASE_URL}/auths/faceliveness_bind`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data),
+  }).then(async (res) => {
+    return res.json();
+  }).catch((err) => {
+    return null;
+  });
+  return res;
+};
 
 
 // 做活体检测后的结果
