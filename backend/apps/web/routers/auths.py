@@ -808,8 +808,7 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
 @router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
 async def faceliveness_bind(user: UserRequest):
     passedInfo = await faceliveness_check_for_ws(user.user_id)
-    if (passedInfo['passed']):
-        await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user.user_id) 
+    await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user.user_id) 
     return passedInfo
         
 
