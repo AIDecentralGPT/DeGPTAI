@@ -914,24 +914,30 @@ async def faceliveness_check_for_ws(id: str):
             # face_lib.add_face_data(faceImg)
             
             # 3. 搜索该人脸照片在库中是否存在
-            face_id = face_lib.search_face(faceImg)
-            print("face_id", face_id)
+            # face_id = face_lib.search_face(faceImg)
+            # print("face_id", face_id)
             
-            if face_id is not None:
-                user_id = Users.get_user_id_by_face_id(face_id)
-                print("user_id",face_id, user_id)
-                # 4. 存在就告诉你，该人脸已经被检测过了！
-                if user_id  is not None :
-                    return {
-                        "passed": False,
-                        "message": "Your face has been used"
-                    }
-            else:
-                # 添加人脸样本
-                id_str = str(uuid.uuid4())
-                face_lib.add_face_sample(id_str)
-                # 在人脸样本添加对应的人脸数据
-                face_id = face_lib.add_face_data(faceImg, id_str)   
+            # if face_id is not None:
+            #     user_id = Users.get_user_id_by_face_id(face_id)
+            #     print("user_id",face_id, user_id)
+            #     # 4. 存在就告诉你，该人脸已经被检测过了！
+            #     if user_id  is not None :
+            #         return {
+            #             "passed": False,
+            #             "message": "Your face has been used"
+            #         }
+            # else:
+            #     # 添加人脸样本
+            #     id_str = str(uuid.uuid4())
+            #     face_lib.add_face_sample(id_str)
+            #     # 在人脸样本添加对应的人脸数据
+            #     face_id = face_lib.add_face_data(faceImg, id_str)   
+
+            # 添加人脸样本
+            id_str = str(uuid.uuid4())
+            face_lib.add_face_sample(id_str)
+            # 在人脸样本添加对应的人脸数据
+            face_id = face_lib.add_face_data(faceImg, id_str)   
             
             # 判断该face_id是否有过
             if response.body.result.passed:

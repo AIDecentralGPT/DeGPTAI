@@ -47,8 +47,33 @@ export const getDeModels = async (token: string = "") => {
 
   const format_res = {
     models: [
+      // Meta LLM(LIama3.1-405B)
       {
-        name: "Ali General Large Model (Qwen2-72B)",
+        name: "Meta LLM (Llama-3.1-405B)",
+
+        model: "Llama-3.1-405B",
+        modified_at: new Date().toISOString(),
+        size: 0, // 需要根据实际数据填充
+        digest: "", // 需要根据实际数据填充
+        details: {
+          parent_model: "",
+          format: "", // 需要根据实际数据填充
+          family: "",
+          families: [],
+          parameter_size: "",
+          quantization_level: "",
+        },
+        expires_at: "0001-01-01T00:00:00Z",
+        urls: [
+          // "https://chat.degpt.ai/llama3-70b/v1"
+          host + "/api",
+          // "http://122.99.183.53:1042/v1"
+        ],
+        source: "Exemplary performance,low error rate,diverse responses.",
+        nodeList: ["16Uiu2HAmBcP2Zv51z4VA8UnHRNRjatyHcv4TSuU6pXixLELP1U7F"],
+      },
+      {
+        name: "Ali LLM (Qwen2-72B)",
         model: "Qwen2-72B",
         modified_at: new Date().toISOString(),
         size: 0, // 需要根据实际数据填充
@@ -72,32 +97,7 @@ export const getDeModels = async (token: string = "") => {
       },
 
       {
-        name: "Meta General Large Model (LIama3 70B)",
-
-        model: "Llama3-70B",
-        modified_at: new Date().toISOString(),
-        size: 0, // 需要根据实际数据填充
-        digest: "", // 需要根据实际数据填充
-        details: {
-          parent_model: "",
-          format: "", // 需要根据实际数据填充
-          family: "",
-          families: [],
-          parameter_size: "",
-          quantization_level: "",
-        },
-        expires_at: "0001-01-01T00:00:00Z",
-        urls: [
-          // "https://chat.degpt.ai/llama3-70b/v1"
-          host + "/api",
-          // "http://122.99.183.53:1042/v1"
-        ],
-        source: "Exemplary performance,low error rate,diverse responses.",
-        nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
-      },
-
-      {
-        name: "Google Universal Large Model (Gemma-2-27B)",
+        name: "Google LLM (Gemma-2-27B)",
 
         model: "Gemma-2-27B",
         modified_at: new Date().toISOString(),
@@ -119,11 +119,11 @@ export const getDeModels = async (token: string = "") => {
         ],
         source: "Exemplary performance,low error rate,diverse responses.",
         nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
-				isProModel: true
       },
 
+      // Mistral LLM(Large2-123B)
       {
-        name: "Code Large Model (Codestral-22B-v0.1)",
+        name: "Code LLM (Codestral-22B-v0.1)",
         model: "Codestral-22B-v0.1",
         modified_at: new Date().toISOString(),
         size: 0, // 需要根据实际数据填充
@@ -140,40 +140,15 @@ export const getDeModels = async (token: string = "") => {
         urls: [host + "/api"],
         source: "Code completion and generation, error detection and repair.",
         nodeList: ["16Uiu2HAmPKuJU5VE2PCnydyUn1VcTN2Lt59UDJFFEiRbb7h1x4CV"],
-				isProModel: true
       },
     ],
   };
-
-  // const nodes = await Promise.all(format_res?.models?.map(async (item) => {
-  // 	console.log(item);
-  // 	const {urls, model} = item
-
-  // 	console.log(1111, urls[0], model);
-
-  // 	const node = await getDeModelNodeList(urls[0], model).catch((error) => {
-  // 		console.error(error);
-
-  // 		return null
-  // 	}); // Handle error or non-existent chat gracefully
-
-  // 	item.nodeList = node?.data
-
-  // 	return node?.data;
-  // }))
-
-  // console.log("format_res?.models", format_res?.models);
-
-  // console.log("res11", nodes, format_res?.models);
 
   return (format_res?.models ?? []).map((model) => ({
     id: model.model,
     name: model.name ?? model.model,
     ...model,
   }));
-  // .sort((a, b) => {
-  // 	return a.name.localeCompare(b.name);
-  // });
 };
 
 // // 获取De的所有模型列表
