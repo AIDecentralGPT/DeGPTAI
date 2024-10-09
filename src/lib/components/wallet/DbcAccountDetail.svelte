@@ -370,7 +370,7 @@
     >
       {$i18n.t("Buy")}
     </button>
-    <button
+    <!-- <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
       on:click={async () => {
@@ -378,7 +378,7 @@
       }}
     >
       {$i18n.t("Rewards")}
-    </button>
+    </button> -->
     <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
       type="submit"
