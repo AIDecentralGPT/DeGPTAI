@@ -81,20 +81,13 @@ class SigninForm(BaseModel):
 
 
 class WalletSigninForm(BaseModel):
-    # email: str
-    # password: str
-    # visiter_id: Optional[str] = None
     address: str
     address_type: str
     nonce:str
     signature: str
-    # id: str
     device_id: str
+    private_key: Optional[str] = None
     inviter_id: Optional[str] = None
-
-
-            # 将签名从十六进制转换为字节
-
 
 
 class FingerprintSignInForm(BaseModel):
@@ -177,9 +170,10 @@ class AuthsTable:
         id: str = None,
         inviter_id: str = None,
         private_key: str = None,
-        address_type: str = None,
+        address_type: str = None
     ) -> Optional[TypingTuple[UserModel, int]]:  # 修改返回类型声明
-        print("insert_new_auth:1", role, inviter_id, address_type)
+        
+        print("insert_new_auth:1", role, inviter_id, address_type, private_key)
 
         # id = str(uuid.uuid4())
 

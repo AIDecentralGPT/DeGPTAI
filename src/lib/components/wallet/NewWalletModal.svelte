@@ -198,15 +198,6 @@
                   toast.error("Please enter your password");
                 }
                 loading = true;
-                // const res = await createAccountFromSeed(); // 创建新账户
-                // walletCreatedData = res;
-                // const pair = walletCreatedData?.pair;
-                // // 存储本地密码
-                // savePair(pair, password);
-                // // 获取钱包面板数据
-                // updateWalletData(pair);
-                // // 请求服务端登录钱包账户
-                // await handleWalletSignIn(pair, password, $inviterId);
 
                 // 1. 创建钱包
                 const { wallet, keystore, accountPrivateKey } =
@@ -221,10 +212,8 @@
                   password,
                   address_type: "dbc",
                   inviterId: $inviterId,
+                  privateKey
                 });
-
-                
-
 
                 loading = false;
 

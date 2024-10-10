@@ -335,11 +335,10 @@ class UsersTable:
             return None  # 如果查询失败，返回None
         
     # 根据face_id获取user_id
-    def get_user_id_by_face_id(self, face_id: str) -> Optional[str]:
+    def get_user_id_by_face_id(self, face_id: str) -> Optional[UserModel]:
         try:
             user = User.get(User.face_id == face_id)  # 查询用户
-            print("user", user)
-            return user.id  # 返回用户的id
+            return user # 返回用户
         except:
             return None  # 如果查询失败，返回None
         

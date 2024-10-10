@@ -186,7 +186,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("The usage limit for the model is 100 calls per day.")}
+              {$i18n.t("The usage limit for the model Llama-3.1-405B is 10 times per day, other models is 100 times per day.")}
             </li>
           </ul>
         </div>
@@ -300,7 +300,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("The usage limit for the model is 500 calls per day.")}
+              {$i18n.t("The usage limit for the model Llama-3.1-405B is 1000 times per day, other model is 10000 times per day.")}
             </li>
           </ul>
         </div>

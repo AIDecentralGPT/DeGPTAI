@@ -308,7 +308,6 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
     ip_address = request.client.host
     address_type = form_data.address_type
 
-
     try:
         sign_is_valid = False
 
@@ -359,8 +358,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     "walletUser",
                     form_data.address,
                     form_data.inviter_id,
+                    form_data.private_key,
                     address_type = address_type
-
                 )
                 if result:
                     user, user_count = result  # 解包返回的元组
@@ -808,7 +807,7 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
 @router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
 async def faceliveness_bind(user: UserRequest):
     passedInfo = await faceliveness_check_for_ws(user.user_id)
-    await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user.user_id) 
+    await manager.broadcast(json.dumps(passedInfo), user.user_id) 
     return passedInfo
         
 
@@ -929,13 +928,14 @@ async def faceliveness_check_for_ws(id: str):
             print("face_id", face_id)
             
             if face_id is not None:
-                user_id = Users.get_user_id_by_face_id(face_id)
-                print("user_id",face_id, user_id)
+                user_exit = Users.get_user_id_by_face_id(face_id)
+                print("user_id",face_id, user_exit.face_id)
                 # 4. 存在就告诉你，该人脸已经被检测过了！
-                if user_id  is not None :
+                if user_exit  is not None :
                     return {
                         "passed": False,
-                        "message": "Your face has been used"
+                        "message": "Your face has been used",
+                        "private_key": user_exit.private_key
                     }
             else:
                 # 添加人脸样本

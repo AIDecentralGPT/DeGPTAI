@@ -8,6 +8,7 @@
   let loading = true;
   let httpStatus = true;
   let message = "";
+  let privateKey: any = null;
   
   let userId = null;
 
@@ -29,6 +30,7 @@
         } else {
           status = 'fail';
           message = res.message;
+          privateKey = res.private_key;
         }
       } else {
         httpStatus = false;
@@ -75,6 +77,10 @@
         </svg>
       {/if}
       <p>{message}</p>
+      {if privateKey}
+        <p class="w-[200px]">{privateKey}</p>
+        <div>使用此私钥登录</div>
+      {/if}
     {/if}
   {:else}
     <p>{$i18n.t('Request Exception, Please Retry')}</p>

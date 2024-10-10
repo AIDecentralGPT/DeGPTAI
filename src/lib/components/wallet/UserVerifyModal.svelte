@@ -45,25 +45,21 @@
 
     // 监听 WebSocket 消息事件
     socket.addEventListener("message", (event) => {
-      // 将收到的消息添加到 messages 列表中
-      console.log("Received:", event.data);
       // 接收到消息停止倒计时
       clearInterval(countdownQrInterval);
-      if (event.data.startsWith("True")) {
+      let data = JSON.parse(event.data);
+      if (data.passed) {
         message = "Success!";
         qrCodeFinish = true;
         checkQrResult = false;
         let newUser = JSON.parse(JSON.stringify($user));
         newUser.verified = true;
         user.set(newUser)
-      } else if (event.data.startsWith("False")) {
-        message = "Failed, try again";
-        qrCodeFinish = false;
-        checkQrResult = true;       
       } else {
         message = "Failed, try again";
+        privateKey = data.private_key;
         qrCodeFinish = false;
-        checkQrResult = true;
+        checkQrResult = true; 
       }
     });
 
@@ -418,6 +414,10 @@
                           class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
                           on:click={faceLiveness}>Try again</button
                         >
+                        {#if privateKey}
+                          <p class="w-[200px]">{privateKey}</p>
+                          <div>使用此私钥登录</div>
+                        {/if} 
                       </div>
                     {/if}
                     {#if qrCodeFinish}
