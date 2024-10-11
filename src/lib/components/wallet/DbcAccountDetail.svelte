@@ -297,7 +297,11 @@
       </div>
 
       <div class="opacity-50 leading-normal fs12">
-        DGC price ${floorToFixed(Number($currentWalletData?.dgcBalance) * 0.0005, 4)}
+        1DGC=0.0005u
+      </div>
+
+      <div class="opacity-50 leading-normal fs12">
+        Total ${floorToFixed(Number($currentWalletData?.dgcBalance) * 0.0005, 4)}u
       </div>
       
       <!-- <div on:click={()=>showPrice=!showPrice}>
@@ -352,7 +356,7 @@
         </div>
       </div>
       <div class="opacity-50 leading-normal fs12">
-        DBC price ${floorToFixed(Number($currentWalletData?.dbcBalance) * 0.0005, 4)}
+        Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * 0.0005, 4)}u
       </div>
     </div>
   </div>

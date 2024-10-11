@@ -8,21 +8,20 @@
   let rewards = [
   {
     title: "I. New User Creation Reward",
-    description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>2000</span> DGC reward."
+    description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward."
   },
   {
     title: "II. Referral Reward",
     description: [
-      "1. For each friend invited to create a wallet successfully, the user receives a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward, and the friend also receives a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.",
-      "2. Maximum of <span style='color: rgba(184, 142, 86, 1);'>10</span> invitations per day, with a daily maximum reward of <span style='color: rgba(184, 142, 86, 1);'>10000</span> DGC."
+      "1. Free airdrops for the first 1 million users, each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>600</span> DGC reward.",
+      "2. Free airdrops 1-5m users,each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>2,000</span> DGC reward."
     ]
   },
   {
     title: "III. Clock in Reward",
     description: [
-      "1. Clock in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.",
-      "2. Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>500</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.",
-      "3. User Clock in rule: log in to DEGPT every <span style='color: rgba(184, 142, 86, 1);'>24</span> hours and send a valid command once using DEGPT."
+      "1. Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.",
+      "2. Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.",
     ]
   }
 ];
