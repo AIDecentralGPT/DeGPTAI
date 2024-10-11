@@ -57,7 +57,7 @@
     }
   }
 
-  const upgradePrice = 3;
+  const upgradePrice = 6000;
 
   // const { writeContract } = useWriteContract()
 

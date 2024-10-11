@@ -73,7 +73,7 @@
           <p class="mt-6 flex items-baseline gap-x-1">
             <span class="text-4xl font-bold tracking-tight">$0</span>
             <span class="text-sm font-semibold leading-6 text-gray-400"
-              >DGC</span
+              >(0DGC)</span
             >
           </p>
           <p class="text-sm leading-6 text-gray-400">
@@ -83,7 +83,7 @@
             disabled
             class="w-full mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100"
           >
-            {$i18n.t("Your Current Plan")}
+            {$i18n.t("Your Basic Plan")}
           </button>
           <ul
             role="list"
@@ -182,7 +182,7 @@
               >${upgradePrice}</span
             >
             <span class="text-sm font-semibold leading-6 text-gray-400"
-              >DGC</span
+              >(6000DGC)</span
             >
           </p>
           <p class="text-sm leading-6 text-gray-400">
