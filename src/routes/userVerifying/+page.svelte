@@ -77,7 +77,7 @@
         </svg>
       {/if}
       <p>{message}</p>
-      {if privateKey}
+      {#if privateKey}
         <p class="w-[200px]">{privateKey}</p>
         <div class="cursor-pointer">使用此私钥登录</div>
       {/if}
