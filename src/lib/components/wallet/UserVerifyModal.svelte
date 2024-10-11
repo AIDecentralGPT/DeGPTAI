@@ -414,11 +414,7 @@
                         <button
                           class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
                           on:click={faceLiveness}>Try again</button
-                        >
-                        {#if privateKey}
-                          <p class="w-[200px]">{privateKey}</p>
-                          <div class="cursor-pointer">使用此私钥登录</div>
-                        {/if} 
+                        > 
                       </div>
                     {/if}
                     {#if qrCodeFinish}
@@ -441,7 +437,11 @@
                   {:else}
                     {#if qrCodeFinish}
                       <div class="flex flex-row items-center success">
-                        {message}
+                        <span>{message}<span>
+                        {#if privateKey}
+                          <p class="w-[200px]">{privateKey}</p>
+                          <div class="cursor-pointer">使用此私钥登录</div>
+                        {/if}
                       </div>
                     {:else}
                       <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>
