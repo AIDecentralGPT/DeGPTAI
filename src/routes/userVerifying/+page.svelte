@@ -78,7 +78,7 @@
       {/if}
       <p>{message}</p>
       {#if privateKey}
-        <p class="w-[200px]">{privateKey}</p>
+        <p class="w-[200px]">{ privateKey }</p>
         <div class="cursor-pointer">使用此私钥登录</div>
       {/if}
     {/if}
