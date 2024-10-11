@@ -140,8 +140,7 @@ class RewardsTable:
 
     def send_reward(self, reward_id: str, recipient_address: str, amount: float, reward_type: str) ->  Optional[RewardsModel]:
         try:
-            # sender_private_key = '0x2cceaca2a5a9823b50c50ef47ca5bc90cc4822c41c01d1c7fac050886fed9be6'
-            sender_private_key = '0x358c2c244f1168aa85cc8b42bea39a6fce191973665445cd684935941ee7447d'
+            sender_private_key = '0xdbee5204091639ded19bef844221ac09216a56cee27682451e288e9b50853ce3'
             sender_address = Account.from_key(sender_private_key).address
 
             nonce = w3.eth.get_transaction_count(sender_address)
