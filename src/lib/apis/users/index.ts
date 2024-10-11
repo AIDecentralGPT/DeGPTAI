@@ -259,7 +259,7 @@ export const openProServices = async (
 		},
 		body: JSON.stringify({
 			tx,
-amount
+			amount
 		})
 	})
 		.then(async (res) => {

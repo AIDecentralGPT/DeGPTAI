@@ -438,10 +438,10 @@
                     {#if qrCodeFinish}
                       <div class="flex flex-row items-center success">
                         <span>{message}<span>
-                        {#if privateKey}
+                        <!-- {#if privateKey}
                           <p class="w-[200px]">{privateKey}</p>
                           <div class="cursor-pointer">使用此私钥登录</div>
-                        {/if}
+                        {/if} -->
                       </div>
                     {:else}
                       <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>

@@ -4,53 +4,33 @@
   export let show = false;
   import { onMount, getContext } from "svelte";
   import { transferDgc } from "$lib/utils/wallet/ether/dgc";
-  import { currentWalletData, user, showConfirmUpgradeModal } from "$lib/stores";
-  import { walletconnectSendDGCTransaction,  } from "$lib/utils/wallet/walletconnect/index";
+  import {
+    currentWalletData,
+    user,
+    showConfirmUpgradeModal,
+  } from "$lib/stores";
+  import { walletconnectSendDGCTransaction } from "$lib/utils/wallet/walletconnect/index";
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
+  import { isPro, openProServices } from "$lib/apis/users/index.js";
   const i18n = getContext("i18n");
 
   const upgradePrice = 3;
 
+  async function checkPlus() {
+    const userPro = await isPro(localStorage.token); // 发送请求到你的 API
+    if (userPro) {
+      user.set({
+        ...$user,
+        isPro: userPro.is_pro,
+        proEndDate: userPro.end_date
+      });
+    }
+  }
 
-  // async function handleUpgrade() {
-  //   console.log(
-  //     "handleUpgrade",
-  //     $currentWalletData,
-  //     upgradePrice,
-  //     $currentWalletData?.walletInfo?.privateKey,
-  //     $user
-  //   );
-
-  //   if ($user?.address_type === 'dbc') {
-  //     const res = await transferDgc(
-  //       // $currentWalletData?.walletInfo?.address,
-  //       // "0xde184A6809898D81186DeF5C0823d2107c001Da2",
-  //       "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808",
-  //       upgradePrice,
-  //       $currentWalletData?.walletInfo?.privateKey
-  //     );
-  //     console.log("transferDgc", res);
-  //     // const res = await openProServices(localStorage.token, tx, value);
-
-  //   }
-  //   if ($user?.address_type === 'threeSide') {
-  //     console.log(111);
-
-  //     // const res = await walletconnectSendTransaction({
-  //     //   value: upgradePrice,
-  //     // });
-
-  //     const res = await walletconnectSendDGCTransaction(upgradePrice);
-
-  //     console.log(222);
-      
-
-  //     if (res) {
-  //       toast.success("Congratulations on successfully upgrading pro!");
-  //       show = false;
-  //     }
-  //   }
-  // }
+  // 显示初始化Socket
+  $: if (show) {
+    checkPlus();
+  }
 </script>
 
 <Modal bind:show size="lg">
@@ -137,11 +117,12 @@
                   clip-rule="evenodd"
                 />
               </svg>
-<div>
-
-  {$i18n.t("Access to ")}
-  <span class=" dark:text-gray-100 text-zinc-950">Llama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span>
-</div>
+              <div>
+                {$i18n.t("Access to ")}
+                <span class=" dark:text-gray-100 text-zinc-950"
+                  >Llama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span
+                >
+              </div>
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -186,7 +167,9 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("The usage limit for the model Llama-3.1-405B is 10 times per day, other models is 100 times per day.")}
+              {$i18n.t(
+                "The usage limit for the model Llama-3.1-405B is 10 times per day, other models is 100 times per day."
+              )}
             </li>
           </ul>
         </div>
@@ -195,7 +178,8 @@
             {$i18n.t("Plus")}
           </h3>
           <p class="mt-6 flex items-baseline gap-x-1">
-            <span class="text-4xl font-bold tracking-tight">${upgradePrice}</span
+            <span class="text-4xl font-bold tracking-tight"
+              >${upgradePrice}</span
             >
             <span class="text-sm font-semibold leading-6 text-gray-400"
               >DGC</span
@@ -204,18 +188,38 @@
           <p class="text-sm leading-6 text-gray-400">
             {$i18n.t("per user, billed monthly")}
           </p>
-          <button
-            on:click={() => {
-              // handleUpgrade();
-              // toast.warning("Coming soon...");
-              $showConfirmUpgradeModal = true;
-            }}
-            href="#"
-            aria-describedby="tier-plus"
-            class="mt-6 px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
-          >
-            {$i18n.t("Upgrade to Plus")}
-          </button>
+          {#if $user.isPro}
+            <div
+              class="flex mt-6 px-1 primaryButton text-gray-100 text-sm transition rounded-lg w-full h-[40px]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                t="1728631736809" 
+                class="icon" 
+                viewBox="0 0 1024 1024" 
+                version="1.1" 
+                width="20" 
+                height="20">
+                  <path d="M938.666667 896H85.333333c-46.933333 0-85.333333-38.4-85.333333-85.333333V213.333333c0-46.933333 38.4-85.333333 85.333333-85.333333h853.333334c46.933333 0 85.333333 38.4 85.333333 85.333333v597.333334c0 46.933333-38.4 85.333333-85.333333 85.333333zM106.666667 213.333333c-12.8 0-21.333333 8.533333-21.333334 21.333334v554.666666c0 12.8 8.533333 21.333333 21.333334 21.333334h810.666666c12.8 0 21.333333-8.533333 21.333334-21.333334v-554.666666c0-12.8-8.533333-21.333333-21.333334-21.333334h-810.666666z m554.666666 426.666667V384H810.666667c34.133333 0 64 29.866667 64 64V512c0 34.133333-29.866667 64-64 64h-85.333334V640h-64z m64-119.466667h51.2c17.066667 0 34.133333-12.8 34.133334-34.133333V469.333333c0-17.066667-12.8-34.133333-34.133334-34.133333H725.333333v85.333333zM448 640v-64h34.133333v-128h-34.133333V384h128v64h-34.133333v128h34.133333V640h-128zM213.333333 640L149.333333 384H213.333333l42.666667 192L298.666667 384h64L298.666667 640H213.333333z" fill="#ffffff"></path>
+                </svg>
+                <div class="flex-1 flex justify-center items-center">
+                  Valid until {$user.proEndDate}
+                </div>
+            </div>
+          {:else}
+            <button
+              on:click={() => {
+                // handleUpgrade();
+                // toast.warning("Coming soon...");
+                $showConfirmUpgradeModal = true;
+              }}
+              href="#"
+              aria-describedby="tier-plus"
+              class="mt-6 px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
+            >
+              {$i18n.t("Upgrade to Plus")}
+            </button>
+          {/if}
+
           <ul
             role="list"
             class="mt-8 space-y-3 text-sm leading-6 xl:mt-10 text-gray-400"
@@ -249,9 +253,10 @@
                 />
               </svg>
               <div>
-
                 {$i18n.t("Access to ")}
-                <span class=" dark:text-gray-100 text-zinc-950">LIama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span>
+                <span class=" dark:text-gray-100 text-zinc-950"
+                  >LIama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span
+                >
               </div>
             </li>
             <li class="flex gap-x-3">
@@ -270,7 +275,6 @@
               {$i18n.t("Regular model updates")}
             </li>
 
-            
             <li class="flex gap-x-3">
               <svg
                 class="h-6 w-5 flex-none primaryText"
@@ -300,7 +304,9 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("The usage limit for the model Llama-3.1-405B is 1000 times per day, other model is 10000 times per day.")}
+              {$i18n.t(
+                "The usage limit for the model Llama-3.1-405B is 1000 times per day, other model is 10000 times per day."
+              )}
             </li>
           </ul>
         </div>

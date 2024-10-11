@@ -12,7 +12,7 @@ import logging
 from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
-from apps.web.models.vip import VIPStatuses
+from apps.web.models.vip import VIPStatuses, VIPStatusModelResp
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
 from constants import ERROR_MESSAGES
@@ -339,102 +339,61 @@ def update_user_vip(user_id, tx_hash):
 async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_current_user)):
 
     if session_user:
-            try:
-                # # 在这里添加你的业务逻辑，比如查询数据库
-                # users = Users.get_users_invited(session_user.id)
-                # print("users", users)
+        try:
+            # # 在这里添加你的业务逻辑，比如查询数据库
+            # users = Users.get_users_invited(session_user.id)
+            # print("users", users)
 
-                tx_hash = form_data.tx
-                tx = w3.eth.get_transaction(tx_hash)
+            tx_hash = form_data.tx
+            tx = w3.eth.get_transaction(tx_hash)
                 
                 
-                # try:
-                tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
-                print("receipt", tx_receipt)
+            # try:
+            tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
+            print("receipt", tx_receipt)
 
 
-                if tx_receipt.status == 1:
-                    # # 获取交易回执
-                    # tx_receipt = w3.eth.get_transaction_receipt(tx_hash)
-                    # 打印交易回执
-                    print("Transaction Receipt:", tx_receipt)
-                    # 解析事件日志
-                    for log in tx_receipt['logs']:
-                        # 打印日志信息
-                        print(log)
+            if tx_receipt.status == 1:
+                # # 获取交易回执
+                # tx_receipt = w3.eth.get_transaction_receipt(tx_hash)
+                # 打印交易回执
+                print("Transaction Receipt:", tx_receipt)
+                # 解析事件日志
+                for log in tx_receipt['logs']:
+                    # 打印日志信息
+                    print(log)
                         
-                        # 解析日志中的目标地址（假设合约事件中包含目标地址）
-                        # 这里需要根据你的具体合约和事件定义进行解析
-                        # 比如，如果你的合约事件定义为：event Transfer(address indexed from, address indexed to, uint256 value);
-                        event_signature_hash = w3.keccak(text='Transfer(address,address,uint256)').hex()
-                        if log['topics'][0].hex() == event_signature_hash:
-                            from_address_hex = log['topics'][1].hex()
-                            to_address_hex = log['topics'][2].hex()
+                    # 解析日志中的目标地址（假设合约事件中包含目标地址）
+                    # 这里需要根据你的具体合约和事件定义进行解析
+                    # 比如，如果你的合约事件定义为：event Transfer(address indexed from, address indexed to, uint256 value);
+                    event_signature_hash = w3.keccak(text='Transfer(address,address,uint256)').hex()
+                    if log['topics'][0].hex() == event_signature_hash:
+                        from_address_hex = log['topics'][1].hex()
+                        to_address_hex = log['topics'][2].hex()
 
-                            # 处理地址
-                            from_address_hex = from_address_hex[26:]
-                            to_address_hex = to_address_hex[26:]
+                        # 处理地址
+                        from_address_hex = from_address_hex[26:]
+                        to_address_hex = to_address_hex[26:]
 
-                            from_address = w3.to_checksum_address('0x' + from_address_hex)
-                            to_address = w3.to_checksum_address('0x' + to_address_hex)
+                        from_address = w3.to_checksum_address('0x' + from_address_hex)
+                        to_address = w3.to_checksum_address('0x' + to_address_hex)
                             
-                            print(f"From: {from_address}")
-                            print(f"To: {to_address}")
+                        print(f"From: {from_address}")
+                        print(f"To: {to_address}")
                             
-                            if to_address == "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808": 
-                                print("执行update_user_vip")
-                                update_user_vip(session_user.id, tx_hash)
+                        if to_address == "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808": 
+                            print("执行update_user_vip")
+                            update_user_vip(session_user.id, tx_hash)
                                 # Users.update_user_role_by_id(session_user.id, "pro")
 
 
-                                return True
+                            return True             
+                else:
+                    return False
 
-
-
-                    # print("tx", tx)
-
-                    # if tx:
-                    #     from_address = tx['from']
-                    #     to_address = tx['to']
-                    #     value = w3.from_wei(tx['value'], 'ether')
-                    #     gas_price = w3.from_wei(tx['gasPrice'], 'gwei')
-                        
-                    #     print(f"From: {from_address}")
-                    #     print(f"To: {to_address}")
-                    #     print(f"Value: {value} Ether")
-                    #     print(f"Gas Price: {gas_price} Gwei")
-                    
-                    
-                    # # 要价格校验逻辑， hash存一下，防止一个订单重复提交
-
-                    # if to_address == "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808": 
-                    #     print("执行update_user_vip")
-                    #     update_user_vip(session_user.id, tx_hash)
-                    #     # Users.update_user_role_by_id(session_user.id, "pro")
-
-
-                    #     return True
-                    else:
-                        return False
-                    
-
-                    # # 调用函数获取交易收据
-                    # receipt = get_transaction_receipt(tx_hash)
-                    # # print("receipt", receipt)
-
-
-                    # if receipt.status == 1 and to_address == "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808": 
-                    #     print("执行update_user_vip")
-                    #     update_user_vip(session_user.id)
-                    #     # Users.update_user_role_by_id(session_user.id, "pro")
-
-
-                    #     return True
-                    # else:
-                    #     return False
-            except Exception as e:
-                print("获取所有邀请用户时发生错误", e)
-                raise HTTPException(400, detail="Error retrieving invited users")
+        except Exception as e:
+            print("获取所有邀请用户时发生错误", e)
+            raise HTTPException(400, detail="Error retrieving invited users")
   
 
     raise HTTPException(
@@ -444,7 +403,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
 
 
 
-@router.post("/is_pro", response_model=bool)
+@router.post("/is_pro", response_model=Optional[VIPStatusModelResp])
 async def isPro( session_user=Depends(get_current_user)):
     # print("isPro session_user", session_user)
     if session_user:
@@ -458,13 +417,12 @@ async def isPro( session_user=Depends(get_current_user)):
             is_pro = bool(vip_status and VIPStatuses.is_vip_active(user_id))
 
             # print("isPro", is_pro, vip_status, VIPStatuses.is_vip_active(user_id), user_id, session_user.id, session_user.role)
-            return is_pro
+            vip_status.is_pro = is_pro
+            return vip_status
         except Exception as e:
             print("判断是否为vip", e)
             raise HTTPException(400, detail="Error is_pro")
             
-
-
 
 
 @router.post("/get_user_info",response_model=None)

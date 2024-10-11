@@ -57,7 +57,7 @@
     }
   }
 
-  const upgradePrice = 5;
+  const upgradePrice = 3;
 
   // const { writeContract } = useWriteContract()
 
@@ -69,13 +69,18 @@
       $currentWalletData?.walletInfo?.privateKey,
       $user
     );
+    if ($currentWalletData && $currentWalletData?.walletInfo?.privateKey) {   
+    } else {
+      toast.error($i18n.t("Please log in to your wallet first!"))
+      return;
+    }
 
     let res;
     if ($user?.address_type === "dbc") {
       const tx = await transferDgc(
         // $currentWalletData?.walletInfo?.address,
         // "0xde184A6809898D81186DeF5C0823d2107c001Da2",
-        "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808",
+        "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8",
         upgradePrice,
         $currentWalletData?.walletInfo?.privateKey
       );
@@ -119,12 +124,12 @@
       toast.success("Congratulations on successfully upgrading pro!");
       $showConfirmUpgradeModal = false;
       show = false;
-
-      const userIsPro: boolean = await isPro(localStorage.token); // 发送请求到你的 API
-      if (userIsPro) {
+      const userPro = await isPro(localStorage.token); // 发送请求到你的 API
+      if (userPro && userPro.is_pro) {
         user.set({
           ...$user,
-          isPro: userIsPro,
+          isPro: userPro.is_pro,
+          proEndDate: userPro.end_date
         });
       }
     }
@@ -173,7 +178,7 @@
           </p> -->
 
         <p class="text-md mb-4 w-full">
-          {$i18n.t("Are you sure to become a distinguished pro member?")}
+          {$i18n.t("Are you sure to become a distinguished Plus member?")}
         </p>
 
         <!-- <div class="pt-0.5 max-w-[300px]">

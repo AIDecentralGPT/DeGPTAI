@@ -59,6 +59,13 @@ class VIPStatusModel(BaseModel):
     start_date: date
     end_date: date
 
+class VIPStatusModelResp(BaseModel):
+    id: str
+    user_id: str
+    start_date: date
+    end_date: date
+    is_pro: Optional[bool] = None
+
 
 
 class VIPStatusTable:
@@ -84,10 +91,10 @@ class VIPStatusTable:
             log.error(f"insert_vip_status: {e}")
             return None
 
-    def get_vip_status_by_user_id(self, user_id: str) -> Optional[VIPStatusModel]:
+    def get_vip_status_by_user_id(self, user_id: str) -> Optional[VIPStatusModelResp]:
         try:
             vip_status = VIPStatus.get(VIPStatus.user_id == user_id)
-            return VIPStatusModel(**model_to_dict(vip_status))
+            return VIPStatusModelResp(**model_to_dict(vip_status))
         except Exception as e:
             log.error(f"get_vip_status_by_user_id: {e}")
             return None
