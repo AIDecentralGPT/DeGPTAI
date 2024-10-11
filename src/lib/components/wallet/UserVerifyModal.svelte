@@ -17,6 +17,7 @@
 
   let socket;
   let message = "";
+  let privateKey: any = null;
 
   function initSocket() {
     // 创建 WebSocket 连接
