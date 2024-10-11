@@ -381,7 +381,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
                         print(f"From: {from_address}")
                         print(f"To: {to_address}")
                             
-                        if to_address == "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808": 
+                        if to_address == "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8": 
                             print("执行update_user_vip")
                             update_user_vip(session_user.id, tx_hash)
                                 # Users.update_user_role_by_id(session_user.id, "pro")
@@ -414,6 +414,8 @@ async def isPro( session_user=Depends(get_current_user)):
             vip_status = VIPStatuses.get_vip_status_by_user_id(user_id)
             # print("vip_status", vip_status)
             # is_pro = vip_status and VIPStatuses.is_vip_active(user_id)
+            if vip_status is None:
+                return None;
             is_pro = bool(vip_status and VIPStatuses.is_vip_active(user_id))
 
             # print("isPro", is_pro, vip_status, VIPStatuses.is_vip_active(user_id), user_id, session_user.id, session_user.role)
