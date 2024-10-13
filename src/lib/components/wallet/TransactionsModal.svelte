@@ -1,18 +1,17 @@
 <script lang="ts">
   import { beforeUpdate, onMount } from "svelte";
-  import { fade } from "svelte/transition";
+  import { copyToClipboard } from "$lib/utils";
+  import { toast } from "svelte-sonner";
   import dayjs from "dayjs";
   import { getContext } from "svelte";
   import Modal from "../common/Modal.svelte";
-  import { currentWalletData, user } from "$lib/stores";
+  import { user } from "$lib/stores";
   import { getTransactions } from "$lib/apis/wallet";
   import { ethers } from "ethers";
   const i18n = getContext("i18n");
 
   export let show = false;
 
-  let modalElement = null;
-  let mounted = false;
   let transactionsList = [];
 
   onMount(() => {
@@ -61,6 +60,10 @@
       } 
     });
     console.log("transactionsList", transactionsList);
+  }
+
+  function formateAddress(val) {
+    return val.substring(0, 6) + '*****' + val.substring(val.length - 2);
   }
 </script>
 
@@ -119,6 +122,10 @@
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
                 >Value</th
               >
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+                >Date</th
+              >
             </tr>
           </thead>
           <tbody
@@ -126,20 +133,124 @@
           >
             {#each transactionsList as historyItem}
               <tr>
-                <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.coinType}</td
-                >
+                <td class="px-6 py-4 whitespace-nowrap">{historyItem.coinType}</td>
                 <!-- <td class="px-6 py-4 whitespace-nowrap">{historyItem.token_transfers ? historyItem.token_transfers.token_id : "N/A"}</td> -->
-                <td class="px-6 py-4 whitespace-nowrap">{historyItem.hash}</td>
-                <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.from.hash}</td
-                >
-                <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.toHash}</td
-                >
-                <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.coinAmount}</td
-                >
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {formateAddress(historyItem.hash)}
+                  <button
+                    on:click={async () => {
+                      const res = await copyToClipboard(historyItem.hash);
+                      if (res) {
+                        toast.success($i18n.t("Copying to clipboard was successful!"));
+                      }
+                    }}
+                    type="button"
+                    class="inset-y-0 right-0 px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 512 512"
+                      ><rect
+                        width="336"
+                        height="336"
+                        x="128"
+                        y="128"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        rx="57"
+                        ry="57"
+                      /><path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                      /></svg>
+                  </button>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {formateAddress(historyItem.from.hash)}
+                  <button
+                    on:click={async () => {
+                      const res = await copyToClipboard(historyItem.from.hash);
+                      if (res) {
+                        toast.success($i18n.t("Copying to clipboard was successful!"));
+                      }
+                    }}
+                    type="button"
+                    class="inset-y-0 right-0 px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 512 512"
+                      ><rect
+                        width="336"
+                        height="336"
+                        x="128"
+                        y="128"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        rx="57"
+                        ry="57"
+                      /><path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                      /></svg>
+                  </button>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {formateAddress(historyItem.toHash)}
+                  <button
+                    on:click={async () => {
+                      const res = await copyToClipboard(historyItem.toHash);
+                      if (res) {
+                        toast.success($i18n.t("Copying to clipboard was successful!"));
+                      }
+                    }}
+                    type="button"
+                    class="inset-y-0 right-0 px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 512 512"
+                      ><rect
+                        width="336"
+                        height="336"
+                        x="128"
+                        y="128"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        rx="57"
+                        ry="57"
+                      /><path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                      /></svg>
+                  </button>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">{historyItem.coinAmount}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{dayjs(new Date(historyItem.timestamp)).format('YYYY-MM-DD HH:mm:ss')}</td>
               </tr>
             {/each}
           </tbody>

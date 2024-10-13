@@ -153,14 +153,12 @@ class RewardsTable:
             print("amount", amount, "amount_wei", amount_wei, "w3.eth.chain_id", w3.eth.chain_id)
 
             # 调用合约的 transfer 函数
-            tx = dgc_contract.functions.transfer(
-                recipient_address,
-                int(amount_wei)
-            ).build_transaction({
-                'chainId': w3.eth.chain_id,
+            tx = dgc_contract.functions.transfer(recipient_address, int(amount_wei)).build_transaction({
+                # 'chainId': w3.eth.chain_id,
+                'from': sender_address,
+                'nonce': nonce,
                 'gas': gas_limit,
                 'gasPrice': gas_price,
-                'nonce': nonce,
             })
 
             # 签名交易

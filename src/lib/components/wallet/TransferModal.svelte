@@ -88,21 +88,9 @@
 
         try {
           await transferMethod(
-            // $currentWalletData?.pair?.address,
             address,
             amount,
             $currentWalletData?.walletInfo?.privateKey
-            // (res) => {
-            //   loading = false;
-            //   if (res?.msg) {
-            //     toast.error(res?.msg);
-            //     // throw new Error("111");
-            //   } else {
-            //     show = false;
-            //     toast.success($i18n.t("Transfer successful!"));
-            //     console.log(res);
-            //   }
-            // }
           );
           toast.success($i18n.t("Transfer successful,please be patient!"));
 
@@ -114,28 +102,6 @@
 
         show = false;
         updateWalletData($currentWalletData?.walletInfo)
-
-        // try {
-        //   await transferDBC(
-        //     $currentWalletData?.pair?.address,
-        //     amount,
-        //     password,
-        //     (res) => {
-        //       loading = false;
-        //       if (res?.msg) {
-        //         toast.error(res?.msg);
-        //         throw new Error("111");
-        //       } else {
-        //       show = false;
-
-        //         toast.success($i18n.t("Transfer successful!"));
-        //         console.log(res);
-        //       }
-        //     }
-        //   );
-        // } catch (error) {
-        //   // toast.success($i18n.t("Transfer successful!"));
-        // }
       }
     } catch (error) {
       loading = false;

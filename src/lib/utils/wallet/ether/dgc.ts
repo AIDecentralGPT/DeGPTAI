@@ -59,48 +59,28 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 
   // 获取钱包余额
   const dbcBalance = await getDbcBalance(wallet?.address);
-  
-  
-  // if(gasPrice > dbcBalance) {
-  //   toast.error("The balance is not enough to pay for gas!")
-  // }
 
   const gasNumber = ethers.formatEther(gasPrice);
 
-
   console.log("balance gasCost ", gasPrice, dbcBalance, gasNumber, );
 
+  // 比较余额和gas费用
+  if (gasNumber > dbcBalance) {
+    toast.error("The balance is not enough to pay for gas!");
+    return;
+  }
   
-
-
-    // 比较余额和gas费用
-    if (gasNumber > dbcBalance) {
-      toast.error("The balance is not enough to pay for gas!");
-      return;
-    }
-  
-
-
   const tx = {
     to: DGC_TOKEN_CONTRACT_ADDRESS,
-    // to: toAddress,
     value: 0,
     data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
-    // gasLimit: gasLimit,
-    // gasPrice: gasPrice,
-
     gasPrice: gasPrice, // 设置燃气价格
-    // gasLimit: ethers.hexlify(21000) // 设置燃气限制
-
   };
 
   try {
     const txResponse = await wallet.sendTransaction(tx);
-    console.log("Transaction sent:", txResponse);
-    console.log("Transaction hash:", txResponse.hash);
     return txResponse;
   } catch (error) {
-    console.error("Failed to send transaction:", error);
     throw error;
   }
 }
