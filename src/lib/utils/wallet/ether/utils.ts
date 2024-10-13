@@ -275,10 +275,8 @@ async function handleWalletSignIn({
 
     // 将消息转换为十六进制字符串
     const messageHex = ethers.hexlify(ethers.toUtf8Bytes(randomMessage));
-    console.log("Message Hex:", messageHex);
     console.log(
-      "因吹斯汀要的数据",
-
+      "第三方登录请求数据",
       {
         wallet: walletImported?.address,
         signature: signature,

@@ -163,11 +163,7 @@
       </div>
 
       <div class="flex items-center">
-        <w3m-button id="web3button" label="链接钱包" class="flex-1" />
-
-        <!-- 购买 -->
-        <!-- class=" p-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 rounded-lg " -->
-
+        <!-- <w3m-button id="web3button" label="链接钱包" class="flex-1" /> -->
         <button
           type="submit"
           on:click={async () => {
@@ -179,10 +175,6 @@
       </div>
     </div>
   {/if}
-
-  <!-- <button on:click={signDemoMessage}>Sign Message</button>
-  <button on:click={sendDemoTransaction}>Send Transaction</button> -->
-  <!-- <button on:click={calculateGasFee}>Calculate Gas Fee</button> -->
 </div>
 
 <style>

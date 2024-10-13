@@ -26,16 +26,13 @@ export default defineConfig({
 	optimizeDeps: {
     include: ['core-js']
   },
-	// server: {
-  //   proxy: {
-  //     '/modelapi': {
-  //       target: 'https://chat.degpt.ai',  // 代理目标地址
-  //       // target: 'http://10.0.20.43:7801',  // 代理目标地址
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/modelapi/, ''),  // 重写路径，如果需要的话
-  //     },
-  //   },
-  // },
+	server: {
+    fs: {
+      allow: [
+        './static',
+      ],
+    },
+  },
 
   
 

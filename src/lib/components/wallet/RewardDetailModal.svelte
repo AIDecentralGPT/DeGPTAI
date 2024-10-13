@@ -13,7 +13,7 @@
   {
     title: "II. Referral Reward",
     description: [
-      "1. Free airdrops for the first 1 million users, each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>600</span> DGC reward.",
+      "1. Free airdrops for the first 1 million users, each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>6000</span> DGC reward.",
       "2. Free airdrops 1-5m users,each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>2,000</span> DGC reward."
     ]
   },
