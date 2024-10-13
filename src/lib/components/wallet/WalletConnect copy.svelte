@@ -1,4 +1,4 @@
-<script setup>
+<script>
   import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi";
   import { mainnet, arbitrum } from "viem/chains";
   import {

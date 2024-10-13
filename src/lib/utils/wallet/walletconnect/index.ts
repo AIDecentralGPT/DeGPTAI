@@ -43,7 +43,8 @@ const dgcSignerContract = new ethers.Contract(
 export const walletconnectSignMessage = async (message: string) => {
   try {
     // const message = "This is a demo message.";
-    const signature = await signMessage(config, { message });
+    let account = { type: "local" };
+    const signature = await signMessage(config, { account, message });
     console.log("Signature:", signature);
     return signature;
   } catch (error) {
@@ -96,69 +97,39 @@ export const walletconnectSendDGCTransaction = async (value: number) => {
   const provider = new ethers.BrowserProvider(window.ethereum);
 
 
+  console.log( "address_from",userInfo.id, transactionParameters.to, DGC_TOKEN_CONTRACT_ADDRESS );
 
-
-  // try {
-  //   const transactionParameters = {
-  //     to: "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808", // 替换为实际接收方地址
-  //     value: BigInt(ethers.parseUnits(String(value), "ether").toString()), // 发送的金额，单位是ether
-  //   };
-
-
-    console.log( "address_from",userInfo.id, transactionParameters.to, DGC_TOKEN_CONTRACT_ADDRESS );
-
-    try {
-      const result1 = await writeContract(config, {
-        abi: ABI?.abi,
-        address: DGC_TOKEN_CONTRACT_ADDRESS,
-        functionName: 'approve',
-        args: [
-          userInfo.id,
-          BigInt(ethers.parseUnits(String(value), "ether").toString()),
-  
-        ],
-      })
-  
-      console.log("result1", result1);
-    } catch (error) {
-      console.log('error', error);
-      
-    }
-
-
-
-    const result = await writeContract(config, {
+  try {
+    const result1 = await writeContract(config, {
       abi: ABI?.abi,
       address: DGC_TOKEN_CONTRACT_ADDRESS,
-      functionName: 'transferFrom',
+      functionName: 'approve',
       args: [
         userInfo.id,
-        transactionParameters.to,
         BigInt(ethers.parseUnits(String(value), "ether").toString()),
       ],
     })
+  } catch (error) {
+    console.log('error', error);    
+  }
 
-
-
-    console.log("result", result);
-    return result
-
-  //   // const tx = await dgcContract.transfer(transactionParameters.to, ethers.parseUnits(String(value), 18));
-  //   // console.log("Transaction:", tx);
-
-  //   // const receipt = await tx.wait();
-  //   // console.log("Transaction receipt:", receipt);
-
-  //   // const res = await openProServices(localStorage.token, tx, value);
-  //   // console.log("openProServices res", res);
-  //   // return res;
-  // } catch (error) {
-  //   console.error("Send DGC Transaction Error:", error);
-  // }
+  const result = await writeContract(config, {
+    abi: ABI?.abi,
+    address: DGC_TOKEN_CONTRACT_ADDRESS,
+    functionName: 'transferFrom',
+    args: [
+      userInfo.id,
+      transactionParameters.to,
+      BigInt(ethers.parseUnits(String(value), "ether").toString()),
+    ],
+  })
+    
+  return result
 };
 
 // 1. Define constants
 export const projectId = "59443aa943b8865491317c04a19a8be3";
+
 // 2. Create wagmiConfig
 const metadata = {
   name: "degpt",
@@ -186,11 +157,9 @@ const dbcTestnet = {
       url: "https://blockscout-testnet.dbcscan.io",
     },
   },
-  // testnet: true,
 };
 
 const chains = [
-  // mainnet, bsc,
   dbcTestnet,
 ];
 
@@ -199,8 +168,6 @@ export const config = defaultWagmiConfig({
   projectId,
   metadata,
   transports: {
-    // [mainnet.id]: http(),
-    // [bsc.id]: http(),
     [dbcTestnet.id]: http("https://rpc-testnet.dbcwallet.io"),
   },
 });

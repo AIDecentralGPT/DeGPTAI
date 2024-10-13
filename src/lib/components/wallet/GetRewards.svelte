@@ -23,19 +23,19 @@
   const items = [
     {
       id: "new_wallet",
-      text: "Create Wallet",
+      text: $i18n.t("Create Wallet"),
       reward: "2000DGCs",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6 20q-1.65 0-2.825-1.175T2 16V8q0-1.65 1.175-2.825T6 4h12q1.65 0 2.825 1.175T22 8v8q0 1.65-1.175 2.825T18 20zM6 8h12q.55 0 1.05.125t.95.4V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8v.525q.45-.275.95-.4T6 8m-1.85 3.25l11.125 2.7q.225.05.45 0t.425-.2l3.475-2.9q-.275-.375-.7-.612T18 10H6q-.65 0-1.137.338t-.713.912"/></svg>',
     },
     {
       id: "clock_in",
-      text: "Clock In",
+      text: $i18n.t("Clock In"),
       reward: "15000DGCs",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M4 19q-.825 0-1.412-.587T2 17V5q0-.825.588-1.412T4 3h16q.825 0 1.413.588T22 5v12q0 .825-.587 1.413T20 19h-4v1q0 .425-.288.713T15 21H9q-.425 0-.712-.288T8 20v-1zm0-2h16V5H4zm0 0V5zm4-2h8v-.55q0-1.125-1.1-1.787T12 12t-2.9.663T8 14.45zm4-4q.825 0 1.413-.587T14 9t-.587-1.412T12 7t-1.412.588T10 9t.588 1.413T12 11"/></svg>',
     },
     {
       id: "invite",
-      text: "Share",
+      text: $i18n.t("Share"),
       reward: "10000DGCs",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M18 22q-1.25 0-2.125-.875T15 19q0-.175.025-.363t.075-.337l-7.05-4.1q-.425.375-.95.588T6 15q-1.25 0-2.125-.875T3 12t.875-2.125T6 9q.575 0 1.1.213t.95.587l7.05-4.1q-.05-.15-.075-.337T15 5q0-1.25.875-2.125T18 2t2.125.875T21 5t-.875 2.125T18 8q-.575 0-1.1-.212t-.95-.588L8.9 11.3q.05.15.075.338T9 12t-.025.363t-.075.337l7.05 4.1q.425-.375.95-.587T18 16q1.25 0 2.125.875T21 19t-.875 2.125T18 22"/></svg>',
     },
@@ -115,7 +115,7 @@
   
   <div class="flex flex-wrap lg:justify-between">
     {#each items as item, index}
-      {#if (item.text !== "Create Wallet" && $user?.id?.startsWith("0x")) || (item.text === "Create Wallet" && !$user?.id.startsWith("0x"))}
+      {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id.startsWith("0x"))}
         <div
           class="flex direction-column justify-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
         >
@@ -134,7 +134,7 @@
               on:click={async () => {
                 console.log("user info ", $user);
   
-                if (item.text === "Create Wallet") {
+                if (item.id === "new_wallet") {
                   $showNewWalletModal = true;
                   return
                 }
@@ -173,7 +173,7 @@
             >
               {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
                 ? "Done"
-                : "Get Now!"}
+                : $i18n.t("Get Now!")}
             </button>
           </div>
         </div>

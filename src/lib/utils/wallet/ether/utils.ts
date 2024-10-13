@@ -264,6 +264,7 @@ async function handleWalletSignIn({
   signature?: string;
   privateKey?: string;
 }) {
+  
   let walletSignInResult = {};
   const randomMessage = generateRandomMessage(32);
 

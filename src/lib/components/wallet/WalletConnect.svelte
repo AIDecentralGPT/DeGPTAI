@@ -2,35 +2,25 @@
   import { getContext, onMount } from "svelte";
   import { writable } from "svelte/store";
 
-  import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi";
-  import { mainnet, bsc } from "@wagmi/core/chains";
+  import { createWeb3Modal } from "@web3modal/wagmi";
   import {
-    reconnect,
-    http,
     watchConnections,
-    sendTransaction,
-    signMessage,
     disconnect,
     getAccount,
     watchAccount,
   } from "@wagmi/core";
-  import { ethers } from "ethers";
   import { handleWalletSignIn, provider, signOut } from "$lib/utils/wallet/ether/utils";
   import {
     showPriceModal,
     showRewardsModal,
     showShareModal,
     threesideAccount,
-    currentWalletData,
     user,
   } from "$lib/stores";
-  import DbcThreeSideWalletDetail from "./DbcThreeSideWalletDetail.svelte";
   import {
     config,
     projectId,
-    walletconnectSignMessage,
   } from "$lib/utils/wallet/walletconnect/index";
-  import { printSignIn } from "$lib/apis/auths";
   const i18n = getContext("i18n");
 
   // 定义存储
@@ -48,51 +38,15 @@
     }
   };
 
-  // const calculateGasFee = async () => {
-  //   try {
-  //     const gasPrice = await provider.getGasPrice();
-  //     const gasLimit = 21000;
-  //     const gasFee = gasPrice.mul(gasLimit);
-  //     console.log('Gas Fee (in wei):', gasFee.toString());
-  //     console.log('Gas Fee (in ether):', ethers.formatEther(gasFee));
-  //   } catch (error) {
-  //     console.error('Calculate Gas Fee Error:', error);
-  //   }
-  // };
-
   const initConnection = async () => {
-    try {
-      console.log("initConnection");
-      let res = [];
-
-      if ($user?.id && $user?.address_type === "threeSide") {
-        // res = await reconnect(config);
-      }
-
-      console.log("reconnect res", res);
-      if (res.length) {
-        const address = res[0].accounts[0];
-        // threesideAccount.update((prev) => {
-        //   return {
-        //     // ...prev,
-        //     address,
-        //   };
-        // });
-        // // walletAddress.set(address);
-        await getBalance(address);
-      } else {
-        // walletAddress.set('');
-        // walletBalance.set(0);
-      }
-    } catch (error) {
-      console.error("Reconnect Error:", error);
-    }
+    
   };
 
   onMount(() => {
     initConnection();
     watchConnections(config, {
       async onChange(data) {
+        console.log("=================connections===============", data)
         if (data.length) {
           const address = data[0].accounts[0];
           walletAddress.set(address);
@@ -114,26 +68,20 @@
 
   watchAccount(config, {
     async onChange(account, prevAccount) {
-      console.log("1", account, prevAccount);
-      // if (isConnected) {
-      //   signMessage(config, { message: "hello world" }).then((res) => {
-      //     console.log(123, res);
-      //   });
-      // }
-
-      // CreateSignature($currentWalletData.pair,"123", undefined  )
+      console.log("=============scan wallet================", account, prevAccount);
 
       $threesideAccount = account;
 
       if (account.status === "connected" ) {
-        handleWalletSignIn({
-          walletImported: {
-            address: account?.address,
-          },
-          address_type: "threeSide",
-        });
+        // handleWalletSignIn({
+        //   walletImported: {
+        //     address: account?.address,
+        //   },
+        //   address_type: "threeSide",
+        // });
       }
       if(account.status ==="disconnected" ) {
+        console.log("=============disconnected===============")
         signOut();
       }
 
@@ -141,9 +89,6 @@
   });
 
   function connect() {
-    console.log("三方钱包数据", getAccount(config), $user);
-    // disconnect(config);
-
     if ($user?.id?.startsWith('0x') && getAccount(config).isConnected) {
       disconnect(config);
         signOut();
