@@ -44,9 +44,9 @@
 				class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none"
 				draggable="false"/> -->
 
-			{#if $user?.address_type === 'threeSide'}
-				<w3m-button id="web3button" label="链接钱包"/>
-			{/if}
+				<!-- {#if $user?.address_type === 'threeSide'}
+					<w3m-button id="web3button" label="链接钱包"/>
+				{/if} -->
 
 
 

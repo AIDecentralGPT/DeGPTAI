@@ -132,10 +132,8 @@
     </button>
   {/if}
 
-
-  {#if $user?.id?.startsWith("0x") && $user?.address_type === "threeSide"}
+  <!-- {#if $user?.id?.startsWith("0x") && $user?.address_type === "threeSide"}
     <div>
-      <!-- 分享按钮 -->
       <div class="flex justify-between items-center flex-row-reverse mb-2">
         <button
           class="flex gap-2 items-center cursor-pointer"
@@ -162,7 +160,6 @@
         </button>
       </div>
 
-      <!-- 
       <div class="flex items-center">
         <w3m-button id="web3button" label="链接钱包" class="flex-1" />
         <button
@@ -174,9 +171,9 @@
           {$i18n.t("Rewards")}
         </button>
       </div>
-      -->
+      
     </div>
-  {/if}
+  {/if} -->
 </div>
 
 <style>
