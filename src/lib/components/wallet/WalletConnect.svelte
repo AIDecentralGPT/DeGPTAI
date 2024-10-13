@@ -162,8 +162,9 @@
         </button>
       </div>
 
+      <!-- 
       <div class="flex items-center">
-        <!-- <w3m-button id="web3button" label="链接钱包" class="flex-1" /> -->
+        <w3m-button id="web3button" label="链接钱包" class="flex-1" />
         <button
           type="submit"
           on:click={async () => {
@@ -173,6 +174,7 @@
           {$i18n.t("Rewards")}
         </button>
       </div>
+      -->
     </div>
   {/if}
 </div>

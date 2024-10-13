@@ -99,7 +99,8 @@
   {/if}
 
   <!-- 钱包数据面板 -->
-  {#if $user?.id?.startsWith('0x') && $user?.address_type === 'dbc'}
+  <!-- {#if $user?.id?.startsWith('0x') && $user?.address_type === 'dbc'} -->
+  {#if $user?.id?.startsWith('0x')}
     <DbcAccountDetail />
   {/if}
 </div>
