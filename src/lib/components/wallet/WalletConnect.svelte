@@ -11,7 +11,6 @@
   } from "@wagmi/core";
   import { handleWalletSignIn, provider, signOut } from "$lib/utils/wallet/ether/utils";
   import {
-    showPriceModal,
     showRewardsModal,
     showShareModal,
     threesideAccount,
@@ -68,20 +67,19 @@
 
   watchAccount(config, {
     async onChange(account, prevAccount) {
-      console.log("=============scan wallet================", account, prevAccount);
 
+      console.log("=============scan wallet================", account, prevAccount);
       $threesideAccount = account;
 
       if (account.status === "connected" ) {
-        // handleWalletSignIn({
-        //   walletImported: {
-        //     address: account?.address,
-        //   },
-        //   address_type: "threeSide",
-        // });
+        handleWalletSignIn({
+          walletImported: {
+            address: account?.address,
+          },
+          address_type: "threeSide",
+        });
       }
       if(account.status ==="disconnected" ) {
-        console.log("=============disconnected===============")
         signOut();
       }
 
@@ -136,17 +134,6 @@
 
 
   {#if $user?.id?.startsWith("0x") && $user?.address_type === "threeSide"}
-    <!-- <div class="py-2 px-3"> -->
-    <!-- 升级计划 -->
-    <button
-      on:click={() => {
-        $showPriceModal = true;
-      }}
-      class="w-full px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-    >
-      <span class="relative">{$i18n.t("Upgrade Plan")}</span>
-    </button>
-
     <div>
       <!-- 分享按钮 -->
       <div class="flex justify-between items-center flex-row-reverse mb-2">

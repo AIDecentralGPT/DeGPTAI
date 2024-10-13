@@ -44,9 +44,8 @@ declare module '$env/static/private' {
 	export const DokanLibrary2: string;
 	export const DriverData: string;
 	export const EDITOR: string;
+	export const EFC_8452: string;
 	export const FORCE_COLOR: string;
-	export const FPS_BROWSER_APP_PROFILE_STRING: string;
-	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GATEWAY_VM_OPTIONS: string;
 	export const GIT_ASKPASS: string;
 	export const GOLAND_VM_OPTIONS: string;
@@ -90,6 +89,7 @@ declare module '$env/static/private' {
 	export const NVM_HOME: string;
 	export const NVM_SYMLINK: string;
 	export const OLLAMA_MODELS: string;
+	export const OneDrive: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const OS: string;
 	export const Path: string;
@@ -181,9 +181,8 @@ declare module '$env/dynamic/private' {
 		DokanLibrary2: string;
 		DriverData: string;
 		EDITOR: string;
+		EFC_8452: string;
 		FORCE_COLOR: string;
-		FPS_BROWSER_APP_PROFILE_STRING: string;
-		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GATEWAY_VM_OPTIONS: string;
 		GIT_ASKPASS: string;
 		GOLAND_VM_OPTIONS: string;
@@ -227,6 +226,7 @@ declare module '$env/dynamic/private' {
 		NVM_HOME: string;
 		NVM_SYMLINK: string;
 		OLLAMA_MODELS: string;
+		OneDrive: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		OS: string;
 		Path: string;

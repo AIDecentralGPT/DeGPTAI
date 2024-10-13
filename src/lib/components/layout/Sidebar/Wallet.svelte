@@ -1,40 +1,19 @@
 <script lang="ts">
-  import { DropdownMenu } from "bits-ui";
-  import { createEventDispatcher, getContext } from "svelte";
-
-  import { flyAndScale } from "$lib/utils/transitions";
-  import { goto } from "$app/navigation";
-  import ArchiveBox from "$lib/components/icons/ArchiveBox.svelte";
+  import { getContext } from "svelte";
   import {
-    showSettings,
     showNewWalletModal,
     showOpenWalletModal,
     showPriceModal,
-    currentWalletData,
-    chatId,
-    pageUpdateNumber,
-    threesideAccount,
     user,
   } from "$lib/stores";
-  import { fade, slide } from "svelte/transition";
-  import {
-    GetApi,
-    createAccountFromSeed,
-    dbcPriceOcw,
-  } from "$lib/utils/wallet/dbc";
   import DbcAccountDetail from "$lib/components/wallet/DbcAccountDetail.svelte";
   import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
-  // import connectThreeSide from "$lib/utils/wallet/walletconnect";
-
+  
   const i18n = getContext("i18n");
 
   export let show = false;
   export let role = "";
   export let className = "max-w-[240px]";
-
-  const dispatch = createEventDispatcher();
-
-  // createWalletConnect()
 </script>
 
 <div name="content">
@@ -52,7 +31,7 @@
     </button>
   </div>
   
-
+  <!-- 第三方方式登录钱包 -->
   <WalletConnect />
 
   <!-- 创建，连接，打开钱包，三个按钮 -->
@@ -61,16 +40,6 @@
       <button
         class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
         on:click={async () => {
-          // // localStorage.removeItem('token');
-          // // location.href = '/auth';
-          // // show = false;
-          // // GetApi()
-          // console.log("createAccount在这里");
-
-          // const res = await createAccountFromSeed()
-
-          // // const res = await dbcPriceOcw()
-          // console.log("res", res);
           $showNewWalletModal = true;
         }}
       >
@@ -92,17 +61,6 @@
       <button
         class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
         on:click={async () => {
-          // localStorage.removeItem('token');
-          // location.href = '/auth';
-          // show = false;
-          // GetApi()
-          // console.log("createAccount在这里");
-
-          // const res = await createAccountFromSeed()
-
-          // // const res = await dbcPriceOcw()
-          // console.log("res", res);
-
           $showOpenWalletModal = true;
         }}
       >

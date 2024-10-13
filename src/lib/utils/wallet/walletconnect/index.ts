@@ -43,8 +43,7 @@ const dgcSignerContract = new ethers.Contract(
 export const walletconnectSignMessage = async (message: string) => {
   try {
     // const message = "This is a demo message.";
-    let account = { type: "local" };
-    const signature = await signMessage(config, { account, message });
+    const signature = await signMessage(config, { message });
     console.log("Signature:", signature);
     return signature;
   } catch (error) {

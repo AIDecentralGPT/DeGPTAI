@@ -1,23 +1,12 @@
 <script lang="ts">
-  import {
-    exportAccountForKeystore,
-    createAccountFromMnemonic,
-    createAccountFromSeed,
-    getCurrentPair,
-    savePair,
-  } from "./../../utils/wallet/dbc.js";
-  import { getContext, onMount } from "svelte";
+  import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
 
   import { getModels as _getModels, copyToClipboard } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import { onGetBalance } from "$lib/utils/wallet/dbc.js";
-  import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import {
     currentWalletData,
-    models,
-    settings,
     user,
     inviterId,
   } from "$lib/stores";
@@ -200,8 +189,7 @@
                 loading = true;
 
                 // 1. 创建钱包
-                const { wallet, keystore, accountPrivateKey } =
-                  await createAccount(password);
+                const { wallet, keystore, accountPrivateKey } = await createAccount(password);
                 console.log("wallet", wallet);
                 keystoreJson = keystore;
                 privateKey = accountPrivateKey;
