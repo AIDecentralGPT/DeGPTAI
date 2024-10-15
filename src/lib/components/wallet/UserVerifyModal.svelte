@@ -467,7 +467,7 @@
             </div>
           {/if}
           {#if isMobile}
-            <p>Preparing to jump to the face verification page</p>
+            <p>Preparing to switch to the face verification page</p>
           {/if}
 
           <!-- <button on:click={getFaceRes}> 
