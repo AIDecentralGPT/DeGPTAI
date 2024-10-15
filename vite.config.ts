@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import legacy from "@vitejs/plugin-legacy";
 
 // /** @type {import('vite').Plugin} */
 // const viteServerConfig = {
@@ -16,7 +17,13 @@ import { defineConfig } from 'vite';
 // };
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [
+		sveltekit(),
+		legacy({
+			targets: ["Chrome 64"],
+			modernPolyfills: true,
+		}),
+	],
 	define: {
 		APP_VERSION: JSON.stringify(process.env.npm_package_version)
 	},
@@ -24,13 +31,13 @@ export default defineConfig({
 		format: 'es'
 	},
 	optimizeDeps: {
-    include: ['core-js']
-  },
+		include: ['core-js']
+	},
 	server: {
-    fs: {
-      allow: [
-        './static',
-      ],
-    },
-  },
+		fs: {
+			allow: [
+				'./static',
+			],
+		},
+	},
 });
