@@ -72,8 +72,8 @@
 
     let res = {}
     if(localStorage.token) {
-      res = await getUserInfo(localStorage.token);
-      await user.set(res);
+      // res = await getUserInfo(localStorage.token);
+      // await user.set(res);
     }
     else {
        res = await printSignIn();

@@ -66,7 +66,7 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 
   // 比较余额和gas费用
   if (gasNumber > dbcBalance) {
-    toast.error("The balance is not enough to pay for gas!");
+    toast.error("The DBC is not enough to pay!");
     return;
   }
   

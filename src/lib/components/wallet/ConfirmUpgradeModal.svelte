@@ -90,13 +90,11 @@
       }
     }
     if ($user?.address_type === "threeSide") {
-      console.log(111);
 
       // const res = await walletconnectSendTransaction({
       //   value: upgradePrice,
       // });
       const txhash = await walletconnectSendDGCTransaction(upgradePrice);
-      console.log(222, txhash);
 
       if(txhash){
         res = await openProServices(localStorage.token, txhash, 0);
