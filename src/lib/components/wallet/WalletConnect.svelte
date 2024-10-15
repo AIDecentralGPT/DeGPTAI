@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { getContext, onMount } from "svelte";
   import { writable } from "svelte/store";
 
@@ -11,8 +11,6 @@
   } from "@wagmi/core";
   import { handleWalletSignIn, provider, signOut } from "$lib/utils/wallet/ether/utils";
   import {
-    showRewardsModal,
-    showShareModal,
     threesideAccount,
     user,
   } from "$lib/stores";
@@ -25,7 +23,7 @@
   // 定义存储
   const walletAddress = writable("");
   const walletBalance = writable(0);
-  let modal = null;
+  let modal:any = null;
 
   const getBalance = async (address) => {
     try {
@@ -45,7 +43,6 @@
     initConnection();
     watchConnections(config, {
       async onChange(data) {
-        console.log("=================connections===============", data)
         if (data.length) {
           const address = data[0].accounts[0];
           walletAddress.set(address);
@@ -89,7 +86,7 @@
   function connect() {
     if ($user?.id?.startsWith('0x') && getAccount(config).isConnected) {
       disconnect(config);
-        signOut();
+      signOut();
     } else {
       modal.open();
     }
