@@ -55,7 +55,6 @@ jobs: # 定义需要执行的工作
             # 检查并停止已经运行的容器
             if [ "$(docker ps -q -f name=open-webui)" ]; then
               docker stop open-webui # 停止运行中的容器
-<<<<<<< HEAD
               docker rm open-webui  # 删除容器
               
               # 等待容器完全删除
@@ -63,11 +62,6 @@ jobs: # 定义需要执行的工作
                 echo "Waiting for open-webui container to be removed..."
                 sleep 2
               done
-=======
-              # docker rm open-webui  # 删除容器
-              sleep 2
-
->>>>>>> fingerprintAuth-out
 
             fi
       
