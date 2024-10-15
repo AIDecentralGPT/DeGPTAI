@@ -46,6 +46,8 @@ declare module '$env/static/private' {
 	export const EDITOR: string;
 	export const EFC_8452: string;
 	export const FORCE_COLOR: string;
+	export const FPS_BROWSER_APP_PROFILE_STRING: string;
+	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GATEWAY_VM_OPTIONS: string;
 	export const GIT_ASKPASS: string;
 	export const GOLAND_VM_OPTIONS: string;
@@ -183,6 +185,8 @@ declare module '$env/dynamic/private' {
 		EDITOR: string;
 		EFC_8452: string;
 		FORCE_COLOR: string;
+		FPS_BROWSER_APP_PROFILE_STRING: string;
+		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GATEWAY_VM_OPTIONS: string;
 		GIT_ASKPASS: string;
 		GOLAND_VM_OPTIONS: string;
