@@ -37,7 +37,7 @@
     const mergedItems = [...res[0].items, ...res[1].items];
 
     // 按时间排序
-    mergedItems.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    mergedItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
       const coinType = item?.tx_types?.[0] === "coin_transfer" ? "DBC" : "DGC";
@@ -65,6 +65,26 @@
   function formateAddress(val) {
     return val.substring(0, 6) + '*****' + val.substring(val.length - 2);
   }
+
+  // 分页功能
+  let currentPage = 0;
+  let pageSize = 10;
+
+  $: pageTotal = Math.ceil(transactionsList.length / pageSize);
+  $: pagedItems = transactionsList.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+ 
+  function previousPage() {
+    if (currentPage > 0) {
+      currentPage--;
+    }
+  }
+ 
+  function nextPage() {
+    if (currentPage < (transactionsList.length / pageSize) - 1) {
+      currentPage++;
+    }
+  }
+
 </script>
 
 {#if show}
@@ -94,10 +114,10 @@
     </div>
 
     <div
-      class="m-auto rounded-2xl max-w-full mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4"
+      class="m-auto rounded-2xl max-w-full mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4 overflow-auto h-[600px]"
     >
       <!-- <h1 class="text-xl font-semibold mb-4">{$i18n.t("Transactions")}</h1> -->
-      <div class="overflow-x-auto">
+      <div>
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
@@ -131,7 +151,7 @@
           <tbody
             class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs"
           >
-            {#each transactionsList as historyItem}
+            {#each pagedItems as historyItem}
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap">{historyItem.coinType}</td>
                 <!-- <td class="px-6 py-4 whitespace-nowrap">{historyItem.token_transfers ? historyItem.token_transfers.token_id : "N/A"}</td> -->
@@ -257,13 +277,15 @@
         </table>
       </div>
     </div>
+    <div class="flex justify-center items-center h-[50px]">
+      <button class="px-2 py-1 fs-12 mr-4 dark:bg-white dark:text-zinc-950 text-gray-100 rounded-md" on:click={previousPage}> Pre </button>
+      <div class="fs-16">{ currentPage + 1 } / { pageTotal }</div>
+      <button class="px-2 py-1 fs-12 ml-4 dark:bg-white dark:text-zinc-950 text-gray-100 rounded-md" on:click={nextPage}> Next </button>
+    </div>  
   </Modal>
 {/if}
 
 <style>
-  .modal-content {
-    animation: scaleUp 0.1s ease-out forwards;
-  }
 
   @keyframes scaleUp {
     from {
@@ -276,20 +298,10 @@
     }
   }
 
-  .icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3em;
-    height: 3em;
-    border-radius: 50%;
-    background-color: rgba(184, 142, 86, 1);
-    margin: 0 auto 1em;
+  .fs-12 {
+    font-size: 12px;
   }
-
-  .icon-wrapper svg {
-    width: 1.5em;
-    height: 1.5em;
-    fill: white;
+  .fs-16 {
+    font-size: 20px;
   }
 </style>
