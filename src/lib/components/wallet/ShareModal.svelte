@@ -61,8 +61,8 @@
               </svg>
             </div>
             <h3 class="text-lg font-bold mb-2">01</h3>
-            <p class="text-sm text-gray-600">
-              {$i18n.t('Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.')}
+            <p class="text-sm text-gray-100">
+              {$i18n.t('Invite friends to create a wallet to earn 6000 DGCs rewards,youfriends will also carn 1000 DGC')}
             </p>
           </div>
           <div class=" flex flex-col justify-center items-center">
@@ -98,8 +98,8 @@
               </svg>
             </div>
             <h3 class="text-lg font-bold mb-2">02</h3>
-            <p class="text-sm text-gray-600">
-              {$i18n.t('You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.')}
+            <p class="text-sm text-gray-100">
+              {$i18n.t('The user you invite must complcte wallet creation and KYC verification process before you can receive the reward')}
             </p>
           </div>
           <!-- <div class=" flex flex-col justify-center items-center">
@@ -129,11 +129,6 @@
           </div> -->
         </div>
 
-        <p class="text-center text-sm text-primary mb-4"  >
-          Invite at least 2 friends for invitation rewards
-        </p>
-
-  
         <div class="text-center mt-8 flex justify-center gap-4 items-center flex-col md:flex-row">
           <p
             class="

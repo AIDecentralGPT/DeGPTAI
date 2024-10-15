@@ -81,7 +81,7 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
     const txResponse = await wallet.sendTransaction(tx);
     return txResponse;
   } catch (error) {
-    throw error;
+    console.log("==============transferDgc=============", error) ;
     toast.error("The DGC balance is not enough to pay. You can invite a friend to obtain 6000 DGC");
     return;
   }
