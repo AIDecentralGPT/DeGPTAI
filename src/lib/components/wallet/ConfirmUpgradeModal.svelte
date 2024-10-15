@@ -84,7 +84,6 @@
         upgradePrice,
         $currentWalletData?.walletInfo?.privateKey
       );
-      console.log("transferDgc", tx);
       if (tx?.hash) {
         res = await openProServices(localStorage.token, tx?.hash, 0);
       }

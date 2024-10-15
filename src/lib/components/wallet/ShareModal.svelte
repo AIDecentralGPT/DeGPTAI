@@ -62,7 +62,7 @@
             </div>
             <h3 class="text-lg font-bold mb-2">01</h3>
             <p class="text-sm text-gray-600">
-              {$i18n.t('Invite friends to create a wallet to earn 1000 DGCs rewards,your friends will also earn 1000 DGCs rewards.')}
+              {$i18n.t('Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.')}
             </p>
           </div>
           <div class=" flex flex-col justify-center items-center">
@@ -99,7 +99,7 @@
             </div>
             <h3 class="text-lg font-bold mb-2">02</h3>
             <p class="text-sm text-gray-600">
-              {$i18n.t('You can invite up to 10 friends per day, with a maximum reward of 10,000 DGCs per day.')}
+              {$i18n.t('You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.')}
             </p>
           </div>
           <!-- <div class=" flex flex-col justify-center items-center">
