@@ -144,7 +144,7 @@
 							class="relative rounded-full dark:bg-gray-700"
 							type="button"
 							on:click={() => {
-								profileImageInputElement.click();
+								// profileImageInputElement.click();
 							}}
 						>
 							<img
@@ -153,7 +153,7 @@
 								class=" rounded-full size-16 object-cover"
 							/>
 
-							<div
+							<!-- <div
 								class="absolute flex justify-center rounded-full bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-gray-700 bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50"
 							>
 								<div class="my-auto text-gray-100">
@@ -168,7 +168,7 @@
 										/>
 									</svg>
 								</div>
-							</div>
+							</div> -->
 						</button>
 					</div>
 				</div>
@@ -204,12 +204,12 @@
 							}}>{$i18n.t('Use Gravatar')}</button
 						>
 
-						<button
+						<!-- <button
 							class=" text-xs text-center text-gray-800 dark:text-gray-400 rounded-lg px-2 py-1"
 							on:click={async () => {
 								profileImageUrl = '/user.png';
 							}}>{$i18n.t('Remove')}</button
-						>
+						> -->
 					</div>
 				</div>
 			</div>

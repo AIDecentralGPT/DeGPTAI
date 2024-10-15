@@ -53,7 +53,7 @@
 				"content": "Check the following sentence for grammar and clarity: \"[sentence]\". Rewrite it for better readability while maintaining its original meaning."
 			}
 		],
-		"default_models": "Qwen2-72B,Llama3-70B"
+		"default_models": "Llama-3.1-405B,Qwen2-72B"
 	},
 	"openai": {
 		"api_base_urls": [

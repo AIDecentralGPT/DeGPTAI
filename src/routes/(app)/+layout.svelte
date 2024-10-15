@@ -78,15 +78,12 @@
 
 	onMount( async () => {
 
-
-
 		// localStorage.setItem("token", "public_token")
 		if ($config) {
 				if (localStorage.token) {
 					// Get Session User Info
 					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
 						// toast.error(error);
-
 						return null;
 					});
 
@@ -102,21 +99,13 @@
 					// await goto('/auth');
 				}
 			}
-
-
 		console.log(
 			"$user", $user
 		);
 		
 
 		if ($user === undefined) {
-			// await goto('/auth');
-			// await handleSigninAsIntialStatus()
 			await models.set(await getModels());
-
-			
-
-
 		} else if (['user', 'admin', 'walletUser', 'visitor'].includes($user?.role)) {
 			try {
 				// Check if IndexedDB exists
@@ -244,12 +233,8 @@
 <!-- <ChangelogModal bind:show={$showChangelog} /> -->
 
 <div class="app relative">
-	<div
-
-		class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row"
-	>
+	<div class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row">
 		{#if loaded}
-			<!-- {#if !['user', 'admin'].includes($user?.role)} -->
 			{#if false}
 				<div class="fixed w-full h-full flex z-[999]">
 					<div

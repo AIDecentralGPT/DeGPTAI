@@ -16,7 +16,7 @@ export const OPENAI_API_BASE_URL = `${WEBUI_BASE_URL}/openai/api`;
 export const AUDIO_API_BASE_URL = `${WEBUI_BASE_URL}/audio/api/v1`;
 export const IMAGES_API_BASE_URL = `${WEBUI_BASE_URL}/images/api/v1`;
 export const RAG_API_BASE_URL = `${WEBUI_BASE_URL}/rag/api/v1`;
-export const DE_API_BASE_URL = `https://chat.degpt.ai/v1`;
+export const DE_API_BASE_URL = `https://chat.degpt.ai`;
 
 export const WEBUI_VERSION = APP_VERSION;
 export const REQUIRED_OLLAMA_VERSION = "0.1.16";

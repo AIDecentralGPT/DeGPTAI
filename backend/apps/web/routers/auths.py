@@ -91,6 +91,7 @@ async def get_session_user(user=Depends(get_current_user)):
         return {"error": "An internal server error occurred"}
 
 
+
 ############################
 # Update Profile
 ############################
@@ -238,7 +239,7 @@ async def update_password(
 
 @router.post("/printSignIn", response_model=None)
 async def printSignIn(request: Request, form_data: FingerprintSignInForm):
-    print("Received printSignIn request")  # 打印日志
+
     try:
         user = Users.get_user_by_id(form_data.id)
     except Exception as e:
@@ -248,16 +249,16 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         print("User found:", user.id)
     else:
         print("User not found, creating new user")
+
         hashed = get_password_hash("")
 
         # 使用 web3.py 创建新的以太坊账户
-        account = w3.eth.account.create()
-        wallet_address = account.address
+        #account = w3.eth.account.create()
+        #wallet_address = account.address
         # private_key = account.key.hex()
-        private_key=w3.to_hex(account.key)
+        # private_key=w3.to_hex(account.key)
         # python -c "from web3 import Web3; w3 = Web3(); acc = w3.eth.account.create(); print(f'private key={w3.to_hex(acc.key)}, account={acc.address}')"
-
-        print("private_key:", private_key)
+        #print("private_key:", private_key)
 
 
 

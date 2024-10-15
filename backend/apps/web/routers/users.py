@@ -86,31 +86,6 @@ async def get_users_invited(
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
 
 
-# @router.get("/users/invited", response_model=List[UserModel])
-# async def get_users_invited(
-#     session_user=Depends(get_current_user)
-# ):
-#     print("session_user获取到啦111")
-    
-#     print("session_user获取到啦", session_user.id)
-#     if session_user:
-#         try:
-#             print("session_user", session_user.id)
-#             # users = Users.get_users_invited(session_user.id)
-#             # print("users", users)
-#             return []
-#         except Exception as e:
-#             print("获取搜有邀请用户", e)
-#         # if users:
-#         #     return users
-#         else:
-#             raise HTTPException(400, detail=ERROR_MESSAGES.DEFAULT())
-#     else:
-#         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
-
-
-
-
 ############################
 # User Permissions
 ############################

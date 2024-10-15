@@ -33,7 +33,7 @@ function transformModelData(input) {
 export const getDeModels = async (token: string = "") => {
   let error = null;
 
-  const host = "https://chat.degpt.ai"
+  const host = "https://chat.degpt.ai";
 
   // const host =
   //   window.location.hostname === "localhost"
@@ -143,7 +143,6 @@ export const getDeModels = async (token: string = "") => {
       },
     ],
   };
-
   return (format_res?.models ?? []).map((model) => ({
     id: model.model,
     name: model.name ?? model.model,
@@ -206,6 +205,7 @@ export const generateDeOpenAIChatCompletion = async (
 ): Promise<[Response | null, AbortController]> => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 30000);
+
   let error = null;
 
   // console.log("generateDeOpenAIChatCompletion url:", url,`${url}/v0/chat/completion`, body);

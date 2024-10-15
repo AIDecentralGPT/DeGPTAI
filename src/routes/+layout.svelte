@@ -1,6 +1,5 @@
 <script>
 	import '../polyfills'; // 必须在其他代码之前引入
-
   import { onMount, tick, setContext } from "svelte";
   import {
     config,
@@ -21,7 +20,7 @@
 
   import "../tailwind.css";
   import "../app.css";
-  import VConsole from 'vconsole';
+  //import VConsole from 'vconsole';
   //const vConsole = new VConsole();
 
   import "tippy.js/dist/tippy.css";
@@ -36,7 +35,6 @@
   setContext("i18n", i18n);
   let loaded = false;
   const BREAKPOINT = 768;
-
 
 	async function initData (){
 		
@@ -61,8 +59,6 @@
 			// Redirect to /error when Backend Not Detected
 			await goto(`/error`);
 		}
-
-
 		
 		// 加载 FingerprintJS 库
 		const fp = await FingerprintJS.load();
@@ -76,16 +72,13 @@
 
     let res = {}
     if(localStorage.token) {
-      // res = await getUserInfo(localStorage.token);
-
-      // 获取用户信息？可以通过auth/接口
-
+      res = await getUserInfo(localStorage.token);
+      await user.set(res);
     }
     else {
        res = await printSignIn();
     }
 
-		// await user.set(res);
 		loaded = true;
 
 		console.log(res);
@@ -107,9 +100,6 @@
     };
 
     window.addEventListener("resize", onResize);
-
-
-
 
 		document.getElementById('splash-screen')?.remove();
 

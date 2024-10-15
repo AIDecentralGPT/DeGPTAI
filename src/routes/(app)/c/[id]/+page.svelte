@@ -94,10 +94,6 @@
 	};
 	let firstResAlready = false // 已经有了第一个响应
 
-
-
-
-
 	$: if (history.currentId !== null) {
 		let _messages = [];
 
@@ -195,6 +191,10 @@
 // 2. 点击提交按钮，触发检查
 const submitPrompt = async (userPrompt, _user = null) => {
 	console.log('submitPrompt', $chatId);
+	console.log("点击了", firstResAlready);
+			
+	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
+	await tick()
 
 	if (selectedModels.includes('')) {
 		toast.error($i18n.t('Model not selected'));
@@ -359,6 +359,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 
 		// 对话DeGpt
 		const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
+			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = messages
 			.filter((message) => message?.files ?? null)
@@ -481,6 +482,17 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 						responseMessage.citations = citations;
 						continue;
 					}
+
+
+
+			if(!firstResAlready && responseMessage.content.length > 0) { // 第一次响应的时候，把当前的id设置为当前响应的id
+				console.log("模型调用完毕？", res, model.id, firstResAlready, responseMessageId, responseMessage.content);
+				
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+				await tick();
+
+			}
 
 					if (responseMessage.content == '' && value == '\n') {
 						continue;

@@ -33,8 +33,4 @@ export default defineConfig({
       ],
     },
   },
-
-  
-
-
 });
