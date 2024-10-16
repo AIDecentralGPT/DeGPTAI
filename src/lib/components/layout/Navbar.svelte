@@ -159,13 +159,6 @@
             </button>
           </Menu>
         {/if}
-
-        <!-- <button on:click={demo}>{$user?.isPro}</button> -->
-        {#if $user?.role === "visitor"}
-          <button on:click={()=> {
-            demo()
-          }}>demo</button>
-        {/if}
         
         <Tooltip content={$i18n.t("New Chat")}>
           <button
@@ -195,34 +188,31 @@
           </button>
         </Tooltip>
 
-        {#if $user !== undefined && $user?.id.startsWith('0x')}
-          <UserMenu
-            className="max-w-[200px]"
-            role={$user?.role}
-            on:show={(e) => {
-              if (e.detail === "archived-chat") {
-                showArchivedChats.set(true);
-              }
-            }}
-          >
+        
+        <UserMenu
+          className="max-w-[200px]"
+          role={$user?.role}
+          on:show={(e) => {
+            if (e.detail === "archived-chat") {
+              showArchivedChats.set(true);
+            }
+          }}
+        >
+          {#if $user !== undefined && $user?.id.startsWith('0x')}
             <button
               class="select-none flex rounded-xl p-1.5 w-full hover:bg-gray-100 dark:hover:bg-gray-850 transition"
               aria-label="User Menu"
             >
               <div class=" self-center">
-                <!-- <img
-                  src={$user.profile_image_url}
-                  class="size-6 object-cover rounded-full"
-                  alt="User profile"
-                  draggable="false"
-                /> -->
                 <div class="size-6 object-cover rounded-full bg-primary">
                   {$user.id?.slice(2,4)}
                 </div>
               </div>
             </button>
-          </UserMenu>
-        {/if}
+          {:else}
+            <button>{$i18n.t("demo")}</button>
+          {/if}
+        </UserMenu>
       </div>
     </div>
   </div>

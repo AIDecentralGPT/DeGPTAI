@@ -584,6 +584,7 @@
 	"email": "邮箱",
 	"lastActive": "最后活跃时间",
 	"createdAt": "创建时间",
-	"You haven't invited any partners yet. Click the button below to claim the reward!": "你还没有邀请任何伙伴！快点击下面按钮领取奖励哦！"
+	"You haven't invited any partners yet. Click the button below to claim the reward!": "你还没有邀请任何伙伴！快点击下面按钮领取奖励哦！",
+	"demo": "游客"
 	
 }
