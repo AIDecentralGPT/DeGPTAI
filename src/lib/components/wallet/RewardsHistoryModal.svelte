@@ -8,7 +8,7 @@
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
   import { currentWalletData, user} from "$lib/stores";
-  import { getRewardsHistory, clockInCheck } from "$lib/apis/rewards";
+  import { getRewardsHistory, creatWalletCheck, inviteCheck, clockInCheck } from "$lib/apis/rewards";
 
   const i18n = getContext("i18n");
 
@@ -63,8 +63,20 @@
     console.log("rewardsHistory", rewardsHistory);
   }
 
-  async function updateReward(id) {
-    await clockInCheck(localStorage.token, id)
+  async function updateReward(id, type) {
+    let rewardApiMethod = null;
+    if (type === "new_wallet") {
+      rewardApiMethod = creatWalletCheck;
+    } else if (type === "clock_in"){
+      rewardApiMethod = clockInCheck;
+    } else if (type === "invite" || type === "invitee") {
+      rewardApiMethod = inviteCheck;
+    }
+    if (rewardApiMethod === null) {
+      console.log("===============方法未找到===============")
+      return;
+    }
+    await rewardApiMethod(localStorage.token, id)
       .then((res) => {
         console.log("Clock In Check res", res);
         if (res?.ok) {
@@ -85,6 +97,10 @@
         console.log("Clock In Check  error", res);
       }); 
     console.log("Clock In Check res update", rewardsHistory);
+  }
+
+  function formateAddress(val) {
+    return val.substring(0, 6) + '*****' + val.substring(val.length - 2);
   }
 
 </script>
@@ -165,9 +181,44 @@
                 <!-- <td class="px-6 py-4 whitespace-nowrap flex items-center">
                   {historyItem.user_id}
                 </td> -->
-                <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.transfer_hash}</td
-                >
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {formateAddress(historyItem.transfer_hash)}
+                  <button
+                    on:click={async () => {
+                      const res = await copyToClipboard(historyItem.transfer_hash);
+                      if (res) {
+                        toast.success($i18n.t("Copying to clipboard was successful!"));
+                      }
+                    }}
+                    type="button"
+                    class="px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 512 512"
+                      ><rect
+                        width="336"
+                        height="336"
+                        x="128"
+                        y="128"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        rx="57"
+                        ry="57"
+                      /><path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                      /></svg>
+                  </button>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap">   
                   {#if historyItem.status}
                     {historyItem.reward_amount} DGC
@@ -177,9 +228,9 @@
                       <div class="obtain-styl cursor-pointer" 
                         on:click={() => {
                           if ($user.verified) {
-                            updateReward(historyItem.id)
+                            updateReward(historyItem.id, historyItem.reward_type)
                           } else {
-                            toast.warning("Please complete the KYC verification to convert your points into cash");
+                            toast.warning("Please complete the KYC verification to convert your points into cash"); 
                           }
                         }}
                       >Obtain now</div>
@@ -188,7 +239,7 @@
                   
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  {dayjs(historyItem.reward_date).format("YYYY-MM-DD")}
+                  {dayjs(historyItem.reward_date).format("YYYY-MM-DD HH:mm:ss")}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap"
                   >{historyItem.reward_type}</td

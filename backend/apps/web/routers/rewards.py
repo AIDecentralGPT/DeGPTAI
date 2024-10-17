@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
-from apps.web.models.users import User
+from apps.web.models.users import User, Users
 from apps.web.models.device import Device
 from apps.web.models.ip_log import IpLog
 from apps.web.models.rewards import RewardsTableInstance, RewardsRequest
+from apps.web.api.rewardapi import RewardApiInstance
 from utils.utils import get_verified_user
-from playhouse.shortcuts import model_to_dict
-import time
 from datetime import date
 
 router = APIRouter()
@@ -40,27 +39,33 @@ async def claim_reward(request: Request, user_id: str, device_id: str, user=Depe
     else:
         raise HTTPException(status_code=500, detail="Failed to send reward")
 
-
-
-    # # 校验设备ID
-    # device_valid = await check_device(user_id, device_id)
-    # if not device_valid:
-    #     raise HTTPException(status_code=400, detail="Device already registered for this user.")
-
-    # # 校验IP地址
-    # client_ip = request.client.host
-    # ip_valid = await check_ip(user_id, client_ip)
-    # if not ip_valid:
-    #     raise HTTPException(status_code=400, detail="IP address already used for rewards.")
-
-    # 处理奖励领取逻辑
-    # 这里只是一个示例，你需要根据你的具体业务逻辑来实现
-    return {"message": "Reward claimed successfully."}
-
+# 用户创建领取奖励
+@router.post("/creat_wallet_check")
+async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_user)):
+    try:
+        # 校验用户是否已经完成kyc认证
+        user_find = Users.get_user_by_id(user.id)
+        if not user_find.verified:
+            raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
+        
+        # 获取签到记录
+        rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
+        if rewards_history is None:
+            raise HTTPException(status_code=400, detail="You Rewards History not found")
+        
+        # 领取奖励
+        result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+        if result is not None:
+            return {"ok": True, "data": result}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to received reward")
+    except Exception as e:
+        print(f"Exception: {e}")
+        raise HTTPException(status_code=500, detail="Failed to received reward")
 
 # 用户签到
 @router.post("/clock_in")
-async def clock_in(request: Request, user=Depends(get_verified_user)):
+async def clock_in(user=Depends(get_verified_user)):
     # 获取今天的日期
     today = date.today()
     # 发送奖励
@@ -77,15 +82,50 @@ async def clock_in(request: Request, user=Depends(get_verified_user)):
     else:
         raise HTTPException(status_code=500, detail="Failed to received reward")
 
-# 用户签到确认
+# 用户签到领取奖励
 @router.post("/clock_in_check")
 async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user)):
+
+    # 校验用户是否已经完成kyc认证
+    user_find = Users.get_user_by_id(user.id)
+    if not user_find.verified:
+        raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
+    
     # 获取签到记录
-    rewards_history= RewardsTableInstance.get_rewards_by_id(request.id, user.id)
+    rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
     if rewards_history is None:
         raise HTTPException(status_code=400, detail="You Rewards History not found")
     
-    result = RewardsTableInstance.send_reward(rewards_history.id, rewards_history.user_id, rewards_history.reward_amount, rewards_history.reward_type)
+    # 领取奖励
+    result = RewardApiInstance.dailyReward(rewards_history.id, user.id)
+    if result is not None:
+        return {"ok": True, "data": result}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to received reward")
+    
+# 用户邀请领取奖励
+@router.post("/invite_check")
+async def invite_check(request: RewardsRequest, user=Depends(get_verified_user)):
+
+    # 获取签到记录
+    rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
+    if rewards_history is None:
+        raise HTTPException(status_code=400, detail="You Rewards History not found")
+
+    if rewards_history.reward_type == 'invite':
+        if rewards_history.status:
+            return rewards_history
+        else:
+            raise HTTPException(status_code=400, detail="Your friend complete the KYC verification to convert your points into cash") 
+    else: 
+        if not rewards_history.status:
+            # 校验用户是否已经完成kyc认证
+            user_find = Users.get_user_by_id(user.id)
+            if not user_find.verified:
+                raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
+    
+    # 领取奖励
+    result = RewardApiInstance.inviteReward(rewards_history.user_id, rewards_history.invitee)
     if result is not None:
         return {"ok": True, "data": result}
     else:

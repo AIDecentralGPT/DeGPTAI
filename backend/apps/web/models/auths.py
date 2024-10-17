@@ -169,11 +169,10 @@ class AuthsTable:
         role: str = "user",
         id: str = None,
         inviter_id: str = None,
-        private_key: str = None,
         address_type: str = None
     ) -> Optional[TypingTuple[UserModel, int]]:  # 修改返回类型声明
         
-        print("insert_new_auth:1", role, inviter_id, address_type, private_key)
+        print("insert_new_auth:1", role, inviter_id, address_type)
 
         # id = str(uuid.uuid4())
 
@@ -184,7 +183,7 @@ class AuthsTable:
         result = Auth.create(**auth.dict())
 
 
-        user = Users.insert_new_user(id, name, email, inviter_id, address_type=address_type, role=role, profile_image_url=profile_image_url, private_key=private_key)
+        user = Users.insert_new_user(id, name, email, inviter_id, address_type=address_type, role=role, profile_image_url=profile_image_url)
 
         user_count = Users.get_user_count()  # 获取用户个数
 

@@ -256,13 +256,11 @@ async function handleWalletSignIn({
   walletImported,
   address_type,
   inviterId,
-  privateKey,
 }: {
   walletImported: any;
   address_type: string;
   inviterId?: string;
   signature?: string;
-  privateKey?: string;
 }) {
   
   let walletSignInResult = {};
@@ -293,7 +291,6 @@ async function handleWalletSignIn({
         signature,
         id: localStorage.visitor_id || "",
         inviter_id: inviterId,
-        private_key: privateKey,
       });
     }
   }
@@ -331,7 +328,6 @@ async function handleWalletSignIn({
       signature,
       id: localStorage.visitor_id,
       inviter_id: inviterId,
-      private_key: privateKey,
     });
   }
 

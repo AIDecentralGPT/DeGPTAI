@@ -5,6 +5,8 @@ from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
 from datetime import datetime
 
+import uuid
+
 from utils.misc import get_gravatar_url  # 导入获取Gravatar URL的方法
 
 from apps.web.internal.db import DB  # 导入数据库实例DB
@@ -141,10 +143,33 @@ class UsersTable:
 
         # 在这里给新钱包发送奖励
         if result and UsersTable.is_ethereum_address(result.id):
-            print("开始给新钱包发送奖励")
-            # 发送创建钱包奖励
-            reward_type = "new_wallet"  # 创建钱包奖励
-            new_wallet_success = RewardsTableInstance.send_reward(user.id, 200, reward_type)
+
+            # 添加创建奖励记录
+            print("创建钱包奖励", user.id)
+            RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
+
+            # 添加邀请建立
+            if user.inviter_id is not None:
+                # 获取邀请人信息
+                invite_user_ret = User.get_or_none(User.id == inviter_id)
+
+                if invite_user_ret is not None:
+                    # 生成关联字符串
+                    invitee = str(uuid.uuid4())
+
+                    # 校验邀请人是否KYC认证
+                    invite_user_dict = model_to_dict(invite_user_ret)
+                    invite_user = UserModel(**invite_user_dict)
+                    if invite_user.verified:
+                        print("邀请人得奖励", user.inviter_id)
+                        RewardsTableInstance.create_reward(user.inviter_id, 6000, "invite", True, invitee)
+                        print("被邀请人得奖励", user.id)
+                        RewardsTableInstance.create_reward(user.id, 1000, "invitee", True, invitee)
+                    else:
+                        print("邀请人得奖励0", user.inviter_id)
+                        RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
+                        print("被邀请人得奖励0", user.id)
+                        RewardsTableInstance.create_reward(user.id, 0, "invitee", False, invitee)
 
 
         # if inviter_id:

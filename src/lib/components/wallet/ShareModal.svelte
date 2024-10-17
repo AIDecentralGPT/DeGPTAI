@@ -62,7 +62,7 @@
             </div>
             <h3 class="text-lg font-bold mb-2">01</h3>
             <p class="text-sm text-gray-100">
-              {$i18n.t('Invite friends to create a wallet to earn 6000 DGC rewards,youfriends will also carn 1000 DGC')}
+              {$i18n.t('Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC')}
             </p>
           </div>
           <div class=" flex flex-col justify-center items-center">

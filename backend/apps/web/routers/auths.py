@@ -49,6 +49,7 @@ from apps.web.models.ip_log import ip_logs_table
 from apps.web.models.device import devices_table
 from apps.web.models.faceCompare import face_compare
 from apps.web.models.faceLib import  face_lib
+from apps.web.models.rewards import RewardsTableInstance
 
 from utils.utils import (
     get_password_hash,
@@ -63,6 +64,8 @@ from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
 from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
 
 from datetime import datetime
+
+from apps.web.api.rewardapi import RewardApi
 
 router = APIRouter()
 
@@ -146,93 +149,6 @@ async def update_password(
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
 
 
-# ############################
-# # printSignIn(根据指纹身份校验)
-# ############################
-# # @router.post("/fingerprintSignIn", response_model=FingerprintSigninResponse)
-# @router.post("/fingerprintSignIn", response_model=None)
-# async def printSignIn(request: Request, form_data: FingerprintSignInForm):
-#     # 生成UUID并转换为字符串
-#     id_str = str(uuid.uuid4())
-#     visitors_table.insert_new_visitor(id_str, form_data.visitor_id)
-
-#     #  # 检查用户是否存在，如果不存在则进行注册
-#     # if not Users.get_user_by_email(trusted_email.lower()):
-#     #     await signup(
-#     #         request,
-#     #         SignupForm(
-#     #             email=trusted_email, password=str(uuid.uuid4()), name=trusted_email
-#     #         ),
-#     #     )
-
-
-
-    # # 检查是否启用了基于信任头的 WebUI 认证
-    # if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
-    #     print("检查是否启用了基于信任头的 WebUI 认证")
-
-    #     # 检查用户是否存在，如果不存在则进行注册
-    #     if not Users.get_user_by_email(trusted_email.lower()):
-    #         await signup(
-    #             request,
-    #             SignupForm(
-    #                 email=trusted_email, password=str(uuid.uuid4()), name=trusted_email
-    #             ),
-    #         )
-
-
-
-    #     print("检查是否禁用了 WebUI 认证")
-    #     admin_email = "admin@localhost"
-    #     admin_password = "admin"
-    #     print(2)
-
-    #     # 检查管理员账号是否存在
-    #     if Users.get_user_by_email(admin_email.lower()):
-    #         # 管理员账号存在，进行认证
-    #         user = Auths.authenticate_user(admin_email.lower(), admin_password)
-    #     else:
-    #         # 管理员账号不存在，检查是否有其他用户
-    #         if Users.get_num_users() != 0:
-    #             raise HTTPException(400, detail=ERROR_MESSAGES.EXISTING_USERS)
-
-    #         # 没有其他用户，进行管理员账号注册
-    #         await signup(
-    #             request,
-    #             SignupForm(email=admin_email, password=admin_password, name="User"),
-    #         )
-
-    #         # 注册完成后，再次进行认证
-    #         user = Auths.authenticate_user(admin_email.lower(), admin_password)
-    # else:
-    #     # 使用表单中的邮箱和密码进行用户认证
-    #     user = Auths.authenticate_user(form_data.email.lower(), form_data.password)
-    #     print("使用表单中的邮箱和密码进行用户认证", user)
-
-    # # 如果认证成功，则生成令牌并返回用户信息
-    # if user:
-    #     token = create_token(
-    #         data={"id": user.id},
-    #         expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
-    #     )
-
-    #     return {
-    #         "token": token,
-    #         "token_type": "Bearer",
-    #         "id": user.id,
-    #         "email": user.email,
-    #         "name": user.name,
-    #         "role": user.role,
-    #         "profile_image_url": user.profile_image_url,
-    #     }
-    # else:
-    #     # 如果认证失败，则打印日志并返回错误提示
-    #     print(3)
-    #     raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
-
-
-
-
 ############################
 # SignIn
 ############################
@@ -255,7 +171,7 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         # 使用 web3.py 创建新的以太坊账户
         account = w3.eth.account.create()
         #wallet_address = account.address
-        private_key = account.key.hex()
+        # private_key = account.key.hex()
         # private_key=w3.to_hex(account.key)
         # python -c "from web3 import Web3; w3 = Web3(); acc = w3.eth.account.create(); print(f'private key={w3.to_hex(acc.key)}, account={acc.address}')"
         #print("private_key:", private_key)
@@ -270,7 +186,6 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
             "visitor",
             form_data.id,
             "",
-            private_key,
             address_type = None
 
         )
@@ -326,13 +241,11 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
             # 比较签名者地址和恢复的地址
             sign_is_valid = recovered_address.lower() == address.lower()
 
-             
-            
             # message = form_data.nonce
             # sign_is_valid = False
         else :
             # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
-            prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
+            # prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
             encoded_message = encode_defunct(text=message)
             
             # 从签名中恢复地址
@@ -350,6 +263,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 print("User found:", user.id)
             else:
                 print("User not found, creating new user")
+
+                # 添加用户信息
                 hashed = get_password_hash("")
                 result = Auths.insert_new_auth(
                     "",
@@ -359,9 +274,9 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     "walletUser",
                     form_data.address,
                     form_data.inviter_id,
-                    form_data.private_key,
                     address_type = address_type
                 )
+
                 if result:
                     user, user_count = result  # 解包返回的元组
                     print(f"用户: {user}, 用户个数: {user_count}")

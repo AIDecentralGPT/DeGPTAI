@@ -1,5 +1,63 @@
 import { WEBUI_API_BASE_URL } from "$lib/constants";
 
+export const creatWalletCheck = async (token: string, id: string) => {
+  let error = null;
+
+  const res = await fetch(`${WEBUI_API_BASE_URL}/rewards/creat_wallet_check`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      id
+    })
+  })
+    .then(async (res) => {
+      return await res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      return null;
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return res;
+};
+
+export const inviteCheck = async (token: string, id: string) => {
+  let error = null;
+
+  const res = await fetch(`${WEBUI_API_BASE_URL}/rewards/invite_check`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      id
+    })
+  })
+    .then(async (res) => {
+      return await res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      return null;
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return res;
+};
+
 export const clockIn = async (token: string) => {
   let error = null;
 
@@ -10,10 +68,6 @@ export const clockIn = async (token: string) => {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    // 		body: JSON.stringify({
-    // 			tx,
-    // amount
-    // 		})
   })
     .then(async (res) => {
       return await res.json();

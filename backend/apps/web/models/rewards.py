@@ -2,7 +2,7 @@ from peewee import *
 from apps.web.internal.db import DB
 from pydantic import BaseModel
 from typing import Optional, List
-from datetime import date
+from datetime import date, datetime
 import uuid
 import logging
 from web3 import Web3
@@ -37,11 +37,12 @@ class Rewards(Model):
     id = CharField(primary_key=True, default=str(uuid.uuid4))
     user_id = CharField()
     reward_amount = FloatField()
-    reward_date = DateField()
+    reward_date = DateTimeField()
     reward_type = CharField()
     transfer_hash = CharField()
     invitee = CharField(null=True)
-    status = CharField()
+    status = CharField(null=False)
+    show = CharField(null=True)
 
     class Meta:
         database = DB
@@ -55,11 +56,12 @@ class RewardsModel(BaseModel):
     id: str
     user_id: str
     reward_amount: float
-    reward_date: date
+    reward_date: datetime
     reward_type: str
     transfer_hash: str
     invitee: Optional[str] = None
     status: bool
+    show: bool
 
 # 定义 Rewards 操作类
 class RewardsTable:
@@ -67,7 +69,7 @@ class RewardsTable:
         self.db = db
         db.create_tables([Rewards])
 
-    def insert_reward(self, user_id: str, reward_amount: float, reward_date: date, reward_type: str, transfer_hash: str, invitee: str, status: bool) -> Optional[RewardsModel]:
+    def insert_reward(self, user_id: str, reward_amount: float, reward_date: datetime, reward_type: str, transfer_hash: str, invitee: str, status: bool, show: bool) -> Optional[RewardsModel]:
         reward = RewardsModel(
             id=str(uuid.uuid4()),
             user_id=user_id,
@@ -76,7 +78,8 @@ class RewardsTable:
             reward_type=reward_type,
             transfer_hash=transfer_hash,
             invitee=invitee,
-            status=status
+            status=status,
+            show=show
         )
         try:
             result = Rewards.create(**reward.model_dump())
@@ -100,17 +103,17 @@ class RewardsTable:
             log.error(f"update_reward: {e}")
             return None
 
-    def get_rewards_by_user_id(self, user_id: str) -> Optional[List[RewardsModel]]:
+    def get_rewards_by_user_id(self, user_id: str, pageNum: Optional[int]=1, pageSize: Optional[int]=10) -> Optional[List[RewardsModel]]:
         try:
-            rewards = Rewards.select().where(Rewards.user_id == user_id)
+            rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.show == True)).order_by(Rewards.reward_date.desc()).paginate(pageNum, pageSize);
             return [RewardsModel(**model_to_dict(reward)) for reward in rewards]
         except Exception as e:
             log.error(f"get_rewards_by_user_id: {e}")
             return None
     
-    def get_rewards_by_id(self, id: str, user_id: str) -> Optional[RewardsModel]:
+    def get_rewards_by_id(self, id: str) -> Optional[RewardsModel]:
         try:
-            rewards = Rewards.get_or_none(Rewards.id == id, Rewards.user_id == user_id)
+            rewards = Rewards.get_or_none(Rewards.id == id)
             if rewards is None:
                 return None
             else:
@@ -120,19 +123,28 @@ class RewardsTable:
         except Exception as e:
             log.error(f"get_rewards_by_id: {e}")
             return None
+    
+    def get_rewards_by_invitee(self, invitee: str) -> Optional[List[RewardsModel]]:
+        try:
+            rewards = Rewards.select().where(Rewards.invitee == invitee)
+            return [RewardsModel(**model_to_dict(reward)) for reward in rewards]
+        except Exception as e:
+            log.error(f"get_rewards_by_id: {e}")
+            return None
 
     def get_rewards_by_user_id_and_date_and_reward_type(self, user_id: str, reward_date: date, reward_type: str) -> Optional[List[RewardsModel]]:
         try:
-            rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.reward_date == reward_date)& (Rewards.reward_type == reward_type))
+            rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.reward_type == reward_type) & (Rewards.show == True)
+                & (SQL('date(reward_date)') == reward_date))
             return [RewardsModel(**model_to_dict(reward)) for reward in rewards]
         except Exception as e:
             log.error(f"get_rewards_by_user_id_and_date: {e}")
             return None
         
-    def create_reward(self, recipient_address: str, amount: float, reward_type: str, invitee: Optional[str] = None) -> bool:
+    def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> bool:
         try:
             # 插入奖励记录
-            self.insert_reward(recipient_address, amount, date.today(), reward_type, "**********", invitee, False)
+            self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show)
             return True
         except Exception as e:
             print("send_reward:", e)

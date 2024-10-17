@@ -28,8 +28,6 @@
   let walletCreatedData = null; // 创建钱包返回的数据
   let keystoreJson: string | null = null;
 
-  let privateKey = "";
-
   function validatePassword() {
     if (password.length < 8) {
       passwordError = "Password must be at least 8 characters long.";
@@ -192,7 +190,6 @@
                 const { wallet, keystore, accountPrivateKey } = await createAccount(password);
                 console.log("wallet", wallet);
                 keystoreJson = keystore;
-                privateKey = accountPrivateKey;
 
                 // 2. 请求服务端登录钱包账户
                 await handleWalletSignIn({
@@ -200,7 +197,6 @@
                   password,
                   address_type: "dbc",
                   inviterId: $inviterId,
-                  privateKey
                 });
 
                 loading = false;
@@ -284,12 +280,11 @@
                     pr-[35px]
                     px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none"
               >
-                {privateKey}
+                {$currentWalletData?.walletInfo?.privateKey}
               </p>
               <button
                 on:click={async () => {
                   const res = await copyToClipboard(
-                    // $currentWalletData?.walletInfo?.address
                     $currentWalletData?.walletInfo?.privateKey
                   );
                   if (res) {
