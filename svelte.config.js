@@ -15,11 +15,6 @@ const config = {
 			assets: 'build',
 			fallback: 'index.html'
 		}),
-		// Vite 兼容性配置
-		vite: {       
-            // 浏览器的最小版本
-            browser: 'es2019',
-        }
 	},
 	onwarn: (warning, handler) => {
 		const { code, _ } = warning;
