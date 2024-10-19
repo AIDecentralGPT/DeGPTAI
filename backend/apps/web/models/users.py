@@ -143,11 +143,6 @@ class UsersTable:
 
         # 在这里给新钱包发送奖励
         if result and UsersTable.is_ethereum_address(result.id):
-
-            # 添加创建奖励记录
-            print("创建钱包奖励", user.id)
-            RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
-
             # 添加邀请建立
             if user.inviter_id is not None:
                 # 获取邀请人信息
@@ -161,15 +156,18 @@ class UsersTable:
                     invite_user_dict = model_to_dict(invite_user_ret)
                     invite_user = UserModel(**invite_user_dict)
                     if invite_user.verified:
+                        # 注册奖励绑定邀请人
+                        RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
                         print("邀请人得奖励", user.inviter_id)
                         RewardsTableInstance.create_reward(user.inviter_id, 6000, "invite", True, invitee)
-                        print("被邀请人得奖励", user.id)
-                        RewardsTableInstance.create_reward(user.id, 1000, "invitee", True, invitee)
                     else:
+                        # 注册奖励绑定邀请人
+                        RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
                         print("邀请人得奖励0", user.inviter_id)
                         RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
-                        print("被邀请人得奖励0", user.id)
-                        RewardsTableInstance.create_reward(user.id, 0, "invitee", False, invitee)
+                else:
+                    # 注册奖励
+                    RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
 
 
         # if inviter_id:

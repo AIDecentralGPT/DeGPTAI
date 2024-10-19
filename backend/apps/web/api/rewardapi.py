@@ -72,26 +72,12 @@ class RewardApi:
             return None
 
     #邀请奖励
-    def inviteReward(self, user_id: str, invitee: str) ->  Optional[RewardsModel]:
+    def inviteReward(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
         try:
-            # 获取记录判断是否已经领取，领取不可再次领取
-            rewards = RewardsTableInstance.get_rewards_by_invitee(invitee)
-            if len(rewards) != 2:
-                return None
-
-            # 判断rewards 是否正确
-            inviteReward = None;
-            inviteeReward = None;
-            for reward in rewards:
-                if reward.reward_type == 'invite':
-                    inviteReward = reward
-                else:
-                    inviteeReward = reward
-
             #拼接请求地址
             url = f"{self.apiUrl}/claim_invite_reward"
             #请求体
-            data = {"inviter_id": inviteReward.user_id, "invitee_id": inviteeReward.user_id, "inviter_amount": int(inviteReward.reward_amount), "invitee_amount": int(inviteeReward.reward_amount)}
+            data = {"inviter_id": invite.user_id, "invitee_id": invitee.user_id, "inviter_amount": int(invite.reward_amount), "invitee_amount": int(invitee.reward_amount)}
             # 发送POST请求
             response = requests.post(url, json.dumps(data))
             # 校验请求是否成功
@@ -102,12 +88,9 @@ class RewardApi:
             if (response_json['code'] == 0):       
                 # 更新记录
                 tran_hash = response_json['result']['message'].split(':')[1].strip()
-                inviteResult = RewardsTableInstance.update_reward(inviteReward.id, tran_hash, True)
-                inviteeResult = RewardsTableInstance.update_reward(inviteeReward.id, tran_hash, True)
-                if inviteReward.user_id == user_id:
-                    return inviteResult
-                else:
-                    return inviteeResult
+                RewardsTableInstance.update_reward(invite.id, tran_hash, True)
+                inviteeResult = RewardsTableInstance.update_reward(invitee.id, tran_hash, True)
+                return inviteeResult
             else:
                 return None
         except Exception as e:

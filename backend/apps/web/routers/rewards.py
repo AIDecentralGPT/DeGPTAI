@@ -53,12 +53,43 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
         if rewards_history is None:
             raise HTTPException(status_code=400, detail="You Rewards History not found")
         
-        # 领取奖励
-        result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-        if result is not None:
-            return {"ok": True, "data": result}
+        # 是否已领取校验
+        if rewards_history.status:
+            return {"ok": True, "data": rewards_history}
+        
+        # 判断领取那种奖励
+        inviteReward = None;
+        inviteeReward = None;
+        if rewards_history.invitee is not None:
+           # 获取记录判断是否已经领取，领取不可再次领取
+            rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+            if len(rewards) != 2:
+                raise HTTPException(status_code=500, detail="Failed to received reward")       
+            for reward in rewards:
+                if reward.reward_type == 'invite':
+                    inviteReward = reward
+                else:
+                    inviteeReward = reward
+            if inviteReward.show is False:
+               inviteReward = None
         else:
-            raise HTTPException(status_code=500, detail="Failed to received reward")
+            inviteeReward = rewards_history
+
+        if inviteReward is None:
+            # 领取注册奖励
+            result = RewardApiInstance.registReward(inviteeReward.id, inviteeReward.user_id)
+            if result is not None:
+                return {"ok": True, "data": result}
+            else:
+                raise HTTPException(status_code=500, detail="Failed to received reward")
+        else:
+            # 领取邀请奖励
+            result = RewardApiInstance.inviteReward(inviteReward, inviteeReward)
+            if result is not None:
+                return {"ok": True, "data": result}
+            else:
+                raise HTTPException(status_code=500, detail="Failed to received reward")
+                       
     except Exception as e:
         print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Failed to received reward")
@@ -118,18 +149,7 @@ async def invite_check(request: RewardsRequest, user=Depends(get_verified_user))
         else:
             raise HTTPException(status_code=400, detail="Your friend complete the KYC verification to convert your points into cash") 
     else: 
-        if not rewards_history.status:
-            # 校验用户是否已经完成kyc认证
-            user_find = Users.get_user_by_id(user.id)
-            if not user_find.verified:
-                raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
-    
-    # 领取奖励
-    result = RewardApiInstance.inviteReward(rewards_history.user_id, rewards_history.invitee)
-    if result is not None:
-        return {"ok": True, "data": result}
-    else:
-        raise HTTPException(status_code=500, detail="Failed to received reward")
+        raise HTTPException(status_code=400, detail="Your friend complete the KYC verification to convert your points into cash")     
     
 @router.get("/reward_count")
 async def get_reward_count(user=Depends(get_verified_user)):
