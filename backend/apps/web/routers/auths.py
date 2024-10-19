@@ -855,7 +855,7 @@ async def faceliveness_check_for_ws(id: str):
                     }
             else:
                 # 添加人脸样本
-                id_str = str(uuid.uuid4())
+                id_str = str(uuid.uuid4()).replace("-", "_")
                 face_lib.add_face_sample(id_str)
                 # 在人脸样本添加对应的人脸数据
                 face_id = face_lib.add_face_data(faceImg, id_str)

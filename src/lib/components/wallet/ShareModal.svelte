@@ -138,12 +138,11 @@
                     pr-[35px]
                     px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
           >
-            {`${location.host}?inviter=${
-            $user?.id}`}
+            https://{`${location.host}/invite/${$user?.id}`}
           </p>
           <button
             on:click={async () => {
-              const res = await copyToClipboard(`${location.host}?inviter=${ $user?.id}`);
+              const res = await copyToClipboard(`https://${location.host}/invite/${ $user?.id}`);
               if (res) {
                 toast.success($i18n.t("Copying to clipboard was successful!"));
               }
