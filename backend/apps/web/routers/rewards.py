@@ -67,11 +67,10 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
                 raise HTTPException(status_code=500, detail="Failed to received reward")       
             for reward in rewards:
                 if reward.reward_type == 'invite':
-                    inviteReward = reward
+                    if reward.show:
+                        inviteReward = reward
                 else:
                     inviteeReward = reward
-            if inviteReward.show is False:
-               inviteReward = None
         else:
             inviteeReward = rewards_history
 

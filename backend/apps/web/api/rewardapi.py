@@ -87,9 +87,8 @@ class RewardApi:
             response_json = json.loads(response.text)
             if (response_json['code'] == 0):       
                 # 更新记录
-                tran_hash = response_json['result']['message'].split(':')[1].strip()
-                RewardsTableInstance.update_reward(invite.id, tran_hash, True)
-                inviteeResult = RewardsTableInstance.update_reward(invitee.id, tran_hash, True)
+                RewardsTableInstance.update_reward(invite.id, response_json['result']['Data']['inviterTxHash'], True)
+                inviteeResult = RewardsTableInstance.update_reward(invitee.id, response_json['result']['Data']['inviteeTxHash'], True)
                 return inviteeResult
             else:
                 return None
