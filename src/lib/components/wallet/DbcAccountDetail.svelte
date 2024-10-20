@@ -104,14 +104,13 @@
         </p>
         <button
           on:click={async () => {
-            const res = await copyToClipboard(
-              // $currentWalletData?.walletInfo?.address
-              $user?.id
-
-            );
-            if (res) {
-              toast.success($i18n.t("Copying to clipboard was successful!"));
-            }
+            alert("123123123123123");
+            // const res = await copyToClipboard(
+            //   $user?.id
+            // );
+            // if (res) {
+            //   toast.success($i18n.t("Copying to clipboard was successful!"));
+            // }
           }}
           type="button"
           class="absolute inset-y-0 right-0 px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
