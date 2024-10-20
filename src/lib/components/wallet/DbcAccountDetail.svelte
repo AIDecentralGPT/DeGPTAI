@@ -105,7 +105,6 @@
         <button
           on:click={async () => {
             const res = await copyToClipboard($user?.id);
-            alert(res);
             if (res) {
               toast.success($i18n.t("Copying to clipboard was successful!"));
             }

@@ -197,6 +197,7 @@ export const generateInitialsImage = (name) => {
 
 export const copyToClipboard = async (text) => {
 	let result = false;
+	alert("==========" + navigator.clipboard)
 	if (!navigator.clipboard) {
 		const textArea = document.createElement('textarea');
 		textArea.value = text;
