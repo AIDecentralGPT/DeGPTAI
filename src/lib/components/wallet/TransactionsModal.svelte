@@ -116,7 +116,6 @@
     <div
       class="m-auto rounded-2xl max-w-full mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4 overflow-auto h-[600px]"
     >
-      <!-- <h1 class="text-xl font-semibold mb-4">{$i18n.t("Transactions")}</h1> -->
       <div>
         <table class="min-w-full divide-y divide-gray-200">
           <thead>

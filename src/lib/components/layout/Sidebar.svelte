@@ -293,15 +293,41 @@
 {/if}
 
 <ExportWalletJsonModal bind:show={$showExportWalletJsonModal} />
+
+<!-- 转账弹窗 -->
+{#if showRewardsHistoryModal}
 <TransferModal bind:show={$showTransferModal} />
+{/if}
+
 <PriceModal bind:show={$showPriceModal} />
 <BuyCoinModal bind:show={$showBuyCoinModal} />
-<ShareModal bind:show={$showShareModal} />
-<RewardsModal bind:show={$showRewardsModal} />
-<RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
-<RewardDetailModal bind:show={$showRewardDetailModal} />
-<TransactionsModal bind:show={$showTransactionsModal} />
 
+<!-- 分享弹窗 -->
+{#if showRewardsHistoryModal}
+<ShareModal bind:show={$showShareModal} />
+{/if}
+
+<!-- 邀请朋友获取奖励弹窗（已注释） -->
+{#if showRewardsModal} 
+<RewardsModal bind:show={$showRewardsModal} />
+{/if}
+
+<!-- 奖励记录弹窗 -->
+{#if showRewardsHistoryModal} 
+<RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
+{/if}
+
+<!-- 奖励操作界面 -->
+{#if showRewardDetailModal} 
+<RewardDetailModal bind:show={$showRewardDetailModal} />
+{/if}
+
+<!-- 转账记录弹窗 -->
+{#if showTransactionsModal} 
+<TransactionsModal bind:show={$showTransactionsModal} />
+{/if}
+
+<!-- KYC认证弹窗 -->
 {#if showUserVerifyModal} 
 <UserVerifyModal bind:show={$showUserVerifyModal} />
 {/if}
