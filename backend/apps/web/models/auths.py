@@ -150,6 +150,7 @@ class FaceLivenessCheckRequest(BaseModel):
 class FaceLivenessCheckResponse(BaseModel):
     passed: bool
     message:  Optional[str] = ""
+    address: Optional[str] = ""
 
 
 class SearchFormRequest(BaseModel):

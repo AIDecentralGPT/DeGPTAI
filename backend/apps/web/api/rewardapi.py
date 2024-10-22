@@ -58,7 +58,7 @@ class RewardApi:
             # 校验请求是否成功
             response.raise_for_status()
             # 打印响应内容
-            print("===========registReward===========", response.text)
+            print("===========dailyReward===========", response.text)
             response_json = json.loads(response.text)
             if response_json['code'] == 0:       
                 # 更新记录

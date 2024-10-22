@@ -15,9 +15,9 @@
 
   const i18n = getContext("i18n");
 
-  let socket;
+  let socket:any = null;
   let message = "";
-  let address: any = null;
+  let address = "";
 
   function initSocket() {
     // 创建 WebSocket 连接

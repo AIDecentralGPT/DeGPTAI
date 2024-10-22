@@ -9,7 +9,7 @@
   let loading = true;
   let httpStatus = true;
   let message = "";
-  let address: any = null;
+  let address = "";
   
   let userId = null;
 
