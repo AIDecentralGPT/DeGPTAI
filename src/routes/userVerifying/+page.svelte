@@ -31,9 +31,7 @@
         } else {
           status = 'fail';
           message = res.message;
-          // address = res.address;
-          address = '12312312312312312312312312312312';
-        }
+          address = res.address;        }
       } else {
         httpStatus = false;
       }
