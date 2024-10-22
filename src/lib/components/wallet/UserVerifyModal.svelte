@@ -432,10 +432,10 @@
                     {/if}
                   </div>  
                   {#if checkQrResult}
-                    <div class="flex flex-row items-center">
-                      {message}
-                    </div>
                     {#if address}
+                      <div class="flex flex-row items-center">
+                        {$i18n.t("Your face has been used")}
+                      </div>
                       <div class="flex">
                         <p class="w-[300px] dark:text-gray-500 dark:bg-gray-650 text-ellipsis overflow-hidden whitespace-nowrap">Wallet Adress: { address }</p>
                         <button
@@ -474,7 +474,11 @@
                               />
                           </svg>
                         </button>
-                      </div> 
+                      </div>
+                    {:else}
+                      <div class="flex flex-row items-center">
+                        {message}
+                      </div>
                     {/if}
                   {:else}
                     {#if qrCodeFinish}
