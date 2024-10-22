@@ -434,55 +434,51 @@
                     <div class="flex flex-row items-center">
                       {message}
                     </div>
+                    {#if address}
+                      <div class="flex">
+                        <p class="w-[300px] dark:text-gray-500 dark:bg-gray-650 text-ellipsis overflow-hidden whitespace-nowrap">Wallet Adress: { address }</p>
+                        <button
+                          on:click={async () => {
+                            const res = await copyToClipboard(address);
+                            if (res) {
+                              toast.success($i18n.t("Copying to clipboard was successful!"));
+                            }
+                          }}
+                          type="button"
+                          class="px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1em"
+                            height="1em"
+                            viewBox="0 0 512 512">
+                              <rect
+                                width="336"
+                                height="336"
+                                x="128"
+                                y="128"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linejoin="round"
+                                stroke-width="32"
+                                rx="57"
+                                ry="57"
+                              />
+                              <path
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="32"
+                                d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                              />
+                          </svg>
+                        </button>
+                      </div> 
+                    {/if}
                   {:else}
                     {#if qrCodeFinish}
                       <div class="flex flex-row items-center success">
                         <span>{message}<span>
-                        {#if address}
-                          <div class="flex">
-                            <p class="w-[300px] dark:text-gray-500 dark:bg-gray-650 text-ellipsis overflow-hidden whitespace-nowrap">Wallet Adress: { address }</p>
-                            <button
-                              on:click={async () => {
-                                const res = await copyToClipboard(address);
-                                if (res) {
-                                  toast.success($i18n.t("Copying to clipboard was successful!"));
-                                }
-                              }}
-                              type="button"
-                              class="px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="1em"
-                                height="1em"
-                                viewBox="0 0 512 512"
-                                ><rect
-                                  width="336"
-                                  height="336"
-                                  x="128"
-                                  y="128"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-linejoin="round"
-                                  stroke-width="32"
-                                  rx="57"
-                                  ry="57"
-                                /><path
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="32"
-                                  d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
-                                /></svg
-                              >
-                            </button>
-                          </div>
-                          <!-- <div class="flex justify-between items-start">
-                            <div class="px-2 cursor-pointer">返回首页</div>
-                            <div class="px-2 cursor-pointer">返回登陆</div>
-                          </div> -->  
-                        {/if}
                       </div>
                     {:else}
                       <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>
