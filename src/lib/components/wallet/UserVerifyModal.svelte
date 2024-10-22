@@ -2,6 +2,7 @@
   import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
   import { WEBUI_API_BASE_URL } from "$lib/constants";
+  import { copyToClipboard } from "$lib/utils";
   import {
     faceliveness,
     facelivenessRes,
