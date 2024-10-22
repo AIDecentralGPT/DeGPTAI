@@ -570,14 +570,14 @@ export const deleteAPIKey = async (token: string) => {
 
 
 // 验证码
-export const sendCode = async (email: string) => {
+export const sendCode = async (token: string, email: string) => {
   let error = null;
 
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/send_code`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       email: email

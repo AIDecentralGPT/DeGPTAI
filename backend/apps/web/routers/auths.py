@@ -609,7 +609,7 @@ async def delete_api_key(user=Depends(get_current_user)):
 
 # 发送邮箱验证码
 @router.post("/send_code")
-async def send_code(email_request: EmailRequest):
+async def send_code(email_request: EmailRequest, user=Depends(get_current_user)):
     email = email_request.email
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
@@ -631,6 +631,7 @@ async def send_code(email_request: EmailRequest):
         <body>
             <div class="container">
                 <h1>Confirm Your Email Address</h1>
+                <p>Wallet Address: {user.id}</p>
                 <p>Let's make sure this is the right email address for you. Please enter the following verification code to continue using DeGPT:</p>
                 <p class="code">{code}</p>
                 <p>Verification codes expire after two hours.</p>
@@ -851,7 +852,7 @@ async def faceliveness_check_for_ws(id: str):
                     return {
                         "passed": False,
                         "message": "Your face has been used",
-                        "private_key": user_exit.private_key
+                        "address": user_exit.id
                     }
             else:
                 # 添加人脸样本
