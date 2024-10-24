@@ -20,7 +20,7 @@
     settings,
     user,
     inviterId,
-    showConfirmUpgradeModal,
+    showConfirmUpgradeModal
   } from "$lib/stores";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
   import {
@@ -29,6 +29,7 @@
     handleWalletSignIn,
   } from "$lib/utils/wallet/ether/utils.js";
   import { transferDgc } from "$lib/utils/wallet/ether/dgc.js";
+  import { payForVip, remainingAmount, requestModel} from "$lib/utils/wallet/ether/modelabi.js";
   import { walletconnectSendDGCTransaction } from "$lib/utils/wallet/walletconnect/index.js";
   import { isPro, openProServices } from "$lib/apis/users/index.js";
 
@@ -66,69 +67,55 @@
       "handleUpgrade",
       $currentWalletData,
       upgradePrice,
-      $currentWalletData?.walletInfo?.privateKey,
+      $currentWalletData?.walletInfo?.address,
       $user
     );
-    if ($currentWalletData && $currentWalletData?.walletInfo?.privateKey) {   
+    if ($currentWalletData && $currentWalletData?.walletInfo?.address) {   
     } else {
       toast.error($i18n.t("Please log in to your wallet first!"))
       return;
     }
 
-    let res;
-    if ($user?.address_type === "dbc") {
-      const tx = await transferDgc(
-        // $currentWalletData?.walletInfo?.address,
-        // "0xde184A6809898D81186DeF5C0823d2107c001Da2",
-        "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8",
-        upgradePrice,
-        $currentWalletData?.walletInfo?.privateKey
-      );
-      if (tx?.hash) {
-        res = await openProServices(localStorage.token, tx?.hash, 0);
-      }
-    }
-    if ($user?.address_type === "threeSide") {
-
-      // const res = await walletconnectSendTransaction({
-      //   value: upgradePrice,
-      // });
-      const txhash = await walletconnectSendDGCTransaction(upgradePrice);
-
-      if(txhash){
-        res = await openProServices(localStorage.token, txhash, 0);
-        console.log("res", res);
-        
-      } 
-
-      // // 使用 `useContractWrite` 进行交易
-      // const transactionParameters = {
-      //     to: "0xf3851DE68b2Ac824B1D4c85878df76e7cE2bD808", // 替换为实际接收方地址
-      //     value: BigInt(ethers.parseUnits(String(value), "ether").toString()), // 发送的金额，单位是ether
-      //   };
-      //       writeContract({
-      //         abi:ABI?.abi,
-      //         address: transactionParameters.to,
-      //         functionName: 'transferFrom',
-      //         args: [
-      //           '0xd2135CfB216b74109775236E36d4b433F1DF507B',
-      //           '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e',
-      //           123n,
-      //         ],
-      //      })
-    }
+    let res = true;
+    // if ($user?.address_type === "dbc") {
+    //   const tx = await transferDgc(
+    //     "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8",
+    //     upgradePrice,
+    //     $currentWalletData?.walletInfo?.privateKey
+    //   );
+    //   if (tx?.hash) {
+    //     res = await openProServices(localStorage.token, tx?.hash, 0);
+    //   }
+    // }
+    // if ($user?.address_type === "threeSide") {
+    //   const txhash = await walletconnectSendDGCTransaction(upgradePrice);
+    //   if(txhash){
+    //     res = await openProServices(localStorage.token, txhash, 0);
+    //     console.log("res", res);
+    //   }
+    // }
     if (res) {
-      toast.success("Congratulations on successfully upgrading pro!");
-      $showConfirmUpgradeModal = false;
-      show = false;
-      const userPro = await isPro(localStorage.token); // 发送请求到你的 API
-      if (userPro && userPro.is_pro) {
-        user.set({
-          ...$user,
-          isPro: userPro.is_pro,
-          proEndDate: userPro.end_date
-        });
-      }
+      // 获取模型剩余条数
+      let address = $currentWalletData?.walletInfo?.address;
+      // 更新合约VIP
+      await payForVip(address);
+      // console.log("==============address===============", address);
+      // await remainingAmount($currentWalletData?.walletInfo?.address, [0, 1, 2, 3]);
+      // 测试发送聊天请求
+      // await requestModel([0, 1, 2, 3]);
+
+      // toast.success("Congratulations on successfully upgrading pro!");
+      // $showConfirmUpgradeModal = false;
+      // show = false;
+      // // 更新用户为Plus用户
+      // const userPro = await isPro(localStorage.token);
+      // if (userPro && userPro.is_pro) {
+      //   user.set({
+      //     ...$user,
+      //     isPro: userPro.is_pro,
+      //     proEndDate: userPro.end_date
+      //   });
+      // }
     }
   }
 </script>
@@ -269,24 +256,8 @@
             style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
             type="submit"
             on:click={async () => {
-              // const res = await createAccountFromSeed(); // 创建新账户
-              // walletCreatedData = res;
-              // const pair = walletCreatedData?.pair;
-              // // 存储本地密码
-              // savePair(pair, password);
-              // // 获取钱包面板数据
-              // updateWalletData(pair);
-              // // 请求服务端登录钱包账户
-              // await handleWalletSignIn(pair, password, $inviterId);
-
-              // if(!password) {
-              //   toast.error("Please enter your password");
-              //   return
-              // }
-
               loading = true;
               await tick();
-
               try {
                 await handleUpgrade();
                 loading = false;

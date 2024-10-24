@@ -4,7 +4,7 @@
 	import { getLanguages } from '$lib/i18n';
 	const dispatch = createEventDispatcher();
 
-	import { models, user, theme } from '$lib/stores';
+	import { models, user, theme, mobile } from '$lib/stores';
 
 	const i18n = getContext('i18n');
 
@@ -208,30 +208,32 @@ onMount(() => {
 					</a>
 				</div>
 			{/if}
+			<!-- {#if !$mobile} -->
+			{#if false}
+				<div>
+					<div class=" py-0.5 flex w-full justify-between">
+						<div class=" self-center text-xs font-medium">{$i18n.t('Notifications')}</div>
 
-			<div>
-				<div class=" py-0.5 flex w-full justify-between">
-					<div class=" self-center text-xs font-medium">{$i18n.t('Notifications')}</div>
-
-					<button
-						class="p-1 px-3 text-xs flex rounded transition"
-						on:click={() => {
-							toggleNotification();
-						}}
-						type="button"
-					>
-						{#if notificationEnabled === true}
-							<span class="ml-2 self-center">{$i18n.t('On')}</span>
-						{:else}
-							<span class="ml-2 self-center">{$i18n.t('Off')}</span>
-						{/if}
-					</button>
+						<button
+							class="p-1 px-3 text-xs flex rounded transition"
+							on:click={() => {
+								toggleNotification();
+							}}
+							type="button"
+						>
+							{#if notificationEnabled === true}
+								<span class="ml-2 self-center">{$i18n.t('On')}</span>
+							{:else}
+								<span class="ml-2 self-center">{$i18n.t('Off')}</span>
+							{/if}
+						</button>
+					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 
 		<hr class=" dark:border-gray-700 my-3" />
-
+		{#if false}
 		<div>
 			<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
 			<textarea
@@ -240,6 +242,7 @@ onMount(() => {
 				rows="4"
 			/>
 		</div>
+		{/if}
 
 		<div class="mt-2 space-y-3 pr-1.5">
 			<!-- <div class="flex justify-between items-center text-sm">

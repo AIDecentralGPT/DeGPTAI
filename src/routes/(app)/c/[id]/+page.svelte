@@ -275,8 +275,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 3\2. 继续聊天会话
 	const sendPrompt = async (prompt, parentId, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
-
-
 		// 对每个模型都做请求
 		await Promise.all(
 			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
@@ -344,7 +342,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
 
 					} else {
-console.error($i18n.t(`Model {{modelId}} not found`, { }));
+						console.error($i18n.t(`Model {{modelId}} not found`, { }));
 
 						// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
@@ -357,8 +355,8 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		await chats.set(await getChatList(localStorage.token));
 	};
 
-		// 对话DeGpt
-		const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
+	// 对话DeGpt
+	const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = messages
@@ -502,12 +500,12 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 						messages = messages;
 					}
 
-					if ($settings.notificationEnabled && !document.hasFocus()) {
-						const notification = new Notification(`OpenAI ${model}`, {
-							body: responseMessage.content,
-							icon: `${WEBUI_BASE_URL}/static/favicon.png`
-						});
-					}
+					// if ($settings.notificationEnabled && !document.hasFocus()) {
+					// 	const notification = new Notification(`OpenAI ${model}`, {
+					// 		body: responseMessage.content,
+					// 		icon: `${WEBUI_BASE_URL}/static/favicon.png`
+					// 	});
+					// }
 
 					if ($settings.responseAutoCopy) {
 						copyToClipboard(responseMessage.content);
@@ -715,20 +713,20 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 									};
 									messages = messages;
 
-									if ($settings.notificationEnabled && !document.hasFocus()) {
-										const notification = new Notification(
-											selectedModelfile
-												? `${
-														selectedModelfile.title.charAt(0).toUpperCase() +
-														selectedModelfile.title.slice(1)
-												  }`
-												: `${model}`,
-											{
-												body: responseMessage.content,
-												icon: selectedModelfile?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`
-											}
-										);
-									}
+									// if ($settings.notificationEnabled && !document.hasFocus()) {
+									// 	const notification = new Notification(
+									// 		selectedModelfile
+									// 			? `${
+									// 					selectedModelfile.title.charAt(0).toUpperCase() +
+									// 					selectedModelfile.title.slice(1)
+									// 			  }`
+									// 			: `${model}`,
+									// 		{
+									// 			body: responseMessage.content,
+									// 			icon: selectedModelfile?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`
+									// 		}
+									// 	);
+									// }
 
 									if ($settings.responseAutoCopy) {
 										copyToClipboard(responseMessage.content);
@@ -960,12 +958,12 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 						messages = messages;
 					}
 
-					if ($settings.notificationEnabled && !document.hasFocus()) {
-						const notification = new Notification(`OpenAI ${model}`, {
-							body: responseMessage.content,
-							icon: `${WEBUI_BASE_URL}/static/favicon.png`
-						});
-					}
+					// if ($settings.notificationEnabled && !document.hasFocus()) {
+					// 	const notification = new Notification(`OpenAI ${model}`, {
+					// 		body: responseMessage.content,
+					// 		icon: `${WEBUI_BASE_URL}/static/favicon.png`
+					// 	});
+					// }
 
 					if ($settings.responseAutoCopy) {
 						copyToClipboard(responseMessage.content);

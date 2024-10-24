@@ -9,6 +9,7 @@
   import { copyToClipboard } from "$lib/utils";
   import { currentWalletData, user} from "$lib/stores";
   import { getRewardsHistory, creatWalletCheck, inviteCheck, clockInCheck } from "$lib/apis/rewards";
+    import { boolToBytes } from "viem";
 
   const i18n = getContext("i18n");
 
@@ -63,7 +64,9 @@
     console.log("rewardsHistory", rewardsHistory);
   }
 
+  let obtainLoad = false;
   async function updateReward(id, type) {
+    obtainLoad = true;
     let rewardApiMethod = null;
     if (type === "new_wallet") {
       rewardApiMethod = creatWalletCheck;
@@ -97,6 +100,7 @@
         console.log("Clock In Check  error", res);
       }); 
     console.log("Clock In Check res update", rewardsHistory);
+    obtainLoad = false;
   }
 
   function formateAddress(val) {
@@ -225,7 +229,7 @@
                   {:else}
                     <div class="flex direction-column amount-styl">
                       <div class="obtain-amount">{historyItem.reward_amount} DGC</div>
-                      <div class="obtain-styl cursor-pointer" 
+                      <button class="obtain-styl cursor-pointer" disabled={obtainLoad}
                         on:click={() => {
                           if ($user.verified) {
                             updateReward(historyItem.id, historyItem.reward_type)
@@ -233,7 +237,7 @@
                             toast.warning("Please complete the KYC verification to convert your points into cash"); 
                           }
                         }}
-                      >Obtain now</div>
+                      >Obtain now</button>
                     </div>
                   {/if}
                   

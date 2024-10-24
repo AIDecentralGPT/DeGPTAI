@@ -5,9 +5,9 @@
   import { createWeb3Modal } from "@web3modal/wagmi";
   import {
     watchConnections,
-    disconnect,
     getAccount,
     watchAccount,
+    getClient,
   } from "@wagmi/core";
   import { handleWalletSignIn, provider, signOut } from "$lib/utils/wallet/ether/utils";
   import {
@@ -25,6 +25,9 @@
   const walletBalance = writable(0);
   let modal:any = null;
 
+  const client = getClient(config);
+  console.log("=========client===========", client);
+
   const getBalance = async (address) => {
     try {
       const balance = await provider.getBalance(address);
@@ -35,12 +38,7 @@
     }
   };
 
-  const initConnection = async () => {
-    
-  };
-
   onMount(() => {
-    initConnection();
     watchConnections(config, {
       async onChange(data) {
         if (data.length) {
@@ -64,17 +62,18 @@
 
   watchAccount(config, {
     async onChange(account, prevAccount) {
-
       console.log("=============scan wallet================", account, prevAccount);
       $threesideAccount = account;
-
+      
       if (account.status === "connected" ) {
-        handleWalletSignIn({
-          walletImported: {
-            address: account?.address,
-          },
-          address_type: "threeSide",
-        });
+        if (!$user?.id?.startsWith('0x')) {
+          handleWalletSignIn({
+            walletImported: {
+              address: account?.address,
+            },
+            address_type: "threeSide",
+          });
+        }   
       }
       if(account.status ==="disconnected" ) {
         signOut();
@@ -84,8 +83,8 @@
   });
 
   function connect() {
+    console.log("==========================", getAccount(config));
     if ($user?.id?.startsWith('0x') && getAccount(config).isConnected) {
-      disconnect(config);
       signOut();
     } else {
       modal.open();
@@ -94,8 +93,6 @@
 </script>
 
 <div class="walletConnect flex flex-col gap-4">
-  <!-- <button on:click={connect}>connect wallet </button> -->
-
   {#if !($user?.id && $user?.id?.startsWith("0x"))}
     <button
       id="btn"
@@ -128,49 +125,6 @@
       </div>
     </button>
   {/if}
-
-  <!-- {#if $user?.id?.startsWith("0x") && $user?.address_type === "threeSide"}
-    <div>
-      <div class="flex justify-between items-center flex-row-reverse mb-2">
-        <button
-          class="flex gap-2 items-center cursor-pointer"
-          on:click={() => {
-            $showShareModal = true;
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 24 24"
-            ><path
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4m-8-2l8-8m0 0v5m0-5h-5"
-            /></svg
-          >
-
-          <span> {$i18n.t("Share to Obtain DGC")} </span>
-        </button>
-      </div>
-
-      <div class="flex items-center">
-        <w3m-button id="web3button" label="链接钱包" class="flex-1" />
-        <button
-          type="submit"
-          on:click={async () => {
-            $showRewardsModal = true;
-          }}
-        >
-          {$i18n.t("Rewards")}
-        </button>
-      </div>
-      
-    </div>
-  {/if} -->
 </div>
 
 <style>

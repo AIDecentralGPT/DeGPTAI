@@ -73,6 +73,12 @@ export const showConfirmUpgradeModal = writable(false);
 export let currentWalletData = writable(DefaultCurrentWalletData)
 export let threesideAccount = writable({})
 
+// 模型访问数量
+export let modelOne = writable(10)
+export let modelTwo = writable(10)
+export let modelThree = writable(10)
+export let modelFour = writable(10)
+
 
 
 export let pageUpdateNumber = writable(0)

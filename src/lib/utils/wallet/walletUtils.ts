@@ -14,6 +14,9 @@ import { getDbcBalance } from "./ether/dbc";
 import { getDgcBalance } from "./ether/dgc";
 import { DefaultCurrentWalletData } from "$lib/constants";
 
+import { getAccount, disconnect } from "@wagmi/core";
+import { config } from "$lib/utils/wallet/walletconnect/index";
+
 // 处理登录逻辑（不管有没有token，触发 用初始化状态登录，即删掉token，然后指纹登录）
 export async function handleSigninAsIntialStatus() {
   // 处理没有token的情况
@@ -124,13 +127,12 @@ export async function closeWallet() {
   const walletData = get(currentWalletData);
   currentWalletData.update(() => DefaultCurrentWalletData)
 
-  localStorage.removeItem("token")
+  localStorage.removeItem("token");
 
-  // removePair(walletData?.pair?.address);
-  // currentWalletData.set({});
-
-  // // localStorage.removeItem("token");
-  // localStorage.token = "";
+  let closeUser = get(user);
+  if (closeUser?.address_type === "threeSide") {
+    disconnect(config);
+  }
 
   await printSignIn().then((res) => {
     console.log("printSignIn的res", res);
@@ -159,10 +161,6 @@ export async function updateWalletData(walletInfo: any) {
 
   const dbcBalance = await getDbcBalance(walletAdress);
   const dgcBalance = await getDgcBalance(walletAdress);
-
-
-
-
 
   currentWalletData.update((data) => {
     return {

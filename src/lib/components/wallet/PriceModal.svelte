@@ -24,6 +24,12 @@
         isPro: userPro.is_pro,
         proEndDate: userPro.end_date
       });
+    } else{
+      user.set({
+        ...$user,
+        isPro: false,
+        proEndDate: null
+      });
     }
   }
 

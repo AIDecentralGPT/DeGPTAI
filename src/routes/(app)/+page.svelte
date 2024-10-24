@@ -208,13 +208,13 @@
 		);
 
 
-console.log("selectedModels", selectedModels);
+		console.log("selectedModels", selectedModels);
 
 
 		// const selectedModelsValid = selectedModels 
-if(selectedModels.length  <1) {
-	toast.error($i18n.t('Model not selected'));
-}
+		if(selectedModels.length  <1) {
+			toast.error($i18n.t('Model not selected'));
+		}
 		// if (selectedModels.includes('')) {
 		// 	// 如果是‘’，就去掉。只要有选中的就行
 		// 	toast.error($i18n.t('Model not selected'));
@@ -298,7 +298,6 @@ if(selectedModels.length  <1) {
 
 	const sendPrompt = async (prompt, parentId, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
-
 		await Promise.all(
 			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
 				async (modelId, index) => {
@@ -371,8 +370,7 @@ if(selectedModels.length  <1) {
 						// 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
 						// }
 					} else {
-console.error($i18n.t(`Model {{modelId}} not found`, { }));
-						
+						console.error($i18n.t(`Model {{modelId}} not found`, { }));						
 						// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
 				}
@@ -545,20 +543,20 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 									};
 									messages = messages;
 
-									if ($settings.notificationEnabled && !document.hasFocus()) {
-										const notification = new Notification(
-											selectedModelfile
-												? `${
-														selectedModelfile.title.charAt(0).toUpperCase() +
-														selectedModelfile.title.slice(1)
-												  }`
-												: `${model}`,
-											{
-												body: responseMessage.content,
-												icon: selectedModelfile?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`
-											}
-										);
-									}
+									// if ($settings.notificationEnabled && !document.hasFocus()) {
+									// 	const notification = new Notification(
+									// 		selectedModelfile
+									// 			? `${
+									// 					selectedModelfile.title.charAt(0).toUpperCase() +
+									// 					selectedModelfile.title.slice(1)
+									// 			  }`
+									// 			: `${model}`,
+									// 		{
+									// 			body: responseMessage.content,
+									// 			icon: selectedModelfile?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`
+									// 		}
+									// 	);
+									// }
 
 									if ($settings.responseAutoCopy) {
 										copyToClipboard(responseMessage.content);
