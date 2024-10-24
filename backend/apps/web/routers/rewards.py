@@ -175,3 +175,13 @@ async def get_reward_count(user=Depends(get_verified_user)):
     rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id)
 
     return rewards_history
+
+@router.get("/dbc_rate")
+async def get_dbc_rate(user=Depends(get_verified_user)):
+    
+    # 查询dbc汇率
+    dbc_rate = RewardApiInstance.getDbcRate()
+    if dbc_rate is not None:
+        return dbc_rate
+    else:
+       raise HTTPException(status_code=400, detail="Failed to request third-party interface")  

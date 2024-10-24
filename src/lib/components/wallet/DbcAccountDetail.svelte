@@ -15,6 +15,8 @@
 
   "$lib/utils/wallet/dbc";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
+  import { getDbcRate } from "$lib/apis/wallet/index";
+
   const i18n = getContext("i18n");
 
   function floorToFixed(num, digits) {
@@ -22,8 +24,13 @@
     return (Math.floor(num * pow) / pow).toFixed(digits);
   }
 
-  onMount(() => {
+  let dbcRate = 0.0003;
 
+  onMount(async () => {
+    let dbc_rate = await getDbcRate(localStorage.token);
+    if (dbc_rate) {
+      dbcRate = dbc_rate;
+    }
   });
 </script>
 
@@ -88,7 +95,10 @@
 
   <!-- 二级按钮 -->
   {#if $user?.address_type === 'threeSide'}
-    <w3m-button class="v-btn w-full" label="组件方式打开" balance="show">关闭</w3m-button>
+    <div class="flex justify-center">
+      <w3m-button class="v-btn" label="组件方式打开"/>
+    </div>
+    
   {:else}
     <div class="flex justify-start gap-2 mt6 mb10">
       <button
@@ -221,10 +231,10 @@
         </div>
       </div>
       <div class="opacity-50 leading-normal fs12">
-        1DBC=0.0005u
+        1DBC={floorToFixed(dbcRate, 4)}u
       </div>
       <div class="opacity-50 leading-normal fs12">
-        Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * 0.0005, 4)}u
+        Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * dbcRate, 4)}u
       </div>
     </div>
   </div>

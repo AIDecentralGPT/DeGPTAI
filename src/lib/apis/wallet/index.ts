@@ -1,4 +1,4 @@
-// import { WEBUI_API_BASE_URL } from '$lib/constants';
+import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 export const getTransactions = async (address: string) => {
   let error = null;
@@ -30,4 +30,31 @@ export const getTransactions = async (address: string) => {
 
   const json = await Promise.all([res[0].json(), res[1].json()]);
   return json;
+};
+
+// 获取dbc汇率
+export const getDbcRate = async (token: string) => {
+
+  let error = null;
+	const res = await fetch(`${WEBUI_API_BASE_URL}/rewards/dbc_rate`, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		},
+	}).then(async (res) => {
+		if (!res.ok) 
+      throw await res.json();
+    return res.json();
+  }).then((json) => {
+		return json;
+	}).catch((err) => {
+		console.log(err);
+		return null;
+	});
+	if (error) {
+		throw error;
+	}
+	return res;
 };

@@ -1,6 +1,5 @@
 import requests
 import json
-import uuid
 from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
 
@@ -119,11 +118,18 @@ class RewardApi:
         # 打印响应内容
         print(response.text)
         return response
+    
+    # 获取dbc汇率
+    def getDbcRate(self):
+        try:
+            rul = "https://api.coingecko.com/api/v3/simple/price?ids=deepbrain-chain&vs_currencies=usd"
+            response = requests.get(rul)
+            respnose_json = json.loads(response.text)
+            print(respnose_json)
+            return respnose_json['deepbrain-chain']['usd']
+        except Exception as e:
+            return None
+            
+        
 
 RewardApiInstance = RewardApi(baseUrl)
-
-if __name__ == '__main__':
-    rewardApi = RewardApi(baseUrl)
-    respnose = rewardApi.registReward("b7f5802f-dc67-4ee4-aaee-db10f4d341f5", "0xDF438925607aA670cF827672e75fD7Ac6A5CCc6e")
-    print(respnose)
-    print(respnose.text)
