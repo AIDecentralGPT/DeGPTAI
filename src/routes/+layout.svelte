@@ -1,22 +1,18 @@
 <script>
 	import '../polyfills'; // 必须在其他代码之前引入
-  import { onMount, tick, setContext } from "svelte";
+  import { onMount, setContext } from "svelte";
   import {
     config,
     user,
     theme,
     WEBUI_NAME,
     mobile,
-    currentWalletData,
-    showOpenWalletModal,
-    chats,
   } from "$lib/stores";
   import { goto } from "$app/navigation";
-  import { Toaster, toast } from "svelte-sonner";
+  import { Toaster } from "svelte-sonner";
 
   import { getBackendConfig } from "$lib/apis";
   import {  printSignIn,  } from "$lib/apis/auths";
-  import { onGetBalance, onGetDLCBalance, removePair } from "$lib/utils/wallet/dbc";
 
   import "../tailwind.css";
   import "../app.css";
@@ -28,9 +24,8 @@
   import { WEBUI_BASE_URL } from "$lib/constants";
   import i18n, { initI18n } from "$lib/i18n";
   import FingerprintJS from "@fingerprintjs/fingerprintjs";
-  import { getCurrentPair, signData } from "$lib/utils/wallet/dbc";
-  import { getUserInfo, updateUserById } from "$lib/apis/users";
-  import { handleSigninAsIntialStatus } from "$lib/utils/wallet/walletUtils";
+  import { getUserInfo } from "$lib/apis/users";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
 
   setContext("i18n", i18n);
   let loaded = false;
@@ -72,8 +67,36 @@
 
     let res = {}
     if(localStorage.token) {
-      // res = await getUserInfo(localStorage.token);
-      // await user.set(res);
+      // 获取缓存用户信息
+      let localUser = null;
+      if (localStorage.user) {
+        try {
+          localUser = JSON.parse(localStorage.user);
+        } catch{ }  
+      }
+
+      if (localUser?.address_type == 'dbc') {
+        res = await getUserInfo(localStorage.token);
+        if (res?.id === localUser?.id) {
+          await user.set({
+            ...res,
+            address_type: localUser.address_type,
+          });
+        }
+        localStorage.user = JSON.stringify($user);
+
+        // 校验钱包
+        if (localStorage.walletImported) {
+          let walletImported = JSON.parse(localStorage.walletImported);
+          if (walletImported) {
+            updateWalletData(walletImported);
+          }
+        }
+      } else {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('walletImported');
+      }
     }
     else {
        res = await printSignIn();
@@ -81,7 +104,6 @@
 
 		loaded = true;
 
-		console.log(res);
 		localStorage.token = res.token;
 
 

@@ -311,7 +311,6 @@ async function handleWalletSignIn({
     console.log("Message Hex:", messageHex);
     console.log(
       "因吹斯汀要的数据",
-
       {
         wallet: walletImported?.address,
         signature: signature,
@@ -336,8 +335,8 @@ async function handleWalletSignIn({
 
     localStorage.token = walletSignInResult.token;
 
-    console.log("钱包登录后获得的用户信息", walletSignInResult);
     user.set(walletSignInResult);
+    localStorage.user = JSON.stringify(walletSignInResult);
 
     if (walletSignInResult.token) {
       await chats.set(await getChatList(localStorage.token));
@@ -346,10 +345,24 @@ async function handleWalletSignIn({
     console.log("walletSignInResult", walletSignInResult);
 
     if (walletSignInResult.id) {
-      // ----------------
-      await chats.set([]);
-      // 获取钱包面板数据
+      await chats.set([]); 
       updateWalletData(walletImported);
+      let localWalletImported = {
+        'address': walletImported?.address,
+        'chainCode':walletImported?.chainCode,
+        'depth':walletImported?.depth,
+        'fingerprint':walletImported?.fingerprint,
+        'index':walletImported?.index,
+        'mnemonic':walletImported?.mnemonic,
+        'parentFingerprint':walletImported?.parentFingerprint,
+        'path':walletImported?.path,
+        'provider':walletImported?.provider,
+        'publicKey':walletImported?.publicKey,
+        'extendedKey':walletImported?.extendedKey,
+        'privateKey':walletImported?.privateKey,
+        'signingKey':walletImported?.signingKey
+      }
+      localStorage.walletImported = JSON.stringify(localWalletImported);
     }
   }
 
@@ -364,6 +377,8 @@ async function handleWalletSignIn({
 
 async function signOut() {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  localStorage.removeItem("walletImported");
   user.set({});
   await printSignIn().then((res) => {
     console.log("指纹登录了", res);

@@ -209,7 +209,6 @@
                   encryptedJson,
                   password
                 );
-                console.log("walletImported", walletImported);
 
                 // 请求服务端登录钱包账户
                 await handleWalletSignIn({

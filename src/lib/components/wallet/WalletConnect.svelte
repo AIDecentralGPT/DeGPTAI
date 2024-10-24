@@ -6,8 +6,7 @@
   import {
     watchConnections,
     getAccount,
-    watchAccount,
-    getClient,
+    watchAccount
   } from "@wagmi/core";
   import { handleWalletSignIn, provider, signOut } from "$lib/utils/wallet/ether/utils";
   import {
@@ -24,9 +23,6 @@
   const walletAddress = writable("");
   const walletBalance = writable(0);
   let modal:any = null;
-
-  const client = getClient(config);
-  console.log("=========client===========", client);
 
   const getBalance = async (address) => {
     try {
