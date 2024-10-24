@@ -185,38 +185,40 @@
 					</a>
 				</div>
 			{/if}
+			{#if false}
+				<div>
+					<div class=" py-0.5 flex w-full justify-between">
+						<div class=" self-center text-xs font-medium">{$i18n.t('Notifications')}</div>
 
-			<div>
-				<div class=" py-0.5 flex w-full justify-between">
-					<div class=" self-center text-xs font-medium">{$i18n.t('Notifications')}</div>
-
-					<button
-						class="p-1 px-3 text-xs flex rounded transition"
-						on:click={() => {
-							toggleNotification();
-						}}
-						type="button"
-					>
-						{#if notificationEnabled === true}
-							<span class="ml-2 self-center">{$i18n.t('On')}</span>
-						{:else}
-							<span class="ml-2 self-center">{$i18n.t('Off')}</span>
-						{/if}
-					</button>
+						<button
+							class="p-1 px-3 text-xs flex rounded transition"
+							on:click={() => {
+								toggleNotification();
+							}}
+							type="button"
+						>
+							{#if notificationEnabled === true}
+								<span class="ml-2 self-center">{$i18n.t('On')}</span>
+							{:else}
+								<span class="ml-2 self-center">{$i18n.t('Off')}</span>
+							{/if}
+						</button>
+					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 
 		<hr class=" dark:border-gray-700 my-3" />
-
-		<div>
-			<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
-			<textarea
-				bind:value={system}
-				class="w-full rounded-lg p-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none resize-none"
-				rows="4"
-			/>
-		</div>
+		{#if false}
+			<div>
+				<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
+				<textarea
+					bind:value={system}
+					class="w-full rounded-lg p-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none resize-none"
+					rows="4"
+				/>
+			</div>
+		{/if}
 
 		<div class="mt-2 space-y-3 pr-1.5">
 			<!-- <div class="flex justify-between items-center text-sm">

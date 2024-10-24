@@ -506,20 +506,20 @@
 									};
 									messages = messages;
 
-									if ($settings.notificationEnabled && !document.hasFocus()) {
-										const notification = new Notification(
-											selectedModelfile
-												? `${
-														selectedModelfile.title.charAt(0).toUpperCase() +
-														selectedModelfile.title.slice(1)
-												  }`
-												: `${model}`,
-											{
-												body: responseMessage.content,
-												icon: selectedModelfile?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`
-											}
-										);
-									}
+									// if ($settings.notificationEnabled && !document.hasFocus()) {
+									// 	const notification = new Notification(
+									// 		selectedModelfile
+									// 			? `${
+									// 					selectedModelfile.title.charAt(0).toUpperCase() +
+									// 					selectedModelfile.title.slice(1)
+									// 			  }`
+									// 			: `${model}`,
+									// 		{
+									// 			body: responseMessage.content,
+									// 			icon: selectedModelfile?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`
+									// 		}
+									// 	);
+									// }
 
 									if ($settings.responseAutoCopy) {
 										copyToClipboard(responseMessage.content);
@@ -733,12 +733,12 @@
 						messages = messages;
 					}
 
-					if ($settings.notificationEnabled && !document.hasFocus()) {
-						const notification = new Notification(`OpenAI ${model}`, {
-							body: responseMessage.content,
-							icon: `${WEBUI_BASE_URL}/static/favicon.png`
-						});
-					}
+					// if ($settings.notificationEnabled && !document.hasFocus()) {
+					// 	const notification = new Notification(`OpenAI ${model}`, {
+					// 		body: responseMessage.content,
+					// 		icon: `${WEBUI_BASE_URL}/static/favicon.png`
+					// 	});
+					// }
 
 					if ($settings.responseAutoCopy) {
 						copyToClipboard(responseMessage.content);
@@ -914,12 +914,12 @@
 						messages = messages;
 					}
 
-					if ($settings.notificationEnabled && !document.hasFocus()) {
-						const notification = new Notification(`OpenAI ${model}`, {
-							body: responseMessage.content,
-							icon: `${WEBUI_BASE_URL}/static/favicon.png`
-						});
-					}
+					// if ($settings.notificationEnabled && !document.hasFocus()) {
+					// 	const notification = new Notification(`OpenAI ${model}`, {
+					// 		body: responseMessage.content,
+					// 		icon: `${WEBUI_BASE_URL}/static/favicon.png`
+					// 	});
+					// }
 
 					if ($settings.responseAutoCopy) {
 						copyToClipboard(responseMessage.content);
