@@ -1,14 +1,12 @@
 // utils.js
 
-import { ethers, uuidV4 } from "ethers";
+import { ethers } from "ethers";
 
-import ABI from "./abi.json";
 import { printSignIn, walletSignIn } from "$lib/apis/auths";
 import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
 import { walletconnectSignMessage } from "../walletconnect/index";
-import { toast } from "svelte-sonner";
 import { isPro } from "$lib/apis/users";
 
 // 定义 RPC URL 和 Chain ID
@@ -269,6 +267,7 @@ async function handleWalletSignIn({
   if (address_type === "threeSide") {
     // Example: Generate a random message of 32 bytes (256 bits)
     // const signature = threeSideSignature;
+    console.log("====================================");
     const signature = await walletconnectSignMessage(randomMessage);
 
     // 将消息转换为十六进制字符串
@@ -364,14 +363,14 @@ async function handleWalletSignIn({
       }
       localStorage.walletImported = JSON.stringify(localWalletImported);
     }
-  }
 
-  const userIsPro: boolean = await isPro(localStorage.token); // 发送请求到你的 API
-  if (userIsPro) {
-    user.set({
-      ...walletSignInResult,
-      isPro: userIsPro,
-    });
+    const userIsPro: boolean = await isPro(localStorage.token); // 发送请求到你的 API
+    if (userIsPro) {
+      user.set({
+        ...walletSignInResult,
+        isPro: userIsPro,
+      });
+    }
   }
 }
 

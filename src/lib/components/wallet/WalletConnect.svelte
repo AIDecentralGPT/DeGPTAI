@@ -79,7 +79,6 @@
   });
 
   function connect() {
-    console.log("==========================", getAccount(config));
     if ($user?.id?.startsWith('0x') && getAccount(config).isConnected) {
       signOut();
     } else {

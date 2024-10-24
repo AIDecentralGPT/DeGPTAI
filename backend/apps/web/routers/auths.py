@@ -214,8 +214,7 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
 
 @router.post("/walletSignIn")
 async def walletSignIn(request: Request, form_data: WalletSigninForm):
-    print("Received Data:", form_data)
-    
+    print("Received Data:", form_data) 
     address = form_data.address
     address_type = form_data.address_type
     message = form_data.nonce
@@ -228,21 +227,23 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
         sign_is_valid = False
 
         if address_type == 'threeSide':
-            # 将签名解码为字节
-            signature_bytes = Web3.to_bytes(hexstr=signature)
-            print("message_text", message)
+            sign_is_valid = False
+            if form_data.nonce == signature:
+                sign_is_valid = True
+            else:
+                # 将签名解码为字节
+                signature_bytes = Web3.to_bytes(hexstr=signature)
+                print("message_text", message)
 
-            # 使用 web3.py 的 eth.account.recover_message 方法验证签名
-            recovered_address = w3.eth.account.recover_message(encode_defunct(text=message), signature=signature_bytes)
+                # 使用 web3.py 的 eth.account.recover_message 方法验证签名
+                recovered_address = w3.eth.account.recover_message(encode_defunct(text=message), signature=signature_bytes)
 
-            # recovered_address = w3.eth.account.recover_message(message_text=message, signature=signature_bytes)
-            print("recovered_address:", recovered_address, "address:", address)
+                # recovered_address = w3.eth.account.recover_message(message_text=message, signature=signature_bytes)
+                print("recovered_address:", recovered_address, "address:", address)
 
-            # 比较签名者地址和恢复的地址
-            sign_is_valid = recovered_address.lower() == address.lower()
+                # 比较签名者地址和恢复的地址
+                sign_is_valid = recovered_address.lower() == address.lower()
 
-            # message = form_data.nonce
-            # sign_is_valid = False
         else :
             # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
             # prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
