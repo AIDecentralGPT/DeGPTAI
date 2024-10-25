@@ -420,6 +420,7 @@ async def get_user_info(request: Request,  user=Depends(get_current_user)):
                 "role": user.role,
                 "profile_image_url": user.profile_image_url,
                 "address_type": user.address_type,
+                "verified": user.verified
             }
             return response
                     
