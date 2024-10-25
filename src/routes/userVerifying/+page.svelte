@@ -57,7 +57,7 @@
 
 </script>
 
-<div class="container">
+<div class="container-main">
   {#if httpStatus}
     {#if loading}
       <div class="loading-container">
@@ -149,12 +149,13 @@
 </div>
 
 <style>
-  .container {
+  .container-main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100%;
     font-size: 1.5rem;
     text-align: center;
   }

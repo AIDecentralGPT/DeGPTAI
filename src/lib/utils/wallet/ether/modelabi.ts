@@ -55,7 +55,7 @@ export async function payForVip(address) {
         } 
     } catch(e) {
         console.log("============payForVip-Error==============", e)
-        toast.warning("========payForVip-Error======");
+        toast.warning("Upgrade to Plus failed!");
         return null;
     }  
 }
