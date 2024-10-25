@@ -11,6 +11,7 @@ import uuid
 from apps.web.models.email_codes import (
     email_code_operations,
     EmailRequest,
+    TimeRequest,
     VerifyCodeRequest
     )
 
@@ -662,6 +663,12 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
         return {"message": "验证码已发送"}
     else:
         raise HTTPException(status_code=500, detail="无法创建验证码记录")
+    
+# 获取服务器时间
+@router.post("/serve_time")
+async def serve_time():
+    local_time = datetime.now()
+    return {"data": local_time}
 
 # 校验邮箱验证码
 @router.post("/verify_code")

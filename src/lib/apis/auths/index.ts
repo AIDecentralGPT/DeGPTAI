@@ -630,6 +630,31 @@ export const verifyCode = async (email: string, code: string) => {
   return res;
 };
 
+// 验证码
+export const servetime = async () => {
+  let error = null;
+
+  const res = await fetch(`${WEBUI_API_BASE_URL}/auths/serve_time`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then(async (res) => {
+      if (!res.ok) throw await res.json();
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      error = err.detail;
+      return null;
+    });
+  if (error) {
+    throw error;
+  }
+  return res;
+};
+
 
 
 

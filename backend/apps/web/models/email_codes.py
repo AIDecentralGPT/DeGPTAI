@@ -21,6 +21,9 @@ class VerifyCodeRequest(BaseModel):
     email: str
     code: str
 
+class TimeRequest(BaseModel):
+    time: str
+
 # 定义EmailCodeTable模型
 class EmailCodeTable(Model):
     id = CharField(primary_key=True, unique=True)  # 定义唯一的主键字符字段id

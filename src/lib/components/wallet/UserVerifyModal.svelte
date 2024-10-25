@@ -8,6 +8,7 @@
     facelivenessRes,
     sendCode,
     verifyCode,
+    servetime
   } from "$lib/apis/auths";
   import { user } from "$lib/stores";
   import { toast } from "svelte-sonner";
@@ -190,6 +191,15 @@
     });
   }
 
+  // 时间校准
+  let timeDiff = 0;
+  function serveTime() {
+    servetime().then(async (res) => {
+      // 加200毫秒请求时长浮动
+      timeDiff = new Date().getTime() - (new Date(res.data).getTime() + 200);
+    });
+  }
+
   function getQrCode(url) {
     QRCode.toDataURL(url, function (err, url) {
       console.log(url);
@@ -211,7 +221,7 @@
         clearInterval(countdownQrInterval);
       }
       countdownQrInterval = setInterval(() => {
-        let comptime = Math.floor((new Date().getTime() - faceTime.getTime()) / 1000);
+        let comptime = Math.floor((new Date().getTime() - faceTime.getTime() - timeDiff) / 1000);
         let qrcountdown = 300 - comptime;
         let minute = Math.floor(qrcountdown / 60);
         let second = qrcountdown % 60;
@@ -255,6 +265,9 @@
 
     // 检查是否为移动端设备
     isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
+
+    // 时间校准
+    serveTime();
   });
 
   function initParam() {
