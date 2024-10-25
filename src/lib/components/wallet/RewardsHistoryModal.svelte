@@ -229,15 +229,22 @@
                   {:else}
                     <div class="flex direction-column amount-styl">
                       <div class="obtain-amount">{historyItem.reward_amount} DGC</div>
-                      <button class="obtain-styl cursor-pointer" disabled={obtainLoad}
+                      <button class="obtain-styl cursor-pointer" style={obtainLoad ? "background: rgba(251, 251, 251, 0.8)" : ""} disabled={obtainLoad}
                         on:click={() => {
                           if ($user.verified) {
                             updateReward(historyItem.id, historyItem.reward_type)
                           } else {
                             toast.warning("Please complete the KYC verification to convert your points into cash"); 
-                          }
+                          } 
                         }}
-                      >Obtain now</button>
+                      >
+                      {#if obtainLoad}
+                        <span>Obtain in...</span>
+                      {:else}
+                        <span>Obtain now</span>
+                      {/if}
+                      
+                    </button>
                     </div>
                   {/if}
                   
