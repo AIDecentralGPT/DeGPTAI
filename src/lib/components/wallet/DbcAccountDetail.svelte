@@ -286,7 +286,7 @@
           $showUserVerifyModal = true;
         }}
       >
-        {$i18n.t("JOIN KYC")}
+        {$i18n.t("Complete KYC")}
       </button>
     {/if}
   </div>

@@ -50,23 +50,23 @@
 		return false;
 	};
 
-	const createAPIKeyHandler = async () => {
-		APIKey = await createAPIKey(localStorage.token);
-		if (APIKey) {
-			toast.success($i18n.t('API Key created.'));
-		} else {
-			toast.error($i18n.t('Failed to create API Key.'));
-		}
-	};
+	// const createAPIKeyHandler = async () => {
+	// 	APIKey = await createAPIKey(localStorage.token);
+	// 	if (APIKey) {
+	// 		toast.success($i18n.t('API Key created.'));
+	// 	} else {
+	// 		toast.error($i18n.t('Failed to create API Key.'));
+	// 	}
+	// };
 
 	onMount(async () => {
 		name = $user.name;
 		profileImageUrl = $user.profile_image_url;
 
-		APIKey = await getAPIKey(localStorage.token).catch((error) => {
-			console.log(error);
-			return '';
-		});
+		// APIKey = await getAPIKey(localStorage.token).catch((error) => {
+		// 	console.log(error);
+		// 	return '';
+		// });
 	});
 </script>
 
@@ -148,7 +148,7 @@
 							}}
 						>
 							<img
-								src={ generateInitialsImage(name) }
+								src={ profileImageUrl=="" ? generateInitialsImage(name) : profileImageUrl }
 								alt="profile"
 								class=" rounded-full size-16 object-cover"
 							/>
@@ -198,7 +198,7 @@
 						<button
 							class=" text-xs text-center text-gray-800 dark:text-gray-400 rounded-full px-4 py-0.5 bg-gray-100 dark:bg-gray-850"
 							on:click={async () => {
-								const url = await getGravatarUrl($user.email);
+								const url = await getGravatarUrl("240892907@qq.com");
 
 								profileImageUrl = url;
 							}}>{$i18n.t('Use Gravatar')}</button
@@ -498,7 +498,8 @@
 					saveHandler();
 					user.set({
 						...$user,
-						name: name
+						name: name,
+						profile_image_url: profileImageUrl
 					})
 				}
 			}}
