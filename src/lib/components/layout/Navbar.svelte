@@ -44,10 +44,6 @@
   // 获取用户信息
 	const getIsPro = async () => {
     try {
-      // const userIsPro = await isPro(localStorage.token); // 发送请求到你的 API
-
-			// console.log("userIsPro", userIsPro, $user);
-
       const userIsPro:boolean = await isPro(localStorage.token); // 发送请求到你的 API
         // if(userIsPro){
         //   user.set({
