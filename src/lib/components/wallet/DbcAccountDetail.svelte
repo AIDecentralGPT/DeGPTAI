@@ -31,6 +31,7 @@
     if (dbc_rate) {
       dbcRate = dbc_rate;
     }
+    console.log("===================================", $user)
   });
 </script>
 

@@ -99,7 +99,7 @@
             </div>
             <h3 class="text-lg font-bold mb-2">02</h3>
             <p class="text-sm text-gray-100">
-              {$i18n.t('The user you invite must complcte wallet creation and KYC verification process before you can receive the reward')}
+              {$i18n.t('The user you invite must complete wallet creation and KYC verification process before you can receive the reward')}
             </p>
           </div>
           <!-- <div class=" flex flex-col justify-center items-center">

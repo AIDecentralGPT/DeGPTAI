@@ -66,7 +66,7 @@
 				<div class=" self-center font-medium">{$i18n.t('Settings')}</div>
 			</button>
 
-			<button
+			<!-- <button
 				class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
 				on:click={() => {
 					dispatch('show', 'archived-chat');
@@ -77,7 +77,7 @@
 					<ArchiveBox className="size-5" strokeWidth="1.5" />
 				</div>
 				<div class=" self-center font-medium">{$i18n.t('Archived Chats')}</div>
-			</button>
+			</button> -->
 
 			{#if role === 'admin'}
 				<button

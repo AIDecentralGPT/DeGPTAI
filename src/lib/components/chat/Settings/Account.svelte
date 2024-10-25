@@ -148,7 +148,7 @@
 							}}
 						>
 							<img
-								src={profileImageUrl !== '' ? profileImageUrl : generateInitialsImage(name)}
+								src={ generateInitialsImage(name) }
 								alt="profile"
 								class=" rounded-full size-16 object-cover"
 							/>
@@ -230,13 +230,13 @@
 			</div>
 		</div>
 
-		<div class="py-0.5">
+		<!-- <div class="py-0.5">
 			<UpdatePassword />
-		</div>
+		</div> -->
 
 		<hr class=" dark:border-gray-700 my-4" />
 
-		<div class="flex justify-between items-center text-sm">
+		<!-- <div class="flex justify-between items-center text-sm">
 			<div class="  font-medium">{$i18n.t('API keys')}</div>
 			<button
 				class=" text-xs font-medium text-gray-500"
@@ -485,7 +485,7 @@
 					</div>
 				</div>
 			</div>
-		{/if}
+		{/if} -->
 	</div>
 
 	<div class="flex justify-end pt-3 text-sm font-medium">
@@ -496,6 +496,10 @@
 
 				if (res) {
 					saveHandler();
+					user.set({
+						...$user,
+						name: name
+					})
 				}
 			}}
 		>

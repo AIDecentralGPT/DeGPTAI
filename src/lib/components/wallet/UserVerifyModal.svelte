@@ -407,7 +407,7 @@
             >
               <div class="flex flex-col items-center">
                 {#if qrcodeUrl}
-                  <p class="text-center text-gray-100">Please user your mobile phone to scan the QR code below for identity verification</p>
+                  <p class="text-center text-gray-100">Please use your mobile phone to scan the QR code below for identity verification</p>
                   <div class="flex justify-center items-center w-[200px] h-[180px] m-2 pos-rel">
                     <img class="w-[160px]" src={qrcodeUrl} alt="" />
                     {#if checkQrResult}

@@ -79,11 +79,12 @@
         res = await getUserInfo(localStorage.token);
         if (res?.id === localUser?.id) {
           await user.set({
-            ...res,
-            address_type: localUser.address_type,
+            ...localUser,
+            token: res?.token,
           });
         }
         localStorage.user = JSON.stringify($user);
+        console.log("======================", localUser);
 
         // 校验钱包
         if (localStorage.walletImported) {
