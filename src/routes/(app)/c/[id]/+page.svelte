@@ -424,25 +424,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 												: message?.raContent ?? message.content
 								  })
 						})),
-					// seed: $settings?.options?.seed ?? undefined,
-					// stop:
-					// 	$settings?.options?.stop ?? undefined
-					// 		? $settings.options.stop.map((str) =>
-					// 				decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
-					// 		  )
-					// 		: undefined,
-					// temperature: $settings?.options?.temperature ?? undefined,
-					// top_p: $settings?.options?.top_p ?? undefined,
-					// num_ctx: $settings?.options?.num_ctx ?? undefined,
-					// frequency_penalty: $settings?.options?.repeat_penalty ?? undefined,
-					// max_tokens: $settings?.options?.num_predict ?? undefined,
-					// docs: docs.length > 0 ? docs : undefined,
-					// citations: docs.length > 0
 				},
 				model?.urls?.[0]
-				// model?.source?.toLowerCase() === 'litellm'
-				// 	? `${LITELLM_API_BASE_URL}/v1`
-				// 	: `${OPENAI_API_BASE_URL}`
 			);
 
 			if(!firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id

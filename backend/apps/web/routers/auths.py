@@ -170,11 +170,11 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
 
         # 使用 web3.py 创建新的以太坊账户
         account = w3.eth.account.create()
-        #wallet_address = account.address
+        wallet_address = account.address
         # private_key = account.key.hex()
         # private_key=w3.to_hex(account.key)
         # python -c "from web3 import Web3; w3 = Web3(); acc = w3.eth.account.create(); print(f'private key={w3.to_hex(acc.key)}, account={acc.address}')"
-        #print("private_key:", private_key)
+        print("系统创建钱包账户:", wallet_address)
 
 
 
@@ -186,8 +186,8 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
             "visitor",
             form_data.id,
             "",
-            address_type = None
-
+            address_type = None,
+            address = wallet_address
         )
         print("Auths.insert_new_auth executed")
 
@@ -206,6 +206,7 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         "name": user.name,
         "role": user.role,
         "profile_image_url": user.profile_image_url,
+        "address": user.address
     }
     # print("Returning response:", response)  # 打印日志
     return response
@@ -275,7 +276,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     "walletUser",
                     form_data.address,
                     form_data.inviter_id,
-                    address_type = address_type
+                    address_type = address_type,
+                    address = address
                 )
 
                 if result:
@@ -306,6 +308,7 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 "profile_image_url": user.profile_image_url,
                 "address_type": address_type,
                 "verified": user.verified,
+                "address": user.address,
                 "user_no": user_count + 1 if user_count is not None else None                
             }
             return response

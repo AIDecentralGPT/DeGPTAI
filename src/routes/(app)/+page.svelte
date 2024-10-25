@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 	import { v4 as uuidv4 } from 'uuid';
-
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { getContext, onMount, tick } from 'svelte';
 
@@ -20,7 +18,8 @@
 		showNewWalletModal,
 		showSidebar,
 		showUserVerifyModal,
-		user
+		user,
+		modelLimits
 	} from '$lib/stores';
 	import { copyToClipboard, splitStream, addTextSlowly } from '$lib/utils';
 
@@ -36,21 +35,17 @@
 	import { cancelOllamaRequest, generateChatCompletion } from '$lib/apis/ollama';
 	import { generateOpenAIChatCompletion, generateTitle } from '$lib/apis/openai';
 	import { generateDeOpenAIChatCompletion, generateDeTitle } from '$lib/apis/de';
-	import { queryCollection, queryDoc } from '$lib/apis/rag';
 
 	import { queryMemory } from '$lib/apis/memories';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import MessageInput from '$lib/components/chat/MessageInput.svelte';
 	import Messages from '$lib/components/chat/Messages.svelte';
-	import ModelSelector from '$lib/components/chat/ModelSelector.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import {
 		LITELLM_API_BASE_URL,
 		OLLAMA_API_BASE_URL,
-		OPENAI_API_BASE_URL,
-		WEBUI_BASE_URL
+		OPENAI_API_BASE_URL
 	} from '$lib/constants';
-	import { RAGTemplate } from '$lib/utils/rag';
 
 	let inviter = '';
 
@@ -117,9 +112,6 @@
 
 	onMount(async () => {
 
-
-
-
 		const queryParams = new URLSearchParams($page.url.search);
 		inviter = queryParams.get('inviter');
 		console.log("inviter", inviter);
@@ -131,8 +123,6 @@
 		if(verifyAgain && $user?.id) {
 			$showUserVerifyModal = true;
 		}
-
-
 
 		await initNewChat();
 	});
@@ -210,15 +200,10 @@
 
 		console.log("selectedModels", selectedModels);
 
-
 		// const selectedModelsValid = selectedModels 
 		if(selectedModels.length  <1) {
 			toast.error($i18n.t('Model not selected'));
 		}
-		// if (selectedModels.includes('')) {
-		// 	// 如果是‘’，就去掉。只要有选中的就行
-		// 	toast.error($i18n.t('Model not selected'));
-		// }
 		
 		else if (messages.length != 0 && messages.at(-1).done != true) {
 			// Response not done
@@ -229,9 +214,7 @@
 		) {
 			// Upload not done
 			toast.error(
-				$i18n.t(
-					`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`
-				)
+				$i18n.t(`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`)
 			);
 		} else {
 			// Reset chat message textarea height
@@ -774,10 +757,10 @@
 					}
 
 					if ($settings.notificationEnabled && !document.hasFocus()) {
-						const notification = new Notification(`OpenAI ${model}`, {
-							body: responseMessage.content,
-							icon: `${WEBUI_BASE_URL}/static/favicon.png`
-						});
+						// const notification = new Notification(`OpenAI ${model}`, {
+						// 	body: responseMessage.content,
+						// 	icon: `${WEBUI_BASE_URL}/static/favicon.png`
+						// });
 					}
 
 					if ($settings.responseAutoCopy) {
@@ -955,10 +938,10 @@
 					}
 
 					if ($settings.notificationEnabled && !document.hasFocus()) {
-						const notification = new Notification(`OpenAI ${model}`, {
-							body: responseMessage.content,
-							icon: `${WEBUI_BASE_URL}/static/favicon.png`
-						});
+						// const notification = new Notification(`OpenAI ${model}`, {
+						// 	body: responseMessage.content,
+						// 	icon: `${WEBUI_BASE_URL}/static/favicon.png`
+						// });
 					}
 
 					if ($settings.responseAutoCopy) {

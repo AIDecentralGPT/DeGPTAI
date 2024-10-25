@@ -41,6 +41,7 @@ class User(Model):
     api_key = CharField(null=True, unique=True)  # 定义可为空且唯一的字符字段api_key
     inviter_id = CharField(null=True)  # 邀请人id
     address_type = CharField(null=True)
+    address = CharField(null=True)
     verified= CharField(null=False)
     face_id = CharField(null=True)
     merchant_biz_id= CharField(null=True)
@@ -72,6 +73,7 @@ class UserModel(BaseModel):
     transaction_id: Optional[str] = None
     private_key: Optional[str] = None
     face_time: Optional[datetime] = None
+    address: Optional[str] = None
 
 ####################
 # Forms
@@ -115,7 +117,10 @@ class UsersTable:
         merchant_biz_id: str = None,
         transaction_id: str = None,
         private_key: str = None,
+        address: str = None,
     ) -> Optional[UserModel]:
+        
+        # 创建UserModel实例
         user = UserModel(
             **{
                 "id": id,
@@ -128,18 +133,21 @@ class UsersTable:
                 "updated_at": int(time.time()),
                 "inviter_id": inviter_id,
                 "address_type": address_type,
+                "address": address,
                 "verified":  verified,
                 "face_id": face_id,
                 "merchant_biz_id": merchant_biz_id,
                 "transaction_id": transaction_id,
                 "private_key": private_key,
             }
-        )  # 创建UserModel实例
+        )
 
+        print("User.create address", user.address)
 
-        result = User.create(**user.model_dump())  # 在数据库中创建新用户
+        # 在数据库中创建新用户
+        result = User.create(**user.model_dump())
 
-        print("User.create result", result.id, user)
+        print("User.create result", result.id)
 
         # 在这里给新钱包发送奖励
         if result and UsersTable.is_ethereum_address(result.id):
@@ -168,20 +176,9 @@ class UsersTable:
                 else:
                     # 注册奖励
                     RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
-
-
-        # if inviter_id:
-        #     print("开始给邀请人发送奖励")
-        #     # 发送创建钱包奖励
-        #     reward_type2 = "friend_invite"  # 创建钱包奖励
-        #     invite_reward_success = RewardsTableInstance.send_reward(user.id, 100, reward_type2, invitee=inviter_id)
         
-        # if invite_reward_success and new_wallet_success:
-            return user  # 返回创建的用户
-        else:
-            raise HTTPException(status_code=500, detail="Failed to send reward")
-        
-   
+        # return user info:
+        return user  # 返回创建的用户 
 
     # 根据id获取用户
     def get_user_by_id(self, id: str) -> Optional[UserModel]:

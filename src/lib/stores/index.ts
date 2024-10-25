@@ -74,12 +74,12 @@ export let currentWalletData = writable(DefaultCurrentWalletData)
 export let threesideAccount = writable({})
 
 // 模型访问数量
-export let modelOne = writable(10)
-export let modelTwo = writable(10)
-export let modelThree = writable(10)
-export let modelFour = writable(10)
-
-
+export let modelLimits = writable([
+	{name: 'Llama-3.1-405B', num: 10},
+	{name: 'Qwen2-72B', num: 10},
+	{name: 'Gemma-2-27B', num: 10},
+	{name: 'Codestral-22B-v0.1', num: 10}
+])
 
 export let pageUpdateNumber = writable(0)
 

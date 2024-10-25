@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import ABI from "./modelabi.json";
-import { modelOne, modelTwo, modelThree, modelFour } from "$lib/stores";
+import { modelLimits } from "$lib/stores";
 import { toast } from "svelte-sonner";
 
 console.log("ABI", typeof ABI);
@@ -72,10 +72,12 @@ export async function remainingAmount(address, models) {
     try {
         const result = await modelContract.remainingAmount(address, models);
         console.log("remainingAmount:", result);
-        modelOne.set(Number(result[0]));
-        modelTwo.set(Number(result[1]));
-        modelThree.set(Number(result[2]));
-        modelFour.set(Number(result[3]));
+        modelLimits.set([
+            {name: 'Llama-3.1-405B', num: Number(result[0])},
+            {name: 'Qwen2-72B', num: Number(result[1])},
+            {name: 'Gemma-2-27B', num: Number(result[2])},
+            {name: 'Codestral-22B-v0.1', num: Number(result[3])}
+        ])
     } catch(e) {
         console.log("========remainingAmount-Error======", e);
     }

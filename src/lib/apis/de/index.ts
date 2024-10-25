@@ -229,21 +229,6 @@ export const generateDeOpenAIChatCompletion = async (
       project: "DecentralGPT",
       node_id: nodeList?.[0],
       stream: true,
-
-      // "node_id": "16Uiu2HAm5cygUrKCBxtNSMKKvgdr1saPM6XWcgnPyTvK4sdrARGL",
-      // "project": "DecentralGPT",
-      // "model": "Llama3-70B",
-      // "messages": [
-      // 	{
-      // 		"role": "system",
-      // 		"content": "You are a helpful assistant."
-      // 	},
-      // 	{
-      // 		"role": "user",
-      // 		"content": "Hello"
-      // 	}
-      // ],
-      // "stream": true
     }),
   }).catch((err) => {
     console.log("err", err);

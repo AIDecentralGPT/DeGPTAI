@@ -3,6 +3,7 @@
   import { facelivenessBindRes } from "$lib/apis/auths";
   import { copyToClipboard } from "$lib/utils";
   import { toast } from "svelte-sonner";
+  import { goto } from '$app/navigation';
   const i18n = getContext('i18n');
   
   let status: any = null;
@@ -28,10 +29,12 @@
         if (res.passed) {
           status = 'success';
           message = res.message;
+          setInterval(gotoHome, 500);
         } else {
           status = 'fail';
           message = res.message;
-          address = res.address;        }
+          address = res.address;
+        }
       } else {
         httpStatus = false;
       }
@@ -45,6 +48,11 @@
     httpStatus = true;
     message = "";
     facelivenesdsBind();
+  }
+
+  // 返回首页
+  function gotoHome() {
+    goto(`/`);
   }
 
 </script>
@@ -116,12 +124,20 @@
               /></svg
             >
           </button>
-        </div>
-        <!-- <div class="flex justify-between items-start">
-          <div class="px-2 cursor-pointer">返回首页</div>
-          <div class="px-2 cursor-pointer">返回登陆</div>
-        </div> -->
-        
+        </div>        
+      {/if}
+      {#if status==='fail'}
+        <button
+          disabled={loading}
+          class={" px-4 py-1 primaryButton text-gray-100 transition rounded-lg"}
+          style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+          type="submit"
+          on:click={async () => {
+            gotoHome
+          }}
+        >
+          <span>{$i18n.t("Home")}</span>
+        </button>
       {/if}
     {/if}
   {:else}
