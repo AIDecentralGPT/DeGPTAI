@@ -79,29 +79,30 @@
 	onMount( async () => {
 
 		// localStorage.setItem("token", "public_token")
-		if ($config) {
-				if (localStorage.token) {
-					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
-						// toast.error(error);
-						return null;
-					});
+		// if ($config) {
+		// 		if (localStorage.token) {
+		// 			// Get Session User Info
+		// 			const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
+		// 				// toast.error(error);
+		// 				return null;
+		// 			});
 
-					if (sessionUser) {
-						// Save Session User to Store
-						await user.set(sessionUser);
-					} else {
-						// Redirect Invalid Session User to /auth Page
-						// localStorage.removeItem('token');
-						// await goto('/auth');
-					}
-				} else {
-					// await goto('/auth');
-				}
-			}
-		console.log(
-			"$user", $user
-		);
+		// 			if (sessionUser) {
+		// 				// Save Session User to Store
+		// 				await user.set(sessionUser);
+		// 				console.log("============sessionUser2===========", sessionUser)
+		// 			} else {
+		// 				// Redirect Invalid Session User to /auth Page
+		// 				// localStorage.removeItem('token');
+		// 				// await goto('/auth');
+		// 			}
+		// 		} else {
+		// 			// await goto('/auth');
+		// 		}
+		// 	}
+		// console.log(
+		// 	"$user", $user
+		// );
 		
 
 		if ($user === undefined) {
