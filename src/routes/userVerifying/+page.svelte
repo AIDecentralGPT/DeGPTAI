@@ -129,11 +129,11 @@
       {#if status==='fail'}
         <button
           disabled={loading}
-          class={" px-4 py-1 primaryButton text-gray-100 transition rounded-lg"}
+          class={" px-4 py-1 mt-2 primaryButton text-gray-100 transition rounded-lg fs-16"}
           style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
           type="submit"
           on:click={async () => {
-            gotoHome
+            gotoHome()
           }}
         >
           <span>{$i18n.t("Home")}</span>
@@ -143,7 +143,7 @@
   {:else}
     <p>{$i18n.t('Request Exception, Please Retry')}</p>
     <button
-      class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+      class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg fs-16"
       on:click={refreshBind}>{$i18n.t('Refresh')}</button>
   {/if}
 </div>
@@ -187,6 +187,9 @@
     text-align: center;
     margin-top: 12px;
     color: #393939;
+    font-size: 16px;
+  }
+  .fs-16 {
     font-size: 16px;
   }
 </style>
