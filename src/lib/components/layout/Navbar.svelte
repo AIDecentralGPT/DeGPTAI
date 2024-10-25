@@ -210,7 +210,7 @@
               </div>
             </button>
           {:else}
-            <button>{$i18n.t("demo")}</button>
+            <button>{$i18n.t("Vistor")}</button>
           {/if}
         </UserMenu>
       </div>
