@@ -14,5 +14,6 @@ Pipfile
 
 !data/config.json
 .webui_secret_key
+.svelte-kit
 
 venv
