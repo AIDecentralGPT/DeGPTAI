@@ -5,27 +5,19 @@
   import {
     WEBUI_NAME,
     chatId,
-    mobile,
-    modelfiles,
-    settings,
     showArchivedChats,
-    showSettings,
     showSidebar,
     user,
   } from "$lib/stores";
 
-  import { slide } from "svelte/transition";
   import ShareChatModal from "../chat/ShareChatModal.svelte";
   import ModelSelector from "../chat/ModelSelector.svelte";
   import Tooltip from "../common/Tooltip.svelte";
   import Menu from "./Navbar/Menu.svelte";
-  import { page } from "$app/stores";
   import UserMenu from "./Sidebar/UserMenu.svelte";
   import MenuLines from "../icons/MenuLines.svelte";
-  // import { demo } from "$lib/utils/wallet/ether/utils";
   import { isPro } from "$lib/apis/users";
-  import { walletconnectSignMessage } from "$lib/utils/wallet/walletconnect/index";
-  import { slice } from "viem";
+  import { generateInitialsImage } from '$lib/utils';
 
   const i18n = getContext("i18n");
 
@@ -200,8 +192,12 @@
               aria-label="User Menu"
             >
               <div class=" self-center">
-                <div class="size-6 object-cover rounded-full bg-primary">
-                  {$user.id?.slice(2,4)}
+                <div class="size-8 object-cover rounded-full bg-primary">
+                  <img
+                    src={ $user.profile_image_url=="" ? generateInitialsImage($user.name) : $user.profile_image_url }
+                    alt="profile"
+                    class=" rounded-full size-8 object-cover"
+                  />
                 </div>
               </div>
             </button>
