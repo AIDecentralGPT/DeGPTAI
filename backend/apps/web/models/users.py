@@ -3,14 +3,30 @@ from peewee import *  # 导入Peewee中的所有模块
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
 from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
+from datetime import datetime
+
+import uuid
+
 from utils.misc import get_gravatar_url  # 导入获取Gravatar URL的方法
 
 from apps.web.internal.db import DB  # 导入数据库实例DB
 from apps.web.models.chats import Chats  # 导入Chats模型
+from apps.web.models.rewards import RewardsTableInstance
+from fastapi import APIRouter, Depends, HTTPException, Request
+
 
 ####################
 # User DB Schema
 ####################
+
+# 定义Pydantic模型UserRoleUpdateProForm
+class UserRoleUpdateProForm(BaseModel):
+    tx: str  # 定义id字段，类型为字符串
+    amount: int  # 定义role字段，类型为字符串
+
+# 定义Pydantic模型UserRequest
+class UserRequest(BaseModel):
+    user_id: str  # 定义id字段，类型为字符串
 
 # 定义User模型
 class User(Model):
@@ -19,12 +35,19 @@ class User(Model):
     email = CharField()  # 定义字符字段email
     role = CharField()  # 定义字符字段role
     profile_image_url = TextField()  # 定义文本字段profile_image_url
-
     last_active_at = BigIntegerField()  # 定义大整数字段last_active_at
     updated_at = BigIntegerField()  # 定义大整数字段updated_at
     created_at = BigIntegerField()  # 定义大整数字段created_at
-
     api_key = CharField(null=True, unique=True)  # 定义可为空且唯一的字符字段api_key
+    inviter_id = CharField(null=True)  # 邀请人id
+    address_type = CharField(null=True)
+    address = CharField(null=True)
+    verified= CharField(null=False)
+    face_id = CharField(null=True)
+    merchant_biz_id= CharField(null=True)
+    transaction_id= CharField(null=True)
+    private_key = CharField(null=True)
+    face_time = CharField(null=True)
 
     class Meta:
         database = DB  # 指定数据库
@@ -42,6 +65,15 @@ class UserModel(BaseModel):
     created_at: int  # 定义created_at字段，类型为整型，表示epoch时间戳
 
     api_key: Optional[str] = None  # 定义可选的api_key字段，类型为字符串，默认值为None
+    inviter_id: Optional[str] = None
+    address_type: Optional[str] = None
+    verified: Optional[bool] = False
+    face_id: Optional[str] = None
+    merchant_biz_id: Optional[str] = None
+    transaction_id: Optional[str] = None
+    private_key: Optional[str] = None
+    face_time: Optional[datetime] = None
+    address: Optional[str] = None
 
 ####################
 # Forms
@@ -65,15 +97,30 @@ class UsersTable:
         self.db = db  # 初始化数据库实例
         self.db.create_tables([User])  # 创建User表
 
+    # 判断 result 是否是以0x开头的钱包地址
+    def is_ethereum_address(address):
+        print("验证是不是钱包地址" ,isinstance(address, str) , address.startswith("0x"))
+        return isinstance(address, str) and address.startswith("0x")
+
     # 插入新用户
     def insert_new_user(
         self,
         id: str,
         name: str,
         email: str,
+        inviter_id: str ,
         profile_image_url: str = "/user.png",
         role: str = "user",
+        address_type: str = None,
+        verified: bool = False,
+        face_id: str = None,
+        merchant_biz_id: str = None,
+        transaction_id: str = None,
+        private_key: str = None,
+        address: str = None,
     ) -> Optional[UserModel]:
+        
+        # 创建UserModel实例
         user = UserModel(
             **{
                 "id": id,
@@ -84,21 +131,86 @@ class UsersTable:
                 "last_active_at": int(time.time()),
                 "created_at": int(time.time()),
                 "updated_at": int(time.time()),
+                "inviter_id": inviter_id,
+                "address_type": address_type,
+                "address": address,
+                "verified":  verified,
+                "face_id": face_id,
+                "merchant_biz_id": merchant_biz_id,
+                "transaction_id": transaction_id,
+                "private_key": private_key,
             }
-        )  # 创建UserModel实例
-        result = User.create(**user.model_dump())  # 在数据库中创建新用户
-        if result:
-            return user  # 返回创建的用户
-        else:
-            return None  # 如果创建失败，返回None
+        )
+
+        print("User.create address", user.address)
+
+        # 在数据库中创建新用户
+        result = User.create(**user.model_dump())
+
+        print("User.create result", result.id)
+
+        # 在这里给新钱包发送奖励
+        if result and UsersTable.is_ethereum_address(result.id):
+            # 添加邀请建立
+            if user.inviter_id is not None:
+                # 获取邀请人信息
+                invite_user_ret = User.get_or_none(User.id == inviter_id)
+
+                if invite_user_ret is not None:
+                    # 生成关联字符串
+                    invitee = str(uuid.uuid4())
+
+                    # 校验邀请人是否KYC认证
+                    invite_user_dict = model_to_dict(invite_user_ret)
+                    invite_user = UserModel(**invite_user_dict)
+                    if invite_user.verified:
+                        # 注册奖励绑定邀请人
+                        RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
+                        print("邀请人得奖励", user.inviter_id)
+                        RewardsTableInstance.create_reward(user.inviter_id, 6000, "invite", True, invitee)
+                    else:
+                        # 注册奖励绑定邀请人
+                        RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
+                        print("邀请人得奖励0", user.inviter_id)
+                        RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
+                else:
+                    # 注册奖励
+                    RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
+        
+        # return user info:
+        return user  # 返回创建的用户 
 
     # 根据id获取用户
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
-            user = User.get(User.id == id)  # 查询数据库中的用户
-            return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
-        except:
+            print("开始根据id获取用户")
+            user = User.get_or_none(User.id == id)  # 查询数据库中的用户
+            if user is None:
+                return None
+            else:
+                user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+                user_model = UserModel(**user_dict)  # 将字典转换为Pydantic模型
+                print("获取完毕用户")
+                # print("用户模型：", user_model)
+                return user_model
+        except Exception as e:
+            print(f"get_user_by_id补货错误: {e}")
             return None  # 如果查询失败，返回None
+        
+
+    # 获取邀请的所有用户
+    def get_users_invited(self, inviter_id: str) -> List[UserModel]:
+        try:
+            print("开始根据inviter_id获取所有用户")
+            users = User.select().where(User.inviter_id == inviter_id)  # 查询数据库中的用户
+            user_list = [UserModel(**model_to_dict(user)) for user in users]  # 将数据库对象转换为字典并转换为Pydantic模型
+            print("获取到的用户模型列表：", user_list)
+            return user_list
+        except Exception as e:
+            print(f"get_users_invited捕获错误: {e}")
+            return []  # 如果查询失败，返回空列表
+
+
 
     # 根据api_key获取用户
     def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
@@ -181,12 +293,19 @@ class UsersTable:
     # 根据id更新用户的last_active_at
     def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
         try:
+            print("update_user_last_active_by_id")
             query = User.update(last_active_at=int(time.time())).where(User.id == id)  # 更新用户的last_active_at
             query.execute()  # 执行更新操作
+            # print("update_user_last_active_by_id222222")
 
             user = User.get(User.id == id)  # 查询更新后的用户
+            # print("update_user_last_active_by_id33333", user)
+            # print(4444, UserModel(**model_to_dict(user)))
+
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
-        except:
+        except Exception as e:
+            print("update_user_last_active_by_id error", e)
+            
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户信息
@@ -234,6 +353,52 @@ class UsersTable:
             return user.api_key  # 返回用户的api_key
         except:
             return None  # 如果查询失败，返回None
+        
+    # 根据face_id获取user_id
+    def get_user_id_by_face_id(self, face_id: str) -> Optional[UserModel]:
+        try:
+            user = User.get(User.face_id == face_id)  # 查询用户
+            return user # 返回用户
+        except:
+            return None  # 如果查询失败，返回None
+        
+
+    def update_user_id(old_id: str, new_id: str) -> bool:
+        try:
+            query = UserModel.update(id=new_id).where(UserModel.id == old_id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+        
+        
+        
+    # 更新用户的transaction_id和merchant_biz_id
+    def update_user_verify_info(self, id: str, transaction_id: str, merchant_biz_id: str, face_time: datetime) -> bool:
+        try:
+            query = User.update(transaction_id=transaction_id, merchant_biz_id =merchant_biz_id, face_time = face_time).where(User.id == id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+
+    
+    # 更新用户是否完成活体检测认证
+    def update_user_verified(self, id: str, verified: bool, face_id: str) -> bool:
+        try:
+            query = User.update(verified=verified, face_id =face_id).where(User.id == id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+        
+    def get_user_count(self) -> int:
+        return User.select().count()  # 查询用户数量
+
+
 
 # 实例化UsersTable类
 Users = UsersTable(DB)

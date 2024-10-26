@@ -114,12 +114,8 @@ input[type='number'] {
 
 
 
-/* 按钮颜色 */
-.primaryButton {
-  background-color: rgba(184, 142, 86, 1);
 
-}
 
-.primaryButton:hover {
-	background-color: rgb(205 150 75)
-}
+
+
+/* dark:bg-white dark:text-zinc-950 bg-black text-gray-100 */

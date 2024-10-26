@@ -4,6 +4,7 @@
 
 	export let src = '';
 	export let alt = '';
+	export let className = "";
 
 	let _src = '';
 
@@ -19,5 +20,5 @@
 		showImagePreview = true;
 	}}
 >
-	<img src={_src} {alt} class=" max-h-96 rounded-lg" draggable="false" />
+	<img src={_src} alt={alt} class={`max-h-96 rounded-lg ${className ? className : ''}`} draggable="false" />
 </button>

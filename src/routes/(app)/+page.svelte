@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 	import { v4 as uuidv4 } from 'uuid';
-
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { getContext, onMount, tick } from 'svelte';
 
@@ -12,11 +10,16 @@
 		chatId,
 		chats,
 		config,
+		inviterId,
 		modelfiles,
 		models,
+		pageUpdateNumber,
 		settings,
+		showNewWalletModal,
 		showSidebar,
-		user
+		showUserVerifyModal,
+		user,
+		modelLimits
 	} from '$lib/stores';
 	import { copyToClipboard, splitStream, addTextSlowly } from '$lib/utils';
 
@@ -32,21 +35,19 @@
 	import { cancelOllamaRequest, generateChatCompletion } from '$lib/apis/ollama';
 	import { generateOpenAIChatCompletion, generateTitle } from '$lib/apis/openai';
 	import { generateDeOpenAIChatCompletion, generateDeTitle } from '$lib/apis/de';
-	import { queryCollection, queryDoc } from '$lib/apis/rag';
 
 	import { queryMemory } from '$lib/apis/memories';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import MessageInput from '$lib/components/chat/MessageInput.svelte';
 	import Messages from '$lib/components/chat/Messages.svelte';
-	import ModelSelector from '$lib/components/chat/ModelSelector.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import {
 		LITELLM_API_BASE_URL,
 		OLLAMA_API_BASE_URL,
-		OPENAI_API_BASE_URL,
-		WEBUI_BASE_URL
+		OPENAI_API_BASE_URL
 	} from '$lib/constants';
-	import { RAGTemplate } from '$lib/utils/rag';
+
+	let inviter = '';
 
 	const i18n = getContext('i18n');
 
@@ -91,6 +92,8 @@
 		currentId: null
 	};
 
+	// 触发当前组件初始化
+	$: $pageUpdateNumber, initNewChat();
 	let firstResAlready = false // 已经有了第一个响应
 
 	$: if (history.currentId !== null) {
@@ -108,6 +111,19 @@
 	}
 
 	onMount(async () => {
+
+		const queryParams = new URLSearchParams($page.url.search);
+		inviter = queryParams.get('inviter');
+		console.log("inviter", inviter);
+		if(inviter) {
+			$showNewWalletModal = true;
+			$inviterId = inviter
+		}
+		const verifyAgain = queryParams.get('verifyAgain');
+		if(verifyAgain && $user?.id) {
+			$showUserVerifyModal = true;
+		}
+
 		await initNewChat();
 	});
 
@@ -181,9 +197,15 @@
 			$models.map((m) => m.id).includes(modelId) ? modelId : ''
 		);
 
-		if (selectedModels.includes('')) {
+
+		console.log("selectedModels", selectedModels);
+
+		// const selectedModelsValid = selectedModels 
+		if(selectedModels.length  <1) {
 			toast.error($i18n.t('Model not selected'));
-		} else if (messages.length != 0 && messages.at(-1).done != true) {
+		}
+		
+		else if (messages.length != 0 && messages.at(-1).done != true) {
 			// Response not done
 			console.log('wait');
 		} else if (
@@ -192,9 +214,7 @@
 		) {
 			// Upload not done
 			toast.error(
-				$i18n.t(
-					`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`
-				)
+				$i18n.t(`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`)
 			);
 		} else {
 			// Reset chat message textarea height
@@ -261,7 +281,6 @@
 
 	const sendPrompt = async (prompt, parentId, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
-
 		await Promise.all(
 			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
 				async (modelId, index) => {
@@ -334,7 +353,8 @@
 						// 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
 						// }
 					} else {
-						toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+						console.error($i18n.t(`Model {{modelId}} not found`, { }));						
+						// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
 				}
 			)
@@ -681,8 +701,11 @@
 			
 			);
 
-
-
+			// 第一次响应的时候，把当前的id设置为当前响应的id
+			if(!firstResAlready) { 
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+			}
 
 			// Wait until history/message have been updated
 			await tick();
@@ -733,12 +756,12 @@
 						messages = messages;
 					}
 
-					// if ($settings.notificationEnabled && !document.hasFocus()) {
-					// 	const notification = new Notification(`OpenAI ${model}`, {
-					// 		body: responseMessage.content,
-					// 		icon: `${WEBUI_BASE_URL}/static/favicon.png`
-					// 	});
-					// }
+					if ($settings.notificationEnabled && !document.hasFocus()) {
+						// const notification = new Notification(`OpenAI ${model}`, {
+						// 	body: responseMessage.content,
+						// 	icon: `${WEBUI_BASE_URL}/static/favicon.png`
+						// });
+					}
 
 					if ($settings.responseAutoCopy) {
 						copyToClipboard(responseMessage.content);
@@ -914,12 +937,12 @@
 						messages = messages;
 					}
 
-					// if ($settings.notificationEnabled && !document.hasFocus()) {
-					// 	const notification = new Notification(`OpenAI ${model}`, {
-					// 		body: responseMessage.content,
-					// 		icon: `${WEBUI_BASE_URL}/static/favicon.png`
-					// 	});
-					// }
+					if ($settings.notificationEnabled && !document.hasFocus()) {
+						// const notification = new Notification(`OpenAI ${model}`, {
+						// 	body: responseMessage.content,
+						// 	icon: `${WEBUI_BASE_URL}/static/favicon.png`
+						// });
+					}
 
 					if ($settings.responseAutoCopy) {
 						copyToClipboard(responseMessage.content);
@@ -1060,7 +1083,8 @@
 				// 	);
 			}
 		} else {
-			toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+console.error($i18n.t(`Model {{modelId}} not found`, { }));
+// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 		}
 	};
 
@@ -1177,7 +1201,7 @@
 
 <div
 	class="min-h-screen max-h-screen {$showSidebar
-		? 'md:max-w-[calc(100%-260px)]'
+		? 'md:max-w-[calc(100%-340px)]'
 		: ''} w-full max-w-full flex flex-col"
 >
 	<Navbar
@@ -1201,6 +1225,7 @@
 		>
 			<div class=" h-full w-full flex flex-col pt-2 pb-4">
 				<Messages
+					key={$chatId}
 					chatId={$chatId}
 					{selectedModels}
 					{selectedModelfiles}

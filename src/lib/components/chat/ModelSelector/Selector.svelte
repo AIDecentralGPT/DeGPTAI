@@ -30,31 +30,40 @@
 
   export let items = [{ value: "mango", label: "Mango" }];
 
-	export let selectedList: any = []
+  export let selectedList: any = [];
 
-	export let className = 'w-[30rem]';
+  export let className = "w-[30rem]";
 
   let show = false;
 
   let selectedModel = "";
   $: selectedModel = items.find((item) => item.value === value) ?? "";
 
+  // $: selectedModel = () => {
+  //   console.log("$user?.isPro", $user?.isPro);
+    
+  //   if($user?.isPro) {
+  //     const models = items.find((item) => item.value === value) ?? "";
+  //     return models
+  //   }
+  //   else {
+  //     const models = items?.filter((item) => !item?.info?.isProModel).find((item) => item.value === value) ?? "";
+  //     return models
+  //   }
+  // }
+
   let searchValue = "";
   let ollamaVersion = null;
 
-	// $: filteredItems = searchValue
-	// 	? items.filter((item) => item.value.toLowerCase().includes(searchValue.toLowerCase()))
-	// 	: items;
+  // $: filteredItems = searchValue
+  // 	? items.filter((item) => item.value.toLowerCase().includes(searchValue.toLowerCase()))
+  // 	: items;
 
-	// console.log("1value", value);
-	
+  // console.log("1value", value);
 
+  $: filteredItems = items.filter((item) => !selectedList.includes(item.value));
 
-		$: filteredItems = items.filter((item) => !selectedList.includes(item.value))
-
-		// console.log("filteredItems", filteredItems, items, selectedList);
-		
-	
+  // console.log("filteredItems", filteredItems, items, selectedList);
 
   const pullModelHandler = async () => {
     const sanitizedModelTag = searchValue
@@ -233,16 +242,16 @@
     </div>
   </DropdownMenu.Trigger>
 
-	<DropdownMenu.Content
-		class=" z-[90] {$mobile
-			? `w-full`
-			: `${className}`} max-w-[calc(100vw-1rem)] justify-start rounded-xl  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
-		transition={flyAndScale}
-		side={$mobile ? 'bottom' : 'bottom-start'}
-		sideOffset={4}
-	>
-		<slot>
-			<!-- {#if searchEnabled}
+  <DropdownMenu.Content
+    class=" z-[90] {$mobile
+      ? `w-full`
+      : `${className}`} max-w-[calc(100vw-1rem)] justify-start rounded-xl  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+    transition={flyAndScale}
+    side={$mobile ? "bottom" : "bottom-start"}
+    sideOffset={4}
+  >
+    <slot>
+      <!-- {#if searchEnabled}
 				<div class="flex items-center gap-2.5 px-5 mt-3.5 mb-3">
 					<Search className="size-4" strokeWidth="2.5" />
 
@@ -264,9 +273,14 @@
             aria-label="model-item"
             class="flex w-full text-left font-medium line-clamp-1 select-none items-center rounded-button py-2 pl-3 pr-1.5 text-sm text-gray-700 dark:text-gray-100 outline-none transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer data-[highlighted]:bg-muted"
             on:click={() => {
-              value = item.value;
-
-              show = false;
+              if (item && item?.info?.isProModel && !$user?.isPro) {
+                toast.warning(
+                  "This is an exclusive service for pro users. \n Please upgrade your pro permissions first!"
+                );
+              } else {
+                value = item.value;
+                show = false;
+              }
             }}
           >
             <div class="flex items-center gap-2">
@@ -282,22 +296,29 @@
               <!-- {JSON.stringify(item.info)} -->
               <Tooltip content={item.info?.source}>
                 <div class=" mr-2">
-									<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke-width="1.5"
-									stroke="currentColor"
-									class="w-4 h-4"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-									/>
-								</svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class={`w-4 h-4 ${
+                      item?.info?.isProModel ? "text-yellow-600" : ""
+                    } `}
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                    />
+                  </svg>
                 </div>
               </Tooltip>
+
+              <!-- {#if item?.info?.isProModel}
+                <span>Free 5 times</span>
+              {/if} -->
+
               <!-- {#if item.info.external}
 								<Tooltip content={item.info?.source ?? 'External'}>
 									<div class=" mr-2">
@@ -364,16 +385,18 @@
           </div>
         {/each}
 
-				{#if !(searchValue.trim() in $MODEL_DOWNLOAD_POOL) && searchValue && ollamaVersion && $user?.role === 'admin'}
-					<button
-						class="flex w-full font-medium line-clamp-1 select-none items-center rounded-button py-2 pl-3 pr-1.5 text-sm text-gray-700 dark:text-gray-100 outline-none transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer data-[highlighted]:bg-muted"
-						on:click={() => {
-							pullModelHandler();
-						}}
-					>
-						{$i18n.t(`Pull "{{searchValue}}" from Ollama.com`, { searchValue: searchValue })}
-					</button>
-				{/if}
+        {#if !(searchValue.trim() in $MODEL_DOWNLOAD_POOL) && searchValue && ollamaVersion && $user?.role === "admin"}
+          <button
+            class="flex w-full font-medium line-clamp-1 select-none items-center rounded-button py-2 pl-3 pr-1.5 text-sm text-gray-700 dark:text-gray-100 outline-none transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer data-[highlighted]:bg-muted"
+            on:click={() => {
+              pullModelHandler();
+            }}
+          >
+            {$i18n.t(`Pull "{{searchValue}}" from Ollama.com`, {
+              searchValue: searchValue,
+            })}
+          </button>
+        {/if}
 
         {#each Object.keys($MODEL_DOWNLOAD_POOL) as model}
           <div

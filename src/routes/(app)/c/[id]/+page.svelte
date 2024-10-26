@@ -94,7 +94,6 @@
 	};
 	let firstResAlready = false // 已经有了第一个响应
 
-
 	$: if (history.currentId !== null) {
 		let _messages = [];
 
@@ -276,8 +275,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 3\2. 继续聊天会话
 	const sendPrompt = async (prompt, parentId, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
-
-
 		// 对每个模型都做请求
 		await Promise.all(
 			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
@@ -345,7 +342,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
 
 					} else {
-						toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+						console.error($i18n.t(`Model {{modelId}} not found`, { }));
+
+						// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 					}
 					
 				}
@@ -356,8 +355,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		await chats.set(await getChatList(localStorage.token));
 	};
 
-		// 对话DeGpt
-		const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
+	// 对话DeGpt
+	const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = messages
@@ -425,28 +424,14 @@ const submitPrompt = async (userPrompt, _user = null) => {
 												: message?.raContent ?? message.content
 								  })
 						})),
-					// seed: $settings?.options?.seed ?? undefined,
-					// stop:
-					// 	$settings?.options?.stop ?? undefined
-					// 		? $settings.options.stop.map((str) =>
-					// 				decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
-					// 		  )
-					// 		: undefined,
-					// temperature: $settings?.options?.temperature ?? undefined,
-					// top_p: $settings?.options?.top_p ?? undefined,
-					// num_ctx: $settings?.options?.num_ctx ?? undefined,
-					// frequency_penalty: $settings?.options?.repeat_penalty ?? undefined,
-					// max_tokens: $settings?.options?.num_predict ?? undefined,
-					// docs: docs.length > 0 ? docs : undefined,
-					// citations: docs.length > 0
 				},
 				model?.urls?.[0]
-				// model?.source?.toLowerCase() === 'litellm'
-				// 	? `${LITELLM_API_BASE_URL}/v1`
-				// 	: `${OPENAI_API_BASE_URL}`
 			);
 
-
+			if(!firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+			}
 
 			// Wait until history/message have been updated
 			await tick();
@@ -1101,7 +1086,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				);
 			}
 		} else {
-			toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+console.error($i18n.t(`Model {{modelId}} not found`, { }));
+// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 		}
 	};
 
@@ -1194,9 +1180,10 @@ const submitPrompt = async (userPrompt, _user = null) => {
 </svelte:head>
 
 {#if loaded}
+
 	<div
 		class="min-h-screen max-h-screen {$showSidebar
-			? 'md:max-w-[calc(100%-260px)]'
+			? 'md:max-w-[calc(100%-340px)]'
 			: ''} w-full max-w-full flex flex-col"
 	>
 		<Navbar
@@ -1244,6 +1231,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			</div>
 		</div>
 	</div>
+
+
+
 
 	<MessageInput
 		bind:files

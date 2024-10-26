@@ -83,7 +83,7 @@
 	};
 
 	const updateInterfaceHandler = async () => {
-		if ($user.role === 'admin') {
+		if ($user?.role === 'admin') {
 			promptSuggestions = await setDefaultPromptSuggestions(localStorage.token, promptSuggestions);
 			await config.set(await getBackendConfig());
 		}
@@ -100,7 +100,7 @@
 	};
 
 	onMount(async () => {
-		if ($user.role === 'admin') {
+		if ($user?.role === 'admin') {
 			promptSuggestions = $config?.default_prompt_suggestions;
 		}
 
@@ -334,7 +334,7 @@
 			</div>
 		</div> -->
 
-		{#if $user.role === 'admin'}
+		{#if $user?.role === 'admin'}
 			<hr class=" dark:border-gray-700" />
 
 			<div class=" space-y-3 pr-1.5">

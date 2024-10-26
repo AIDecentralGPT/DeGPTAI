@@ -49,7 +49,7 @@
 	};
 
 	onMount(async () => {
-		if ($user.role === 'admin') {
+		if ($user?.role === 'admin') {
 			OLLAMA_BASE_URLS = await getOllamaUrls(localStorage.token);
 
 			const config = await getOpenAIConfig(localStorage.token);

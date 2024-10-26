@@ -1,18 +1,38 @@
 import logging
+from typing import List, Dict
 
-from fastapi import Request, UploadFile, File
+from fastapi import Request, WebSocket, WebSocketDisconnect
 from fastapi import Depends, HTTPException, status
-
 from fastapi import APIRouter
 from pydantic import BaseModel
 import re
 import uuid
-import csv
+
+from apps.web.models.email_codes import (
+    email_code_operations,
+    EmailRequest,
+    TimeRequest,
+    VerifyCodeRequest
+    )
+
+from constants import USER_CONSTANTS
+import logging
+log = logging.getLogger(__name__)
+
+# --------钱包相关--------
+import json
+from web3 import Web3
+w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
+from web3.auto import w3
+from eth_account.messages import encode_defunct
+
+# ————————————————————————
 
 
 from apps.web.models.auths import (
     SigninForm,
     FingerprintSignInForm,
+    WalletSigninForm,
     SignupForm,
     AddUserForm,
     UpdateProfileForm,
@@ -21,9 +41,16 @@ from apps.web.models.auths import (
     SigninResponse,
     Auths,
     ApiKey,
+    FaceLivenessRequest,
+    FaceLivenessResponse,
+    FaceLivenessCheckResponse    
 )
-from apps.web.models.users import Users
-from apps.web.models.visitors import visitors_table
+from apps.web.models.users import Users, UserRequest
+from apps.web.models.ip_log import ip_logs_table
+from apps.web.models.device import devices_table
+from apps.web.models.faceCompare import face_compare
+from apps.web.models.faceLib import  face_lib
+from apps.web.models.rewards import RewardsTableInstance
 
 from utils.utils import (
     get_password_hash,
@@ -37,6 +64,10 @@ from utils.webhook import post_webhook
 from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
 from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
 
+from datetime import datetime
+
+from apps.web.api.rewardapi import RewardApi
+
 router = APIRouter()
 
 ############################
@@ -46,21 +77,24 @@ router = APIRouter()
 
 @router.get("/", response_model=UserResponse)
 async def get_session_user(user=Depends(get_current_user)):
-    return {
-        "id": user.id,
-        "email": user.email,
-        "name": user.name,
-        "role": user.role,
-        "profile_image_url": user.profile_image_url,
-    }
-    # print("get_session_user 的 user:" , user['id'], user)
-    # return {
-    #     "id": user['id'],
-    #     "email": user['email'],
-    #     "name": user.name,
-    #     "role": user.role,
-    #     "profile_image_url": user.profile_image_url,
-    # }
+    try:
+        # print("audo get_session_user 的 user:", user.id, user)
+        return {
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "role": user.role,
+            "profile_image_url": user.profile_image_url,
+            "address_type": user.address_type,
+            "verified": user.verified,
+            "address": user.address
+        }
+    except AttributeError as e:
+        print("AttributeError: ", e)
+        return {"error": "An error occurred while fetching user details"}
+    except Exception as e:
+        print("Exception: ", e)
+        return {"error": "An internal server error occurred"}
 
 
 
@@ -118,137 +152,56 @@ async def update_password(
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
 
 
-# ############################
-# # printSignIn(根据指纹身份校验)
-# ############################
-# # @router.post("/fingerprintSignIn", response_model=FingerprintSigninResponse)
-# @router.post("/fingerprintSignIn", response_model=None)
-# async def printSignIn(request: Request, form_data: FingerprintSignInForm):
-#     # 生成UUID并转换为字符串
-#     id_str = str(uuid.uuid4())
-#     visitors_table.insert_new_visitor(id_str, form_data.visitor_id)
-
-#     #  # 检查用户是否存在，如果不存在则进行注册
-#     # if not Users.get_user_by_email(trusted_email.lower()):
-#     #     await signup(
-#     #         request,
-#     #         SignupForm(
-#     #             email=trusted_email, password=str(uuid.uuid4()), name=trusted_email
-#     #         ),
-#     #     )
-
-
-
-    # # 检查是否启用了基于信任头的 WebUI 认证
-    # if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
-    #     print("检查是否启用了基于信任头的 WebUI 认证")
-
-    #     # 检查用户是否存在，如果不存在则进行注册
-    #     if not Users.get_user_by_email(trusted_email.lower()):
-    #         await signup(
-    #             request,
-    #             SignupForm(
-    #                 email=trusted_email, password=str(uuid.uuid4()), name=trusted_email
-    #             ),
-    #         )
-
-
-
-    #     print("检查是否禁用了 WebUI 认证")
-    #     admin_email = "admin@localhost"
-    #     admin_password = "admin"
-    #     print(2)
-
-    #     # 检查管理员账号是否存在
-    #     if Users.get_user_by_email(admin_email.lower()):
-    #         # 管理员账号存在，进行认证
-    #         user = Auths.authenticate_user(admin_email.lower(), admin_password)
-    #     else:
-    #         # 管理员账号不存在，检查是否有其他用户
-    #         if Users.get_num_users() != 0:
-    #             raise HTTPException(400, detail=ERROR_MESSAGES.EXISTING_USERS)
-
-    #         # 没有其他用户，进行管理员账号注册
-    #         await signup(
-    #             request,
-    #             SignupForm(email=admin_email, password=admin_password, name="User"),
-    #         )
-
-    #         # 注册完成后，再次进行认证
-    #         user = Auths.authenticate_user(admin_email.lower(), admin_password)
-    # else:
-    #     # 使用表单中的邮箱和密码进行用户认证
-    #     user = Auths.authenticate_user(form_data.email.lower(), form_data.password)
-    #     print("使用表单中的邮箱和密码进行用户认证", user)
-
-    # # 如果认证成功，则生成令牌并返回用户信息
-    # if user:
-    #     token = create_token(
-    #         data={"id": user.id},
-    #         expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
-    #     )
-
-    #     return {
-    #         "token": token,
-    #         "token_type": "Bearer",
-    #         "id": user.id,
-    #         "email": user.email,
-    #         "name": user.name,
-    #         "role": user.role,
-    #         "profile_image_url": user.profile_image_url,
-    #     }
-    # else:
-    #     # 如果认证失败，则打印日志并返回错误提示
-    #     print(3)
-    #     raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
-
-
-
-
 ############################
 # SignIn
 ############################
+
 @router.post("/printSignIn", response_model=None)
 async def printSignIn(request: Request, form_data: FingerprintSignInForm):
-    print(111)
-    user  = Users.get_user_by_id(form_data.id)
-    if Users.get_user_by_id(form_data.id):
-        print("有此访客",  user.id)
-    else: 
-        print(222)
+
+    try:
+        user = Users.get_user_by_id(form_data.id)
+    except Exception as e:
+        print("Error retrieving user by id:", e.message)
+
+    if user:
+        print("User found:", user.id)
+    else:
+        print("User not found, creating new user")
+
         hashed = get_password_hash("")
-        print("无此访客，创建新访客", form_data.id)
-        # token = create_token(
-        #     data={"id": user.id},
-        #     expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
-        #               )
+
+        # 使用 web3.py 创建新的以太坊账户
+        account = w3.eth.account.create()
+        wallet_address = account.address
+        # private_key = account.key.hex()
+        # private_key=w3.to_hex(account.key)
+        # python -c "from web3 import Web3; w3 = Web3(); acc = w3.eth.account.create(); print(f'private key={w3.to_hex(acc.key)}, account={acc.address}')"
+        print("系统创建钱包账户:", wallet_address)
+
+
+
         Auths.insert_new_auth(
             "",
             hashed,
-            "visitor",
-            "data:image/jpeg;base64,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",
+            "user",
+            "",
             "visitor",
             form_data.id,
-            # "token": token,
+            "",
+            address_type = None,
+            address = wallet_address
         )
-        
+        print("Auths.insert_new_auth executed")
 
         user = Users.get_user_by_id(form_data.id)
+        print("New user created:", user.id)
     
     token = create_token(
             data={"id": user.id},
             expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
     )
-    # return {
-    #     token,
-    #       "token_type": "Bearer",
-    #         "id": user.id,
-    #         "email": user.email,
-    #         "name": user.name,
-    #         "role": user.role,
-    #         "profile_image_url": user.profile_image_url,
-    # }
-    return {
+    response = {
         "token": token,
         "token_type": "Bearer",
         "id": user.id,
@@ -256,7 +209,121 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         "name": user.name,
         "role": user.role,
         "profile_image_url": user.profile_image_url,
+        "address": user.address
     }
+    # print("Returning response:", response)  # 打印日志
+    return response
+
+
+
+@router.post("/walletSignIn")
+async def walletSignIn(request: Request, form_data: WalletSigninForm):
+    print("Received Data:", form_data) 
+    address = form_data.address
+    address_type = form_data.address_type
+    message = form_data.nonce
+    signature = form_data.signature
+    device_id = form_data.device_id
+    ip_address = request.client.host
+    address_type = form_data.address_type
+
+    try:
+        sign_is_valid = False
+
+        if address_type == 'threeSide':
+            sign_is_valid = False
+            if form_data.nonce == signature:
+                sign_is_valid = True
+            else:
+                # 将签名解码为字节
+                signature_bytes = Web3.to_bytes(hexstr=signature)
+                print("message_text", message)
+
+                # 使用 web3.py 的 eth.account.recover_message 方法验证签名
+                recovered_address = w3.eth.account.recover_message(encode_defunct(text=message), signature=signature_bytes)
+
+                # recovered_address = w3.eth.account.recover_message(message_text=message, signature=signature_bytes)
+                print("recovered_address:", recovered_address, "address:", address)
+
+                # 比较签名者地址和恢复的地址
+                sign_is_valid = recovered_address.lower() == address.lower()
+
+        else :
+            # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
+            # prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
+            encoded_message = encode_defunct(text=message)
+            
+            # 从签名中恢复地址
+            address_signed = w3.eth.account.recover_message(encoded_message, signature=signature)
+
+            print("address_signed:", address_signed)
+            print("address:", address)
+            sign_is_valid = address_signed.lower() == address.lower()
+
+        if sign_is_valid:  # 忽略大小写进行比较
+            user = Users.get_user_by_id(address)
+            user_count = None
+
+            if user:
+                print("User found:", user.id)
+            else:
+                print("User not found, creating new user")
+
+                # 添加用户信息
+                hashed = get_password_hash("")
+                result = Auths.insert_new_auth(
+                    "",
+                    hashed,
+                    address,
+                    "",
+                    "walletUser",
+                    form_data.address,
+                    form_data.inviter_id,
+                    address_type = address_type,
+                    address = address
+                )
+
+                if result:
+                    user, user_count = result  # 解包返回的元组
+                    print(f"用户: {user}, 用户个数: {user_count}")
+                else:
+                    print("用户创建失败")
+
+            # 记录设备ID和IP地址
+            if device_id:
+                device = devices_table.insert_new_device(user_id=user.id, device_id=device_id)
+            else:
+                log.info("No device_id provided!")
+
+            ip_log = ip_logs_table.insert_new_ip_log(user_id=user.id, ip_address=ip_address)
+
+            token = create_token(
+                data={"id": user.id},
+                expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+            )
+            response = {
+                "token": token,
+                "token_type": "Bearer",
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "role": user.role,
+                "profile_image_url": user.profile_image_url,
+                "address_type": address_type,
+                "verified": user.verified,
+                "address": user.address,
+                "user_no": user_count + 1 if user_count is not None else None                
+            }
+            return response
+        else:
+            raise HTTPException(status_code=400, detail="Signature verification failed")
+
+    except ValueError as e:
+        print(f"ValueError: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+    except Exception as e:
+        print(f"Exception: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 
@@ -265,7 +332,7 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
 async def signin(request: Request, form_data: SigninForm):
     # 检查是否启用了基于信任头的 WebUI 认证
     if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
-        print("检查是否启用了基于信任头的 WebUI 认证")
+        print("Checking if trusted email header authentication is enabled")
         # 检查请求头中是否包含信任头
         if WEBUI_AUTH_TRUSTED_EMAIL_HEADER not in request.headers:
             print(1)
@@ -286,7 +353,7 @@ async def signin(request: Request, form_data: SigninForm):
         user = Auths.authenticate_user_by_trusted_header(trusted_email)
     # 检查是否禁用了 WebUI 认证
     elif WEBUI_AUTH == False:
-        print("检查是否禁用了 WebUI 认证")
+        print("Checking if WebUI authentication is disabled")
         admin_email = "admin@localhost"
         admin_password = "admin"
         print(2)
@@ -333,6 +400,9 @@ async def signin(request: Request, form_data: SigninForm):
         # 如果认证失败，则打印日志并返回错误提示
         print(3)
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
+    
+
+
 
 
 ############################
@@ -368,7 +438,9 @@ async def signup(request: Request, form_data: SignupForm):
             form_data.name,
             form_data.profile_image_url,
             "user",
-            form_data.id
+            form_data.id,
+            form_data.inviter_id,
+            address_type = None
         )
 
         if user:
@@ -523,7 +595,7 @@ async def update_token_expires_duration(
 ############################
 
 
-# create api key
+# 创建用户 api_key
 @router.post("/api_key", response_model=ApiKey)
 async def create_api_key_(user=Depends(get_current_user)):
     api_key = create_api_key()
@@ -536,20 +608,351 @@ async def create_api_key_(user=Depends(get_current_user)):
         raise HTTPException(500, detail=ERROR_MESSAGES.CREATE_API_KEY_ERROR)
 
 
-# delete api key
+# 删除用户 api_key
 @router.delete("/api_key", response_model=bool)
 async def delete_api_key(user=Depends(get_current_user)):
     success = Users.update_user_api_key_by_id(user.id, None)
     return success
 
+# 发送邮箱验证码
+@router.post("/send_code")
+async def send_code(email_request: EmailRequest, user=Depends(get_current_user)):
+    email = email_request.email
+    code = email_code_operations.generate_code()  # 生成验证码
+    result = email_code_operations.create(email, code)  # 将验证码保存到数据库
+    if result:
+        email_body = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                h1 {{ color: #2c3e50; }}
+                .code {{ font-size: 24px; font-weight: bold; color: #3498db; }}
+                .footer {{ margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }}
+                .logo {{ width: 200px; height: auto; }}
+                .social-links {{ margin-top: 15px; }}
+                .social-links a {{ margin-right: 10px; color: #3498db; text-decoration: none; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Confirm Your Email Address</h1>
+                <p>Wallet Address: {user.id}</p>
+                <p>Let's make sure this is the right email address for you. Please enter the following verification code to continue using DeGPT:</p>
+                <p class="code">{code}</p>
+                <p>Verification codes expire after two hours.</p>
+                <p>Thank you.</p>
+                
+                <div class="footer">
+                    <p><strong>DecentralGPT = AI + DePIN + AGI</strong></p>
+                    <p>DecentralGPT supports a variety of open-source large language models. We are committed to building a safe, privacy-protective, democratic, transparent, open-source, and universally accessible AGI.</p>
+                    <img src="https://www.degpt.ai/static/email/telegram_icon_url.png" alt="DecentralGPT Logo" class="logo">
+                    <div class="social-links">
+                        <a href="https://www.decentralgpt.org/">DecentralGPT Website</a>
+                        <a href="https://x.com/DecentralGPT">Follow on Twitter</a>
+                        <a href="https://t.me/DecentralGPT">Join Telegram</a>
+                    </div>
+                    <p>Best regards,<br>DecentralGPT Team</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
 
-# get api key
-@router.get("/api_key", response_model=ApiKey)
-async def get_api_key(user=Depends(get_current_user)):
-    api_key = Users.get_user_api_key_by_id(user.id)
-    if api_key:
+
+        email_code_operations.send_email(email, "DeGPT Code", email_body)  # 发送邮件
+        return {"message": "验证码已发送"}
+    else:
+        raise HTTPException(status_code=500, detail="无法创建验证码记录")
+    
+# 获取服务器时间
+@router.post("/serve_time")
+async def serve_time():
+    local_time = datetime.now()
+    return {"data": local_time}
+
+# 校验邮箱验证码
+@router.post("/verify_code")
+async def verify_code(verify_code_request: VerifyCodeRequest):
+    email = verify_code_request.email
+    code = verify_code_request.code
+
+    record = email_code_operations.get_by_email(email)
+    
+    if not record:
+        raise HTTPException(status_code=404, detail="验证码记录不存在")
+    
+    if email_code_operations.is_expired(record.created_at):
+        raise HTTPException(status_code=400, detail="验证码已过期")
+    
+    print("record.code", record.code, "code", code)
+    if record.code == code:
+        return {"message": "验证码验证成功"}
+    else:
+        raise HTTPException(status_code=400, detail="验证码无效")
+
+
+# 生成人脸识别库
+@router.get("/create_face")
+async def create_face():
+    # 生成人脸识别库
+    return face_lib.create_face_db()
+
+# 获取人脸识别连接
+@router.post("/face_liveness", response_model=FaceLivenessResponse)
+async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
+        # 获取查询参数
+    print("face_liveness Query Parameters:", user.id)
+
+    if True:
+        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
+        response = face_compare.face_liveness({
+            "deviceType": form_data.metaInfo.deviceType,
+            "ua":form_data.metaInfo.ua,
+            "bioMetaInfo": form_data.metaInfo.bioMetaInfo,
+            "user_id": user.id
+        })
+           
+        merchant_biz_id = response["merchant_biz_id"]
+        transaction_id = response["transaction_id"]
+        transaction_url = response["transaction_url"]
+        
+        
+        # 存储该用户的验证信息
+        face_time = datetime.now()
+        Users.update_user_verify_info(user.id, transaction_id,merchant_biz_id, face_time)
+        
         return {
-            "api_key": api_key,
+            "merchant_biz_id": merchant_biz_id,
+            "transaction_id": transaction_id,
+            "transaction_url": transaction_url,
+            "face_time": face_time,
         }
+
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+
+# 人脸绑定
+@router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
+async def faceliveness_bind(user: UserRequest):
+    passedInfo = await faceliveness_check_for_ws(user.user_id)
+    await manager.broadcast(json.dumps(passedInfo), user.user_id) 
+    return passedInfo
+        
+
+
+# 人脸识别校验
+@router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
+async def faceliveness_check(user=Depends(get_current_user)):
+        # 获取查询参数
+    # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
+    merchant_biz_id = user.merchant_biz_id
+    transaction_id = user.transaction_id
+    
+    print("form_data.", merchant_biz_id, transaction_id)
+
+    if True:
+        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
+        # response = face_compare.check_result({
+        #     "transaction_id": form_data.transaction_id,
+        #     "merchant_biz_id":form_data.merchant_biz_id,
+        # })
+        response = face_compare.check_result(
+            transaction_id= transaction_id,
+            merchant_biz_id=merchant_biz_id,
+        )
+   
+
+        # print("face compare success", response, response.body.result.ext_face_info, response.body)
+        # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
+        
+        faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+        
+        # face_lib.add_face_data(faceImg)
+        face_id = face_lib.search_face(faceImg)
+        print("face_id", face_id)
+        
+        user_id = Users.get_user_id_by_face_id(face_id)
+        print("user_id",face_id, user_id)
+        if user_id is None :
+            return {
+                "passed": False,
+                "message": "Fail"
+            }
+            
+        # 'Message': 'success',
+        # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+        # 'Result': {
+        #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+        #     'Passed': 'Y',
+        #     'SubCode': '200'
+        # }
+        passed = False
+        message = "Fail"
+        if (response.body.result.passed == 'Y'):
+            passed = True
+            message = "Success"
+        return {
+            "passed": passed,
+            "message": message
+        }
+
+    else:
+        raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+
+
+# 检查人脸是否通过
+async def faceliveness_check_for_ws(id: str):
+
+    print("开始人脸校验-userId", id)
+
+    try:
+        # 获取用户信息
+        user = Users.get_user_by_id((id))
+
+        if (user.verified):
+            return {
+                "passed": True,
+                "message": "Success"
+            }
+
+        # 校验时间是否超时
+        face_time = user.face_time
+        if (face_time is None):
+            return {
+                "passed": False,
+                "message": "Time expired, try again"
+            }
+        
+        now_time = datetime.now()
+        # 计算时间差
+        time_difference = now_time - face_time
+        if (time_difference.total_seconds() > 300):
+            return {
+                "passed": False,
+                "message": "Time expired, try again"
+            }
+        
+        # 获取查询参数
+        merchant_biz_id = user.merchant_biz_id
+        transaction_id = user.transaction_id
+        
+        if merchant_biz_id is not None and transaction_id is not None:
+            # 1. 获取人脸检测返回的信息（包含照片base64信息
+            response = face_compare.check_result(
+                transaction_id= transaction_id,
+                merchant_biz_id=merchant_biz_id,
+            )
+    
+
+            # print("face compare success", response, response.body.result.ext_face_info, response.body)
+            # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
+            
+            
+            # 2. 获取人脸照片
+            faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+                        
+            # 3. 搜索该人脸照片在库中是否存在
+            face_id = face_lib.search_face(faceImg)
+            print("face_id", face_id)
+            
+            if face_id is not None:
+                user_exit = Users.get_user_id_by_face_id(face_id)
+                print("user_id",face_id, user_exit.face_id, user_exit.id)
+                # 4. 存在就告诉你，该人脸已经被检测过了！
+                if user_exit is not None :
+                    return {
+                        "passed": False,
+                        "message": "Your face has been used",
+                        "address": user_exit.id
+                    }
+            else:
+                # 添加人脸样本
+                id_str = str(uuid.uuid4()).replace("-", "_")
+                face_lib.add_face_sample(id_str)
+                # 在人脸样本添加对应的人脸数据
+                face_id = face_lib.add_face_data(faceImg, id_str)
+            
+            # 判断该face_id是否有过
+            if response.body.result.passed:
+                user_update_result = Users.update_user_verified(user.id, True, face_id)
+                # return user_update_result
+                print("user_update_result", user_update_result)         
+            
+            # 'Message': 'success',
+            # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+            # 'Result': {
+            #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+            #     'Passed': 'Y',
+            #     'SubCode': '200'
+            # }
+            # 校验成功返回对应数据
+            passed = False
+            message = "Fail"
+            if (response.body.result.passed == 'Y'):
+                passed = True
+                message = "Success"
+            return {
+                "passed": passed,
+                "message": message
+            }
+            
+            
+        else:
+            return {
+                "passed": False,
+                "message": "We haven't started live testing yet"
+            }
+        
+    except Exception as e:
+        print(f"Error in faceliveness_check_for_ws: {e}")
+        # 根据需要执行错误处理，例如记录日志或通知客户端
+        return {
+                "passed": False,
+                "message": "The identity validate fail"
+            }
+
+
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, List[WebSocket]] = {}
+
+    async def connect(self, websocket: WebSocket, user_id: str):
+        await websocket.accept()
+        if user_id not in self.active_connections:
+            self.active_connections[user_id] = []
+        self.active_connections[user_id].append(websocket)
+
+    def disconnect(self, websocket: WebSocket, user_id: str):
+        self.active_connections[user_id].remove(websocket)
+        if not self.active_connections[user_id]:
+            del self.active_connections[user_id]
+
+    async def broadcast(self, message: str, user_id: str):
+        connections = self.active_connections.get(user_id, [])
+        for connection in connections:
+            await connection.send_text(message)
+
+manager = ConnectionManager()
+
+@router.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+    await manager.connect(websocket, user_id)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            print("socket接收到得信息", data)
+            # if (data == "heart"):
+            #    await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id) 
+            # else:
+            #     passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
+            #     print("passed",passedInfo,  passedInfo['passed'])
+            #     await manager.broadcast("heart", user_id)
+            #     # await manager.broadcast(f"服务端接收到{user_id}", user_id)
+    except WebSocketDisconnect:
+        print("WebSocketDisconnect了")
+        manager.disconnect(websocket, user_id)
+    except Exception as e:
+        print(f"WebSocket connection error: {e}")
+        await websocket.close(code=1000)  # 优雅地关闭连接

@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { WEBUI_BASE_URL } from '$lib/constants';
-	import { user } from '$lib/stores';
 	import { onMount, getContext } from 'svelte';
 
-	import { blur, fade } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	import Suggestions from '../MessageInput/Suggestions.svelte';
-
-	const i18n = getContext('i18n');
+  	import GetRewards from '$lib/components/wallet/GetRewards.svelte';
 
 	export let models = [];
 	export let modelfiles = [];
@@ -34,90 +31,26 @@
 {#key mounted}
 	<div class="m-auto w-full max-w-6xl px-8 lg:px-24 pb-16">
 		<div class="flex justify-start">
-			<div class="flex -space-x-4 mb-1" in:fade={{ duration: 200 }}>
-
-				<img
-				crossorigin="anonymous"
-				src={`${WEBUI_BASE_URL}/static/favicon.png`}
-				alt="modelfile"
-				class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none"
-				draggable="false"
-			/>
-				<!-- {#each models as model, modelIdx}
-					<button
-						on:click={() => {
-							selectedModelIdx = modelIdx;
-						}}
-					>
-						{#if model in modelfiles}
-							<img
-								crossorigin="anonymous"
-								src={modelfiles[model]?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`}
-								alt="modelfile"
-								class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none"
-								draggable="false"
-							/>
-						{:else}
-							<img
-								crossorigin="anonymous"
-								src={$i18n.language === 'dg-DG'
-									? `/doge.png`
-									: `${WEBUI_BASE_URL}/static/favicon.png`}
-								class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none"
-								alt="logo"
-								draggable="false"
-							/>
-						{/if}
-					</button>
-				{/each} -->
-			</div>
+			<div class="flex space-x-4 mb-1" in:fade={{ duration: 200 }}></div>
 		</div>
 
-		<div
-			class=" mt-2 mb-4 text-3xl text-gray-800 dark:text-gray-100 font-semibold text-left flex items-center gap-4"
-		>
-			<div>
-				<div class=" capitalize line-clamp-1" in:fade={{ duration: 200 }}>
-					{#if modelfile}
-						{modelfile.title}
-					{:else}
-						{$i18n.t('Hello, {{name}}', { name: $user?.name })}
-					{/if}
-				</div>
+		<GetRewards/>
 
-				<div in:fade={{ duration: 200, delay: 200 }}>
-					{#if modelfile}
-						<div class="mt-0.5 text-base font-normal text-gray-500 dark:text-gray-400">
-							{modelfile.desc}
-						</div>
-						{#if modelfile.user}
-							<div class="mt-0.5 text-sm font-normal text-gray-400 dark:text-gray-500">
-								By <a href="https://openwebui.com/m/{modelfile.user.username}"
-									>{modelfile.user.name ? modelfile.user.name : `@${modelfile.user.username}`}</a
-								>
-							</div>
-						{/if}
-					{:else}
-						<div class=" font-medium text-gray-400 dark:text-gray-500">
-							{$i18n.t('How can I help you today?')}
-						</div>
-					{/if}
-				</div>
-			</div>
-		</div>
-
-		<div class=" w-full" in:fade={{ duration: 200, delay: 300 }}>
+		<div class="w-full bg-1e1e1e padding-10" in:fade={{ duration: 200, delay: 300 }}>
 			<Suggestions {suggestionPrompts} {submitPrompt} />
 		</div>
 
-
-		<!-- <a class="flex flex-col w-fit cursor-pointer border border-gray-600 rounded-lg p-4 py-2 mt-8  "  href="https://x.degpt.ai?comefrom=degpt.ai">
+		<a class="flex flex-col w-fit cursor-pointer border border-gray-600 rounded-lg p-4 py-2 mt-8  "  href="https://x.degpt.ai?comefrom=degpt.ai">
 			<svg xmlns="http://www.w3.org/2000/svg" width="8em" height="8em" viewBox="0 0 16 16"><path fill="currentColor" d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07l-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/></svg>
 			<div style="color: rgba(184, 142, 86, 1)">
 				Twitter Personality
 			</div>
-		</a> -->
-
-
+		</a>
 	</div>
 {/key}
+
+<style>
+.padding-10 {
+	padding: 10px;
+}
+</style>

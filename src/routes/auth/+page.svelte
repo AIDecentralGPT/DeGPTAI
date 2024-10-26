@@ -19,7 +19,7 @@
 
 	const setSessionUser = async (sessionUser) => {
 		if (sessionUser) {
-			console.log(sessionUser);
+			console.log("============sessionUser1=============", sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
 			localStorage.token = sessionUser.token;
 			await user.set(sessionUser);

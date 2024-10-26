@@ -1,30 +1,35 @@
 <script>
 	import '../polyfills'; // 必须在其他代码之前引入
+  import { onMount, setContext } from "svelte";
+  import {
+    config,
+    user,
+    theme,
+    WEBUI_NAME,
+    mobile,
+  } from "$lib/stores";
+  import { goto } from "$app/navigation";
+  import { Toaster } from "svelte-sonner";
 
-	import { onMount, tick, setContext } from 'svelte';
-	import { config, user, theme, WEBUI_NAME, mobile } from '$lib/stores';
-	import { goto } from '$app/navigation';
-	import { Toaster, toast } from 'svelte-sonner';
+  import { getBackendConfig } from "$lib/apis";
+  import {  printSignIn,  } from "$lib/apis/auths";
 
-	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser, printSignIn } from '$lib/apis/auths';
-
-	import '../tailwind.css';
-	import '../app.css';
-
-	// import VConsole from 'vconsole';
+  import "../tailwind.css";
+  import "../app.css";
+  // import VConsole from 'vconsole';
   // const vConsole = new VConsole();
 
-	import 'tippy.js/dist/tippy.css';
+  import "tippy.js/dist/tippy.css";
 
-	import { WEBUI_BASE_URL } from '$lib/constants';
-	import i18n, { initI18n } from '$lib/i18n';
-	import FingerprintJS from '@fingerprintjs/fingerprintjs';
+  import { WEBUI_BASE_URL } from "$lib/constants";
+  import i18n, { initI18n } from "$lib/i18n";
+  import FingerprintJS from "@fingerprintjs/fingerprintjs";
+  import { getUserInfo } from "$lib/apis/users";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
 
-	setContext('i18n', i18n);
-
-	let loaded = false;
-	const BREAKPOINT = 768;
+  setContext("i18n", i18n);
+  let loaded = false;
+  const BREAKPOINT = 768;
 
 	async function initData (){
 		
@@ -49,8 +54,6 @@
 			// Redirect to /error when Backend Not Detected
 			await goto(`/error`);
 		}
-
-
 		
 		// 加载 FingerprintJS 库
 		const fp = await FingerprintJS.load();
@@ -61,31 +64,65 @@
 		console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
 		localStorage.setItem('visitor_id', visitorId);
 
-		const res = await printSignIn();
-		await user.set(res);
+
+    let res = {}
+    if(localStorage.token) {
+      // 获取缓存用户信息
+      let localUser = null;
+      if (localStorage.user) {
+        try {
+          localUser = JSON.parse(localStorage.user);
+        } catch{ }  
+      }
+
+      if (localUser?.address_type == 'dbc') {
+        res = await getUserInfo(localStorage.token);
+        if (res?.id === localUser?.id) {
+          await user.set({
+            ...localUser,
+            token: res?.token,
+          });
+        }
+        localStorage.user = JSON.stringify($user);
+        console.log("===========localUser===========", localUser);
+
+        // 校验钱包
+        if (localStorage.walletImported) {
+          let walletImported = JSON.parse(localStorage.walletImported);
+          if (walletImported) {
+            updateWalletData(walletImported);
+          }
+        }
+      } else {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('walletImported');
+      }
+    }
+    else {
+       res = await printSignIn();
+    }
+
 		loaded = true;
 
-		console.log(res);
 		localStorage.token = res.token;
 
 
 
+    // -----------------
 
-		theme.set(localStorage.theme);
+    theme.set(localStorage.theme);
 
-		mobile.set(window.innerWidth < BREAKPOINT);
-		const onResize = () => {
-			if (window.innerWidth < BREAKPOINT) {
-				mobile.set(true);
-			} else {
-				mobile.set(false);
-			}
-		};
+    mobile.set(window.innerWidth < BREAKPOINT);
+    const onResize = () => {
+      if (window.innerWidth < BREAKPOINT) {
+        mobile.set(true);
+      } else {
+        mobile.set(false);
+      }
+    };
 
-		window.addEventListener('resize', onResize);
-
-
-
+    window.addEventListener("resize", onResize);
 
 		document.getElementById('splash-screen')?.remove();
 
@@ -108,6 +145,7 @@
 
 		return () => {
 			window.removeEventListener('resize', onResize);
+      
 		};
 	}
 
@@ -115,17 +153,23 @@
 </script>
 
 <svelte:head>
-	<title>{$WEBUI_NAME}</title>
-	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
+  <title>{$WEBUI_NAME}</title>
+  <link
+    crossorigin="anonymous"
+    rel="icon"
+    href="{WEBUI_BASE_URL}/static/favicon.png"
+  />
 
-	<!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
-	<!-- feel free to make a PR to fix if anyone wants to see it return -->
-	<!-- <link rel="stylesheet" type="text/css" href="/themes/rosepine.css" />
+  <script type="text/javascript" src="https://hkwebcdn.yuncloudauth.com/cdn/jsvm_all.js"></script>
+
+  <!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
+  <!-- feel free to make a PR to fix if anyone wants to see it return -->
+  <!-- <link rel="stylesheet" type="text/css" href="/themes/rosepine.css" />
 	<link rel="stylesheet" type="text/css" href="/themes/rosepine-dawn.css" /> -->
 </svelte:head>
 
 {#if loaded}
-	<slot />
+  <slot />
 {/if}
 
-<Toaster richColors position="top-center" />
+<Toaster richColors position="top-center" class="flex"  />

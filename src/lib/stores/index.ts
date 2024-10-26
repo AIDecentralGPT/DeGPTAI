@@ -1,4 +1,4 @@
-import { APP_NAME } from '$lib/constants';
+import { APP_NAME, DefaultCurrentWalletData } from '$lib/constants';
 import { type Writable, writable } from 'svelte/store';
 
 // Backend
@@ -42,6 +42,71 @@ export const showSidebar = writable(false);
 export const showSettings = writable(false);
 export const showArchivedChats = writable(false);
 export const showChangelog = writable(false);
+
+
+
+
+
+
+
+
+// ###########
+// 钱包相关
+export const showNewWalletModal = writable(false);
+export const showOpenWalletModal = writable(false);
+export const showExportWalletJsonModal = writable(false);
+export const showTransferModal = writable(false);
+export const showPriceModal = writable(false);
+export const showBuyCoinModal = writable(false);
+export const showShareModal = writable(false);
+export const showRewardsModal = writable(false);
+export const showRewardsHistoryModal = writable(false);
+export const showRewardDetailModal = writable(false);
+export const showTransactionsModal = writable(false);
+export const showUserVerifyModal = writable(false);
+export const showConfirmUpgradeModal = writable(false);
+
+
+
+
+// 钱包数据
+export let currentWalletData = writable(DefaultCurrentWalletData)
+export let threesideAccount = writable({})
+
+// 模型访问数量
+export let modelLimits = writable([
+	{name: 'Llama-3.1-405B', num: 10},
+	{name: 'Qwen2-72B', num: 10},
+	{name: 'Gemma-2-27B', num: 10},
+	{name: 'Codestral-22B-v0.1', num: 10}
+])
+
+export let pageUpdateNumber = writable(0)
+
+
+// 邀请人id
+export let inviterId = writable("")
+
+
+
+
+// 初始化
+
+// export const initNewChat = async () => {
+
+	
+// 	// 重置聊天ID和浏览器历史记录
+// 	window.history.replaceState(history.state, '', `/`);
+// 	chatId.set('');
+
+
+
+// };
+
+
+
+// ###########
+
 
 type Model = OpenAIModel | OllamaModel;
 
@@ -147,4 +212,7 @@ type SessionUser = {
 	name: string;
 	role: string;
 	profile_image_url: string;
+	isPro: boolean
+	address_type: string
+	verified: boolean
 };

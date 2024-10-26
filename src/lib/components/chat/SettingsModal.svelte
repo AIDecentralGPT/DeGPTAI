@@ -141,7 +141,7 @@
 					</button>
 				{/if}
 
-				<button
+				<!-- <button
 					class="px-2.5 py-2.5 min-w-fit rounded-lg flex-1 md:flex-none flex text-right transition {selectedTab ===
 					'interface'
 						? 'bg-gray-200 dark:bg-gray-700'
@@ -165,7 +165,7 @@
 						</svg>
 					</div>
 					<div class=" self-center">{$i18n.t('Interface')}</div>
-				</button>
+				</button> -->
 
 				<!-- <button
 					class="px-2.5 py-2.5 min-w-fit rounded-lg flex-1 md:flex-none flex text-right transition {selectedTab ===
@@ -182,7 +182,7 @@
 					<div class=" self-center">{$i18n.t('Personalization')}</div>
 				</button> -->
 
-				<button
+				<!-- <button
 					class="px-2.5 py-2.5 min-w-fit rounded-lg flex-1 md:flex-none flex text-right transition {selectedTab ===
 					'audio'
 						? 'bg-gray-200 dark:bg-gray-700'
@@ -207,9 +207,9 @@
 						</svg>
 					</div>
 					<div class=" self-center">{$i18n.t('Audio')}</div>
-				</button>
+				</button> -->
 
-				{#if $user.role === 'admin'}
+				{#if $user?.role === 'admin'}
 					<button
 						class="px-2.5 py-2.5 min-w-fit rounded-lg flex-1 md:flex-none flex text-right transition {selectedTab ===
 						'images'

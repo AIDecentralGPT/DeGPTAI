@@ -143,36 +143,11 @@ export const getDeModels = async (token: string = "") => {
       },
     ],
   };
-
-  // const nodes = await Promise.all(format_res?.models?.map(async (item) => {
-  // 	console.log(item);
-  // 	const {urls, model} = item
-
-  // 	console.log(1111, urls[0], model);
-
-  // 	const node = await getDeModelNodeList(urls[0], model).catch((error) => {
-  // 		console.error(error);
-
-  // 		return null
-  // 	}); // Handle error or non-existent chat gracefully
-
-  // 	item.nodeList = node?.data
-
-  // 	return node?.data;
-  // }))
-
-  // console.log("format_res?.models", format_res?.models);
-
-  // console.log("res11", nodes, format_res?.models);
-
   return (format_res?.models ?? []).map((model) => ({
     id: model.model,
     name: model.name ?? model.model,
     ...model,
   }));
-  // .sort((a, b) => {
-  // 	return a.name.localeCompare(b.name);
-  // });
 };
 
 // // 获取De的所有模型列表
@@ -229,6 +204,8 @@ export const generateDeOpenAIChatCompletion = async (
   url: string = DE_API_BASE_URL
 ): Promise<[Response | null, AbortController]> => {
   const controller = new AbortController();
+  setTimeout(() => controller.abort(), 30000);
+
   let error = null;
 
   // console.log("generateDeOpenAIChatCompletion url:", url,`${url}/v0/chat/completion`, body);
@@ -252,21 +229,6 @@ export const generateDeOpenAIChatCompletion = async (
       project: "DecentralGPT",
       node_id: nodeList?.[0],
       stream: true,
-
-      // "node_id": "16Uiu2HAm5cygUrKCBxtNSMKKvgdr1saPM6XWcgnPyTvK4sdrARGL",
-      // "project": "DecentralGPT",
-      // "model": "Llama3-70B",
-      // "messages": [
-      // 	{
-      // 		"role": "system",
-      // 		"content": "You are a helpful assistant."
-      // 	},
-      // 	{
-      // 		"role": "user",
-      // 		"content": "Hello"
-      // 	}
-      // ],
-      // "stream": true
     }),
   }).catch((err) => {
     console.log("err", err);

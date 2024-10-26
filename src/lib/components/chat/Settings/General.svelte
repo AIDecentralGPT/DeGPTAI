@@ -4,7 +4,7 @@
 	import { getLanguages } from '$lib/i18n';
 	const dispatch = createEventDispatcher();
 
-	import { models, user, theme } from '$lib/stores';
+	import { models, user, theme, mobile } from '$lib/stores';
 
 	const i18n = getContext('i18n');
 
@@ -130,6 +130,27 @@
 		}
 		applyTheme(_theme);
 	};
+
+
+
+
+
+	let isMobile = false;
+
+const checkUserAgent = () => {
+	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+	// 检测常见的移动设备标识
+	isMobile = /android|iphone|ipad|iPod|blackberry|opera mini|iemobile|wpdesktop/i.test(userAgent);
+	if(isMobile) {
+		themeChangeHandler("dark")
+	}
+};
+
+onMount(() => {
+	checkUserAgent();
+});
+
+
 </script>
 
 <div class="flex flex-col h-full justify-between text-sm">
@@ -137,6 +158,7 @@
 		<div class="">
 			<div class=" mb-1 text-sm font-medium">{$i18n.t('WebUI Settings')}</div>
 
+			{#if !isMobile}
 			<div class="flex w-full justify-between">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Theme')}</div>
 				<div class="flex items-center relative">
@@ -155,6 +177,7 @@
 					</select>
 				</div>
 			</div>
+			{/if}
 
 			<div class=" flex w-full justify-between">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Language')}</div>
@@ -185,6 +208,7 @@
 					</a>
 				</div>
 			{/if}
+			<!-- {#if !$mobile} -->
 			{#if false}
 				<div>
 					<div class=" py-0.5 flex w-full justify-between">
@@ -210,14 +234,14 @@
 
 		<hr class=" dark:border-gray-700 my-3" />
 		{#if false}
-			<div>
-				<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
-				<textarea
-					bind:value={system}
-					class="w-full rounded-lg p-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none resize-none"
-					rows="4"
-				/>
-			</div>
+		<div>
+			<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
+			<textarea
+				bind:value={system}
+				class="w-full rounded-lg p-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none resize-none"
+				rows="4"
+			/>
+		</div>
 		{/if}
 
 		<div class="mt-2 space-y-3 pr-1.5">

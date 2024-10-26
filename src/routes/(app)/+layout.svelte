@@ -14,8 +14,7 @@
 
 	import { getDocs } from '$lib/apis/documents';
 	import { getAllChatTags } from '$lib/apis/chats';
-	import { getSessionUser, printSignIn } from '$lib/apis/auths';
-	import FingerprintJS from '@fingerprintjs/fingerprintjs';
+
 	import {
 		user,
 		showSettings,
@@ -36,6 +35,13 @@
 	import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
+  import { handleSigninAsIntialStatus } from '$lib/utils/wallet/walletUtils';
+  import { getSessionUser } from '$lib/apis/auths';
+
+
+	
+
+
 
 	const i18n = getContext('i18n');
 
@@ -72,20 +78,19 @@
 
 	onMount( async () => {
 
-
-
-		// localStorage.setItem("token", "public_token")
+		localStorage.setItem("token", "public_token")
 		if ($config) {
 				if (localStorage.token) {
 					// Get Session User Info
 					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
-						toast.error(error);
+						// toast.error(error);
 						return null;
 					});
 
 					if (sessionUser) {
 						// Save Session User to Store
 						await user.set(sessionUser);
+						console.log("============sessionUser2===========", sessionUser)
 					} else {
 						// Redirect Invalid Session User to /auth Page
 						// localStorage.removeItem('token');
@@ -95,16 +100,14 @@
 					// await goto('/auth');
 				}
 			}
-
-
 		console.log(
 			"$user", $user
 		);
 		
 
 		if ($user === undefined) {
-			// await goto('/auth');
-		} else if (['user', 'admin', 'visitor'].includes($user.role)) {
+			await models.set(await getModels());
+		} else if (['user', 'admin', 'walletUser', 'visitor'].includes($user?.role)) {
 			try {
 				// Check if IndexedDB exists
 				DB = await openDB('Chats', 1);
@@ -201,7 +204,7 @@
 				}
 			});
 
-			if ($user.role === 'admin') {
+			if ($user?.role === 'admin') {
 				showChangelog.set(localStorage.version !== $config.version);
 			}
 
@@ -231,12 +234,8 @@
 <!-- <ChangelogModal bind:show={$showChangelog} /> -->
 
 <div class="app relative">
-	<div
-
-		class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row"
-	>
+	<div class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row">
 		{#if loaded}
-			<!-- {#if !['user', 'admin'].includes($user.role)} -->
 			{#if false}
 				<div class="fixed w-full h-full flex z-[999]">
 					<div

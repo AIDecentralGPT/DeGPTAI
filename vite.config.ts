@@ -16,7 +16,9 @@ import { defineConfig } from 'vite';
 // };
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [
+		sveltekit()
+	],
 	define: {
 		APP_VERSION: JSON.stringify(process.env.npm_package_version)
 	},
@@ -24,20 +26,13 @@ export default defineConfig({
 		format: 'es'
 	},
 	optimizeDeps: {
-    include: ['core-js']
-  },
-	// server: {
-  //   proxy: {
-  //     '/modelapi': {
-  //       target: 'https://chat.degpt.ai',  // 代理目标地址
-  //       // target: 'http://10.0.20.43:7801',  // 代理目标地址
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/modelapi/, ''),  // 重写路径，如果需要的话
-  //     },
-  //   },
-  // },
-
-  
-
-
+		include: ['core-js']
+	},
+	server: {
+		fs: {
+			allow: [
+				'./static',
+			],
+		},
+	},
 });

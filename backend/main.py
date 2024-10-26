@@ -1,22 +1,20 @@
 from contextlib import asynccontextmanager
-from bs4 import BeautifulSoup
 import json
-import markdown
 import time
 import os
 import sys
 import logging
 import aiohttp
-import requests
 
 from fastapi import FastAPI, Request, Depends, status
 from fastapi.staticfiles import StaticFiles
 from fastapi import HTTPException
-from fastapi.middleware.wsgi import WSGIMiddleware
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import StreamingResponse, Response
+from starlette.requests import Request
 
 from apps.ollama.main import app as ollama_app
 from apps.openai.main import app as openai_app
@@ -402,6 +400,13 @@ async def get_opensearch_xml():
 @app.get("/health")
 async def healthcheck():
     return {"status": True}
+
+@app.get('/invite/{id}')
+def redirect_to_url(request: Request, id: str):
+    headers = request.headers
+    host = headers.get('host')
+    # 替换成你想要跳转到的网址
+    return RedirectResponse(url=f'https://{host}?inviter={id}')
 
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")

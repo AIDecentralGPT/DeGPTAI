@@ -162,6 +162,8 @@ def get_current_user(
     #         print("auth_token.credentials", e)
 
 
+    print("auth_token", auth_token)
+
     # 根据API密钥进行认证
     # auth by api key
     if auth_token.credentials.startswith("sk-"):
@@ -171,6 +173,8 @@ def get_current_user(
     # 解码token
     # auth by jwt token
     data = decode_token(auth_token.credentials)
+
+    print("get_current_user - data", data)
 
     # 如果解码后的数据不为空且包含"id"字段
     if data != None and "id" in data:
@@ -188,8 +192,13 @@ def get_current_user(
             )
         else:
             # 更新用户的最后活跃时间
-            Users.update_user_last_active_by_id(user.id)
-
+            try:
+                Users.update_user_last_active_by_id(user.id)
+            except Exception as e:
+                print("get_current_user - user-error", e)
+                
+            
+        # print("最终的user", user)
         # 返回当前用户
         return user
 
@@ -216,7 +225,7 @@ def get_current_user_by_api_key(api_key: str):
 
 
 def get_verified_user(user=Depends(get_current_user)):
-    if user.role not in {"user", "admin"}:
+    if user.role not in {"user", "admin", "walletUser"}:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=ERROR_MESSAGES.ACCESS_PROHIBITED,

@@ -1,5 +1,36 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
+
+
+export const getUsersInvited = async (token: string, inviter_id: string) => {
+	let error = null;
+
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users/invited`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			console.log(err);
+			error = err.detail;
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+
 export const getUserPermissions = async (token: string) => {
 	let error = null;
 
@@ -189,7 +220,7 @@ export const updateUserById = async (token: string, userId: string, user: UserUp
 		body: JSON.stringify({
 			profile_image_url: user.profile_image_url,
 			email: user.email,
-			name: user.name,
+			name: user.name, // 存放钱包地址
 			password: user.password !== '' ? user.password : undefined
 		})
 	})
@@ -200,6 +231,115 @@ export const updateUserById = async (token: string, userId: string, user: UserUp
 		.catch((err) => {
 			console.log(err);
 			error = err.detail;
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+
+
+export const openProServices = async (
+	token: string,
+	tx: string,
+	amount: number,
+) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users/pro`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			tx,
+			amount
+		})
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+
+
+export const isPro = async (
+	token: string,
+) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users/is_pro`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		},
+
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+
+export const getUserInfo = async (
+	token: string,
+) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users/get_user_info`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		},
+
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			console.log(err);
 			return null;
 		});
 
