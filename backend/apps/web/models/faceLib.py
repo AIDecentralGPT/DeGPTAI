@@ -15,7 +15,7 @@ import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
 
-face_db = 'dev_face'
+face_db = 'online_face'
 
 class FaceLib:
     def __init__(self):
