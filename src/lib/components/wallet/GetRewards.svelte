@@ -114,7 +114,6 @@
   </div>
   
   <div class="flex flex-wrap lg:justify-between">
-    <div>{$user}</div>
     {#each items as item, index}
       {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id.startsWith("0x"))}
         <div
