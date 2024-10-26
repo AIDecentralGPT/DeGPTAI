@@ -267,7 +267,6 @@ async function handleWalletSignIn({
   if (address_type === "threeSide") {
     // Example: Generate a random message of 32 bytes (256 bits)
     // const signature = threeSideSignature;
-    console.log("====================================");
     const signature = await walletconnectSignMessage(randomMessage);
 
     // 将消息转换为十六进制字符串

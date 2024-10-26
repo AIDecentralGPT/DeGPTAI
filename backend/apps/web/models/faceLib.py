@@ -15,9 +15,11 @@ import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
 
+face_db = 'dev_face'
 
 class FaceLib:
     def __init__(self):
+        self.faceDb = face_db
         self.config = Config(
             # 创建AccessKey ID和AccessKey Secret，请参考https://help.aliyun.com/document_detail/175144.html。
             # 如果您用的是RAM用户的AccessKey，还需要为RAM用户授予权限AliyunVIAPIFullAccess，请参考https://help.aliyun.com/document_detail/145025.html。
@@ -31,7 +33,7 @@ class FaceLib:
         )
 
         self.runtime_option = RuntimeOptions()
-        self.create_face_db_request = CreateFaceDbRequest( name='online_face' )
+        self.create_face_db_request = CreateFaceDbRequest( name=self.faceDb )
 
         # 阿里oss上传文件
         self.file_utils = FileUtils('LTAI5tKRwDnNYRAjF9SkeFv6', '6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde')
@@ -49,7 +51,7 @@ class FaceLib:
     # 添加人脸样本 再 添加 人脸数据
     def add_face_sample(self, user_id):
         request = AddFaceEntityRequest()
-        request.db_name = "online_face"
+        request.db_name = self.faceDb
         request.entity_id = user_id
         request.labels = "face-sample"
         try: 
@@ -65,7 +67,7 @@ class FaceLib:
     # 获取人脸样本
     def get_face_sample(self, user_id):
         request = GetFaceEntityRequest()
-        request.db_name = "online_face"
+        request.db_name = self.faceDb
         request.entity_id = user_id
         try: 
             # 初始化Client
@@ -83,7 +85,7 @@ class FaceLib:
         # 解码Base64数据
         img_data = base64.b64decode(base64_data)
         request.image_url_object = io.BytesIO(img_data)
-        request.db_name = 'online_face'
+        request.db_name = self.faceDb
         request.entity_id = user_id
         request.extra_data = 'degpt-face:' + user_id
         try: 
@@ -109,7 +111,7 @@ class FaceLib:
         
         search_face_request = SearchFaceAdvanceRequest()
         search_face_request.image_url_object = io.BytesIO(img_data)
-        search_face_request.db_name = 'online_face'
+        search_face_request.db_name = self.faceDb
         search_face_request.limit = 5
         
         try:
@@ -134,7 +136,7 @@ class FaceLib:
     def remove_face(self, face_id):
 
         deleteFaceRequest = DeleteFaceRequest()
-        deleteFaceRequest.db_name = "online_face"
+        deleteFaceRequest.db_name = self.faceDb
         deleteFaceRequest.face_id = face_id
 
         runtime_option = RuntimeOptions()

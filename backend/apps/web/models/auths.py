@@ -62,6 +62,8 @@ class UserResponse(BaseModel):
     role: str
     profile_image_url: str
     address_type: Optional[str] = None
+    verified: Optional[bool] = None
+    address: Optional[str] = None
 
 
 class SigninResponse(Token, UserResponse):

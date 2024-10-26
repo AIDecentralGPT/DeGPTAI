@@ -77,8 +77,6 @@
 
 
 	onMount( async () => {
-
-		localStorage.setItem("token", "public_token")
 		if ($config) {
 				if (localStorage.token) {
 					// Get Session User Info

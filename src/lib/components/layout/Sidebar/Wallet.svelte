@@ -61,9 +61,7 @@
       <button
         class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
         on:click={async () => {
-          console.log("=====================open wallet======================", $showOpenWalletModal);
           $showOpenWalletModal = true;
-          console.log("=====================open wallet======================", $showOpenWalletModal);
         }}
       >
         <div class=" self-center mr-3">
