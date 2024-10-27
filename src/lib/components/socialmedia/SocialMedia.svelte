@@ -1,13 +1,14 @@
 <script>
   import { getContext } from "svelte";
-  import { showLoginInfoModal } from "$lib/stores";
+  import { showLoginInfoModal,user } from "$lib/stores";
   import Tooltip from '$lib/components/common/Tooltip.svelte';
   const i18n = getContext("i18n");
 </script>
 
 <section>
   <hr class="dark:border-gray-800 p-0" />
-  <div class="flex justify-center">
+  <div class="flex justify-center h-[8px]">
+    {#if $user.id.startsWith('0x')}
       {#if $showLoginInfoModal}
         <Tooltip content={$i18n.t('Hide')}>
           <button class="bg-gray-800 px-4 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
@@ -25,7 +26,9 @@
           </button>
         </Tooltip>
       {/if}
+    {/if}
   </div>
+
   <div class="flex justify-between gap-6 px-3 pb-1">
     <div class=" text-base leading-6">{$i18n.t('Join Our Community')}:</div>
 
