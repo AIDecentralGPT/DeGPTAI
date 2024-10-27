@@ -10,6 +10,7 @@
     user,
     showTransactionsModal,
     showUserVerifyModal,
+    showLoginInfoModal
   } from "$lib/stores";
   import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
 
@@ -34,122 +35,122 @@
   });
 </script>
 
-<div class="flex flex-col gap-2 padding-l-r-10">
+<div class="flex flex-col gap-2 px-3">
   <!-- <div class="py-2 px-3"> -->
-
-  <!-- 地址展示 -->
-  <div class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal">
-    {$i18n.t("Wallet Address")}
-  </div>
-
-  <div class="pt-0.5">
-    <div class="flex flex-col w-full">
-      <div class="flex-1 relative">
-        <p
-          class="text-ellipsis overflow-hidden whitespace-nowrap pr-[35px] opacity-50
-          px-5 py-3 rounded-md w-full text-sm-12 outline-none border dark:border-none dark:bg-gray-850 fs12"
-        >
-          <!-- {$currentWalletData?.walletInfo?.address} -->
-          {$user?.id}
-
-        </p>
-        <button
-          on:click={async () => {
-            const res = await copyToClipboard($user?.id);
-            if (res) {
-              toast.success($i18n.t("Copying to clipboard was successful!"));
-            }
-          }}
-          type="button"
-          class="absolute inset-y-0 right-0 px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 512 512"
-            ><rect
-              width="336"
-              height="336"
-              x="128"
-              y="128"
-              fill="none"
-              stroke="currentColor"
-              stroke-linejoin="round"
-              stroke-width="32"
-              rx="57"
-              ry="57"
-            /><path
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="32"
-              d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
-            /></svg
+  {#if $showLoginInfoModal}
+    <!-- 地址展示 -->
+    <div class="opacity-80 text-base font-medium leading-6">
+      {$i18n.t("Wallet Address")}
+    </div>
+    <div class="pt-0.5">
+      <div class="flex flex-col w-full">
+        <div class="flex-1 relative">
+          <p
+            class="text-ellipsis overflow-hidden whitespace-nowrap pr-[35px] opacity-50
+            px-5 py-3 rounded-md w-full leading-3 outline-none border dark:border-none dark:bg-gray-850 text-xs"
           >
-        </button>
+            <!-- {$currentWalletData?.walletInfo?.address} -->
+            {$user?.id}
+
+          </p>
+          <button
+            on:click={async () => {
+              const res = await copyToClipboard($user?.id);
+              if (res) {
+                toast.success($i18n.t("Copying to clipboard was successful!"));
+              }
+            }}
+            type="button"
+            class="absolute inset-y-0 right-0 px-3 py-2 leading-3 dark:text-gray-300 dark:bg-gray-650 rounded-md text-xs"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 512 512"
+              ><rect
+                width="336"
+                height="336"
+                x="128"
+                y="128"
+                fill="none"
+                stroke="currentColor"
+                stroke-linejoin="round"
+                stroke-width="32"
+                rx="57"
+                ry="57"
+              /><path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="32"
+                d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+              /></svg
+            >
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 二级按钮 -->
-  {#if $user?.address_type === 'threeSide'}
-    <div class="flex justify-center">
-      <w3m-button class="v-btn" label="组件方式打开"/>
-    </div>
-    
-  {:else}
-    <div class="flex justify-start gap-2 mt6 mb10">
-      <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
-        type="submit"
-        on:click={async () => {
-          $showTransferModal = true;
-        }}
-      >
-        {$i18n.t("Transfer")}
-      </button>
-      <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
-        type="submit"
-        on:click={async () => {
-          console.log("showExportWalletJsonModal", $showExportWalletJsonModal);
-          // const pair = getCurrentPair()
-          // exportAccountForKeystore(pair)
+    <!-- 二级按钮 -->
+    {#if $user?.address_type === 'threeSide'}
+      <div class="flex justify-center">
+        <w3m-button class="v-btn" label="组件方式打开"/>
+      </div>
+      
+    {:else}
+      <div class="flex justify-start gap-2 mt-1 mb5">
+        <button
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            $showTransferModal = true;
+          }}
+        >
+          {$i18n.t("Transfer")}
+        </button>
+        <button
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            console.log("showExportWalletJsonModal", $showExportWalletJsonModal);
+            // const pair = getCurrentPair()
+            // exportAccountForKeystore(pair)
 
-          $showExportWalletJsonModal = true;
-        }}
-      >
-        {$i18n.t("Export Wallet")}
-      </button>
-      <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
-        type="submit"
-        on:click={async () => {
-          closeWallet();
-        }}
-      >
-        {$i18n.t("Close Wallet")}
-      </button>
-    </div>
+            $showExportWalletJsonModal = true;
+          }}
+        >
+          {$i18n.t("Export Wallet")}
+        </button>
+        <button
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            closeWallet();
+          }}
+        >
+          {$i18n.t("Close Wallet")}
+        </button>
+      </div>
+    {/if}
+    <!-- ------------ -->
+
+    <hr class="dark:border-gray-800 my-1 p-0" />
   {/if}
-  <!-- ------------ -->
-
-  <hr class="dark:border-gray-800 my-2 p-0" />
 
   <!-- ------------ -->
   <!-- 钱包余额 -->
   <!-- 标题 -->
   <div class="flex justify-between items-center">
     <div
-      class="opacity-80 text-lg font-medium font-['Gilroy'] leading-normal flex items-center"
+      class="opacity-80 text-base font-medium leading-6 flex items-center"
     >
       {$i18n.t("Wallet Balance")}
     </div>
     <div class="flex">
       <button
-        class="flex gap-2 items-center cursor-pointer opacity-50 fs12 mr-2"
+        class="flex gap-2 items-center cursor-pointer opacity-50 text-xs mr-2"
         on:click={() => {
           $showShareModal = true;
         }}
@@ -207,11 +208,11 @@
         </div>
       </div>
 
-      <div class="opacity-50 leading-normal fs12">
+      <div class="opacity-50 leading-normal text-xs">
         1DGC=0.0005u
       </div>
 
-      <div class="opacity-50 leading-normal fs12">
+      <div class="opacity-50 leading-normal text-xs">
         Total ${floorToFixed(Number($currentWalletData?.dgcBalance) * 0.0005, 4)}u
       </div>
     </div>
@@ -230,85 +231,69 @@
           {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
         </div>
       </div>
-      <div class="opacity-50 leading-normal fs12">
+      <div class="opacity-50 leading-normal text-xs">
         1DBC={floorToFixed(dbcRate, 4)}u
       </div>
-      <div class="opacity-50 leading-normal fs12">
+      <div class="opacity-50 leading-normal text-xs">
         Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * dbcRate, 4)}u
       </div>
     </div>
   </div>
 
   <!-- 二级按钮 -->
-  <div class="flex justify-start gap-2 mt6 mb30">
-    <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
-      type="submit"
-      on:click={async () => {
-        // $showBuyCoinModal = true;
-        // 用新标签打开
-        window.open("https://www.drcpad.io/project?name=DeGPT", "_blank");
-      }}
-    >
-      {$i18n.t("Buy")}
-    </button>
-    <!-- <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
-      type="submit"
-      on:click={async () => {
-        $showRewardsModal = true;
-      }}
-    >
-      {$i18n.t("Rewards")}
-    </button> -->
-    <button
-      class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
-      type="submit"
-      on:click={async () => {
-        $showTransactionsModal = true;
-      }}
-    >
-      {$i18n.t("Transactions")}
-    </button>
-    {#if $user?.verified}
+  {#if $showLoginInfoModal}
+    <div class="flex justify-start gap-2 mt-1 mb-2">
       <button
-        class=" px-4 py-2 primaryButton text-gray-800 transition rounded-lg fs12"
-        type="submit"
-      >
-        {$i18n.t("Authed KYC")}
-      </button>
-    {:else}
-      <button
-        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg fs12"
+        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
-          $showUserVerifyModal = true;
+          // $showBuyCoinModal = true;
+          // 用新标签打开
+          window.open("https://www.drcpad.io/project?name=DeGPT", "_blank");
         }}
       >
-        {$i18n.t("Complete KYC")}
+        {$i18n.t("Buy")}
       </button>
-    {/if}
-  </div>
+      <!-- <button
+        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
+        type="submit"
+        on:click={async () => {
+          $showRewardsModal = true;
+        }}
+      >
+        {$i18n.t("Rewards")}
+      </button> -->
+      <button
+        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+        type="submit"
+        on:click={async () => {
+          $showTransactionsModal = true;
+        }}
+      >
+        {$i18n.t("Transactions")}
+      </button>
+      {#if $user?.verified}
+        <button
+          class=" px-4 py-2 primaryButton text-gray-800 transition rounded-lg text-xs"
+          type="submit"
+        >
+          {$i18n.t("Authed KYC")}
+        </button>
+      {:else}
+        <button
+          class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            $showUserVerifyModal = true;
+          }}
+        >
+          {$i18n.t("Complete KYC")}
+        </button>
+      {/if}
+    </div>
+  {/if}
 </div>
 
 <style>
-.padding-l-r-10 {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-.text-sm-12 {
-  line-height: 12px;
-}
-.fs12 {
-  font-size: 12px;
-}
-.mt6 {
-  margin-top: 6px;
-}
-.mb10 {
-  margin-bottom: 10px;
-}
-.mb30 {
-  margin-bottom: 30px;
-}
+
 </style>

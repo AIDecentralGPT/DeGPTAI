@@ -4,6 +4,7 @@
     showNewWalletModal,
     showOpenWalletModal,
     showPriceModal,
+    showLoginInfoModal,
     user,
   } from "$lib/stores";
   import DbcAccountDetail from "$lib/components/wallet/DbcAccountDetail.svelte";
@@ -17,19 +18,21 @@
 </script>
 
 <div name="content">
-  <hr class=" dark:border-gray-800 my-2 p-0" />
+  <hr class=" dark:border-gray-800 my-1 p-0" />
 
-  <div class="flex flex-col gap-2 padding-l-r-10">
-    <!-- 升级计划 -->
-    <button
-      on:click={() => {
-        $showPriceModal = true;
-      }}
-      class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
-    >
-      <span class="relative">{$i18n.t("Upgrade Plan")}</span>
-    </button>
-  </div>
+  {#if $showLoginInfoModal}
+    <div class="flex flex-col gap-2 px-3">
+      <!-- 升级计划 -->
+      <button
+        on:click={() => {
+          $showPriceModal = true;
+        }}
+        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
+      >
+        <span class="relative">{$i18n.t("Upgrade Plan")}</span>
+      </button>
+    </div>
+  {/if}
   
   <!-- 第三方方式登录钱包 -->
   <WalletConnect />

@@ -129,8 +129,8 @@
             <span class="relative">{item.reward}</span>
             <button
               disabled={clockLoading}
-              class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words" +
-                `${clockLoading ? "" : ""}`}
+              class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words"}
+                style={(clockLoading && item.id === "clock_in") ? "background: rgba(251, 251, 251, 0.8)" : ""}
               on:click={async () => {
                 console.log("user info ", $user);
   
@@ -168,8 +168,8 @@
               }}
             >
               {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
-                ? "Done"
-                : $i18n.t("Get Now!")}
+                ? ((clockLoading && item.id === "clock_in") ? "Done..." : "Done")
+                : ((clockLoading && item.id === "clock_in") ? $i18n.t("Get Now...") : $i18n.t("Get Now!"))}
             </button>
           </div>
         </div>

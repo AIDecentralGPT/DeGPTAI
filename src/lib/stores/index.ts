@@ -65,6 +65,7 @@ export const showRewardDetailModal = writable(false);
 export const showTransactionsModal = writable(false);
 export const showUserVerifyModal = writable(false);
 export const showConfirmUpgradeModal = writable(false);
+export const showLoginInfoModal = writable(true);
 
 
 

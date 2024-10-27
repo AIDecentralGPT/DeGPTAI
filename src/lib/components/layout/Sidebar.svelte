@@ -1,10 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import {
-    user,
     chats,
     settings,
-    showSettings,
     chatId,
     tags,
     showSidebar,
@@ -18,7 +16,6 @@
     showBuyCoinModal,
     showShareModal,
     showRewardsModal,
-    currentWalletData,
     pageUpdateNumber,
     showRewardDetailModal,
     showRewardsHistoryModal,
@@ -26,11 +23,7 @@
     showUserVerifyModal
   } from "$lib/stores";
   import {
-    exportAccountForKeystore,
-    createAccountFromMnemonic,
-    createAccountFromSeed,
     getCurrentPair,
-    savePair,
   } from "./../../utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
 
@@ -46,16 +39,12 @@
     archiveChatById,
   } from "$lib/apis/chats";
   import { toast } from "svelte-sonner";
-  import { fade, slide } from "svelte/transition";
   import { WEBUI_BASE_URL } from "$lib/constants";
-  import Tooltip from "../common/Tooltip.svelte";
   import ChatMenu from "./Sidebar/ChatMenu.svelte";
   import ShareChatModal from "../chat/ShareChatModal.svelte";
-  import ArchiveBox from "../icons/ArchiveBox.svelte";
   import ArchivedChatsModal from "./Sidebar/ArchivedChatsModal.svelte";
   import NewWalletModal from "../wallet/NewWalletModal.svelte";
 
-  import UserMenu from "./Sidebar/UserMenu.svelte";
   import Wallet from "./Sidebar/Wallet.svelte";
   import OpenWalletModal from "../wallet/OpenWalletModal.svelte";
   import ExportWalletJsonModal from "../wallet/ExportWalletJsonModal.svelte";
@@ -64,9 +53,7 @@
   import BuyCoinModal from "../wallet/BuyCoinModal.svelte";
   import ShareModal from "../wallet/ShareModal.svelte";
   import SocialMedia from "../socialmedia/SocialMedia.svelte";
-  import { onGetBalance } from "$lib/utils/wallet/dbc.js";
-  import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
-  import { showWallet, updateWalletData } from "$lib/utils/wallet/walletUtils.js";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
   import RewardsModal from "../wallet/RewardsModal.svelte";
   import RewardsHistoryModal from "../wallet/RewardsHistoryModal.svelte";
   import RewardDetailModal from "../wallet/RewardDetailModal.svelte";
@@ -75,7 +62,6 @@
 
   const BREAKPOINT = 768;
 
-  let show = false;
   let navElement;
 
   let title: string = "UI";
@@ -89,12 +75,8 @@
   let chatTitleEditId = null;
   let chatTitle = "";
 
-  let showModal = true;
-
 
   let showShareChatModal = false;
-  let showDropdown = false;
-  let isEditing = false;
 
   let filteredChatList = [];
 
@@ -844,38 +826,37 @@
         {/if}
       </div>
     </div>
-
-    <div class="px-2.5">
+    <div>
       <!-- <hr class=" border-gray-900 mb-1 w-full" /> -->
 
       <!-- <div class="flex flex-col">
-				{#if $user !== undefined}
-					<UserMenu
-						role={$user?.role}
-						on:show={(e) => {
-							if (e.detail === 'archived-chat') {
-								showArchivedChats.set(true);
-							}
-						}}
-					>
-						<button
-							class=" flex rounded-xl py-3 px-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-900 transition"
-							on:click={() => {
-								showDropdown = !showDropdown;
-							}}
-						>
-							<div class=" self-center mr-3">
-								<img
-									src={$user.profile_image_url}
-									class=" max-w-[30px] object-cover rounded-full"
-									alt="User profile"
-								/>
-							</div>
-							<div class=" self-center font-semibold">{$user.name}</div>
-						</button>
-					</UserMenu>
-				{/if}
-			</div> -->
+        {#if $user !== undefined}
+          <UserMenu
+            role={$user?.role}
+            on:show={(e) => {
+              if (e.detail === 'archived-chat') {
+                showArchivedChats.set(true);
+              }
+            }}
+          >
+            <button
+              class=" flex rounded-xl py-3 px-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-900 transition"
+              on:click={() => {
+                showDropdown = !showDropdown;
+              }}
+            >
+              <div class=" self-center mr-3">
+                <img
+                  src={$user.profile_image_url}
+                  class=" max-w-[30px] object-cover rounded-full"
+                  alt="User profile"
+                />
+              </div>
+              <div class=" self-center font-semibold">{$user.name}</div>
+            </button>
+          </UserMenu>
+        {/if}
+      </div> -->
 
       <!-- 社媒 -->
       <SocialMedia />

@@ -63,13 +63,7 @@
   // const { writeContract } = useWriteContract()
 
   async function handleUpgrade() {
-    console.log(
-      "handleUpgrade",
-      $currentWalletData,
-      upgradePrice,
-      $currentWalletData?.walletInfo?.address,
-      $user
-    );
+
     if ($currentWalletData && $currentWalletData?.walletInfo?.address) {   
     } else {
       toast.error($i18n.t("Please log in to your wallet first!"))
@@ -95,10 +89,8 @@
     //   }
     // }
     if (res) {
-      // 获取模型剩余条数
-      let address = $currentWalletData?.walletInfo?.address;
       // 更新合约VIP
-      await payForVip(address);
+      await payForVip($currentWalletData, $user?.address_type);
       // console.log("==============address===============", address);
       // await remainingAmount($currentWalletData?.walletInfo?.address, [0, 1, 2, 3]);
       // 测试发送聊天请求

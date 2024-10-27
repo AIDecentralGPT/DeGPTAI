@@ -8,7 +8,11 @@
     getAccount,
     watchAccount
   } from "@wagmi/core";
-  import { handleWalletSignIn, provider, signOut } from "$lib/utils/wallet/ether/utils";
+  import { 
+    handleWalletSignIn, 
+    provider, 
+    signOut 
+  } from "$lib/utils/wallet/ether/utils";
   import {
     threesideAccount,
     user,

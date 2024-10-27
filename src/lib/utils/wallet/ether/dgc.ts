@@ -36,6 +36,7 @@ export const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, ABI?.
 
 // 查询 DGC 余额
 export async function getDgcBalance(address) {
+  console.log("======================getDgcBalance==================", provider.getSigner())
   const balanceWei = await dgcContract.balanceOf(address);
 
   const balanceDGC = ethers.formatUnits(balanceWei, 18);

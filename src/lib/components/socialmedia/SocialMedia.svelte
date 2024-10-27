@@ -1,13 +1,33 @@
 <script>
   import { getContext } from "svelte";
+  import { showLoginInfoModal } from "$lib/stores";
+  import Tooltip from '$lib/components/common/Tooltip.svelte';
   const i18n = getContext("i18n");
 </script>
 
 <section>
-  <hr class="dark:border-gray-800 my-2 p-0" />
-
-  <div class="flex flex-start gap-6 px-3">
-    <div class=" text-lg leading-6">{$i18n.t('Join Our Community')}:</div>
+  <hr class="dark:border-gray-800 p-0" />
+  <div class="flex justify-center">
+      {#if $showLoginInfoModal}
+        <Tooltip content={$i18n.t('Hide')}>
+          <button class="bg-gray-800 px-4 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+              <path d="M512 741.504l338.752-338.752 90.496 90.496L512 922.496 82.752 493.248l90.496-90.496L512 741.504z m0-320l338.752-338.752 90.496 90.496L512 602.496 82.752 173.248l90.496-90.496L512 421.504z" fill="#ffffff"></path>
+            </svg>
+          </button>
+        </Tooltip> 
+      {:else}
+        <Tooltip content={$i18n.t('Show')}>
+          <button class="bg-gray-800 px-4 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+              <path d="M512 602.496l-338.752 338.752-90.496-90.496L512 421.504l429.248 429.248-90.496 90.496L512 602.496z m0-320L173.248 621.248 82.752 530.752 512 101.504l429.248 429.248-90.496 90.496L512 282.496z" fill="#ffffff"></path>
+            </svg>
+          </button>
+        </Tooltip>
+      {/if}
+  </div>
+  <div class="flex justify-between gap-6 px-3 pb-1">
+    <div class=" text-base leading-6">{$i18n.t('Join Our Community')}:</div>
 
     <div class="flex gap-4 items-center">
       <a
@@ -21,7 +41,7 @@
         xmlns:xlink="http://www.w3.org/1999/xlink"
         fill="none"
         version="1.1"
-        width="16"
+        width="12"
         height="14"
         viewBox="0 0 16 14"
         ><defs
@@ -49,7 +69,7 @@
         xmlns:xlink="http://www.w3.org/1999/xlink"
         fill="none"
         version="1.1"
-        width="18"
+        width="14"
         height="14"
         viewBox="0 0 18 14"
         ><defs
@@ -77,7 +97,7 @@
         xmlns:xlink="http://www.w3.org/1999/xlink"
         fill="none"
         version="1.1"
-        width="18"
+        width="14"
         height="14"
         viewBox="0 0 18 14"
         ><defs

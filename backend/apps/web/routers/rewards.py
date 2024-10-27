@@ -106,8 +106,12 @@ async def clock_in(user=Depends(get_verified_user)):
     if existing_rewards:
         raise HTTPException(status_code=400, detail="You have received 100 DGC points，you can convert your points into cash")
     
-    success = RewardsTableInstance.create_reward(user.id, 100, reward_type)
-    if success:
+    rewards = RewardsTableInstance.create_reward(user.id, 100, reward_type)
+    if rewards is not None:
+        # 校验用户是否已经kyc
+        if user.verified:
+            # 领取奖励
+            RewardApiInstance.dailyReward(rewards.id, user.id)
         return {"ok": True, "message": "You have received 100 DGC points !"}
     else:
         raise HTTPException(status_code=500, detail="Failed to received reward")
@@ -177,11 +181,14 @@ async def get_reward_count(user=Depends(get_verified_user)):
     return rewards_history
 
 @router.get("/dbc_rate")
-async def get_dbc_rate(user=Depends(get_verified_user)):
-    
-    # 查询dbc汇率
-    dbc_rate = RewardApiInstance.getDbcRate()
-    if dbc_rate is not None:
-        return dbc_rate
-    else:
-       raise HTTPException(status_code=400, detail="Failed to request third-party interface")  
+async def get_dbc_rate(user=Depends(get_verified_user)): 
+    # 查询dbc汇率 默认0.00198537(第一次查询的值)
+    try:
+        dbc_rate = RewardApiInstance.getDbcRate()
+        print("==============dbc-rate===============", dbc_rate)
+        if dbc_rate is not None:
+            return dbc_rate
+        else:
+            return 0.00198537
+    except Exception as e:
+        return 0.00198537
