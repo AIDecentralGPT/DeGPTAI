@@ -7,7 +7,7 @@
 
 <section>
   <hr class="dark:border-gray-800 p-0" />
-  <div class="flex justify-center h-[8px]">
+  <div class="flex justify-center h-[12px]">
     {#if $user.id.startsWith('0x')}
       {#if $showLoginInfoModal}
         <Tooltip content={$i18n.t('Hide')}>
