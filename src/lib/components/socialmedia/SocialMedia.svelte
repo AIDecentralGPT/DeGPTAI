@@ -8,7 +8,7 @@
 <section>
   <hr class="dark:border-gray-800 p-0" />
   <div class="flex justify-center h-[12px]">
-    {#if $user.id.startsWith('0x')}
+    {#if $user?.id?.startsWith('0x')}
       {#if $showLoginInfoModal}
         <Tooltip content={$i18n.t('Hide')}>
           <button class="bg-gray-800 px-4 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
