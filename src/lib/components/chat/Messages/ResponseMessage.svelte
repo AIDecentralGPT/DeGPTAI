@@ -561,7 +561,7 @@
 													/>
 												</svg>
 											</button>
-											<div>{siblings.length} large models are searching</div>
+											<div class="truncate">searching by {siblings.length} {siblings.length > 1 ? 'LLMs' : 'LLM'}</div>
 										</div>
 									{/if}
 
