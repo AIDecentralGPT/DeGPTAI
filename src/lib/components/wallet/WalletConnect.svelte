@@ -7,27 +7,21 @@
     getAccount,
     watchAccount
   } from "@wagmi/core";
-  import { 
-    handleWalletSignIn, 
-    provider, 
-    signOut 
+  import {
+    handleWalletSignIn,
+    provider,
+    signOut,
   } from "$lib/utils/wallet/ether/utils";
-  import {
-    threesideAccount,
-    user,
-  } from "$lib/stores";
-  import {
-    config,
-    projectId,
-  } from "$lib/utils/wallet/walletconnect/index";
+  import { threesideAccount, user } from "$lib/stores";
+  import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   const i18n = getContext("i18n");
 
   // 定义存储
   const walletAddress = writable("");
   const walletBalance = writable(0);
-  let modal:any = null;
+  let modal: any = null;
 
-  const getBalance = async (address:string) => {
+  const getBalance = async (address: string) => {
     try {
       //const balance = await provider.getBalance(address);
       // console.log("balance", balance);
@@ -59,31 +53,40 @@
     });
   });
 
+  function clearConnector() {
+    config.state.connections.forEach((item) => {
+      config.state.connections.delete(item.connector.uid);
+    });
+    console.log("==============config.state.connections================", config.state.connections);
+  }
+
   watchAccount(config, {
     async onChange() {
       let account = getAccount(config);
       console.log("=============scan wallet================", account);
       $threesideAccount = account;
-      
-      if (account.status === "connected" ) {
-        handleWalletSignIn({
-          walletImported: {
-            address: account?.address,
-          },
-          address_type: "threeSide",
-        }); 
+
+      if (account.status === "connected") {
+        if (!$user?.id?.startsWith("0x")) {
+          handleWalletSignIn({
+            walletImported: {
+              address: account?.address,
+            },
+            address_type: "threeSide",
+          });
+        }
       }
-      if(account.status ==="disconnected" ) {
+      if (account.status === "disconnected") {
         signOut();
       }
-
     },
   });
 
   function connect() {
-    if ($user?.id?.startsWith('0x') && getAccount(config).isConnected) {
+    if ($user?.id?.startsWith("0x") && getAccount(config).isConnected) {
       signOut();
     } else {
+      clearConnector();
       modal.open();
     }
   }

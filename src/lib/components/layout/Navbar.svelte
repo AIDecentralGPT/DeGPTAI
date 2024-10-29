@@ -186,7 +186,7 @@
             }
           }}
         >
-          {#if $user !== undefined && $user?.id.startsWith('0x')}
+          {#if $user !== undefined && $user?.id?.startsWith('0x')}
             <button
               class="select-none flex rounded-xl p-1.5 w-full hover:bg-gray-100 dark:hover:bg-gray-850 transition"
               aria-label="User Menu"

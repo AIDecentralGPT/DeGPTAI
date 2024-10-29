@@ -115,7 +115,7 @@
   
   <div class="flex flex-wrap lg:justify-between">
     {#each items as item, index}
-      {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id.startsWith("0x"))}
+      {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id?.startsWith("0x"))}
         <div
           class="flex direction-column justify-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
         >

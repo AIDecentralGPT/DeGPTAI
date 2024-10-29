@@ -838,6 +838,7 @@ LITELLM_PROXY_HOST = os.getenv("LITELLM_PROXY_HOST", "127.0.0.1")
 
 # DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DATA_DIR}/webui.db")
 DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:Jxyandcyq88888@34.234.201.126:9875/my_webui_db")
+#DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:dzy@123@127.0.0.1:5432/test_webui_db")
 
 # DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:Jxyandcyq88888@43.242.202.166:9875/my_webui_db")
 # DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:Jxyandcyq88888@34.234.201.126:9875/my_webui_db")
