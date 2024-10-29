@@ -114,9 +114,8 @@
   </div>
   
   <div class="flex flex-wrap lg:justify-between">
-    <div>{$user}</div>
     {#each items as item, index}
-      {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id.startsWith("0x"))}
+      {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id?.startsWith("0x"))}
         <div
           class="flex direction-column justify-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
         >
@@ -130,8 +129,8 @@
             <span class="relative">{item.reward}</span>
             <button
               disabled={clockLoading}
-              class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words" +
-                `${clockLoading ? "" : ""}`}
+              class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words"}
+                style={(clockLoading && item.id === "clock_in") ? "background: rgba(251, 251, 251, 0.8)" : ""}
               on:click={async () => {
                 console.log("user info ", $user);
   
@@ -169,8 +168,8 @@
               }}
             >
               {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
-                ? "Done"
-                : $i18n.t("Get Now!")}
+                ? ((clockLoading && item.id === "clock_in") ? "Done..." : "Done")
+                : ((clockLoading && item.id === "clock_in") ? $i18n.t("Get Now...") : $i18n.t("Get Now!"))}
             </button>
           </div>
         </div>

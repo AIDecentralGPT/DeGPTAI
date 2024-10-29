@@ -77,7 +77,7 @@
 
       {#if selectedModelIdx === selectedModels?.length - 1 && selectedModels?.length !== $models.length}
         <div
-          class="  self-center mr-2 disabled:text-gray-600 disabled:hover:text-gray-600 text-yellow-600"
+          class="  self-center mr-2 disabled:text-gray-600 disabled:hover:text-gray-600"
         >
           <Tooltip
             content={$i18n.t(

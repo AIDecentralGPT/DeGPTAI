@@ -94,7 +94,10 @@ class VIPStatusTable:
     def get_vip_status_by_user_id(self, user_id: str) -> Optional[VIPStatusModelResp]:
         try:
             vip_status = VIPStatus.get(VIPStatus.user_id == user_id)
-            return VIPStatusModelResp(**model_to_dict(vip_status))
+            if (vip_status):
+                return VIPStatusModelResp(**model_to_dict(vip_status))
+            else:
+                return None
         except Exception as e:
             log.error(f"get_vip_status_by_user_id: {e}")
             return None

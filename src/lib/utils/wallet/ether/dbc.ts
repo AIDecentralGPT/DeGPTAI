@@ -36,12 +36,8 @@ export async function getDbcBalance(address) {
 // 转账 DBC 到指定账户
 export async function transferDbc(toAddress, amountDbc, privateKey) {
   const wallet = new ethers.Wallet(privateKey, provider);
-  // const amountWei = ethers.parseEther(amountDbc.toString());
   const amountWei = ethers.parseUnits(amountDbc.toString());
-
-
-const { gasLimit, gasPrice  } = await getGas();
-
+  const { gasLimit, gasPrice  } = await getGas();
 
   const tx = {
     to: toAddress,

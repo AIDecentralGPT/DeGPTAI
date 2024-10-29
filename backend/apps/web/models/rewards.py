@@ -141,14 +141,14 @@ class RewardsTable:
             log.error(f"get_rewards_by_user_id_and_date: {e}")
             return None
         
-    def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> bool:
+    def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> Optional[RewardsModel]:
         try:
             # 插入奖励记录
-            self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show)
-            return True
+            rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show)
+            return rewards
         except Exception as e:
             print("send_reward:", e)
-            return False
+            return None
 
     def send_reward(self, reward_id: str, recipient_address: str, amount: float, reward_type: str) ->  Optional[RewardsModel]:
         try:

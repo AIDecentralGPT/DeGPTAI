@@ -847,7 +847,7 @@
 
             <div class=" flex">
               {#if fileUploadEnabled}
-                <div class=" self-end mb-2 ml-1">
+                <!-- <div class=" self-end mb-2 ml-1">
                   <Tooltip content={$i18n.t("Upload files")}>
                     <button
                       class="bg-gray-50 hover:bg-gray-100 text-gray-800 dark:bg-gray-850 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
@@ -868,7 +868,7 @@
                       </svg>
                     </button>
                   </Tooltip>
-                </div>
+                </div> -->
               {/if}
 
               <textarea
@@ -1083,7 +1083,7 @@
 
               <div class="self-end mb-2 flex space-x-1 mr-1">
                 {#if messages.length == 0 || messages.at(-1).done == true}
-                  <Tooltip content={$i18n.t("Record voice")}>
+                  <!-- <Tooltip content={$i18n.t("Record voice")}>
                     {#if speechRecognitionEnabled}
                       <button
                         id="voice-input-button"
@@ -1165,7 +1165,7 @@
                         {/if}
                       </button>
                     {/if}
-                  </Tooltip>
+                  </Tooltip> -->
 
                   <Tooltip content={$i18n.t("Send message")}>
                     <button

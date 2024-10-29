@@ -1,20 +1,10 @@
 import { printSignIn } from "$lib/apis/auths";
 import { user, pageUpdateNumber, chats, currentWalletData } from "$lib/stores";
 import { get } from "svelte/store";
-import {
-  getCurrentPair,
-  onGetBalance,
-  onGetDLCBalance,
-  signData,
-  removePair,
-} from "./dbc";
-import { getChatList } from "$lib/apis/chats";
 import { goto } from "$app/navigation";
 import { getDbcBalance } from "./ether/dbc";
 import { getDgcBalance } from "./ether/dgc";
 import { DefaultCurrentWalletData } from "$lib/constants";
-
-import { config } from "$lib/utils/wallet/walletconnect/index";
 
 // 处理登录逻辑（不管有没有token，触发 用初始化状态登录，即删掉token，然后指纹登录）
 export async function handleSigninAsIntialStatus() {

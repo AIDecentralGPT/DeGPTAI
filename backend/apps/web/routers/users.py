@@ -320,9 +320,8 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
             # print("users", users)
 
             tx_hash = form_data.tx
-            tx = w3.eth.get_transaction(tx_hash)
-                
-                
+            # tx = w3.eth.get_transaction(tx_hash)
+                       
             # try:
             tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
             print("receipt", tx_receipt)
@@ -359,9 +358,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
                         if to_address == "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8": 
                             print("执行update_user_vip")
                             update_user_vip(session_user.id, tx_hash)
-                                # Users.update_user_role_by_id(session_user.id, "pro")
-
-
+                            # Users.update_user_role_by_id(session_user.id, "pro")
                             return True             
                 else:
                     return False
@@ -375,8 +372,6 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
         status_code=status.HTTP_403_FORBIDDEN,
         detail=ERROR_MESSAGES.ACTION_PROHIBITED,
     )
-
-
 
 @router.post("/is_pro", response_model=Optional[VIPStatusModelResp])
 async def isPro( session_user=Depends(get_current_user)):

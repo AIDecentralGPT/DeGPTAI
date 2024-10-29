@@ -127,9 +127,10 @@ class EmailCodeOperations:
 
     def connect(self):
         try:   
-            self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=3000)
+            self.server = smtplib.SMTP('smtpdm.aliyun.com', 80, timeout=3000)
             self.server.starttls()  # 启动TLS加密
-            self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')
+            #self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')
+            self.server.login('service@dgc.degpt.ai', 'decentralGPT2049')
             print("SMTP连接成功")
             
         except Exception as e:
@@ -147,7 +148,7 @@ class EmailCodeOperations:
             
         print("邮件服务对象", self.server)
         msg = MIMEMultipart()
-        from_email = 'degpt'
+        from_email = 'service@dgc.degpt.ai'
         msg['From'] = from_email
         msg['To'] = to_email
         msg['Subject'] = subject
