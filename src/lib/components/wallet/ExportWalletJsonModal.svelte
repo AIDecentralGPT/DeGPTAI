@@ -185,6 +185,7 @@
                 // console.log("loading", loading);
 
                 // 设置密码以加密Keystore文件
+                console.log("=============Keystore============");
                 const keystore = await storeWallet(
                   $currentWalletData?.walletInfo,
                   password

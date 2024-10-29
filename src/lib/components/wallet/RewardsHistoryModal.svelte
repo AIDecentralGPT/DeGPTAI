@@ -1,15 +1,12 @@
 <script lang="ts">
   import { beforeUpdate, onMount } from "svelte";
-  import { fade } from "svelte/transition";
   import dayjs from "dayjs";
   import { getContext } from "svelte";
-  import { getCurrentPair } from "$lib/utils/wallet/dbc";
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
   import { currentWalletData, user} from "$lib/stores";
   import { getRewardsHistory, creatWalletCheck, inviteCheck, clockInCheck } from "$lib/apis/rewards";
-    import { boolToBytes } from "viem";
 
   const i18n = getContext("i18n");
 
@@ -102,6 +99,8 @@
     console.log("Clock In Check res update", rewardsHistory);
     obtainLoad = false;
   }
+
+  let selItem = '';
 
   function formateAddress(val) {
     return val.substring(0, 6) + '*****' + val.substring(val.length - 2);
@@ -229,16 +228,17 @@
                   {:else}
                     <div class="flex direction-column amount-styl">
                       <div class="obtain-amount">{historyItem.reward_amount} DGC</div>
-                      <button class="obtain-styl cursor-pointer" style={obtainLoad ? "background: rgba(251, 251, 251, 0.8)" : ""} disabled={obtainLoad}
+                      <button class="obtain-styl cursor-pointer" style={(obtainLoad && selItem == historyItem?.id) ? "background: rgba(251, 251, 251, 0.8)" : ""} disabled={(obtainLoad && selItem == historyItem?.id)}
                         on:click={() => {
-                          if ($user.verified) {
+                          selItem = historyItem?.id;
+                          if ($user?.verified) {
                             updateReward(historyItem.id, historyItem.reward_type)
                           } else {
                             toast.warning("Please complete the KYC verification to convert your points into cash"); 
                           } 
                         }}
                       >
-                      {#if obtainLoad}
+                      {#if (obtainLoad && selItem == historyItem?.id) }
                         <span>Obtain in...</span>
                       {:else}
                         <span>Obtain now</span>

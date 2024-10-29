@@ -211,7 +211,7 @@ async function importWallet(encryptedJson, password) {
  * @param {string} privateKey - 用户的钱包私钥
  * @returns {object} wallet - 解锁后的钱包对象
  */
-export async function unlockWalletWithPrivateKey(privateKey) {
+export async function unlockWalletWithPrivateKey(privateKey:string) {
   try {
     // 使用私钥和 provider 创建钱包对象
     const wallet = new ethers.Wallet(privateKey, provider);

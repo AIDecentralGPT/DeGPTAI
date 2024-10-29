@@ -7,10 +7,11 @@
   import Modal from "../common/Modal.svelte";
   import {
     currentWalletData,
+    showConfirmUpgradeModal,
     user
   } from "$lib/stores";
   import { payForVip } from "$lib/utils/wallet/ether/modelabi.js";
-  import { openProServices } from "$lib/apis/users/index.js";
+  import { openProServices, isPro } from "$lib/apis/users/index.js";
 
 
   const i18n = getContext("i18n");
@@ -43,7 +44,19 @@
     let result = await payForVip($currentWalletData, $user?.address_type);
     if(result){
       res = await openProServices(localStorage.token, result?.hash, 0);
-      console.log("res", res);
+      if (res) {
+        toast.success("Congratulations on successfully upgrading pro!");
+        $showConfirmUpgradeModal = false;
+        show = false;
+        const userPro = await isPro(localStorage.token); // 发送请求到你的 API
+        if (userPro && userPro.is_pro) {
+          user.set({
+            ...$user,
+            isPro: userPro.is_pro,
+            proEndDate: userPro.end_date
+          });
+        }
+      }
     }
 
       

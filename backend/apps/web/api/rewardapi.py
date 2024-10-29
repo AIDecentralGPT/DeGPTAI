@@ -77,6 +77,7 @@ class RewardApi:
             url = f"{self.apiUrl}/claim_invite_reward"
             #请求体
             data = {"inviter_id": invite.user_id, "invitee_id": invitee.user_id, "inviter_amount": int(invite.reward_amount), "invitee_amount": int(invitee.reward_amount)}
+            print("===========inviteReward参数===========:", data);
             # 发送POST请求
             response = requests.post(url, json.dumps(data))
             # 校验请求是否成功
