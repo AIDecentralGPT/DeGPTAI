@@ -193,7 +193,6 @@ export const generateInitialsImage = (name) => {
 			initials = sanitizedName.substring(0,2);
 		}
 	}
-	console.log("================用户名称================:", initials);
 	ctx.fillText(initials.toUpperCase(), canvas.width / 2, canvas.height / 2);
 
 	return canvas.toDataURL();
