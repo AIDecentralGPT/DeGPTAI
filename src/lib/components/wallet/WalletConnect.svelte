@@ -66,14 +66,12 @@
       $threesideAccount = account;
       
       if (account.status === "connected" ) {
-        if (!$user?.id?.startsWith('0x')) {
-          handleWalletSignIn({
-            walletImported: {
-              address: account?.address,
-            },
-            address_type: "threeSide",
-          });
-        }   
+        handleWalletSignIn({
+          walletImported: {
+            address: account?.address,
+          },
+          address_type: "threeSide",
+        }); 
       }
       if(account.status ==="disconnected" ) {
         signOut();
