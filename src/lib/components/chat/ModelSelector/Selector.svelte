@@ -238,7 +238,7 @@
       {:else}
         {placeholder}
       {/if}
-      <ChevronDown className=" self-center ml-2 size-3" strokeWidth="2.5" />
+      <ChevronDown className=" self-center ml-2 size-5" strokeWidth="2.5" />
     </div>
   </DropdownMenu.Trigger>
 

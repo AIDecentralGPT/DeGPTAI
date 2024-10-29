@@ -97,7 +97,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="size-3.5"
+                class="size-6"
               >
                 <path
                   stroke-linecap="round"
@@ -151,7 +151,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="size-3.5"
+                class="size-4"
               >
                 <path
                   stroke-linecap="round"
