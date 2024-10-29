@@ -43,7 +43,7 @@
     // 更新合约VIP
     let result = await payForVip($currentWalletData, $user?.address_type);
     if(result){
-      res = await openProServices(localStorage.token, result?.hash, 0);
+      let res = await openProServices(localStorage.token, result?.hash, 0);
       if (res) {
         toast.success("Congratulations on successfully upgrading pro!");
         $showConfirmUpgradeModal = false;
