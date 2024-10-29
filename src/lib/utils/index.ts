@@ -182,14 +182,18 @@ export const generateInitialsImage = (name) => {
 	ctx.textBaseline = 'middle';
 
 	const sanitizedName = name.trim();
-	const initials =
-		sanitizedName.length > 0
-			? sanitizedName[0] +
-			  (sanitizedName.split(' ').length > 1
-					? sanitizedName[sanitizedName.lastIndexOf(' ') + 1]
-					: '')
-			: '';
 
+	let initials = "";
+	if (sanitizedName.length > 12) {
+		initials = sanitizedName.substring(2,4);
+	} else {
+		if (sanitizedName.length < 3) {
+			initials = sanitizedName;
+		} else {
+			initials = sanitizedName.substring(0,2);
+		}
+	}
+	console.log("================用户名称================:", initials);
 	ctx.fillText(initials.toUpperCase(), canvas.width / 2, canvas.height / 2);
 
 	return canvas.toDataURL();
