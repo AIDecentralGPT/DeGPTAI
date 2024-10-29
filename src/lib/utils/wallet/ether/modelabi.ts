@@ -1,7 +1,10 @@
 import { ethers } from "ethers";
 import DGCABI from "./abi.json";
 import MODELABI from "./modelabi.json";
-import { modelLimits, user, currentWalletData } from "$lib/stores";
+import { modelLimits } from "$lib/stores";
+import { getDbcBalance } from "$lib/utils/wallet/ether/dbc";
+import { getDgcBalance } from "$lib/utils/wallet/ether/dgc";
+import { currentWalletData } from "$lib/stores";
 import { toast } from "svelte-sonner";
 
 // DGC 合约地址
@@ -18,12 +21,32 @@ const provider = new ethers.JsonRpcProvider(modelUrl);
 // 创建 DGC 合约实例
 export const modelContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, provider);
 
+async function checkMoney(address: string) {
+    const dbcBalance = await getDbcBalance(address);
+    const dgcBalance = await getDgcBalance(address);
+    currentWalletData.update((data) => {
+        return {
+        ...data,
+        dbcBalance,
+        dgcBalance
+        };
+    });
+    if (parseFloat(dbcBalance) < 0.01) {
+        toast.error("The DBC balance is not enough to pay gas.");
+        return false;
+    }
+    if (parseFloat(dgcBalance) < 6000) {
+        toast.error("The DGC balance is not enough to pay gas.");
+        return false;
+    }
+    return true;
+}
 
 // 授权操作
 async function authSigner(data:any, type: string) {
     if (type == 'dbc') {
         // 通过私钥创建signer
-        return new ethers.Wallet(data?.walletInfo.privateKey, provider);
+        return new ethers.Wallet(data?.walletInfo?.privateKey, provider);
     } else {
         if (window.ethereum) {
             let authProvider = new ethers.BrowserProvider(window.ethereum);
@@ -32,7 +55,7 @@ async function authSigner(data:any, type: string) {
             return signer;
         } else {
             toast.warning('Please install Ethereum wallet plugin, such as MetaMask.');
-            return "";
+            return null;
         }
     }
     
@@ -41,41 +64,49 @@ async function authSigner(data:any, type: string) {
 // 升级vip
 export async function payForVip(data:any, type: string) {
     try {
+
+        // 先校验金额是否充足
+        let check = await checkMoney(data?.walletInfo?.address);
+        if (!check) {
+            return null;
+        }
+
+        // 用户鉴权
         let signer = await authSigner(data, type);
-        console.log("===================================", signer)
-        if (false) {
-            // 创建 DGC 合约实例
-            const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, DGCABI?.abi, signer);
+        if (signer == null) {
+            return null
+        }
 
-            // 授权数量，单位和数值可根据实际情况调整
-            const amountToApprove = ethers.parseUnits('5');
-            console.log("====================授权额度===================", amountToApprove);
-            let approveFlag = await dgcContract.approve(MODEL_TOKEN_CONTRACT_ADDRESS, amountToApprove)
-                .then((tx) => tx.wait())
-                .then((receipt) => {
-                console.log('授权成功，交易收据：', receipt);
-                return true;
-            }).catch((error) => {
-              console.error('授权失败：', error);
-              return false;
-            });
+        // 创建 DGC 合约实例
+        const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, DGCABI?.abi, signer);
 
-            // 升级VIP方法
-            if (approveFlag) {
-                // 查询 授权额度
-                const amount = await dgcContract.allowance(signer?.address, MODEL_TOKEN_CONTRACT_ADDRESS);
-                console.log("============allowance=============", amount);
+        // 授权数量，单位和数值可根据实际情况调整
+        const amountToApprove = ethers.parseUnits('6000');
+        console.log("====================授权额度===================", amountToApprove);
+        let approveFlag = await dgcContract.approve(MODEL_TOKEN_CONTRACT_ADDRESS, amountToApprove)
+            .then((tx) => tx.wait())
+            .then((receipt) => {
+            console.log('授权成功，交易收据：', receipt);
+            return true;
+        }).catch((error) => {
+            console.error('授权失败：', error);
+            return false;
+        });
 
-                // 模型VIP合约
-                const vipContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, signer);
-                const result = await vipContract.payForVip();
-                console.log("payForVip:", result);
-                return result;
-            }
-            return null;
-        } else {
-            return null;
-        } 
+        // 升级VIP方法
+        if (approveFlag) {
+            // 查询 授权额度
+            const amount = await dgcContract.allowance(signer?.address, MODEL_TOKEN_CONTRACT_ADDRESS);
+            console.log("============allowance=============", amount);
+
+            // 模型VIP合约
+            const vipContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, signer);
+            const result = await vipContract.payForVip();
+            console.log("payForVip:", result);
+            return result;
+        }
+        return null;
+
     } catch(e) {
         console.log("============payForVip-Error==============", e)
         toast.warning("Upgrade to Plus failed!");

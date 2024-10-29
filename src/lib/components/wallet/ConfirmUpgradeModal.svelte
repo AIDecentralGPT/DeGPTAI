@@ -1,54 +1,25 @@
 <script lang="ts">
-  import {
-    exportAccountForKeystore,
-    createAccountFromMnemonic,
-    createAccountFromSeed,
-    getCurrentPair,
-    savePair,
-  } from "../../utils/wallet/dbc.js";
-  import { getContext, onMount, tick } from "svelte";
+  import { getContext, tick } from "svelte";
   import { toast } from "svelte-sonner";
 
-  import { getModels as _getModels, copyToClipboard } from "$lib/utils";
+  import { getModels as _getModels } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import { onGetBalance } from "$lib/utils/wallet/dbc.js";
-  import { onGetDLCBalance } from "$lib/utils/wallet/dbc.js";
   import {
     currentWalletData,
-    models,
-    settings,
-    user,
-    inviterId,
-    showConfirmUpgradeModal
+    user
   } from "$lib/stores";
-  import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
-  import {
-    createAccount,
-    downloadKeyStore,
-    handleWalletSignIn,
-  } from "$lib/utils/wallet/ether/utils.js";
-  import { transferDgc } from "$lib/utils/wallet/ether/dgc.js";
-  import { payForVip, remainingAmount, requestModel} from "$lib/utils/wallet/ether/modelabi.js";
-  import { walletconnectSendDGCTransaction } from "$lib/utils/wallet/walletconnect/index.js";
-  import { isPro, openProServices } from "$lib/apis/users/index.js";
+  import { payForVip } from "$lib/utils/wallet/ether/modelabi.js";
+  import { openProServices } from "$lib/apis/users/index.js";
 
-  // import { useAccount, useWriteContract, } from 'wagmi';
-  import { ethers } from "ethers";
-
-  import ABI from "../../utils/wallet/ether/abi.json";
 
   const i18n = getContext("i18n");
 
   export let show = false;
   let loading = false;
 
-  let showPassword = false;
   let password = "";
   let passwordError = "";
-  let keystoreJson: string | null = null;
-
-  let privateKey = "";
 
   function validatePassword() {
     if (password.length < 8) {
@@ -57,8 +28,6 @@
       passwordError = "";
     }
   }
-
-  const upgradePrice = 6000;
 
   // const { writeContract } = useWriteContract()
 
@@ -70,45 +39,14 @@
       return;
     }
 
-    let res = true;
-    // if ($user?.address_type === "dbc") {
-    //   const tx = await transferDgc(
-    //     "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8",
-    //     upgradePrice,
-    //     $currentWalletData?.walletInfo?.privateKey
-    //   );
-    //   if (tx?.hash) {
-    //     res = await openProServices(localStorage.token, tx?.hash, 0);
-    //   }
-    // }
-    // if ($user?.address_type === "threeSide") {
-    //   const txhash = await walletconnectSendDGCTransaction(upgradePrice);
-    //   if(txhash){
-    //     res = await openProServices(localStorage.token, txhash, 0);
-    //     console.log("res", res);
-    //   }
-    // }
-    if (res) {
-      // 更新合约VIP
-      await payForVip($currentWalletData, $user?.address_type);
-      // console.log("==============address===============", address);
-      // await remainingAmount($currentWalletData?.walletInfo?.address, [0, 1, 2, 3]);
-      // 测试发送聊天请求
-      // await requestModel([0, 1, 2, 3]);
-
-      // toast.success("Congratulations on successfully upgrading pro!");
-      // $showConfirmUpgradeModal = false;
-      // show = false;
-      // // 更新用户为Plus用户
-      // const userPro = await isPro(localStorage.token);
-      // if (userPro && userPro.is_pro) {
-      //   user.set({
-      //     ...$user,
-      //     isPro: userPro.is_pro,
-      //     proEndDate: userPro.end_date
-      //   });
-      // }
+    // 更新合约VIP
+    let result = await payForVip($currentWalletData, $user?.address_type);
+    if(result){
+      res = await openProServices(localStorage.token, result?.hash, 0);
+      console.log("res", res);
     }
+
+      
   }
 </script>
 
@@ -251,10 +189,13 @@
               loading = true;
               await tick();
               try {
+                console.log("=============================", loading);
                 await handleUpgrade();
                 loading = false;
+                console.log("=============================", loading);
               } catch (error) {
                 loading = false;
+                console.log("=============================", loading);
               }
               // toast.success("Upgrade Successfully!");
             }}

@@ -41,7 +41,7 @@ export async function getDgcBalance(address) {
 
   const balanceDGC = ethers.formatUnits(balanceWei, 18);
 
-  console.log("DBC balance:",balanceWei, balanceDGC, ethers.formatEther(balanceWei), "DBC");
+  console.log("DGC balance:",balanceWei, balanceDGC, ethers.formatEther(balanceWei), "DGC");
 
   return balanceDGC;
 }
