@@ -60,7 +60,7 @@
 		"@pyscript/core": "^0.4.32",
 		"@sveltejs/adapter-node": "^1.3.1",
 		"@tanstack/react-query": "^5.40.0",
-		"@web3modal/wagmi": "^5.0.6",
+		"@web3modal/wagmi": "^4.2.3",
 		"async": "^3.2.5",
 		"bits-ui": "^0.19.7",
 		"core-js": "^3.37.1",

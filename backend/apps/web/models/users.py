@@ -183,7 +183,7 @@ class UsersTable:
     # 根据id获取用户
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
-            print("开始根据id获取用户")
+            print("开始根据id获取用户", id)
             user = User.get_or_none(User.id == id)  # 查询数据库中的用户
             if user is None:
                 return None

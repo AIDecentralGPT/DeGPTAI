@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getContext, onMount } from "svelte";
   import { writable } from "svelte/store";
-
   import { createWeb3Modal } from "@web3modal/wagmi";
   import {
     watchConnections,
@@ -28,10 +27,10 @@
   const walletBalance = writable(0);
   let modal:any = null;
 
-  const getBalance = async (address) => {
+  const getBalance = async (address:string) => {
     try {
-      const balance = await provider.getBalance(address);
-      console.log("balance", balance);
+      //const balance = await provider.getBalance(address);
+      // console.log("balance", balance);
       // walletBalance.set(ethers.formatEther(balance));
     } catch (error) {
       console.error("Get Balance Error:", error);
@@ -61,8 +60,9 @@
   });
 
   watchAccount(config, {
-    async onChange(account, prevAccount) {
-      console.log("=============scan wallet================", account, prevAccount);
+    async onChange() {
+      let account = getAccount(config);
+      console.log("=============scan wallet================", account);
       $threesideAccount = account;
       
       if (account.status === "connected" ) {
