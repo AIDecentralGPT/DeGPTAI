@@ -6,6 +6,18 @@
 	{
 		"code": "zh-CN",
 		"title": "中文"
+	},
+	{
+		"code": "ja-JP",
+		"title": "日本語"
+	},
+	{
+		"code": "vi-VN",
+		"title": "Việt nam"
+	},
+	{
+		"code": "ko-KR",
+		"title": "로그인"
 	}
 	
 ]

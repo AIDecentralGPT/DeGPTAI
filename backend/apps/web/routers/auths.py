@@ -858,8 +858,8 @@ async def faceliveness_check_for_ws(id: str):
             print("face_id", face_id)
             
             if face_id is not None:
+                print("user check:", face_id)
                 user_exit = Users.get_user_id_by_face_id(face_id)
-                print("user_id",face_id, user_exit.face_id, user_exit.id)
                 # 4. 存在就告诉你，该人脸已经被检测过了！
                 if user_exit is not None :
                     return {
