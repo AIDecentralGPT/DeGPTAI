@@ -32,11 +32,11 @@ async function checkMoney(address: string) {
         };
     });
     if (parseFloat(dbcBalance) < 0.01) {
-        toast.error("The DBC balance is not enough to pay gas.");
+        toast.error("The DBC balance is not enough to pay.");
         return false;
     }
     if (parseFloat(dgcBalance) < 6000) {
-        toast.error("The DGC balance is not enough to pay gas.");
+        toast.error("The DGC balance is not enough to pay.");
         return false;
     }
     return true;
