@@ -29,7 +29,7 @@ abi_path = os.path.join(current_dir, 'abi.json')
 with open(abi_path, 'r') as abi_file:
     DGC_ABI = json.load(abi_file)
 
-DGC_TOKEN_CONTRACT_ADDRESS = '0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1'  # 替换为实际地址
+DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'  # 替换为实际地址
 dgc_contract = w3.eth.contract(address=DGC_TOKEN_CONTRACT_ADDRESS, abi=DGC_ABI['abi'])
 
 # 定义 Rewards 表

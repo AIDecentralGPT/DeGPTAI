@@ -659,5 +659,10 @@
   "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "Tunjukkanlah kepada saya potongan kode dari judul tetap situs web dalam CSS dan JavaScript.",
   "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "Bantu saya belajar kosakata: tulislah sebuah kalimat untuk saya mengisi bagian kosong, dan saya akan mencoba memilih opsi yang benar.",
   "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "Periksalah kalimat berikut untuk tata bahasa dan kejelasan: '[kalimat]'. Tulis ulang untuk keterbacaan yang lebih baik sambil mempertahankan makna aslinya.",
-  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Bisakah Anda mulai dengan menanyakan kepada saya tentang kejadian-kejadian ketika saya paling suka menunda-nunda kemudian memberi saya beberapa saran untuk mengatasi itu?"
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Bisakah Anda mulai dengan menanyakan kepada saya tentang kejadian-kejadian ketika saya paling suka menunda-nunda kemudian memberi saya beberapa saran untuk mengatasi itu?",
+  "I konw": "Saya tahu",
+  "About DGC": "Tentang DGC",
+  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "Sebelum diluncurkan pada mainnet dari platform perdagangan apapun, token DGC ditandai sebagai poin. Poin-poin ini akan dikonversi dengan rasio 1:1 ketika DGC secara resmi diluncurkan. Tim DGC akan memastikan bahwa transisi ini berjalan lancar dan mencegah penyalahgunaan kebijakan ini.",
+  "About DBC": "Tentang DBC",
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain adalah rantai publik AI pertama di dunia. Token aslinya, DBC, digunakan sebagai biaya gas dalam proyek ini. Setiap transaksi DGC memerlukan sejumlah DBC nominal tertentu."
 }

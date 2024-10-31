@@ -659,5 +659,10 @@
   "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "CSS と JavaScript で書かれたウェブサイトの固定ヘッダーのコード断片を見せてください。",
   "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "語彙の勉強を手伝ってください。空白を埋めるための文を書いてください。そして、私は正しい選択肢を選ぼうとします。",
   "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "次の文の文法と明瞭さをチェックしてください。「[文]」。元の意味を保ちながら、読みやすく書き直してください。",
-  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "あなたは、私が最も先延ばしをする状況について尋ねてから、それを克服するためのアドバイスをくれることはできますか？"
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "あなたは、私が最も先延ばしをする状況について尋ねてから、それを克服するためのアドバイスをくれることはできますか？",
+  "I konw": "私は知っています",
+  "About DGC": "DGC について",
+  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "どの取引プラットフォームのメインネットに立ち上げる前に、DGC トークンはポイントとしてマークされます。DGC が正式に立ち上げられるとき、これらのポイントは 1:1 の比率で変換されます。DGC チームは、この移行がスムーズに行われ、このポリシーの乱用を防ぐように確認します。",
+  "About DBC": "DBC について",
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "ディープブレインチェインは世界初の AI パブリックチェインです。そのネイティブトークンである DBC は、このプロジェクトでガス料金として使われます。どの DGC 取引も一定量の名目上の DBC を必要とします。"
 }

@@ -659,5 +659,10 @@
   "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "Mostre-me um trecho de código de um cabeçalho fixo de um site web em CSS e JavaScript.",
   "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "Ajude-me a estudar vocabulário: escreva uma frase para eu preencher o espaço em branco e eu tentarei escolher a opção correta.",
   "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "Verifique a seguinte frase quanto à gramática e clareza: '[frase]'. Reescreva-a para melhor legibilidade, mantendo o seu significado original.",
-  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Você poderia começar perguntando-me sobre as ocasiões em que mais procrastino e depois me dar algumas sugestões para superá-lo?"
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Você poderia começar perguntando-me sobre as ocasiões em que mais procrastino e depois me dar algumas sugestões para superá-lo?",
+  "I konw": "Eu sei",
+  "About DGC": "Sobre DGC",
+  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "Antes do lançamento na rede principal de qualquer plataforma de negociação, as fichas DGC são marcadas como pontos. Esses pontos serão convertidos na proporção 1:1 quando o DGC for lançado oficialmente. A equipe do DGC vai garantir que essa transição ocorra sem problemas e evitar qualquer abuso dessa política.",
+  "About DBC": "Sobre DBC",
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "A DeepBrainChain é a primeira cadeia pública de IA do mundo. Seu token nativo, DBC, é usado como taxa de gás neste projeto. Todas as transações DGC requerem uma certa quantidade de DBCs nominais."
 }

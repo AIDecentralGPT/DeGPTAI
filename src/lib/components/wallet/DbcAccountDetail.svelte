@@ -10,7 +10,9 @@
     user,
     showTransactionsModal,
     showUserVerifyModal,
-    showLoginInfoModal
+    showLoginInfoModal,
+    showCoinIntruModal,
+    showCoinIntruType
   } from "$lib/stores";
   import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
 
@@ -116,10 +118,6 @@
           class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
-            console.log("showExportWalletJsonModal", $showExportWalletJsonModal);
-            // const pair = getCurrentPair()
-            // exportAccountForKeystore(pair)
-
             $showExportWalletJsonModal = true;
           }}
         >
@@ -211,8 +209,15 @@
         </div>
       </div>
 
-      <div class="opacity-50 leading-normal text-xs">
+      <div class="flex flex-row opacity-50 leading-normal text-xs">
         1DGC=0.0005u
+        <button class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+          on:click={ async () => {
+              $showCoinIntruModal = true;
+              $showCoinIntruType = 'dgc';
+          }}>
+            ?
+        </button>
       </div>
 
       <div class="opacity-50 leading-normal text-xs">
@@ -234,8 +239,15 @@
           {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
         </div>
       </div>
-      <div class="opacity-50 leading-normal text-xs">
+      <div class="flex flex-row opacity-50 leading-normal text-xs">
         1DBC={floorToFixed(dbcRate, 4)}u
+        <button class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+          on:click={ async () => {
+            $showCoinIntruModal = true;
+            $showCoinIntruType = 'dbc';
+          }}>
+            ?
+        </button>
       </div>
       <div class="opacity-50 leading-normal text-xs">
         Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * dbcRate, 4)}u

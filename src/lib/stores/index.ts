@@ -66,6 +66,8 @@ export const showTransactionsModal = writable(false);
 export const showUserVerifyModal = writable(false);
 export const showConfirmUpgradeModal = writable(false);
 export const showLoginInfoModal = writable(true);
+export const showCoinIntruModal = writable(false);
+export const showCoinIntruType = writable('dgc');
 
 
 

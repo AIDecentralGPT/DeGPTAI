@@ -20,7 +20,8 @@
     showRewardDetailModal,
     showRewardsHistoryModal,
     showTransactionsModal,
-    showUserVerifyModal
+    showUserVerifyModal,
+    showCoinIntruModal
   } from "$lib/stores";
   import {
     getCurrentPair,
@@ -59,6 +60,7 @@
   import RewardDetailModal from "../wallet/RewardDetailModal.svelte";
   import TransactionsModal from "../wallet/TransactionsModal.svelte";
   import UserVerifyModal from "../wallet/UserVerifyModal.svelte";
+  import CoinIntruModal from "../wallet/CoinIntruModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -318,6 +320,11 @@
 <!-- KYC认证弹窗 -->
 {#if showUserVerifyModal} 
 <UserVerifyModal bind:show={$showUserVerifyModal} />
+{/if}
+
+<!-- KYC认证弹窗 -->
+{#if showCoinIntruModal} 
+<CoinIntruModal bind:show={$showCoinIntruModal} />
 {/if}
 
 
