@@ -652,5 +652,12 @@
   "Overcome procrastination": "Überwinde die Prokrastination",
   "give me tips": "Gib mir Tipps",
   "Help me study": "Hilf mir beim Lernen",
-  "vocabulary for a college entrance exam": "Vokabular für eine Hochschulaufnahmeprüfung"
+  "vocabulary for a college entrance exam": "Vokabular für eine Hochschulaufnahmeprüfung",
+  "Tell me a random fun fact about the Roman Empire": "Erzähl mir eine zufällige, lustige Tatsache über das Römische Reich.",
+  "Explain options trading in simple terms if I'm familiar with buying and selling stocks.": "Erkläre mir den Optionshandel in einfachen Begriffen, wenn ich mit dem Kaufen und Verkaufen von Aktien vertraut bin.",
+  "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.": "Was sind fünf kreative Dinge, die ich mit der Kunst meiner Kinder machen könnte? Ich möchte sie nicht wegschmeißen, aber es ist auch so viel Kram.",
+  "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "Zeige mir einen Code-Ausschnitt eines festsitzenden Headers einer Website in CSS und JavaScript.",
+  "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "Hilf mir beim Vokabellernen: Schreibe mir einen Satz zum Ausfüllen der Lücke, und ich werde versuchen, die richtige Option auszuwählen.",
+  "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "Prüfe den folgenden Satz auf Grammatik und Klarheit: '[Satz]'. Schreibe ihn um, um eine bessere Lesbarkeit zu erreichen, während du seine ursprüngliche Bedeutung beibehältst.",
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Könntest du damit beginnen, mich nach Situationen zu fragen, in denen ich am meisten procrastiniere, und mir dann einige Vorschläge geben, um es zu überwinden?"
 }

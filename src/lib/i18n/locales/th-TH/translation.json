@@ -651,5 +651,12 @@
   "Overcome procrastination": "เอาชนะการล่าช้า",
   "give me tips": "ให้คำแนะนำแก่ฉัน",
   "Help me study": "ช่วยฉันในการเรียน",
-  "vocabulary for a college entrance exam": "คำศัพท์สำหรับการสอบเข้า kolej"
-  }
+  "vocabulary for a college entrance exam": "คำศัพท์สำหรับการสอบเข้า kolej",
+  "Tell me a random fun fact about the Roman Empire": "บอกเล่าเรื่องที่น่าสนใจแบบสุ่มให้ฉันฟังเกี่ยวกับอาณาจักรโรมัน",
+  "Explain options trading in simple terms if I'm familiar with buying and selling stocks.": "อธิบายการซื้อขายออปชันด้วยคำพูดง่ายๆ ถ้าฉันคุ้นเคยกับการซื้อขายหุ้น",
+  "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.": "มีอะไรบ้างที่ฉันทำได้แบบสร้างสรรค์ 5 อย่างด้วยงานศิลปะของลูก ๆ ของฉัน? ฉันไม่อยากทิ้งมันไป แต่มันก็แตกหักไปหมด",
+  "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "แสดงชิ้นส่วนของโค้ดของหัวข้อแน่นของเว็บไซต์ใน CSS และ JavaScript ให้ฉันดู",
+  "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "ช่วยฉันเรียนศัพท์ด้วยนะ: เขียนประโยคให้ฉันเติมคำว่าง แล้วฉันจะลองเลือกตัวเลือกที่ถูกต้อง",
+  "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "ตรวจสอบประโยคต่อไปนี้ด้วยไวยากรณ์และความชัดเจน: '[ประโยค]'. เขียนใหม่เพื่อให้อ่านง่ายขึ้นโดยยังคงความหมายเดิม",
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "คุณสามารถเริ่มด้วยการถามฉันเกี่ยวกับเหตุการณ์ที่ฉันล่าช้าได้มากที่สุด แล้วให้คำแนะนำให้ฉันเพื่อเอาชนะมันได้หรือไม่?"
+}

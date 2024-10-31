@@ -652,5 +652,12 @@
   "Overcome procrastination": "Mengatasi prokrastinasi",
   "give me tips": "Berikan saya tips",
   "Help me study": "Bantu saya belajar",
-  "vocabulary for a college entrance exam": "Kosa kata untuk ujian masuk perguruan tinggi"
+  "vocabulary for a college entrance exam": "Kosa kata untuk ujian masuk perguruan tinggi",
+  "Tell me a random fun fact about the Roman Empire": "Ceritakanlah kepada saya satu fakta menarik secara acak tentang Kekaisaran Romawi.",
+  "Explain options trading in simple terms if I'm familiar with buying and selling stocks.": "Jelaskanlah perdagangan opsi dengan istilah sederhana jika saya sudah akrab dengan membeli dan menjual saham.",
+  "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.": "Apa saja lima hal kreatif yang bisa saya lakukan dengan karya anak-anak saya? Saya tidak ingin membuangnya, tapi juga terlalu banyak barang-barang berserakan.",
+  "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "Tunjukkanlah kepada saya potongan kode dari judul tetap situs web dalam CSS dan JavaScript.",
+  "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "Bantu saya belajar kosakata: tulislah sebuah kalimat untuk saya mengisi bagian kosong, dan saya akan mencoba memilih opsi yang benar.",
+  "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "Periksalah kalimat berikut untuk tata bahasa dan kejelasan: '[kalimat]'. Tulis ulang untuk keterbacaan yang lebih baik sambil mempertahankan makna aslinya.",
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Bisakah Anda mulai dengan menanyakan kepada saya tentang kejadian-kejadian ketika saya paling suka menunda-nunda kemudian memberi saya beberapa saran untuk mengatasi itu?"
 }

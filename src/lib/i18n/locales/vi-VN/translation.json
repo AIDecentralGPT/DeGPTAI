@@ -652,5 +652,12 @@
   "Overcome procrastination": "Vượt qua sự trì hoãn",
   "give me tips": "Đưa cho tôi các mẹo",
   "Help me study": "Giúp tôi học tập",
-  "vocabulary for a college entrance exam": "Từ vựng cho kỳ thi tuyển sinh đại học"
+  "vocabulary for a college entrance exam": "Từ vựng cho kỳ thi tuyển sinh đại học",
+  "Tell me a random fun fact about the Roman Empire": "Nói cho tôi biết một sự kiện thú vị ngẫu nhiên về Đế chế La Mã.",
+  "Explain options trading in simple terms if I'm familiar with buying and selling stocks.": "Giải thích về giao dịch quyền chọn bằng các thuật ngữ đơn giản nếu tôi quen với việc mua và bán cổ phiếu.",
+  "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.": "Có năm việc sáng tạo nào tôi có thể làm với tác phẩm nghệ thuật của con cái tôi? Tôi không muốn vứt chúng đi, nhưng chúng cũng gây rối như thế này.",
+  "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "Hiển thị cho tôi một đoạn mã code của tiêu đề dính của một trang web trong CSS và JavaScript.",
+  "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "Giúp tôi học tập từ vựng: viết cho tôi một câu để điền vào chỗ trống, và tôi sẽ cố gắng chọn lựa chọn đúng.",
+  "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "Kiểm tra câu sau về ngữ pháp và độ rõ ràng: '[câu]'. Viết lại cho dễ đọc hơn trong khi vẫn giữ nguyên nghĩa của nó.",
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Bạn có thể bắt đầu bằng cách hỏi tôi về các trường hợp tôi trì hoãn nhiều nhất và sau đó cho tôi một số gợi ý để vượt qua nó không?"
 }

@@ -652,5 +652,12 @@
   "Overcome procrastination": "지연행동을 극복하세요",
   "give me tips": "팁을 알려주세요",
   "Help me study": "공부를 도와주세요",
-  "vocabulary for a college entrance exam": "대학 입학 시험용 어휘"
+  "vocabulary for a college entrance exam": "대학 입학 시험용 어휘",
+  "Tell me a random fun fact about the Roman Empire": "로마 제국에 관한 랜덤한 재미있는 사실을 알려주세요.",
+  "Explain options trading in simple terms if I'm familiar with buying and selling stocks.": "주식의 구매와 판매에 익숙하다면, 옵션 거래를 간단한 용어로 설명해주세요.",
+  "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.": "제 자녀들의 예술 작품으로 할 수 있는 창의적인 일 5가지가 뭐가 있을까요? 제가 그것들을 버리고 싶지는 않지만, 너무도 지저분해요.",
+  "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "CSS와 JavaScript로 작성된 웹사이트의 고정 헤더의 코드 조각을 보여주세요.",
+  "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the the correct option.": "어휘 공부를 도와주세요. 빈칸을 채울 수 있는 문장을 써주세요. 그리고 제가 올바른 선택지를 골라보도록 하겠습니다.",
+  "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "다음 문장의 문법과 명확성을 확인해주세요. '[문장]'. 원래의 의미를 유지하면서 더 읽기 쉽게 다시 쓰세요.",
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "제가 가장 늦추는 상황에 대해 묻고 나서 그것을 극복하기 위한 몇 가지 제안을 주실 수 있을까요?"
 }

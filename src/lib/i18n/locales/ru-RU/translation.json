@@ -651,5 +651,12 @@
   "Overcome procrastination": "Побороть прокрастинацию",
   "give me tips": "Дайте мне советы",
   "Help me study": "Помогите мне учиться",
-  "vocabulary for a college entrance exam": "Лексика для вступительного экзамена в университет"
+  "vocabulary for a college entrance exam": "Лексика для вступительного экзамена в университет",
+  "Tell me a random fun fact about the Roman Empire": "Расскажите мне случайную забавную информацию о Римской империи.",
+  "Explain options trading in simple terms if I'm familiar with buying and selling stocks.": "Если я знаком с покупкой и продажей акций, то объясните торговлю опциями простыми словами.",
+  "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.": "Какие пять творческих вещей я могу сделать с творчеством моих детей? Я не хочу выбрасывать их, но и здесь так много беспорядка.",
+  "Show me a code snippet of a website's sticky header in CSS and JavaScript.": "Покажите мне фрагмент кода фиксированного заголовка веб-сайта на CSS и JavaScript.",
+  "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.": "Помогите мне изучать лексику: напишите мне предложение для заполнения пропуска, и я постараюсь выбрать правильный вариант.",
+  "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning.": "Проверьте следующее предложение на грамматику и ясность: '[предложение]'. Перепишите его для лучшей читаемости, сохраняя исходный смысл.",
+  "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?": "Можете ли вы начать, спросив меня о случаях, когда я наиболее откладываю выполнение дел, а затем дать мне несколько советов, чтобы преодолеть это?"
 }

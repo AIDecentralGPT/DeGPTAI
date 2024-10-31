@@ -50,7 +50,7 @@
 					"Grammar check",
 					"rewrite it for better readability "
 				],
-				"content": "Check the following sentence for grammar and clarity: \"[sentence]\". Rewrite it for better readability while maintaining its original meaning."
+				"content": "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning."
 			}
 		],
 		"default_models": "Llama-3.1-405B,Qwen2-72B"
