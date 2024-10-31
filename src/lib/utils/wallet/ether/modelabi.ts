@@ -8,7 +8,7 @@ import { getDgcBalance } from "$lib/utils/wallet/ether/dgc";
 import { currentWalletData } from "$lib/stores";
 
 // DGC 合约地址
-const DGC_TOKEN_CONTRACT_ADDRESS = '0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1';
+const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26';
 // 模型合约地址
 const MODEL_TOKEN_CONTRACT_ADDRESS = '0x8588fb0Fec459d44a75135EE74E532a34539C749';
 
@@ -24,20 +24,20 @@ export const modelContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, M
 export async function checkMoney(address: string) {
     const dbcBalance = await getDbcBalance(address);
     const dgcBalance = await getDgcBalance(address);
-    currentWalletData.update((data) => {
+    await currentWalletData.update((data) => {
         return {
         ...data,
         dbcBalance,
         dgcBalance
         };
     });
-    if (parseFloat(dbcBalance) < 0.01) {
+    if (parseFloat(dbcBalance) < 1) {
         return {ok: false, message: "The DBC gas fee is not enough.Please recharge at least 1 DBC."};
     }
     if (parseFloat(dgcBalance) < 6000) {
         return {ok: false, message: "The DGC balance is not enough to pay."};
     }
-    return true;
+    return {ok: true, message: "success."};;
 }
 
 // 授权操作

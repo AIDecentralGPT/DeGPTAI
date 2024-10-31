@@ -40,7 +40,7 @@
       return;
     }
 
-    let checkRet = await checkMoney(currentWalletData?.walletInfo?.address);
+    let checkRet = await checkMoney($currentWalletData?.walletInfo?.address);
     if (!checkRet?.ok){
       toast.error($i18n.t(checkRet.message));
       return;
@@ -216,13 +216,10 @@
               loading = true;
               await tick();
               try {
-                console.log("=============================", loading);
                 await handleUpgrade();
                 loading = false;
-                console.log("=============================", loading);
               } catch (error) {
                 loading = false;
-                console.log("=============================", loading);
               }
               // toast.success("Upgrade Successfully!");
             }}
