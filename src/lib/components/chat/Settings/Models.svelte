@@ -137,7 +137,7 @@
 		console.log($MODEL_DOWNLOAD_POOL);
 		if ($MODEL_DOWNLOAD_POOL[sanitizedModelTag]) {
 			toast.error(
-				$i18n.t(`Model '{{modelTag}}' is already in queue for downloading.`, {
+				$i18n.t(`Model {{modelTag}} is already in queue for downloading.`, {
 					modelTag: sanitizedModelTag
 				})
 			);
@@ -238,7 +238,7 @@
 
 			if ($MODEL_DOWNLOAD_POOL[sanitizedModelTag].done) {
 				toast.success(
-					$i18n.t(`Model '{{modelName}}' has been successfully downloaded.`, {
+					$i18n.t(`Model {{modelName}} has been successfully downloaded.`, {
 						modelName: sanitizedModelTag
 					})
 				);
@@ -435,7 +435,7 @@
 				...$MODEL_DOWNLOAD_POOL
 			});
 			await deleteModel(localStorage.token, model);
-			toast.success(`${model} download has been canceled`);
+			toast.success($i18n.t(`${model} download has been canceled`));
 		}
 	};
 

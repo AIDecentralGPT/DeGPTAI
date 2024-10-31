@@ -10,7 +10,7 @@
     showConfirmUpgradeModal,
     user
   } from "$lib/stores";
-  import { payForVip } from "$lib/utils/wallet/ether/modelabi.js";
+  import { checkMoney, authSigner,  payForVip } from "$lib/utils/wallet/ether/modelabi.js";
   import { openProServices, isPro } from "$lib/apis/users/index.js";
 
 
@@ -40,12 +40,24 @@
       return;
     }
 
+    let checkRet = await checkMoney(currentWalletData?.walletInfo?.address);
+    if (!checkRet?.ok){
+      toast.error($i18n.t(checkRet.message));
+      return;
+    }
+
+    let signerRet = await authSigner($currentWalletData, $user?.address_type);
+    if (!signerRet?.ok){
+      toast.error($i18n.t(signer.message));
+      return;
+    }
+
     // 更新合约VIP
-    let result = await payForVip($currentWalletData, $user?.address_type);
-    if(result){
-      let res = await openProServices(localStorage.token, result?.hash, 0);
+    let result = await payForVip(signerRet?.data);
+    if(result?.ok){
+      let res = await openProServices(localStorage.token, result?.data?.hash, 0);
       if (res) {
-        toast.success("Congratulations on successfully upgrading pro!");
+        toast.success($i18n.t("Congratulations on successfully upgrading pro!"));
         $showConfirmUpgradeModal = false;
         show = false;
         const userPro = await isPro(localStorage.token); // 发送请求到你的 API
@@ -57,6 +69,8 @@
           });
         }
       }
+    } else{
+      toast.error($i18n.t(result.message));
     }
 
       

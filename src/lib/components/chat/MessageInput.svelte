@@ -413,7 +413,7 @@
             } else {
               toast.error(
                 $i18n.t(
-                  `Unknown File Type '{{file_type}}', but accepting and treating as plain text`,
+                  `Unknown File Type {{file_type}}, but accepting and treating as plain text`,
                   { file_type: file["type"] }
                 )
               );
@@ -662,7 +662,7 @@
                   } else {
                     toast.error(
                       $i18n.t(
-                        `Unknown File Type '{{file_type}}', but accepting and treating as plain text`,
+                        `Unknown File Type {{file_type}}, but accepting and treating as plain text`,
                         { file_type: file["type"] }
                       )
                     );

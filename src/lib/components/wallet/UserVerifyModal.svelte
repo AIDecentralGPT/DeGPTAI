@@ -244,11 +244,11 @@
     }).then((res) => {
       console.log(res);
       if (res?.passed) {
-        toast.success("Congratulations on passing the verification!");
+        toast.success($i18n.t("Congratulations on passing the verification!"));
         show = false;
       } else {
         toast.error(
-          "Verification failed, the system detects that your face has been used!"
+          $i18n.t("Verification failed, the system detects that your face has been used!")
         );
       }
     });

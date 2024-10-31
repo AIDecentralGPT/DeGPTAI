@@ -27,6 +27,8 @@
 
   let dbcRate = 0.0003;
 
+  let updateWalletLoad = false;
+
   onMount(async () => {
     let dbc_rate = await getDbcRate(localStorage.token);
     if (dbc_rate) {
@@ -174,19 +176,20 @@
       </button>
 
       <button
-        on:click={() => {
-          updateWalletData($currentWalletData?.walletInfo);
-        }}
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
-          viewBox="0 0 24 24"
-          ><path
-            fill="currentColor"
-            d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
-          /></svg
-        >
+        on:click={ async () => {
+          updateWalletLoad = true;
+          await updateWalletData($currentWalletData?.walletInfo);
+          updateWalletLoad = false;
+        }}>
+          <svg class="{updateWalletLoad? 'animate-spin' : 'animate-none'}"
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em"
+            viewBox="0 0 24 24"
+            >
+              <path fill="currentColor"
+                d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
+          </svg>
       </button>
     </div>
   </div>

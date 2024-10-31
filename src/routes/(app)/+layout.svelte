@@ -70,7 +70,7 @@
 
 		console.log(ollamaVersion);
 		if (compareVersion(REQUIRED_OLLAMA_VERSION, ollamaVersion)) {
-			toast.error(`Ollama Version: ${ollamaVersion !== '' ? ollamaVersion : 'Not Detected'}`);
+			toast.error($i18n.t(`Ollama Version: ${ollamaVersion !== '' ? ollamaVersion : 'Not Detected'}`));
 		}
 	};
 

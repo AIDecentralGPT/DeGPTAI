@@ -94,7 +94,7 @@
             const walletImportedInfo = await unlockWalletWithPrivateKey(
               walletImported?.privateKey
             );
-            updateWalletData(walletImportedInfo);
+            updateWalletData(walletImportedInfo?.data);
           }
         }
       } else {

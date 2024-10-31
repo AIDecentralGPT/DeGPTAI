@@ -106,7 +106,7 @@
 		if (res) {
 			console.log('embeddingModelUpdateHandler:', res);
 			if (res.status === true) {
-				toast.success($i18n.t('Embedding model set to "{{embedding_model}}"', res), {
+				toast.success($i18n.t('Embedding model set to {{embedding_model}}', res), {
 					duration: 1000 * 10
 				});
 			}
@@ -134,7 +134,7 @@
 						duration: 1000 * 10
 					});
 				} else {
-					toast.success($i18n.t('Reranking model set to "{{reranking_model}}"', res), {
+					toast.success($i18n.t('Reranking model set to {{reranking_model}}', res), {
 						duration: 1000 * 10
 					});
 				}

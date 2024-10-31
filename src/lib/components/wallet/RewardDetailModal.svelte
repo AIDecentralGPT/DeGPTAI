@@ -51,7 +51,7 @@
 
     <div class="p-6 pt-0 shadow-md mt-0 flex-1">
       <div>
-        <h1>Rewards Details</h1>
+        <h1>{$i18n.t("Rewards Details")}</h1>
         {#each rewards as reward}
           <h2>{reward.title}</h2>
           {#if Array.isArray(reward.description)}

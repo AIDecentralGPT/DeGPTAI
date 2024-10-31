@@ -138,128 +138,116 @@
 
     
     <div
-      class=" m-auto rounded-2xl max-w-full mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4"
+      class=" m-auto rounded-2xl max-w-full h-v-80 mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4 overflow-auto"
       on:mousedown={(e) => {
         e.stopPropagation();
       }}
     >
-
-
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead>
+      <table class="min-w-full divide-y divide-gray-200 overflow-auto">
+        <thead>
+          <tr>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+            >
+              {$i18n.t("transfer hash")}
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+            >
+              {$i18n.t("reward amount")}
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+            >
+              {$i18n.t("reward date")}
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+            >
+              {$i18n.t("reward type")}
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs"
+        >
+          {#each rewardsHistory as historyItem}
             <tr>
-              <!-- <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
-              >
-                {$i18n.t("user ID")}
-              </th> -->
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
-              >
-                {$i18n.t("transfer hash")}
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
-              >
-                {$i18n.t("reward amount")}
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
-              >
-                {$i18n.t("reward date")}
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
-              >
-                {$i18n.t("reward type")}
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs"
-          >
-            {#each rewardsHistory as historyItem}
-              <tr>
-                <!-- <td class="px-6 py-4 whitespace-nowrap flex items-center">
-                  {historyItem.user_id}
-                </td> -->
-                <td class="px-6 py-4 whitespace-nowrap">
-                  {formateAddress(historyItem.transfer_hash)}
-                  <button
-                    on:click={async () => {
-                      const res = await copyToClipboard(historyItem.transfer_hash);
-                      if (res) {
-                        toast.success($i18n.t("Copying to clipboard was successful!"));
-                      }
-                    }}
-                    type="button"
-                    class="px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      viewBox="0 0 512 512"
-                      ><rect
-                        width="336"
-                        height="336"
-                        x="128"
-                        y="128"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linejoin="round"
-                        stroke-width="32"
-                        rx="57"
-                        ry="57"
-                      /><path
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="32"
-                        d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
-                      /></svg>
-                  </button>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">   
-                  {#if historyItem.status}
-                    {historyItem.reward_amount} DGC
-                  {:else}
-                    <div class="flex direction-column amount-styl">
-                      <div class="obtain-amount">{historyItem.reward_amount} DGC</div>
-                      <button class="obtain-styl cursor-pointer" style={(obtainLoad && selItem == historyItem?.id) ? "background: rgba(251, 251, 251, 0.8)" : ""} disabled={(obtainLoad && selItem == historyItem?.id)}
-                        on:click={() => {
-                          selItem = historyItem?.id;
-                          if ($user?.verified) {
-                            updateReward(historyItem.id, historyItem.reward_type)
-                          } else {
-                            toast.warning("Please complete the KYC verification to convert your points into cash"); 
-                          } 
-                        }}
-                      >
-                      {#if (obtainLoad && selItem == historyItem?.id) }
-                        <span>Obtain in...</span>
-                      {:else}
-                        <span>Obtain now</span>
-                      {/if}
-                      
-                    </button>
-                    </div>
-                  {/if}
-                  
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  {dayjs(historyItem.reward_date).format("YYYY-MM-DD HH:mm:ss")}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap"
-                  >{historyItem.reward_type}</td
+              <td class="px-6 py-4 whitespace-nowrap">
+                {formateAddress(historyItem.transfer_hash)}
+                <button
+                  on:click={async () => {
+                    const res = await copyToClipboard(historyItem.transfer_hash);
+                    if (res) {
+                      toast.success($i18n.t("Copying to clipboard was successful!"));
+                    }
+                  }}
+                  type="button"
+                  class="px-3 py-2 text-sm-12 dark:text-gray-300 dark:bg-gray-650 rounded-md fs12"
                 >
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-      </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 512 512"
+                    ><rect
+                      width="336"
+                      height="336"
+                      x="128"
+                      y="128"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linejoin="round"
+                      stroke-width="32"
+                      rx="57"
+                      ry="57"
+                    /><path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="32"
+                      d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                    /></svg>
+                </button>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">   
+                {#if historyItem.status}
+                  {historyItem.reward_amount} DGC
+                {:else}
+                  <div class="flex direction-column amount-styl">
+                    <div class="obtain-amount">{historyItem.reward_amount} DGC</div>
+                    <button class="obtain-styl cursor-pointer" style={(obtainLoad && selItem == historyItem?.id) ? "background: rgba(251, 251, 251, 0.8)" : ""} disabled={(obtainLoad && selItem == historyItem?.id)}
+                      on:click={() => {
+                        selItem = historyItem?.id;
+                        if ($user?.verified) {
+                          updateReward(historyItem.id, historyItem.reward_type)
+                        } else {
+                          toast.warning($i18n.t("Please complete the KYC verification to convert your points into cash")); 
+                        } 
+                      }}
+                    >
+                    {#if (obtainLoad && selItem == historyItem?.id) }
+                      <span>Obtain in...</span>
+                    {:else}
+                      <span>Obtain now</span>
+                    {/if}
+                    
+                  </button>
+                  </div>
+                {/if}
+                
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {dayjs(historyItem.reward_date).format("YYYY-MM-DD HH:mm:ss")}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap"
+                >{historyItem.reward_type}</td
+              >
+            </tr>
+          {/each}
+        </tbody>
+      </table>
     </div>
   </Modal>
 {/if}
@@ -317,5 +305,8 @@
     padding: 6px;
     text-align: center;
     color: #000000;
+  }
+  .h-v-80 {
+    height: 80vh;
   }
 </style>

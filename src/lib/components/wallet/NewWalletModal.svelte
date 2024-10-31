@@ -349,7 +349,7 @@
                 show = false;
               }}
             >
-              {$i18n.t("  FINISHED  ")}
+              {$i18n.t("FINISHED")}
             </button>
           </div>
         </div>

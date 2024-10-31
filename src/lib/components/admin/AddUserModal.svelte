@@ -84,7 +84,7 @@
 									columns[2],
 									columns[3].toLowerCase()
 								).catch((error) => {
-									toast.error(`Row ${idx + 1}: ${error}`);
+									toast.error($i18n.t(`Row ${idx + 1}: ${error}`));
 									return null;
 								});
 
@@ -92,12 +92,12 @@
 									userCount = userCount + 1;
 								}
 							} else {
-								toast.error(`Row ${idx + 1}: invalid format.`);
+								toast.error($i18n.t(`Row ${idx + 1}: invalid format.`));
 							}
 						}
 					}
 
-					toast.success(`Successfully imported ${userCount} users.`);
+					toast.success($i18n.t(`Successfully imported ${userCount} users.`));
 					inputFiles = null;
 					const uploadInputElement = document.getElementById('upload-user-csv-input');
 
@@ -255,9 +255,7 @@
 								</div>
 
 								<div class=" text-xs text-gray-500">
-									ⓘ {$i18n.t(
-										'Ensure your CSV file includes 4 columns in this order: Name, Email, Password, Role.'
-									)}
+									ⓘ {$i18n.t('Ensure your CSV file includes 4 columns in this order: Name, Email, Password, Role.')}
 									<a
 										class="underline dark:text-gray-200"
 										href="{WEBUI_BASE_URL}/static/user-import.csv"

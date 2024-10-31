@@ -94,7 +94,7 @@
 																});
 
 																if (res) {
-																	toast.success('Memory deleted successfully');
+																	toast.success($i18n.t('Memory deleted successfully'));
 																	memories = await getMemories(localStorage.token);
 																}
 															}}
@@ -147,7 +147,7 @@
 						});
 
 						if (res) {
-							toast.success('Memory cleared successfully');
+							toast.success($i18n.t('Memory cleared successfully'));
 							memories = [];
 						}
 					}}>Clear memory</button

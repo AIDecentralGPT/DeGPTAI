@@ -174,7 +174,7 @@
           style={buttonStyle}
           on:click={async () => {
             if (!password) {
-              toast.error(`Please enter the password!`);
+              toast.error($i18n.t(`Please enter the password!`));
 
               return;
             }

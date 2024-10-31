@@ -216,10 +216,10 @@ export async function unlockWalletWithPrivateKey(privateKey:string) {
     // 使用私钥和 provider 创建钱包对象
     const wallet = new ethers.Wallet(privateKey, provider);
     console.log("钱包地址:", wallet.address);
-    return wallet;
+    return {ok: true, data: wallet};
   } catch (error) {
     console.error("解锁钱包失败:", error);
-    throw error;
+    return {ok: false, message: "Invalid private key"};
   }
 }
 
