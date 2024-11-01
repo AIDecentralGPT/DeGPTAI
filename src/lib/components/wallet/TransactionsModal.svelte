@@ -44,12 +44,17 @@
     transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
       const coinType = (item?.tx_types?.[0] === "coin_transfer") ? "DBC" : "DGC";
       if (coinType === "DGC") {
+        console.log("========================", item);
         const toHash = item.decoded_input.parameters[0].value;
+        let coinAmount = '0.00000';
+        if (item.decoded_input?.parameters[1]?.value) {
+          coinAmount = Number(ethers.formatUnits(item.decoded_input.parameters[1].value, "ether")).toFixed(5);
+        }
         return {
           ...item,
           coinType,
           toHash,
-          coinAmount: Number(ethers.formatUnits(item.decoded_input.parameters[1].value, "ether")).toFixed(5),
+          coinAmount: coinAmount,
         };
       } else {
         const toHash = item.to.hash;
@@ -65,8 +70,13 @@
     console.log("transactionsList", transactionsList);
   }
 
-  function formateAddress(val) {
-    return val.substring(0, 6) + '*****' + val.substring(val.length - 2);
+  function formateAddress(val: String) {
+    try {
+      return val.substring(0, 6) + '*****' + val.substring(val.length - 2);
+    } catch(error) {
+      return "*************";
+    }
+    
   }
 
   // 分页功能
@@ -158,7 +168,7 @@
               <td class="px-6 py-4 whitespace-nowrap">{historyItem.coinType}</td>
               <!-- <td class="px-6 py-4 whitespace-nowrap">{historyItem.token_transfers ? historyItem.token_transfers.token_id : "N/A"}</td> -->
               <td class="px-6 py-4 whitespace-nowrap">
-                {formateAddress(historyItem.hash)}
+                {formateAddress(historyItem?.hash)}
                 <button
                   on:click={async () => {
                     const res = await copyToClipboard(historyItem.hash);
