@@ -106,7 +106,7 @@
           const index = rewardsHistory?.row.findIndex(item => item.id === checkReward.id);
           if (index !== -1) {
             let rowinfo = rewardsHistory?.row[index];
-            rowinfo = { 
+            rewardsHistory.row[index] = {
               ...rowinfo, 
               transfer_hash: checkReward.transfer_hash, 
               status: checkReward.status 
