@@ -712,8 +712,6 @@
 
 			scrollToBottom();
 
-			console.log("========================================");
-
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 				console.log("textStream", textStream);
