@@ -8,6 +8,7 @@ import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
 
+faceVerifyUrl = "https://test.degpt.ai/userVerifying"
 
 class FaceCompare:
     # 配置请求认证信息
@@ -39,7 +40,7 @@ class FaceCompare:
             meta_info=str(metaInfo), # 动态，传入
 
             # return_url="https://www.aliyun.com",
-            return_url="https://test.degpt.ai/userVerifying?user_id=" + metaInfo['user_id'],
+            return_url= faceVerifyUrl + "?user_id=" + metaInfo['user_id'],
             # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
             security_level="02",
@@ -50,7 +51,7 @@ class FaceCompare:
 
         # 调用初始化API
         response = self.client.initialize(request)
-        print("initialize_response", response, "https://test.degpt.ai/userVerifying?user_id=" + metaInfo['user_id'])
+        print("initialize_response", response, faceVerifyUrl + "?user_id=" + metaInfo['user_id'])
         return response
 
 
