@@ -7,7 +7,6 @@ import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
 import { walletconnectSignMessage } from "../walletconnect/index";
-import { isPro } from "$lib/apis/users";
 
 // 定义 RPC URL 和 Chain ID
 const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
@@ -363,13 +362,9 @@ async function handleWalletSignIn({
       localStorage.walletImported = JSON.stringify(localWalletImported);
     }
 
-    const userIsPro: boolean = await isPro(localStorage.token); // 发送请求到你的 API
-    if (userIsPro) {
-      user.set({
-        ...walletSignInResult,
-        isPro: userIsPro,
-      });
-    }
+    user.set({
+      ...walletSignInResult
+    });
   }
 }
 

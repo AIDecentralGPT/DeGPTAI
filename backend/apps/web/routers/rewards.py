@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from apps.web.models.users import User, Users
 from apps.web.models.device import Device
 from apps.web.models.ip_log import IpLog
-from apps.web.models.rewards import RewardsTableInstance, RewardsRequest
+from apps.web.models.rewards import RewardsTableInstance, RewardsRequest, RewardsPageRequest
 from apps.web.api.rewardapi import RewardApiInstance
 from utils.utils import get_verified_user
 from datetime import date
@@ -172,13 +172,18 @@ async def get_reward_count(user=Depends(get_verified_user)):
         "new_wallet": new_wallet
     }
 
-@router.get("/reward_history")
-async def get_reward_count(user=Depends(get_verified_user)):
+@router.post("/reward_history")
+async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified_user)):
     
+    print("=============page=============", request);
     # 查询 clock_in 类型奖励的次数
-    rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id)
+    rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id, request.pageNum, request.pageSize)
+    total = RewardsTableInstance.get_rewards_count_by_user_id(user.id);
 
-    return rewards_history
+    return {
+        "row" :rewards_history,
+        "total": total
+    }
 
 @router.get("/dbc_rate")
 async def get_dbc_rate(user=Depends(get_verified_user)): 

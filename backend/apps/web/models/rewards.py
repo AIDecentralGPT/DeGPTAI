@@ -51,6 +51,10 @@ class Rewards(Model):
 class RewardsRequest(BaseModel):
     id: str
 
+class RewardsPageRequest(BaseModel):
+    pageSize: int
+    pageNum: int
+
 # 定义 Rewards 的 Pydantic 模型
 class RewardsModel(BaseModel):
     id: str
@@ -110,6 +114,13 @@ class RewardsTable:
         except Exception as e:
             log.error(f"get_rewards_by_user_id: {e}")
             return None
+    def get_rewards_count_by_user_id(self, user_id: str) -> Optional[int]:
+        try:
+            total = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.show == True)).count();
+            return total
+        except Exception as e:
+            log.error(f"get_rewards_by_user_id: {e}")
+            return 0
     
     def get_rewards_by_id(self, id: str) -> Optional[RewardsModel]:
         try:

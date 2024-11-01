@@ -85,7 +85,7 @@
           });
         }
         localStorage.user = JSON.stringify($user);
-        console.log("===========localUser===========", localUser);
+        console.log("===========localUser===========");
 
         // 校验钱包
         if (localStorage.walletImported) {

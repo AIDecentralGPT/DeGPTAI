@@ -39,19 +39,6 @@
   let selectedModel = "";
   $: selectedModel = items.find((item) => item.value === value) ?? "";
 
-  // $: selectedModel = () => {
-  //   console.log("$user?.isPro", $user?.isPro);
-    
-  //   if($user?.isPro) {
-  //     const models = items.find((item) => item.value === value) ?? "";
-  //     return models
-  //   }
-  //   else {
-  //     const models = items?.filter((item) => !item?.info?.isProModel).find((item) => item.value === value) ?? "";
-  //     return models
-  //   }
-  // }
-
   let searchValue = "";
   let ollamaVersion = null;
 

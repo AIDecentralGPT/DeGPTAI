@@ -150,10 +150,10 @@
                         console.log("Clock In  res", res);
                         getCount();
                         if (res?.ok) {
-                          toast.success(res?.message);
+                          toast.success($i18n.t(res?.message));
                         }
                         if (res?.detail) {
-                          toast.warning(res?.detail);
+                          toast.warning($i18n.t(res?.detail));
                         }
                       })
                       .catch((res) => {
@@ -168,7 +168,7 @@
               }}
             >
               {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
-                ? ((clockLoading && item.id === "clock_in") ? "Done..." : "Done")
+                ? ((clockLoading && item.id === "clock_in") ? $i18n.t("Done...") : $i18n.t("Done"))
                 : ((clockLoading && item.id === "clock_in") ? $i18n.t("Get Now...") : $i18n.t("Get Now!"))}
             </button>
           </div>

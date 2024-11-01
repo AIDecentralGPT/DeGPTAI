@@ -5,39 +5,18 @@
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
-  import { currentWalletData, user} from "$lib/stores";
+  import { user} from "$lib/stores";
   import { getRewardsHistory, creatWalletCheck, inviteCheck, clockInCheck } from "$lib/apis/rewards";
 
   const i18n = getContext("i18n");
 
   export let show = true;
 
-  let modalElement = null;
-  let mounted = false;
-
-  let rewardsHistory = [];
-
-  // onMount(async () => {
-  //   mounted = true;
-
-  //   const address = $currentWalletData?.walletInfo?.address;
-  //   const rewardsHistory = await getRewardsHistory(localStorage.token,);
-  //   console.log("rewardsHistory", rewardsHistory);
-  // });
-
-  // $: if (show) {
-  //   (async () => {
-  //     const address = $currentWalletData?.walletInfo?.address;
-  //     rewardsHistory = await getRewardsHistory(localStorage.token);
-  //     console.log("rewardsHistory", rewardsHistory);
-  //   })();
-  // }
-
-
   // 当组件挂载时运行一次
-  onMount(() => {
+  onMount(async () => {
     if (show) {
-      fetchData();
+      firstCtrl = true;
+      await fetchData();
     }
   });
 
@@ -46,19 +25,62 @@
 
 
   // 当 show 状态变化时运行
-  beforeUpdate(() => {
+  beforeUpdate(async () => {
     if (show !== previousShow) {
       previousShow = show;
       if (show) {
-        fetchData();
+        currentPage = 1;
+        firstCtrl = true;
+        await fetchData();
       }
     }
   });
 
-  async function fetchData() {
-    const address = currentWalletData?.walletInfo?.address;
-    rewardsHistory = await getRewardsHistory(localStorage.token);
-    console.log("rewardsHistory", rewardsHistory);
+  // 分页功能
+  let currentPage = 1;
+  let prePage = 1;
+  let pageSize = 10;
+  let loading = false;
+  let firstCtrl = true;
+  let rewardsHistory = {row: [], total: 1};
+
+  $: pageTotal = Math.ceil(rewardsHistory?.total / pageSize);
+  $: if (currentPage != prePage) {
+    (async () => {
+      await fetchData();
+    })();
+    
+  }
+ 
+  function previousPage() {
+    if (currentPage > 1) {
+      currentPage--;
+    }
+  }
+ 
+  function nextPage() {
+    if (currentPage < Math.ceil(rewardsHistory?.total / pageSize)) {
+      currentPage++;
+    }
+  }
+
+  function fetchData() {
+    loading = true;
+    if (firstCtrl) {
+      firstCtrl = false;
+      rewardsHistory = {row: [], total: 1};
+    }
+    prePage = currentPage;
+    getRewardsHistory(localStorage.token, {pageSize: pageSize, pageNum: currentPage})
+      .then(result => {
+          loading = false;
+          rewardsHistory = result;
+          console.log("rewardsHistory", rewardsHistory);
+      })
+      .catch((error) => {
+        loading = false;
+      });
+      
   }
 
   let obtainLoad = false;
@@ -81,17 +103,18 @@
         console.log("Clock In Check res", res);
         if (res?.ok) {
           const checkReward = res.data;
-          const index = rewardsHistory.findIndex(item => item.id === checkReward.id);
+          const index = rewardsHistory?.row.findIndex(item => item.id === checkReward.id);
           if (index !== -1) {
-            rewardsHistory[index] = { 
-              ...rewardsHistory[index], 
+            let rowinfo = rewardsHistory?.row[index];
+            rowinfo = { 
+              ...rowinfo, 
               transfer_hash: checkReward.transfer_hash, 
               status: checkReward.status 
             };
           }
         }
         if (res?.detail) {
-          toast.warning(res?.detail);
+          toast.warning($i18n.t(res?.detail));
         }
       }).catch((res) => {
         console.log("Clock In Check  error", res);
@@ -138,13 +161,13 @@
 
     
     <div
-      class=" m-auto rounded-2xl max-w-full h-v-80 mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4 overflow-auto"
+      class=" m-auto rounded-2xl max-w-full min-h-[50vh] max-h-[68vh] mx-2 bg-gray-50 dark:bg-gray-900 shadow-3xl p-4 overflow-auto relative"
       on:mousedown={(e) => {
         e.stopPropagation();
       }}
     >
       <table class="min-w-full divide-y divide-gray-200 overflow-auto">
-        <thead>
+        <thead class="dark:border-gray-200 border-b">
           <tr>
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
@@ -169,9 +192,9 @@
           </tr>
         </thead>
         <tbody
-          class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs"
+          class="bg-white dark:bg-gray-900 text-xs"
         >
-          {#each rewardsHistory as historyItem}
+          {#each rewardsHistory?.row as historyItem}
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
                 {formateAddress(historyItem.transfer_hash)}
@@ -248,15 +271,40 @@
           {/each}
         </tbody>
       </table>
+      {#if loading}
+        <div class="flex items-center justify-center inset-0 z-10 bg-opacity-50 w-full absolute">
+          <div class="flex items-center justify-center bg-gray-300 w-[150px] h-[150px] rounded-xl opacity-90">
+            <svg class="animate-spin"
+              xmlns="http://www.w3.org/2000/svg"
+              width="80"
+              height="80"
+              viewBox="0 0 24 24">
+                <path fill="white" d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
+            </svg>
+          </div> 
+        </div>
+      {/if}
     </div>
+
+    <div class="flex justify-center items-center h-[50px] pt-5 pb-10">
+      <button class="px-1.5 py-1.5 mr-4 dark:bg-white dark:text-zinc-950 text-gray-100 rounded-full" on:click={previousPage}> 
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+          <path d="M510.0475173 510.0475173l3.9049654 3.9049654-3.9049654-3.9049654zM514.38636775 509.61363225l-4.7727355 4.7727355c1.73554016-1.51859766 3.25413782-3.03719531 4.7727355-4.7727355z" fill="#515151"></path>
+          <path d="M216.74122852 512.21694254c0 18.00622928 6.72521815 34.27691837 18.00622926 46.64264205l4.77273549 4.77273547 46.64264205 46.64264208L689.0250974 1013.13722421c26.90087265 26.90087265 71.157147 26.90087265 98.27496213 0 26.90087265-26.90087265 26.90087265-71.157147 0-98.27496216L384.22085499 512l402.86226199-403.07920455c26.90087265-26.90087265 26.90087265-71.157147 0-98.27496217-26.90087265-26.90087265-71.157147-26.90087265-98.05801958 0.21694251L286.16283532 413.72503786l-47.29346962 47.29346962-3.90496539 3.90496538c-11.49795361 12.3657237-18.44011431 29.07029783-18.22317179 47.29346968z" fill="#515151"></path>
+        </svg>  
+      </button>
+      <div class="fs-16">{ currentPage } / { pageTotal }</div>
+      <button class="px-1.5 py-1.5 ml-4 dark:bg-white dark:text-zinc-950 text-gray-100 rounded-full" on:click={nextPage}>
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+          <path d="M784.246262 454.443749L360.714443 30.88935a85.577949 85.577949 0 0 0-120.983285 121.005865l363.062756 363.040176-363.085336 362.995017a85.577949 85.577949 0 0 0 120.983285 120.983285l423.554399-423.464079a85.510209 85.510209 0 0 0 0-121.005865z" fill="#515151"></path>
+        </svg>
+      </button>
+    </div> 
+
   </Modal>
 {/if}
 
 <style>
-  .modal-content {
-    animation: scaleUp 0.1s ease-out forwards;
-  }
-
   @keyframes scaleUp {
     from {
       transform: scale(0.985);
@@ -266,23 +314,6 @@
       transform: scale(1);
       opacity: 1;
     }
-  }
-
-  .icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3em;
-    height: 3em;
-    border-radius: 50%;
-    background-color: rgba(184, 142, 86, 1);
-    margin: 0 auto 1em;
-  }
-
-  .icon-wrapper svg {
-    width: 1.5em;
-    height: 1.5em;
-    fill: white;
   }
 
   .direction-column {

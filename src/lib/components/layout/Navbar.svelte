@@ -17,7 +17,6 @@
   import UserMenu from "./Sidebar/UserMenu.svelte";
   import LanguageMenu from "./Sidebar/LanguageMenu.svelte";
   import MenuLines from "../icons/MenuLines.svelte";
-  import { isPro } from "$lib/apis/users";
   import { generateInitialsImage } from '$lib/utils';
 
   import { getLanguages } from '$lib/i18n';
@@ -35,40 +34,13 @@
   let showShareChatModal = false;
   let showDownloadChatModal = false;
 
-  // 获取用户信息
-	const getIsPro = async () => {
-    try {
-      const userIsPro:boolean = await isPro(localStorage.token); // 发送请求到你的 API
-        // if(userIsPro){
-        //   user.set({
-        //     ...$user,
-        //     isPro: userIsPro,
-        //   });
-        // }
-
-      const newUser = await $user;
-			
-      await user.set({
-        ...newUser,
-        isPro: userIsPro,
-      });
-      
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
-
   let isMobile = false;
   let languages = [];
   onMount(async () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     // 检查是否为移动端设备
     isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
-    console.log("===========================", isMobile);
     languages = await getLanguages();
-
-		await getIsPro();
-    
 	});
 
 

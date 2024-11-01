@@ -1,10 +1,8 @@
 <script lang="ts">
     import { onMount } from'svelte';
 
-    let dataDisplay = '';
-    let chunks: Uint8Array[] = [];
-    let totalBytesReceived = 0;
-    let previousReceiveTime = Date.now();
+    let textContent = '';
+
 
     async function fetchTimeLineData() {
         try {
@@ -15,54 +13,40 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    "model": "Llama-3.1-405B",
+                    "model": "Qwen2-72B",
                     "messages": [
                         {
-                        "role": "user",
-                        "content": "山西好玩的地方"
+                            "role": "user",
+                            "content": "1+1="
                         }
                     ],
-                    "stream": false,
+                    "stream": true,
                     "project": "DecentralGPT",
                     "max_tokens": 50
                 })
-            }).then(async (res) => {
-                // if (!res.ok) throw await res.json();
-                return res;
             });
+            if (response.status === 200) {
+                const body = response.body;
+                const reader = body.getReader();
+                let receivedText = "";
+                const readStream = async () => {
+                const { done, value } = await reader.read();
+                if (!done) {
+                    receivedText += new TextDecoder('utf-8').decode(value);
+                    await readStream();
+                } else {
+                    textContent = receivedText;
+                }
+                };
 
-            // const reader = response.body.getReader();
-            console.log("====================", response);
-
-            // return new Promise<void>((resolve, reject) => {
-            //     function read() {
-            //         return reader.read().then(({ done, value }) => {
-            //             const currentReceiveTime = Date.now();
-            //             const timeInterval = currentReceiveTime - previousReceiveTime;
-            //             previousReceiveTime = currentReceiveTime;
-
-            //             if (done) {
-            //                 const text = Buffer.concat(chunks).toString('utf8');
-            //                 resolve();
-            //             } else {
-            //                 chunks.push(value);
-            //                 totalBytesReceived += value.byteLength;
-            //                 // 实时更新展示数据
-            //                 updateDataDisplay(timeInterval, totalBytesReceived);
-            //                 read();
-            //             }
-            //         });
-            //     }
-
-            //     read();
-            // });
+                await readStream();
+            } else {
+                throw new Error('请求失败，状态码：' + response.status);
+            }
+            
         } catch (error) {
             console.error('Error:', error);
         }
-    }
-
-    function updateDataDisplay(timeInterval: number, totalBytesReceived: number) {
-        dataDisplay += `Received data block. Time interval: ${timeInterval} ms. Total bytes received: ${totalBytesReceived}\n`;
     }
 
     onMount(() => {
@@ -72,5 +56,5 @@
 
 <main>
     <button on:click = {async() => {fetchTimeLineData()}}>开始请求</button>
-    <pre>{dataDisplay}</pre>
+    <pre>{textContent}</pre>
 </main>

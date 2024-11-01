@@ -1,41 +1,44 @@
 <script lang="ts">
-  import { toast } from "svelte-sonner";
   import Modal from "../common/Modal.svelte";
   export let show = false;
-  import { onMount, getContext } from "svelte";
-  import { transferDgc } from "$lib/utils/wallet/ether/dgc";
+  import { getContext } from "svelte";
   import {
-    currentWalletData,
     user,
     showConfirmUpgradeModal,
   } from "$lib/stores";
-  import { walletconnectSendDGCTransaction } from "$lib/utils/wallet/walletconnect/index";
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
-  import { isPro, openProServices } from "$lib/apis/users/index.js";
+  import { isPro } from "$lib/apis/users/index.js";
   const i18n = getContext("i18n");
 
   const upgradePrice = 3;
 
-  async function checkPlus() {
-    const userPro = await isPro(localStorage.token); // 发送请求到你的 API
-    if (userPro) {
-      await user.set({
-        ...$user,
-        isPro: userPro.is_pro,
-        proEndDate: userPro.end_date
-      });
-    } else{
-      await user.set({
-        ...$user,
-        isPro: false,
-        proEndDate: null
-      });
-    }
+  let checkProLoading = true;
+  function checkPlus() {
+    isPro(localStorage.token).then(result => {
+      if (result) {
+        user.set({
+          ...$user,
+          isPro: result.is_pro,
+          proEndDate: result.end_date
+        });
+      } else{
+        user.set({
+          ...$user,
+          isPro: false,
+          proEndDate: ""
+        });
+      }
+      checkProLoading = false;
+    }).catch((error) => {
+      console.log("============", error);
+      checkProLoading = false;
+    });    
   }
 
   // 显示初始化Socket
   $: if (show) {
-    checkPlus();
+    checkProLoading = true;
+    checkPlus(); 
   }
 </script>
 
@@ -197,7 +200,6 @@
               class="flex mt-6 px-1 primaryButton text-gray-100 text-sm transition rounded-lg w-full h-[40px]"
             >
               <svg xmlns="http://www.w3.org/2000/svg" 
-                t="1728631736809" 
                 class="icon" 
                 viewBox="0 0 1024 1024" 
                 version="1.1" 
@@ -205,22 +207,40 @@
                 height="20">
                   <path d="M938.666667 896H85.333333c-46.933333 0-85.333333-38.4-85.333333-85.333333V213.333333c0-46.933333 38.4-85.333333 85.333333-85.333333h853.333334c46.933333 0 85.333333 38.4 85.333333 85.333333v597.333334c0 46.933333-38.4 85.333333-85.333333 85.333333zM106.666667 213.333333c-12.8 0-21.333333 8.533333-21.333334 21.333334v554.666666c0 12.8 8.533333 21.333333 21.333334 21.333334h810.666666c12.8 0 21.333333-8.533333 21.333334-21.333334v-554.666666c0-12.8-8.533333-21.333333-21.333334-21.333334h-810.666666z m554.666666 426.666667V384H810.666667c34.133333 0 64 29.866667 64 64V512c0 34.133333-29.866667 64-64 64h-85.333334V640h-64z m64-119.466667h51.2c17.066667 0 34.133333-12.8 34.133334-34.133333V469.333333c0-17.066667-12.8-34.133333-34.133334-34.133333H725.333333v85.333333zM448 640v-64h34.133333v-128h-34.133333V384h128v64h-34.133333v128h34.133333V640h-128zM213.333333 640L149.333333 384H213.333333l42.666667 192L298.666667 384h64L298.666667 640H213.333333z" fill="#ffffff"></path>
                 </svg>
-                <div class="flex-1 flex justify-center items-center">
-                  Valid until {$user.proEndDate}
+                <div class="flex-1 flex flex-row justify-center items-center">
+                  {$i18n.t("Valid until")} {$user.proEndDate}
+                  {#if checkProLoading}
+                    <svg class="animate-spin ml-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 24 24">
+                        <path fill="#ffffff"
+                          d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
+                    </svg>
+                  {/if}
                 </div>
             </div>
           {:else}
             <button
               on:click={() => {
-                // handleUpgrade();
-                // toast.warning("Coming soon...");
                 $showConfirmUpgradeModal = true;
               }}
-              href="#"
               aria-describedby="tier-plus"
-              class="mt-6 px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
+              class="mt-6 px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full flex flex-row justify-center items-center"
+              disabled = { checkProLoading }
             >
               {$i18n.t("Upgrade to Plus")}
+              {#if checkProLoading}
+                <svg class="animate-spin ml-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 24 24">
+                    <path fill="#ffffff"
+                      d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
+                </svg>
+              {/if}
             </button>
           {/if}
 

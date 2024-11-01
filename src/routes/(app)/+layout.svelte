@@ -88,7 +88,7 @@
 					if (sessionUser) {
 						// Save Session User to Store
 						await user.set(sessionUser);
-						console.log("============sessionUser2===========", sessionUser)
+						console.log("============sessionUser2===========")
 					} else {
 						// Redirect Invalid Session User to /auth Page
 						// localStorage.removeItem('token');
