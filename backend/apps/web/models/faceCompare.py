@@ -39,7 +39,7 @@ class FaceCompare:
             meta_info=str(metaInfo), # 动态，传入
 
             # return_url="https://www.aliyun.com",
-            return_url="https://test.degpt.ai/userVerifying?user_id=" + metaInfo['user_id'],
+            return_url="https://degpt.ai/userVerifying?user_id=" + metaInfo['user_id'],
             # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
             security_level="02",
@@ -50,7 +50,7 @@ class FaceCompare:
 
         # 调用初始化API
         response = self.client.initialize(request)
-        print("initialize_response", response, "https://test.degpt.ai/userVerifying?user_id=" + metaInfo['user_id'])
+        print("initialize_response", response, "https://degpt.ai/userVerifying?user_id=" + metaInfo['user_id'])
         return response
 
 
