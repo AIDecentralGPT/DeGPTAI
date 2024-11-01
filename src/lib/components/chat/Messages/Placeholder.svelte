@@ -6,8 +6,6 @@
 	import Suggestions from '../MessageInput/Suggestions.svelte';
   	import GetRewards from '$lib/components/wallet/GetRewards.svelte';
 
-	import { user } from "$lib/stores";
-
 	export let models = [];
 	export let modelfiles = [];
 
@@ -36,20 +34,7 @@
 			<div class="flex space-x-4 mb-1" in:fade={{ duration: 200 }}></div>
 		</div>
 
-		<!-- <GetRewards/> -->
-		<div class="flex justify-start">
-			<div class="flex -space-x-4 mb-1" style="">
-				<img crossorigin="anonymous" src="/static/favicon.png" alt="modelfile" class="size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none" draggable="false"/>
-			</div>
-		</div>
-		<div class="mt-2 mb-4 text-3xl text-gray-800 dark:text-gray-100 font-semibold text-left flex items-center gap-4">
-			<div>
-				<div class="capitalize line-clamp-1" style="">Hello, {$user?.name}</div> 
-				<div style="">
-					<div class="font-medium text-gray-400 dark:text-gray-500">How can I help you today?</div>
-				</div>
-			</div>
-		</div>
+		<GetRewards/>
 
 		<div class="w-full bg-1e1e1e padding-10" in:fade={{ duration: 200, delay: 300 }}>
 			<Suggestions {suggestionPrompts} {submitPrompt} />
