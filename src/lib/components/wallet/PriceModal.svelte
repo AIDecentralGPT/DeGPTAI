@@ -129,7 +129,7 @@
               <div>
                 {$i18n.t("Access to ")}
                 <span class=" dark:text-gray-100 text-zinc-950"
-                  >Llama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span
+                  >Qwen2.5-72B, Llama-3.1-Nemotron-70B, NVLM-D-72B, DeepSeek-Coder, Codestral-22B</span
                 >
               </div>
             </li>
@@ -176,7 +176,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("The usage limit for the model Llama-3.1-405B is 10 times per day, other models 100 times per day.")}
+              {$i18n.t("For users who have created a wallet, the daily limit is 50 times. For users who have not created a wallet, the daily limit is 10 times.")}
             </li>
           </ul>
         </div>
@@ -279,7 +279,7 @@
               <div>
                 {$i18n.t("Access to ")}
                 <span class=" dark:text-gray-100 text-zinc-950"
-                  >LIama3.1-405B、Mistral Large2-123B、Qwen2-72B、Gemma2</span
+                  >Qwen2.5-72B, Llama-3.1-Nemotron-70B, NVLM-D-72B, DeepSeek-Coder, Codestral-22B</span
                 >
               </div>
             </li>
@@ -328,9 +328,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t(
-                "The usage limit for the model Llama-3.1-405B is 1000 times per day, other models 10000 times per day."
-              )}
+              {$i18n.t("For VlP users, the daily limit is 500 times.")}
             </li>
           </ul>
         </div>

@@ -43,6 +43,7 @@ class Rewards(Model):
     invitee = CharField(null=True)
     status = CharField(null=False)
     show = CharField(null=True)
+    amount_type = CharField()
 
     class Meta:
         database = DB
@@ -66,6 +67,7 @@ class RewardsModel(BaseModel):
     invitee: Optional[str] = None
     status: bool
     show: bool
+    amount_type: str
 
 # 定义 Rewards 操作类
 class RewardsTable:
@@ -73,7 +75,7 @@ class RewardsTable:
         self.db = db
         db.create_tables([Rewards])
 
-    def insert_reward(self, user_id: str, reward_amount: float, reward_date: datetime, reward_type: str, transfer_hash: str, invitee: str, status: bool, show: bool) -> Optional[RewardsModel]:
+    def insert_reward(self, user_id: str, reward_amount: float, reward_date: datetime, reward_type: str, transfer_hash: str, invitee: str, status: bool, show: bool, amount_type: str) -> Optional[RewardsModel]:
         reward = RewardsModel(
             id=str(uuid.uuid4()),
             user_id=user_id,
@@ -83,7 +85,8 @@ class RewardsTable:
             transfer_hash=transfer_hash,
             invitee=invitee,
             status=status,
-            show=show
+            show=show,
+            amount_type=amount_type
         )
         try:
             result = Rewards.create(**reward.model_dump())
@@ -155,7 +158,16 @@ class RewardsTable:
     def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> Optional[RewardsModel]:
         try:
             # 插入奖励记录
-            rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show)
+            rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show, "DGC")
+            return rewards
+        except Exception as e:
+            print("send_reward:", e)
+            return None
+        
+    def create_dbc_reward(self, recipient_address: str, amount: float, reward_type: str, tx_hash: str, invitee: Optional[str] = None) -> Optional[RewardsModel]:
+        try:
+            # 插入奖励记录
+            rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, tx_hash, invitee, True, True, "DBC")
             return rewards
         except Exception as e:
             print("send_reward:", e)

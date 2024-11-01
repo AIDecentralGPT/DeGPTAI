@@ -31,7 +31,7 @@ export async function checkMoney(address: string) {
         dgcBalance
         };
     });
-    if (parseFloat(dbcBalance) < 1) {
+    if (parseFloat(dbcBalance) < 0.01) {
         return {ok: false, message: "The DBC gas fee is not enough.Please recharge at least 1 DBC."};
     }
     if (parseFloat(dgcBalance) < 6000) {

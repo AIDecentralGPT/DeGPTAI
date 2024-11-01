@@ -236,10 +236,10 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">   
                 {#if historyItem.status}
-                  {historyItem.reward_amount} DGC
+                  {historyItem.reward_amount} {historyItem.amount_type}
                 {:else}
                   <div class="flex direction-column amount-styl">
-                    <div class="obtain-amount">{historyItem.reward_amount} DGC</div>
+                    <div class="obtain-amount">{historyItem.reward_amount} {historyItem.amount_type}</div>
                     <button class="obtain-styl cursor-pointer" style={(obtainLoad && selItem == historyItem?.id) ? "background: rgba(251, 251, 251, 0.8)" : ""} disabled={(obtainLoad && selItem == historyItem?.id)}
                       on:click={() => {
                         selItem = historyItem?.id;
