@@ -27,8 +27,12 @@
     mounted = true;
 
     const address = $currentWalletData?.walletInfo?.address;
-    users = await getUsersInvited(localStorage.token, address);
-    console.log("users", users);
+    getUsersInvited(localStorage.token, address).then(result => {
+      users = result;
+    }).catch((error)=> {
+      console.log("========userinvite======", error);
+    });
+    
   });
 
   $: if (mounted) {

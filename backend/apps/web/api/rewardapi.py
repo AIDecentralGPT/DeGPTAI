@@ -31,8 +31,10 @@ class RewardApi:
             response_json = json.loads(response.text);
             if response_json['code'] == 0:       
                 # 更新记录
-                tran_hash = response_json['result']['message'].split(':')[1].strip()
-                result = RewardsTableInstance.update_reward(reward_id, tran_hash, True)
+                dgc_hash = response_json['result']['Data']['DGCTxHash']
+                result = RewardsTableInstance.update_reward(reward_id, dgc_hash, True)
+                dbc_hash = response_json['result']['Data']['DBCTxHash']
+                RewardsTableInstance.create_dbc_reward(reward.user_id, 0.1, 'new_wallet', dbc_hash, "")
                 return result
             else:
                 return None
@@ -77,6 +79,7 @@ class RewardApi:
             url = f"{self.apiUrl}/claim_invite_reward"
             #请求体
             data = {"inviter_id": invite.user_id, "invitee_id": invitee.user_id, "inviter_amount": int(invite.reward_amount), "invitee_amount": int(invitee.reward_amount)}
+            print("===========inviteReward参数===========:", data);
             # 发送POST请求
             response = requests.post(url, json.dumps(data))
             # 校验请求是否成功

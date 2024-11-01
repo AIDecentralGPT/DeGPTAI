@@ -37,20 +37,9 @@
       if (selectedModels.length === 1) {
         return selectedModels[0] === "" ? $models[0]?.model : model;
       } else {
-        // if($user?.isPro) {
-        // 	return  $models.map((m) => m.id).includes(model) ? model : ''
-        // }
-        // else {
-        // 	return  $models.map((m) => m.id).includes(model) ? model : ''
-        // }
-
         return $models.map((m) => m.id).includes(model) ? model : ""; 
       }
     });
-
-    //  modelsList  = $models?.filter((item) => !selectedModels.includes(item.name)  )
-
-    // console.log("$modelsList", $models, modelsList);
   }
 </script>
 
@@ -97,7 +86,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="size-3.5"
+                class="size-6"
               >
                 <path
                   stroke-linecap="round"
@@ -151,7 +140,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="size-3.5"
+                class="size-4"
               >
                 <path
                   stroke-linecap="round"

@@ -39,19 +39,6 @@
   let selectedModel = "";
   $: selectedModel = items.find((item) => item.value === value) ?? "";
 
-  // $: selectedModel = () => {
-  //   console.log("$user?.isPro", $user?.isPro);
-    
-  //   if($user?.isPro) {
-  //     const models = items.find((item) => item.value === value) ?? "";
-  //     return models
-  //   }
-  //   else {
-  //     const models = items?.filter((item) => !item?.info?.isProModel).find((item) => item.value === value) ?? "";
-  //     return models
-  //   }
-  // }
-
   let searchValue = "";
   let ollamaVersion = null;
 
@@ -73,7 +60,7 @@
     console.log($MODEL_DOWNLOAD_POOL);
     if ($MODEL_DOWNLOAD_POOL[sanitizedModelTag]) {
       toast.error(
-        $i18n.t(`Model '{{modelTag}}' is already in queue for downloading.`, {
+        $i18n.t(`Model {{modelTag}} is already in queue for downloading.`, {
           modelTag: sanitizedModelTag,
         })
       );
@@ -179,7 +166,7 @@
 
       if ($MODEL_DOWNLOAD_POOL[sanitizedModelTag].done) {
         toast.success(
-          $i18n.t(`Model '{{modelName}}' has been successfully downloaded.`, {
+          $i18n.t(`Model {{modelName}} has been successfully downloaded.`, {
             modelName: sanitizedModelTag,
           })
         );
@@ -214,7 +201,7 @@
         ...$MODEL_DOWNLOAD_POOL,
       });
       await deleteModel(localStorage.token, model);
-      toast.success(`${model} download has been canceled`);
+      toast.success($i18n.t(`${model} download has been canceled`));
     }
   };
 </script>
@@ -238,7 +225,7 @@
       {:else}
         {placeholder}
       {/if}
-      <ChevronDown className=" self-center ml-2 size-3" strokeWidth="2.5" />
+      <ChevronDown className=" self-center ml-2 size-5" strokeWidth="2.5" />
     </div>
   </DropdownMenu.Trigger>
 
@@ -274,9 +261,7 @@
             class="flex w-full text-left font-medium line-clamp-1 select-none items-center rounded-button py-2 pl-3 pr-1.5 text-sm text-gray-700 dark:text-gray-100 outline-none transition-all duration-75 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer data-[highlighted]:bg-muted"
             on:click={() => {
               if (item && item?.info?.isProModel && !$user?.isPro) {
-                toast.warning(
-                  "This is an exclusive service for pro users. \n Please upgrade your pro permissions first!"
-                );
+                toast.warning($i18n.t("This is an exclusive service for pro users. \n Please upgrade your pro permissions first!"));
               } else {
                 value = item.value;
                 show = false;

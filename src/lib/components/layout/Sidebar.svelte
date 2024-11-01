@@ -21,7 +21,7 @@
     showRewardsHistoryModal,
     showTransactionsModal,
     showUserVerifyModal,
-    user
+    showCoinIntruModal
   } from "$lib/stores";
   import {
     getCurrentPair,
@@ -60,7 +60,7 @@
   import RewardDetailModal from "../wallet/RewardDetailModal.svelte";
   import TransactionsModal from "../wallet/TransactionsModal.svelte";
   import UserVerifyModal from "../wallet/UserVerifyModal.svelte";
-  import { generateInitialsImage } from '$lib/utils';
+  import CoinIntruModal from "../wallet/CoinIntruModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -320,6 +320,11 @@
 <!-- KYC认证弹窗 -->
 {#if showUserVerifyModal} 
 <UserVerifyModal bind:show={$showUserVerifyModal} />
+{/if}
+
+<!-- KYC认证弹窗 -->
+{#if showCoinIntruModal} 
+<CoinIntruModal bind:show={$showCoinIntruModal} />
 {/if}
 
 
@@ -828,20 +833,7 @@
         {/if}
       </div>
     </div>
-
-    <div class="px-2.5">
-      <div class="flex flex-col">
-        <button aria-controls="L15Sjki8yC" aria-expanded="false" data-state="closed" id="rfPaF89uKo" tabindex="0" data-melt-dropdown-menu-trigger="" data-menu-trigger="" type="button">
-          <button class="flex rounded-xl py-3 px-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-900 transition">
-            <div class="self-center mr-3">
-              <img src="{ $user.profile_image_url=="" ? generateInitialsImage($user.name) : $user.profile_image_url }" class="max-w-[30px] object-cover rounded-full" alt="User profile">
-            </div> 
-            <div class="self-center font-semibold">{$user?.name}</div>
-          </button>
-        </button> 
-      </div>
-    </div>
-    <!-- <div> -->
+    <div>
       <!-- <hr class=" border-gray-900 mb-1 w-full" /> -->
 
       <!-- <div class="flex flex-col">
@@ -874,10 +866,10 @@
       </div> -->
 
       <!-- 社媒 -->
-      <!-- <SocialMedia /> -->
+      <SocialMedia />
       <!-- 钱包 -->
-      <!-- <Wallet /> -->
-    <!-- </div> -->
+      <Wallet />
+    </div>
   </div>
 
   <!-- <div

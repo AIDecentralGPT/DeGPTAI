@@ -26,6 +26,7 @@
   import FingerprintJS from "@fingerprintjs/fingerprintjs";
   import { getUserInfo } from "$lib/apis/users";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
+  import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
 
   setContext("i18n", i18n);
   let loaded = false;
@@ -84,13 +85,16 @@
           });
         }
         localStorage.user = JSON.stringify($user);
-        console.log("===========localUser===========", localUser);
+        console.log("===========localUser===========");
 
         // 校验钱包
         if (localStorage.walletImported) {
           let walletImported = JSON.parse(localStorage.walletImported);
           if (walletImported) {
-            updateWalletData(walletImported);
+            const walletImportedInfo = await unlockWalletWithPrivateKey(
+              walletImported?.privateKey
+            );
+            updateWalletData(walletImportedInfo?.data);
           }
         }
       } else {

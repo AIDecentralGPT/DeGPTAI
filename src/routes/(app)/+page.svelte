@@ -1235,8 +1235,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 					bind:autoScroll
 					bind:prompt
 					bottomPadding={files.length > 0}
-					suggestionPrompts={selectedModelfile?.suggestionPrompts ??
-						$config?.default_prompt_suggestions}
+					suggestionPrompts={selectedModelfile?.suggestionPrompts ?? $config?.default_prompt_suggestions}
 					{sendPrompt}
 					{continueGeneration}
 					{regenerateResponse}

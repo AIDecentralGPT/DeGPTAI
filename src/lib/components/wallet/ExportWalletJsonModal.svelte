@@ -174,7 +174,7 @@
           style={buttonStyle}
           on:click={async () => {
             if (!password) {
-              toast.error(`Please enter the password!`);
+              toast.error($i18n.t(`Please enter the password!`));
 
               return;
             }
@@ -185,6 +185,7 @@
                 // console.log("loading", loading);
 
                 // 设置密码以加密Keystore文件
+                console.log("=============Keystore============");
                 const keystore = await storeWallet(
                   $currentWalletData?.walletInfo,
                   password

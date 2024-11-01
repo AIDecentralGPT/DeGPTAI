@@ -47,9 +47,13 @@
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = (e) => {
-      const fileText = e.target?.result;
-      if (fileText) {
-        encryptedJson = JSON.parse(String(fileText));
+      try {
+        const fileText = e.target?.result;
+        if (fileText) {
+          encryptedJson = JSON.parse(String(fileText));
+        }
+      } catch(e) {
+        toast.error($i18n.t("Invalid keystore file"));
       }
     };
   }
@@ -113,13 +117,66 @@
 
       {#if openWalletType === "privateKey"}
 
-      <input
-        bind:value={privateKey}
-        type="text"
-        class="my-4  px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-        placeholder={$i18n.t("Enter Your privateKey")}
-        required
-      />
+        <input
+          bind:value={privateKey}
+          type="text"
+          class="my-4  px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+          placeholder={$i18n.t("Enter Your privateKey")}
+          required
+        />
+        <div class="flex justify-end">
+          <button
+            disabled={loading}
+            class={" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"}
+            style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+            type="submit"
+            on:click={async () => {
+              loading = true;
+              await tick();
+              console.log("变色了要", loading);
+
+              try {
+                const walletImportedRet = await unlockWalletWithPrivateKey(
+                  privateKey
+                );
+
+                if (!walletImportedRet?.ok) {
+                  toast.error($i18n.t(walletImportedRet?.message));
+                  loading = false;
+                  return;
+                }
+
+                // 请求服务端登录钱包账户
+                const walletImported = walletImportedRet?.data;
+                await handleWalletSignIn({
+                  walletImported,
+                  password,
+                  address_type: "dbc",
+                });
+                updateWalletData(walletImported);
+
+                await tick();
+                loading = false;
+
+                show = false;
+                password = "";
+                chats.set(await getChatList(localStorage.token));
+              } catch (error) {
+                console.log("error, ", error, error.message);
+                toast.error(error.message);
+              }
+              loading = false;
+
+          
+            }}
+          >
+            {#if loading}
+              <span>{$i18n.t("Unlocking")}</span>
+            {:else}
+              <span>{$i18n.t("Unlock")}</span>
+            {/if}
+          </button>
+        </div>
       {/if}
 
       {#if openWalletType === "keyStore"}
@@ -159,171 +216,91 @@
             }
           }}
         />
-      {/if}
-
-
-      <!-- ------ -->
-
-      <!-- 输入密码 -->
-      {#if encryptedJson}
-        <div class="mb-6 pt-0.5 max-w-[300px]">
-          <div class="flex flex-col w-full">
-            <div class="flex-1 relative">
-              {#if showPassword}
-                <input
-                  bind:value={password}
-                  type="text"
-                  class=" px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-                  placeholder={$i18n.t("Enter Your Password")}
-                  autocomplete="current-password"
-                  required
-                />
-              {:else}
-                <input
-                  bind:value={password}
-                  type="password"
-                  class=" px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-                  placeholder={$i18n.t("Enter Your Password")}
-                  autocomplete="current-password"
-                  required
-                />
-              {/if}
+        <!-- 输入密码 -->
+        {#if encryptedJson}
+          <div class="mb-6 pt-0.5 max-w-[300px]">
+            <div class="flex flex-col w-full">
+              <div class="flex-1 relative">
+                {#if showPassword}
+                  <input
+                    bind:value={password}
+                    type="text"
+                    class=" px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+                    placeholder={$i18n.t("Enter Your Password")}
+                    autocomplete="current-password"
+                    required
+                  />
+                {:else}
+                  <input
+                    bind:value={password}
+                    type="password"
+                    class=" px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+                    placeholder={$i18n.t("Enter Your Password")}
+                    autocomplete="current-password"
+                    required
+                  />
+                {/if}
+              </div>
             </div>
           </div>
-        </div>
-      {/if}
-      {#if encryptedJson}
-        <div class="flex justify-end">
-          <button
-            disabled={loading}
-            class={" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"}
-            style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
-            type="submit"
-            on:click={async () => {
-              loading = true;
-              await tick();
-              console.log("变色了要", loading);
-
-              try {
-                const walletImported = await importWallet(
-                  encryptedJson,
-                  password
-                );
-
-                // 请求服务端登录钱包账户
-                await handleWalletSignIn({
-                  walletImported,
-                  password,
-                  address_type: "dbc",
-                });
-                updateWalletData(walletImported);
-
+        {/if}
+        {#if encryptedJson}
+          <div class="flex justify-end">
+            <button
+              disabled={loading}
+              class={" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"}
+              style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+              type="submit"
+              on:click={async () => {
+                loading = true;
                 await tick();
+                console.log("变色了要", loading);
+
+                if (password=="") {
+                  toast.error($i18n.t("Please input password"));
+                  loading = false;
+                  return;
+                }
+
+                try {
+                  const walletImported = await importWallet(
+                    encryptedJson,
+                    password
+                  );
+
+                  // 请求服务端登录钱包账户
+                  await handleWalletSignIn({
+                    walletImported,
+                    password,
+                    address_type: "dbc",
+                  });
+                  updateWalletData(walletImported);
+
+                  await tick();
+                  loading = false;
+
+                  show = false;
+                  password = "";
+                  chats.set(await getChatList(localStorage.token));
+                } catch (error) {
+                  toast.error($i18n.t("Incorrect password"));
+                }
                 loading = false;
 
-                show = false;
-                password = "";
-                chats.set(await getChatList(localStorage.token));
-              } catch (error) {
-                console.log("error, ", error, error.message);
-                toast.error(error.message);
-              }
-              loading = false;
-
-              const lockIndex = 0; // 锁定索引
-              // unlockDLC(password, lockIndex, async (result) => {
-              //   console.log("Unlock DGC result:", result);
-
-              //   // 解锁失败
-              //   if (result && !result?.success) {
-              //     toast.error(result?.msg);
-              //     loading = false;
-              //     await tick(); // 确保状态更新立即生效
-
-              //     return;
-              //   }
-
-              //   // 解锁成功
-              //   if (result && result?.success) {
-              //     // 存储本地密码
-              //     saveencryptedJson(encryptedJson, password);
-
-              //     // ----------------
-              //     // 请求服务端登录钱包账户
-              //     await handleWalletSignIn(encryptedJson, password);
-
-              //     loading = false;
-              //     await tick();
-
-              //     show = false;
-              //     password = "";
-              //   }
-              // });
-            }}
-          >
-            {#if loading}
-              <span>{$i18n.t("Unlocking")}</span>
-            {:else}
-              <span>{$i18n.t("Unlock")}</span>
-            {/if}
-          </button>
-        </div>
-      {/if}
-      {#if openWalletType === "privateKey"}
-      <div class="flex justify-end">
-        <button
-          disabled={loading}
-          class={" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"}
-          style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
-          type="submit"
-          on:click={async () => {
-            loading = true;
-            await tick();
-            console.log("变色了要", loading);
-
-            try {
-              const walletImported = await unlockWalletWithPrivateKey(
-                privateKey
-              );
-
-              
-
-              console.log("walletImported", walletImported);
-
-              // 请求服务端登录钱包账户
-              await handleWalletSignIn({
-                walletImported,
-                password,
-                address_type: "dbc",
-              });
-              updateWalletData(walletImported);
-
-              await tick();
-              loading = false;
-
-              show = false;
-              password = "";
-              chats.set(await getChatList(localStorage.token));
-            } catch (error) {
-              console.log("error, ", error, error.message);
-              toast.error(error.message);
-            }
-            loading = false;
-
-         
-          }}
-        >
-          {#if loading}
-            <span>{$i18n.t("Unlocking")}</span>
-          {:else}
-            <span>{$i18n.t("Unlock")}</span>
-          {/if}
-        </button>
-      </div>
+                const lockIndex = 0; // 锁定索引
+              }}
+            >
+              {#if loading}
+                <span>{$i18n.t("Unlocking")}</span>
+              {:else}
+                <span>{$i18n.t("Unlock")}</span>
+              {/if}
+            </button>
+          </div>
+        {/if}
       {/if}
 
-      <div />
-    </div>
+    <div/>
   </div>
 </Modal>
 

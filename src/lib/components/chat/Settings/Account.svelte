@@ -31,10 +31,17 @@
 	let profileImageInputElement: HTMLInputElement;
 
 	const submitHandler = async () => {
+		
 		if (name !== $user.name) {
-			if (profileImageUrl === generateInitialsImage($user.name) || profileImageUrl === '') {
-				profileImageUrl = generateInitialsImage(name);
+			if (name.length < 3) {
+				toast.error($i18n.t('The length of the name cannot be less than 3 characters'));
+				return false;
 			}
+			if (name.length > 12) {
+				toast.error($i18n.t('The length of the name cannot exceed 12 characters'));
+				return false;
+			}
+			profileImageUrl = generateInitialsImage(name);
 		}
 
 		const updatedUser = await updateUserProfile(localStorage.token, name, profileImageUrl).catch(

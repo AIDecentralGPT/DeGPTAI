@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from apps.web.models.users import User, Users
 from apps.web.models.device import Device
 from apps.web.models.ip_log import IpLog
-from apps.web.models.rewards import RewardsTableInstance, RewardsRequest
+from apps.web.models.rewards import RewardsTableInstance, RewardsRequest, RewardsPageRequest
 from apps.web.api.rewardapi import RewardApiInstance
 from utils.utils import get_verified_user
 from datetime import date
@@ -46,7 +46,7 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
         # 校验用户是否已经完成kyc认证
         user_find = Users.get_user_by_id(user.id)
         if not user_find.verified:
-            raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
+            raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
         
         # 获取签到记录
         rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
@@ -104,7 +104,7 @@ async def clock_in(user=Depends(get_verified_user)):
     existing_rewards = RewardsTableInstance.get_rewards_by_user_id_and_date_and_reward_type(user.id, today, reward_type)
     print("existing_rewards:", existing_rewards)
     if existing_rewards:
-        raise HTTPException(status_code=400, detail="You have received 100 DGC points，you can convert your points into cash")
+        raise HTTPException(status_code=400, detail="You have received 100 DGC points !")
     
     rewards = RewardsTableInstance.create_reward(user.id, 100, reward_type)
     if rewards is not None:
@@ -123,7 +123,7 @@ async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user
     # 校验用户是否已经完成kyc认证
     user_find = Users.get_user_by_id(user.id)
     if not user_find.verified:
-        raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
+        raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
     
     # 获取签到记录
     rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
@@ -172,13 +172,18 @@ async def get_reward_count(user=Depends(get_verified_user)):
         "new_wallet": new_wallet
     }
 
-@router.get("/reward_history")
-async def get_reward_count(user=Depends(get_verified_user)):
+@router.post("/reward_history")
+async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified_user)):
     
+    print("=============page=============", request);
     # 查询 clock_in 类型奖励的次数
-    rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id)
+    rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id, request.pageNum, request.pageSize)
+    total = RewardsTableInstance.get_rewards_count_by_user_id(user.id);
 
-    return rewards_history
+    return {
+        "row" :rewards_history,
+        "total": total
+    }
 
 @router.get("/dbc_rate")
 async def get_dbc_rate(user=Depends(get_verified_user)): 

@@ -1,23 +1,21 @@
 
 <script>
+  import { getContext } from "svelte";
+  const i18n = getContext("i18n");
   let rewards = [
     {
       title: "I. New User Creation Reward",
-      description: "After completing new user authentication, receive a 2000 DGC reward."
+      description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward."
     },
     {
       title: "II. Referral Reward",
-      description: [
-        "1. For each friend invited to create a wallet successfully, the user receives a 1000 DGC reward, and the friend also receives a 1000 DGC reward.",
-        "2. Maximum of 10 invitations per day, with a daily maximum reward of 10000 DGC."
-      ]
+      description: "Each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>6000</span> DGC reward."
     },
     {
       title: "III. Clock in Reward",
       description: [
-        "1. Clock in reward is valid for 60 days after authentication is completed.",
-        "2. Logging in and clocking in for 1 day can earn 500 DGC rewards; maximum of 30 Clock in rewards.",
-        "3. User Clock in rule: log in to DEGPT every 24 hours and send a valid command once using DEGPT."
+        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.",
+        "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.",
       ]
     }
   ];
@@ -48,15 +46,15 @@
 <main class=" m-4 lg:mx-[40px]">
   <h1>Reward Details</h1>
   {#each rewards as reward}
-    <h2>{reward.title}</h2>
+    <h2>{$i18n.t(reward.title)}</h2>
     {#if Array.isArray(reward.description)}
       <ul>
-        {#each reward.description as desc}
-          <li>{desc}</li>
+        {#each reward.description as desc, index}
+          <li>{index + 1}. {$i18n.t(desc)}</li>
         {/each}
       </ul>
     {:else}
-      <p>{reward.description}</p>
+      <p>{$i18n.t(reward.description)}</p>
     {/if}
   {/each}
 </main>

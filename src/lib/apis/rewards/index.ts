@@ -143,16 +143,17 @@ export const getRewardsCount = async (token: string) => {
   return res;
 };
 
-export const getRewardsHistory = async (token: string) => {
+export const getRewardsHistory = async (token: string, page: Object) => {
   let error = null;
 
   const res = await fetch(`${WEBUI_API_BASE_URL}/rewards/reward_history`, {
-    method: "GET",
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
+    body: JSON.stringify(page)
   })
     .then(async (res) => {
       if (!res.ok) throw await res.json();

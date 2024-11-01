@@ -7,7 +7,6 @@ import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
 import { walletconnectSignMessage } from "../walletconnect/index";
-import { isPro } from "$lib/apis/users";
 
 // 定义 RPC URL 和 Chain ID
 const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
@@ -211,15 +210,15 @@ async function importWallet(encryptedJson, password) {
  * @param {string} privateKey - 用户的钱包私钥
  * @returns {object} wallet - 解锁后的钱包对象
  */
-export async function unlockWalletWithPrivateKey(privateKey) {
+export async function unlockWalletWithPrivateKey(privateKey:string) {
   try {
     // 使用私钥和 provider 创建钱包对象
     const wallet = new ethers.Wallet(privateKey, provider);
     console.log("钱包地址:", wallet.address);
-    return wallet;
+    return {ok: true, data: wallet};
   } catch (error) {
     console.error("解锁钱包失败:", error);
-    throw error;
+    return {ok: false, message: "Invalid private key"};
   }
 }
 
@@ -363,13 +362,9 @@ async function handleWalletSignIn({
       localStorage.walletImported = JSON.stringify(localWalletImported);
     }
 
-    const userIsPro: boolean = await isPro(localStorage.token); // 发送请求到你的 API
-    if (userIsPro) {
-      user.set({
-        ...walletSignInResult,
-        isPro: userIsPro,
-      });
-    }
+    user.set({
+      ...walletSignInResult
+    });
   }
 }
 

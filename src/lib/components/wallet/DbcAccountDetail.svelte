@@ -10,7 +10,10 @@
     user,
     showTransactionsModal,
     showUserVerifyModal,
-    showLoginInfoModal
+    showLoginInfoModal,
+    showCoinIntruModal,
+    showCoinIntruType,
+    dbcRate
   } from "$lib/stores";
   import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
 
@@ -25,13 +28,28 @@
     return (Math.floor(num * pow) / pow).toFixed(digits);
   }
 
-  let dbcRate = 0.0003;
+  let updateWalletLoad = false;
 
   onMount(async () => {
-    let dbc_rate = await getDbcRate(localStorage.token);
-    if (dbc_rate) {
-      dbcRate = dbc_rate;
+    // 第一次获取
+    if ($dbcRate?.time) {
+      getDbcRate(localStorage.token).then(result => {
+        if (result) {
+          dbcRate.set({rate: result, time: new Date().toLocaleString()})
+        }
+      }) 
+    } else {
+      // 大于5分钟重新获取一次
+      const diffInMilliseconds = Math.abs(new Date().getTime() - new Date($dbcRate.time).getTime());
+      if (diffInMilliseconds > 1000 * 60 * 5) {
+        getDbcRate(localStorage.token).then(result => {
+          if (result) {
+            dbcRate.set({rate: result, time: new Date().toLocaleString()})
+          }
+        })
+      }
     }
+    
   });
 </script>
 
@@ -114,10 +132,6 @@
           class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
-            console.log("showExportWalletJsonModal", $showExportWalletJsonModal);
-            // const pair = getCurrentPair()
-            // exportAccountForKeystore(pair)
-
             $showExportWalletJsonModal = true;
           }}
         >
@@ -174,19 +188,20 @@
       </button>
 
       <button
-        on:click={() => {
-          updateWalletData($currentWalletData?.walletInfo);
-        }}
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
-          viewBox="0 0 24 24"
-          ><path
-            fill="currentColor"
-            d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
-          /></svg
-        >
+        on:click={ async () => {
+          updateWalletLoad = true;
+          await updateWalletData($currentWalletData?.walletInfo);
+          updateWalletLoad = false;
+        }}>
+          <svg class="{updateWalletLoad? 'animate-spin' : 'animate-none'}"
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em"
+            viewBox="0 0 24 24"
+            >
+              <path fill="#71717a"
+                d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
+          </svg>
       </button>
     </div>
   </div>
@@ -208,8 +223,15 @@
         </div>
       </div>
 
-      <div class="opacity-50 leading-normal text-xs">
+      <div class="flex flex-row opacity-50 leading-normal text-xs">
         1DGC=0.0005u
+        <button class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+          on:click={ async () => {
+              $showCoinIntruModal = true;
+              $showCoinIntruType = 'dgc';
+          }}>
+            ?
+        </button>
       </div>
 
       <div class="opacity-50 leading-normal text-xs">
@@ -231,11 +253,18 @@
           {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
         </div>
       </div>
-      <div class="opacity-50 leading-normal text-xs">
-        1DBC={floorToFixed(dbcRate, 4)}u
+      <div class="flex flex-row opacity-50 leading-normal text-xs">
+        1DBC={floorToFixed($dbcRate?.rate, 4)}u
+        <button class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+          on:click={ async () => {
+            $showCoinIntruModal = true;
+            $showCoinIntruType = 'dbc';
+          }}>
+            ?
+        </button>
       </div>
       <div class="opacity-50 leading-normal text-xs">
-        Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * dbcRate, 4)}u
+        Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * $dbcRate?.rate, 4)}u
       </div>
     </div>
   </div>

@@ -1,7 +1,5 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
-
-
 export const getUsersInvited = async (token: string, inviter_id: string) => {
 	let error = null;
 

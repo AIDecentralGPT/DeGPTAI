@@ -141,7 +141,7 @@
             );
           }}
         >
-          {$i18n.t(" Buy Now ")}
+          {$i18n.t("Buy Now")}
         </button>
       </div>
     {/if}

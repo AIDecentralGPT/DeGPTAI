@@ -29,7 +29,7 @@ abi_path = os.path.join(current_dir, 'abi.json')
 with open(abi_path, 'r') as abi_file:
     DGC_ABI = json.load(abi_file)
 
-DGC_TOKEN_CONTRACT_ADDRESS = '0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1'  # 替换为实际地址
+DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'  # 替换为实际地址
 dgc_contract = w3.eth.contract(address=DGC_TOKEN_CONTRACT_ADDRESS, abi=DGC_ABI['abi'])
 
 # 定义 Rewards 表
@@ -43,6 +43,7 @@ class Rewards(Model):
     invitee = CharField(null=True)
     status = CharField(null=False)
     show = CharField(null=True)
+    amount_type = CharField()
 
     class Meta:
         database = DB
@@ -50,6 +51,10 @@ class Rewards(Model):
 
 class RewardsRequest(BaseModel):
     id: str
+
+class RewardsPageRequest(BaseModel):
+    pageSize: int
+    pageNum: int
 
 # 定义 Rewards 的 Pydantic 模型
 class RewardsModel(BaseModel):
@@ -62,6 +67,7 @@ class RewardsModel(BaseModel):
     invitee: Optional[str] = None
     status: bool
     show: bool
+    amount_type: str
 
 # 定义 Rewards 操作类
 class RewardsTable:
@@ -69,7 +75,7 @@ class RewardsTable:
         self.db = db
         db.create_tables([Rewards])
 
-    def insert_reward(self, user_id: str, reward_amount: float, reward_date: datetime, reward_type: str, transfer_hash: str, invitee: str, status: bool, show: bool) -> Optional[RewardsModel]:
+    def insert_reward(self, user_id: str, reward_amount: float, reward_date: datetime, reward_type: str, transfer_hash: str, invitee: str, status: bool, show: bool, amount_type: str) -> Optional[RewardsModel]:
         reward = RewardsModel(
             id=str(uuid.uuid4()),
             user_id=user_id,
@@ -79,7 +85,8 @@ class RewardsTable:
             transfer_hash=transfer_hash,
             invitee=invitee,
             status=status,
-            show=show
+            show=show,
+            amount_type=amount_type
         )
         try:
             result = Rewards.create(**reward.model_dump())
@@ -110,6 +117,13 @@ class RewardsTable:
         except Exception as e:
             log.error(f"get_rewards_by_user_id: {e}")
             return None
+    def get_rewards_count_by_user_id(self, user_id: str) -> Optional[int]:
+        try:
+            total = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.show == True)).count();
+            return total
+        except Exception as e:
+            log.error(f"get_rewards_by_user_id: {e}")
+            return 0
     
     def get_rewards_by_id(self, id: str) -> Optional[RewardsModel]:
         try:
@@ -144,7 +158,16 @@ class RewardsTable:
     def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> Optional[RewardsModel]:
         try:
             # 插入奖励记录
-            rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show)
+            rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show, "DGC")
+            return rewards
+        except Exception as e:
+            print("send_reward:", e)
+            return None
+        
+    def create_dbc_reward(self, recipient_address: str, amount: float, reward_type: str, tx_hash: str, invitee: Optional[str] = None) -> Optional[RewardsModel]:
+        try:
+            # 插入奖励记录
+            rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, tx_hash, invitee, True, True, "DBC")
             return rewards
         except Exception as e:
             print("send_reward:", e)
