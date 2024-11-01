@@ -33,6 +33,6 @@ export default defineConfig({
 			allow: [
 				'./static',
 			],
-		},
+		}
 	},
 });

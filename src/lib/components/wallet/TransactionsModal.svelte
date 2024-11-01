@@ -38,36 +38,40 @@
     // 合并两个 items 数组
     const mergedItems = [...res[0].items, ...res[1].items];
 
-    // 按时间排序
-    mergedItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    try {
+      // 按时间排序
+      mergedItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-    transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
-      const coinType = (item?.tx_types?.[0] === "coin_transfer") ? "DBC" : "DGC";
-      if (coinType === "DGC") {
-        console.log("========================", item);
-        const toHash = item.decoded_input.parameters[0].value;
-        let coinAmount = '0.00000';
-        if (item.decoded_input?.parameters[1]?.value) {
-          coinAmount = Number(ethers.formatUnits(item.decoded_input.parameters[1].value, "ether")).toFixed(5);
-        }
-        return {
-          ...item,
-          coinType,
-          toHash,
-          coinAmount: coinAmount,
-        };
-      } else {
-        const toHash = item.to.hash;
-        return {
-          ...item,
-          coinType,
-          toHash,
-          coinAmount: Number(ethers.formatUnits(item.value, "ether")).toFixed(5),
-        };    
-      } 
-    });
-    loading = false;
-    console.log("transactionsList", transactionsList);
+      transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
+        const coinType = (item?.tx_types?.[0] === "coin_transfer") ? "DBC" : "DGC";
+        if (coinType === "DGC") {
+          const toHash = item.decoded_input.parameters[0].value;
+          let coinAmount = '0.00000';
+          if (item.decoded_input?.parameters[1]?.value) {
+            coinAmount = Number(ethers.formatUnits(item.decoded_input.parameters[1].value, "ether")).toFixed(5);
+          }
+          return {
+            ...item,
+            coinType,
+            toHash,
+            coinAmount: coinAmount,
+          };
+        } else {
+          const toHash = item.to.hash;
+          return {
+            ...item,
+            coinType,
+            toHash,
+            coinAmount: Number(ethers.formatUnits(item.value, "ether")).toFixed(5),
+          };    
+        } 
+      });
+      loading = false;
+    } catch (error) {
+      loading = false;
+      console.log("transactionsList-error", error);
+    }
+    
   }
 
   function formateAddress(val: String) {
@@ -289,11 +293,11 @@
       </table>
       {#if loading}
         <div class="flex items-center justify-center inset-0 z-10 bg-opacity-50 w-full absolute">
-          <div class="flex items-center justify-center bg-gray-300 w-[150px] h-[150px] rounded-xl opacity-90">
+          <div class="flex items-center justify-center bg-gray-300 w-[100px] h-[100px] rounded-xl opacity-60">
             <svg class="animate-spin"
               xmlns="http://www.w3.org/2000/svg"
-              width="80"
-              height="80"
+              width="30"
+              height="30"
               viewBox="0 0 24 24">
                 <path fill="white" d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
             </svg>

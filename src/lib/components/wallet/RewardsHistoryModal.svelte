@@ -44,7 +44,7 @@
   let firstCtrl = true;
   let rewardsHistory = {row: [], total: 1};
 
-  $: pageTotal = Math.ceil(rewardsHistory?.total / pageSize);
+  $: pageTotal = Math.ceil(rewardsHistory?.total / pageSize) == 0 ? "1" : Math.ceil(rewardsHistory?.total / pageSize);
   $: if (currentPage != prePage) {
     (async () => {
       await fetchData();
@@ -246,7 +246,7 @@
                         if ($user?.verified) {
                           updateReward(historyItem.id, historyItem.reward_type)
                         } else {
-                          toast.warning($i18n.t("Please complete the KYC verification to convert your points into cash")); 
+                          toast.warning($i18n.t("Please complete the KYC verification !")); 
                         } 
                       }}
                     >
@@ -273,11 +273,11 @@
       </table>
       {#if loading}
         <div class="flex items-center justify-center inset-0 z-10 bg-opacity-50 w-full absolute">
-          <div class="flex items-center justify-center bg-gray-300 w-[150px] h-[150px] rounded-xl opacity-90">
+          <div class="flex items-center justify-center bg-gray-300 w-[100px] h-[100px] rounded-xl opacity-60">
             <svg class="animate-spin"
               xmlns="http://www.w3.org/2000/svg"
-              width="80"
-              height="80"
+              width="30"
+              height="30"
               viewBox="0 0 24 24">
                 <path fill="white" d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
             </svg>

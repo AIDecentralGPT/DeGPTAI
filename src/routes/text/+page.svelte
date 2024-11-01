@@ -8,12 +8,11 @@
         try {
             const response = await fetch('https://usa-chat.degpt.ai/api/v0/chat/completion/proxy', {
                 method: "POST",
-                mode: 'no-cors',
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    "model": "Qwen2-72B",
+                    "model": "Qwen2.5-72B",
                     "messages": [
                         {
                             "role": "user",

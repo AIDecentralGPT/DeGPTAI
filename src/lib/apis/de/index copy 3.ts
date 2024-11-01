@@ -7,35 +7,35 @@ export const getDeModels = async (token: string = "") => {
   const format_res = {
     models: [
       // Meta LLM(LIama3.1-405B)
-      {
-        name: "Meta LLM (Llama-3.1-405B)",
-        model: "Llama-3.1-405B",
-      },
+      // {
+      //   name: "Meta LLM (Llama-3.1-405B)",
+      //   model: "Llama-3.1-405B",
+      // },
       // Ali LLM (Qwen2-72B)
       {
-        name: "Ali LLM (Qwen2-72B)",
-        model: "Qwen2-72B",
-      },
-      // Nvidia LLM(Support Image)
-      {
-        name: "Nvidia LLM(Support Image)",
-        model: "nvlm-d 72b"
+        name: "Ali LLM (Qwen2.5-72B)",
+        model: "Qwen2.5-72B",
       },
       // Nvidia LLM(Nemotron 70B)
       {
         name: "Nvidia LLM(Nemotron 70B)",
-        model: "nemotron 70"
+        model: "Llama-3.1-Nemotron-70B"
+      },
+      // Nvidia LLM(Nvidia 3.1)
+      {
+        name: "Nvidia LLM(Nvidia 3.1)",
+        model: "NVLM-D-72B"
+      },
+      // Nvidia LLM(Nemotron 70B)
+      {
+        name: "DeepSeek(Coder V2)",
+        model: "DeepSeek-Coder-V2"
       },
       // Code LLM (Codestral-22B-v0.1)
       {
         name: "Code LLM (Codestral-22B-v0.1)",
         model: "Codestral-22B-v0.1",
-      },
-      // Nvidia LLM(Nemotron 70B)
-      {
-        name: "DeepSeek(Coder V2)",
-        model: "Coder V2"
-      },
+      }
     ],
   };
   return (format_res?.models ?? []).map((model) => ({
@@ -59,7 +59,6 @@ export const generateDeOpenAIChatCompletion = async (
   const res = await fetch(`${url}/v0/chat/completion/proxy`, {
     signal: controller.signal,
     method: "POST",
-    mode: 'no-cors',
     headers: {
       // Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -67,14 +66,9 @@ export const generateDeOpenAIChatCompletion = async (
     body: JSON.stringify({
       ...body,
       project: "DecentralGPT",
-      //node_id: nodeList?.[0],
       stream: true,
     }),
-  })
-  .then(res => {
-    return res;
-  })
-  .catch((err) => {
+  }).catch((err) => {
     console.log("err", err);
     error = err;
     return null;
@@ -102,7 +96,6 @@ export const generateDeTitle = async (
 
   const res = await fetch(`${url}/v0/chat/completion/proxy`, {
     method: "POST",
-    mode: 'no-cors',
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

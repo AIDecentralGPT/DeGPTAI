@@ -40,10 +40,6 @@
         return $models.map((m) => m.id).includes(model) ? model : ""; 
       }
     });
-
-    //  modelsList  = $models?.filter((item) => !selectedModels.includes(item.name)  )
-
-    // console.log("$modelsList", $models, modelsList);
   }
 </script>
 

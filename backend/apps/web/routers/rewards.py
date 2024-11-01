@@ -46,7 +46,7 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
         # 校验用户是否已经完成kyc认证
         user_find = Users.get_user_by_id(user.id)
         if not user_find.verified:
-            raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
+            raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
         
         # 获取签到记录
         rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
@@ -123,7 +123,7 @@ async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user
     # 校验用户是否已经完成kyc认证
     user_find = Users.get_user_by_id(user.id)
     if not user_find.verified:
-        raise HTTPException(status_code=500, detail="Please complete the KYC verification to convert your points into cash")
+        raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
     
     # 获取签到记录
     rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)

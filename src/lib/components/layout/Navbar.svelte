@@ -68,11 +68,7 @@
 <nav id="nav" class=" sticky py-2.5 top-0 flex flex-row justify-center z-30">
   <div class=" flex max-w-full w-full mx-auto px-5 pt-0.5 md:px-[1rem]">
     <div class="flex items-center w-full max-w-full">
-      <div
-        class="{$showSidebar
-          ? 'md:hidden'
-          : ''} mr-3 self-start flex flex-none items-center text-gray-600 dark:text-gray-400"
-      >
+      <div class="{$showSidebar ? 'md:hidden' : ''} mr-3 self-start flex flex-none items-center text-gray-600 dark:text-gray-400">
         <button
           id="sidebar-toggle-button"
           class="cursor-pointer px-2 py-2 flex rounded-xl hover:bg-gray-100 dark:hover:bg-gray-850 transition"
@@ -166,8 +162,7 @@
             if (e.detail === "archived-chat") {
               showArchivedChats.set(true);
             }
-          }}
-        >
+          }}>
             <button
               class="select-none flex rounded-xl p-1.5 w-full hover:bg-gray-100 dark:hover:bg-gray-850 transition"
               aria-label="User Menu"
