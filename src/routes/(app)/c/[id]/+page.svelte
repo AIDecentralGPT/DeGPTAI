@@ -428,10 +428,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				model?.urls?.[0]
 			);
 
-			if(!firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
-				firstResAlready = true;
-				history.currentId = responseMessageId;
-			}
+
 
 			// Wait until history/message have been updated
 			await tick();
@@ -444,6 +441,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 				for await (const update of textStream) {
 					const { value, done, citations, error } = update;
+
+					if(value && !firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
+				firstResAlready = true;
+				history.currentId = responseMessageId;
+			}
 					if (error) {
 						await handleOpenAIError(error, null, model, responseMessage);
 						break;
