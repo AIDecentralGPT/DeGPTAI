@@ -52,7 +52,7 @@ export const generateDeOpenAIChatCompletion = async (
   url: string = DE_API_BASE_URL
 ): Promise<[Response | null, AbortController]> => {
   const controller = new AbortController();
-  setTimeout(() => controller.abort(), 30000);
+  setTimeout(() => controller.abort(), 120000);
 
   let error = null;
 

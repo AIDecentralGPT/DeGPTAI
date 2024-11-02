@@ -138,6 +138,19 @@ class RewardsTable:
             log.error(f"get_rewards_by_id: {e}")
             return None
     
+    def get_create_rewards_by_userid(self, user_id: str) -> Optional[RewardsModel]:
+        try:
+            rewards = Rewards.get_or_none(Rewards.user_id == user_id, Rewards.reward_type == 'new_wallet')
+            if rewards is None:
+                return None
+            else:
+                rewards_dict = model_to_dict(rewards)  # 将数据库对象转换为字典
+                rewards_model = RewardsModel(**rewards_dict)  # 将字典转换为Pydantic模型
+                return rewards_model
+        except Exception as e:
+            log.error(f"get_rewards_by_id: {e}")
+            return None
+    
     def get_rewards_by_invitee(self, invitee: str) -> Optional[List[RewardsModel]]:
         try:
             rewards = Rewards.select().where(Rewards.invitee == invitee)

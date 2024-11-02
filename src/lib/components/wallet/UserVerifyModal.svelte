@@ -427,7 +427,7 @@
                       <div class="w-[200px] h-[180px] model-styl">
                         <button
                           class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
-                          on:click={faceLiveness}>Try again</button
+                          on:click={faceLiveness}>{$i18n.t("Try again")}</button
                         > 
                       </div>
                     {/if}
@@ -490,13 +490,13 @@
                       </div>
                     {:else}
                       <div class="flex flex-row items-center">
-                        {message}
+                        {$i18n.t(message)}
                       </div>
                     {/if}
                   {:else}
                     {#if qrCodeFinish}
                       <div class="flex flex-row items-center success">
-                        <span>{message}<span>
+                        <span>{$i18n.t(message)}<span>
                       </div>
                     {:else}
                       <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>

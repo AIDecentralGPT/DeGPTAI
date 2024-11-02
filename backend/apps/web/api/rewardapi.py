@@ -75,22 +75,27 @@ class RewardApi:
     #邀请奖励
     def inviteReward(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
         try:
-            #拼接请求地址
+            # 用户领取注册奖励
+            inviteeResult = self.registReward(invitee.id, invitee.user_id);
+            if inviteeResult == None:
+                return None
+
+            # 用户领取邀请奖励
+            ##拼接请求地址
             url = f"{self.apiUrl}/claim_invite_reward"
-            #请求体
-            data = {"inviter_id": invite.user_id, "invitee_id": invitee.user_id, "inviter_amount": int(invite.reward_amount), "invitee_amount": int(invitee.reward_amount)}
+            ##请求体
+            data = {"inviter_id": invite.user_id, "invitee_id": invitee.user_id, "inviter_amount": int(invite.reward_amount), "invitee_amount": 0}
             print("===========inviteReward参数===========:", data);
-            # 发送POST请求
+            ## 发送POST请求
             response = requests.post(url, json.dumps(data))
-            # 校验请求是否成功
+            ## 校验请求是否成功
             response.raise_for_status()
-            # 打印响应内容
+            ## 打印响应内容
             print("===========inviteReward===========", response.text)
             response_json = json.loads(response.text)
             if (response_json['code'] == 0):       
-                # 更新记录
+                ## 更新记录
                 RewardsTableInstance.update_reward(invite.id, response_json['result']['Data']['inviterTxHash'], True)
-                inviteeResult = RewardsTableInstance.update_reward(invitee.id, response_json['result']['Data']['inviteeTxHash'], True)
                 return inviteeResult
             else:
                 return None

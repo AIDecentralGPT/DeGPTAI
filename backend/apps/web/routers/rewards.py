@@ -70,7 +70,7 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
         inviteReward = None;
         inviteeReward = None;
         if rewards_history.invitee is not None:
-           # 获取记录判断是否已经领取，领取不可再次领取
+            # 获取奖励记录校验是那种奖励
             rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
             if len(rewards) != 2:
                 raise HTTPException(status_code=500, detail="Failed to received reward")       

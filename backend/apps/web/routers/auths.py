@@ -51,6 +51,7 @@ from apps.web.models.device import devices_table
 from apps.web.models.faceCompare import face_compare
 from apps.web.models.faceLib import  face_lib
 from apps.web.models.rewards import RewardsTableInstance
+from apps.web.api.rewardapi import RewardApiInstance
 
 from utils.utils import (
     get_password_hash,
@@ -878,7 +879,32 @@ async def faceliveness_check_for_ws(id: str):
             if response.body.result.passed:
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
                 # return user_update_result
-                print("user_update_result", user_update_result)         
+                print("user_update_result", user_update_result)
+
+                # 更新用户注册奖励
+                ## 获取用户注册奖励信息
+                rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user.id)
+                print("rewards_history", rewards_history)
+                if rewards_history is not None and rewards_history.status == False:
+                    ## 判断领取那种奖励
+                    if rewards_history.invitee is not None:
+                        ## 获取奖励记录校验是那种奖励
+                        rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+                        if len(rewards) == 2:
+                            inviteReward = None;
+                            inviteeReward = None;   
+                            for reward in rewards:
+                                if reward.reward_type == 'invite':
+                                    if reward.show:
+                                        inviteReward = reward
+                                else:
+                                    inviteeReward = reward
+                            # 领取邀请奖励
+                            RewardApiInstance.inviteReward(inviteReward, inviteeReward) 
+                    else:
+                        ## 领取注册奖励
+                        RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+                          
             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
@@ -902,7 +928,7 @@ async def faceliveness_check_for_ws(id: str):
         else:
             return {
                 "passed": False,
-                "message": "We haven't started live testing yet"
+                "message": "Your haven't started live testing yet"
             }
         
     except Exception as e:
