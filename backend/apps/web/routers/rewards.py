@@ -47,8 +47,8 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
     global user_locks_dict
     # 若用户对应的锁不存在，则创建并添加到字典
     if user.id not in user_locks_dict:
-        user_locks_dict[user.id] = threading.Lock()
-    user_lock = user_locks_dict[user.id]
+        user_locks_dict[user.id + "-new_waller"] = threading.Lock()
+    user_lock = user_locks_dict[user.id + "-new_waller"]
     # 获取锁，若锁已被该用户其他线程占用，则等待
     user_lock.acquire()
     try:
@@ -99,8 +99,6 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
                 raise HTTPException(status_code=500, detail="Failed to received reward")                  
     except Exception as e:
         print(f"Exception: {e}")
-        # 释放锁，以便该用户其他线程能获取锁并执行方法
-        user_lock.release()
         raise HTTPException(status_code=500, detail="Failed to received reward")
     finally:
         # 释放锁，以便该用户其他线程能获取锁并执行方法
@@ -133,22 +131,40 @@ async def clock_in(user=Depends(get_verified_user)):
 @router.post("/clock_in_check")
 async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user)):
 
-    # 校验用户是否已经完成kyc认证
-    user_find = Users.get_user_by_id(user.id)
-    if not user_find.verified:
-        raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
-    
-    # 获取签到记录
-    rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
-    if rewards_history is None:
-        raise HTTPException(status_code=400, detail="You Rewards History not found")
-    
-    # 领取奖励
-    result = RewardApiInstance.dailyReward(rewards_history.id, user.id)
-    if result is not None:
-        return {"ok": True, "data": result}
-    else:
+    global user_locks_dict
+    # 若用户对应的锁不存在，则创建并添加到字典
+    if user.id not in user_locks_dict:
+        user_locks_dict[user.id + "-clock_in"] = threading.Lock()
+    user_lock = user_locks_dict[user.id + "-clock_in"]
+    # 获取锁，若锁已被该用户其他线程占用，则等待
+    user_lock.acquire()
+    try:
+        # 校验用户是否已经完成kyc认证
+        user_find = Users.get_user_by_id(user.id)
+        if not user_find.verified:
+            raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
+        
+        # 获取签到记录
+        rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
+        if rewards_history is None:
+            raise HTTPException(status_code=400, detail="You Rewards History not found")
+        
+        # 是否已领取校验
+        if rewards_history.status:
+            return {"ok": True, "data": rewards_history}
+        
+        # 领取奖励
+        result = RewardApiInstance.dailyReward(rewards_history.id, user.id)
+        if result is not None:
+            return {"ok": True, "data": result}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to received reward")
+    except Exception as e:
+        print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Failed to received reward")
+    finally:
+        # 释放锁，以便该用户其他线程能获取锁并执行方法
+        user_lock.release()
     
 # 用户邀请领取奖励
 @router.post("/invite_check")
