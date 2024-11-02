@@ -34,11 +34,11 @@
   async function fetchData() {
     loading = true;
     pagedItems = [];
-    const res = await getTransactions($user?.id);
-    // 合并两个 items 数组
-    const mergedItems = [...res[0].items, ...res[1].items];
-
+    
     try {
+      const res = await getTransactions($user?.id);
+      // 合并两个 items 数组
+      const mergedItems = [...res[0].items, ...res[1].items];
       // 按时间排序
       mergedItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
