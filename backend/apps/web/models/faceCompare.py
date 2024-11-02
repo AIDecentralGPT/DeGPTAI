@@ -8,7 +8,7 @@ import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
 
-faceVerifyUrl = "https://test.degpt.ai/userVerifying"
+faceVerifyUrl = "https://www.degpt.ai/userVerifying"
 
 class FaceCompare:
     # 配置请求认证信息
