@@ -106,7 +106,7 @@
 
 		
 		// _messages.pop()
-		console.log("messages = _messages;", _messages);
+		// console.log("messages = _messages;", _messages);
 
 		messages = _messages;
 	} else {
