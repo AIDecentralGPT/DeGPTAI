@@ -6,6 +6,7 @@ from apps.web.models.rewards import RewardsTableInstance, RewardsRequest, Reward
 from apps.web.api.rewardapi import RewardApiInstance
 from utils.utils import get_verified_user
 from datetime import date
+import threading
 
 router = APIRouter()
 
@@ -40,14 +41,17 @@ async def claim_reward(request: Request, user_id: str, device_id: str, user=Depe
         raise HTTPException(status_code=500, detail="Failed to send reward")
 
 # 用户创建领取奖励
+user_locks_dict = {}
 @router.post("/creat_wallet_check")
 async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_user)):
+    global user_locks_dict
+    # 若用户对应的锁不存在，则创建并添加到字典
+    if user.id not in user_locks_dict:
+        user_locks_dict[user.id] = threading.Lock()
+    user_lock = user_locks_dict[user.id]
+    # 获取锁，若锁已被该用户其他线程占用，则等待
+    user_lock.acquire()
     try:
-        # 校验用户是否已经完成kyc认证
-        user_find = Users.get_user_by_id(user.id)
-        if not user_find.verified:
-            raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
-        
         # 获取签到记录
         rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
         if rewards_history is None:
@@ -56,6 +60,11 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
         # 是否已领取校验
         if rewards_history.status:
             return {"ok": True, "data": rewards_history}
+        
+        # 校验用户是否已经完成kyc认证
+        user_find = Users.get_user_by_id(user.id)
+        if not user_find.verified:
+            raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
         
         # 判断领取那种奖励
         inviteReward = None;
@@ -87,11 +96,15 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
             if result is not None:
                 return {"ok": True, "data": result}
             else:
-                raise HTTPException(status_code=500, detail="Failed to received reward")
-                       
+                raise HTTPException(status_code=500, detail="Failed to received reward")                  
     except Exception as e:
         print(f"Exception: {e}")
+        # 释放锁，以便该用户其他线程能获取锁并执行方法
+        user_lock.release()
         raise HTTPException(status_code=500, detail="Failed to received reward")
+    finally:
+        # 释放锁，以便该用户其他线程能获取锁并执行方法
+        user_lock.release()
 
 # 用户签到
 @router.post("/clock_in")
