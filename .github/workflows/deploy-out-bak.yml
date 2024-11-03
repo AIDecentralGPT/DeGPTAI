@@ -11,9 +11,7 @@ name: Deploy to Server # 定义工作流程的名称
 on: # 定义触发工作流程的事件
   push: # 当代码被推送时
     branches: # 指定触发工作流程的分支
-      - out # 只有main分支的推送才会触发此工作流程
-      - fingerprintAuth-out # 发到他们服务器的版本（指纹自动登录）
-      - wallet-connection-out # 发到他们服务器的版本（钱包连接）
+      - fingerprintAuth-out-bak # 发到他们服务器的版本（指纹自动登录）
 
 jobs: # 定义需要执行的工作
   # timeout-minutes: 30
@@ -35,7 +33,7 @@ jobs: # 定义需要执行的工作
           # password: ${{ secrets.DOCKER_PASSWORD }}
 
           push: true # 推送镜像到Docker Hub
-          tags: dianbobo202311/open-webui:out-latest # 设置镜像的标签
+          tags: dianbobo202311/open-webui:out-latest-bak # 设置镜像的标签
 
 
       # - name: Deploy to Server # 步骤名称
