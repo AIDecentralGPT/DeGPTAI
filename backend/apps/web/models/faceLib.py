@@ -10,16 +10,15 @@ from apps.web.models.users import Users
 
 from config import (
     SRC_LOG_LEVELS,
+    FACE_DB
 )
 import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
 
-face_db = 'dev_face'
-
 class FaceLib:
     def __init__(self):
-        self.faceDb = face_db
+        self.faceDb = FACE_DB
         self.config = Config(
             # 创建AccessKey ID和AccessKey Secret，请参考https://help.aliyun.com/document_detail/175144.html。
             # 如果您用的是RAM用户的AccessKey，还需要为RAM用户授予权限AliyunVIAPIFullAccess，请参考https://help.aliyun.com/document_detail/145025.html。
