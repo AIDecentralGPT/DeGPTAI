@@ -4,7 +4,6 @@
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
   import Selector from "./ModelSelector/Selector.svelte";
-  import ModelDeSelector from "./ModelDeSelector.svelte";
 
   const i18n = getContext("i18n");
 
@@ -75,5 +74,4 @@
   </div>
 {/if}
 
-<ModelDeSelector/>
 
