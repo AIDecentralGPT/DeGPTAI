@@ -69,7 +69,7 @@
 <div>
   <div class="flex gap-3 items-center my-4 flex-wrap justify-between mt-20">
     <span class="text-xl ml-10"> {$i18n.t("Unlimited DGC Reward Task")} </span>
-  
+
     <div class="flex fs-12">
       {#if $user?.id?.startsWith("0x")}
         <button

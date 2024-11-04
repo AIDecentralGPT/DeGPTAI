@@ -19,8 +19,8 @@
     showSidebar,
     showUserVerifyModal,
     user,
-    modelLimits,
-  } from "$lib/stores";
+    deApiBaseUrl,
+    modelLimits,  } from "$lib/stores";
   import { copyToClipboard, splitStream, addTextSlowly } from "$lib/utils";
 
   import {
@@ -421,19 +421,7 @@
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
-          // 想要请求的模型名称
           model: model.id,
-          // 预设的系统助理行为模式和交替问答记录
-          // "messages": [
-          // 		{
-          // 				"role": "system",
-          // 				"content": "You are a helpful assistant."
-          // 		},
-          // 		{
-          // 				"role": "user",
-          // 				"content": userPrompt
-          // 		}
-          // ],
           messages: [
             $settings.system || (responseMessage?.userContext ?? null)
               ? {
@@ -484,7 +472,7 @@
                   }),
             })),
         },
-        model?.urls?.[0]
+        $deApiBaseUrl?.url
       );
 
       // console.log("res controller", res, controller);
@@ -751,7 +739,7 @@
           ) + " {{prompt}}",
         titleModelId,
         userPrompt,
-        model?.urls?.[0]
+        $deApiBaseUrl?.url
       );
 
       return title;

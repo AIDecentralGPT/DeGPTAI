@@ -180,7 +180,6 @@
 
     const onTouchStart = (e) => {
       touchstart = e.changedTouches[0];
-      console.log(touchstart.clientX);
     };
 
     const onTouchEnd = (e) => {

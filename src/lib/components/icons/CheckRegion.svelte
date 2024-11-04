@@ -5,7 +5,7 @@
 </script>
 
 {#if checkFlag}
-	<div class="flex justify-center item-center size-4 border border-grey-600 dark:border-grey-100">
+	<div class="flex justify-center item-center size-4 border region-border-color">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
@@ -18,6 +18,12 @@
 		</svg>
 	</div>
 {:else}
-	<div class="flex justify-center item-center size-4 border border-grey-600 dark:border-grey-100"></div>
+	<div class="flex justify-center item-center size-4 border region-border-color"></div>
 {/if}
+
+<style>
+.region-border-color {
+	border-color: rgba(184, 142, 86, 1);
+}
+</style>
 

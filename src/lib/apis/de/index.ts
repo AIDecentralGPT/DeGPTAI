@@ -1,17 +1,34 @@
-import { DE_API_BASE_URL } from "$lib/constants";
 import { promptTemplate } from "$lib/utils";
+
+// 获取De的所有请求节点
+export const getDeBaseUrls = async () => {
+
+  const baseUrls = [
+    {
+      name: "North America",
+      url: "https://usa-chat.degpt.ai/api",
+    },
+    {
+      name: "Asia",
+      url: "https://singapore-chat.degpt.ai/api",
+    },
+    {
+      name: "Europe",
+      url: "https://malaysia-chat.degpt.ai/api",
+    },
+    {
+      name: "Others",
+      url: "https://korea-chat.degpt.ai/api",
+    }
+  ];
+  return baseUrls;
+};
 
 // 获取De的所有模型列表
 export const getDeModels = async (token: string = "") => {
 
   const format_res = {
     models: [
-      // Meta LLM(LIama3.1-405B)
-      // {
-      //   name: "Meta LLM (Llama-3.1-405B)",
-      //   model: "Llama-3.1-405B",
-      // },
-      // Ali LLM (Qwen2-72B)
       {
         name: "Ali LLM (Qwen2.5-72B)",
         model: "Qwen2.5-72B",
@@ -49,7 +66,7 @@ export const getDeModels = async (token: string = "") => {
 export const generateDeOpenAIChatCompletion = async (
   token: string = "",
   body: object,
-  url: string = DE_API_BASE_URL
+  url: string
 ): Promise<[Response | null, AbortController]> => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 120000);
@@ -86,7 +103,7 @@ export const generateDeTitle = async (
   template: string,
   model: string,
   prompt: string,
-  url: string = DE_API_BASE_URL
+  url: string
 ) => {
   let error = null;
 
@@ -134,45 +151,4 @@ export const generateDeTitle = async (
   return (
     res?.data?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
   );
-};
-
-export const getDeModelNodeList = async (
-  url: string = DE_API_BASE_URL,
-  modelId
-) => {
-  let error = null;
-
-  console.log("getDeModelNodeList", url);
-
-  const res = await fetch(`${url}/v0/ai/projects/peers`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      project: "DecentralGPT",
-      // "model": "Codestral-22B-v0.1"
-      model: modelId,
-    }),
-  })
-    .then(async (res) => {
-      if (!res.ok) throw await res.json();
-      return res.json();
-    })
-    .catch((err) => {
-      console.log(err);
-      if ("detail" in err) {
-        error = err.detail;
-      }
-      return null;
-    });
-
-  if (error) {
-    throw error;
-  }
-
-  console.log("res", res?.data);
-
-  return res;
 };
