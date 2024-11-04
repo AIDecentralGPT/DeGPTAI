@@ -1,17 +1,13 @@
 <script lang="ts">
   import { setDefaultModels } from "$lib/apis/configs";
-  import { models, settings, user, mobile, deApiBaseUrl } from "$lib/stores";
+  import { models, settings, user, mobile } from "$lib/stores";
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
   import Selector from "./ModelSelector/Selector.svelte";
 
   const i18n = getContext("i18n");
 
-  export let className = "w-[30rem]";
-
   export let selectedModels = [""];
-  export let modelsList = [""];
-  export let disabled = false;
 
   export let showSetDefault = true;
 
@@ -32,7 +28,6 @@
   };
 
   $: if (selectedModels.length > 0 && $models.length > 0) {
-    console.log("==================================");
     selectedModels = selectedModels.map((model) => {
       if (selectedModels.length === 1) {
         return selectedModels[0] === "" ? $models[0]?.model : model;
@@ -40,6 +35,10 @@
         return $models.map((m) => m.id).includes(model) ? model : ""; 
       }
     });
+  }
+
+  function updateSelList(list: any) {
+    selectedModels = list.detail;
   }
 
 </script>
@@ -61,6 +60,7 @@
             bind:selectedList={selectedModels}
             selectedModelIdx={selectedModelIdx}
             value={selectedModel}
+            on:childEvent={updateSelList}
           />
         </div>
       </div>

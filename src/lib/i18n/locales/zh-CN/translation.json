@@ -649,6 +649,7 @@
   "Europe": "欧洲",
   "Others": "其他",
   "To facilitate a quicker match with the appropriateGPU node, please select your region.": "为了便于与合适的 GPU 节点更快地匹配，请选择您的地区。",
+  "Please select at least one model.": "请至少选择一个模型。",
   "I. New User Creation Reward": "I. 新用户创建奖励",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "完成新用户认证后，可获得一个<span style='color: rgba(184, 142, 86, 1);'>1000</span>个 DGC 的奖励。",
   "II. Referral Reward": "II. 推荐奖励",

@@ -2,7 +2,7 @@
   import { DropdownMenu } from "bits-ui";
 
   import { flyAndScale } from "$lib/utils/transitions";
-  import { createEventDispatcher, getContext, tick } from "svelte";
+  import { createEventDispatcher, getContext } from "svelte";
 
   import ChevronDown from "$lib/components/icons/ChevronDown.svelte";
   import Check from "$lib/components/icons/Check.svelte";
@@ -12,13 +12,12 @@
 
   import { toast } from 'svelte-sonner';
 
-  const i18n = getContext("i18n");
   const dispatch = createEventDispatcher();
+
+  const i18n = getContext('i18n');
 
   export let value = "";
   export let placeholder = "Select a model";
-  // export let searchEnabled = true;
-  // export let searchPlaceholder = $i18n.t("Search a model");
 
   export let items = [{ value: "mango", label: "Mango" }];
 
@@ -40,11 +39,12 @@
         let index = selectedList.indexOf(selModel);
         selectedList.splice(index, 1);
       } else {
-        toast.warning("请至少选择一个模型");
+        toast.warning($i18n.t("Please select at least one model."));
       }    
     } else {
       selectedList.push(val);
     }
+    dispatch('childEvent', selectedList);
   }
 
 </script>

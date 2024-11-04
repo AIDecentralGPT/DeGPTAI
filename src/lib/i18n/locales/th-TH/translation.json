@@ -649,6 +649,7 @@
   "Europe": "ยุโรป",
   "Others": "อื่นๆ",
   "To facilitate a quicker match with the appropriateGPU node, please select your region.": "เพื่อให้สามารถจับคู่กับโหนด GPU ที่เหมาะสมได้เร็วขึ้น โปรดเลือกภูมิภาคของคุณ",
+  "Please select at least one model.": "กรุณาเลือกแบบจำลองอย่างน้อยหนึ่งแบบ",
   "I. New User Creation Reward": "I. ค่าตอบแทนสำหรับการสร้างผู้ใช้ใหม่",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "หลังจากเสร็จสิ้นการยืนยันผู้ใช้ใหม่แล้ว รับค่าตอบแทน <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC",
   "II. Referral Reward": "II. ค่าตอบแทนสำหรับการแนะนำ",

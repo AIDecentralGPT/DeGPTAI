@@ -650,6 +650,7 @@
   "Europe": "유럽",
   "Others": "기타",
   "To facilitate a quicker match with the appropriateGPU node, please select your region.": "적절한 GPU 노드와의 빠른 매칭을 위해 지역을 선택해주세요.",
+  "Please select at least one model.": "적어도 하나의 모델을 선택하세요.",
   "I. New User Creation Reward": "I. 신규 사용자 생성 보상",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "신규 사용자 인증을 완료한 후, <span style='color: rgba(184, 142, 86, 1);'>1000</span>개의 DGC 보상을 받습니다.",
   "II. Referral Reward": "II. 추천 보상",

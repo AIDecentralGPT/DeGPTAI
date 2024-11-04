@@ -650,6 +650,7 @@
   "Europe": "Europa",
   "Others": "Outros",
   "To facilitate a quicker match with the appropriateGPU node, please select your region.": "Para facilitar uma correspondência mais rápida com o nó GPU apropriado, selecione sua região.",
+  "Please select at least one model.": "Por favor, selecione pelo menos um modelo.",
   "I. New User Creation Reward": "I. Recompensa por Criação de Novo Usuário",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Após completar a autenticação do novo usuário, receba uma recompensa de <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Recompensa por Indicação",

@@ -650,6 +650,7 @@
   "Europe": "Avrupa",
   "Others": "Diğerler",
   "To facilitate a quicker match with the appropriateGPU node, please select your region.": "Uygun GPU düğümüyle daha hızlı bir eşleşme sağlamak için lütfen bölgenizi seçin.",
+  "Please select at least one model.": "Lütfen en az bir model seçin.",
   "I. New User Creation Reward": "I. Yeni Kullanıcı Oluşturma Ödülü",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Yeni kullanıcı doğrulamasını tamamladıktan sonra, <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC ödülü alırsınız.",
   "II. Referral Reward": "II. Tavsiye Ödülü",
