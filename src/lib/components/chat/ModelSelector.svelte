@@ -33,6 +33,7 @@
   };
 
   $: if (selectedModels.length > 0 && $models.length > 0) {
+    console.log("==================================");
     selectedModels = selectedModels.map((model) => {
       if (selectedModels.length === 1) {
         return selectedModels[0] === "" ? $models[0]?.model : model;
@@ -40,10 +41,6 @@
         return $models.map((m) => m.id).includes(model) ? model : ""; 
       }
     });
-  }
-
-  function handleListUpdate(newList) {
-    selectedModels = newList;
   }
 
 </script>
@@ -62,10 +59,9 @@
                 label: model.name,
                 info: model,
               }))}
-            selectedList={selectedModels}
+            bind:selectedList={selectedModels}
             selectedModelIdx={selectedModelIdx}
-            bind:value={selectedModel}
-            on:list-update={handleListUpdate}
+            value={selectedModel}
           />
         </div>
       </div>

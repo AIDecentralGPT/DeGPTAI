@@ -2,7 +2,7 @@
   import { DropdownMenu } from "bits-ui";
 
   import { flyAndScale } from "$lib/utils/transitions";
-  import { createEventDispatcher, getContext } from "svelte";
+  import { createEventDispatcher, getContext, tick } from "svelte";
 
   import ChevronDown from "$lib/components/icons/ChevronDown.svelte";
   import Check from "$lib/components/icons/Check.svelte";
@@ -10,13 +10,15 @@
 
   import { mobile } from "$lib/stores";
 
+  import { toast } from 'svelte-sonner';
+
   const i18n = getContext("i18n");
   const dispatch = createEventDispatcher();
 
   export let value = "";
   export let placeholder = "Select a model";
-  export let searchEnabled = true;
-  export let searchPlaceholder = $i18n.t("Search a model");
+  // export let searchEnabled = true;
+  // export let searchPlaceholder = $i18n.t("Search a model");
 
   export let items = [{ value: "mango", label: "Mango" }];
 
@@ -34,15 +36,15 @@
   function changeModel(val:string) {
     const selModel = selectedList.find((item) => item === val) ?? "";
     if (selModel) {
-      let index = selectedList.indexOf(selModel);
-      selectedList.splice(index, 1);
+      if(selectedList.length > 1) {
+        let index = selectedList.indexOf(selModel);
+        selectedList.splice(index, 1);
+      } else {
+        toast.warning("请至少选择一个模型");
+      }    
     } else {
       selectedList.push(val);
     }
-    console.log("==========================", selectedList);
-    // 触发自定义事件，将更新后的列表传递回父组件
-    const updateEvent = new CustomEvent('list-update', { detail: { newList: selectedList } });
-    dispatchEvent(updateEvent);
   }
 
 </script>
@@ -50,12 +52,12 @@
 <DropdownMenu.Root bind:open={show}>
   <DropdownMenu.Trigger class="relative w-full" aria-label={placeholder}>
     <div
-      class="flex w-full text-left px-0.5 outline-none bg-transparent truncate text-lg font-semibold placeholder-gray-400 focus:outline-none"
+      class="flex flex-row w-full text-left px-0.5 outline-none bg-transparent truncate text-lg font-semibold placeholder-gray-400 focus:outline-none"
     >
       {#if selectedModel}
-        {selectedModel.label}
+        <span class="text-ellipsis overflow-hidden">{selectedModel.label}</span>
       {:else}
-        {placeholder}
+        <span class="text-ellipsis overflow-hidden">{placeholder}</span>
       {/if}
       {#if selectedModelIdx == 0}
         <ChevronDown className=" self-center ml-2 size-5" strokeWidth="2.5" />
@@ -64,9 +66,7 @@
   </DropdownMenu.Trigger>
 
   <DropdownMenu.Content
-    class=" z-[90] {$mobile
-      ? `w-full`
-      : `${className}`} max-w-[260px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[260px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
     transition={flyAndScale}
     side={$mobile ? "bottom" : "bottom-start"}
     sideOffset={4}

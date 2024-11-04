@@ -158,7 +158,7 @@ onMount(() => {
 		<div class="">
 			<div class=" mb-1 text-sm font-medium">{$i18n.t('WebUI Settings')}</div>
 
-			{#if !isMobile}
+			<!-- {#if !isMobile} -->
 			<div class="flex w-full justify-between">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Theme')}</div>
 				<div class="flex items-center relative">
@@ -175,7 +175,7 @@ onMount(() => {
 					</select>
 				</div>
 			</div>
-			{/if}
+			<!-- {/if} -->
 
 			<div class=" flex w-full justify-between">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Language')}</div>
