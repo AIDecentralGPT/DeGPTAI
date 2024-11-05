@@ -7,6 +7,7 @@
     theme,
     WEBUI_NAME,
     mobile,
+    deApiBaseUrl
   } from "$lib/stores";
   import { goto } from "$app/navigation";
   import { Toaster } from "svelte-sonner";
@@ -27,7 +28,7 @@
   import { getUserInfo } from "$lib/apis/users";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
-  import { getRegionInfo } from "$lib/apis/utils/index";
+  import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
 
   setContext("i18n", i18n);
   let loaded = false;
@@ -158,7 +159,25 @@
 
   function getLocationInfo() {
     getRegionInfo().then(data => {
-      console.log("=====================", data);
+      const regionDict = getRegionDict();
+      if (data) {
+        regionDict.Singapore.forEach(item => {
+          if (item === data?.country) {
+            deApiBaseUrl.set({
+              name: "Singapore",
+              url: "https://singapore-chat.degpt.ai/api",
+            })
+          }
+        })
+        regionDict.Korea.forEach(item => {
+          if (item === data?.country) {
+            deApiBaseUrl.set({
+              name: "Korea",
+              url: "https://korea-chat.degpt.ai/api",
+            })
+          }
+        })
+      }
     })
   }
 

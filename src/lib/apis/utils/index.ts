@@ -109,8 +109,19 @@ export const downloadDatabase = async (token: string) => {
 	}
 };
 
+// 获取De的所有请求节点
+export const getRegionDict = () => {
+
+	const regionDict = {
+		Singapore: ["Indonesia", "Malaysia", "Philippines", "Singapore", "Brunei", "Thailand", "Myanmar", "Laos", "Cambodia", "Vietnam", "India", "Pakistan", "Bangladesh", "Sri Lanka", "Maldives", "Nepal", "Bhutan"],
+		Korea: ["China", "Japan", "South Korea", "North Korea", "Mongolia", "Russia", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Uzbekistan", "Turkmenistan"],
+		America: []
+	}
+	return regionDict;
+};
 export const getRegionInfo = async () => {
-	const res = await fetch(`${WEBUI_API_BASE_URL}/utils/ip/info`, {
+	let url = `${WEBUI_API_BASE_URL}/utils/ip/info`;
+	const res = await fetch(url, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
