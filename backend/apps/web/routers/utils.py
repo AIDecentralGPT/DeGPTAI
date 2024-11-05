@@ -1,8 +1,10 @@
-from fastapi import APIRouter, UploadFile, File, Response
+from fastapi import APIRouter, Response, Request
 from fastapi import Depends, HTTPException, status
 from peewee import SqliteDatabase
-from starlette.responses import StreamingResponse, FileResponse
+from starlette.responses import FileResponse
 from pydantic import BaseModel
+import requests
+import json
 
 
 from fpdf import FPDF
@@ -12,7 +14,7 @@ from apps.web.internal.db import DB
 from utils.utils import get_admin_user
 from utils.misc import calculate_sha256, get_gravatar_url
 
-from config import OLLAMA_BASE_URLS, DATA_DIR, UPLOAD_DIR, ENABLE_ADMIN_EXPORT
+from config import ENABLE_ADMIN_EXPORT
 from constants import ERROR_MESSAGES
 from typing import List
 
@@ -107,3 +109,23 @@ async def download_db(user=Depends(get_admin_user)):
         media_type="application/octet-stream",
         filename="webui.db",
     )
+
+@router.get("/ip/info")
+async def download_db(request: Request):
+    try:
+        client_ip = "";
+        if "X-Forwarded-For" in request.headers:
+            client_ip = request.headers["X-Forwarded-For"].split(",")[0].strip()
+        else:
+            client_ip = request.client.host
+        print("==============ip=============", client_ip);
+
+        response = requests.get(f"http://ip-api.com/json/{client_ip}")
+        data = json.loads(response.content)
+        print("==============ip-data=============", data);
+        country = data['country']
+        region = data['region']
+        city = len(data['city']) > 0 and data['city'] or None
+        return {'country': country, 'region': region, 'city': city}
+    except Exception as e:
+        return None

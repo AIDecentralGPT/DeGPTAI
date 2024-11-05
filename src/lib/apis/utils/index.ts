@@ -108,3 +108,22 @@ export const downloadDatabase = async (token: string) => {
 		throw error;
 	}
 };
+
+export const getRegionInfo = async () => {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/utils/ip/info`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
+
+	return res;
+}

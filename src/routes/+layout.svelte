@@ -27,6 +27,7 @@
   import { getUserInfo } from "$lib/apis/users";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
+  import { getRegionInfo } from "$lib/apis/utils/index";
 
   setContext("i18n", i18n);
   let loaded = false;
@@ -146,12 +147,20 @@
     };
 
 
+    // 获取当前区域
+    getLocationInfo();
 
 		return () => {
 			window.removeEventListener('resize', onResize);
-      
 		};
+
 	}
+
+  function getLocationInfo() {
+    getRegionInfo().then(data => {
+      console.log("=====================", data);
+    })
+  }
 
 	onMount(initData);
 </script>
