@@ -656,7 +656,6 @@
   "Optimize code writing": "코드 작성 최적화합니다",
   "Please select at least one model.": "적어도 하나의 모델을 선택하세요.",
   "You can select up to four models at most.": "최대 4개의 모델을 선택할 수 있습니다.",
-  "The possible reason why you haven't received the email is that it might have gone into the spam mailbox.": "이메일을 받지 못한 가능한 이유는 그것이 스팸 메일함에 들어갔을 가능성이 있기 때문입니다.",
   "I. New User Creation Reward": "I. 신규 사용자 생성 보상",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "신규 사용자 인증을 완료한 후, <span style='color: rgba(184, 142, 86, 1);'>1000</span>개의 DGC 보상을 받습니다.",
   "II. Referral Reward": "II. 추천 보상",

@@ -385,11 +385,6 @@
                 </button>
               </div>
             </div>
-            <div class="flex flex-row text-sm mb-5">
-              <div class="w-[60px]"></div>
-              <span class="mx-5 text-red-600">● {$i18n.t("The possible reason why you haven't received the email is that it might have gone into the spam mailbox.")}</span>
-              <div class="w-[90px]"></div>
-            </div>
           </div>
           
           <div class="mb-6 pt-0.5 w-full flex justify-start flex-col gap-2 items-baseline md:items-center md:flex-row"
