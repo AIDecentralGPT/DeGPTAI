@@ -66,7 +66,7 @@ export const dbcRate = writable({rate: 0.0002, time: ""});
 
 // 默认模型请求地址
 export const deApiBaseUrl = writable({
-	name: 'North America', 
+	name: 'America', 
 	url: 'https://usa-chat.degpt.ai/api'
 });
 

@@ -627,10 +627,13 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
         <head>
             <style>
                 body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .container {{ max-width: 750px; margin: 0 auto; padding: 20px; }}
                 h1 {{ color: #2c3e50; }}
+                .wallet-color {{ color:rgba(184, 142, 86, 1); font-size: 20px; }}
                 .code {{ font-size: 24px; font-weight: bold; color: #3498db; }}
                 .footer {{ margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }}
+                .tip-div {{ display: flex; align-items: center; }}
+                .tip {{ width: 20px; margin-right: 5px; }} 
                 .logo {{ width: 200px; height: auto; }}
                 .social-links {{ margin-top: 15px; }}
                 .social-links a {{ margin-right: 10px; color: #3498db; text-decoration: none; }}
@@ -639,15 +642,17 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
         <body>
             <div class="container">
                 <h1>Confirm Your Email Address</h1>
-                <p>Wallet Address: {user.id}</p>
+                <p class="wallet-color">Wallet Address: {user.id}</p>
                 <p>Let's make sure this is the right email address for you. Please enter the following verification code to continue using DeGPT:</p>
                 <p class="code">{code}</p>
                 <p>Verification codes expire after two hours.</p>
-                <p>Thank you.</p>
-                
+                <p>Thank you.</p>  
                 <div class="footer">
-                    <p><strong>DecentralGPT = AI + DePIN + AGI</strong></p>
-                    <p>DecentralGPT supports a variety of open-source large language models. We are committed to building a safe, privacy-protective, democratic, transparent, open-source, and universally accessible AGI.</p>
+                    <div class="tip-div">
+                        <img src="https://www.degpt.ai/static/email/tip.png" class="tip"/>
+                        <span>Small Tip:</span>
+                    </div>
+                    <p>If you're using a Gmail account and can't find the verification code in you Inbox, it's highly likely that it's been filtered into your SpamFolder.</p>
                     <img src="https://www.degpt.ai/static/email/telegram_icon_url.png" alt="DecentralGPT Logo" class="logo">
                     <div class="social-links">
                         <a href="https://www.decentralgpt.org/">DecentralGPT Website</a>

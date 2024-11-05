@@ -19,7 +19,7 @@
   export let value = "";
   export let placeholder = "Select a model";
 
-  export let items = [{ value: "mango", label: "Mango" }];
+  export let items = [{ value: "mango", label: "Mango", "info": {"tip": "mango", "desc": "desc"} }];
 
   export let selectedList: any = [];
 
@@ -40,9 +40,13 @@
         selectedList.splice(index, 1);
       } else {
         toast.warning($i18n.t("Please select at least one model."));
-      }    
+      }   
     } else {
-      selectedList.push(val);
+      if (selectedList.length > 3) {
+        toast.warning($i18n.t("You can select up to four models at most."));
+      } else {
+        selectedList.push(val);
+      }
     }
     dispatch('childEvent', selectedList);
   }
@@ -66,13 +70,14 @@
   </DropdownMenu.Trigger>
 
   <DropdownMenu.Content
-    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[260px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[240px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
     transition={flyAndScale}
     side={$mobile ? "bottom" : "bottom-start"}
     sideOffset={4}
   >
     <slot>
       <div class="px-1 my-2 max-h-88 overflow-y-auto scrollbar-hidden">
+        <div class="text-lg px-2 py-1">{$i18n.t("Switch Models")}</div>
         {#each items as item (item.value)}
           <button
             aria-label="model-item"
@@ -83,8 +88,8 @@
           >
             <div class="flex items-center gap-2">
               <div class="flex flex-col line-clamp-1">
-                <span class="text-sm text-gray-900 dark:text-gray-100">{item.label}</span>
-                <span class="text-xs text-gray-600 dark:text-gray-500">Suitable for most tasks</span>
+                <span class="text-xs text-gray-900 dark:text-gray-100">{item?.info?.tip}</span>
+                <span class="text-xs text-gray-600 dark:text-gray-500">{$i18n.t(item?.info?.desc)}</span>
               </div>
             </div>
 

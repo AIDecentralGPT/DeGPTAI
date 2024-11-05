@@ -5,19 +5,19 @@ export const getDeBaseUrls = async () => {
 
   const baseUrls = [
     {
-      name: "North America",
+      name: "America",
       url: "https://usa-chat.degpt.ai/api",
     },
     {
-      name: "Asia",
+      name: "Singapore",
       url: "https://singapore-chat.degpt.ai/api",
     },
+    // {
+    //   name: "Europe",
+    //   url: "https://malaysia-chat.degpt.ai/api",
+    // },
     {
-      name: "Europe",
-      url: "https://malaysia-chat.degpt.ai/api",
-    },
-    {
-      name: "Others",
+      name: "Korea",
       url: "https://korea-chat.degpt.ai/api",
     }
   ];
@@ -32,26 +32,36 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Ali LLM (Qwen2.5-72B)",
         model: "Qwen2.5-72B",
+        tip: "Qwen 2.5",
+        desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nemotron 70B)
       {
         name: "Nvidia LLM(Nemotron 70B)",
-        model: "Llama-3.1-Nemotron-70B"
+        model: "Llama-3.1-Nemotron-70B",
+        tip: "Llamma 3.1",
+        desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nvidia 3.1)
       {
         name: "Nvidia LLM(Nvidia 3.1)",
-        model: "NVLM-D-72B"
+        model: "NVLM-D-72B",
+        tip: "Nvidia 3.1",
+        desc: "Support image recognition"
       },
       // Nvidia LLM(Nemotron 70B)
       {
         name: "DeepSeek(Coder V2)",
-        model: "DeepSeek-Coder-V2"
+        model: "DeepSeek-Coder-V2",
+        tip: "Deepseek coder2.0",
+        desc: "Optimize code writing"
       },
       // Code LLM (Codestral-22B-v0.1)
       {
         name: "Code LLM (Codestral-22B-v0.1)",
         model: "Codestral-22B-v0.1",
+        tip: "Codestral 0.1",
+        desc: "Optimize code writing"
       }
     ],
   };
