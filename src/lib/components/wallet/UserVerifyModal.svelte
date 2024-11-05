@@ -349,7 +349,7 @@
       {#if current === 1}
         <div class="w-4/5 flex flex-col">
           <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
-          <div class="flex flex-col">
+          <div class="flex flex-col mb-3">
             <div
               class="mb-1 pt-0.5 flex justify-start w-full flex-col gap-2 items-baseline md:items-center md:flex-row"
             >
