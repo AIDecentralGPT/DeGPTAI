@@ -15,9 +15,6 @@
     showCoinIntruType,
     dbcRate
   } from "$lib/stores";
-  import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
-
-  "$lib/utils/wallet/dbc";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getDbcRate } from "$lib/apis/wallet/index";
 

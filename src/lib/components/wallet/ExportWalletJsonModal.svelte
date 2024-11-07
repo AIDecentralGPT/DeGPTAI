@@ -1,25 +1,11 @@
 <script lang="ts">
-  import { importAccountFromKeystore } from "./../../utils/wallet/dbc.js";
-
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
-  import { currentWalletData, models, settings, user } from "$lib/stores";
+  import { currentWalletData } from "$lib/stores";
 
-  import { getModels as _getModels, copyToClipboard } from "$lib/utils";
-  import {
-    SUPPORTED_FILE_TYPE,
-    SUPPORTED_FILE_EXTENSIONS,
-    WEBUI_BASE_URL,
-  } from "$lib/constants";
+  import { copyToClipboard } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import {
-    onGetBalance,
-    createAccountFromSeed,
-    onGetDLCBalance,
-    exportAccountForKeystore,
-    createAccountFromMnemonic,
-  } from "$lib/utils/wallet/dbc";
   import {
     downloadKeyStore,
     storeWallet,

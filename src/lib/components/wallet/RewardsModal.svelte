@@ -1,9 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fade } from "svelte/transition";
   import dayjs from "dayjs";
   import { getContext } from "svelte";
-  import { getCurrentPair } from "$lib/utils/wallet/dbc";
   import { getUsersInvited } from "$lib/apis/users";
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";

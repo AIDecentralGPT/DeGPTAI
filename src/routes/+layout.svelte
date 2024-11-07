@@ -181,7 +181,12 @@
     })
   }
 
-	onMount(initData);
+	onMount(async () => {
+    let currentAddress = window.location.href;
+    if (currentAddress.indexOf("userVerifying") < 0) {
+      await initData()
+    }
+  });
 </script>
 
 <svelte:head>

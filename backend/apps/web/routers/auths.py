@@ -1,17 +1,17 @@
 import logging
 from typing import List, Dict
-
-from fastapi import Request, WebSocket, WebSocketDisconnect
+from fastapi import Request, Response, WebSocket, WebSocketDisconnect
 from fastapi import Depends, HTTPException, status
 from fastapi import APIRouter
 from pydantic import BaseModel
 import re
 import uuid
+import time
+import threading
 
 from apps.web.models.email_codes import (
     email_code_operations,
     EmailRequest,
-    TimeRequest,
     VerifyCodeRequest
     )
 
@@ -711,7 +711,7 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         # 获取查询参数
     print("face_liveness Query Parameters:", user.id)
 
-    if True:
+    try:
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         response = face_compare.face_liveness({
             "deviceType": form_data.metaInfo.deviceType,
@@ -736,16 +736,44 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
             "face_time": face_time,
         }
 
-    else:
+    except:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 # 人脸绑定
+progress_status = {};
 @router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
 async def faceliveness_bind(user: UserRequest):
-    passedInfo = await faceliveness_check_for_ws(user.user_id)
-    await manager.broadcast(json.dumps(passedInfo), user.user_id) 
-    return passedInfo
-        
+
+    global progress_status
+    if user.id not in progress_status:
+        progress_status[user.id + "-kyc"] = { "status": 0}
+        face_thread = threading.Thread(target=thread_face_check, args=(user.user_id))
+        reward_thread = threading.Thread(target=update_rewards, args=(user.user_id))
+        face_thread.start()
+        reward_thread.start()
+
+    #定义更新进度
+    update_data = [
+        {'type': 1, 'progress': 0, 'flag': False},
+        {'type': 2, 'progress': 0, 'flag': False}
+    ]
+    def generate_progress():
+        data = progress_status[user.id + "-kyc"]
+        while data['status'] < 2:
+            if data['status'] == 0:
+                if update_data[0]["progress"] < 90:
+                    update_data[0]["progress"] = update_data["progress"] + 10 
+            elif data['status'] == 1:
+                update_data[0]["progress"] = 100
+                update_data[0]["flag"] = True
+                if update_data[1]["progress"] < 90:
+                    update_data[1]["progress"] = update_data[1]["progress"] + 10 
+            elif data['status'] == 2:
+                update_data[1]["progress"] = 100
+                update_data[1]["flag"] = True
+            yield json.dumps(update_data)
+            time.sleep(0.5)
+    return Response(generate_progress(), media_type="text/event-stream")
 
 
 # 人脸识别校验
@@ -758,7 +786,7 @@ async def faceliveness_check(user=Depends(get_current_user)):
     
     print("form_data.", merchant_biz_id, transaction_id)
 
-    if True:
+    try:
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         # response = face_compare.check_result({
         #     "transaction_id": form_data.transaction_id,
@@ -804,19 +832,18 @@ async def faceliveness_check(user=Depends(get_current_user)):
             "message": message
         }
 
-    else:
+    except:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
-
 
 # 检查人脸是否通过
 async def faceliveness_check_for_ws(id: str):
 
     print("开始人脸校验-userId", id)
 
+    # 定义人脸认证初始返回值
     try:
         # 获取用户信息
         user = Users.get_user_by_id((id))
-
         if (user.verified):
             return {
                 "passed": True,
@@ -886,31 +913,6 @@ async def faceliveness_check_for_ws(id: str):
                 # return user_update_result
                 print("user_update_result", user_update_result)
 
-                # 更新用户注册奖励
-                ## 获取用户注册奖励信息
-                rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user.id)
-                print("rewards_history", rewards_history)
-                if rewards_history is not None and rewards_history.status == False:
-                    ## 判断领取那种奖励
-                    if rewards_history.invitee is not None:
-                        ## 获取奖励记录校验是那种奖励
-                        rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-                        if len(rewards) == 2:
-                            inviteReward = None;
-                            inviteeReward = None;   
-                            for reward in rewards:
-                                if reward.reward_type == 'invite':
-                                    if reward.show:
-                                        inviteReward = reward
-                                else:
-                                    inviteeReward = reward
-                            # 领取邀请奖励
-                            RewardApiInstance.inviteReward(inviteReward, inviteeReward) 
-                    else:
-                        ## 领取注册奖励
-                        RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-                          
-            
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
             # 'Result': {
@@ -936,13 +938,47 @@ async def faceliveness_check_for_ws(id: str):
                 "message": "Your haven't started live testing yet"
             }
         
-    except Exception as e:
-        print(f"Error in faceliveness_check_for_ws: {e}")
+    except:
         # 根据需要执行错误处理，例如记录日志或通知客户端
         return {
-                "passed": False,
-                "message": "The identity validate fail"
-            }
+            "passed": False,
+            "message": "The identity validate fail"
+        }
+
+def thread_face_check(user_id: str):
+    global progress_status
+    passedInfo = faceliveness_check_for_ws(user_id)
+    manager.broadcast(json.dumps(passedInfo), user_id)
+    data = progress_status[user_id + "-kyc"]
+    data['status'] = 1
+
+# kyc认证成功发奖励
+def update_rewards(user_id: str):
+    global progress_status
+    #获取用户注册奖励信息
+    rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user_id)
+    print("rewards_history", rewards_history)
+    if rewards_history is not None and rewards_history.status == False:
+        ## 判断领取那种奖励
+        if rewards_history.invitee is not None:
+            ## 获取奖励记录校验是那种奖励
+            rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+            if len(rewards) == 2:
+                inviteReward = None;
+                inviteeReward = None;   
+                for reward in rewards:
+                    if reward.reward_type == 'invite':
+                        if reward.show:
+                            inviteReward = reward
+                        else:
+                            inviteeReward = reward
+                ## 领取邀请奖励
+                RewardApiInstance.inviteReward(inviteReward, inviteeReward) 
+        else:
+            ## 领取注册奖励
+            RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+    data = progress_status[user_id + "-kyc"]
+    data['status'] = 2
 
 
 class ConnectionManager:

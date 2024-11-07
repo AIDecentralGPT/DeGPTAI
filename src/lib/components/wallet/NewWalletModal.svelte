@@ -263,10 +263,9 @@
       {#if walletCreatedData}
         <div>
           {#if $user.user_no}
-          <p class="
-          mb-2">
-            <span> {$i18n.t("Congratulations on becoming the")}</span>
-            <strong>{$user.user_no}</strong>
+            <p class="mb-2">
+              <span> {$i18n.t("Congratulations on becoming the")}</span>
+              <!-- <strong>{$user.user_no}</strong> -->
               <span>
                 {$i18n.t("wallet registered user!")}
               </span>

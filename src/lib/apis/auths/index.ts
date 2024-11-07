@@ -17,7 +17,6 @@ export const getSessionUser = async (token: string) => {
       return res.json();
     })
     .catch(async (err) => {
-      console.log(111111, err, err.code, err.message);
       error = err.detail;
       await signOut();
       // window.location.reload();
