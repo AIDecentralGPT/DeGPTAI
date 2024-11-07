@@ -46,7 +46,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Meta LLM (Llama-3.1-405B)",
 
-        model: "Llama-3.1-405B",
+        model: "Llama-3.1-Nemotron-70B",
         modified_at: new Date().toISOString(),
         size: 0, // 需要根据实际数据填充
         digest: "", // 需要根据实际数据填充
