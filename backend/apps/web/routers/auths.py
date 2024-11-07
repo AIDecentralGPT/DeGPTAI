@@ -1,6 +1,7 @@
 import logging
 from typing import List, Dict
-from fastapi import Request, Response, WebSocket, WebSocketDisconnect
+from fastapi import Request, WebSocket, WebSocketDisconnect
+from fastapi.responses import StreamingResponse
 from fastapi import Depends, HTTPException, status
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -740,103 +741,72 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 # 人脸绑定
-progress_status = {};
-@router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
+progress_locks_dict = {}
+progress_status_dict = {}
+progress_step_dict = {}
+@router.post("/faceliveness_bind")
 async def faceliveness_bind(user: UserRequest):
+    global progress_locks_dict, progress_status_dict, progress_step_dict
 
-    global progress_status
-    if user.id not in progress_status:
-        progress_status[user.id + "-kyc"] = { "status": 0}
-        face_thread = threading.Thread(target=thread_face_check, args=(user.user_id))
-        reward_thread = threading.Thread(target=update_rewards, args=(user.user_id))
-        face_thread.start()
-        reward_thread.start()
+    # 判断是否进行中进行加锁
+    user_key = user.user_id + "-kyc"
+    if user_key not in progress_locks_dict:
+        progress_locks_dict[user.user_id + "-kyc"] = threading.Lock()
+    progress_locks = progress_locks_dict[user.user_id + "-kyc"]
+    progress_locks.acquire()
 
-    #定义更新进度
-    update_data = [
+    #定义进度对象
+    progress_data = [
         {'type': 1, 'progress': 0, 'flag': False},
         {'type': 2, 'progress': 0, 'flag': False}
     ]
-    def generate_progress():
-        data = progress_status[user.id + "-kyc"]
-        while data['status'] < 2:
-            if data['status'] == 0:
-                if update_data[0]["progress"] < 90:
-                    update_data[0]["progress"] = update_data["progress"] + 10 
-            elif data['status'] == 1:
-                update_data[0]["progress"] = 100
-                update_data[0]["flag"] = True
-                if update_data[1]["progress"] < 90:
-                    update_data[1]["progress"] = update_data[1]["progress"] + 10 
-            elif data['status'] == 2:
-                update_data[1]["progress"] = 100
-                update_data[1]["flag"] = True
-            yield json.dumps(update_data)
-            time.sleep(0.5)
-    return Response(generate_progress(), media_type="text/event-stream")
+    if user_key not in progress_status_dict:
+        progress_status_dict[user.user_id + "-kyc"] = progress_data
+    progress_status = progress_status_dict[user.user_id + "-kyc"]
 
+    if user_key not in progress_step_dict:
+        progress_step_dict[user.user_id + "-kyc"] = {'step': 0}
+    progress_step = progress_step_dict[user.user_id + "-kyc"]
 
-# 人脸识别校验
-@router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
-async def faceliveness_check(user=Depends(get_current_user)):
-        # 获取查询参数
-    # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
-    merchant_biz_id = user.merchant_biz_id
-    transaction_id = user.transaction_id
-    
-    print("form_data.", merchant_biz_id, transaction_id)
+    # 执行业务
+    try:       
+        kyc_thread = threading.Thread(target=thread_face_check, kwargs={"user_id": user.user_id})
+        kyc_thread.start()
 
-    try:
-        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
-        # response = face_compare.check_result({
-        #     "transaction_id": form_data.transaction_id,
-        #     "merchant_biz_id":form_data.merchant_biz_id,
-        # })
-        response = face_compare.check_result(
-            transaction_id= transaction_id,
-            merchant_biz_id=merchant_biz_id,
-        )
-   
-
-        # print("face compare success", response, response.body.result.ext_face_info, response.body)
-        # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
-        
-        faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
-        
-        # face_lib.add_face_data(faceImg)
-        face_id = face_lib.search_face(faceImg)
-        print("face_id", face_id)
-        
-        user_id = Users.get_user_id_by_face_id(face_id)
-        print("user_id",face_id, user_id)
-        if user_id is None :
-            return {
-                "passed": False,
-                "message": "Fail"
-            }
-            
-        # 'Message': 'success',
-        # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
-        # 'Result': {
-        #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
-        #     'Passed': 'Y',
-        #     'SubCode': '200'
-        # }
-        passed = False
-        message = "Fail"
-        if (response.body.result.passed == 'Y'):
-            passed = True
-            message = "Success"
-        return {
-            "passed": passed,
-            "message": message
-        }
-
-    except:
-        raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+        def event_stream():
+            check_flag = True
+            check_time = datetime.now()
+            while check_flag:
+                # 计算时间差
+                time_difference = datetime.now() - check_time
+                if time_difference.total_seconds() > 60:
+                    check_flag = False
+                if progress_step['step'] == 0:
+                    if progress_status[0]["progress"] < 90:
+                        progress_status[0]["progress"] = progress_status[0]["progress"] + 3 
+                elif progress_step['step'] == 1:
+                    progress_status[0]["progress"] = 100
+                    if progress_status[1]["progress"] < 90:
+                        progress_status[1]["progress"] = progress_status[1]["progress"] + 3
+                elif progress_step['step'] == 2:
+                    progress_status[1]["progress"] = 100
+                    check_flag = False
+                else:
+                    check_flag = False
+                jsonstr = json.dumps(progress_status)
+                # 每次迭代输出进度数据
+                yield f"data: {jsonstr}\n\n"
+                time.sleep(0.2)     
+            # 任务完成后输出完成信息
+            yield "data: [done]\n\n"  
+        return StreamingResponse(event_stream(), media_type="text/event-stream")
+    finally:
+        # 释放锁，以及进度对象
+        progress_locks.release()
+        #progress_status.release()
 
 # 检查人脸是否通过
-async def faceliveness_check_for_ws(id: str):
+def faceliveness_check_for_ws(id: str):
 
     print("开始人脸校验-userId", id)
 
@@ -945,20 +915,13 @@ async def faceliveness_check_for_ws(id: str):
             "message": "The identity validate fail"
         }
 
-def thread_face_check(user_id: str):
-    global progress_status
-    passedInfo = faceliveness_check_for_ws(user_id)
-    manager.broadcast(json.dumps(passedInfo), user_id)
-    data = progress_status[user_id + "-kyc"]
-    data['status'] = 1
-
-# kyc认证成功发奖励
+# kyc认证成功后发奖励
 def update_rewards(user_id: str):
     global progress_status
     #获取用户注册奖励信息
     rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user_id)
     print("rewards_history", rewards_history)
-    if rewards_history is not None and rewards_history.status == False:
+    if rewards_history is not None:
         ## 判断领取那种奖励
         if rewards_history.invitee is not None:
             ## 获取奖励记录校验是那种奖励
@@ -973,13 +936,100 @@ def update_rewards(user_id: str):
                         else:
                             inviteeReward = reward
                 ## 领取邀请奖励
-                RewardApiInstance.inviteReward(inviteReward, inviteeReward) 
+                RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
         else:
             ## 领取注册奖励
             RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-    data = progress_status[user_id + "-kyc"]
-    data['status'] = 2
 
+# kyc认证线程执行
+def thread_face_check(user_id: str):
+    global progress_status_dict, progress_step_dict
+
+    progress_status = progress_status_dict[user_id + "-kyc"]
+    progress_step = progress_step_dict[user_id + "-kyc"]
+    try:
+        # 人脸认证
+        passedInfo = faceliveness_check_for_ws(user_id)
+        manager.broadcast(json.dumps(passedInfo), user_id)
+
+        passed = passedInfo['passed']
+        progress_status[0]['flag'] = passed
+        progress_status[0]['progress'] = 100
+        progress_status[0]['passedInfo'] = passedInfo
+        progress_step['step'] = 1
+
+        # 奖励发放
+        if passed:
+            update_rewards(user_id)
+            progress_status[1]['flag'] = True
+            progress_status[1]['progress'] = 100
+            progress_step['step'] = 2
+        else:
+            progress_status[1]['flag'] = False
+            progress_status[1]['progress'] = 100
+            progress_step['step'] = 2
+
+    except Exception as e:
+        progress_step['step'] = 3
+
+# 人脸识别校验
+@router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
+async def faceliveness_check(user=Depends(get_current_user)):
+        # 获取查询参数
+    # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
+    merchant_biz_id = user.merchant_biz_id
+    transaction_id = user.transaction_id
+    
+    print("form_data.", merchant_biz_id, transaction_id)
+
+    try:
+        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
+        # response = face_compare.check_result({
+        #     "transaction_id": form_data.transaction_id,
+        #     "merchant_biz_id":form_data.merchant_biz_id,
+        # })
+        response = face_compare.check_result(
+            transaction_id= transaction_id,
+            merchant_biz_id=merchant_biz_id,
+        )
+   
+
+        # print("face compare success", response, response.body.result.ext_face_info, response.body)
+        # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
+        
+        faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+        
+        # face_lib.add_face_data(faceImg)
+        face_id = face_lib.search_face(faceImg)
+        print("face_id", face_id)
+        
+        user_id = Users.get_user_id_by_face_id(face_id)
+        print("user_id",face_id, user_id)
+        if user_id is None :
+            return {
+                "passed": False,
+                "message": "Fail"
+            }
+            
+        # 'Message': 'success',
+        # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
+        # 'Result': {
+        #     'ExtFaceInfo': '{"faceAttack":"N","faceOcclusion":"N","faceQuality":67.1241455078125}',
+        #     'Passed': 'Y',
+        #     'SubCode': '200'
+        # }
+        passed = False
+        message = "Fail"
+        if (response.body.result.passed == 'Y'):
+            passed = True
+            message = "Success"
+        return {
+            "passed": passed,
+            "message": message
+        }
+
+    except:
+        raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 class ConnectionManager:
     def __init__(self):

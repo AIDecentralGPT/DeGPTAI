@@ -67,6 +67,8 @@
       $threesideAccount = account;
 
       if (account.status === "connected") {
+        let provider = account?.connector?.getProvider();
+        console.log("===============provider==============", provider)
         if (!$user?.id?.startsWith("0x")) {
           handleWalletSignIn({
             walletImported: {

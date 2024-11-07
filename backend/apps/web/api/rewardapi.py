@@ -2,6 +2,7 @@ import requests
 import json
 from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
+import threading
 
 #接口请求地址
 baseUrl = "http://34.234.201.126:8081"
@@ -72,14 +73,13 @@ class RewardApi:
             print("dailyReward:", e)
             return None
 
-    #邀请奖励
+    #邀请人奖励
     def inviteReward(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
         try:
-            # 用户领取注册奖励
-            inviteeResult = self.registReward(invitee.id, invitee.user_id);
-            if inviteeResult == None:
-                return None
-
+            # 获取记录判断是否已经领取，领取不可再次领取
+            reward = RewardsTableInstance.get_rewards_by_id(invite.id)
+            if reward.status:
+                return reward
             # 用户领取邀请奖励
             ##拼接请求地址
             url = f"{self.apiUrl}/claim_invite_reward"
@@ -96,12 +96,28 @@ class RewardApi:
             if (response_json['code'] == 0):       
                 ## 更新记录
                 RewardsTableInstance.update_reward(invite.id, response_json['result']['Data']['inviterTxHash'], True)
-                return inviteeResult
+                inviteResult = RewardsTableInstance.get_rewards_by_id(invite.id)
+                return inviteResult
             else:
                 return None
         except Exception as e:
             print("inviteReward:", e)
             return None
+    
+    #邀请奖励多线程
+    def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
+
+        create_thread = threading.Thread(target=self.registReward, args=(invitee.id, invitee.user_id))
+        invite_thread = threading.Thread(target=self.inviteReward, args=(invite, invitee))
+
+        create_thread.start()
+        invite_thread.start()
+
+        create_thread.join()
+        invite_thread.join()
+
+        createResult = RewardsTableInstance.get_rewards_by_id(invitee.id)
+        return createResult
         
     #关注推特
     def followXReward(self, user_id: str):

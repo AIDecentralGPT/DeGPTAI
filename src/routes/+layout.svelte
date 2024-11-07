@@ -58,7 +58,45 @@
 			await goto(`/error`);
 		}
 		
-		// 加载 FingerprintJS 库
+    // -----------------
+    theme.set(localStorage.theme);
+
+    mobile.set(window.innerWidth < BREAKPOINT);
+    const onResize = () => {
+      if (window.innerWidth < BREAKPOINT) {
+        mobile.set(true);
+      } else {
+        mobile.set(false);
+      }
+    };
+
+    window.addEventListener("resize", onResize);
+
+		document.getElementById('splash-screen')?.remove();
+
+
+    // 创建并插入Google Analytics的script标签
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2';
+    script.async = true;
+    document.head.appendChild(script);
+
+    // 初始化Google Analytics
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ELT9ER83T2');
+    };
+
+		return () => {
+			window.removeEventListener('resize', onResize);
+		};
+
+	}
+
+  async function checkLogin() {
+    // 加载 FingerprintJS 库
 		const fp = await FingerprintJS.load();
 		// 获取设备指纹
 		const result = await fp.get();
@@ -111,53 +149,10 @@
 
 		loaded = true;
 
-		localStorage.token = res.token;
+		localStorage.token = res?.token;
+  }
 
-
-
-    // -----------------
-
-    theme.set(localStorage.theme);
-
-    mobile.set(window.innerWidth < BREAKPOINT);
-    const onResize = () => {
-      if (window.innerWidth < BREAKPOINT) {
-        mobile.set(true);
-      } else {
-        mobile.set(false);
-      }
-    };
-
-    window.addEventListener("resize", onResize);
-
-		document.getElementById('splash-screen')?.remove();
-
-
-    // 创建并插入Google Analytics的script标签
-    const script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2';
-    script.async = true;
-    document.head.appendChild(script);
-
-    // 初始化Google Analytics
-    script.onload = () => {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-ELT9ER83T2');
-    };
-
-
-    // 获取当前区域
-    getLocationInfo();
-
-		return () => {
-			window.removeEventListener('resize', onResize);
-		};
-
-	}
-
-  function getLocationInfo() {
+  async function getLocationInfo() {
     getRegionInfo().then(data => {
       const regionDict = getRegionDict();
       if (data) {
@@ -183,8 +178,12 @@
 
 	onMount(async () => {
     let currentAddress = window.location.href;
+    await initData()   
     if (currentAddress.indexOf("userVerifying") < 0) {
-      await initData()
+      await checkLogin();
+      await getLocationInfo();
+    } else {
+      loaded = true;
     }
   });
 </script>

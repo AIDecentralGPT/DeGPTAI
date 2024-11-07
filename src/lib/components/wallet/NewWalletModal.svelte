@@ -264,8 +264,8 @@
         <div>
           {#if $user.user_no}
             <p class="mb-2">
-              <span> {$i18n.t("Congratulations on becoming the")}</span>
-              <!-- <strong>{$user.user_no}</strong> -->
+              <span> {$i18n.t("Congratulations on becoming")}</span>
+              <!-- <strong> the {$user.user_no}</strong> -->
               <span>
                 {$i18n.t("wallet registered user!")}
               </span>
