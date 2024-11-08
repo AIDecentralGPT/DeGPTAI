@@ -232,7 +232,6 @@ async def get_dbc_rate(user=Depends(get_verified_user)):
     # 查询dbc汇率 默认0.00198537(第一次查询的值)
     try:
         dbc_rate = RewardApiInstance.getDbcRate()
-        print("==============dbc-rate===============", dbc_rate)
         if dbc_rate is not None:
             return dbc_rate
         else:

@@ -5,6 +5,7 @@ import { goto } from "$app/navigation";
 import { getDbcBalance } from "./ether/dbc";
 import { getDgcBalance } from "./ether/dgc";
 import { DefaultCurrentWalletData } from "$lib/constants";
+import { getDbcRate } from "$lib/apis/wallet";
 
 // 处理登录逻辑（不管有没有token，触发 用初始化状态登录，即删掉token，然后指纹登录）
 export async function handleSigninAsIntialStatus() {
@@ -139,11 +140,6 @@ export async function updateWalletData(walletInfo: any) {
   const walletAdress = walletInfo?.address;
 
   await showWallet(walletInfo)
-
-  // 获取钱包面板数据
-
-  // const balance = await onGetBalance(pair?.address);
-  // const dlcBalance = await onGetDLCBalance(pair?.address);
 
   const dbcBalance = await getDbcBalance(walletAdress);
   const dgcBalance = await getDgcBalance(walletAdress);

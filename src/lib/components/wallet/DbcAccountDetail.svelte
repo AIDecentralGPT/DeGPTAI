@@ -27,26 +27,29 @@
 
   let updateWalletLoad = false;
 
-  onMount(async () => {
+  async function refreshDbcRate() {
     // 第一次获取
     if ($dbcRate?.time) {
-      getDbcRate(localStorage.token).then(result => {
-        if (result) {
-          dbcRate.set({rate: result, time: new Date().toLocaleString()})
-        }
-      }) 
-    } else {
       // 大于5分钟重新获取一次
       const diffInMilliseconds = Math.abs(new Date().getTime() - new Date($dbcRate.time).getTime());
-      if (diffInMilliseconds > 1000 * 60 * 5) {
+      if (diffInMilliseconds > 1000 * 60) {
         getDbcRate(localStorage.token).then(result => {
           if (result) {
             dbcRate.set({rate: result, time: new Date().toLocaleString()})
           }
         })
       }
-    }
-    
+    } else {
+      getDbcRate(localStorage.token).then(result => {
+        if (result) {
+          dbcRate.set({rate: result, time: new Date().toLocaleString()})
+        }
+      })  
+    }  
+  }
+
+  onMount(async () => {
+    await refreshDbcRate();
   });
 </script>
 
@@ -188,6 +191,7 @@
         on:click={ async () => {
           updateWalletLoad = true;
           await updateWalletData($currentWalletData?.walletInfo);
+          await refreshDbcRate();
           updateWalletLoad = false;
         }}>
           <svg class="{updateWalletLoad? 'animate-spin' : 'animate-none'}"

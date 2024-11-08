@@ -49,13 +49,14 @@
   }
 
   // 重新加载页面
-  function refreshBind() {
+  async function initBind() {
+    httpStatus = true;
     progress_finish = false;
     progress_status = [
       {'type': 1, 'progress': 0, 'flag': false, 'passedInfo': {'message': '', 'address': ''}},
       {'type': 2, 'progress': 0, 'flag': false}
     ];
-    facelivenesdsBind();
+    await facelivenesdsBind();
   }
 
   // 返回首页
@@ -67,7 +68,7 @@
     // 获取URL中的参数
     const params = new URLSearchParams(window.location.search);
     userId = params.get("user_id");
-    await facelivenesdsBind();
+    await initBind();
   });
 
 </script>
@@ -142,7 +143,7 @@
       {/if}
     {:else}
       <button class="w-full py-2 primaryButton text-gray-100 transition rounded-lg text-base"
-      on:click={refreshBind}>{$i18n.t('Refresh')}</button>
+      on:click={initBind}>{$i18n.t('Refresh')}</button>
     {/if} 
   </div>
   
