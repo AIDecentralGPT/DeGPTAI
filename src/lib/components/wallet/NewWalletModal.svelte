@@ -243,7 +243,7 @@
                   if (keystore) {
                     downloadKeyStore(keystore);
                     toast.success(
-                      "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key"
+                      $i18n.t("The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key")
                     );
                   }
                 }}
