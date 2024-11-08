@@ -1,4 +1,3 @@
-import { getContext } from 'svelte';
 import { ethers } from "ethers";
 import DGCABI from "./abi.json";
 import MODELABI from "./modelabi.json";

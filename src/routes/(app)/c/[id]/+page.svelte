@@ -15,7 +15,8 @@
 		config,
 		WEBUI_NAME,
 		tags as _tags,
-		showSidebar
+		showSidebar,
+		deApiBaseUrl
 	} from '$lib/stores';
 	import { copyToClipboard, splitStream, convertMessagesToHistory, addTextSlowly } from '$lib/utils';
 
@@ -106,7 +107,7 @@
 
 		
 		// _messages.pop()
-		console.log("messages = _messages;", _messages);
+		// console.log("messages = _messages;", _messages);
 
 		messages = _messages;
 	} else {
@@ -425,7 +426,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 								  })
 						})),
 				},
-				model?.urls?.[0]
+				$deApiBaseUrl?.url
 			);
 
 
@@ -808,6 +809,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					) + ' {{prompt}}',
 				titleModelId,
 				userPrompt,
+				$deApiBaseUrl?.url
 			);
 
 			return title;

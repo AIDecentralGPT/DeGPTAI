@@ -1,31 +1,19 @@
 import { ApiPromise, WsProvider, Keyring } from "@polkadot/api";
 import {
   cryptoWaitReady,
-  blake2AsHex,
   randomAsU8a,
   mnemonicGenerate,
-  mnemonicToMiniSecret,
 } from "@polkadot/util-crypto";
 import {
-  formatBalance,
   BN_TEN,
   isHex,
   stringToU8a,
   u8aToHex,
-  hexToU8a,
-  stringToHex,
-  hexToString,
 } from "@polkadot/util";
 import BN from "bn.js";
 import FileSaver from "file-saver";
-import { DefaultCurrentWalletData } from "$lib/constants";
-import {
-  showSettings,
-  showNewWalletModal,
-  showOpenWalletModal,
-  currentWalletData,
-} from "$lib/stores";
-	import { v4 as uuidv4 } from 'uuid';
+
+import { v4 as uuidv4 } from 'uuid';
 
 const node = {
   dbc: "wss://info1.dbcwallet.io", // 公链正式链

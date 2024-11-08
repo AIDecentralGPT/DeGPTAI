@@ -35,8 +35,8 @@
 	import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
-  import { handleSigninAsIntialStatus } from '$lib/utils/wallet/walletUtils';
-  import { getSessionUser } from '$lib/apis/auths';
+   	import { handleSigninAsIntialStatus } from '$lib/utils/wallet/walletUtils';
+   	import { getSessionUser } from '$lib/apis/auths';
 
 
 	

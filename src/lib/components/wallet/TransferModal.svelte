@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { afterUpdate, getContext } from "svelte";
+  import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
   import { currentWalletData } from "$lib/stores";
-  import { transferDBC, transferDLC } from "$lib/utils/wallet/dbc"; // 导入 transferDLC 方法
 
   import Modal from "../common/Modal.svelte";
   import { transferDbc } from "$lib/utils/wallet/ether/dbc";

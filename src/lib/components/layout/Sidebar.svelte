@@ -25,7 +25,7 @@
   } from "$lib/stores";
   import {
     getCurrentPair,
-  } from "./../../utils/wallet/dbc.js";
+  } from "$lib/utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
 
   const i18n = getContext("i18n");
@@ -136,14 +136,10 @@
 
   onMount(async () => {
     // 登录账号
-    const pair = await getCurrentPair();
+    const pair = getCurrentPair();
     console.log("sidebar组件获取pair ", pair);
     
     if (pair) {
-
-      // showWallet(pair)
-
-
       // 获取钱包面板数据
       updateWalletData(pair);
     }
@@ -160,47 +156,46 @@
     });
 
     showSidebar.set(window.innerWidth > BREAKPOINT);
-    await chats.set(await getChatList(localStorage.token));
-
-    let touchstart;
-    let touchend;
-
-    function checkDirection() {
-      const screenWidth = window.innerWidth;
-      const swipeDistance = Math.abs(touchend.screenX - touchstart.screenX);
-      if (touchstart.clientX < 40 && swipeDistance >= screenWidth / 8) {
-        if (touchend.screenX < touchstart.screenX) {
-          showSidebar.set(false);
-        }
-        if (touchend.screenX > touchstart.screenX) {
-          showSidebar.set(true);
-        }
-      }
-    }
-
-    const onTouchStart = (e) => {
-      touchstart = e.changedTouches[0];
-      console.log(touchstart.clientX);
-    };
-
-    const onTouchEnd = (e) => {
-      touchend = e.changedTouches[0];
-      checkDirection();
-    };
+    chats.set(await getChatList(localStorage.token));
 
     window.addEventListener("touchstart", onTouchStart);
     window.addEventListener("touchend", onTouchEnd);
 
-    return () => {
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchend", onTouchEnd);
-    };
+    // return () => {
+    //   window.removeEventListener("touchstart", onTouchStart);
+    //   window.removeEventListener("touchend", onTouchEnd);
+    // };
   });
 
+  let touchstart: any;
+  let touchend: any;
+
+  function checkDirection() {
+    const screenWidth = window.innerWidth;
+    const swipeDistance = Math.abs(touchend.screenX - touchstart.screenX);
+    if (touchstart.clientX < 40 && swipeDistance >= screenWidth / 8) {
+      if (touchend.screenX < touchstart.screenX) {
+        showSidebar.set(false);
+      }
+      if (touchend.screenX > touchstart.screenX) {
+        showSidebar.set(true);
+      }
+    }
+  }
+
+  const onTouchStart = (e: any) => {
+    touchstart = e.changedTouches[0];
+  };
+
+  const onTouchEnd = (e: any) => {
+    touchend = e.changedTouches[0];
+    checkDirection();
+  };
+
   // Helper function to fetch and add chat content to each chat
-  const enrichChatsWithContent = async (chatList) => {
-    const enrichedChats = await Promise.all(
-      chatList.map(async (chat) => {
+  const enrichChatsWithContent = async (chatList: any) => {
+    const enrichedChats: any = await Promise.all(
+      chatList.map(async (chat: any) => {
         const chatDetails = await getChatById(
           localStorage.token,
           chat.id
@@ -211,8 +206,7 @@
         return chat;
       })
     );
-
-    await chats.set(enrichedChats);
+    chats.set(enrichedChats);
   };
 
   const loadChat = async (id) => {
@@ -376,6 +370,7 @@
         href="/"
         draggable="false"
         on:click={async () => {
+          console.log("=====================");
           selectedChatId = null;
 
           await goto("/");

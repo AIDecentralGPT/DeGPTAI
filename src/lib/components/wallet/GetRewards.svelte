@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
-
   import { getModels as _getModels } from "$lib/utils";
+  import ModelDeSelector from "$lib/components/chat/ModelDeSelector.svelte";
 
   import {
     chats,
@@ -10,8 +10,7 @@
     showShareModal,
     showRewardsHistoryModal,
     showNewWalletModal,
-    showRewardDetailModal,
-    showUserVerifyModal,
+    showRewardDetailModal
   } from "$lib/stores";
 
   import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
@@ -68,9 +67,11 @@
 
 <div>
   <div class="flex gap-3 items-center my-4 flex-wrap justify-between mt-20">
-    <span class="text-xl ml-10"> {$i18n.t("Unlimited DGC Reward Task")} </span>
-  
-    <div class="flex fs-12">
+    <div class="flex flex-col">
+      <ModelDeSelector/>
+      <span class="text-xl ml-10 mt-1"> {$i18n.t("Unlimited DGC Reward Task")} </span>
+    </div>
+    <div class="flex fs-12 self-end">
       {#if $user?.id?.startsWith("0x")}
         <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"

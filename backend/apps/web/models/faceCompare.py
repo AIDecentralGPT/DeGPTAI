@@ -2,13 +2,12 @@ from alibabacloud_cloudauth_intl20220809.client import Client as CloudauthClient
 from alibabacloud_cloudauth_intl20220809 import models as cloudauth_models
 from alibabacloud_tea_openapi import models as open_api_models
 from apps.web.models.auths import ( MetaInfo )
+import time
 
-from config import ( SRC_LOG_LEVELS )
+from config import ( SRC_LOG_LEVELS, FACE_URL )
 import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
-
-faceVerifyUrl = "https://www.degpt.ai/userVerifying"
 
 class FaceCompare:
     # 配置请求认证信息
@@ -33,14 +32,14 @@ class FaceCompare:
     def initialize(self, metaInfo: MetaInfo):
         print("metaInfo", metaInfo)
         # 构建初始化请求
+        timestamp = time.time()
         request = cloudauth_models.InitializeRequest(
             merchant_biz_id="c2371516-d114-4872-8de0-b9d2a42f9f7c", #常态，唯一业务标识
             merchant_user_id=metaInfo['user_id'], #动态，用户id
             # meta_info="{\"apdid****mVer\":\"1.0.0\"}", # 动态，传入
             meta_info=str(metaInfo), # 动态，传入
-
-            # return_url="https://www.aliyun.com",
-            return_url= faceVerifyUrl + "?user_id=" + metaInfo['user_id'],
+            # return_url="https://www.aliyun.com",    
+            return_url= FACE_URL + "?user_id=" + metaInfo['user_id'] + "&timestamp=" + str(timestamp),
             # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
             security_level="02",
@@ -51,7 +50,7 @@ class FaceCompare:
 
         # 调用初始化API
         response = self.client.initialize(request)
-        print("initialize_response", response, faceVerifyUrl + "?user_id=" + metaInfo['user_id'])
+        print("initialize_response", response, FACE_URL + "?user_id=" + metaInfo['user_id'])
         return response
 
 

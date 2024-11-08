@@ -64,6 +64,12 @@ export const showCoinIntruModal = writable(false);
 export const showCoinIntruType = writable('dgc');
 export const dbcRate = writable({rate: 0.0002, time: ""});
 
+// 默认模型请求地址
+export const deApiBaseUrl = writable({
+	name: 'America', 
+	url: 'https://usa-chat.degpt.ai/api'
+});
+
 
 
 

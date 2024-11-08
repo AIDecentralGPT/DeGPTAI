@@ -1,11 +1,8 @@
 <script lang="ts">
+  import { getContext, tick } from "svelte";
   import { getChatList } from "$lib/apis/chats";
   import { chats } from '$lib/stores';
-  import { getContext, tick } from "svelte";
   import { toast } from "svelte-sonner";
-
-  import { getModels as _getModels } from "$lib/utils";
-
   import Modal from "../common/Modal.svelte";
   import { handleWalletSignIn, unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils.js";
   import { importWallet } from "$lib/utils/wallet/ether/utils.js";
@@ -18,27 +15,13 @@
   let showPassword = false;
   let password = "";
   let loading = false;
-  let passwordError = "";
-  let walletCreatedData = null; // 创建钱包返回的数据
-  let filesInputElement;
-  let inputFiles;
-  let encryptedJson = null; //
-  let privateKey = null;
+  let filesInputElement: any = null;
+  let inputFiles: any = null;
+  let encryptedJson: any = null; //
+  let privateKey: string = '';
   let openWalletType = "privateKey";
 
-  $: if (!show) {
-    (async () => {
-      console.log("show", show);
-
-      password = "";
-      privateKey = ""
-      showPassword = false;
-      inputFiles = null;
-      encryptedJson = null;
-    })();
-  }
-
-  async function uploadJson(file) {
+  const uploadJson = async (file: any) => {
     // const res = await importAccountFromKeystore(file);
     // console.log("uploadJson", res);
     // encryptedJson = res; // 获取json文件中的账户对
@@ -57,14 +40,22 @@
       }
     };
   }
+
+  $: if (!show) {(async () => {
+      console.log("show", show);
+
+      password = "";
+      privateKey = ""
+      showPassword = false;
+      inputFiles = null;
+      encryptedJson = null;
+    })();
+  }
 </script>
 
 <Modal bind:show>
   <!-- min-h-[400px] -->
-  <div
-    class="text-gray-700 dark:text-gray-100
-	"
-  >
+  <div class="text-gray-700 dark:text-gray-100">
     <div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
       <div class=" text-lg font-medium self-center">
         {$i18n.t("Open Wallet")}
@@ -116,7 +107,6 @@
       </div>
 
       {#if openWalletType === "privateKey"}
-
         <input
           bind:value={privateKey}
           type="text"
@@ -300,7 +290,7 @@
         {/if}
       {/if}
 
-    <div/>
+    </div>
   </div>
 </Modal>
 

@@ -75,7 +75,7 @@ export const walletconnectSendDGCTransaction = async (value: number) => {
     "dgcSignerContract",
     dgcSignerContract,
     value,
-    userInfo.id,
+    userInfo?.id,
     transactionParameters.to
   );
 
@@ -86,7 +86,7 @@ export const walletconnectSendDGCTransaction = async (value: number) => {
   const provider = new ethers.BrowserProvider(window.ethereum);
 
 
-  console.log( "address_from",userInfo.id, transactionParameters.to, DGC_TOKEN_CONTRACT_ADDRESS );
+  console.log( "address_from",userInfo?.id, transactionParameters.to, DGC_TOKEN_CONTRACT_ADDRESS );
 
   try {
     const result1 = await writeContract(config, {
@@ -94,7 +94,7 @@ export const walletconnectSendDGCTransaction = async (value: number) => {
       address: DGC_TOKEN_CONTRACT_ADDRESS,
       functionName: 'approve',
       args: [
-        userInfo.id,
+        userInfo?.id,
         BigInt(ethers.parseUnits(String(value), "ether").toString()),
       ],
     })
@@ -107,7 +107,7 @@ export const walletconnectSendDGCTransaction = async (value: number) => {
     address: DGC_TOKEN_CONTRACT_ADDRESS,
     functionName: 'transferFrom',
     args: [
-      userInfo.id,
+      userInfo?.id,
       transactionParameters.to,
       BigInt(ethers.parseUnits(String(value), "ether").toString()),
     ],
@@ -148,13 +148,11 @@ const dbcTestnet = {
   },
 };
 
-const chains = [
-  dbcTestnet,
-];
+const chains: any = [ dbcTestnet ];
 
 export const config = defaultWagmiConfig({
-  chains,
   projectId,
+  chains,
   metadata,
   transports: {
     [dbcTestnet.id]: http("https://rpc-testnet.dbcwallet.io"),

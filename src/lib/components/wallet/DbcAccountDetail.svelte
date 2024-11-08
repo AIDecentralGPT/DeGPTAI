@@ -15,9 +15,6 @@
     showCoinIntruType,
     dbcRate
   } from "$lib/stores";
-  import // dbcPriceOcw, exportAccountForKeystore, getCurrentPair, removePair
-
-  "$lib/utils/wallet/dbc";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getDbcRate } from "$lib/apis/wallet/index";
 
@@ -33,7 +30,7 @@
   async function refreshDbcRate() {
     // 第一次获取
     if ($dbcRate?.time) {
-      // 大于1分钟重新获取一次
+      // 大于5分钟重新获取一次
       const diffInMilliseconds = Math.abs(new Date().getTime() - new Date($dbcRate.time).getTime());
       if (diffInMilliseconds > 1000 * 60) {
         getDbcRate(localStorage.token).then(result => {
@@ -41,14 +38,14 @@
             dbcRate.set({rate: result, time: new Date().toLocaleString()})
           }
         })
-      }   
+      }
     } else {
       getDbcRate(localStorage.token).then(result => {
         if (result) {
           dbcRate.set({rate: result, time: new Date().toLocaleString()})
         }
-      })
-    }
+      })  
+    }  
   }
 
   onMount(async () => {
@@ -285,7 +282,8 @@
           window.open("https://www.drcpad.io/project?name=DeGPT", "_blank");
         }}
       >
-        {$i18n.t("Buy")}
+        <!-- {$i18n.t("Buy")} -->
+        {$i18n.t("Node Sale")}
       </button>
       <!-- <button
         class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"

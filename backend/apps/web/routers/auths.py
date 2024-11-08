@@ -624,35 +624,25 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
     if result:
         email_body = f"""
         <html>
-        <head>
-            <style>
-                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                h1 {{ color: #2c3e50; }}
-                .code {{ font-size: 24px; font-weight: bold; color: #3498db; }}
-                .footer {{ margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }}
-                .logo {{ width: 200px; height: auto; }}
-                .social-links {{ margin-top: 15px; }}
-                .social-links a {{ margin-right: 10px; color: #3498db; text-decoration: none; }}
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>Confirm Your Email Address</h1>
-                <p>Wallet Address: {user.id}</p>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 750px; margin: 0 auto; padding: 20px;">
+                <h1 style="color: #2c3e50;">Confirm Your Email Address</h1>
+                <p style="color:rgba(184, 142, 86, 1); font-size: 20px;">Wallet Address: {user.id}</p>
                 <p>Let's make sure this is the right email address for you. Please enter the following verification code to continue using DeGPT:</p>
-                <p class="code">{code}</p>
+                <p style="font-size: 24px; font-weight: bold; color: #3498db;">{code}</p>
                 <p>Verification codes expire after two hours.</p>
-                <p>Thank you.</p>
-                
-                <div class="footer">
-                    <p><strong>DecentralGPT = AI + DePIN + AGI</strong></p>
-                    <p>DecentralGPT supports a variety of open-source large language models. We are committed to building a safe, privacy-protective, democratic, transparent, open-source, and universally accessible AGI.</p>
-                    <img src="https://www.degpt.ai/static/email/telegram_icon_url.png" alt="DecentralGPT Logo" class="logo">
-                    <div class="social-links">
-                        <a href="https://www.decentralgpt.org/">DecentralGPT Website</a>
-                        <a href="https://x.com/DecentralGPT">Follow on Twitter</a>
-                        <a href="https://t.me/DecentralGPT">Join Telegram</a>
+                <p>Thank you.</p>  
+                <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <div style="display: flex; align-items: center;">
+                        <img src="https://www.degpt.ai/static/email/tip.png" style="width: 20px; margin-right: 5px;"/>
+                        <span>Small Tip:</span>
+                    </div>
+                    <p>If you're using a Gmail account and can't find the verification code in you Inbox, it's highly likely that it's been filtered into your SpamFolder.</p>
+                    <img src="https://www.degpt.ai/static/email/telegram_icon_url.png" alt="DecentralGPT Logo" style="width: 200px; height: auto;">
+                    <div style="margin-top: 15px;">
+                        <a style="margin-right: 10px; color: #3498db; text-decoration: none;" href="https://www.decentralgpt.org/">DecentralGPT Website</a>
+                        <a style="margin-right: 10px; color: #3498db; text-decoration: none;" href="https://x.com/DecentralGPT">Follow on Twitter</a>
+                        <a style="margin-right: 10px; color: #3498db; text-decoration: none;" href="https://t.me/DecentralGPT">Join Telegram</a>
                     </div>
                     <p>Best regards,<br>DecentralGPT Team</p>
                 </div>
@@ -660,8 +650,6 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
         </body>
         </html>
         """
-
-
         email_code_operations.send_email(email, "DeGPT Code", email_body)  # 发送邮件
         return {"message": "验证码已发送"}
     else:

@@ -349,51 +349,45 @@
       {#if current === 1}
         <div class="w-4/5 flex flex-col">
           <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
-
-          <div
-            class="mb-6 pt-0.5 flex justify-start w-full
-          flex-col gap-2 items-baseline md:items-center md:flex-row
-
-          "
-          >
-            <label
-              for="email"
-              class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
-              >Email:</label
+          <div class="flex flex-col mb-3">
+            <div
+              class="mb-1 pt-0.5 flex justify-start w-full flex-col gap-2 items-baseline md:items-center md:flex-row"
             >
-            <div class="flex items-center justify-around flex-1 space-x-4">
-              <input
-                aria-label="email"
-                id="emailInput"
-                type="email"
-                placeholder="Enter email address"
-                bind:value={email}
-                class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"
-              />
-              <button
-                class="w-[90px] px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex items-center justify-center {countdown >
-                0
-                  ? 'opacity-50 cursor-not-allowed'
-                  : ''}"
-                type="button"
-                on:click={sendVerificationCode}
-                disabled={countdown > 0}
+              <label
+                for="email"
+                class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
+                >Email:</label
               >
-                {#if countdown > 0}
-                  {countdown}s
-                {/if}
-                {#if countdown === 0}
-                  Send
-                {/if}
-              </button>
+              <div class="flex items-center justify-around flex-1 space-x-4">
+                <input
+                  aria-label="email"
+                  id="emailInput"
+                  type="email"
+                  placeholder="Enter email address"
+                  bind:value={email}
+                  class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"
+                />
+                <button
+                  class="w-[90px] px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex items-center justify-center {countdown >
+                  0
+                    ? 'opacity-50 cursor-not-allowed'
+                    : ''}"
+                  type="button"
+                  on:click={sendVerificationCode}
+                  disabled={countdown > 0}
+                >
+                  {#if countdown > 0}
+                    {countdown}s
+                  {/if}
+                  {#if countdown === 0}
+                    Send
+                  {/if}
+                </button>
+              </div>
             </div>
           </div>
-          <div
-            class="mb-6 pt-0.5 w-full flex justify-start
           
-          flex-col gap-2 items-baseline md:items-center md:flex-row
-          
-          "
+          <div class="mb-6 pt-0.5 w-full flex justify-start flex-col gap-2 items-baseline md:items-center md:flex-row"
           >
             <label
               for="code"

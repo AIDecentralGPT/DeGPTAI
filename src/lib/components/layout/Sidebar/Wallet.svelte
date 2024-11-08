@@ -6,9 +6,11 @@
     showPriceModal,
     showLoginInfoModal,
     user,
+    mobile
   } from "$lib/stores";
   import DbcAccountDetail from "$lib/components/wallet/DbcAccountDetail.svelte";
   import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
+  import { goto } from "$app/navigation";
   
   const i18n = getContext("i18n");
 
@@ -21,15 +23,27 @@
   <hr class=" dark:border-gray-800 my-1 p-0" />
 
   {#if $showLoginInfoModal}
-    <div class="flex flex-col gap-2 px-3">
+    <div class="flex flex-row gap-2 px-3">
       <!-- 升级计划 -->
       <button
         on:click={() => {
           $showPriceModal = true;
         }}
-        class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
+        class="w-full px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
       >
         <span class="relative">{$i18n.t("Upgrade Plan")}</span>
+      </button>
+      <button class="w-[50px] px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
+        on:click={async () => {
+          await goto("/");
+          const newChatButton = document.getElementById("new-chat-button");
+          setTimeout(() => {
+            newChatButton?.click();
+          }, 0);
+        }}>
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+          <path d="M786.88711111 644.43733333c45.51111111-58.70933333 72.81777778-132.43733333 72.81777778-212.53688888 0-192.05688889-155.648-347.70488889-347.70488889-347.7048889s-347.70488889 155.648-347.70488889 347.7048889c0 80.09955555 27.30666667 153.37244445 72.81777778 212.53688888L84.19555555 797.80977778h142.44977778v142.44977777l177.49333334-177.49333333c33.67822222 10.92266667 70.08711111 17.29422222 107.40622222 17.29422223s73.728-5.91644445 107.40622222-17.29422223l177.49333334 177.49333333v-142.44977777H939.80444445l-152.91733334-153.37244445z m-162.92977778-66.90133333L512 519.28177778l-111.95733333 58.70933333 21.39022222-124.70044444-91.02222222-88.29155556 125.15555555-18.20444444 55.97866667-113.77777778 55.97866666 113.77777778 125.15555556 18.20444444-90.112 88.29155556 21.39022222 124.24533333z" fill="#ffffff"></path>
+        </svg>
       </button>
     </div>
   {/if}
