@@ -29,6 +29,7 @@
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
   import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
+  import { getLanguages } from "$lib/i18n/index"
 
   setContext("i18n", i18n);
   let loaded = false;
@@ -152,7 +153,7 @@
 		localStorage.token = res?.token;
   }
 
-  async function getLocationInfo() {
+  async function intiLocationInfo() {
     getRegionInfo().then(data => {
       const regionDict = getRegionDict();
       if (data) {
@@ -176,12 +177,22 @@
     })
   }
 
+  async function initLanguage() {
+    let browserLanguage = navigator.language;
+    const languages = await getLanguages();
+    let localLanguage = languages.filter(item => item.code == browserLanguage);
+    if (localLanguage.length > 0) {
+      $i18n.changeLanguage(browserLanguage);
+    }
+  }
+
 	onMount(async () => {
     let currentAddress = window.location.href;
-    await initData()   
+    await initData();
+    await initLanguage();
     if (currentAddress.indexOf("userVerifying") < 0) {
       await checkLogin();
-      await getLocationInfo();
+      await intiLocationInfo();
     } else {
       loaded = true;
     }

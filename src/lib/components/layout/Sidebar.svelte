@@ -370,6 +370,7 @@
         href="/"
         draggable="false"
         on:click={async () => {
+          console.log("=====================");
           selectedChatId = null;
 
           await goto("/");
