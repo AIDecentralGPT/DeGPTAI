@@ -4,6 +4,7 @@
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
   import Selector from "./ModelSelector/Selector.svelte";
+  import SelectorTip from "./ModelSelector/SelectorTip.svelte";
 
   const i18n = getContext("i18n");
 
@@ -69,9 +70,22 @@
 </div>
 
 {#if showSetDefault && !$mobile}
-  <div class="text-left mt-0.5 ml-1 text-[0.7rem] text-gray-500">
-    <button on:click={saveDefaultModel}> {$i18n.t("Set as default")}</button>
-  </div>
+  <SelectorTip 
+    items={$models
+      .filter((model) => model.name !== "hr")
+      .map((model) => ({
+        value: model.id,
+        label: model.name,
+        info: model,
+      }))}
+    bind:selectedList={selectedModels}
+    on:childEvent={updateSelList}
+  />
+  <!-- <div class="text-left mt-0.5 ml-1 text-[0.7rem] text-gray-500">
+    <button> 
+      {$i18n.t("Click to select more models")}
+    </button>
+  </div> -->
 {/if}
 
 

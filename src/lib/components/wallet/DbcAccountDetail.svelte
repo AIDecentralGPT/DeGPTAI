@@ -282,7 +282,8 @@
           window.open("https://www.drcpad.io/project?name=DeGPT", "_blank");
         }}
       >
-        {$i18n.t("Buy")}
+        <!-- {$i18n.t("Buy")} -->
+        {$i18n.t("Node Sale")}
       </button>
       <!-- <button
         class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
