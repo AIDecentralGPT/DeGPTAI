@@ -32,13 +32,14 @@ class FaceCompare:
     def initialize(self, metaInfo: MetaInfo):
         print("metaInfo", metaInfo)
         # 构建初始化请求
+        timestame = time.time()
         request = cloudauth_models.InitializeRequest(
             merchant_biz_id="c2371516-d114-4872-8de0-b9d2a42f9f7c", #常态，唯一业务标识
             merchant_user_id=metaInfo['user_id'], #动态，用户id
             # meta_info="{\"apdid****mVer\":\"1.0.0\"}", # 动态，传入
             meta_info=str(metaInfo), # 动态，传入
             # return_url="https://www.aliyun.com",    
-            return_url= FACE_URL + "?user_id=" + metaInfo['user_id'] + "&timestamp=" + time.time(),
+            return_url= FACE_URL + "?user_id=" + metaInfo['user_id'] + "&timestamp=" + str(timestame),
             # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
             security_level="02",
