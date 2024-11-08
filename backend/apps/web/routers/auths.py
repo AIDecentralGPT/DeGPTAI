@@ -934,8 +934,8 @@ def update_rewards(user_id: str):
                     if reward.reward_type == 'invite':
                         if reward.show:
                             inviteReward = reward
-                        else:
-                            inviteeReward = reward
+                    else:
+                        inviteeReward = reward
                 ## 领取邀请奖励
                 RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
         else:
@@ -951,7 +951,6 @@ def thread_face_check(user_id: str):
     try:
         # 人脸认证
         passedInfo = faceliveness_check_for_ws(user_id)
-        print("==================================", passedInfo)
         asyncio.run(manager.broadcast(json.dumps(passedInfo), user_id))
         
         passed = passedInfo['passed']
