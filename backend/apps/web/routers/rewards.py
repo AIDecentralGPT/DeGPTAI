@@ -222,6 +222,6 @@ async def get_dbc_rate(user=Depends(get_verified_user)):
         if dbc_rate is not None:
             return dbc_rate
         else:
-            return 0.00198537
+            return 0.0002
     except Exception as e:
-        return 0.00198537
+        return 0.0002

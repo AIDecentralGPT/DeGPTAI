@@ -69,23 +69,16 @@
   {/each}
 </div>
 
-{#if showSetDefault && !$mobile}
-  <SelectorTip 
-    items={$models
-      .filter((model) => model.name !== "hr")
-      .map((model) => ({
-        value: model.id,
-        label: model.name,
-        info: model,
-      }))}
-    bind:selectedList={selectedModels}
-    on:childEvent={updateSelList}
-  />
-  <!-- <div class="text-left mt-0.5 ml-1 text-[0.7rem] text-gray-500">
-    <button> 
-      {$i18n.t("Click to select more models")}
-    </button>
-  </div> -->
-{/if}
+<SelectorTip 
+  items={$models
+    .filter((model) => model.name !== "hr")
+    .map((model) => ({
+      value: model.id,
+      label: model.name,
+      info: model,
+    }))}
+  bind:selectedList={selectedModels}
+  on:childEvent={updateSelList}
+/>
 
 
