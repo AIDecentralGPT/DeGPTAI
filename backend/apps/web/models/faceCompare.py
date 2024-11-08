@@ -2,6 +2,7 @@ from alibabacloud_cloudauth_intl20220809.client import Client as CloudauthClient
 from alibabacloud_cloudauth_intl20220809 import models as cloudauth_models
 from alibabacloud_tea_openapi import models as open_api_models
 from apps.web.models.auths import ( MetaInfo )
+import time
 
 from config import ( SRC_LOG_LEVELS, FACE_URL )
 import logging
@@ -38,7 +39,8 @@ class FaceCompare:
             meta_info=str(metaInfo), # 动态，传入
 
             # return_url="https://www.aliyun.com",
-            return_url= FACE_URL + "?user_id=" + metaInfo['user_id'],
+            timestamp = time.time()
+            return_url= FACE_URL + "?user_id=" + metaInfo['user_id'] + "&timestamp=" + timestamp,
             # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
             security_level="02",
