@@ -2,6 +2,7 @@
   import { onMount, getContext } from 'svelte';
   import { WEBUI_API_BASE_URL } from '$lib/constants';
   import { copyToClipboard } from "$lib/utils";
+  import { toast } from "svelte-sonner";
   import { goto } from '$app/navigation';
   const i18n = getContext('i18n');
   
@@ -71,7 +72,7 @@
 
 </script>
 
-<div class="flex flex-col justify-center items-center mt-40">
+<div class="flex flex-col justify-center items-center mt-20">
   <img class="size-20" src='./static/logo.png' alt="logo"/>
   {#if progress_finish}
     <span class="font-bold text-3xl mt-2">{ $i18n.t("AUTHENTICATED") }</span>
@@ -133,12 +134,20 @@
     </div>
   </div>
   
-  {#if !httpStatus}
-    <button class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg text-base mt-6"
+  <div class="w-full px-2 py-5">
+    {#if httpStatus}
+      {#if progress_finish}
+        <button class="w-full py-2 primaryButton text-gray-100 transition rounded-lg text-base"
+          on:click={gotoHome}>{$i18n.t('Home')}</button>
+      {/if}
+    {:else}
+      <button class="w-full py-2 primaryButton text-gray-100 transition rounded-lg text-base"
       on:click={refreshBind}>{$i18n.t('Refresh')}</button>
-  {/if}
+    {/if} 
+  </div>
+  
 
-  <div class="w-full text-left px-2 mt-6">
+  <div class="w-full text-left px-2">
     {#if progress_finish}
       <span class="text-sm ml-1">{ $i18n.t("AUTHENTICATION RESULT") }:</span>
       <div class="flex flex-col border border-gray-300 rounded-lg p-2">
@@ -147,7 +156,7 @@
         {:else}
           <span class="text-sm">{ $i18n.t("INFO") }: { $i18n.t(progress_status[0].passedInfo?.message) }</span>
           {#if progress_status[0]?.passedInfo?.address}
-            <div class="flex">
+            <div class="flex items-center">
               <span class="w-[300px] text-sm text-ellipsis overflow-hidden whitespace-nowrap">{ $i18n.t("Wallet Adress") }: { progress_status[0].passedInfo?.address }</span>
               <button
                 on:click={async () => {

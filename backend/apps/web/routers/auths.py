@@ -9,6 +9,7 @@ import re
 import uuid
 import time
 import threading
+import asyncio
 
 from apps.web.models.email_codes import (
     email_code_operations,
@@ -950,8 +951,9 @@ def thread_face_check(user_id: str):
     try:
         # 人脸认证
         passedInfo = faceliveness_check_for_ws(user_id)
-        manager.broadcast(json.dumps(passedInfo), user_id)
-
+        print("==================================", passedInfo)
+        asyncio.run(manager.broadcast(json.dumps(passedInfo), user_id))
+        
         passed = passedInfo['passed']
         progress_status[0]['flag'] = passed
         progress_status[0]['progress'] = 100
@@ -968,8 +970,10 @@ def thread_face_check(user_id: str):
             progress_status[1]['flag'] = False
             progress_status[1]['progress'] = 100
             progress_step['step'] = 2
-
+        
+        print("================kyc-end==================")
     except Exception as e:
+        print("==============================", e)
         progress_step['step'] = 3
 
 # 人脸识别校验
