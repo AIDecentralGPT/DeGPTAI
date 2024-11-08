@@ -146,11 +146,11 @@ class RewardApi:
     # 获取dbc汇率
     def getDbcRate(self):
         try:
-            rul = "https://api.coingecko.com/api/v3/simple/price?ids=deepbrain-chain&vs_currencies=usd"
+            rul = "https://dbchaininfo.congtu.cloud/query/dbc_info?language=CN"
             response = requests.get(rul)
             respnose_json = json.loads(response.text)
             print(respnose_json)
-            return respnose_json['deepbrain-chain']['usd']
+            return respnose_json['content']['dbc_price']
         except Exception as e:
             return None
             

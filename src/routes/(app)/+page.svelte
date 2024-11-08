@@ -194,8 +194,8 @@
       ..._settings,
     });
 
-    const chatInput = document.getElementById("chat-textarea");
-    setTimeout(() => chatInput?.focus(), 0);
+    // const chatInput = document.getElementById("chat-textarea");
+    // setTimeout(() => chatInput?.focus(), 0);
   };
 
   const scrollToBottom = async () => {

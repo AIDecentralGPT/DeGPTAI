@@ -9,7 +9,6 @@
   } from "@wagmi/core";
   import {
     handleWalletSignIn,
-    provider,
     signOut,
   } from "$lib/utils/wallet/ether/utils";
   import { threesideAccount, user } from "$lib/stores";
@@ -21,23 +20,12 @@
   const walletBalance = writable(0);
   let modal: any = null;
 
-  const getBalance = async (address: string) => {
-    try {
-      //const balance = await provider.getBalance(address);
-      // console.log("balance", balance);
-      // walletBalance.set(ethers.formatEther(balance));
-    } catch (error) {
-      console.error("Get Balance Error:", error);
-    }
-  };
-
   onMount(() => {
     watchConnections(config, {
       async onChange(data) {
         if (data.length) {
           const address = data[0].accounts[0];
           walletAddress.set(address);
-          await getBalance(address);
         } else {
           walletAddress.set("");
           walletBalance.set(0);
@@ -57,18 +45,15 @@
     config.state.connections.forEach((item) => {
       config.state.connections.delete(item.connector.uid);
     });
-    console.log("==============config.state.connections================", config.state.connections);
   }
 
   watchAccount(config, {
     async onChange() {
       let account = getAccount(config);
-      console.log("=============scan wallet================", account);
       $threesideAccount = account;
 
       if (account.status === "connected") {
         let provider = account?.connector?.getProvider();
-        console.log("===============provider==============", provider)
         if (!$user?.id?.startsWith("0x")) {
           handleWalletSignIn({
             walletImported: {
