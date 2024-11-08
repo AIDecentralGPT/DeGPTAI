@@ -668,6 +668,7 @@
   "Please select at least one model.": "กรุณาเลือกแบบจำลองอย่างน้อยหนึ่งแบบ",
   "You can select up to four models at most.": "คุณสามารถเลือกได้สูงสุดสี่แบบจำลอง",
   "Your friend not complete the KYC verification.": "เพื่อนของคุณยังไม่เสร็จสิ้นการตรวจสอบ KYC.",
+  "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore ได้ถูกดาวน์โหลดโดยอัตโนมัติ. หากจำเป็น คุณสามารถดาวน์โหลด JSON แบบมืออาชีพหรือคัดลอกคีย์ส่วนตัวได้.",
   "I. New User Creation Reward": "I. ค่าตอบแทนสำหรับการสร้างผู้ใช้ใหม่",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "หลังจากเสร็จสิ้นการยืนยันผู้ใช้ใหม่แล้ว รับค่าตอบแทน <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC",
   "II. Referral Reward": "II. ค่าตอบแทนสำหรับการแนะนำ",
