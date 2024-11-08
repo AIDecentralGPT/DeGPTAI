@@ -107,8 +107,8 @@ class RewardApi:
     #邀请奖励多线程
     def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
 
-        create_thread = threading.Thread(target=self.registReward, args=(invitee.id, invitee.user_id))
-        invite_thread = threading.Thread(target=self.inviteReward, args=(invite, invitee))
+        create_thread = threading.Thread(target=self.registReward, kwargs={"reward_id": invitee.id, "user_id": invitee.user_id})
+        invite_thread = threading.Thread(target=self.inviteReward, kwargs={"invite": invite, "invitee": invitee})
 
         create_thread.start()
         invite_thread.start()
