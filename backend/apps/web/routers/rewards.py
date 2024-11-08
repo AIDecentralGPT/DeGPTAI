@@ -192,9 +192,9 @@ async def invite_check(request: RewardsRequest, user=Depends(get_verified_user))
                 inviteResult = RewardApiInstance.inviteReward(inviteReward, inviteeReward)
                 return {"ok": True, "data": inviteResult}
             else:
-                raise HTTPException(status_code=400, detail="Your friend complete the KYC verification to convert your points into cash") 
+                raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.") 
     else: 
-        raise HTTPException(status_code=400, detail="Your friend complete the KYC verification to convert your points into cash")     
+        raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.")     
     
 @router.get("/reward_count")
 async def get_reward_count(user=Depends(get_verified_user)):

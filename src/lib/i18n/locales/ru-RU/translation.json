@@ -665,6 +665,7 @@
   "Optimize code writing": "Оптимизировать написание кода",
   "Please select at least one model.": "Пожалуйста, выберите хотя бы один модель.",
   "You can select up to four models at most.": "Вы можете выбрать до четырех моделей максимум.",
+  "Your friend not complete the KYC verification.": "Ваш друг не завершил проверку KYC.",
   "I. New User Creation Reward": "I. Премия за создание нового пользователя",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "После завершения аутентификации нового пользователя получите премию в <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Премия за рекомендацию",
