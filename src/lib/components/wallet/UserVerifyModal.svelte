@@ -414,7 +414,7 @@
             >
               <div class="flex flex-col items-center">
                 {#if qrcodeUrl}
-                  <p class="text-center text-gray-100">Please use your mobile phone to scan the QR code below for identity verification</p>
+                  <p class="text-center text-gray-100">{$i18n.t("Please use your mobile phone to scan the QR code below for identity verification")}</p>
                   <div class="flex justify-center items-center w-[200px] h-[180px] m-2 pos-rel">
                     <img class="w-[160px]" src={qrcodeUrl} alt="" />
                     {#if checkQrResult}
@@ -444,7 +444,7 @@
                         {$i18n.t("Your face has been used")}
                       </div>
                       <div class="flex">
-                        <p class="w-[300px] dark:text-gray-500 dark:bg-gray-650 text-ellipsis overflow-hidden whitespace-nowrap">Wallet Adress: { address }</p>
+                        <p class="w-[300px] dark:text-gray-500 dark:bg-gray-650 text-ellipsis overflow-hidden whitespace-nowrap">{$i18n.t("Wallet Adress")}: { address }</p>
                         <button
                           on:click={async () => {
                             const res = await copyToClipboard(address);
@@ -493,7 +493,7 @@
                         <span>{$i18n.t(message)}<span>
                       </div>
                     {:else}
-                      <p class="text-center text-gray-100">QR code is valid for 5 minutes</p>
+                      <p class="text-center text-gray-100">{$i18n.t("QR code is valid for 5 minutes")}</p>
                       <div class="flex flex-row items-center timesty">
                         <svg xmlns="http://www.w3.org/2000/svg"
                           class="icon" 
@@ -516,7 +516,7 @@
             </div>
           {/if}
           {#if isMobile}
-            <p>Preparing to switch to the face verification page</p>
+            <p>{$i18n.t("Preparing to switch to the face verification page")}</p>
           {/if}
 
           <!-- <button on:click={getFaceRes}> 
