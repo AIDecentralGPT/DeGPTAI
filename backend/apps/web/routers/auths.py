@@ -624,6 +624,9 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
     if result:
         email_body = f"""
         <html>
+        <head>
+            <meta charset="UTF-8">
+        </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <div style="max-width: 750px; margin: 0 auto; padding: 20px;">
                 <h1 style="color: #2c3e50;">Confirm Your Email Address</h1>
