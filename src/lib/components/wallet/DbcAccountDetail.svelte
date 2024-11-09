@@ -255,7 +255,7 @@
         </div>
       </div>
       <div class="flex flex-row opacity-50 leading-normal text-xs">
-        1DBC={floorToFixed($dbcRate?.rate, 4)}u
+        1DBC={floorToFixed($dbcRate?.rate, 6)}u
         <button class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
           on:click={ async () => {
             $showCoinIntruModal = true;
