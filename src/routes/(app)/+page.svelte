@@ -56,7 +56,7 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
-  let inviter = "";
+  let inviter: any = "";
 
   const i18n = getContext("i18n");
 
@@ -133,7 +133,6 @@
   onMount(async () => {
     const queryParams = new URLSearchParams($page.url.search);
     inviter = queryParams.get("inviter");
-    console.log("inviter", inviter);
     if (inviter) {
       $showNewWalletModal = true;
       $inviterId = inviter;
@@ -476,9 +475,6 @@
       );
 
       // console.log("res controller", res, controller);
-
-
-
 
       // console.log(
       //   "firstResAlready responseMessageId",

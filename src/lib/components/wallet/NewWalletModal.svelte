@@ -25,12 +25,12 @@
   let showPassword = false;
   let password = "";
   let passwordError = "";
-  let walletCreatedData = null; // 创建钱包返回的数据
+  let walletCreatedData: any = null; // 创建钱包返回的数据
   let keystoreJson: string | null = null;
 
   function validatePassword() {
     if (password.length < 8) {
-      passwordError = "Password must be at least 8 characters long.";
+      passwordError = $i18n.t("Password must be at least 8 characters long.");
     } else {
       passwordError = "";
     }
@@ -52,7 +52,8 @@
   >
     <div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
       <div class=" text-lg font-medium self-center">
-        {$i18n.t("NEW DBC WALLET")}
+        <!-- {$i18n.t("NEW DBC WALLET")} -->
+        {$i18n.t("NEW DGC WALLET")}
       </div>
 
       <!-- X 关闭键 -->
@@ -164,16 +165,17 @@
                 <p class="text-red-500 text-sm mt-1">{passwordError}</p>
               {/if}
             </div>
-
-            <input
-              bind:value={$inviterId}
-              type="text"
-              class="mt-4 px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-              placeholder={$i18n.t("Enter the inviter id here")}
-              autocomplete="current-password"
-              on:input={validatePassword}
-              required
-            />
+            {#if !$inviterId}
+              <input
+                bind:value={$inviterId}
+                type="text"
+                class="mt-4 px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+                placeholder={$i18n.t("Enter the inviter id here")}
+                autocomplete="current-password"
+                on:input={validatePassword}
+                required
+              />
+            {/if}
           </div>
 
           <div class="flex justify-between my-4">

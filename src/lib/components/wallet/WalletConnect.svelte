@@ -7,10 +7,7 @@
     getAccount,
     watchAccount
   } from "@wagmi/core";
-  import {
-    handleWalletSignIn,
-    signOut,
-  } from "$lib/utils/wallet/ether/utils";
+  import { handleWalletSignIn, signOut } from "$lib/utils/wallet/ether/utils";
   import { threesideAccount, user } from "$lib/stores";
   import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   const i18n = getContext("i18n");
@@ -53,7 +50,6 @@
       $threesideAccount = account;
 
       if (account.status === "connected") {
-        let provider = account?.connector?.getProvider();
         if (!$user?.id?.startsWith("0x")) {
           handleWalletSignIn({
             walletImported: {
