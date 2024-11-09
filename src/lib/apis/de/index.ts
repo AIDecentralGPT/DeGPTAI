@@ -72,7 +72,7 @@ export const getDeModels = async (token: string = "") => {
   }));
 };
 
-// 和De的模型对话
+// 和De的模型对话给提问内容添加一个简语
 export const generateDeOpenAIChatCompletion = async (
   token: string = "",
   body: object,
@@ -108,6 +108,7 @@ export const generateDeOpenAIChatCompletion = async (
   return [res, controller];
 };
 
+// 型对话给提问内容添加一个简语
 export const generateDeTitle = async (
   token: string = "",
   template: string,
@@ -157,8 +158,7 @@ export const generateDeTitle = async (
   if (error) {
     throw error;
   }
-
   return (
-    res?.data?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
+    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
   );
 };
