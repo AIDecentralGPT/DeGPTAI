@@ -8,14 +8,14 @@
     watchAccount
   } from "@wagmi/core";
   import { handleWalletSignIn, signOut } from "$lib/utils/wallet/ether/utils";
-  import { threesideAccount, user } from "$lib/stores";
+  import { threesideAccount, user, theme } from "$lib/stores";
   import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   const i18n = getContext("i18n");
 
   // 定义存储
   const walletAddress = writable("");
   const walletBalance = writable(0);
-  let modal: any = null;
+  let modal: any = {options: {themeMode: 'dark'}};
 
   onMount(() => {
     watchConnections(config, {
@@ -31,6 +31,7 @@
     });
 
     modal = createWeb3Modal({
+      themeMode: 'dark',
       wagmiConfig: config,
       projectId,
       enableAnalytics: true,
@@ -42,6 +43,14 @@
     config.state.connections.forEach((item) => {
       config.state.connections.delete(item.connector.uid);
     });
+  }
+
+  function changeModalTheme() {
+    if ($theme === 'system' || $theme === 'light') {
+      modal.setThemeMode('light');
+    } else {
+      modal.setThemeMode('dark');
+    }
   }
 
   watchAccount(config, {
@@ -70,6 +79,7 @@
       signOut();
     } else {
       clearConnector();
+      changeModalTheme();
       modal.open();
     }
   }
@@ -119,7 +129,5 @@
     ) !important;
     --wui-gray-glass-010: midnightblue !important;
     --wui-border-radius-m: 12px !important;
-  }
-  .walletConnect {
   }
 </style>
