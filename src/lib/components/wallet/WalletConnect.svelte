@@ -17,14 +17,6 @@
   const walletBalance = writable(0);
   let modal: any = {options: {themeMode: 'dark'}};
 
-  $: {
-    if ($theme === 'system' || $theme === 'light') {
-      modal.options.themeMode = 'light';
-    } else {
-      modal.options.themeMode = 'dark';
-    }
-  }
-
   onMount(() => {
     watchConnections(config, {
       async onChange(data) {
@@ -53,6 +45,14 @@
     });
   }
 
+  function changeModalTheme() {
+    if ($theme === 'system' || $theme === 'light') {
+      modal.setThemeMode('light');
+    } else {
+      modal.setThemeMode('dark');
+    }
+  }
+
   watchAccount(config, {
     async onChange() {
       let account = getAccount(config);
@@ -79,7 +79,7 @@
       signOut();
     } else {
       clearConnector();
-      console.log("=====================", modal);
+      changeModalTheme();
       modal.open();
     }
   }
