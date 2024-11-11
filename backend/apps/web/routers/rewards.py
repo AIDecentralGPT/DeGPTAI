@@ -67,10 +67,10 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
             raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
         
         # 判断领取那种奖励
-        inviteReward = None;
-        inviteeReward = None;
         if rewards_history.invitee is not None:
-            # 获取奖励记录校验是那种奖励
+            # 赋值奖励信息
+            inviteReward = None;
+            inviteeReward = None;
             rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
             if len(rewards) != 2:
                 raise HTTPException(status_code=500, detail="Failed to received reward")       
@@ -80,23 +80,20 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
                         inviteReward = reward
                 else:
                     inviteeReward = reward
-        else:
-            inviteeReward = rewards_history
-
-        if inviteReward is None:
-            # 领取注册奖励
-            result = RewardApiInstance.registReward(inviteeReward.id, inviteeReward.user_id)
+            # 领取邀请奖励
+            result = RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward)
             if result is not None:
                 return {"ok": True, "data": result}
             else:
                 raise HTTPException(status_code=500, detail="Failed to received reward")
         else:
-            # 领取邀请奖励
-            result = RewardApiInstance.inviteReward(inviteReward, inviteeReward)
+            # 领取注册奖励
+            result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
             if result is not None:
                 return {"ok": True, "data": result}
             else:
-                raise HTTPException(status_code=500, detail="Failed to received reward")                  
+                raise HTTPException(status_code=500, detail="Failed to received reward")
+            
     except Exception as e:
         print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Failed to received reward")
