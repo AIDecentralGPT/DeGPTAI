@@ -81,7 +81,7 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
                 else:
                     inviteeReward = reward
             # 领取邀请奖励
-            result = RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward)
+            result = RewardApiInstance.inviteReward(inviteReward, inviteeReward)
             if result is not None:
                 return {"ok": True, "data": result}
             else:
