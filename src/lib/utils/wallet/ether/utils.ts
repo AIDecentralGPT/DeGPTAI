@@ -7,6 +7,7 @@ import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
 import { walletconnectSignMessage } from "../walletconnect/index";
+import { Base64 } from 'js-base64';
 
 // 定义 RPC URL 和 Chain ID
 const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
@@ -266,19 +267,26 @@ async function handleWalletSignIn({
   if (address_type === "threeSide") {
     // Example: Generate a random message of 32 bytes (256 bits)
     // const signature = threeSideSignature;
-    const signature = await walletconnectSignMessage(randomMessage);
-
-    // 将消息转换为十六进制字符串
-    const messageHex = ethers.hexlify(ethers.toUtf8Bytes(randomMessage));
-    console.log(
-      "第三方登录请求数据",
-      {
-        wallet: walletImported?.address,
-        signature: signature,
-        hash: messageHex,
-      }
-    );
-
+    // const signature = await walletconnectSignMessage(randomMessage);
+    // // 将消息转换为十六进制字符串
+    // const messageHex = ethers.hexlify(ethers.toUtf8Bytes(randomMessage));
+    // console.log(
+    //   "第三方登录请求数据",
+    //   {
+    //     wallet: walletImported?.address,
+    //     signature: signature,
+    //     hash: messageHex,
+    //   }
+    // );
+    
+    // 采用base64加密传输
+    let combinedText = '';
+    for (let i = 0; i < randomMessage.length; i++) {
+      let charCode = randomMessage.charCodeAt(i);
+      let vectorCharCode = walletImported?.address.charCodeAt(i % walletImported?.address.length);
+      combinedText += String.fromCharCode((charCode + vectorCharCode) % 256);
+    }
+    const signature = Base64.encode(combinedText);
     if (signature) {
       walletSignInResult = await walletSignIn({
         address: walletImported?.address,

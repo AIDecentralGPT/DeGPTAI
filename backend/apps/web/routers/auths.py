@@ -10,6 +10,7 @@ import uuid
 import time
 import threading
 import asyncio
+import base64
 
 from apps.web.models.email_codes import (
     email_code_operations,
@@ -235,21 +236,33 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
 
         if address_type == 'threeSide':
             sign_is_valid = False
-            if form_data.nonce == signature:
-                sign_is_valid = True
-            else:
-                # 将签名解码为字节
-                signature_bytes = Web3.to_bytes(hexstr=signature)
-                print("message_text", message)
+            # if form_data.nonce == signature:
+            #     sign_is_valid = True
+            # else:
+            # 将签名解码为字节
+            # signature_bytes = Web3.to_bytes(hexstr=signature)
+            # print("message_text", message)
 
-                # 使用 web3.py 的 eth.account.recover_message 方法验证签名
-                recovered_address = w3.eth.account.recover_message(encode_defunct(text=message), signature=signature_bytes)
+            # 使用 web3.py 的 eth.account.recover_message 方法验证签名
+            # recovered_address = w3.eth.account.recover_message(encode_defunct(text=message), signature=signature_bytes)
 
-                # recovered_address = w3.eth.account.recover_message(message_text=message, signature=signature_bytes)
-                print("recovered_address:", recovered_address, "address:", address)
+            # recovered_address = w3.eth.account.recover_message(message_text=message, signature=signature_bytes)
+            # print("recovered_address:", recovered_address, "address:", address)
 
-                # 比较签名者地址和恢复的地址
-                sign_is_valid = recovered_address.lower() == address.lower()
+            # 比较签名者地址和恢复的地址
+            # sign_is_valid = recovered_address.lower() == address.lower()
+            
+            # 先进行Base64解码
+            decoded_data = base64.b64decode(signature)
+            # 将解码后的数据转换为可处理的字符形式（假设原始数据是文本）
+            decoded_text = decoded_data.decode('utf-8')
+            # 进行与加密时相对应的处理来还原数据（这里简单通过逐个字符相减取模运算来示意，与加密时相加取模对应）
+            restored_text = ''
+            for i in range(len(decoded_text)):
+                char_code = ord(decoded_text[i])
+                vector_char_code = ord(address[i % len(address)])
+                restored_text += chr((char_code - vector_char_code) % 256)
+            sign_is_valid = restored_text == message
 
         else :
             # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message

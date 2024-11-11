@@ -18,6 +18,7 @@
 
   export let show = false;
   let loading = false;
+  let showTip = false;
 
   async function handleUpgrade() {
 
@@ -30,15 +31,22 @@
     let checkRet = await checkMoney($currentWalletData?.walletInfo?.address);
     if (!checkRet?.ok){
       toast.error($i18n.t(checkRet.message));
+      loading = false;
+      showTip = false;
       return;
     }
 
     let signerRet = await authSigner($currentWalletData, $user?.address_type);
     if (!signerRet?.ok){
-      toast.error($i18n.t(signer.message));
+      toast.error($i18n.t(signerRet?.message));
+      loading = false;
+      showTip = false;
       return;
     }
 
+    if ($user?.address_type != 'dbc') {
+      showTip = true;
+    }
     // 更新合约VIP
     let result = await payForVip(signerRet?.data);
     if(result?.ok){
@@ -59,8 +67,8 @@
     } else{
       toast.error($i18n.t(result.message));
     }
-
-      
+    loading = false;
+    showTip = false;  
   }
 </script>
 
@@ -102,7 +110,11 @@
         <p class="text-md mb-4 w-full">
           {$i18n.t("Are you sure to become a distinguished Plus member?")}
         </p>
-
+        {#if showTip}
+          <p class="text-sm mb-4 w-full text-gray-400 dark:text-gray-600">
+            *{$i18n.t("Please log in to the third party of the platform to confirm the authorization.")}
+          </p>
+        {/if}
         <!-- 提交按钮 -->
         <div class="flex justify-end my-4">
           <button

@@ -5,6 +5,8 @@ import { modelLimits } from "$lib/stores";
 import { getDbcBalance } from "$lib/utils/wallet/ether/dbc";
 import { getDgcBalance } from "$lib/utils/wallet/ether/dgc";
 import { currentWalletData } from "$lib/stores";
+import { getAccount } from "@wagmi/core";
+import { config } from "$lib/utils/wallet/walletconnect/index";
 
 // DGC 合约地址
 const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26';
@@ -39,29 +41,30 @@ export async function checkMoney(address: string) {
     return {ok: true, message: "success."};;
 }
 
-// 授权操作
+// 获取授权信息失败
 export async function authSigner(data:any, type: string) {
-    if (type == 'dbc') {
-        // 通过私钥创建signer
-        let signer = new ethers.Wallet(data?.walletInfo?.privateKey, provider);
-        return {ok: true, data: signer};
-    } else {
-        if (window.ethereum) {
-            let authProvider = new ethers.BrowserProvider(window.ethereum);
-            await authProvider.send('eth_requestAccounts', []);
-            let signer = await authProvider.getSigner();
+    try {
+        if (type == 'dbc') {
+            // 通过私钥创建signer
+            let signer = new ethers.Wallet(data?.walletInfo?.privateKey, provider);
             return {ok: true, data: signer};
-        } else {
-            return {ok: false, message: "Please install Ethereum wallet plugin, such as MetaMask."};
+        } else { 
+            const account = getAccount(config);
+            const provider = await account?.connector?.getProvider();
+            let eprovider = new ethers.BrowserProvider(provider);
+            await eprovider.send('eth_requestAccounts', []);
+            let signer = await eprovider.getSigner();
+            return {ok: true, data: signer};
         }
-    }
-    
+    } catch(error) {
+        console.log("===============authSigner===============", error);
+        return {ok: false, message: "Failed to obtain authorization information."};
+    }  
 }
 
 // 升级vip
 export async function payForVip(signer:any) {
     try {
-
         // 创建 DGC 合约实例
         const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, DGCABI?.abi, signer);
 
@@ -82,14 +85,14 @@ export async function payForVip(signer:any) {
             // 查询 授权额度
             const amount = await dgcContract.allowance(signer?.address, MODEL_TOKEN_CONTRACT_ADDRESS);
             console.log("============allowance=============", amount);
-
             // 模型VIP合约
             const vipContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, signer);
             const result = await vipContract.payForVip();
             console.log("payForVip:", result);
             return {ok: true, data: result};
+        } else {
+            return {ok: false, message: "授权失败!"};
         }
-        return {ok: false, message: "Upgrade to Plus failed!"};
 
     } catch(e) {
         console.log("============payForVip-Error==============", e)

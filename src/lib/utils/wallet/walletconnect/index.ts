@@ -33,7 +33,6 @@ export const walletconnectSignMessage = async (message: string) => {
   try {
     // const message = "This is a demo message.";
     const signature = await signMessage(config, { message });
-    console.log("Signature:", signature);
     return signature;
   } catch (error) {
     console.error("Sign Message Error:", error);
