@@ -1,5 +1,5 @@
 import { printSignIn } from "$lib/apis/auths";
-import { user, pageUpdateNumber, chats, currentWalletData, channel } from "$lib/stores";
+import { user, pageUpdateNumber, chats, currentWalletData } from "$lib/stores";
 import { get } from "svelte/store";
 import { goto } from "$app/navigation";
 import { getDbcBalance } from "./ether/dbc";
@@ -14,9 +14,7 @@ export async function handleSigninAsIntialStatus() {
     console.log("handleSignin");
 
     // 没token统一走指纹登录的逻辑（这是最初始的状态）
-    const channelName = $channel;
-    console.log("====================", channelName);
-    await printSignIn(channelName).then((res) => {
+    await printSignIn("").then((res) => {
       if (res.token) {
         localStorage.token = res.token;
         user.set(res);
