@@ -90,6 +90,7 @@ class WalletSigninForm(BaseModel):
     device_id: str
     private_key: Optional[str] = None
     inviter_id: Optional[str] = None
+    channel: Optional[str] = None
 
 
 class FingerprintSignInForm(BaseModel):

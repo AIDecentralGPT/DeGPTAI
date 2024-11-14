@@ -9,6 +9,7 @@
     currentWalletData,
     user,
     inviterId,
+    channel
   } from "$lib/stores";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
   import {
@@ -226,13 +227,13 @@
                   const { wallet, keystore, accountPrivateKey } = await createAccount(password);
                   console.log("wallet", wallet);
                   keystoreJson = keystore;
-
                   // 2. 请求服务端登录钱包账户
                   await handleWalletSignIn({
                     walletImported: wallet,
                     password,
                     address_type: "dbc",
                     inviterId: $inviterId,
+                    channel: $channel
                   });
 
                   loading = false;

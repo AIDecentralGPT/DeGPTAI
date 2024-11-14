@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, tick } from "svelte";
   import { getChatList } from "$lib/apis/chats";
-  import { chats } from '$lib/stores';
+  import { chats, channel } from '$lib/stores';
   import { toast } from "svelte-sonner";
   import Modal from "../common/Modal.svelte";
   import { handleWalletSignIn, unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils.js";
@@ -142,6 +142,7 @@
                   walletImported,
                   password,
                   address_type: "dbc",
+                  channel: $channel
                 });
                 updateWalletData(walletImported);
 
@@ -263,6 +264,7 @@
                     walletImported,
                     password,
                     address_type: "dbc",
+                    channel: $channel
                   });
                   updateWalletData(walletImported);
 

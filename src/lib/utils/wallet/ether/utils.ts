@@ -254,11 +254,13 @@ async function handleWalletSignIn({
   walletImported,
   address_type,
   inviterId,
+  channel,
 }: {
   walletImported: any;
   address_type: string;
   inviterId?: string;
   signature?: string;
+  channel?: string
 }) {
   
   let walletSignInResult = {};
@@ -296,6 +298,7 @@ async function handleWalletSignIn({
         signature,
         id: localStorage.visitor_id || "",
         inviter_id: inviterId,
+        channel: channel
       });
     }
   }
@@ -312,16 +315,16 @@ async function handleWalletSignIn({
     const signature = await signChallenge(walletImported, prefixedMessage);
 
     // 将消息转换为十六进制字符串
-    const messageHex = ethers.hexlify(ethers.toUtf8Bytes(message));
-    console.log("Message Hex:", messageHex);
-    console.log(
-      "因吹斯汀要的数据",
-      {
-        wallet: walletImported?.address,
-        signature: signature,
-        hash: messageHex,
-      }
-    );
+    // const messageHex = ethers.hexlify(ethers.toUtf8Bytes(message));
+    // console.log("Message Hex:", messageHex);
+    // console.log(
+    //   "因吹斯汀要的数据",
+    //   {
+    //     wallet: walletImported?.address,
+    //     signature: signature,
+    //     hash: messageHex,
+    //   }
+    // );
 
     walletSignInResult = await walletSignIn({
       address: walletImported?.address,
@@ -332,6 +335,7 @@ async function handleWalletSignIn({
       signature,
       id: localStorage.visitor_id,
       inviter_id: inviterId,
+      channel: channel
     });
   }
 

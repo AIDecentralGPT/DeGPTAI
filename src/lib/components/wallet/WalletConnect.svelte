@@ -65,6 +65,7 @@
               address: account?.address,
             },
             address_type: "threeSide",
+            channel: $channel
           });
         }
       }

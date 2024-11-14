@@ -199,6 +199,7 @@ export const walletSignIn = async (payload: {
   id: string;
   device_id: string;
   inviter_id?: string;
+  channel?: string
 }) => {
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/walletSignIn`, {
     method: "POST",

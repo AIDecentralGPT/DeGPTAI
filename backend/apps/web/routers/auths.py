@@ -297,7 +297,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     form_data.address,
                     form_data.inviter_id,
                     address_type = address_type,
-                    address = address
+                    address = address,
+                    channel = form_data.channel
                 )
 
                 if result:
