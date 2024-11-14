@@ -64,10 +64,16 @@ export const getDeModels = async (token: string = "") => {
         desc: "Optimize code writing"
       },
       // Code LLM (Codestral-22B-v0.1)
+      // {
+      //   name: "Codestral 0.1", 
+      //   model: "Codestral-22B-v0.1",
+      //   tip: "Codestral 0.1",
+      //   desc: "Optimize code writing"
+      // },
       {
-        name: "Codestral 0.1", 
-        model: "Codestral-22B-v0.1",
-        tip: "Codestral 0.1",
+        name: "Qwen 2.5 Code", 
+        model: "Qwen2.5-Coder-32B",
+        tip: "Qwen 2.5 Code",
         desc: "Optimize code writing"
       }
     ],
