@@ -29,16 +29,14 @@
 		channel,
 	} from '$lib/stores';
 	import { page } from "$app/stores";
-	import { REQUIRED_OLLAMA_VERSION, WEBUI_API_BASE_URL } from '$lib/constants';
+	import { REQUIRED_OLLAMA_VERSION } from '$lib/constants';
 	import { compareVersion } from '$lib/utils';
 
 	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
 	import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
-	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
-   	import { handleSigninAsIntialStatus } from '$lib/utils/wallet/walletUtils';
-   	import { getSessionUser } from '$lib/apis/auths';
+  import { getSessionUser } from '$lib/apis/auths';
 
 
 	
