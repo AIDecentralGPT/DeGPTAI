@@ -91,6 +91,9 @@ export let pageUpdateNumber = writable(0)
 // 邀请人id
 export let inviterId = writable("")
 
+// 来源频道
+export let channel = writable("")
+
 
 
 

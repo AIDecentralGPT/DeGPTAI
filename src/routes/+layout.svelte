@@ -7,8 +7,10 @@
     theme,
     WEBUI_NAME,
     mobile,
-    deApiBaseUrl
+    deApiBaseUrl,
+    channel
   } from "$lib/stores";
+  import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { Toaster } from "svelte-sonner";
 
@@ -145,7 +147,12 @@
       }
     }
     else {
-       res = await printSignIn();
+      const queryParams = new URLSearchParams($page.url.search);
+      let channelName = queryParams.get("channel");
+      if (channelName) {
+        await channel.set(channelName);
+      }
+      res = await printSignIn($channel);
     }
 
 		loaded = true;

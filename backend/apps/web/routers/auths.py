@@ -192,7 +192,8 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
             form_data.id,
             "",
             address_type = None,
-            address = wallet_address
+            address = wallet_address,
+            channel = form_data.channel
         )
         print("Auths.insert_new_auth executed")
 
@@ -294,7 +295,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     form_data.address,
                     form_data.inviter_id,
                     address_type = address_type,
-                    address = address
+                    address = address,
+                    channel = form_data.channel
                 )
 
                 if result:

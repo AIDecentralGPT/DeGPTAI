@@ -2,7 +2,7 @@ import { WEBUI_API_BASE_URL } from "$lib/constants";
 import { user } from "$lib/stores";
 import { signOut } from "$lib/utils/wallet/ether/utils";
 
-export const getSessionUser = async (token: string) => {
+export const getSessionUser = async (token: string, channel: string) => {
   let error = null;
 
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/`, {
@@ -18,9 +18,7 @@ export const getSessionUser = async (token: string) => {
     })
     .catch(async (err) => {
       error = err.detail;
-      await signOut();
-      // window.location.reload();
-
+      await signOut(channel);
       return null;
     });
 
@@ -166,7 +164,7 @@ export const userSignUp = async (
   return res;
 };
 
-export const printSignIn = async () => {
+export const printSignIn = async (channel: string) => {
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/printSignIn`, {
     method: "POST",
     headers: {
@@ -174,6 +172,7 @@ export const printSignIn = async () => {
     },
     body: JSON.stringify({
       id: localStorage.visitor_id,
+      channel: channel
     }),
   });
 
@@ -200,6 +199,7 @@ export const walletSignIn = async (payload: {
   id: string;
   device_id: string;
   inviter_id?: string;
+  channel?: string
 }) => {
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/walletSignIn`, {
     method: "POST",

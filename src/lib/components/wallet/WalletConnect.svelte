@@ -8,7 +8,7 @@
     watchAccount
   } from "@wagmi/core";
   import { handleWalletSignIn, signOut } from "$lib/utils/wallet/ether/utils";
-  import { threesideAccount, user, theme } from "$lib/stores";
+  import { threesideAccount, user, theme, channel } from "$lib/stores";
   import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   const i18n = getContext("i18n");
 
@@ -65,18 +65,19 @@
               address: account?.address,
             },
             address_type: "threeSide",
+            channel: $channel
           });
         }
       }
       if (account.status === "disconnected") {
-        signOut();
+        signOut($channel);
       }
     },
   });
 
   function connect() {
     if ($user?.id?.startsWith("0x") && getAccount(config).isConnected) {
-      signOut();
+      signOut($channel);
     } else {
       clearConnector();
       changeModalTheme();

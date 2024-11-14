@@ -25,8 +25,10 @@
 		documents,
 		tags,
 		showChangelog,
-		config
+		config,
+		channel,
 	} from '$lib/stores';
+	import { page } from "$app/stores";
 	import { REQUIRED_OLLAMA_VERSION, WEBUI_API_BASE_URL } from '$lib/constants';
 	import { compareVersion } from '$lib/utils';
 
@@ -77,10 +79,15 @@
 
 
 	onMount( async () => {
+		const queryParams = new URLSearchParams($page.url.search);
+    let channelName = queryParams.get("channel");
+		if (channelName) {
+      await channel.set(channelName);
+    }
 		if ($config) {
 				if (localStorage.token) {
 					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
+					const sessionUser = await getSessionUser(localStorage.token, $channel).catch((error) => {
 						// toast.error(error);
 						return null;
 					});

@@ -155,7 +155,7 @@ async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user
         if result is not None:
             return {"ok": True, "data": result}
         else:
-            raise HTTPException(status_code=500, detail="Failed to received reward")
+            raise HTTPException(status_code=500, detail="Clockin rewards can only be obtained once within a 24-hour period，you can try later.")
     except Exception as e:
         print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Failed to received reward")
