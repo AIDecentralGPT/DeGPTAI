@@ -175,7 +175,6 @@ class UsersTable:
                         print("邀请人得奖励0", user.inviter_id)
                         RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
             else:
-                print("============创建注册奖励2============")
                 # 注册奖励
                 RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
         
