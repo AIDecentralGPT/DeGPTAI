@@ -166,17 +166,15 @@
                 <p class="text-red-500 text-sm mt-1">{passwordError}</p>
               {/if}
             </div>
-            {#if !$inviterId}
-              <input
-                bind:value={$inviterId}
-                type="text"
-                class="mt-4 px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-                placeholder={$i18n.t("Enter the inviter id here")}
-                autocomplete="current-password"
-                on:input={validatePassword}
-                required
-              />
-            {/if}
+            <!-- <input
+              bind:value={$inviterId}
+              type="text"
+              class="mt-4 px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+              placeholder={$i18n.t("Enter the inviter id here")}
+              autocomplete="current-password"
+              on:input={validatePassword}
+              required
+            /> -->
           </div>
 
           <div class="flex justify-between my-4">
