@@ -408,6 +408,13 @@ def redirect_to_url(request: Request, id: str):
     # 替换成你想要跳转到的网址
     return RedirectResponse(url=f'https://{host}?inviter={id}')
 
+@app.get('/channel/{name}')
+def redirect_to_url(request: Request, name: str):
+    headers = request.headers
+    host = headers.get('host')
+    # 替换成你想要跳转到的网址
+    return RedirectResponse(url=f'https://{host}?channel={name}')
+
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 app.mount("/cache", StaticFiles(directory=CACHE_DIR), name="cache")

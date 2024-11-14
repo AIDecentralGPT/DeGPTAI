@@ -376,12 +376,12 @@ async function handleWalletSignIn({
   }
 }
 
-async function signOut() {
+async function signOut(channel: string) {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("walletImported");
   user.set({});
-  await printSignIn().then((res) => {
+  await printSignIn(channel).then((res) => {
     console.log("指纹登录了", res);
     localStorage.token = res.token;
   });

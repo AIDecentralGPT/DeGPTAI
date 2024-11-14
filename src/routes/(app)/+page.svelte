@@ -11,6 +11,7 @@
     chats,
     config,
     inviterId,
+    channel,
     modelfiles,
     models,
     pageUpdateNumber,
@@ -57,6 +58,7 @@
   } from "$lib/constants";
 
   let inviter: any = "";
+  let channelName: any = "";
 
   const i18n = getContext("i18n");
 
@@ -133,9 +135,13 @@
   onMount(async () => {
     const queryParams = new URLSearchParams($page.url.search);
     inviter = queryParams.get("inviter");
+    channelName = queryParams.get("channel");
     if (inviter) {
       $showNewWalletModal = true;
       $inviterId = inviter;
+    }
+    if (channelName) {
+      await channel.set(channelName);
     }
     const verifyAgain = queryParams.get("verifyAgain");
     if (verifyAgain && $user?.id) {

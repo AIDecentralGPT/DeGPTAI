@@ -194,7 +194,8 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
             form_data.id,
             "",
             address_type = None,
-            address = wallet_address
+            address = wallet_address,
+            channel = form_data.channel
         )
         print("Auths.insert_new_auth executed")
 

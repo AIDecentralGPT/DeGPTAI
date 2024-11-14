@@ -13,6 +13,9 @@
   import { checkMoney, authSigner,  payForVip } from "$lib/utils/wallet/ether/modelabi.js";
   import { openProServices, isPro } from "$lib/apis/users/index.js";
 
+  import { getAccount } from "@wagmi/core";
+  import { config } from "$lib/utils/wallet/walletconnect/index";
+
 
   const i18n = getContext("i18n");
 
@@ -45,8 +48,13 @@
     }
 
     if ($user?.address_type != 'dbc') {
-      showTip = true;
+      const account = await getAccount(config);
+      const provider = await account?.connector?.getProvider();
+      if (provider?.namespace) {
+        showTip = true;
+      }
     }
+
     // 更新合约VIP
     let result = await payForVip(signerRet?.data);
     if(result?.ok){
@@ -112,7 +120,7 @@
         </p>
         {#if showTip}
           <p class="text-sm mb-4 w-full text-gray-400 dark:text-gray-600">
-            *{$i18n.t("Please log in to the third party of the platform to confirm the authorization.")}
+            *{$i18n.t("Please open the mobile app and approve the transaction request.")}
           </p>
         {/if}
         <!-- 提交按钮 -->

@@ -48,6 +48,7 @@ class User(Model):
     transaction_id= CharField(null=True)
     private_key = CharField(null=True)
     face_time = CharField(null=True)
+    channel = CharField(null=True)
 
     class Meta:
         database = DB  # 指定数据库
@@ -74,6 +75,7 @@ class UserModel(BaseModel):
     private_key: Optional[str] = None
     face_time: Optional[datetime] = None
     address: Optional[str] = None
+    channel: Optional[str] = None
 
 ####################
 # Forms
@@ -118,6 +120,7 @@ class UsersTable:
         transaction_id: str = None,
         private_key: str = None,
         address: str = None,
+        channel: str = None
     ) -> Optional[UserModel]:
         
         # 创建UserModel实例
@@ -139,6 +142,7 @@ class UsersTable:
                 "merchant_biz_id": merchant_biz_id,
                 "transaction_id": transaction_id,
                 "private_key": private_key,
+                "channel": channel
             }
         )
 

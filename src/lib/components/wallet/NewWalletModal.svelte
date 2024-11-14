@@ -181,7 +181,7 @@
           <div class="flex justify-between my-4">
             <!-- 下载按钮 -->
             <div class="flex flex-col p-2">
-              <div class="text-sm font-medium text-center">{$i18n.t("Download DeGPTto obtain rewards")}</div>
+              <div class="text-sm font-medium text-center">{$i18n.t("Download DeGPT to obtain rewards")}</div>
               <div class="flex flex-row mt-1 px-2">
                 <button class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-900"
                   on:click={() => {
@@ -380,7 +380,7 @@
           <div class="flex justify-between mt-4 border-t border-dotted">
             <!-- 下载按钮 -->
             <div class="flex flex-col py-2">
-              <div class="text-sm font-medium text-center">{$i18n.t("Download DeGPTto obtain rewards")}</div>
+              <div class="text-sm font-medium text-center">{$i18n.t(" obtain rewards")}</div>
               <div class="flex flex-row mt-1 px-2">
                 <button class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-900"
                   on:click={() => {

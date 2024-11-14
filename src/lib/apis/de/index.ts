@@ -30,35 +30,42 @@ export const getDeModels = async (token: string = "") => {
   const format_res = {
     models: [
       {
-        name: "Ali LLM (Qwen2.5-72B)",
+        name: "Llamma 3.1",
+        model: "LImma3.1 405B",
+        tip: "Llamma 3.1",
+        desc: "Suitable for most tasks"
+      },
+      // Ali LLM (Qwen2.5-72B)
+      {
+        name: "Qwen 2.5",
         model: "Qwen2.5-72B",
         tip: "Qwen 2.5",
         desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nemotron 70B)
       {
-        name: "Nvidia LLM(Nemotron 70B)",
+        name: "Nemotron 3.1", 
         model: "Llama-3.1-Nemotron-70B",
-        tip: "Llamma 3.1",
+        tip: "Nemotron 3.1",
         desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nvidia 3.1)
       {
-        name: "Nvidia LLM(Nvidia 3.1)",
+        name: "Nvidia 3.1",
         model: "NVLM-D-72B",
         tip: "Nvidia 3.1",
         desc: "Support image recognition"
       },
-      // Nvidia LLM(Nemotron 70B)
+      // DeepSeek(Coder V2)
       {
-        name: "DeepSeek(Coder V2)",
+        name: "Deepseek coder2.0", 
         model: "DeepSeek-Coder-V2",
         tip: "Deepseek coder2.0",
         desc: "Optimize code writing"
       },
       // Code LLM (Codestral-22B-v0.1)
       {
-        name: "Code LLM (Codestral-22B-v0.1)",
+        name: "Codestral 0.1", 
         model: "Codestral-22B-v0.1",
         tip: "Codestral 0.1",
         desc: "Optimize code writing"
