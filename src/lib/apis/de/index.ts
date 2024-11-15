@@ -31,7 +31,7 @@ export const getDeModels = async (token: string = "") => {
     models: [
       {
         name: "Llamma 3.1",
-        model: "LImma3.1 405B",
+        model: "Llama-3.1-405B",
         tip: "Llamma 3.1",
         desc: "Suitable for most tasks"
       },
