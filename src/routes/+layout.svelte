@@ -126,8 +126,8 @@
           await user.set({
             ...localUser,
             token: res?.token,
-            isPro: proInfo.is_pro,
-            proEndDate: proInfo?.end_date
+            isPro: proInfo ? proInfo.is_pro : false,
+            proEndDate: proInfo ? proInfo.end_date : null
           });
         }
         localStorage.user = JSON.stringify($user);

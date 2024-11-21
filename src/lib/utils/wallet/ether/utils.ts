@@ -381,8 +381,8 @@ async function handleWalletSignIn({
     const proInfo = await isPro(localStorage.token);
     user.set({
       ...walletSignInResult,
-      isPro: proInfo.is_pro,
-      proEndDate: proInfo?.end_date
+      isPro: proInfo ? proInfo.is_pro : false,
+      proEndDate: proInfo ? proInfo.end_date : null
     });
 
   }

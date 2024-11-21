@@ -124,8 +124,8 @@
         if (userPro && userPro.is_pro) {
           user.set({
             ...$user,
-            isPro: userPro.is_pro,
-            proEndDate: userPro.end_date,
+            isPro: userPro ? userPro.is_pro : false,
+            proEndDate: userPro ? userPro.end_date : null,
           });
         }
       }
