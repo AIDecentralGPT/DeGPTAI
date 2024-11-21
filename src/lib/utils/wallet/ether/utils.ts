@@ -3,10 +3,11 @@
 import { ethers } from "ethers";
 
 import { printSignIn, walletSignIn } from "$lib/apis/auths";
+import { isPro } from "$lib/apis/users";
 import { chats, user } from "$lib/stores";
 import { getChatList } from "$lib/apis/chats";
 import { updateWalletData } from "../walletUtils";
-import { walletconnectSignMessage } from "../walletconnect/index";
+import dayjs from 'dayjs';
 import { Base64 } from 'js-base64';
 
 // 定义 RPC URL 和 Chain ID
@@ -93,7 +94,9 @@ export function downloadKeyStore(keyStoreStr: string) {
 
   const link = document.createElement("a");
   link.href = url;
-  link.download = "keystore.json";
+  const currentDate = dayjs();
+  const dateTime = currentDate.format('YYYYMMDDHHmm');
+  link.download = "keystore_degpt_" + dateTime + ".json";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -374,9 +377,14 @@ async function handleWalletSignIn({
       localStorage.walletImported = JSON.stringify(localWalletImported);
     }
 
+    // 获取用户是否是VIP
+    const proInfo = await isPro(localStorage.token);
     user.set({
-      ...walletSignInResult
+      ...walletSignInResult,
+      isPro: proInfo.is_pro,
+      proEndDate: proInfo?.end_date
     });
+
   }
 }
 

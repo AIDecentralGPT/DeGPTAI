@@ -340,7 +340,7 @@
       {#if current === 2}
         <div class=" border-primary border-2 rounded-lg p-4">
           <div>
-            <strong>{$i18n.t("Authenticated eamil address:")}</strong>
+            <strong>{$i18n.t("Authenticated email address:")}</strong>
             <span class="text-primary">{email}</span>
           </div>
         </div>

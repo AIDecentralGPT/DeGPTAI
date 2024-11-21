@@ -27,7 +27,7 @@
   import { WEBUI_BASE_URL } from "$lib/constants";
   import i18n, { initI18n } from "$lib/i18n";
   import FingerprintJS from "@fingerprintjs/fingerprintjs";
-  import { getUserInfo } from "$lib/apis/users";
+  import { getUserInfo, isPro } from "$lib/apis/users";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
   import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
@@ -122,9 +122,12 @@
       if (localUser?.address_type == 'dbc') {
         res = await getUserInfo(localStorage.token);
         if (res?.id === localUser?.id) {
+          const proInfo = await isPro(localStorage.token);
           await user.set({
             ...localUser,
             token: res?.token,
+            isPro: proInfo.is_pro,
+            proEndDate: proInfo?.end_date
           });
         }
         localStorage.user = JSON.stringify($user);

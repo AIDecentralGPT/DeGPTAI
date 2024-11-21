@@ -8,46 +8,96 @@
   import {
     currentWalletData,
     showConfirmUpgradeModal,
-    user
+    user,
   } from "$lib/stores";
-  import { checkMoney, authSigner,  payForVip } from "$lib/utils/wallet/ether/modelabi.js";
+  import {
+    checkMoney,
+    authSigner,
+    payForVip,
+  } from "$lib/utils/wallet/ether/modelabi.js";
   import { openProServices, isPro } from "$lib/apis/users/index.js";
 
   import { getAccount } from "@wagmi/core";
   import { config } from "$lib/utils/wallet/walletconnect/index";
-
 
   const i18n = getContext("i18n");
 
   export let show = false;
   let loading = false;
   let showTip = false;
+  let step = 0;
+  let progress = 0;
+  let progressInterval: NodeJS.Timeout;
+
+  function startProgress() {
+    progressInterval = setInterval(() => {
+      if (step == 0 && progress <= 10) {
+        if (progress < 10) {
+          progress < 10 ? progress++ : (progress = 10);
+        } else {
+          progress = 10;
+        }
+      } else if (step == 1 && progress <= 20) {
+        if (progress < 20) {
+          progress < 10 ? (progress = 10) : progress++;
+        } else {
+          progress = 20;
+        }
+      } else if (step == 2 && progress <= 30) {
+        if (progress < 30) {
+          progress < 20 ? (progress = 20) : progress++;
+        } else {
+          progress = 30;
+        }
+      } else if (step == 3 && progress <= 80) {
+        if (progress < 80) {
+          progress < 30 ? (progress = 30) : progress++;
+        } else {
+          progress = 80;
+        }
+      } else if (step == 4 && progress <= 99) {
+        if (progress < 99) {
+          progress < 80 ? (progress = 80) : progress++;
+        } else {
+          progress = 99;
+        }
+      } else if (step == 5) {
+        progress = 100;
+      }
+    }, 800);
+  }
 
   async function handleUpgrade() {
-
-    if ($currentWalletData && $currentWalletData?.walletInfo?.address) {   
+    if (progressInterval) {
+      clearInterval(progressInterval);
+    }
+    startProgress();
+    if ($currentWalletData && $currentWalletData?.walletInfo?.address) {
     } else {
-      toast.error($i18n.t("Please log in to your wallet first!"))
+      toast.error($i18n.t("Please log in to your wallet first!"));
       return;
     }
+    step = 1;
 
     let checkRet = await checkMoney($currentWalletData?.walletInfo?.address);
-    if (!checkRet?.ok){
+    if (!checkRet?.ok) {
       toast.error($i18n.t(checkRet.message));
       loading = false;
       showTip = false;
       return;
     }
+    step = 2;
 
     let signerRet = await authSigner($currentWalletData, $user?.address_type);
-    if (!signerRet?.ok){
+    if (!signerRet?.ok) {
       toast.error($i18n.t(signerRet?.message));
       loading = false;
       showTip = false;
       return;
     }
+    step = 3;
 
-    if ($user?.address_type != 'dbc') {
+    if ($user?.address_type != "dbc") {
       const account = await getAccount(config);
       const provider = await account?.connector?.getProvider();
       if (provider?.namespace) {
@@ -57,10 +107,17 @@
 
     // 更新合约VIP
     let result = await payForVip(signerRet?.data);
-    if(result?.ok){
-      let res = await openProServices(localStorage.token, result?.data?.hash, 0);
+    step = 4;
+    if (result?.ok) {
+      let res = await openProServices(
+        localStorage.token,
+        result?.data?.hash,
+        0
+      );
       if (res) {
-        toast.success($i18n.t("Congratulations on successfully upgrading pro!"));
+        toast.success(
+          $i18n.t("Congratulations on successfully upgrading pro!")
+        );
         $showConfirmUpgradeModal = false;
         show = false;
         const userPro = await isPro(localStorage.token); // 发送请求到你的 API
@@ -68,15 +125,17 @@
           user.set({
             ...$user,
             isPro: userPro.is_pro,
-            proEndDate: userPro.end_date
+            proEndDate: userPro.end_date,
           });
         }
       }
-    } else{
+    } else {
       toast.error($i18n.t(result.message));
     }
+    step = 5;
+    clearInterval(progressInterval);
     loading = false;
-    showTip = false;  
+    showTip = false;
   }
 </script>
 
@@ -113,14 +172,15 @@
 
     <!-- 主体 -->
     <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-      <!-- 输入密码，进行创建 -->
       <div class="w-full">
         <p class="text-md mb-4 w-full">
           {$i18n.t("Are you sure to become a distinguished Plus member?")}
         </p>
         {#if showTip}
           <p class="text-sm mb-4 w-full text-gray-400 dark:text-gray-600">
-            *{$i18n.t("Please open the mobile app and approve the transaction request.")}
+            *{$i18n.t(
+              "Please open the mobile app and approve the transaction request."
+            )}
           </p>
         {/if}
         <!-- 提交按钮 -->
@@ -132,6 +192,8 @@
             type="submit"
             on:click={async () => {
               loading = true;
+              step = 0;
+              progress = 0;
               await tick();
               try {
                 await handleUpgrade();
@@ -143,7 +205,7 @@
             }}
           >
             {#if loading}
-              <span>{$i18n.t("Upgrading")}</span>
+              <span>{progress}% {$i18n.t("Upgrading")}</span>
             {:else}
               <span>{$i18n.t("Yes")}</span>
             {/if}
