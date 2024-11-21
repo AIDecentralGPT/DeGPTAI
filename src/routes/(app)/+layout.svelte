@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { toast } from 'svelte-sonner';
-	import { onMount, tick, getContext } from 'svelte';
-	import { openDB, deleteDB } from 'idb';
-	import fileSaver from 'file-saver';
+	import { toast } from "svelte-sonner";
+	import { onMount, tick, getContext } from "svelte";
+	import { openDB, deleteDB } from "idb";
+	import fileSaver from "file-saver";
 	const { saveAs } = fileSaver;
 
-	import { goto } from '$app/navigation';
+	import { goto } from "$app/navigation";
 
-	import { getModels as _getModels } from '$lib/utils';
-	import { getOllamaVersion } from '$lib/apis/ollama';
-	import { getModelfiles } from '$lib/apis/modelfiles';
-	import { getPrompts } from '$lib/apis/prompts';
+	import { getModels as _getModels } from "$lib/utils";
+	import { getOllamaVersion } from "$lib/apis/ollama";
+	import { getModelfiles } from "$lib/apis/modelfiles";
+	import { getPrompts } from "$lib/apis/prompts";
 
-	import { getDocs } from '$lib/apis/documents';
-	import { getAllChatTags } from '$lib/apis/chats';
+	import { getDocs } from "$lib/apis/documents";
+	import { getAllChatTags } from "$lib/apis/chats";
 
 	import {
 		user,
@@ -27,25 +27,20 @@
 		showChangelog,
 		config,
 		channel,
-	} from '$lib/stores';
+	} from "$lib/stores";
 	import { page } from "$app/stores";
-	import { REQUIRED_OLLAMA_VERSION } from '$lib/constants';
-	import { compareVersion } from '$lib/utils';
+	import { REQUIRED_OLLAMA_VERSION } from "$lib/constants";
+	import { compareVersion } from "$lib/utils";
 
-	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
-	import Sidebar from '$lib/components/layout/Sidebar.svelte';
-	import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
-	import Tooltip from '$lib/components/common/Tooltip.svelte';
-  import { getSessionUser } from '$lib/apis/auths';
+	import SettingsModal from "$lib/components/chat/SettingsModal.svelte";
+	import Sidebar from "$lib/components/layout/Sidebar.svelte";
+	import ShortcutsModal from "$lib/components/chat/ShortcutsModal.svelte";
+	import Tooltip from "$lib/components/common/Tooltip.svelte";
+	import { getSessionUser } from "$lib/apis/auths";
 
+	const i18n = getContext("i18n");
 
-	
-
-
-
-	const i18n = getContext('i18n');
-
-	let ollamaVersion = '';
+	let ollamaVersion = "";
 	let loaded = false;
 	let showShortcutsButtonElement: HTMLButtonElement;
 	let DB = null;
@@ -55,14 +50,14 @@
 
 	const getModels = async () => {
 		// console.log("_getModels(localStorage.token)", _getModels(localStorage.token));
-		
+
 		return _getModels(localStorage.token);
 	};
 
-	const setOllamaVersion = async (version: string = '') => {
-		if (version === '') {
+	const setOllamaVersion = async (version: string = "") => {
+		if (version === "") {
 			version = await getOllamaVersion(localStorage.token).catch((error) => {
-				return '';
+				return "";
 			});
 		}
 
@@ -70,57 +65,67 @@
 
 		console.log(ollamaVersion);
 		if (compareVersion(REQUIRED_OLLAMA_VERSION, ollamaVersion)) {
-			toast.error($i18n.t(`Ollama Version: ${ollamaVersion !== '' ? ollamaVersion : 'Not Detected'}`));
+			toast.error(
+				$i18n.t(
+					`Ollama Version: ${
+						ollamaVersion !== "" ? ollamaVersion : "Not Detected"
+					}`
+				)
+			);
 		}
 	};
 
-
-
-	onMount( async () => {
+	onMount(async () => {
 		const queryParams = new URLSearchParams($page.url.search);
-    let channelName = queryParams.get("channel");
+		let channelName = queryParams.get("channel");
 		if (channelName) {
-      await channel.set(channelName);
-    }
+			await channel.set(channelName);
+		}
 		if ($config) {
-				if (localStorage.token) {
-					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token, $channel).catch((error) => {
-						// toast.error(error);
-						return null;
-					});
+			if (localStorage.token) {
+				// Get Session User Info
+				const sessionUser = await getSessionUser(
+					localStorage.token,
+					$channel
+				).catch((error) => {
+					// toast.error(error);
+					return null;
+				});
 
-					if (sessionUser) {
-						// Save Session User to Store
-						await user.set(sessionUser);
-						console.log("============sessionUser2===========")
-					} else {
-						// Redirect Invalid Session User to /auth Page
-						// localStorage.removeItem('token');
-						// await goto('/auth');
-					}
+				if (sessionUser) {
+					// Save Session User to Store
+					await user.set({
+						...$user,
+						...sessionUser,
+					});
+					console.log("============sessionUser2===========");
 				} else {
+					// Redirect Invalid Session User to /auth Page
+					// localStorage.removeItem('token');
 					// await goto('/auth');
 				}
+			} else {
+				// await goto('/auth');
 			}
-		console.log(
-			"$user", $user
-		);
-		
+		}
 
 		if ($user === undefined) {
 			await models.set(await getModels());
-		} else if (['user', 'admin', 'walletUser', 'visitor'].includes($user?.role)) {
+		} else if (
+			["user", "admin", "walletUser", "visitor"].includes($user?.role)
+		) {
 			try {
 				// Check if IndexedDB exists
-				DB = await openDB('Chats', 1);
+				DB = await openDB("Chats", 1);
 
 				if (DB) {
-					const chats = await DB.getAllFromIndex('chats', 'timestamp');
-					localDBChats = chats.map((item, idx) => chats[chats.length - 1 - idx]);
+					const chats = await DB.getAllFromIndex("chats", "timestamp");
+					localDBChats = chats.map(
+						(item, idx) => chats[chats.length - 1 - idx]
+					);
 
 					if (localDBChats.length === 0) {
-						await deleteDB('Chats');
+						await deleteDB("Chats");
 					}
 				}
 
@@ -130,7 +135,7 @@
 			}
 
 			await models.set(await getModels());
-			await settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
+			await settings.set(JSON.parse(localStorage.getItem("settings") ?? "{}"));
 
 			// await modelfiles.set(await getModelfiles(localStorage.token));
 			// await prompts.set(await getPrompts(localStorage.token));
@@ -142,75 +147,90 @@
 			// 	await models.set(await getModels());
 			// });
 
-			document.addEventListener('keydown', function (event) {
+			document.addEventListener("keydown", function (event) {
 				const isCtrlPressed = event.ctrlKey || event.metaKey; // metaKey is for Cmd key on Mac
 				// Check if the Shift key is pressed
 				const isShiftPressed = event.shiftKey;
 
 				// Check if Ctrl + Shift + O is pressed
-				if (isCtrlPressed && isShiftPressed && event.key.toLowerCase() === 'o') {
+				if (
+					isCtrlPressed &&
+					isShiftPressed &&
+					event.key.toLowerCase() === "o"
+				) {
 					event.preventDefault();
-					console.log('newChat');
-					document.getElementById('sidebar-new-chat-button')?.click();
+					console.log("newChat");
+					document.getElementById("sidebar-new-chat-button")?.click();
 				}
 
 				// Check if Shift + Esc is pressed
-				if (isShiftPressed && event.key === 'Escape') {
+				if (isShiftPressed && event.key === "Escape") {
 					event.preventDefault();
-					console.log('focusInput');
-					document.getElementById('chat-textarea')?.focus();
+					console.log("focusInput");
+					document.getElementById("chat-textarea")?.focus();
 				}
 
 				// Check if Ctrl + Shift + ; is pressed
-				if (isCtrlPressed && isShiftPressed && event.key === ';') {
+				if (isCtrlPressed && isShiftPressed && event.key === ";") {
 					event.preventDefault();
-					console.log('copyLastCodeBlock');
-					const button = [...document.getElementsByClassName('copy-code-button')]?.at(-1);
+					console.log("copyLastCodeBlock");
+					const button = [
+						...document.getElementsByClassName("copy-code-button"),
+					]?.at(-1);
 					button?.click();
 				}
 
 				// Check if Ctrl + Shift + C is pressed
-				if (isCtrlPressed && isShiftPressed && event.key.toLowerCase() === 'c') {
+				if (
+					isCtrlPressed &&
+					isShiftPressed &&
+					event.key.toLowerCase() === "c"
+				) {
 					event.preventDefault();
-					console.log('copyLastResponse');
-					const button = [...document.getElementsByClassName('copy-response-button')]?.at(-1);
+					console.log("copyLastResponse");
+					const button = [
+						...document.getElementsByClassName("copy-response-button"),
+					]?.at(-1);
 					console.log(button);
 					button?.click();
 				}
 
 				// Check if Ctrl + Shift + S is pressed
-				if (isCtrlPressed && isShiftPressed && event.key.toLowerCase() === 's') {
+				if (
+					isCtrlPressed &&
+					isShiftPressed &&
+					event.key.toLowerCase() === "s"
+				) {
 					event.preventDefault();
-					console.log('toggleSidebar');
-					document.getElementById('sidebar-toggle-button')?.click();
+					console.log("toggleSidebar");
+					document.getElementById("sidebar-toggle-button")?.click();
 				}
 
 				// Check if Ctrl + Shift + Backspace is pressed
-				if (isCtrlPressed && isShiftPressed && event.key === 'Backspace') {
+				if (isCtrlPressed && isShiftPressed && event.key === "Backspace") {
 					event.preventDefault();
-					console.log('deleteChat');
-					document.getElementById('delete-chat-button')?.click();
+					console.log("deleteChat");
+					document.getElementById("delete-chat-button")?.click();
 				}
 
 				// Check if Ctrl + . is pressed
-				if (isCtrlPressed && event.key === '.') {
+				if (isCtrlPressed && event.key === ".") {
 					event.preventDefault();
-					console.log('openSettings');
+					console.log("openSettings");
 					showSettings.set(!$showSettings);
 				}
 
 				// Check if Ctrl + / is pressed
-				if (isCtrlPressed && event.key === '/') {
+				if (isCtrlPressed && event.key === "/") {
 					event.preventDefault();
-					console.log('showShortcuts');
+					console.log("showShortcuts");
 					showShortcutsButtonElement.click();
 				}
 			});
 
-			if ($user?.role === 'admin') {
+			if ($user?.role === "admin") {
 				showChangelog.set(localStorage.version !== $config.version);
 			}
-
 		}
 
 		loaded = true;
@@ -218,7 +238,7 @@
 </script>
 
 <div class=" hidden lg:flex fixed bottom-0 right-0 px-3 py-3 z-10">
-	<Tooltip content={$i18n.t('Help')} placement="left">
+	<Tooltip content={$i18n.t("Help")} placement="left">
 		<button
 			id="show-shortcuts-button"
 			bind:this={showShortcutsButtonElement}
@@ -237,7 +257,9 @@
 <!-- <ChangelogModal bind:show={$showChangelog} /> -->
 
 <div class="app relative">
-	<div class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row">
+	<div
+		class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row"
+	>
 		{#if loaded}
 			{#if false}
 				<div class="fixed w-full h-full flex z-[999]">
@@ -246,24 +268,28 @@
 					>
 						<div class="m-auto pb-10 flex flex-col justify-center">
 							<div class="max-w-md">
-								<div class="text-center dark:text-white text-2xl font-medium z-50">
+								<div
+									class="text-center dark:text-white text-2xl font-medium z-50"
+								>
 									Account Activation Pending<br /> Contact Admin for WebUI Access
 								</div>
 
-								<div class=" mt-4 text-center text-sm dark:text-gray-200 w-full">
-									Your account status is currently pending activation. To access the WebUI, please
-									reach out to the administrator. Admins can manage user statuses from the Admin
-									Panel.
+								<div
+									class=" mt-4 text-center text-sm dark:text-gray-200 w-full"
+								>
+									Your account status is currently pending activation. To access
+									the WebUI, please reach out to the administrator. Admins can
+									manage user statuses from the Admin Panel.
 								</div>
 
 								<div class=" mt-6 mx-auto relative group w-fit">
 									<button
 										class="relative z-20 flex px-5 py-2 rounded-full bg-white border border-gray-100 dark:border-none hover:bg-gray-100 text-gray-700 transition font-medium text-sm"
 										on:click={async () => {
-											location.href = '/';
+											location.href = "/";
 										}}
 									>
-										{$i18n.t('Check Again')}
+										{$i18n.t("Check Again")}
 									</button>
 
 									<!-- <button
@@ -285,18 +311,24 @@
 					>
 						<div class="m-auto pb-44 flex flex-col justify-center">
 							<div class="max-w-md">
-								<div class="text-center dark:text-white text-2xl font-medium z-50">
+								<div
+									class="text-center dark:text-white text-2xl font-medium z-50"
+								>
 									Important Update<br /> Action Required for Chat Log Storage
 								</div>
 
-								<div class=" mt-4 text-center text-sm dark:text-gray-200 w-full">
+								<div
+									class=" mt-4 text-center text-sm dark:text-gray-200 w-full"
+								>
 									{$i18n.t(
 										"Saving chat logs directly to your browser's storage is no longer supported. Please take a moment to download and delete your chat logs by clicking the button below. Don't worry, you can easily re-import your chat logs to the backend through"
 									)}
 									<span class="font-semibold dark:text-white"
-										>{$i18n.t('Settings')} > {$i18n.t('Chats')} > {$i18n.t('Import Chats')}</span
+										>{$i18n.t("Settings")} > {$i18n.t("Chats")} > {$i18n.t(
+											"Import Chats"
+										)}</span
 									>. {$i18n.t(
-										'This ensures that your valuable conversations are securely saved to your backend database. Thank you!'
+										"This ensures that your valuable conversations are securely saved to your backend database. Thank you!"
 									)}
 								</div>
 
@@ -305,13 +337,13 @@
 										class="relative z-20 flex px-5 py-2 rounded-full bg-white border border-gray-100 dark:border-none hover:bg-gray-100 transition font-medium text-sm"
 										on:click={async () => {
 											let blob = new Blob([JSON.stringify(localDBChats)], {
-												type: 'application/json'
+												type: "application/json",
 											});
 											saveAs(blob, `chat-export-${Date.now()}.json`);
 
-											const tx = DB.transaction('chats', 'readwrite');
+											const tx = DB.transaction("chats", "readwrite");
 											await Promise.all([tx.store.clear(), tx.done]);
-											await deleteDB('Chats');
+											await deleteDB("Chats");
 
 											localDBChats = [];
 										}}
@@ -323,7 +355,7 @@
 										class="text-xs text-center w-full mt-2 text-gray-400 underline"
 										on:click={async () => {
 											localDBChats = [];
-										}}>{$i18n.t('Close')}</button
+										}}>{$i18n.t("Close")}</button
 									>
 								</div>
 							</div>
@@ -352,7 +384,7 @@
 		}
 	}
 
-	pre[class*='language-'] {
+	pre[class*="language-"] {
 		position: relative;
 		overflow: auto;
 
@@ -362,7 +394,7 @@
 		border-radius: 10px;
 	}
 
-	pre[class*='language-'] button {
+	pre[class*="language-"] button {
 		position: absolute;
 		top: 5px;
 		right: 5px;
@@ -376,7 +408,7 @@
 		text-shadow: #c4c4c4 0 0 2px;
 	}
 
-	pre[class*='language-'] button:hover {
+	pre[class*="language-"] button:hover {
 		cursor: pointer;
 		background-color: #bcbabb;
 	}
