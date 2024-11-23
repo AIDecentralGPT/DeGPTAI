@@ -1,5 +1,5 @@
 <script>
-	import '../polyfills'; // 必须在其他代码之前引入
+  import "../polyfills"; // 必须在其他代码之前引入
   import { onMount, setContext } from "svelte";
   import {
     config,
@@ -8,14 +8,15 @@
     WEBUI_NAME,
     mobile,
     deApiBaseUrl,
-    channel
+    channel,
+    settings,
   } from "$lib/stores";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { Toaster } from "svelte-sonner";
 
   import { getBackendConfig } from "$lib/apis";
-  import {  printSignIn,  } from "$lib/apis/auths";
+  import { printSignIn } from "$lib/apis/auths";
 
   import "../tailwind.css";
   import "../app.css";
@@ -31,36 +32,33 @@
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
   import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
-  import { getLanguages } from "$lib/i18n/index"
+  import { getLanguages } from "$lib/i18n/index";
 
   setContext("i18n", i18n);
   let loaded = false;
   const BREAKPOINT = 768;
 
-	async function initData (){
-		
-		let backendConfig = null;
-		try {
-			backendConfig = await getBackendConfig();
-		} catch (error) {
-			console.error('Error loading backend config:', error);
-		}
-		// Initialize i18n even if we didn't get a backend config,
-		// so `/error` can show something that's not `undefined`.
-		initI18n(backendConfig?.default_locale);
+  async function initData() {
+    let backendConfig = null;
+    try {
+      backendConfig = await getBackendConfig();
+    } catch (error) {
+      console.error("Error loading backend config:", error);
+    }
+    // Initialize i18n even if we didn't get a backend config,
+    // so `/error` can show something that's not `undefined`.
+    initI18n(backendConfig?.default_locale);
 
-		if (backendConfig) {
-			// Save Backend Status to Store
-			await config.set(backendConfig);
+    if (backendConfig) {
+      // Save Backend Status to Store
+      await config.set(backendConfig);
 
-			await WEBUI_NAME.set(backendConfig.name);
+      await WEBUI_NAME.set(backendConfig.name);
+    } else {
+      // Redirect to /error when Backend Not Detected
+      await goto(`/error`);
+    }
 
-			
-		} else {
-			// Redirect to /error when Backend Not Detected
-			await goto(`/error`);
-		}
-		
     // -----------------
     theme.set(localStorage.theme);
 
@@ -75,51 +73,50 @@
 
     window.addEventListener("resize", onResize);
 
-		document.getElementById('splash-screen')?.remove();
-
+    document.getElementById("splash-screen")?.remove();
 
     // 创建并插入Google Analytics的script标签
-    const script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2';
+    const script = document.createElement("script");
+    script.src = "https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2";
     script.async = true;
     document.head.appendChild(script);
 
     // 初始化Google Analytics
     script.onload = () => {
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-ELT9ER83T2');
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-ELT9ER83T2");
     };
 
-		return () => {
-			window.removeEventListener('resize', onResize);
-		};
-
-	}
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }
 
   async function checkLogin() {
     // 加载 FingerprintJS 库
-		const fp = await FingerprintJS.load();
-		// 获取设备指纹
-		const result = await fp.get();
-		// `result.visitorId` 是设备指纹 ID
-		const visitorId = result.visitorId;
-		console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
-		localStorage.setItem('visitor_id', visitorId);
+    const fp = await FingerprintJS.load();
+    // 获取设备指纹
+    const result = await fp.get();
+    // `result.visitorId` 是设备指纹 ID
+    const visitorId = result.visitorId;
+    console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
+    localStorage.setItem("visitor_id", visitorId);
 
-
-    let res = {}
-    if(localStorage.token) {
+    let res = {};
+    if (localStorage.token) {
       // 获取缓存用户信息
       let localUser = null;
       if (localStorage.user) {
         try {
           localUser = JSON.parse(localStorage.user);
-        } catch{ }  
+        } catch {}
       }
 
-      if (localUser?.address_type == 'dbc') {
+      if (localUser?.address_type == "dbc") {
         res = await getUserInfo(localStorage.token);
         if (res?.id === localUser?.id) {
           const proInfo = await isPro(localStorage.token);
@@ -127,11 +124,22 @@
             ...localUser,
             token: res?.token,
             isPro: proInfo ? proInfo.is_pro : false,
-            proEndDate: proInfo ? proInfo.end_date : null
+            proEndDate: proInfo ? proInfo.end_date : null,
           });
         }
         localStorage.user = JSON.stringify($user);
         console.log("===========localUser===========");
+
+        // 更新setting
+        if (res?.models) {
+          settings.set({
+            ...$settings,
+            models: res.models.split(","),
+          });
+        } else {
+          settings.set({ ...$settings, models: $config.models });
+        }
+        localStorage.setItem("settings", JSON.stringify($settings));
 
         // 校验钱包
         if (localStorage.walletImported) {
@@ -144,59 +152,82 @@
           }
         }
       } else {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('walletImported');
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("walletImported");
       }
-    }
-    else {
+    } else {
       const queryParams = new URLSearchParams($page.url.search);
       let channelName = queryParams.get("channel");
       if (channelName) {
         await channel.set(channelName);
       }
+
       res = await printSignIn($channel);
+
+      // 更新用户模型
+      await initUserModels();
     }
 
-		loaded = true;
+    loaded = true;
 
-		localStorage.token = res?.token;
+    localStorage.token = res?.token;
   }
 
   async function intiLocationInfo() {
-    getRegionInfo().then(data => {
+    getRegionInfo().then((data) => {
       const regionDict = getRegionDict();
       if (data) {
-        regionDict.Singapore.forEach(item => {
+        regionDict.Singapore.forEach((item) => {
           if (item === data?.country) {
             deApiBaseUrl.set({
               name: "Singapore",
               url: "https://singapore-chat.degpt.ai/api",
-            })
+            });
           }
-        })
-        regionDict.Korea.forEach(item => {
+        });
+        regionDict.Korea.forEach((item) => {
           if (item === data?.country) {
             deApiBaseUrl.set({
               name: "Korea",
               url: "https://korea-chat.degpt.ai/api",
-            })
+            });
           }
-        })
+        });
       }
-    })
+    });
   }
 
   async function initLanguage() {
     let browserLanguage = navigator.language;
     const languages = await getLanguages();
-    let localLanguage = languages.filter(item => item.code == browserLanguage);
+    let localLanguage = languages.filter(
+      (item) => item.code == browserLanguage
+    );
     if (localLanguage.length > 0) {
       $i18n.changeLanguage(browserLanguage);
     }
   }
 
-	onMount(async () => {
+  // 更新用户模型
+  const initUserModels = async() => {
+    if ($user?.models) {
+      settings.set({ ...$settings, models: $user?.models.split(",") });
+    } else {
+      settings.set({
+        ...$settings,
+        models: $config?.default_models.split(","),
+      });
+    }
+    localStorage.setItem("settings", JSON.stringify($settings));
+    goto("/");
+    const newChatButton = document.getElementById("new-chat-button");
+    setTimeout(() => {
+      newChatButton?.click();
+    }, 0);
+  };
+
+  onMount(async () => {
     let currentAddress = window.location.href;
     await initData();
     await initLanguage();
@@ -217,7 +248,10 @@
     href="{WEBUI_BASE_URL}/static/favicon.png"
   />
 
-  <script type="text/javascript" src="https://hkwebcdn.yuncloudauth.com/cdn/jsvm_all.js"></script>
+  <script
+    type="text/javascript"
+    src="https://hkwebcdn.yuncloudauth.com/cdn/jsvm_all.js"
+  ></script>
 
   <!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
   <!-- feel free to make a PR to fix if anyone wants to see it return -->
@@ -229,4 +263,4 @@
   <slot />
 {/if}
 
-<Toaster richColors position="top-center" class="flex"  />
+<Toaster richColors position="top-center" class="flex" />

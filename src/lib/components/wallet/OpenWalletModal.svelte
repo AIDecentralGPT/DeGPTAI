@@ -1,7 +1,8 @@
 <script lang="ts">
   import { getContext, tick } from "svelte";
   import { getChatList } from "$lib/apis/chats";
-  import { chats, channel } from '$lib/stores';
+  import { goto } from "$app/navigation";
+  import { chats, channel, user, settings, config } from '$lib/stores';
   import { toast } from "svelte-sonner";
   import Modal from "../common/Modal.svelte";
   import { handleWalletSignIn, unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils.js";
@@ -39,6 +40,20 @@
         toast.error($i18n.t("Invalid keystore file"));
       }
     };
+  }
+
+  const initUserModels = () => {
+    if ($user?.models) {
+      settings.set({...$settings, models: $user?.models.split(",")});
+    } else {
+      settings.set({...$settings, models: $config?.default_models.split(",")});
+    }
+    localStorage.setItem("settings", JSON.stringify($settings));
+    goto("/");
+    const newChatButton = document.getElementById("new-chat-button");
+    setTimeout(() => {
+      newChatButton?.click();
+    }, 0);
   }
 
   $: if (!show) {(async () => {
@@ -144,6 +159,10 @@
                   address_type: "dbc",
                   channel: $channel
                 });
+
+                // 更新用户模型
+                initUserModels();
+
                 updateWalletData(walletImported);
 
                 await tick();
@@ -266,6 +285,10 @@
                     address_type: "dbc",
                     channel: $channel
                   });
+
+                  // 更新用户模型
+                  initUserModels();
+
                   updateWalletData(walletImported);
 
                   await tick();

@@ -1,7 +1,5 @@
 // utils.js
-
 import { ethers } from "ethers";
-
 import { printSignIn, walletSignIn } from "$lib/apis/auths";
 import { isPro } from "$lib/apis/users";
 import { chats, user } from "$lib/stores";
@@ -375,7 +373,7 @@ async function handleWalletSignIn({
         'signingKey':walletImported?.signingKey
       }
       localStorage.walletImported = JSON.stringify(localWalletImported);
-    }
+    }  
 
     // 获取用户是否是VIP
     const proInfo = await isPro(localStorage.token);

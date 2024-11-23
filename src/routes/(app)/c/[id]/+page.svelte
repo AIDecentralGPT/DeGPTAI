@@ -147,10 +147,12 @@
 			if (chatContent) {
 				console.log(chatContent);
 
-				selectedModels =
-					(chatContent?.models ?? undefined) !== undefined
-						? chatContent.models
-						: [chatContent.models ?? ''];
+				// selectedModels =
+				// 	(chatContent?.models ?? undefined) !== undefined
+				// 		? chatContent.models
+				// 		: [chatContent.models ?? ''];
+				selectedModels = $settings?.models;
+				
 				history =
 					(chatContent?.history ?? undefined) !== undefined
 						? chatContent.history

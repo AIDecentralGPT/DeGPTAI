@@ -49,6 +49,7 @@ class User(Model):
     private_key = CharField(null=True)
     face_time = CharField(null=True)
     channel = CharField(null=True)
+    models = CharField(null=True)
 
     class Meta:
         database = DB  # 指定数据库
@@ -76,6 +77,7 @@ class UserModel(BaseModel):
     face_time: Optional[datetime] = None
     address: Optional[str] = None
     channel: Optional[str] = None
+    models: Optional[str] = None
 
 ####################
 # Forms
@@ -92,6 +94,10 @@ class UserUpdateForm(BaseModel):
     email: str  # 定义email字段，类型为字符串
     profile_image_url: str  # 定义profile_image_url字段，类型为字符串
     password: Optional[str] = None  # 定义可选的password字段，类型为字符串，默认值为None
+
+# 更新用户选择模型
+class UserModelsUpdateForm(BaseModel):
+    models: str  # 定义模型字段，类型为字符串
 
 # 定义UsersTable类，用于操作User表
 class UsersTable:
@@ -393,6 +399,16 @@ class UsersTable:
     def update_user_verified(self, id: str, verified: bool, face_id: str) -> bool:
         try:
             query = User.update(verified=verified, face_id =face_id).where(User.id == id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+        
+    # 更新用户选择模型
+    def update_user_models(self, id: str, models: str) -> bool:
+        try:
+            query = User.update(models=models).where(User.id == id)
             result = query.execute()
             return True if result == 1 else False
         except Exception as e:

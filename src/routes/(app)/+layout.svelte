@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { toast } from "svelte-sonner";
-	import { onMount, tick, getContext } from "svelte";
+	import { onMount, getContext } from "svelte";
 	import { openDB, deleteDB } from "idb";
 	import fileSaver from "file-saver";
 	const { saveAs } = fileSaver;
@@ -8,29 +7,17 @@
 	import { goto } from "$app/navigation";
 
 	import { getModels as _getModels } from "$lib/utils";
-	import { getOllamaVersion } from "$lib/apis/ollama";
-	import { getModelfiles } from "$lib/apis/modelfiles";
-	import { getPrompts } from "$lib/apis/prompts";
-
-	import { getDocs } from "$lib/apis/documents";
-	import { getAllChatTags } from "$lib/apis/chats";
 
 	import {
 		user,
 		showSettings,
 		settings,
 		models,
-		modelfiles,
-		prompts,
-		documents,
-		tags,
 		showChangelog,
 		config,
 		channel,
 	} from "$lib/stores";
 	import { page } from "$app/stores";
-	import { REQUIRED_OLLAMA_VERSION } from "$lib/constants";
-	import { compareVersion } from "$lib/utils";
 
 	import SettingsModal from "$lib/components/chat/SettingsModal.svelte";
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
@@ -40,7 +27,6 @@
 
 	const i18n = getContext("i18n");
 
-	let ollamaVersion = "";
 	let loaded = false;
 	let showShortcutsButtonElement: HTMLButtonElement;
 	let DB = null;
@@ -54,26 +40,23 @@
 		return _getModels(localStorage.token);
 	};
 
-	const setOllamaVersion = async (version: string = "") => {
-		if (version === "") {
-			version = await getOllamaVersion(localStorage.token).catch((error) => {
-				return "";
-			});
-		}
-
-		ollamaVersion = version;
-
-		console.log(ollamaVersion);
-		if (compareVersion(REQUIRED_OLLAMA_VERSION, ollamaVersion)) {
-			toast.error(
-				$i18n.t(
-					`Ollama Version: ${
-						ollamaVersion !== "" ? ollamaVersion : "Not Detected"
-					}`
-				)
-			);
-		}
-	};
+	// 更新用户模型
+  const initUserModels = async() => {
+    if ($user?.models) {
+      settings.set({ ...$settings, models: $user?.models.split(",") });
+    } else {
+      settings.set({
+        ...$settings,
+        models: $config?.default_models.split(","),
+      });
+    }
+    localStorage.setItem("settings", JSON.stringify($settings));
+    goto("/");
+    const newChatButton = document.getElementById("new-chat-button");
+    setTimeout(() => {
+      newChatButton?.click();
+    }, 0);
+  };
 
 	onMount(async () => {
 		const queryParams = new URLSearchParams($page.url.search);
@@ -88,7 +71,6 @@
 					localStorage.token,
 					$channel
 				).catch((error) => {
-					// toast.error(error);
 					return null;
 				});
 
@@ -100,9 +82,8 @@
 					});
 					console.log("============sessionUser2===========");
 				} else {
-					// Redirect Invalid Session User to /auth Page
-					// localStorage.removeItem('token');
-					// await goto('/auth');
+					// 更新用户模型
+					await initUserModels();
 				}
 			} else {
 				// await goto('/auth');

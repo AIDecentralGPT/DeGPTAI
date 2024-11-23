@@ -1,31 +1,21 @@
 <script lang="ts">
   import { setDefaultModels } from "$lib/apis/configs";
-  import { models, settings, user, mobile } from "$lib/stores";
+  import { models, settings, user } from "$lib/stores";
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
   import Selector from "./ModelSelector/Selector.svelte";
   import SelectorTip from "./ModelSelector/SelectorTip.svelte";
+  import { updateUserModels } from "$lib/apis/users";
 
   const i18n = getContext("i18n");
 
   export let selectedModels = [""];
 
-  export let showSetDefault = true;
-
   const saveDefaultModel = async () => {
-    const hasEmptyModel = selectedModels.filter((it) => it === "");
-    if (hasEmptyModel.length) {
-      toast.error($i18n.t("Choose a model before saving..."));
-      return;
-    }
     settings.set({ ...$settings, models: selectedModels });
     localStorage.setItem("settings", JSON.stringify($settings));
-
-    if ($user?.role === "admin") {
-      console.log("setting default models globally");
-      await setDefaultModels(localStorage.token, selectedModels.join(","));
-    }
-    toast.success($i18n.t("Default model updated"));
+    let selModels = selectedModels.join(",");
+    await updateUserModels(localStorage.token, selModels);
   };
 
   $: if (selectedModels.length > 0 && $models.length > 0) {
@@ -38,8 +28,9 @@
     });
   }
 
-  function updateSelList(list: any) {
+  async function updateSelList(list: any) {
     selectedModels = list.detail;
+    await saveDefaultModel();
   }
 
 </script>
