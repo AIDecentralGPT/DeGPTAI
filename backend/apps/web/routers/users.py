@@ -9,7 +9,7 @@ import time
 import uuid
 import logging
 
-from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm
+from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
 from apps.web.models.vip import VIPStatuses, VIPStatusModelResp
@@ -326,7 +326,6 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
             tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
             print("receipt", tx_receipt)
 
-
             if tx_receipt.status == 1:
                 # # 获取交易回执
                 # tx_receipt = w3.eth.get_transaction_receipt(tx_hash)
@@ -415,13 +414,26 @@ async def get_user_info(request: Request,  user=Depends(get_current_user)):
                 "role": user.role,
                 "profile_image_url": user.profile_image_url,
                 "address_type": user.address_type,
-                "verified": user.verified
+                "verified": user.verified,
+                "models": user.models
             }
             return response
                     
         except Exception as e:
             print("获取用户信息报错", e)
             raise HTTPException(400, detail="Error get_user_info")
+
+# 更新用户选择模型       
+@router.post("/update/models", response_model=bool)
+async def update_user_role(form_data: UserModelsUpdateForm, user=Depends(get_current_user)):
+
+    if user is not None:
+        return Users.update_user_models(user.id, form_data.models)
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
             
 
 

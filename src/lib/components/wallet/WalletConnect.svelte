@@ -1,14 +1,15 @@
 <script lang="ts">
   import { getContext, onMount } from "svelte";
+  import { goto } from "$app/navigation";
   import { writable } from "svelte/store";
   import { createWeb3Modal } from "@web3modal/wagmi";
   import {
     watchConnections,
     getAccount,
-    watchAccount
+    watchAccount,
   } from "@wagmi/core";
   import { handleWalletSignIn, signOut } from "$lib/utils/wallet/ether/utils";
-  import { threesideAccount, user, theme, channel } from "$lib/stores";
+  import { threesideAccount, user, theme, channel, settings, config as storeConfig } from "$lib/stores";
   import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   const i18n = getContext("i18n");
 
@@ -39,6 +40,20 @@
     });
   });
 
+  const initUserModels = () => {
+    if ($user?.models) {
+      settings.set({...$settings, models: $user?.models.split(",")});
+    } else {
+      settings.set({...$settings, models: $config?.default_models.split(",")});
+    }
+    localStorage.setItem("settings", JSON.stringify($settings));
+    goto("/");
+    const newChatButton = document.getElementById("new-chat-button");
+    setTimeout(() => {
+      newChatButton?.click();
+    }, 0);
+  }
+
   function clearConnector() {
     config.state.connections.forEach((item) => {
       config.state.connections.delete(item.connector.uid);
@@ -67,6 +82,9 @@
             address_type: "threeSide",
             channel: $channel
           });
+
+          // 更新用户模型
+          initUserModels();
         }
       }
       if (account.status === "disconnected") {

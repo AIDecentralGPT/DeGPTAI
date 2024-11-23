@@ -212,7 +212,8 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         "name": user.name,
         "role": user.role,
         "profile_image_url": user.profile_image_url,
-        "address": user.address
+        "address": user.address,
+        "models": user.models
     }
     # print("Returning response:", response)  # 打印日志
     return response
@@ -328,7 +329,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 "address_type": address_type,
                 "verified": user.verified,
                 "address": user.address,
-                "user_no": user_count + 1 if user_count is not None else None                
+                "user_no": user_count + 1 if user_count is not None else None,
+                "models": user.models
             }
             return response
         else:

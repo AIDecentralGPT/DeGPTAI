@@ -21,11 +21,9 @@
     showRewardsHistoryModal,
     showTransactionsModal,
     showUserVerifyModal,
-    showCoinIntruModal
+    showCoinIntruModal,
   } from "$lib/stores";
-  import {
-    getCurrentPair,
-  } from "$lib/utils/wallet/dbc.js";
+  import { getCurrentPair } from "$lib/utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
 
   const i18n = getContext("i18n");
@@ -76,7 +74,6 @@
   let chatDeleteId = null;
   let chatTitleEditId = null;
   let chatTitle = "";
-
 
   let showShareChatModal = false;
 
@@ -138,7 +135,7 @@
     // 登录账号
     const pair = getCurrentPair();
     console.log("sidebar组件获取pair ", pair);
-    
+
     if (pair) {
       // 获取钱包面板数据
       updateWalletData(pair);
@@ -264,23 +261,23 @@
 />
 
 <!-- 创建钱包 -->
-{#if showNewWalletModal} 
-<NewWalletModal bind:show={$showNewWalletModal} />
+{#if showNewWalletModal}
+  <NewWalletModal bind:show={$showNewWalletModal} />
 {/if}
 
 <!-- 连接钱包 -->
-{#if showOpenWalletModal} 
-<OpenWalletModal bind:show={$showOpenWalletModal} />
+{#if showOpenWalletModal}
+  <OpenWalletModal bind:show={$showOpenWalletModal} />
 {/if}
 
 <!-- 到处钱包信息 -->
-{#if showExportWalletJsonModal} 
-<ExportWalletJsonModal bind:show={$showExportWalletJsonModal} />
+{#if showExportWalletJsonModal}
+  <ExportWalletJsonModal bind:show={$showExportWalletJsonModal} />
 {/if}
 
 <!-- 转账弹窗 -->
 {#if showRewardsHistoryModal}
-<TransferModal bind:show={$showTransferModal} />
+  <TransferModal bind:show={$showTransferModal} />
 {/if}
 
 <PriceModal bind:show={$showPriceModal} />
@@ -288,39 +285,38 @@
 
 <!-- 分享弹窗 -->
 {#if showRewardsHistoryModal}
-<ShareModal bind:show={$showShareModal} />
+  <ShareModal bind:show={$showShareModal} />
 {/if}
 
 <!-- 邀请朋友获取奖励弹窗（已注释） -->
-{#if showRewardsModal} 
-<RewardsModal bind:show={$showRewardsModal} />
+{#if showRewardsModal}
+  <RewardsModal bind:show={$showRewardsModal} />
 {/if}
 
 <!-- 奖励记录弹窗 -->
-{#if showRewardsHistoryModal} 
-<RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
+{#if showRewardsHistoryModal}
+  <RewardsHistoryModal bind:show={$showRewardsHistoryModal} />
 {/if}
 
 <!-- 奖励操作界面 -->
-{#if showRewardDetailModal} 
-<RewardDetailModal bind:show={$showRewardDetailModal} />
+{#if showRewardDetailModal}
+  <RewardDetailModal bind:show={$showRewardDetailModal} />
 {/if}
 
 <!-- 转账记录弹窗 -->
-{#if showTransactionsModal} 
-<TransactionsModal bind:show={$showTransactionsModal} />
+{#if showTransactionsModal}
+  <TransactionsModal bind:show={$showTransactionsModal} />
 {/if}
 
 <!-- KYC认证弹窗 -->
-{#if showUserVerifyModal} 
-<UserVerifyModal bind:show={$showUserVerifyModal} />
+{#if showUserVerifyModal}
+  <UserVerifyModal bind:show={$showUserVerifyModal} />
 {/if}
 
 <!-- KYC认证弹窗 -->
-{#if showCoinIntruModal} 
-<CoinIntruModal bind:show={$showCoinIntruModal} />
+{#if showCoinIntruModal}
+  <CoinIntruModal bind:show={$showCoinIntruModal} />
 {/if}
-
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 
@@ -370,9 +366,7 @@
         href="/"
         draggable="false"
         on:click={async () => {
-          console.log("=====================");
           selectedChatId = null;
-
           await goto("/");
           const newChatButton = document.getElementById("new-chat-button");
           setTimeout(() => {

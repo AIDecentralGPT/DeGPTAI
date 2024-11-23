@@ -203,7 +203,7 @@ type Config = {
 	version?: string;
 	default_locale?: string;
 	images?: boolean;
-	default_models?: string[];
+	default_models?: string;
 	default_prompt_suggestions?: PromptSuggestion[];
 	trusted_header_auth?: boolean;
 };

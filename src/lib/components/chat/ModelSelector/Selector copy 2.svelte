@@ -40,7 +40,6 @@
     } else {
       selectedList.push(val);
     }
-    console.log("==========================", selectedList);
   }
 
   let searchValue = "";
