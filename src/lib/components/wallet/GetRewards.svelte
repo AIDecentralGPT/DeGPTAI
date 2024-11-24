@@ -130,7 +130,7 @@
             <span class="relative">{item.reward}</span>
             <button
               disabled={clockLoading}
-              class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg break-words"}
+              class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-white text-zinc-950 transition rounded-lg break-words"}
                 style={(clockLoading && item.id === "clock_in") ? "background: rgba(251, 251, 251, 0.8)" : ""}
               on:click={async () => {
                 console.log("user info ", $user);

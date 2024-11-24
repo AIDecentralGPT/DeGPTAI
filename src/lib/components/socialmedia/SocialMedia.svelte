@@ -7,21 +7,21 @@
 
 <section>
   <hr class="dark:border-gray-800 p-0" />
-  <div class="flex justify-center h-[12px]">
+  <div class="flex justify-center h-[18px]">
     {#if $user?.id?.startsWith('0x')}
       {#if $showLoginInfoModal}
         <Tooltip content={$i18n.t('Hide')}>
-          <button class="bg-gray-800 px-4 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
-            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
-              <path d="M512 741.504l338.752-338.752 90.496 90.496L512 922.496 82.752 493.248l90.496-90.496L512 741.504z m0-320l338.752-338.752 90.496 90.496L512 602.496 82.752 173.248l90.496-90.496L512 421.504z" fill="#ffffff"></path>
+          <button class="bg-gray-300 px-2 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="10" height="10">
+              <path d="M512 785.0666667c-17.066667 0-34.133333-8.533333-51.2-17.066667L51.2 349.8666667c-25.6-25.6-25.6-68.266667 0-93.866667 25.6-25.6 68.266667-25.6 93.866667 0L512 622.9333337l366.933333-366.933334c25.6-25.6 68.266667-25.6 93.866667 0 25.6 25.6 25.6 68.266667 0 93.866667l-418.133333 418.133333c-8.533333 8.533333-25.6 17.066667-42.666667 17.066667z" fill="#000000"/>
             </svg>
           </button>
         </Tooltip> 
       {:else}
         <Tooltip content={$i18n.t('Show')}>
-          <button class="bg-gray-800 px-4 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
-            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
-              <path d="M512 602.496l-338.752 338.752-90.496-90.496L512 421.504l429.248 429.248-90.496 90.496L512 602.496z m0-320L173.248 621.248 82.752 530.752 512 101.504l429.248 429.248-90.496 90.496L512 282.496z" fill="#ffffff"></path>
+          <button class="bg-gray-300 px-2 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="10" height="10">
+              <path d="M512 238.9333333c17.066667 0 34.133333 8.533333 51.2 17.066667L972.8 674.1333333c25.6 25.6 25.6 68.266667 0 93.86666701-25.6 25.6-68.266667 25.6-93.866667-1e-8L512 401.0666663l-366.933333 366.933334c-25.6 25.6-68.266667 25.6-93.866667 1e-8-25.6-25.6-25.6-68.266667 0-93.86666701l418.133333-418.133333c8.533333-8.533333 25.6-17.066667 42.666667-17.066667z" fill="#000000"/>
             </svg>
           </button>
         </Tooltip>

@@ -120,7 +120,7 @@
     {:else}
       <div class="flex justify-start gap-2 mt-1 mb5">
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showTransferModal = true;
@@ -129,7 +129,7 @@
           {$i18n.t("Transfer")}
         </button>
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showExportWalletJsonModal = true;
@@ -138,7 +138,7 @@
           {$i18n.t("Export Wallet")}
         </button>
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             closeWallet();
@@ -274,7 +274,7 @@
   {#if $showLoginInfoModal}
     <div class="flex justify-start gap-2 mt-1 mb-2">
       <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           // $showBuyCoinModal = true;
@@ -295,7 +295,7 @@
         {$i18n.t("Rewards")}
       </button> -->
       <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           $showTransactionsModal = true;
