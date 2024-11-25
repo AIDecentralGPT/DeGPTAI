@@ -100,7 +100,7 @@ export const getDeModels = async (token: string = "") => {
       // Mistral LLM(Large2-123B)
       {
         name: "Code LLM (Codestral-22B-v0.1)",
-        model: "Codestral-22B-v0.1",
+        model: "DeepSeek-Coder-V2",
         modified_at: new Date().toISOString(),
         size: 0, // 需要根据实际数据填充
         digest: "", // 需要根据实际数据填充
