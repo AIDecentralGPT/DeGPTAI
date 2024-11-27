@@ -389,7 +389,6 @@
     );
 
     firstResAlready = false; // 所有模型响应结束后，还原firstResAlready为初始状态false
-
     await chats.set(await getChatList(localStorage.token));
   };
 

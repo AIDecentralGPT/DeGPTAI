@@ -16,12 +16,13 @@
   import { Toaster } from "svelte-sonner";
 
   import { getBackendConfig } from "$lib/apis";
-  import { printSignIn } from "$lib/apis/auths";
 
   import "../tailwind.css";
   import "../app.css";
-  // import VConsole from 'vconsole';
-  // const vConsole = new VConsole();
+
+  // 打开调试模式
+  import VConsole from 'vconsole';
+  const vConsole = new VConsole();
 
   import "tippy.js/dist/tippy.css";
 
@@ -33,6 +34,7 @@
   import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
   import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
   import { getLanguages } from "$lib/i18n/index";
+  import { signOut } from "$lib/utils/wallet/ether/utils";
 
   setContext("i18n", i18n);
   let loaded = false;
@@ -106,76 +108,71 @@
     console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
     localStorage.setItem("visitor_id", visitorId);
 
-    let res = {};
-    if (localStorage.token) {
+    // 获取渠道
+    const queryParams = new URLSearchParams($page.url.search);
+    let channelName = queryParams.get("channel");
+    if (channelName) {
+      await channel.set(channelName);
+    }
+
+    if (localStorage?.token) {
       // 获取缓存用户信息
       let localUser = null;
-      if (localStorage.user) {
-        try {
-          localUser = JSON.parse(localStorage.user);
-        } catch {}
-      }
-
-      if (localUser?.address_type == "dbc") {
-        res = await getUserInfo(localStorage.token);
-        if (res?.id === localUser?.id) {
-          const proInfo = await isPro(localStorage.token);
-          await user.set({
-            ...localUser,
-            token: res?.token,
-            isPro: proInfo ? proInfo.is_pro : false,
-            proEndDate: proInfo ? proInfo.end_date : null,
-          });
-        }
-        localStorage.user = JSON.stringify($user);
-        console.log("===========localUser===========");
-
-        // 更新setting
-        if (res?.models) {
-          settings.set({
-            ...$settings,
-            models: res.models.split(","),
-          });
-        } else {
-          settings.set({ ...$settings, models: $config.models });
-        }
-        localStorage.setItem("settings", JSON.stringify($settings));
-
-        // 校验钱包
-        if (localStorage.walletImported) {
-          let walletImported = JSON.parse(localStorage.walletImported);
-          if (walletImported) {
-            const walletImportedInfo = await unlockWalletWithPrivateKey(
-              walletImported?.privateKey
-            );
-            updateWalletData(walletImportedInfo?.data);
+      try {
+        localUser = JSON.parse(localStorage?.user);
+        if (localUser?.address_type == "dbc") {
+          let res = await getUserInfo(localStorage.token);
+          if (res?.id === localUser?.id) {
+            const proInfo = await isPro(localStorage.token);
+            await user.set({
+              ...localUser,
+              token: res?.token,
+              isPro: proInfo ? proInfo.is_pro : false,
+              proEndDate: proInfo ? proInfo.end_date : null,
+            });
           }
+          localStorage.user = JSON.stringify($user);
+
+          // 更新setting
+          if (res?.models) {
+            settings.set({
+              ...$settings,
+              models: res.models.split(","),
+            });
+          } else {
+            settings.set({ ...$settings, models: $config.models });
+          }
+          localStorage.setItem("settings", JSON.stringify($settings));
+
+          // 校验钱包
+          if (localStorage.walletImported) {
+            let walletImported = JSON.parse(localStorage.walletImported);
+            if (walletImported) {
+              const walletImportedInfo = await unlockWalletWithPrivateKey(
+                walletImported?.privateKey
+              );
+              updateWalletData(walletImportedInfo?.data);
+            }
+          }
+        } else {
+          await signOut($channel);
+          // 更新用户模型
+          await initUserModels();
         }
-      } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("walletImported");
+      } catch (error) {
+        await signOut($channel);
+        // 更新用户模型
+        await initUserModels();
       }
     } else {
-      const queryParams = new URLSearchParams($page.url.search);
-      let channelName = queryParams.get("channel");
-      if (channelName) {
-        await channel.set(channelName);
-      }
-
-      res = await printSignIn($channel);
-
+      await signOut($channel);
       // 更新用户模型
       await initUserModels();
     }
-
-    loaded = true;
-
-    localStorage.token = res?.token;
   }
 
   async function intiLocationInfo() {
-    getRegionInfo().then((data) => {
+    await getRegionInfo().then((data) => {
       const regionDict = getRegionDict();
       if (data) {
         regionDict.Singapore.forEach((item) => {
@@ -210,7 +207,7 @@
   }
 
   // 更新用户模型
-  const initUserModels = async() => {
+  const initUserModels = async () => {
     if ($user?.models) {
       settings.set({ ...$settings, models: $user?.models.split(",") });
     } else {
@@ -233,6 +230,7 @@
     await initLanguage();
     if (currentAddress.indexOf("userVerifying") < 0) {
       await checkLogin();
+      loaded = true;
       await intiLocationInfo();
     } else {
       loaded = true;

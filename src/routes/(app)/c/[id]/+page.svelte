@@ -121,8 +121,8 @@
 				loaded = true;
 
 				window.setTimeout(() => scrollToBottom(), 0);
-				const chatInput = document.getElementById('chat-textarea');
-				chatInput?.focus();
+				// const chatInput = document.getElementById('chat-textarea');
+				// chatInput?.focus();
 			} else {
 				await goto('/');
 			}

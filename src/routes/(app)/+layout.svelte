@@ -11,6 +11,7 @@
 	import {
 		user,
 		showSettings,
+		showStatisticsModal,
 		settings,
 		models,
 		showChangelog,
@@ -20,10 +21,10 @@
 	import { page } from "$app/stores";
 
 	import SettingsModal from "$lib/components/chat/SettingsModal.svelte";
+	import StatisticsModal from "$lib/components/statistics/StatisticsModal.svelte";
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
 	import ShortcutsModal from "$lib/components/chat/ShortcutsModal.svelte";
 	import Tooltip from "$lib/components/common/Tooltip.svelte";
-	import { getSessionUser } from "$lib/apis/auths";
 
 	const i18n = getContext("i18n");
 
@@ -66,25 +67,27 @@
 		}
 		if ($config) {
 			if (localStorage.token) {
-				// Get Session User Info
-				const sessionUser = await getSessionUser(
-					localStorage.token,
-					$channel
-				).catch((error) => {
-					return null;
-				});
+				// // Get Session User Info
+				// const sessionUser = await getSessionUser(
+				// 	localStorage.token,
+				// 	$channel
+				// ).catch((error) => {
+				// 	return null;
+				// });
 
-				if (sessionUser) {
-					// Save Session User to Store
-					await user.set({
-						...$user,
-						...sessionUser,
-					});
-					console.log("============sessionUser2===========");
-				} else {
-					// 更新用户模型
-					await initUserModels();
-				}
+				// if (sessionUser) {
+				// 	// Save Session User to Store
+				// 	await user.set({
+				// 		...$user,
+				// 		...sessionUser,
+				// 	});
+				// 	console.log("============sessionUser2===========");
+				// } else {
+				// 	// 更新用户模型
+				// 	await initUserModels();
+				// }
+				// 更新用户模型
+				await initUserModels();
 			} else {
 				// await goto('/auth');
 			}
@@ -235,6 +238,7 @@
 
 <ShortcutsModal bind:show={showShortcuts} />
 <SettingsModal bind:show={$showSettings} />
+<StatisticsModal bind:show={$showStatisticsModal} />
 <!-- <ChangelogModal bind:show={$showChangelog} /> -->
 
 <div class="app relative">

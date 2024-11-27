@@ -1,8 +1,7 @@
 <script lang="ts">
   import { getContext, tick } from "svelte";
-  import { getChatList } from "$lib/apis/chats";
   import { goto } from "$app/navigation";
-  import { chats, channel, user, settings, config } from '$lib/stores';
+  import { channel, user, settings, config } from '$lib/stores';
   import { toast } from "svelte-sonner";
   import Modal from "../common/Modal.svelte";
   import { handleWalletSignIn, unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils.js";
@@ -170,7 +169,6 @@
 
                 show = false;
                 password = "";
-                chats.set(await getChatList(localStorage.token));
               } catch (error) {
                 console.log("error, ", error, error.message);
                 toast.error(error.message);
@@ -296,7 +294,6 @@
 
                   show = false;
                   password = "";
-                  chats.set(await getChatList(localStorage.token));
                 } catch (error) {
                   toast.error($i18n.t("Incorrect password"));
                 }
