@@ -37,7 +37,7 @@
   let search = "";
   let selectedUser = null;
 
-	let loading = false
+  let loading = false;
 
   let role = "";
   // let role = 'All'
@@ -68,13 +68,12 @@
   };
 
   const handleUsersRequest = async () => {
-		loading = true
+    loading = true;
     const res = await getUsers(localStorage.token, page, role, search);
     console.log("user", res);
     users = res?.users || [];
     total = res?.total;
-		loading = false
-
+    loading = false;
   };
 
   const editUserPasswordHandler = async (id, password) => {
@@ -136,29 +135,27 @@
 
 <div class=" flex flex-col w-full min-h-screen">
   {#if loaded}
-    <div class="px-4 pt-3 mt-0.5 mb-1">
-      <div class=" flex items-center gap-1">
-        <div
-          class="{$showSidebar
-            ? 'md:hidden'
-            : ''} mr-1 self-start flex flex-none items-center"
-        >
-          <button
-            id="sidebar-toggle-button"
-            class="cursor-pointer p-1 flex rounded-xl hover:bg-gray-100 dark:hover:bg-gray-850 transition"
-            on:click={() => {
-              showSidebar.set(!$showSidebar);
-            }}
-          >
-            <div class=" m-auto self-center">
-              <MenuLines />
-            </div>
-          </button>
-        </div>
-        <div class="flex items-center text-xl font-semibold">
-          {$i18n.t("Dashboard")}
-        </div>
+    <div class="flex justify-between px-4 pt-3 mt-0.5 mb-1 w-full">
+      <div class="flex items-center text-xl font-semibold">
+        {$i18n.t("Dashboard")}
       </div>
+      <button
+        class="self-center"
+        on:click={() => {
+          goto("/");
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+          />
+        </svg>
+      </button>
     </div>
 
     <!-- <div class="px-4 my-1">
@@ -177,9 +174,9 @@
 			</div>
 		</div> -->
 
-    <hr class=" my-2 dark:border-gray-850" />
+    <hr class=" my-2 dark:border-gray-850 w-full" />
 
-    <div class="px-6">
+    <div class="px-6 w-full">
       <div class="mt-0.5 mb-3 gap-1 flex flex-col md:flex-row justify-between">
         <div class="flex md:self-center text-lg font-medium px-0.5">
           {$i18n.t("All Users")}
@@ -245,9 +242,8 @@
               <select
                 class="w-full capitalize rounded-lg py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
                 on:change={(e) => {
-                  page = 1
-									role = e.target.value;
-
+                  page = 1;
+                  role = e.target.value;
                 }}
               >
                 <option value="">All</option>
@@ -260,7 +256,7 @@
         </div>
       </div>
 
-      <div class="scrollbar-hidden relative overflow-x-auto whitespace-nowrap">
+      <div class="relative w-full overflow-auto whitespace-nowrap">
         <table
           class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
         >
@@ -472,9 +468,9 @@
         ⓘ {$i18n.t("Click on the user role button to change a user's role.")}
       </div>
 
-			{#if !loading && users.length > 0}
-				<Pagination bind:page count={total} />
-			{/if}
+      {#if !loading && users.length > 0}
+        <Pagination bind:page count={total} />
+      {/if}
     </div>
   {/if}
 </div>

@@ -6,7 +6,7 @@
   import { getThirdTotal, getThirdPage } from "$lib/apis/users";
   import { copyToClipboard } from "$lib/utils";
   import { toast } from "svelte-sonner";
-
+  import { goto } from "$app/navigation";
   const i18n = getContext("i18n");
 
   let loaded = false;
@@ -40,7 +40,7 @@
     },
     toolbox: {
       show: true,
-      itemSize: 16,
+      itemSize: 10,
       iconStyle: {
         color: "#ffffff",
         borderColor: "#ffffff",
@@ -49,9 +49,9 @@
         // 自定义按钮配置
         myButton: {
           show: true,
-          icon: "path://M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12",
+          icon: "path://M912.082824 60.235294l42.586352 42.586353-404.60047 404.660706 404.60047 404.600471-42.586352 42.586352-404.600471-404.60047-404.660706 404.60047L60.235294 912.082824l404.660706-404.600471L60.235294 102.821647 102.821647 60.235294l404.660706 404.660706L912.082824 60.235294z",
           onclick: function () {
-            $showSidebar = !$showSidebar;
+            goto("/");
           },
         },
       },
