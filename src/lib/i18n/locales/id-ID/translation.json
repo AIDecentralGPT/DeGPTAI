@@ -683,6 +683,8 @@
   "You can select up to four models at most.": "Anda dapat memilih hingga empat model terbanyak.",
   "Your friend not complete the KYC verification.": "Teman Anda belum menyelesaikan verifikasi KYC.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore telah diunduh secara otomatis. Jika perlu, Anda dapat mengunduh JSON secara manual atau menyalin kunci privat.",
+  "Total": "Total",
+  "Third registration": "Pendaftaran Tersirat",
   "I. New User Creation Reward": "I. Hadiah Pembuatan Pengguna Baru",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Setelah menyelesaikan autentikasi pengguna baru, terima hadiah sebesar <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Hadiah Rujukan",

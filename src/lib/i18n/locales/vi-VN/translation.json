@@ -683,6 +683,8 @@
   "You can select up to four models at most.": "Bạn có thể chọn tối đa bốn mô hình.",
   "Your friend not complete the KYC verification.": "Bạn của bạn chưa hoàn thành xác thực KYC.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore đã được tải xuống tự động. Nếu cần thiết, bạn có thể tải JSON bằng tay hoặc sao chép khóa riêng.",
+  "Total": "Tổng",
+  "Third registration": "Đăng ký thứ ba",
   "I. New User Creation Reward": "I. Thưởng cho việc tạo tài khoản người dùng mới",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Sau khi hoàn thành xác thực người dùng mới, sẽ nhận được phần thưởng <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Thưởng cho việc giới thiệu",

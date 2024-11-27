@@ -683,6 +683,8 @@
   "You can select up to four models at most.": "최대 4개의 모델을 선택할 수 있습니다.",
   "Your friend not complete the KYC verification.": "귀하의 친구는 KYC 인증을 완료하지 않았습니다.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "키스토어가 자동으로 다운로드되었습니다. 필요한 경우 JSON을 수동으로 다운로드하거나 개인키를 복사할 수 있습니다.",
+  "Total": "총계",
+  "Third registration": "제3자 등록",
   "I. New User Creation Reward": "I. 신규 사용자 생성 보상",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "신규 사용자 인증을 완료한 후, <span style='color: rgba(184, 142, 86, 1);'>1000</span>개의 DGC 보상을 받습니다.",
   "II. Referral Reward": "II. 추천 보상",

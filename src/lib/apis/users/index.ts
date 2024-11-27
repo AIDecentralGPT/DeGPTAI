@@ -383,3 +383,66 @@ export const updateUserModels = async (
 
 	return res;
 };
+
+export const getThirdTotal = async (
+	token: string
+) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users/third/total`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+export const getThirdPage = async (token: string, page: Object) => {
+  let error = null;
+
+  const res = await fetch(`${WEBUI_API_BASE_URL}/users/third/list`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(page)
+  })
+    .then(async (res) => {
+      if (!res.ok) throw await res.json();
+      return res.json();
+    })
+    .then((json) => {
+      return json;
+    })
+    .catch((err) => {
+      console.log(err);
+      return null;
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return res;
+};

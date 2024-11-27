@@ -683,6 +683,8 @@
   "You can select up to four models at most.": "最大で 4 つのモデルを選択できます。",
   "Your friend not complete the KYC verification.": "あなたの友人は KYC 検証を完了していません。",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "キーストアは自動的にダウンロードされました。必要に応じて、JSON を手動でダウンロードするか、秘密鍵をコピーできます。",
+  "Total": "そうけい",
+  "Third registration": "サードパーティーの登録",
   "I. New User Creation Reward": "I. 新規ユーザー作成報酬",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": " 新規ユーザー認証を完了した後、<span style='color: rgba(184, 142, 86, 1);'>1000</span>個の DGC 報酬を受け取ります。",
   "II. Referral Reward": "II. 紹介報酬",

@@ -682,6 +682,8 @@
   "You can select up to four models at most.": "你最多可以选择四个模型。",
   "Your friend not complete the KYC verification.": "你的朋友没有完成 KYC 验证。",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "密钥库已自动下载。如有必要，你可以手动下载 JSON 或复制私钥。",
+  "Total": "总数",
+  "Third registration": "第三方注册",
   "I. New User Creation Reward": "I. 新用户创建奖励",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "完成新用户认证后，可获得一个<span style='color: rgba(184, 142, 86, 1);'>1000</span>个 DGC 的奖励。",
   "II. Referral Reward": "II. 推荐奖励",

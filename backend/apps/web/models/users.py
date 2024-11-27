@@ -28,6 +28,10 @@ class UserRoleUpdateProForm(BaseModel):
 class UserRequest(BaseModel):
     user_id: str  # 定义id字段，类型为字符串
 
+class UserPageRequest(BaseModel):
+    pageSize: int
+    pageNum: int
+
 # 定义User模型
 class User(Model):
     id = CharField(unique=True)  # 定义唯一的字符字段id
@@ -78,6 +82,11 @@ class UserModel(BaseModel):
     address: Optional[str] = None
     channel: Optional[str] = None
     models: Optional[str] = None
+
+# 定义Pydantic模型UserModel
+class ChannelTotalModel(BaseModel):
+    channel: str  # 第三方标识
+    total: int  # 总数
 
 ####################
 # Forms
@@ -417,8 +426,20 @@ class UsersTable:
         
     def get_user_count(self) -> int:
         return User.select().count()  # 查询用户数量
+    
+    def get_third_total(self) -> int:
+        return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).count();
 
+    def get_third_group_total(self) -> Optional[ChannelTotalModel]:
+        return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).group_by(User.channel);
 
+    def get_third_list(self, pageNum: Optional[int]=1, pageSize: Optional[int]=10) -> Optional[UserModel]:
+        try:
+            users = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).order_by(User.created_at.desc()).paginate(pageNum, pageSize);
+            return [UserModel(**model_to_dict(user)) for user in users]
+        except Exception as e:
+            print(f"get_third_list Exception: {e}")
+            return None
 
 # 实例化UsersTable类
 Users = UsersTable(DB)

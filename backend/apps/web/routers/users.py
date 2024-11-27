@@ -9,7 +9,7 @@ import time
 import uuid
 import logging
 
-from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm
+from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserPageRequest
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
 from apps.web.models.vip import VIPStatuses, VIPStatusModelResp
@@ -429,6 +429,35 @@ async def update_user_role(form_data: UserModelsUpdateForm, user=Depends(get_cur
 
     if user is not None:
         return Users.update_user_models(user.id, form_data.models)
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
+# 获取第三方注册统计数据      
+@router.post("/third/total", response_model=List[ChannelTotalModel])
+async def third_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        return Users.get_third_group_total()
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
+# 获取第三方注册数据列表      
+@router.post("/third/list")
+async def third_list(request: UserPageRequest, user=Depends(get_current_user)):
+
+    if user is not None:
+        users = Users.get_third_list(request.pageNum, request.pageSize)
+        total = Users.get_third_total()
+        return {
+            "row": users,
+            "total": total
+        }
 
     raise HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,

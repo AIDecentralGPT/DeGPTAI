@@ -5,7 +5,7 @@
 	import { flyAndScale } from "$lib/utils/transitions";
 	import { goto } from "$app/navigation";
 	import ArchiveBox from "$lib/components/icons/ArchiveBox.svelte";
-	import { showSettings, showStatisticsModal } from "$lib/stores";
+	import { user, showSettings, showStatisticsModal } from "$lib/stores";
 	import { fade, slide } from "svelte/transition";
 
 	const i18n = getContext("i18n");
@@ -66,26 +66,27 @@
 				<div class=" self-center font-medium">{$i18n.t("Settings")}</div>
 			</button>
 
-			<!-- {#if $user?.role === 'admin'} -->
-			<button
-				class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-				on:click={ async () => {
-					await showStatisticsModal.set(true);
-					show = false;
-				}}
-			>
-				<div class=" self-center mr-3">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 1024 1024"
-						fill="currentColor"
-						class="w-5 h-5">
-						<path d="M510.8 961.2C263.5 961.2 62.4 760 62.4 512.7S263.5 64.2 510.8 64.2s448.5 201.2 448.5 448.5-201.2 448.5-448.5 448.5z m0-837.2c-214.3 0-388.7 174.4-388.7 388.7s174.4 388.7 388.7 388.7S899.5 727 899.5 512.7 725.2 124 510.8 124z" p-id="8600" fill="#ffffff"></path><path d="M316.5 636.7V388.8c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v247.9c0 14-11.5 25.5-25.5 25.5H342c-14 0-25.5-11.5-25.5-25.5zM436.1 636.7V448.6c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v188.1c0 14-11.5 25.5-25.5 25.5h-8.7c-14 0-25.5-11.5-25.5-25.5zM555.7 636.7V388.8c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v247.9c0 14-11.5 25.5-25.5 25.5h-8.7c-14 0-25.5-11.5-25.5-25.5zM675.3 636.7V508.4c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v128.3c0 14-11.5 25.5-25.5 25.5h-8.7c-14 0-25.5-11.5-25.5-25.5z"/>
-					</svg>
-				</div>
-				<div class=" self-center font-medium">{$i18n.t("Statistics")}</div>
-			</button>
-			<!-- {/if} -->
+			{#if $user?.role === 'admin'}
+				<button
+					class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+					on:click={ async () => {
+						await showStatisticsModal.set(true);
+						show = false;
+					}}
+				>
+					<div class=" self-center mr-3">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 1024 1024"
+							fill="currentColor"
+							class="w-5 h-5">
+							<path d="M510.8 961.2C263.5 961.2 62.4 760 62.4 512.7S263.5 64.2 510.8 64.2s448.5 201.2 448.5 448.5-201.2 448.5-448.5 448.5z m0-837.2c-214.3 0-388.7 174.4-388.7 388.7s174.4 388.7 388.7 388.7S899.5 727 899.5 512.7 725.2 124 510.8 124z"/>
+							<path d="M316.5 636.7V388.8c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v247.9c0 14-11.5 25.5-25.5 25.5H342c-14 0-25.5-11.5-25.5-25.5zM436.1 636.7V448.6c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v188.1c0 14-11.5 25.5-25.5 25.5h-8.7c-14 0-25.5-11.5-25.5-25.5zM555.7 636.7V388.8c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v247.9c0 14-11.5 25.5-25.5 25.5h-8.7c-14 0-25.5-11.5-25.5-25.5zM675.3 636.7V508.4c0-14 11.5-25.5 25.5-25.5h8.7c14 0 25.5 11.5 25.5 25.5v128.3c0 14-11.5 25.5-25.5 25.5h-8.7c-14 0-25.5-11.5-25.5-25.5z"/>
+						</svg>
+					</div>
+					<div class=" self-center font-medium">{$i18n.t("Statistics")}</div>
+				</button>
+			{/if}
 
 			<!-- <button
 				class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
