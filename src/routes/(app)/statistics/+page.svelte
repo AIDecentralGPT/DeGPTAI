@@ -88,6 +88,7 @@
     option.yAxis[0].data = [];
     option.series[0].data = [];
     chartInstance = echarts.init(chartRef);
+    $theme = $theme?? 'dark';
     const textColor = $theme.indexOf("dark") >= 0 ? "#fff" : "#000";
     option.textStyle.color = textColor;
     option.title.textStyle.color = textColor;
