@@ -11,7 +11,6 @@
 	import {
 		user,
 		showSettings,
-		showStatisticsModal,
 		settings,
 		models,
 		showChangelog,
@@ -21,7 +20,6 @@
 	import { page } from "$app/stores";
 
 	import SettingsModal from "$lib/components/chat/SettingsModal.svelte";
-	import StatisticsModal from "$lib/components/statistics/StatisticsModal.svelte";
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
 	import ShortcutsModal from "$lib/components/chat/ShortcutsModal.svelte";
 	import Tooltip from "$lib/components/common/Tooltip.svelte";
@@ -238,7 +236,6 @@
 
 <ShortcutsModal bind:show={showShortcuts} />
 <SettingsModal bind:show={$showSettings} />
-<StatisticsModal bind:show={$showStatisticsModal} />
 <!-- <ChangelogModal bind:show={$showChangelog} /> -->
 
 <div class="app relative">

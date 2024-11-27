@@ -5,7 +5,7 @@
 	import { flyAndScale } from "$lib/utils/transitions";
 	import { goto } from "$app/navigation";
 	import ArchiveBox from "$lib/components/icons/ArchiveBox.svelte";
-	import { user, showSettings, showStatisticsModal } from "$lib/stores";
+	import { user, showSettings } from "$lib/stores";
 	import { fade, slide } from "svelte/transition";
 
 	const i18n = getContext("i18n");
@@ -70,8 +70,7 @@
 				<button
 					class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
 					on:click={ async () => {
-						await showStatisticsModal.set(true);
-						show = false;
+						goto("/statistics");
 					}}
 				>
 					<div class=" self-center mr-3">

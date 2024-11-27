@@ -17,7 +17,6 @@
 	import AddFilesPlaceholder from '$lib/components/AddFilesPlaceholder.svelte';
 	import SettingsModal from '$lib/components/documents/SettingsModal.svelte';
 	import AddDocModal from '$lib/components/documents/AddDocModal.svelte';
-	import StatisticsModal from '$lib/components/statistics/StatisticsModal.svelte';
 
 	const i18n = getContext('i18n');
 
