@@ -452,8 +452,8 @@ async def third_total(user=Depends(get_current_user)):
 async def third_list(request: UserPageRequest, user=Depends(get_current_user)):
 
     if user is not None:
-        users = Users.get_third_list(request.pageNum, request.pageSize)
-        total = Users.get_third_total()
+        users = Users.get_third_list(request.pageNum, request.pageSize, request.channel)
+        total = Users.get_third_total(request.channel)
         return {
             "row": users,
             "total": total

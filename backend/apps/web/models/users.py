@@ -31,6 +31,7 @@ class UserRequest(BaseModel):
 class UserPageRequest(BaseModel):
     pageSize: int
     pageNum: int
+    channel: str
 
 # 定义User模型
 class User(Model):
@@ -427,16 +428,23 @@ class UsersTable:
     def get_user_count(self) -> int:
         return User.select().count()  # 查询用户数量
     
-    def get_third_total(self) -> int:
-        return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).count();
+    def get_third_total(self, channel: Optional[str]="") -> int:
+        if channel == "":
+            return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).count();
+        else:
+            return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel == channel, User.id.like('0x%')).count();
 
     def get_third_group_total(self) -> Optional[ChannelTotalModel]:
         return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).group_by(User.channel);
 
-    def get_third_list(self, pageNum: Optional[int]=1, pageSize: Optional[int]=10) -> Optional[UserModel]:
+    def get_third_list(self, pageNum: Optional[int]=1, pageSize: Optional[int]=10, channel: Optional[str]="") -> Optional[UserModel]:
         try:
-            users = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).order_by(User.created_at.desc()).paginate(pageNum, pageSize);
-            return [UserModel(**model_to_dict(user)) for user in users]
+            if channel == "":
+                users = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).order_by(User.created_at.desc()).paginate(pageNum, pageSize);
+                return [UserModel(**model_to_dict(user)) for user in users]
+            else:
+                users = User.select().where(User.channel == channel, User.id.like('0x%')).order_by(User.created_at.desc()).paginate(pageNum, pageSize);
+                return [UserModel(**model_to_dict(user)) for user in users]
         except Exception as e:
             print(f"get_third_list Exception: {e}")
             return None
