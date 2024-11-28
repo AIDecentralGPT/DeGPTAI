@@ -684,6 +684,8 @@
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore ได้ถูกดาวน์โหลดโดยอัตโนมัติ. หากจำเป็น คุณสามารถดาวน์โหลด JSON แบบมืออาชีพหรือคัดลอกคีย์ส่วนตัวได้.",
   "Total": "ทั้งหมด",
   "Third registration": "การสมัครสมาชิกของบุคคลที่สาม",
+  "Verified": "ตรวจสอบแล้ว",
+  "Channel": "ช่อง",
   "I. New User Creation Reward": "I. ค่าตอบแทนสำหรับการสร้างผู้ใช้ใหม่",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "หลังจากเสร็จสิ้นการยืนยันผู้ใช้ใหม่แล้ว รับค่าตอบแทน <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC",
   "II. Referral Reward": "II. ค่าตอบแทนสำหรับการแนะนำ",

@@ -685,6 +685,8 @@
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "",
   "Total": "",
   "Third registration": "",
+  "Verified": "",
+  "Channel": "",
   "I. New User Creation Reward": "",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "",
   "II. Referral Reward": "",

@@ -684,6 +684,8 @@
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore был автоматически загружен. Если необходимо, вы можете скачать JSON вручную или скопировать приватный ключ.",
   "Total": "Общее",
   "Third registration": "Регистрация третьей стороны",
+  "Verified": "Верифицирован",
+  "Channel": "Канал",
   "I. New User Creation Reward": "I. Премия за создание нового пользователя",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "После завершения аутентификации нового пользователя получите премию в <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Премия за рекомендацию",

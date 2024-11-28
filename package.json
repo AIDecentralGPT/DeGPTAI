@@ -54,6 +54,7 @@
 	"type": "module",
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^4.3.0",
+		"@gregg-cbs/svelte-date-picker": "^3.0.3",
 		"@polkadot/api": "^11.2.1",
 		"@polkadot/util": "^12.6.2",
 		"@polkadot/util-crypto": "^12.6.2",

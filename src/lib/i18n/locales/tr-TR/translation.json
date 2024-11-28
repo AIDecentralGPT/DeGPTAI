@@ -685,6 +685,8 @@
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore otomatik olarak indirildi. Gerekirse, JSON'u elle indirip veya özel anahtarı kopyalayabilirsiniz.",
   "Total": "Toplam",
   "Third registration": "Üçüncü taraf kaydı",
+  "Verified": "Doğrulanmış",
+  "Channel": "Kanal",
   "I. New User Creation Reward": "I. Yeni Kullanıcı Oluşturma Ödülü",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Yeni kullanıcı doğrulamasını tamamladıktan sonra, <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC ödülü alırsınız.",
   "II. Referral Reward": "II. Tavsiye Ödülü",

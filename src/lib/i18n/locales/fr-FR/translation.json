@@ -684,6 +684,8 @@
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "Le KeyStore a été téléchargé automatiquement. Si nécessaire, vous pouvez télécharger le JSON manuellement ou copier la clé privée.",
   "Total": "Total",
   "Third registration": "Enregistrement tiers",
+  "Verified": "Vérifié",
+  "Channel": "Canal",
   "I. New User Creation Reward": "I. Récompense pour la création d'un nouvel utilisateur",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Après avoir effectué l'authentification du nouvel utilisateur, recevez une récompense de <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Récompense pour la recommandation",
