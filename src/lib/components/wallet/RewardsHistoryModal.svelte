@@ -337,7 +337,4 @@
     text-align: center;
     color: #000000;
   }
-  .h-v-80 {
-    height: 80vh;
-  }
 </style>

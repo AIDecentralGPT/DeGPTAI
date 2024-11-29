@@ -32,10 +32,10 @@
         }}
         class="w-full px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
       > 
-        {#if $user.isPro}
+        {#if $user?.isPro}
           <div class="text-white text-center text-sm leading-4">VIP</div>       
           <div class="flex-1 flex flex-row text-xs justify-center items-center leading-3">
-            {$i18n.t("Valid until")} {$user.proEndDate}
+            {$i18n.t("Valid until")} {$user?.proEndDate}
           </div>
         {:else}
           <span class="relative">{$i18n.t("Upgrade Plan")}</span>

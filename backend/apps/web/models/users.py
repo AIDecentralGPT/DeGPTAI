@@ -3,7 +3,7 @@ from peewee import *  # 导入Peewee中的所有模块
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
 from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import uuid
 
@@ -13,6 +13,7 @@ from apps.web.internal.db import DB  # 导入数据库实例DB
 from apps.web.models.chats import Chats  # 导入Chats模型
 from apps.web.models.rewards import RewardsTableInstance
 from fastapi import APIRouter, Depends, HTTPException, Request
+from apps.web.models.vip import VIPStatus
 
 
 ####################
@@ -27,6 +28,11 @@ class UserRoleUpdateProForm(BaseModel):
 # 定义Pydantic模型UserRequest
 class UserRequest(BaseModel):
     user_id: str  # 定义id字段，类型为字符串
+
+class UserPageRequest(BaseModel):
+    pageSize: int
+    pageNum: int
+    channel: str
 
 # 定义User模型
 class User(Model):
@@ -79,6 +85,26 @@ class UserModel(BaseModel):
     channel: Optional[str] = None
     models: Optional[str] = None
 
+# 定义Pydantic模型UserModel
+class ChannelTotalModel(BaseModel):
+    channel: str  # 第三方标识
+    total: int  # 总数
+
+# 定义Pydantic模型UserTotalModel
+class UserTotalModel(BaseModel):
+    total: int = 0  # 总数
+    wallet_total: int = 0  # 钱包总数
+    channel_total: int = 0  # 第三方注册总数
+    vip_total: int = 0  # VIP总数
+    kyc_total: int = 0  # 访客总数
+
+# 定义Pydantic模型UserTotalModel
+class UserDisperModel(BaseModel):
+    date_list: List[str] = []  # 日期
+    wallet_list: List[int] = []  # 钱包注册数
+    channel_list: List[int] = []  # 第三方注册数
+    kyc_list: List[int] = []  # kyc认证数
+    
 ####################
 # Forms
 ####################
@@ -221,8 +247,6 @@ class UsersTable:
             print(f"get_users_invited捕获错误: {e}")
             return []  # 如果查询失败，返回空列表
 
-
-
     # 根据api_key获取用户
     def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
         try:
@@ -240,7 +264,7 @@ class UsersTable:
             return None  # 如果查询失败，返回None
 
     # 获取用户列表
-    def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "") -> List[UserModel]:
+    def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "", verified: str = "", channel: str = "") -> List[UserModel]:
         query = User.select()
 
         # 角色筛选
@@ -250,6 +274,14 @@ class UsersTable:
         # 搜索
         if search:
             query = query.where((User.name.contains(search)) | (User.id.contains(search)))
+
+        # KYC认证筛选
+        if verified:
+            query = query.where(User.verified == verified)
+
+        # 渠道筛选
+        if channel:
+            query = query.where(User.channel == channel)
 
         # 获取总记录数
         total = query.count()
@@ -382,9 +414,7 @@ class UsersTable:
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
-        
-        
-        
+             
     # 更新用户的transaction_id和merchant_biz_id
     def update_user_verify_info(self, id: str, transaction_id: str, merchant_biz_id: str, face_time: datetime) -> bool:
         try:
@@ -394,8 +424,7 @@ class UsersTable:
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
-
-    
+  
     # 更新用户是否完成活体检测认证
     def update_user_verified(self, id: str, verified: bool, face_id: str) -> bool:
         try:
@@ -418,8 +447,53 @@ class UsersTable:
         
     def get_user_count(self) -> int:
         return User.select().count()  # 查询用户数量
+    
+    def get_third_total(self, channel: Optional[str]="") -> int:
+        if channel == "":
+            return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).count();
+        else:
+            return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel == channel, User.id.like('0x%')).count();
 
+    def get_third_group_total(self) -> Optional[ChannelTotalModel]:
+        return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).group_by(User.channel);
 
+    def get_user_total(self) -> Optional[UserTotalModel]:
+        total = User.select().count()
+        wallet_total = User.select().where(User.role != 'visitor').count()
+        channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
+        vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
+        kyc_total = User.select().where(User.verified == 't').count()
+        data = {    
+            "total": total,
+            "wallet_total": wallet_total,
+            "channel_total": channel_total,
+            "vip_total": vip_total,
+            "kyc_total": kyc_total
+        }
+        return UserTotalModel(**data)
+    
+    def get_user_lately(self) -> Optional[List[UserModel]]:
+        # 查询数据库中的用户
+        now = datetime.now()
+        fifteen_days_ago = now - timedelta(days=15)
+        target_timestamp = int(fifteen_days_ago.timestamp())
+        sql = 'select * from "user" where created_at > ' + str(target_timestamp)
+        users = User.raw(sql)
+        # 将数据库对象转换为字典并转换为Pydantic模型
+        user_list = [UserModel(**model_to_dict(user)) for user in users]
+        return user_list
+
+    def get_third_list(self, pageNum: Optional[int]=1, pageSize: Optional[int]=10, channel: Optional[str]="") -> Optional[UserModel]:
+        try:
+            if channel == "":
+                users = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).order_by(User.created_at.desc()).paginate(pageNum, pageSize);
+                return [UserModel(**model_to_dict(user)) for user in users]
+            else:
+                users = User.select().where(User.channel == channel, User.id.like('0x%')).order_by(User.created_at.desc()).paginate(pageNum, pageSize);
+                return [UserModel(**model_to_dict(user)) for user in users]
+        except Exception as e:
+            print(f"get_third_list Exception: {e}")
+            return None
 
 # 实例化UsersTable类
 Users = UsersTable(DB)

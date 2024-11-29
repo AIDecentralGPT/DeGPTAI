@@ -13,10 +13,14 @@
     showLoginInfoModal,
     showCoinIntruModal,
     showCoinIntruType,
-    dbcRate
+    dbcRate,
+    settings,
+    config,
+    channel
   } from "$lib/stores";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getDbcRate } from "$lib/apis/wallet/index";
+  import { goto } from "$app/navigation";
 
   const i18n = getContext("i18n");
 
@@ -47,6 +51,24 @@
       })  
     }  
   }
+
+  // 更新用户模型
+  const initUserModels = async () => {
+    if ($user?.models) {
+      settings.set({ ...$settings, models: $user?.models.split(",") });
+    } else {
+      settings.set({
+        ...$settings,
+        models: $config?.default_models.split(","),
+      });
+    }
+    localStorage.setItem("settings", JSON.stringify($settings));
+    goto("/");
+    const newChatButton = document.getElementById("new-chat-button");
+    setTimeout(() => {
+      newChatButton?.click();
+    }, 0);
+  };
 
   onMount(async () => {
     await refreshDbcRate();
@@ -120,7 +142,7 @@
     {:else}
       <div class="flex justify-start gap-2 mt-1 mb5">
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showTransferModal = true;
@@ -129,7 +151,7 @@
           {$i18n.t("Transfer")}
         </button>
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showExportWalletJsonModal = true;
@@ -138,10 +160,12 @@
           {$i18n.t("Export Wallet")}
         </button>
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
-            closeWallet();
+            await closeWallet($channel);
+            // 更新用户模型
+            await initUserModels();
           }}
         >
           {$i18n.t("Close Wallet")}
@@ -274,7 +298,7 @@
   {#if $showLoginInfoModal}
     <div class="flex justify-start gap-2 mt-1 mb-2">
       <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           // $showBuyCoinModal = true;
@@ -295,7 +319,7 @@
         {$i18n.t("Rewards")}
       </button> -->
       <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg text-xs"
+        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           $showTransactionsModal = true;

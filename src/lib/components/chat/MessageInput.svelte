@@ -42,27 +42,27 @@
   export let selectedModel = "";
 
   let chatTextAreaElement: HTMLTextAreaElement;
-  let filesInputElement;
+  let filesInputElement:any;
 
-  let promptsElement;
-  let documentsElement;
-  let modelsElement;
+  let promptsElement:any;
+  let documentsElement:any;
+  let modelsElement:any;
 
-  let inputFiles;
+  let inputFiles:any;
   let dragged = false;
 
-  let user = null;
+  let user:any = null;
   let chatInputPlaceholder = "";
 
-  export let files = [];
+  export let files:any[] = [];
 
   export let fileUploadEnabled = true;
   export let speechRecognitionEnabled = true;
 
   export let prompt = "";
-  export let messages = [];
+  export let messages:any[] = [];
 
-  let speechRecognition;
+  let speechRecognition:any;
 
   $: if (prompt) {
     if (chatTextAreaElement) {
@@ -72,8 +72,8 @@
     }
   }
 
-  let mediaRecorder;
-  let audioChunks = [];
+  let mediaRecorder:any;
+  let audioChunks:any[] = [];
   let isRecording = false;
   const MIN_DECIBELS = -45;
 
@@ -624,6 +624,7 @@
             bind:this={filesInputElement}
             bind:files={inputFiles}
             type="file"
+            accept="image/*"
             hidden
             multiple
             on:change={async () => {
@@ -847,7 +848,7 @@
 
             <div class=" flex">
               {#if fileUploadEnabled}
-                <!-- <div class=" self-end mb-2 ml-1">
+                <div class=" self-end mb-2 ml-1">
                   <Tooltip content={$i18n.t("Upload files")}>
                     <button
                       class="bg-gray-50 hover:bg-gray-100 text-gray-800 dark:bg-gray-850 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
@@ -868,7 +869,7 @@
                       </svg>
                     </button>
                   </Tooltip>
-                </div> -->
+                </div>
               {/if}
 
               <textarea

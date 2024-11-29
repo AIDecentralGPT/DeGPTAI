@@ -5,7 +5,6 @@ import { goto } from "$app/navigation";
 import { getDbcBalance } from "./ether/dbc";
 import { getDgcBalance } from "./ether/dgc";
 import { DefaultCurrentWalletData } from "$lib/constants";
-import { getDbcRate } from "$lib/apis/wallet";
 
 // 处理登录逻辑（不管有没有token，触发 用初始化状态登录，即删掉token，然后指纹登录）
 export async function handleSigninAsIntialStatus() {
@@ -101,16 +100,16 @@ export async function handleSigninAsIntialStatus() {
 //   }
 // }
 
-export async function closeWallet() {
-  const walletData = get(currentWalletData);
+export async function closeWallet(channel:string) {
   currentWalletData.update(() => DefaultCurrentWalletData)
 
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("walletImported");
 
-  await printSignIn().then((res) => {
+  await printSignIn(channel).then((res) => {
     console.log("printSignIn的res", res);
+    user.set(res);
     forceUpdate();
   });
   // $chats = [];

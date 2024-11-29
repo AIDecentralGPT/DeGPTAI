@@ -9,10 +9,10 @@ import time
 import uuid
 import logging
 
-from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm
+from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserTotalModel, UserDisperModel
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
-from apps.web.models.vip import VIPStatuses, VIPStatusModelResp
+from apps.web.models.vip import VIPStatuses, VIPStatusModelResp, VipTotalModel
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
 from constants import ERROR_MESSAGES
@@ -56,9 +56,9 @@ router = APIRouter()
 
 # @router.get("/", response_model=List[UserModel])
 @router.get("/", response_model=dict)
-async def get_users(skip: int = 0, limit: int = 50, role: str = "", search: str = "", user=Depends(get_admin_user)):
+async def get_users(skip: int = 0, limit: int = 50, role: str = "", search: str = "", verified: str = "", channel: str = "", user=Depends(get_admin_user)):
     print("skip", skip, "limit", limit)
-    return Users.get_users(skip, limit, role, search)
+    return Users.get_users(skip, limit, role, search, verified, channel)
 
 ############################
 # 获取搜有邀请用户
@@ -434,6 +434,77 @@ async def update_user_role(form_data: UserModelsUpdateForm, user=Depends(get_cur
         status_code=status.HTTP_403_FORBIDDEN,
         detail=ERROR_MESSAGES.ACTION_PROHIBITED,
     )
-            
+
+# 获取用户注册分布     
+@router.post("/disper/total", response_model=UserTotalModel)
+async def disper_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        return Users.get_user_total()
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
+# 获取近15天用户数据分布     
+@router.post("/disper/user", response_model=UserDisperModel)
+async def disper_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        # 获取前15天日期并以月日格式存储在列表中
+        date_list = []
+        today = datetime.today()
+        for i in range(15):
+            date = today - timedelta(days=14-i)
+            date_list.append(date.strftime('%m-%d'))
+        
+        # 获取用户注册数近15天数据
+        users = Users.get_user_lately()
+        wallet_list = []
+        channel_list = []
+        kyc_list = []
+        for date in date_list:
+            wallet_list.append(len([user for user in users if datetime.fromtimestamp(user.created_at).strftime('%m-%d') == date and user.role != "visitor"]))
+            channel_list.append(len([user for user in users if datetime.fromtimestamp(user.created_at).strftime('%m-%d') == date and user.channel is not None and user.channel != ""]))
+            kyc_list.append(len([user for user in users if datetime.fromtimestamp(user.created_at).strftime('%m-%d') == date and user.verified == "t"]))
+
+        data = {
+            "date_list": date_list,
+            "wallet_list": wallet_list,
+            "channel_list": channel_list,
+            "kyc_list": kyc_list
+        }
+        return UserDisperModel(**data)
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
+# 获取VIP升级分布     
+@router.post("/disper/vip", response_model=VipTotalModel)
+async def disper_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        return VIPStatuses.get_vip_total()
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
+# 获取第三方注册统计数据      
+@router.post("/third/total", response_model=List[ChannelTotalModel])
+async def third_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        return Users.get_third_group_total()
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+       
 
 

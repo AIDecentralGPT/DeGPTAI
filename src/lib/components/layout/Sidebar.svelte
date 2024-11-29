@@ -124,8 +124,6 @@
   $: $pageUpdateNumber, updateChats();
 
   async function updateChats() {
-    console.log("updateChats");
-
     const chatList = await getChatList(localStorage.token);
     chats.set(chatList);
     tags.set([]);
@@ -153,7 +151,6 @@
     });
 
     showSidebar.set(window.innerWidth > BREAKPOINT);
-    chats.set(await getChatList(localStorage.token));
 
     window.addEventListener("touchstart", onTouchStart);
     window.addEventListener("touchend", onTouchEnd);

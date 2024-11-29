@@ -349,13 +349,13 @@ async function handleWalletSignIn({
     localStorage.user = JSON.stringify(walletSignInResult);
 
     if (walletSignInResult.token) {
+      await chats.set([]); 
       await chats.set(await getChatList(localStorage.token));
     }
 
     console.log("walletSignInResult", walletSignInResult);
 
     if (walletSignInResult.id) {
-      await chats.set([]); 
       updateWalletData(walletImported);
       let localWalletImported = {
         'address': walletImported?.address,
@@ -390,11 +390,10 @@ async function signOut(channel: string) {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("walletImported");
-  user.set({});
-  await printSignIn(channel).then((res) => {
-    console.log("指纹登录了", res);
-    localStorage.token = res.token;
-  });
+  const res = await printSignIn(channel);
+  localStorage.token = res.token;
+  user.set(res);
+  console.log("指纹登录了", res);
 }
 
 export { provider, demo, importWallet, handleWalletSignIn, getGas, signOut };

@@ -23,7 +23,7 @@
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
 	import ShortcutsModal from "$lib/components/chat/ShortcutsModal.svelte";
 	import Tooltip from "$lib/components/common/Tooltip.svelte";
-	import { getSessionUser } from "$lib/apis/auths";
+    import { signOut } from "$lib/utils/wallet/ether/utils";
 
 	const i18n = getContext("i18n");
 
@@ -66,31 +66,34 @@
 		}
 		if ($config) {
 			if (localStorage.token) {
-				// Get Session User Info
-				const sessionUser = await getSessionUser(
-					localStorage.token,
-					$channel
-				).catch((error) => {
-					return null;
-				});
+				// // Get Session User Info
+				// const sessionUser = await getSessionUser(
+				// 	localStorage.token,
+				// 	$channel
+				// ).catch((error) => {
+				// 	return null;
+				// });
 
-				if (sessionUser) {
-					// Save Session User to Store
-					await user.set({
-						...$user,
-						...sessionUser,
-					});
-					console.log("============sessionUser2===========");
-				} else {
-					// 更新用户模型
-					await initUserModels();
-				}
+				// if (sessionUser) {
+				// 	// Save Session User to Store
+				// 	await user.set({
+				// 		...$user,
+				// 		...sessionUser,
+				// 	});
+				// 	console.log("============sessionUser2===========");
+				// } else {
+				// 	// 更新用户模型
+				// 	await initUserModels();
+				// }
+				// 更新用户模型
+				await initUserModels();
 			} else {
 				// await goto('/auth');
 			}
 		}
 
 		if ($user === undefined) {
+			await signOut($channel);
 			await models.set(await getModels());
 		} else if (
 			["user", "admin", "walletUser", "visitor"].includes($user?.role)

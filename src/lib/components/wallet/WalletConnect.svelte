@@ -8,7 +8,8 @@
     getAccount,
     watchAccount,
   } from "@wagmi/core";
-  import { handleWalletSignIn, signOut } from "$lib/utils/wallet/ether/utils";
+  import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
+  import { closeWallet } from "$lib/utils/wallet/walletUtils";
   import { threesideAccount, user, theme, channel, settings, config as storeConfig } from "$lib/stores";
   import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   const i18n = getContext("i18n");
@@ -44,7 +45,7 @@
     if ($user?.models) {
       settings.set({...$settings, models: $user?.models.split(",")});
     } else {
-      settings.set({...$settings, models: $config?.default_models.split(",")});
+      settings.set({...$settings, models: $storeConfig?.default_models.split(",")});
     }
     localStorage.setItem("settings", JSON.stringify($settings));
     goto("/");
@@ -75,7 +76,7 @@
 
       if (account.status === "connected") {
         if (!$user?.id?.startsWith("0x")) {
-          handleWalletSignIn({
+          await handleWalletSignIn({
             walletImported: {
               address: account?.address,
             },
@@ -88,14 +89,16 @@
         }
       }
       if (account.status === "disconnected") {
-        signOut($channel);
+        await closeWallet($channel);
+        // 更新用户模型
+        initUserModels();
       }
     },
   });
 
   function connect() {
     if ($user?.id?.startsWith("0x") && getAccount(config).isConnected) {
-      signOut($channel);
+      closeWallet($channel);
     } else {
       clearConnector();
       changeModalTheme();

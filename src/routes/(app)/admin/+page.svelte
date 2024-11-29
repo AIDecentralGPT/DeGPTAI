@@ -10,7 +10,12 @@
 
   import { toast } from "svelte-sonner";
 
-  import { updateUserRole, getUsers, deleteUserById } from "$lib/apis/users";
+  import {
+    updateUserRole,
+    getUsers,
+    deleteUserById,
+    getThirdTotal,
+  } from "$lib/apis/users";
   import {
     getSignUpEnabledStatus,
     toggleSignUpEnabledStatus,
@@ -37,10 +42,12 @@
   let search = "";
   let selectedUser = null;
 
-	let loading = false
+  let loading = false;
 
   let role = "";
-  // let role = 'All'
+  let verified = "";
+  let channel = "";
+  let channelList = [];
 
   let page = 1;
 
@@ -50,7 +57,7 @@
   let showUserChatsModal = false;
   let showEditUserModal = false;
 
-  $: if (page || role || search) {
+  $: if (page || role || search || verified || channel) {
     handleUsersRequest();
   }
 
@@ -68,13 +75,19 @@
   };
 
   const handleUsersRequest = async () => {
-		loading = true
-    const res = await getUsers(localStorage.token, page, role, search);
+    loading = true;
+    const res = await getUsers(
+      localStorage.token,
+      page,
+      role,
+      search,
+      verified,
+      channel
+    );
     console.log("user", res);
     users = res?.users || [];
     total = res?.total;
-		loading = false
-
+    loading = false;
   };
 
   const editUserPasswordHandler = async (id, password) => {
@@ -98,9 +111,19 @@
     }
   };
 
+  const initChannel = async () => {
+    const res = await getThirdTotal(localStorage.getItem("token") || "");
+    if (res) {
+      channelList = [];
+      res.forEach((item) => {
+        channelList.push(item?.channel);
+      });
+    }
+  };
+
   onMount(async () => {
     handleUsersRequest();
-
+    initChannel();
     if ($user?.role !== "admin") {
       // await goto('/');
     } else {
@@ -136,131 +159,101 @@
 
 <div class=" flex flex-col w-full min-h-screen">
   {#if loaded}
-    <div class="px-4 pt-3 mt-0.5 mb-1">
-      <div class=" flex items-center gap-1">
-        <div
-          class="{$showSidebar
-            ? 'md:hidden'
-            : ''} mr-1 self-start flex flex-none items-center"
-        >
-          <button
-            id="sidebar-toggle-button"
-            class="cursor-pointer p-1 flex rounded-xl hover:bg-gray-100 dark:hover:bg-gray-850 transition"
-            on:click={() => {
-              showSidebar.set(!$showSidebar);
-            }}
-          >
-            <div class=" m-auto self-center">
-              <MenuLines />
-            </div>
-          </button>
-        </div>
-        <div class="flex items-center text-xl font-semibold">
-          {$i18n.t("Dashboard")}
-        </div>
+    <div class="flex justify-between px-4 pt-3 mt-0.5 mb-1 w-full">
+      <div class="flex items-center text-xl font-semibold">
+        {$i18n.t("User Report")}
       </div>
+      <button
+        class="self-center"
+        on:click={() => {
+          goto("/");
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+          />
+        </svg>
+      </button>
     </div>
 
-    <!-- <div class="px-4 my-1">
-			<div
-				class="flex scrollbar-none overflow-x-auto w-fit text-center text-sm font-medium rounded-xl bg-transparent/10 p-1"
-			>
-				<button
-					class="min-w-fit rounded-lg p-1.5 px-3 {tab === ''
-						? 'bg-gray-50 dark:bg-gray-850'
-						: ''} transition"
-					type="button"
-					on:click={() => {
-						tab = '';
-					}}>{$i18n.t('Overview')}</button
-				>
-			</div>
-		</div> -->
+    <hr class=" my-2 dark:border-gray-850 w-full" />
 
-    <hr class=" my-2 dark:border-gray-850" />
-
-    <div class="px-6">
+    <div class="px-6 w-full">
       <div class="mt-0.5 mb-3 gap-1 flex flex-col md:flex-row justify-between">
-        <div class="flex md:self-center text-lg font-medium px-0.5">
+        <div class="flex md:self-center text-base font-medium px-0.5">
           {$i18n.t("All Users")}
           <div
-            class="flex self-center w-[1px] h-6 mx-2.5 bg-gray-200 dark:bg-gray-700"
+            class="flex self-center w-[2px] h-5 mx-2.5 bg-gray-200 dark:bg-gray-700"
           />
-          <span class="text-lg font-medium text-gray-500 dark:text-gray-300"
+          <span class="text-base font-medium text-gray-600 dark:text-gray-300"
             >{total}</span
           >
         </div>
 
         <div class="flex gap-1">
           <input
-            class="w-full md:w-60 rounded-xl py-1.5 px-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none"
+            class="w-full md:w-60 rounded-xl py-1.5 px-4 text-sm dark:text-gray-300 bg-gray-100 dark:bg-gray-850 outline-none"
             placeholder={$i18n.t("Search")}
             bind:value={search}
           />
 
           <div class="flex gap-0.5">
-            <!-- <Tooltip content="Add User">
-              <button
-                class=" px-2 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:border-0 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 transition font-medium text-sm flex items-center space-x-1"
-                on:click={() => {
-                  showAddUserModal = !showAddUserModal;
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  class="w-4 h-4"
-                >
-                  <path
-                    d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
-                  />
-                </svg>
-              </button>
-            </Tooltip>
-
-            <Tooltip content={$i18n.t("Admin Settings")}>
-              <button
-                class=" px-2 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:border-0 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 transition font-medium text-sm flex items-center space-x-1"
-                on:click={() => {
-                  showSettingsModal = !showSettingsModal;
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  class="w-4 h-4"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M6.955 1.45A.5.5 0 0 1 7.452 1h1.096a.5.5 0 0 1 .497.45l.17 1.699c.484.12.94.312 1.356.562l1.321-1.081a.5.5 0 0 1 .67.033l.774.775a.5.5 0 0 1 .034.67l-1.08 1.32c.25.417.44.873.561 1.357l1.699.17a.5.5 0 0 1 .45.497v1.096a.5.5 0 0 1-.45.497l-1.699.17c-.12.484-.312.94-.562 1.356l1.082 1.322a.5.5 0 0 1-.034.67l-.774.774a.5.5 0 0 1-.67.033l-1.322-1.08c-.416.25-.872.44-1.356.561l-.17 1.699a.5.5 0 0 1-.497.45H7.452a.5.5 0 0 1-.497-.45l-.17-1.699a4.973 4.973 0 0 1-1.356-.562L4.108 13.37a.5.5 0 0 1-.67-.033l-.774-.775a.5.5 0 0 1-.034-.67l1.08-1.32a4.971 4.971 0 0 1-.561-1.357l-1.699-.17A.5.5 0 0 1 1 8.548V7.452a.5.5 0 0 1 .45-.497l1.699-.17c.12-.484.312-.94.562-1.356L2.629 4.107a.5.5 0 0 1 .034-.67l.774-.774a.5.5 0 0 1 .67-.033L5.43 3.71a4.97 4.97 0 0 1 1.356-.561l.17-1.699ZM6 8c0 .538.212 1.026.558 1.385l.057.057a2 2 0 0 0 2.828-2.828l-.058-.056A2 2 0 0 0 6 8Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-            </Tooltip> -->
-
-            <div class="w-20">
+            <div class="flex flex-row items-center ml-2">
+              <div class="whitespace-nowrap">{$i18n.t("ROLE")}：</div>
               <select
-                class="w-full capitalize rounded-lg py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
+                class="w-full capitalize rounded-lg py-1.5 px-4 text-sm dark:text-gray-300 bg-gray-100 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
                 on:change={(e) => {
-                  page = 1
-									role = e.target.value;
-
+                  page = 1;
+                  role = e.target.value;
                 }}
               >
                 <option value="">All</option>
                 <option value="admin">Admin</option>
+                <option value="walletUser">walletUser</option>
                 <option value="visitor">Visitor</option>
                 <option value="user">User</option>
+              </select>
+            </div>
+            <div class="flex flex-row items-center ml-2">
+              <div class="whitespace-nowrap">{$i18n.t("KYC")}：</div>
+              <select
+                class="w-[80px] capitalize rounded-lg py-1.5 px-4 text-sm dark:text-gray-300 bg-gray-100 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
+                on:change={(e) => {
+                  page = 1;
+                  verified = e.target.value;
+                }}
+              >
+                <option value="">All</option>
+                <option value="t">True</option>
+                <option value="f">False</option>
+              </select>
+            </div>
+            <div class="flex flex-row items-center ml-2">
+              <div class="whitespace-nowrap">{$i18n.t("Channel")}：</div>
+              <select
+                class="w-[80px] capitalize rounded-lg py-1.5 px-4 text-sm dark:text-gray-300 bg-gray-100 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
+                on:change={(e) => {
+                  page = 1;
+                  channel = e.target.value;
+                }}
+              >
+                <option value="">All</option>
+                {#each channelList as item}
+                  <option value={item}>{item}</option>
+                {/each}
               </select>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="scrollbar-hidden relative overflow-x-auto whitespace-nowrap">
+      <div class="relative w-full overflow-auto whitespace-nowrap">
         <table
           class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
         >
@@ -268,15 +261,13 @@
             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-850 dark:text-gray-400"
           >
             <tr>
-              <th scope="col" class="px-3 py-2"> {$i18n.t("Role")} </th>
-              <th scope="col" class="px-3 py-2"> {$i18n.t("User Id")} </th>
-              <!-- <th scope="col" class="px-3 py-2"> {$i18n.t('Name')} </th> -->
-              <th scope="col" class="px-3 py-2"> {$i18n.t("Email")} </th>
-              <th scope="col" class="px-3 py-2"> {$i18n.t("Last Active")} </th>
-
-              <th scope="col" class="px-3 py-2"> {$i18n.t("Created at")} </th>
-
-              <th scope="col" class="px-3 py-2 text-right" />
+              <th scope="col" class="px-3 py-3"> {$i18n.t("Role")} </th>
+              <th scope="col" class="px-3 py-3"> {$i18n.t("User Id")} </th>
+              <th scope="col" class="px-3 py-3"> {$i18n.t("Channel")} </th>
+              <th scope="col" class="px-3 py-3"> {$i18n.t("KYC")} </th>
+              <th scope="col" class="px-3 py-3"> {$i18n.t("Last Active")} </th>
+              <th scope="col" class="px-3 py-3"> {$i18n.t("Created at")} </th>
+              <th scope="col" class="px-3 py-3 text-right" />
             </tr>
           </thead>
 
@@ -290,39 +281,35 @@
             </tr>
           {:else}
             <tbody>
-              <!-- // .filter((user) => {
-							// 	if (search === '') {
-							// 		return true;
-							// 	} else {
-							// 		let name = user.name.toLowerCase();
-							// 		const query = search.toLowerCase();
-							// 		return name.includes(query);
-							// 	}
-							// })
-							// .slice((page - 1) * 10, page * 10) as user} -->
               {#each users as user}
                 <tr
                   class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs"
                 >
                   <td class="px-3 py-2 min-w-[7rem] w-28">
                     <button
-                      class=" flex items-center gap-2 text-xs px-3 py-0.5 rounded-lg {user.role ===
-                        'admin' &&
-                        'text-sky-600 dark:text-sky-200 bg-sky-200/30'} {user.role ===
-                        'user' &&
-                        'text-green-600 dark:text-green-200 bg-green-200/30'} {user.role ===
-                        'pending' &&
+                      class=" flex items-center gap-2 text-xs px-3 py-0.5 rounded-lg
+                        {user.role === 'admin' &&
+                        'text-sky-600 dark:text-sky-200 bg-sky-200/30'} 
+                        {user.role === 'walletUser' &&
+                        'text-orange-600 dark:text-orange-200 bg-orange-200/30'} 
+                        {user.role === 'user' &&
+                        'text-green-600 dark:text-green-200 bg-green-200/30'} 
+                        {user.role === 'pending' &&
                         'text-gray-600 dark:text-gray-200 bg-gray-200/30'}
-											{user.role === 'visitor' &&
-                        'text-orange-600 dark:text-orange-200 bg-orange-200/30'}
+											  {user.role === 'visitor' && 'text-sky-600 dark:text-sky-200 bg-sky-200/30'}
 											"
                     >
                       <div
-                        class="w-1 h-1 rounded-full {user.role === 'admin' &&
-                          'bg-sky-600 dark:bg-sky-300'} {user.role === 'user' &&
-                          'bg-green-600 dark:bg-green-300'} {user.role ===
-                          'pending' && 'bg-gray-600 dark:bg-gray-300'}
-																	{user.role === 'visitor' && 'bg-orange-600 dark:bg-orange-300'}
+                        class="w-1 h-1 rounded-full
+                          {user.role === 'admin' &&
+                          'bg-sky-600 dark:bg-sky-300'} 
+                          {user.role === 'walletUser' &&
+                          'bg-orange-600 dark:bg-orange-300'} 
+                          {user.role === 'user' &&
+                          'bg-green-600 dark:bg-green-300'} 
+                          {user.role === 'pending' &&
+                          'bg-gray-600 dark:bg-gray-300'}
+													{user.role === 'visitor' && 'bg-sky-600 dark:bg-sky-300'}
 												"
                       />
                       {$i18n.t(user.role)}</button
@@ -351,39 +338,18 @@
 										{$i18n.t(user.role)}</button
 									> -->
                   </td>
-                  <!-- <td class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max">
-									<div class="flex flex-row w-max">
-										<img
-											class=" rounded-full w-6 h-6 object-cover mr-2.5"
-											src={user.profile_image_url.startsWith(WEBUI_BASE_URL) ||
-											user.profile_image_url.startsWith('https://www.gravatar.com/avatar/') ||
-											user.profile_image_url.startsWith('data:')
-												? user.profile_image_url
-												: `/user.png`}
-											alt="user"
-										/>
-
-										<div class=" font-medium self-center">{user.name}</div>
-									</div>
-								</td> -->
                   <td
                     class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max"
                   >
                     <div class="flex flex-row w-max">
-                      <!-- <img
-												class=" rounded-full w-6 h-6 object-cover mr-2.5"
-												src={user.profile_image_url.startsWith(WEBUI_BASE_URL) ||
-												user.profile_image_url.startsWith('https://www.gravatar.com/avatar/') ||
-												user.profile_image_url.startsWith('data:')
-													? user.profile_image_url
-													: `/user.png`}
-												alt="user"
-											/> -->
-
                       <div class=" font-medium self-center">{user.id}</div>
                     </div>
                   </td>
-                  <td class=" px-3 py-2"> {user.email} </td>
+                  <td class=" px-3 py-2">
+                    {user.channel && user.channel != "" ? user.channel : "--"}
+                  </td>
+
+                  <td class=" px-3 py-2"> {user.verified} </td>
 
                   <td class=" px-3 py-2">
                     {dayjs(user.last_active_at * 1000).fromNow()}
@@ -472,9 +438,9 @@
         ⓘ {$i18n.t("Click on the user role button to change a user's role.")}
       </div>
 
-			{#if !loading && users.length > 0}
-				<Pagination bind:page count={total} />
-			{/if}
+      {#if !loading && users.length > 0}
+        <Pagination bind:page count={total} />
+      {/if}
     </div>
   {/if}
 </div>

@@ -605,7 +605,7 @@
 														? 'visible'
 														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition copy-response-button"
 													on:click={() => {
-														copyToClipboard(message.content);
+														copyToClipboard(message.content, true);
 													}}
 												>
 													<svg

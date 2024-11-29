@@ -1,24 +1,24 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import { toast } from 'svelte-sonner';
-	import { models, settings, user } from '$lib/stores';
+	import { getContext } from "svelte";
+	import { toast } from "svelte-sonner";
+	import { models, settings, user } from "$lib/stores";
 
-	import { getModels as _getModels } from '$lib/utils';
+	import { getModels as _getModels } from "$lib/utils";
 
-	import Modal from '../common/Modal.svelte';
-	import Account from './Settings/Account.svelte';
-	import About from './Settings/About.svelte';
-	import Models from './Settings/Models.svelte';
-	import General from './Settings/General.svelte';
-	import Interface from './Settings/Interface.svelte';
-	import Audio from './Settings/Audio.svelte';
-	import Chats from './Settings/Chats.svelte';
-	import Connections from './Settings/Connections.svelte';
-	import Images from './Settings/Images.svelte';
-	import User from '../icons/User.svelte';
-	import Personalization from './Settings/Personalization.svelte';
+	import Modal from "../common/Modal.svelte";
+	import Account from "./Settings/Account.svelte";
+	import About from "./Settings/About.svelte";
+	import Models from "./Settings/Models.svelte";
+	import General from "./Settings/General.svelte";
+	import Interface from "./Settings/Interface.svelte";
+	import Audio from "./Settings/Audio.svelte";
+	import Chats from "./Settings/Chats.svelte";
+	import Connections from "./Settings/Connections.svelte";
+	import Images from "./Settings/Images.svelte";
+	import User from "../icons/User.svelte";
+	import Personalization from "./Settings/Personalization.svelte";
 
-	const i18n = getContext('i18n');
+	const i18n = getContext("i18n");
 
 	export let show = false;
 
@@ -26,20 +26,20 @@
 		console.log(updated);
 		await settings.set({ ...$settings, ...updated });
 		await models.set(await getModels());
-		localStorage.setItem('settings', JSON.stringify($settings));
+		localStorage.setItem("settings", JSON.stringify($settings));
 	};
 
 	const getModels = async () => {
 		return await _getModels(localStorage.token);
 	};
 
-	let selectedTab = 'general';
+	let selectedTab = "general";
 </script>
 
 <Modal bind:show>
 	<div class="text-gray-700 dark:text-gray-100">
 		<div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
-			<div class=" text-lg font-medium self-center">{$i18n.t('Settings')}</div>
+			<div class=" text-lg font-medium self-center">{$i18n.t("Settings")}</div>
 			<button
 				class="self-center"
 				on:click={() => {
@@ -69,7 +69,7 @@
 						? 'bg-gray-200 dark:bg-gray-700'
 						: ' hover:bg-gray-300 dark:hover:bg-gray-800'}"
 					on:click={() => {
-						selectedTab = 'general';
+						selectedTab = "general";
 					}}
 				>
 					<div class=" self-center mr-2">
@@ -86,17 +86,17 @@
 							/>
 						</svg>
 					</div>
-					<div class=" self-center">{$i18n.t('General')}</div>
+					<div class=" self-center">{$i18n.t("General")}</div>
 				</button>
 
-				{#if $user?.role === 'admin'}
+				{#if $user?.role === "superadmin"}
 					<button
 						class="px-2.5 py-2.5 min-w-fit rounded-lg flex-1 md:flex-none flex text-right transition {selectedTab ===
 						'connections'
 							? 'bg-gray-200 dark:bg-gray-700'
 							: ' hover:bg-gray-300 dark:hover:bg-gray-800'}"
 						on:click={() => {
-							selectedTab = 'connections';
+							selectedTab = "connections";
 						}}
 					>
 						<div class=" self-center mr-2">
@@ -111,7 +111,7 @@
 								/>
 							</svg>
 						</div>
-						<div class=" self-center">{$i18n.t('Connections')}</div>
+						<div class=" self-center">{$i18n.t("Connections")}</div>
 					</button>
 
 					<button
@@ -120,7 +120,7 @@
 							? 'bg-gray-200 dark:bg-gray-700'
 							: ' hover:bg-gray-300 dark:hover:bg-gray-800'}"
 						on:click={() => {
-							selectedTab = 'models';
+							selectedTab = "models";
 						}}
 					>
 						<div class=" self-center mr-2">
@@ -137,7 +137,7 @@
 								/>
 							</svg>
 						</div>
-						<div class=" self-center">{$i18n.t('Models')}</div>
+						<div class=" self-center">{$i18n.t("Models")}</div>
 					</button>
 				{/if}
 
@@ -209,14 +209,14 @@
 					<div class=" self-center">{$i18n.t('Audio')}</div>
 				</button> -->
 
-				{#if $user?.role === 'admin'}
+				{#if $user?.role === "superadmin"}
 					<button
 						class="px-2.5 py-2.5 min-w-fit rounded-lg flex-1 md:flex-none flex text-right transition {selectedTab ===
 						'images'
 							? 'bg-gray-200 dark:bg-gray-700'
 							: ' hover:bg-gray-300 dark:hover:bg-gray-800'}"
 						on:click={() => {
-							selectedTab = 'images';
+							selectedTab = "images";
 						}}
 					>
 						<div class=" self-center mr-2">
@@ -233,7 +233,7 @@
 								/>
 							</svg>
 						</div>
-						<div class=" self-center">{$i18n.t('Images')}</div>
+						<div class=" self-center">{$i18n.t("Images")}</div>
 					</button>
 				{/if}
 
@@ -269,7 +269,7 @@
 						? 'bg-gray-200 dark:bg-gray-700'
 						: ' hover:bg-gray-300 dark:hover:bg-gray-800'}"
 					on:click={() => {
-						selectedTab = 'account';
+						selectedTab = "account";
 					}}
 				>
 					<div class=" self-center mr-2">
@@ -286,7 +286,7 @@
 							/>
 						</svg>
 					</div>
-					<div class=" self-center">{$i18n.t('Account')}</div>
+					<div class=" self-center">{$i18n.t("Account")}</div>
 				</button>
 
 				<!-- <button
@@ -316,60 +316,60 @@
 				</button> -->
 			</div>
 			<div class="flex-1 md:min-h-[28rem]">
-				{#if selectedTab === 'general'}
+				{#if selectedTab === "general"}
 					<General
 						{getModels}
 						{saveSettings}
 						on:save={() => {
-							toast.success($i18n.t('Settings saved successfully!'));
+							toast.success($i18n.t("Settings saved successfully!"));
 						}}
 					/>
-				{:else if selectedTab === 'models'}
+				{:else if selectedTab === "models"}
 					<Models {getModels} />
-				{:else if selectedTab === 'connections'}
+				{:else if selectedTab === "connections"}
 					<Connections
 						{getModels}
 						on:save={() => {
-							toast.success($i18n.t('Settings saved successfully!'));
+							toast.success($i18n.t("Settings saved successfully!"));
 						}}
 					/>
-				{:else if selectedTab === 'interface'}
+				{:else if selectedTab === "interface"}
 					<Interface
 						{saveSettings}
 						on:save={() => {
-							toast.success($i18n.t('Settings saved successfully!'));
+							toast.success($i18n.t("Settings saved successfully!"));
 						}}
 					/>
-				{:else if selectedTab === 'personalization'}
+				{:else if selectedTab === "personalization"}
 					<Personalization
 						{saveSettings}
 						on:save={() => {
-							toast.success($i18n.t('Settings saved successfully!'));
+							toast.success($i18n.t("Settings saved successfully!"));
 						}}
 					/>
-				{:else if selectedTab === 'audio'}
+				{:else if selectedTab === "audio"}
 					<Audio
 						{saveSettings}
 						on:save={() => {
-							toast.success($i18n.t('Settings saved successfully!'));
+							toast.success($i18n.t("Settings saved successfully!"));
 						}}
 					/>
-				{:else if selectedTab === 'images'}
+				{:else if selectedTab === "images"}
 					<Images
 						{saveSettings}
 						on:save={() => {
-							toast.success($i18n.t('Settings saved successfully!'));
+							toast.success($i18n.t("Settings saved successfully!"));
 						}}
 					/>
-				{:else if selectedTab === 'chats'}
+				{:else if selectedTab === "chats"}
 					<Chats {saveSettings} />
-				{:else if selectedTab === 'account'}
+				{:else if selectedTab === "account"}
 					<Account
 						saveHandler={() => {
-							toast.success($i18n.t('Settings saved successfully!'));
+							toast.success($i18n.t("Settings saved successfully!"));
 						}}
 					/>
-				{:else if selectedTab === 'about'}
+				{:else if selectedTab === "about"}
 					<About />
 				{/if}
 			</div>
@@ -394,7 +394,7 @@
 		scrollbar-width: none; /* Firefox */
 	}
 
-	input[type='number'] {
+	input[type="number"] {
 		-moz-appearance: textfield; /* Firefox */
 	}
 </style>
