@@ -5,12 +5,9 @@
 
   const i18n = getContext("i18n");
 
-  // 定义指定的颜色数组
-  const specifiedColors = ["#5470C6", "#91CC75", "#FAC858"];
+  export let title: string = "";
 
   export let xData: any[] = [];
-
-  export let title: string = "";
 
   export let seriesData: any[] = [];
 
@@ -19,14 +16,14 @@
 
   let option = {
     title: {
-      text: "近30天用户注册分布图",
+      text: title,
       textStyle: {
         color: "#ffffff",
       },
     },
     grid: {
       left: "10",
-      right: "10",
+      right: "20",
       top: "50",
       bottom: "10",
       containLabel: true,
@@ -42,7 +39,7 @@
       {
         type: "category",
         boundaryGap: false,
-        data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"],
+        data: xData,
       },
     ],
     yAxis: [
@@ -53,28 +50,10 @@
         },
       },
     ],
-    series: [
-      {
-        name: "渠道注册",
-        type: "line",
-        data: [11, 11, 15, 13, 12, 13, 10, 10, 11, 15, 13, 12, 13, 10, 11, 15, 13, 12, 13, 10, 10, 11, 15, 13, 12, 13, 10, 8],
-      },
-      {
-        name: "钱包注册",
-        type: "line",
-        data: [1, 6, 2, 5, 3, 2, 0, 6, 2, 5, 3, 2, 0, 2, 5, 3, 2, 0, 6, 2, 5, 3, 2, 0, 2, 0, 2, 6],
-      },
-      {
-        name: "访客数",
-        type: "line",
-        data: [2, 6, 3, 5, 2, 2, 5, 6, 3, 5, 2, 2, 1, 2, 6, 3, 1, 5, 8, 1, 5, 2, 2, 1, 2, 1, 2, 5],
-      },
-    ],
+    series: seriesData,
   };
 
   const initChart = () => {
-    // option.xAxis[0].data = xData;
-    // option.series[0].data = seriesData;
     $theme = $theme ?? "dark";
     const textColor = $theme.indexOf("dark") >= 0 ? "#000" : "#000";
     option.textStyle.color = textColor;

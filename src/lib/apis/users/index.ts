@@ -117,10 +117,10 @@ export const updateUserRole = async (token: string, id: string, role: string) =>
 	return res;
 };
 
-export const getUsers = async (token: string,page:number, role: string = "", search: string = "") => {
+export const getUsers = async (token: string,page:number, role: string = "", search: string = "", verified: string = "", channel: string = "") => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users?skip=${page}&limit=10&role=${role}&search=${search}`, {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users?skip=${page}&limit=10&role=${role}&search=${search}&verified=${verified}&channel=${channel}`, {
 			method: 'GET',
 			headers: {
 					'Content-Type': 'application/json',
@@ -390,6 +390,38 @@ export const getDisperTotal = async (
 	let error = null;
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/users/disper/total`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+export const getDisperUser = async (
+	token: string
+) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users/disper/user`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

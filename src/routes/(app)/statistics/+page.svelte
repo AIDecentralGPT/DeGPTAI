@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext, onMount } from "svelte";
-  import { getDisperTotal, getThirdTotal, getdisperVip } from "$lib/apis/users";
+  import { getDisperTotal, getDisperUser, getThirdTotal, getdisperVip } from "$lib/apis/users";
   import { goto } from "$app/navigation";
   import BarChart from "$lib/components/common/echarts/BarChart.svelte";
   import LineChart from "$lib/components/common/echarts/LineChart.svelte";
@@ -12,7 +12,12 @@
   let walletTotal: number = 0;
   let channelTotal: number = 0;
   let vipTotal: number = 0;
-  let visitorTotal: number = 0;
+  let kycTotal: number = 0;
+
+  let lineLoaded = false;
+  let lineXdata: any[] = [];
+  let lineSeries: any[] = [];
+  let lineTitle = $i18n.t("Recent 15 Days User Data Distribution");
 
   let thirdLoaded = false;
   let thirdXdata: any[] = [];
@@ -22,7 +27,7 @@
   let vipLoaded = false;
   let vipXdata: any[] = [];
   let vipSeries: any[] = [];
-  let vipTitle = "VIP分布图";
+  let vipTitle = $i18n.t("VIP Distribution");
 
   const initInfo = () => {
     getDisperTotal(localStorage.getItem("token") || "").then((res) => {
@@ -30,7 +35,32 @@
       walletTotal = res.wallet_total;
       channelTotal = res.channel_total;
       vipTotal = res.vip_total;
-      visitorTotal = res.visitor_total;
+      kycTotal = res.kyc_total;
+    });
+    getDisperUser(localStorage.getItem("token") || "").then((res) => {
+      lineXdata = res.date_list;
+      lineSeries.push(
+        {
+          name: $i18n.t("Wallet User Total"),
+          type: "line",
+          data: res.wallet_list
+        }
+      );
+      lineSeries.push(
+        {
+          name: $i18n.t("Channel User Total"),
+          type: "line",
+          data: res.channel_list
+        }
+      );
+      lineSeries.push(
+        {
+          name: $i18n.t("KYC User Total"),
+          type: "line",
+          data: res.kyc_list
+        }
+      );
+      lineLoaded = true;
     });
     getThirdTotal(localStorage.getItem("token") || "").then((res) => {
       res.forEach((item: any) => {
@@ -40,7 +70,11 @@
       thirdLoaded = true;
     });
     getdisperVip(localStorage.getItem("token") || "").then((res) => {
-      vipXdata = ["VIP TOTAL", "EXPIRE Total", "RENEW TOTAL"];
+      vipXdata = [
+        $i18n.t("VIP Total"),
+        $i18n.t("Expired Total"),
+        $i18n.t("Renew Total"),
+      ];
       vipSeries.push(res.vip_total);
       vipSeries.push(res.expire_total);
       vipSeries.push(res.renew_total);
@@ -102,12 +136,12 @@
       class="flex flex-col flex-1 min-w-[200px] items-center bg-sky-100 dark:bg-sky-300 rounded-lg px-2 py-4 m-3"
     >
       <div
-        class="flex text-base text-gray-800 dark:text-gray-50 font-bold mt-2"
+        class="flex text-base text-center text-gray-800 dark:text-gray-50 font-bold mt-2"
       >
-        用户总数
+        {$i18n.t("User Total")}
       </div>
       <div
-        class="flex text-3xl font-medium text-gray-800 dark:text-gray-50 mt-1 mb-2"
+        class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
       >
         {userTotal}
       </div>
@@ -116,12 +150,12 @@
       class="flex flex-col flex-1 min-w-[200px] items-center bg-teal-100 dark:bg-teal-300 rounded-lg px-2 py-4 m-3"
     >
       <div
-        class="flex text-base text-gray-800 dark:text-gray-50 font-bold mt-2"
+        class="flex text-base text-center text-gray-800 dark:text-gray-50 font-bold mt-2"
       >
-        钱包用户数
+        {$i18n.t("Wallet User Total")}
       </div>
       <div
-        class="flex text-3xl font-medium text-gray-800 dark:text-gray-50 mt-1 mb-2"
+        class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
       >
         {walletTotal}
       </div>
@@ -130,12 +164,12 @@
       class="flex flex-col flex-1 min-w-[200px] items-center bg-blue-100 dark:bg-blue-300 rounded-lg px-2 py-4 m-3"
     >
       <div
-        class="flex text-base text-gray-800 dark:text-gray-50 font-bold mt-2"
+        class="flex text-base text-center text-gray-800 dark:text-gray-50 font-bold mt-2"
       >
-        渠道用户数
+        {$i18n.t("Channel User Total")}
       </div>
       <div
-        class="flex text-3xl font-medium text-gray-800 dark:text-gray-50 mt-1 mb-2"
+        class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
       >
         {channelTotal}
       </div>
@@ -144,12 +178,12 @@
       class="flex flex-col flex-1 min-w-[200px] items-center bg-violet-100 dark:bg-violet-300 rounded-lg px-2 py-4 m-3"
     >
       <div
-        class="flex text-base text-gray-800 dark:text-gray-50 font-bold mt-2"
+        class="flex text-base text-center text-gray-800 dark:text-gray-50 font-bold mt-2"
       >
-        VIP用户数
+        {$i18n.t("VIP User Total")}
       </div>
       <div
-        class="flex text-3xl font-medium text-gray-800 dark:text-gray-50 mt-1 mb-2"
+        class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
       >
         {vipTotal}
       </div>
@@ -158,14 +192,14 @@
       class="flex flex-col flex-1 min-w-[200px] items-center bg-pink-100 dark:bg-pink-300 rounded-lg px-2 py-4 m-3"
     >
       <div
-        class="flex text-base text-gray-800 dark:text-gray-50 font-bold mt-2"
+        class="flex text-base text-center text-gray-800 dark:text-gray-50 font-bold mt-2"
       >
-        访客数
+        {$i18n.t("KYC User Total")}
       </div>
       <div
-        class="flex text-3xl font-medium text-gray-800 dark:text-gray-50 mt-1 mb-2"
+        class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
       >
-        {visitorTotal}
+        {kycTotal}
       </div>
     </div>
   </div>
@@ -173,13 +207,16 @@
   <hr class=" my-2 dark:border-gray-850 w-full" />
 
   <div class="px-5">
-    <div class="w-full bg-gray-100 dark:bg-gray-50 rounded-lg p-5">
-      <LineChart
-        bind:xData={thirdXdata}
-        bind:seriesData={thirdSeries}
-        bind:resize
-      />
-    </div>
+    {#if lineLoaded}
+      <div class="w-full bg-gray-100 dark:bg-gray-50 rounded-lg p-5">
+        <LineChart
+          bind:title={lineTitle}
+          bind:xData={lineXdata}
+          bind:seriesData={lineSeries}
+          bind:resize
+        />
+      </div>
+    {/if}
   </div>
 
   <div

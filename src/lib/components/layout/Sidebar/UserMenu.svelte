@@ -124,7 +124,7 @@
 							/>
 						</svg>
 					</div>
-					<div class=" self-center font-medium">{$i18n.t("Admin Panel")}</div>
+					<div class=" self-center font-medium">{$i18n.t("User Report")}</div>
 				</button>
 			{/if}
 

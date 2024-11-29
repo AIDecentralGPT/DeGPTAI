@@ -10,7 +10,12 @@
 
   import { toast } from "svelte-sonner";
 
-  import { updateUserRole, getUsers, deleteUserById } from "$lib/apis/users";
+  import {
+    updateUserRole,
+    getUsers,
+    deleteUserById,
+    getThirdTotal,
+  } from "$lib/apis/users";
   import {
     getSignUpEnabledStatus,
     toggleSignUpEnabledStatus,
@@ -40,7 +45,9 @@
   let loading = false;
 
   let role = "";
-  // let role = 'All'
+  let verified = "";
+  let channel = "";
+  let channelList = [];
 
   let page = 1;
 
@@ -50,7 +57,7 @@
   let showUserChatsModal = false;
   let showEditUserModal = false;
 
-  $: if (page || role || search) {
+  $: if (page || role || search || verified || channel) {
     handleUsersRequest();
   }
 
@@ -69,7 +76,14 @@
 
   const handleUsersRequest = async () => {
     loading = true;
-    const res = await getUsers(localStorage.token, page, role, search);
+    const res = await getUsers(
+      localStorage.token,
+      page,
+      role,
+      search,
+      verified,
+      channel
+    );
     console.log("user", res);
     users = res?.users || [];
     total = res?.total;
@@ -97,9 +111,19 @@
     }
   };
 
+  const initChannel = async () => {
+    const res = await getThirdTotal(localStorage.getItem("token") || "");
+    if (res) {
+      channelList = [];
+      res.forEach((item) => {
+        channelList.push(item?.channel);
+      });
+    }
+  };
+
   onMount(async () => {
     handleUsersRequest();
-
+    initChannel();
     if ($user?.role !== "admin") {
       // await goto('/');
     } else {
@@ -137,7 +161,7 @@
   {#if loaded}
     <div class="flex justify-between px-4 pt-3 mt-0.5 mb-1 w-full">
       <div class="flex items-center text-xl font-semibold">
-        {$i18n.t("Dashboard")}
+        {$i18n.t("User Report")}
       </div>
       <button
         class="self-center"
@@ -180,7 +204,8 @@
           />
 
           <div class="flex gap-0.5">
-            <div class="w-20">
+            <div class="flex flex-row items-center ml-2">
+              <div class="whitespace-nowrap">{$i18n.t("ROLE")}：</div>
               <select
                 class="w-full capitalize rounded-lg py-1.5 px-4 text-sm dark:text-gray-300 bg-gray-100 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
                 on:change={(e) => {
@@ -190,8 +215,38 @@
               >
                 <option value="">All</option>
                 <option value="admin">Admin</option>
+                <option value="walletUser">walletUser</option>
                 <option value="visitor">Visitor</option>
                 <option value="user">User</option>
+              </select>
+            </div>
+            <div class="flex flex-row items-center ml-2">
+              <div class="whitespace-nowrap">{$i18n.t("KYC")}：</div>
+              <select
+                class="w-[80px] capitalize rounded-lg py-1.5 px-4 text-sm dark:text-gray-300 bg-gray-100 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
+                on:change={(e) => {
+                  page = 1;
+                  verified = e.target.value;
+                }}
+              >
+                <option value="">All</option>
+                <option value="t">True</option>
+                <option value="f">False</option>
+              </select>
+            </div>
+            <div class="flex flex-row items-center ml-2">
+              <div class="whitespace-nowrap">{$i18n.t("Channel")}：</div>
+              <select
+                class="w-[80px] capitalize rounded-lg py-1.5 px-4 text-sm dark:text-gray-300 bg-gray-100 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
+                on:change={(e) => {
+                  page = 1;
+                  channel = e.target.value;
+                }}
+              >
+                <option value="">All</option>
+                {#each channelList as item}
+                  <option value={item}>{item}</option>
+                {/each}
               </select>
             </div>
           </div>
@@ -208,12 +263,10 @@
             <tr>
               <th scope="col" class="px-3 py-3"> {$i18n.t("Role")} </th>
               <th scope="col" class="px-3 py-3"> {$i18n.t("User Id")} </th>
-              <!-- <th scope="col" class="px-3 py-2"> {$i18n.t('Name')} </th> -->
-              <th scope="col" class="px-3 py-3"> {$i18n.t("Email")} </th>
+              <th scope="col" class="px-3 py-3"> {$i18n.t("Channel")} </th>
+              <th scope="col" class="px-3 py-3"> {$i18n.t("KYC")} </th>
               <th scope="col" class="px-3 py-3"> {$i18n.t("Last Active")} </th>
-
               <th scope="col" class="px-3 py-3"> {$i18n.t("Created at")} </th>
-
               <th scope="col" class="px-3 py-3 text-right" />
             </tr>
           </thead>
@@ -228,39 +281,35 @@
             </tr>
           {:else}
             <tbody>
-              <!-- // .filter((user) => {
-							// 	if (search === '') {
-							// 		return true;
-							// 	} else {
-							// 		let name = user.name.toLowerCase();
-							// 		const query = search.toLowerCase();
-							// 		return name.includes(query);
-							// 	}
-							// })
-							// .slice((page - 1) * 10, page * 10) as user} -->
               {#each users as user}
                 <tr
                   class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs"
                 >
                   <td class="px-3 py-2 min-w-[7rem] w-28">
                     <button
-                      class=" flex items-center gap-2 text-xs px-3 py-0.5 rounded-lg {user.role ===
-                        'admin' &&
-                        'text-sky-600 dark:text-sky-200 bg-sky-200/30'} {user.role ===
-                        'user' &&
-                        'text-green-600 dark:text-green-200 bg-green-200/30'} {user.role ===
-                        'pending' &&
+                      class=" flex items-center gap-2 text-xs px-3 py-0.5 rounded-lg
+                        {user.role === 'admin' &&
+                        'text-sky-600 dark:text-sky-200 bg-sky-200/30'} 
+                        {user.role === 'walletUser' &&
+                        'text-orange-600 dark:text-orange-200 bg-orange-200/30'} 
+                        {user.role === 'user' &&
+                        'text-green-600 dark:text-green-200 bg-green-200/30'} 
+                        {user.role === 'pending' &&
                         'text-gray-600 dark:text-gray-200 bg-gray-200/30'}
-											{user.role === 'visitor' &&
-                        'text-orange-600 dark:text-orange-200 bg-orange-200/30'}
+											  {user.role === 'visitor' && 'text-sky-600 dark:text-sky-200 bg-sky-200/30'}
 											"
                     >
                       <div
-                        class="w-1 h-1 rounded-full {user.role === 'admin' &&
-                          'bg-sky-600 dark:bg-sky-300'} {user.role === 'user' &&
-                          'bg-green-600 dark:bg-green-300'} {user.role ===
-                          'pending' && 'bg-gray-600 dark:bg-gray-300'}
-																	{user.role === 'visitor' && 'bg-orange-600 dark:bg-orange-300'}
+                        class="w-1 h-1 rounded-full
+                          {user.role === 'admin' &&
+                          'bg-sky-600 dark:bg-sky-300'} 
+                          {user.role === 'walletUser' &&
+                          'bg-orange-600 dark:bg-orange-300'} 
+                          {user.role === 'user' &&
+                          'bg-green-600 dark:bg-green-300'} 
+                          {user.role === 'pending' &&
+                          'bg-gray-600 dark:bg-gray-300'}
+													{user.role === 'visitor' && 'bg-sky-600 dark:bg-sky-300'}
 												"
                       />
                       {$i18n.t(user.role)}</button
@@ -289,39 +338,18 @@
 										{$i18n.t(user.role)}</button
 									> -->
                   </td>
-                  <!-- <td class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max">
-									<div class="flex flex-row w-max">
-										<img
-											class=" rounded-full w-6 h-6 object-cover mr-2.5"
-											src={user.profile_image_url.startsWith(WEBUI_BASE_URL) ||
-											user.profile_image_url.startsWith('https://www.gravatar.com/avatar/') ||
-											user.profile_image_url.startsWith('data:')
-												? user.profile_image_url
-												: `/user.png`}
-											alt="user"
-										/>
-
-										<div class=" font-medium self-center">{user.name}</div>
-									</div>
-								</td> -->
                   <td
                     class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max"
                   >
                     <div class="flex flex-row w-max">
-                      <!-- <img
-												class=" rounded-full w-6 h-6 object-cover mr-2.5"
-												src={user.profile_image_url.startsWith(WEBUI_BASE_URL) ||
-												user.profile_image_url.startsWith('https://www.gravatar.com/avatar/') ||
-												user.profile_image_url.startsWith('data:')
-													? user.profile_image_url
-													: `/user.png`}
-												alt="user"
-											/> -->
-
                       <div class=" font-medium self-center">{user.id}</div>
                     </div>
                   </td>
-                  <td class=" px-3 py-2"> {user.email} </td>
+                  <td class=" px-3 py-2">
+                    {user.channel && user.channel != "" ? user.channel : "--"}
+                  </td>
+
+                  <td class=" px-3 py-2"> {user.verified} </td>
 
                   <td class=" px-3 py-2">
                     {dayjs(user.last_active_at * 1000).fromNow()}

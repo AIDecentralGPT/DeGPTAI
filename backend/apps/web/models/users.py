@@ -3,7 +3,7 @@ from peewee import *  # 导入Peewee中的所有模块
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
 from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import uuid
 
@@ -96,7 +96,14 @@ class UserTotalModel(BaseModel):
     wallet_total: int = 0  # 钱包总数
     channel_total: int = 0  # 第三方注册总数
     vip_total: int = 0  # VIP总数
-    visitor_total: int = 0  # 访客总数
+    kyc_total: int = 0  # 访客总数
+
+# 定义Pydantic模型UserTotalModel
+class UserDisperModel(BaseModel):
+    date_list: List[str] = []  # 日期
+    wallet_list: List[int] = []  # 钱包注册数
+    channel_list: List[int] = []  # 第三方注册数
+    kyc_list: List[int] = []  # kyc认证数
     
 ####################
 # Forms
@@ -239,8 +246,6 @@ class UsersTable:
             print(f"get_users_invited捕获错误: {e}")
             return []  # 如果查询失败，返回空列表
 
-
-
     # 根据api_key获取用户
     def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
         try:
@@ -258,7 +263,7 @@ class UsersTable:
             return None  # 如果查询失败，返回None
 
     # 获取用户列表
-    def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "") -> List[UserModel]:
+    def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "", verified: str = "", channel: str = "") -> List[UserModel]:
         query = User.select()
 
         # 角色筛选
@@ -268,6 +273,14 @@ class UsersTable:
         # 搜索
         if search:
             query = query.where((User.name.contains(search)) | (User.id.contains(search)))
+
+        # KYC认证筛选
+        if verified:
+            query = query.where(User.verified == verified)
+
+        # 渠道筛选
+        if channel:
+            query = query.where(User.channel == channel)
 
         # 获取总记录数
         total = query.count()
@@ -448,15 +461,26 @@ class UsersTable:
         wallet_total = User.select().where(User.role != 'visitor').count()
         channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
         vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
-        visitor_total = User.select().where(User.role == 'visitor').count()
+        kyc_total = User.select().where(User.verified == 't').count()
         data = {    
             "total": total,
             "wallet_total": wallet_total,
             "channel_total": channel_total,
             "vip_total": vip_total,
-            "visitor_total": visitor_total
+            "kyc_total": kyc_total
         }
         return UserTotalModel(**data)
+    
+    def get_user_lately(self) -> Optional[List[UserModel]]:
+        # 查询数据库中的用户
+        now = datetime.now()
+        fifteen_days_ago = now - timedelta(days=15)
+        target_timestamp = int(fifteen_days_ago.timestamp())
+        sql = 'select * from "user" where created_at > ' + str(target_timestamp)
+        users = User.raw(sql)
+        # 将数据库对象转换为字典并转换为Pydantic模型
+        user_list = [UserModel(**model_to_dict(user)) for user in users]
+        return user_list
 
     def get_third_list(self, pageNum: Optional[int]=1, pageSize: Optional[int]=10, channel: Optional[str]="") -> Optional[UserModel]:
         try:
