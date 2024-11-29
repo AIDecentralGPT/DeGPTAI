@@ -9,10 +9,10 @@ import time
 import uuid
 import logging
 
-from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserPageRequest
+from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserTotalModel
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
-from apps.web.models.vip import VIPStatuses, VIPStatusModelResp
+from apps.web.models.vip import VIPStatuses, VIPStatusModelResp, VipTotalModel
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
 from constants import ERROR_MESSAGES
@@ -435,6 +435,30 @@ async def update_user_role(form_data: UserModelsUpdateForm, user=Depends(get_cur
         detail=ERROR_MESSAGES.ACTION_PROHIBITED,
     )
 
+# 获取用户注册分布     
+@router.post("/disper/total", response_model=UserTotalModel)
+async def disper_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        return Users.get_user_total()
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
+# 获取用户注册分布     
+@router.post("/disper/vip", response_model=VipTotalModel)
+async def disper_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        return VIPStatuses.get_vip_total()
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
 # 获取第三方注册统计数据      
 @router.post("/third/total", response_model=List[ChannelTotalModel])
 async def third_total(user=Depends(get_current_user)):
@@ -446,23 +470,6 @@ async def third_total(user=Depends(get_current_user)):
         status_code=status.HTTP_403_FORBIDDEN,
         detail=ERROR_MESSAGES.ACTION_PROHIBITED,
     )
-
-# 获取第三方注册数据列表      
-@router.post("/third/list")
-async def third_list(request: UserPageRequest, user=Depends(get_current_user)):
-
-    if user is not None:
-        users = Users.get_third_list(request.pageNum, request.pageSize, request.channel)
-        total = Users.get_third_total(request.channel)
-        return {
-            "row": users,
-            "total": total
-        }
-
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN,
-        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
-    )
-            
+       
 
 

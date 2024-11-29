@@ -684,7 +684,7 @@
   "Your friend not complete the KYC verification.": "あなたの友人は KYC 検証を完了していません。",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "キーストアは自動的にダウンロードされました。必要に応じて、JSON を手動でダウンロードするか、秘密鍵をコピーできます。",
   "Total": "そうけい",
-  "Third registration": "サードパーティーの登録",
+  "Channel Distribution": "チャンネル分布",
   "Verified": "確認済み",
   "Channel": "チャンネル",
   "I. New User Creation Reward": "I. 新規ユーザー作成報酬",

@@ -684,7 +684,7 @@
   "Your friend not complete the KYC verification.": "Arkadaşınız KYC doğrulamasını tamamlamadı.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore otomatik olarak indirildi. Gerekirse, JSON'u elle indirip veya özel anahtarı kopyalayabilirsiniz.",
   "Total": "Toplam",
-  "Third registration": "Üçüncü taraf kaydı",
+  "Channel Distribution": "Kanal Dağılımı",
   "Verified": "Doğrulanmış",
   "Channel": "Kanal",
   "I. New User Creation Reward": "I. Yeni Kullanıcı Oluşturma Ödülü",

@@ -50,9 +50,6 @@ class VIPStatus(Model):
         table_name = 'vip_status'
 
 
-
-
-
 class VIPStatusModel(BaseModel):
     id: str
     user_id: str
@@ -65,6 +62,13 @@ class VIPStatusModelResp(BaseModel):
     start_date: date
     end_date: date
     is_pro: Optional[bool] = None
+
+
+# 定义Pydantic模型VipTotalModel
+class VipTotalModel(BaseModel):
+    vip_total: int = 0  # VIP总数
+    expire_total: int = 0  # 过期VIP
+    renew_total: int = 0  # 续费VIP
 
 
 
@@ -120,7 +124,17 @@ class VIPStatusTable:
         except Exception as e:
             log.error(f"is_vip_active: {e}")
             return False
-        
+    
+    def get_vip_total(self) -> Optional[VipTotalModel]:
+        vip_total = VIPStatus.select(VIPStatus.user_id, fn.Max(VIPStatus.end_date).alias('end_date')).group_by(VIPStatus.user_id).count()
+        expire_total = VIPStatus.select(VIPStatus.user_id, fn.Max(VIPStatus.end_date).alias('end_date')).where(VIPStatus.end_date < date.today()).group_by(VIPStatus.user_id).count()
+        renew_total = VIPStatus.select(fn.COUNT(VIPStatus.user_id)).group_by(VIPStatus.user_id).having(fn.COUNT(VIPStatus.user_id) > 1).count()
+        data = {    
+            "vip_total": vip_total,
+            "expire_total": expire_total,
+            "renew_total": renew_total
+        }
+        return VipTotalModel(**data)
 
 
 

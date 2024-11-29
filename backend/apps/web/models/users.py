@@ -13,6 +13,7 @@ from apps.web.internal.db import DB  # 导入数据库实例DB
 from apps.web.models.chats import Chats  # 导入Chats模型
 from apps.web.models.rewards import RewardsTableInstance
 from fastapi import APIRouter, Depends, HTTPException, Request
+from apps.web.models.vip import VIPStatus
 
 
 ####################
@@ -89,6 +90,14 @@ class ChannelTotalModel(BaseModel):
     channel: str  # 第三方标识
     total: int  # 总数
 
+# 定义Pydantic模型UserTotalModel
+class UserTotalModel(BaseModel):
+    total: int = 0  # 总数
+    wallet_total: int = 0  # 钱包总数
+    channel_total: int = 0  # 第三方注册总数
+    vip_total: int = 0  # VIP总数
+    visitor_total: int = 0  # 访客总数
+    
 ####################
 # Forms
 ####################
@@ -391,9 +400,7 @@ class UsersTable:
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
-        
-        
-        
+             
     # 更新用户的transaction_id和merchant_biz_id
     def update_user_verify_info(self, id: str, transaction_id: str, merchant_biz_id: str, face_time: datetime) -> bool:
         try:
@@ -403,8 +410,7 @@ class UsersTable:
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
-
-    
+  
     # 更新用户是否完成活体检测认证
     def update_user_verified(self, id: str, verified: bool, face_id: str) -> bool:
         try:
@@ -436,6 +442,21 @@ class UsersTable:
 
     def get_third_group_total(self) -> Optional[ChannelTotalModel]:
         return User.select(User.channel, fn.Count(User.id).alias('total')).where(User.channel is not None, User.channel != '', User.id.like('0x%')).group_by(User.channel);
+
+    def get_user_total(self) -> Optional[UserTotalModel]:
+        total = User.select().count()
+        wallet_total = User.select().where(User.role != 'visitor').count()
+        channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
+        vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
+        visitor_total = User.select().where(User.role == 'visitor').count()
+        data = {    
+            "total": total,
+            "wallet_total": wallet_total,
+            "channel_total": channel_total,
+            "vip_total": vip_total,
+            "visitor_total": visitor_total
+        }
+        return UserTotalModel(**data)
 
     def get_third_list(self, pageNum: Optional[int]=1, pageSize: Optional[int]=10, channel: Optional[str]="") -> Optional[UserModel]:
         try:
