@@ -198,11 +198,13 @@ export const generateInitialsImage = (name) => {
 	return canvas.toDataURL();
 };
 
-export const copyToClipboard = async (text) => {
+export const copyToClipboard = async (text, isMarkdown) => {
 	let result = false;
 	const textArea = document.createElement('textarea');
-	text = text.replace(/\*\*(.*?)\*\*/g, '$1');
-	text = text.replace(/^#{1,6}\s/gm, '');
+	if (isMarkdown) {
+		text = text.replace(/\*\*(.*?)\*\*/g, '$1');
+		text = text.replace(/^#{1,6}\s/gm, '');
+	}
 	textArea.value = text;
 
 	// Avoid scrolling to bottom

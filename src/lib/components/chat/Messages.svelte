@@ -48,8 +48,8 @@
 		element.scrollTop = element.scrollHeight;
 	};
 
-	const copyToClipboardWithToast = async (text) => {
-		const res = await copyToClipboard(text);
+	const copyToClipboardWithToast = async (text, isMarkdown) => {
+		const res = await copyToClipboard(text, isMarkdown);
 		if (res) {
 			toast.success($i18n.t('Copying to clipboard was successful!'));
 		}
