@@ -201,8 +201,8 @@ export const generateInitialsImage = (name) => {
 export const copyToClipboard = async (text) => {
 	let result = false;
 	const textArea = document.createElement('textarea');
-	text = text.replace(/\*\*/g, '');
-	text = text.replace(/\#\#/g, '');
+	text = text.replace(/\*\*(.*?)\*\*/g, '$1');
+	text = text.replace(/^#{1,6}\s/gm, '');
 	textArea.value = text;
 
 	// Avoid scrolling to bottom
