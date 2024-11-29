@@ -40,7 +40,7 @@
       thirdLoaded = true;
     });
     getdisperVip(localStorage.getItem("token") || "").then((res) => {
-      vipXdata = ['VIP TOTAL', 'EXPIRE Total', 'RENEW TOTAL'];
+      vipXdata = ["VIP TOTAL", "EXPIRE Total", "RENEW TOTAL"];
       vipSeries.push(res.vip_total);
       vipSeries.push(res.expire_total);
       vipSeries.push(res.renew_total);
@@ -185,30 +185,28 @@
   <div
     class="flex justify-between flex-wrap text-gray-700 dark:text-gray-100 pt-1 pb-4"
   >
-    <div
-      class="flex-1 min-w-[200px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 m-5"
-    >
-      {#if thirdLoaded}
+    {#if thirdLoaded && vipLoaded}
+      <div
+        class="flex-1 min-w-[200px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 m-5"
+      >
         <BarChart
           bind:xData={thirdXdata}
           bind:seriesData={thirdSeries}
           bind:title={thirdTitle}
           bind:resize
         />
-      {/if}
-    </div>
-    <div
-      class="flex-1 min-w-[200px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 m-5"
-    >
-      {#if vipLoaded}
+      </div>
+      <div
+        class="flex-1 min-w-[200px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 m-5"
+      >
         <BarChart
           bind:xData={vipXdata}
           bind:seriesData={vipSeries}
           bind:title={vipTitle}
           bind:resize
         />
-      {/if}
-    </div>
+      </div>
+    {/if}
   </div>
 </div>
 
