@@ -2,7 +2,7 @@ from peewee import *
 from apps.web.internal.db import DB
 from pydantic import BaseModel
 from typing import Optional, List
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import uuid
 import logging
 from web3 import Web3
@@ -219,6 +219,47 @@ class RewardsTable:
         
         except Exception as e:
             print("send_reward:", e)
+            return None
+
+    def get_issue_reward(self) -> int:
+        return Rewards.select().where(Rewards.reward_type=="new_wallet", Rewards.status==True).count()
+
+    def get_invitee_total(self) -> int:
+        return Rewards.select().where(Rewards.reward_type=="invite", Rewards.show==True).count()
+    
+    def get_invitee_reward_total(self) -> int:
+        try:
+            sql = "select count(r.*) from rewards r \
+                left join rewards r2 on r.invitee = r2.invitee \
+                left join \"user\" u on r2.user_id = u.id \
+                where r.reward_type = 'invite' and r.\"show\" = 't' \
+                and r2.reward_type = 'new_wallet' and u.verified = 't'"
+            cursor = self.db.execute_sql(sql)
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+            return 0
+        except Exception as e:
+            print(f"执行查询时出现错误: {e}")
+            return 0
+    
+    def get_issue_invitee_reward_total(self) -> int:
+        return Rewards.select().where(Rewards.reward_type=="invite", Rewards.status == True, Rewards.show==True).count()
+    
+    def sync_regist_rewards(self) -> Optional[List[RewardsModel]]:
+        try:
+            ten_minutes_ago = datetime.now() - timedelta(minutes = 30)
+            ten_minutes_ago_str = ten_minutes_ago.strftime('%Y-%m-%d %H:%M:%S')
+            sql = f"select r.* from rewards r left join \"user\" u on r.user_id = u.id \
+                where r.reward_type = 'new_wallet' and r.status = 'f' \
+                and u.verified = 't' and u.face_time < '{ten_minutes_ago_str}' \
+                limit 100"
+            rewards = Rewards.raw(sql)
+            # 将数据库对象转换为字典并转换为Pydantic模型
+            reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]
+            return reward_list
+        except Exception as e:
+            print(f"执行查询时出现错误: {e}")
             return None
 
 # 初始化 Rewards 表

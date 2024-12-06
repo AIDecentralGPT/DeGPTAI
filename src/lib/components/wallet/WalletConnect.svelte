@@ -73,8 +73,8 @@
     async onChange() {
       let account = getAccount(config);
       $threesideAccount = account;
-
       if (account.status === "connected") {
+        console.log("==================connected=================")
         if (!$user?.id?.startsWith("0x")) {
           await handleWalletSignIn({
             walletImported: {
@@ -89,7 +89,9 @@
         }
       }
       if (account.status === "disconnected") {
+        user.set({});
         await closeWallet($channel);
+        clearConnector();
         // 更新用户模型
         initUserModels();
       }

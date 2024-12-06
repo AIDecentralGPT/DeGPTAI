@@ -9,7 +9,7 @@ import uuid
 
 from utils.misc import get_gravatar_url  # 导入获取Gravatar URL的方法
 
-from apps.web.internal.db import DB  # 导入数据库实例DB
+from apps.web.internal.db import DB, aspect_database_operations  # 导入数据库实例DB
 from apps.web.models.chats import Chats  # 导入Chats模型
 from apps.web.models.rewards import RewardsTableInstance
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -217,6 +217,7 @@ class UsersTable:
         return user  # 返回创建的用户 
 
     # 根据id获取用户
+    @aspect_database_operations
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
             print("开始根据id获取用户", id)
@@ -471,6 +472,12 @@ class UsersTable:
         }
         return UserTotalModel(**data)
     
+    def get_regist_total(self) -> int:
+        return User.select().where(User.id.like('0x%')).count()
+    
+    def get_regist_reward_total(self) -> int:
+        return User.select().where(User.verified == True).count()
+
     def get_user_lately(self) -> Optional[List[UserModel]]:
         # 查询数据库中的用户
         now = datetime.now()

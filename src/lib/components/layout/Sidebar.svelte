@@ -22,6 +22,8 @@
     showTransactionsModal,
     showUserVerifyModal,
     showCoinIntruModal,
+    showFollowTwitterModal,
+    showFollowTGGroupModal
   } from "$lib/stores";
   import { getCurrentPair } from "$lib/utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
@@ -59,6 +61,8 @@
   import TransactionsModal from "../wallet/TransactionsModal.svelte";
   import UserVerifyModal from "../wallet/UserVerifyModal.svelte";
   import CoinIntruModal from "../wallet/CoinIntruModal.svelte";
+  import FollowTwitterModal from "../twitter/FollowTwitterModal.svelte";
+  import FollowTgGroupModal from "../twitter/FollowTgGroupModal.svelte";
 
   const BREAKPOINT = 768;
 
@@ -313,6 +317,15 @@
 <!-- KYC认证弹窗 -->
 {#if showCoinIntruModal}
   <CoinIntruModal bind:show={$showCoinIntruModal} />
+{/if}
+
+<!-- 关注推特弹窗 -->
+{#if showFollowTwitterModal}
+  <FollowTwitterModal bind:show={$showFollowTwitterModal} />
+{/if}
+<!-- 关注TG群弹窗 -->
+{#if showFollowTGGroupModal}
+  <FollowTgGroupModal bind:show={$showFollowTGGroupModal} />
 {/if}
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->

@@ -1,10 +1,18 @@
 <script lang="ts">
   import { getContext, onMount } from "svelte";
-  import { getDisperTotal, getDisperUser, getThirdTotal, getdisperVip } from "$lib/apis/users";
+  import {
+    getDisperTotal,
+    getDisperUser,
+    getThirdTotal,
+    getdisperVip,
+    getRewardsTotal,
+  } from "$lib/apis/users";
+  import { getInviteRewardTotal, syncRegisterReward } from "$lib/apis/rewards";
   import { goto } from "$app/navigation";
   import BarChart from "$lib/components/common/echarts/BarChart.svelte";
   import LineChart from "$lib/components/common/echarts/LineChart.svelte";
   import { showSidebar } from "$lib/stores";
+  import { toast } from "svelte-sonner";
 
   const i18n = getContext("i18n");
 
@@ -29,6 +37,18 @@
   let vipSeries: any[] = [];
   let vipTitle = $i18n.t("VIP Distribution");
 
+  let registLoaded = false;
+  let regist_total = 0;
+  let reward_total = 0;
+  let issue_total = 0;
+  let regist_reward_per = "0";
+
+  let inviteLoaded = false;
+  let invite_total = 0;
+  let invite_reward_total = 0;
+  let invite_issue_total = 0;
+  let invite_reward_per = "0";
+
   const initInfo = () => {
     getDisperTotal(localStorage.getItem("token") || "").then((res) => {
       userTotal = res.total;
@@ -39,27 +59,21 @@
     });
     getDisperUser(localStorage.getItem("token") || "").then((res) => {
       lineXdata = res.date_list;
-      lineSeries.push(
-        {
-          name: $i18n.t("Wallet User Total"),
-          type: "line",
-          data: res.wallet_list
-        }
-      );
-      lineSeries.push(
-        {
-          name: $i18n.t("Channel User Total"),
-          type: "line",
-          data: res.channel_list
-        }
-      );
-      lineSeries.push(
-        {
-          name: $i18n.t("KYC User Total"),
-          type: "line",
-          data: res.kyc_list
-        }
-      );
+      lineSeries.push({
+        name: $i18n.t("Wallet User Total"),
+        type: "line",
+        data: res.wallet_list,
+      });
+      lineSeries.push({
+        name: $i18n.t("Channel User Total"),
+        type: "line",
+        data: res.channel_list,
+      });
+      lineSeries.push({
+        name: $i18n.t("KYC User Total"),
+        type: "line",
+        data: res.kyc_list,
+      });
       lineLoaded = true;
     });
     getThirdTotal(localStorage.getItem("token") || "").then((res) => {
@@ -80,7 +94,45 @@
       vipSeries.push(res.renew_total);
       vipLoaded = true;
     });
+    getRewardsTotal(localStorage.getItem("token") || "").then((res) => {
+      regist_total = res.regist_total;
+      reward_total = res.reward_total;
+      issue_total = res.issue_total;
+      if (issue_total == 0) {
+        regist_reward_per = reward_total == 0 ? "100" : "0";
+      } else {
+        let reward_per = (issue_total * 100) / reward_total;
+        if (reward_per > 100) {
+          regist_reward_per = "100";
+        } else {
+          regist_reward_per = reward_per.toFixed(1);
+        }
+      }
+      registLoaded = true;
+    });
+    getInviteRewardTotal(localStorage.getItem("token") || "").then((res) => {
+      invite_total = res.invite_total;
+      invite_reward_total = res.invite_reward_total;
+      invite_issue_total = res.invite_issue_total;
+      if (invite_issue_total == 0) {
+        invite_reward_per = invite_reward_total == 0 ? "100" : "0";
+      } else {
+        let invitee_per = (invite_issue_total * 100) / invite_reward_total;
+        if (invitee_per >= 100) {
+          invite_reward_per = "100";
+        } else {
+          invite_reward_per = invitee_per.toFixed(1);
+        }
+      }
+      inviteLoaded = true;
+    });
   };
+
+  function syncregisterreward() {
+    syncRegisterReward(localStorage.getItem("token") || "").then((res) => {
+      console.log("==========================", res);
+    });
+  }
 
   onMount(() => {
     initInfo();
@@ -103,7 +155,7 @@
   }
 </script>
 
-<div class=" flex flex-col w-full min-h-screen">
+<div class=" flex flex-col w-full max-h-screen overflow-auto">
   <div class="flex justify-between px-4 pt-3 mt-0.5 mb-1 w-full">
     <div class="flex items-center text-xl font-semibold">
       {$i18n.t("Dashboard")}
@@ -220,11 +272,11 @@
   </div>
 
   <div
-    class="flex justify-between flex-wrap text-gray-700 dark:text-gray-100 pt-1 pb-4"
+    class="flex justify-between flex-wrap text-gray-700 dark:text-gray-100 pt-1 pb-1"
   >
     {#if thirdLoaded && vipLoaded}
       <div
-        class="flex-1 min-w-[200px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 m-5"
+        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-5 mb-2"
       >
         <BarChart
           bind:xData={thirdXdata}
@@ -234,7 +286,7 @@
         />
       </div>
       <div
-        class="flex-1 min-w-[200px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 m-5"
+        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-5 mb-2"
       >
         <BarChart
           bind:xData={vipXdata}
@@ -245,7 +297,148 @@
       </div>
     {/if}
   </div>
+
+  <div
+    class="flex justify-between flex-wrap text-gray-700 dark:text-gray-100 pt-1 pb-4"
+  >
+    {#if registLoaded && inviteLoaded}
+      <div
+        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-2 mb-5"
+      >
+        <div class="flex justify-between">
+          <div class="text-lg text-gray-900 font-semibold">
+            {$i18n.t("Registration Rewards")}
+          </div>
+          <button
+            class="text-sm text-gray-700 font-semibold"
+            on:click={async () => {
+              if (regist_reward_per != '100') {
+                toast.success($i18n.t("There is no data that can be synchronized."));
+              } else {
+                syncregisterreward();
+              }
+            }}
+          >
+            {$i18n.t("Sync Data")} >
+          </button>
+        </div>
+
+        <hr class=" my-2 dark:border-gray-850 w-full" />
+        <div class="flex justify-between">
+          <div class="flex flex-col mt-2">
+            <div class="flex flex-col text-gray-900">
+              <div class="text-sm font-semibold">
+                {$i18n.t("Total Of Rewards")}
+              </div>
+              <div class="text-3xl font-semibold">{regist_total}</div>
+            </div>
+            <div class="flex flex-col text-gray-900 mt-1">
+              <div class="text-sm font-semibold">
+                {$i18n.t("Should Be Issued")}
+              </div>
+              <div class="text-sm text-gray-600">
+                ({$i18n.t("Total rewards for KYC-authenticated users")})
+              </div>
+              <div class="text-3xl font-semibold">{reward_total}</div>
+            </div>
+            <div class="flex flex-col text-gray-900 mt-1">
+              <div class="text-sm font-semibold">
+                {$i18n.t("Actually Issued")}
+              </div>
+              <div class="text-sm text-gray-600">
+                ({$i18n.t(
+                  "Total rewards actually for KYC-authenticated users."
+                )})
+              </div>
+              <div class="text-3xl font-semibold">{issue_total}</div>
+            </div>
+          </div>
+          <div class="flex-1 flex justify-center items-center">
+            <div
+              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 border-green-800 rounded-full
+              {regist_reward_per == '100'
+                ? 'border-green-800'
+                : 'border-yellow-600'}"
+            >
+              <div class="text-gray-900">{$i18n.t("Completion Rate")}</div>
+              <div class="text-3xl font-semibold text-gray-900">
+                {regist_reward_per}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-2 mb-5"
+      >
+        <div class="flex justify-between">
+          <div class="text-lg text-gray-900 font-semibold">
+            {$i18n.t("Invite Rewards")}
+          </div>
+          <button
+            class="text-sm text-gray-700 font-semibold"
+            on:click={async () => {
+              if (invite_reward_per == '100') {
+                toast.success($i18n.t("There is no data that can be synchronized."));
+              } else {
+                toast.success("Upgrade Successfully!");
+              }
+            }}
+          >
+            {$i18n.t("Sync Data")} >
+          </button>
+        </div>
+        <hr class=" my-2 dark:border-gray-850 w-full" />
+        <div class="flex justify-between">
+          <div class="flex flex-col mt-2">
+            <div class="flex flex-col text-gray-900">
+              <div class="text-sm font-semibold">
+                {$i18n.t("Total Of Rewards")}
+              </div>
+              <div class="text-3xl font-semibold">{invite_total}</div>
+            </div>
+            <div class="flex flex-col text-gray-900 mt-1">
+              <div class="text-sm font-semibold">
+                {$i18n.t("Should Be Issued")}
+              </div>
+              <div class="text-sm text-gray-600">
+                ({$i18n.t("Total rewards for KYC-authenticated users")})
+              </div>
+              <div class="text-3xl font-semibold">{invite_reward_total}</div>
+            </div>
+            <div class="flex flex-col text-gray-900 mt-1">
+              <div class="text-sm font-semibold">
+                {$i18n.t("Actually Issued")}
+              </div>
+              <div class="text-sm text-gray-600">
+                ({$i18n.t(
+                  "Total rewards actually for KYC-authenticated users."
+                )})
+              </div>
+              <div class="text-3xl font-semibold">{invite_issue_total}</div>
+            </div>
+          </div>
+          <div class="flex-1 flex justify-center items-center">
+            <div
+              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 border-green-800 rounded-full
+              {invite_reward_per == '100'
+                ? 'border-green-800'
+                : 'border-yellow-600'}"
+            >
+              <div class="text-gray-900">{$i18n.t("Completion Rate")}</div>
+              <div class="text-3xl font-semibold text-gray-900">
+                {invite_reward_per}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style>
+  .bw-16 {
+    border-width: 16px;
+  }
 </style>

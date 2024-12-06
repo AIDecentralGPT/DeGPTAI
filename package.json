@@ -84,6 +84,7 @@
 		"qrcode": "^1.5.3",
 		"svelte-sonner": "0.3.19",
 		"tippy.js": "^6.3.7",
+		"twitter-api-v2": "^1.18.2",
 		"uuid": "^9.0.1",
 		"vconsole": "^3.15.1",
 		"viem": "^2.13.1"
