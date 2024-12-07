@@ -154,7 +154,7 @@
     >
       <h1 class="text-xl font-semibold">{$i18n.t("View Reward")}</h1>
       <div class="flex flex-row gap-2 text-xs">
-        <button
+        <!-- <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
           on:click={() => {
             window.open("https://twitter.com/DecentralGPT", "_blank");
@@ -172,8 +172,8 @@
             />
           </svg>
           <span> {$i18n.t("Follow Twitter")} </span>
-        </button>
-        <button
+        </button> -->
+        <!-- <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1 mr-2"
           on:click={() => {
             showFollowTGGroupModal.set(true);
@@ -190,7 +190,7 @@
             />
           </svg>
           <span> {$i18n.t("Follow TG Group")} </span>
-        </button>
+        </button> -->
         <button
           class="self-center"
           on:click={() => {
