@@ -215,6 +215,7 @@ async def get_reward_count(user=Depends(get_verified_user)):
         "new_wallet": new_wallet
     }
 
+# 获取用户奖励记录
 @router.post("/reward_history")
 async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified_user)):
     
@@ -228,6 +229,7 @@ async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified
         "total": total
     }
 
+# 获取邀请奖励总数
 @router.post("/invite_total")
 async def get_invite_total(user=Depends(get_verified_user)):
     if user is not None:
@@ -240,6 +242,7 @@ async def get_invite_total(user=Depends(get_verified_user)):
             "invite_issue_total": invite_issue_total
         }
 
+# 同步注册奖励
 register_rewards_locks_dict = {}
 @router.post("/sync_regist_rewards")
 async def sync_regist_rewards(user=Depends(get_verified_user)):
@@ -264,6 +267,7 @@ async def sync_regist_rewards(user=Depends(get_verified_user)):
         print("====================register_rewards_lock.release==================")
         register_rewards_lock.release()
 
+# 同步邀请奖励
 invite_rewards_locks_dict = {}
 @router.post("/sync_invite_rewards")
 async def sync_invite_rewards(user=Depends(get_verified_user)):

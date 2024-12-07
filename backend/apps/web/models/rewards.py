@@ -222,7 +222,7 @@ class RewardsTable:
             return None
 
     def get_issue_reward(self) -> int:
-        return Rewards.select().where(Rewards.reward_type=="new_wallet", Rewards.status==True).count()
+        return Rewards.select().where(Rewards.reward_type=="new_wallet", Rewards.amount_type == 'DGC', Rewards.status==True).count()
 
     def get_invitee_total(self) -> int:
         return Rewards.select().where(Rewards.reward_type=="invite", Rewards.show==True).count()
