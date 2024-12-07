@@ -494,8 +494,8 @@ class UsersTable:
         sql = f"select sum(case when role = 'visitor' then 0 else 1 end) as wallet_count, \
             sum(case when channel is not NULL and channel != '' then 1 else 0 end) as channel_count, \
             sum(case when verified = 't' then 1 else 0 end) as kyc_count, \
-            to_char(to_timestamp(created_at), 'MM-DD') AS create_date from \"user\" \
-            where created_at > {target_timestamp} group by to_char(to_timestamp(created_at), 'MM-DD')"
+            to_char(to_timestamp(created_at) AT TIME ZONE 'Asia/Shanghai', 'MM-DD') AS create_date from \"user\" \
+            where created_at > {target_timestamp} group by to_char(to_timestamp(created_at) AT TIME ZONE 'Asia/Shanghai', 'MM-DD')"
         users = User.raw(sql).dicts()
         # 将数据库对象转换为字典并转换为Pydantic模型
         user_list = [UserLatelyModel(**user) for user in users]
