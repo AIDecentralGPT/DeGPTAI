@@ -718,6 +718,7 @@
   "Completion Rate": "Tamamlama Oranı",
   "Invite Rewards": "Davet Ödülleri",
   "There is no data that can be synchronized.": "Synchronize edilebilecek veri yok.",
+  "The synchronous request was sent successfully.": "Senkron istek başarıyla gönderildi.",
   "I. New User Creation Reward": "I. Yeni Kullanıcı Oluşturma Ödülü",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Yeni kullanıcı doğrulamasını tamamladıktan sonra, <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC ödülü alırsınız.",
   "II. Referral Reward": "II. Tavsiye Ödülü",

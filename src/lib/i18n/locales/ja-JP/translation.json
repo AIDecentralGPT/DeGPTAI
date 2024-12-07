@@ -718,6 +718,7 @@
   "Completion Rate": "完了率",
   "Invite Rewards": "招待報酬",
   "There is no data that can be synchronized.": "同期できるデータはありません。",
+  "The synchronous request was sent successfully.": "同期リクエストは正常に送信されました。",
   "I. New User Creation Reward": "I. 新規ユーザー作成報酬",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": " 新規ユーザー認証を完了した後、<span style='color: rgba(184, 142, 86, 1);'>1000</span>個の DGC 報酬を受け取ります。",
   "II. Referral Reward": "II. 紹介報酬",

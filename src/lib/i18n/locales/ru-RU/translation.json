@@ -717,6 +717,7 @@
   "Completion Rate": "Коэффициент выполнения",
   "Invite Rewards": "Награды за приглашение",
   "There is no data that can be synchronized.": "Нет данных, которые можно было бы синхронизировать.",
+  "The synchronous request was sent successfully.": "Синхронный запрос был успешно отправлен.",
   "I. New User Creation Reward": "I. Премия за создание нового пользователя",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "После завершения аутентификации нового пользователя получите премию в <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Премия за рекомендацию",

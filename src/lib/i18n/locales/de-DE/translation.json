@@ -718,6 +718,7 @@
   "Completion Rate": "Abschlussquote",
   "Invite Rewards": "Einladungsbelohnungen",
   "There is no data that can be synchronized.": "Es gibt keine Daten, die synchronisiert werden können.",
+  "The synchronous request was sent successfully.": "Die synchrone Anfrage wurde erfolgreich gesendet.",
   "I. New User Creation Reward": "I. Belohnung für die Erstellung eines neuen Benutzers",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Nach der Vervollständigung der Authentifizierung eines neuen Benutzers erhält man eine <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC-Belohnung.",
   "II. Referral Reward": "II. Empfehlungsbelohnung",

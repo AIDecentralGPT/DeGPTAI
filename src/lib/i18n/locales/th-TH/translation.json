@@ -717,6 +717,7 @@
   "Completion Rate": "อัตราการสำเร็จ",
   "Invite Rewards": "รางวัลสำหรับการเชิญ",
   "There is no data that can be synchronized.": "ไม่มีข้อมูลที่สามารถสั่งซิงค์ได้",
+  "The synchronous request was sent successfully.": "คำขอแบบสynchronous ส่งสำเร็จแล้ว.",
   "I. New User Creation Reward": "I. ค่าตอบแทนสำหรับการสร้างผู้ใช้ใหม่",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "หลังจากเสร็จสิ้นการยืนยันผู้ใช้ใหม่แล้ว รับค่าตอบแทน <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC",
   "II. Referral Reward": "II. ค่าตอบแทนสำหรับการแนะนำ",

@@ -326,7 +326,7 @@
           <button
             class="text-sm text-gray-700 font-semibold"
             on:click={async () => {
-              if (regist_reward_per != '100') {
+              if (regist_reward_per == '100') {
                 toast.success($i18n.t("There is no data that can be synchronized."));
               } else {
                 toast.success("The synchronous request was sent successfully.");
