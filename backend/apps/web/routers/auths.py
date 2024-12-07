@@ -908,7 +908,7 @@ async def faceliveness_check_for_ws(id: str):
                                 else:
                                     inviteeReward = reward
                             # 领取邀请奖励
-                            RewardApiInstance.inviteReward(inviteReward, inviteeReward) 
+                            RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
                     else:
                         ## 领取注册奖励
                         RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
