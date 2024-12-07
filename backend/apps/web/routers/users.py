@@ -460,9 +460,15 @@ async def disper_total(user=Depends(get_current_user)):
         channel_list = []
         kyc_list = []
         for date in date_list:
-            wallet_list.append(len([user for user in users if datetime.fromtimestamp(user.created_at).strftime('%m-%d') == date and user.role != "visitor"]))
-            channel_list.append(len([user for user in users if datetime.fromtimestamp(user.created_at).strftime('%m-%d') == date and user.channel is not None and user.channel != ""]))
-            kyc_list.append(len([user for user in users if datetime.fromtimestamp(user.created_at).strftime('%m-%d') == date and user.verified == "t"]))
+            userlately = [user for user in users if user.create_date == date]
+            if len(userlately) > 0:
+                wallet_list.append(userlately[0].wallet_count)
+                channel_list.append(userlately[0].channel_count)
+                kyc_list.append(userlately[0].kyc_count)
+            else:
+                wallet_list.append(0)
+                channel_list.append(0)
+                kyc_list.append(0)
 
         data = {
             "date_list": date_list,

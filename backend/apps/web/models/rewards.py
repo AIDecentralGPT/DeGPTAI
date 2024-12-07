@@ -229,15 +229,14 @@ class RewardsTable:
     
     def get_invitee_reward_total(self) -> int:
         try:
-            sql = "select count(r.*) from rewards r \
+            sql = "select count(r.*) as count from rewards r \
                 left join rewards r2 on r.invitee = r2.invitee \
                 left join \"user\" u on r2.user_id = u.id \
                 where r.reward_type = 'invite' and r.\"show\" = 't' \
                 and r2.reward_type = 'new_wallet' and u.verified = 't'"
-            cursor = self.db.execute_sql(sql)
-            result = cursor.fetchone()
-            if result:
-                return result[0]
+            results = Rewards.raw(sql).dicts()
+            if len(results) > 0:
+                return results[0]['count']
             return 0
         except Exception as e:
             print(f"执行查询时出现错误: {e}")

@@ -85,6 +85,13 @@ class UserModel(BaseModel):
     channel: Optional[str] = None
     models: Optional[str] = None
 
+# 定义Pydantic近15天统计数据模型UserLatelyModel
+class UserLatelyModel(BaseModel):
+    wallet_count: Optional[int] = 0
+    channel_count: Optional[int] = 0
+    kyc_count: Optional[int] = 0
+    create_date: Optional[str] = None
+
 # 定义Pydantic模型UserModel
 class ChannelTotalModel(BaseModel):
     channel: str  # 第三方标识
@@ -479,15 +486,19 @@ class UsersTable:
     def get_regist_reward_total(self) -> int:
         return User.select().where(User.verified == True).count()
 
-    def get_user_lately(self) -> Optional[List[UserModel]]:
+    def get_user_lately(self) -> Optional[List[UserLatelyModel]]:
         # 查询数据库中的用户
         now = datetime.now()
         fifteen_days_ago = now - timedelta(days=15)
         target_timestamp = int(fifteen_days_ago.timestamp())
-        sql = 'select * from "user" where created_at > ' + str(target_timestamp)
-        users = User.raw(sql)
+        sql = f"select sum(case when role = 'visitor' then 0 else 1 end) as wallet_count, \
+            sum(case when channel is not NULL and channel != '' then 1 else 0 end) as channel_count, \
+            sum(case when verified = 't' then 1 else 0 end) as kyc_count, \
+            to_char(to_timestamp(created_at), 'MM-DD') AS create_date from \"user\" \
+            where created_at > {target_timestamp} group by to_char(to_timestamp(created_at), 'MM-DD')"
+        users = User.raw(sql).dicts()
         # 将数据库对象转换为字典并转换为Pydantic模型
-        user_list = [UserModel(**model_to_dict(user)) for user in users]
+        user_list = [UserLatelyModel(**user) for user in users]
         return user_list
 
     def get_third_list(self, pageNum: Optional[int]=1, pageSize: Optional[int]=10, channel: Optional[str]="") -> Optional[UserModel]:
