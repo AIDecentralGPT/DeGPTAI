@@ -7,7 +7,7 @@
     getdisperVip,
     getRewardsTotal,
   } from "$lib/apis/users";
-  import { getInviteRewardTotal, syncRegisterReward } from "$lib/apis/rewards";
+  import { getInviteRewardTotal, syncRegisterReward, syncInviteReward } from "$lib/apis/rewards";
   import { goto } from "$app/navigation";
   import BarChart from "$lib/components/common/echarts/BarChart.svelte";
   import LineChart from "$lib/components/common/echarts/LineChart.svelte";
@@ -94,6 +94,11 @@
       vipSeries.push(res.renew_total);
       vipLoaded = true;
     });
+    rewardsTotal();
+    inviteRewardTotal();
+  };
+
+  function rewardsTotal() {
     getRewardsTotal(localStorage.getItem("token") || "").then((res) => {
       regist_total = res.regist_total;
       reward_total = res.reward_total;
@@ -110,6 +115,9 @@
       }
       registLoaded = true;
     });
+  }
+
+  function inviteRewardTotal() {
     getInviteRewardTotal(localStorage.getItem("token") || "").then((res) => {
       invite_total = res.invite_total;
       invite_reward_total = res.invite_reward_total;
@@ -126,11 +134,17 @@
       }
       inviteLoaded = true;
     });
-  };
+  }
 
   function syncregisterreward() {
     syncRegisterReward(localStorage.getItem("token") || "").then((res) => {
-      console.log("==========================", res);
+      rewardsTotal();
+    });
+  }
+
+  function syncinviteereward() {
+    syncInviteReward(localStorage.getItem("token") || "").then((res) => {
+      inviteRewardTotal();
     });
   }
 
@@ -315,6 +329,7 @@
               if (regist_reward_per != '100') {
                 toast.success($i18n.t("There is no data that can be synchronized."));
               } else {
+                toast.success("The synchronous request was sent successfully.");
                 syncregisterreward();
               }
             }}
@@ -381,7 +396,8 @@
               if (invite_reward_per == '100') {
                 toast.success($i18n.t("There is no data that can be synchronized."));
               } else {
-                toast.success("Upgrade Successfully!");
+                toast.success("The synchronous request was sent successfully.");
+                syncinviteereward()
               }
             }}
           >

@@ -261,6 +261,23 @@ class RewardsTable:
         except Exception as e:
             print(f"执行查询时出现错误: {e}")
             return None
+        
+    def sync_invite_rewards(self) -> Optional[List[RewardsModel]]:
+        try:
+            ten_minutes_ago = datetime.now() - timedelta(minutes = 30)
+            ten_minutes_ago_str = ten_minutes_ago.strftime('%Y-%m-%d %H:%M:%S')
+            sql = f"select r.* from rewards r left join rewards r2 on r.invitee = r2.invitee \
+                and r2.reward_type = 'new_wallet' left join \"user\" u on r2.user_id = u.id \
+                where r.reward_type = 'invite' and r.status = 'f' and r.show = 't' \
+                and u.verified = 't' and u.face_time < '{ten_minutes_ago_str}' \
+                limit 100"
+            rewards = Rewards.raw(sql)
+            # 将数据库对象转换为字典并转换为Pydantic模型
+            reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]
+            return reward_list
+        except Exception as e:
+            print(f"执行查询时出现错误: {e}")
+            return None
 
 # 初始化 Rewards 表
 RewardsTableInstance = RewardsTable(DB)
