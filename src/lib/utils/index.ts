@@ -201,8 +201,13 @@ export const generateInitialsImage = (name) => {
 export const copyToClipboard = async (text, isMarkdown) => {
 	let result = false;
 	const textArea = document.createElement('textarea');
+	// 去掉 markdown 格式
 	if (isMarkdown) {
+		// 去掉-或* 即 li 标签
+		text = text.replace(/^[ ]*[-*] /gm, "");
+		// 去掉* 即 strong标签
 		text = text.replace(/\*\*(.*?)\*\*/g, '$1');
+		// 去掉# 即 h标签
 		text = text.replace(/^#{1,6}\s/gm, '');
 	}
 	textArea.value = text;

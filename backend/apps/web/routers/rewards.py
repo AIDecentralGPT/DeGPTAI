@@ -2,11 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from apps.web.models.users import User, Users
 from apps.web.models.device import Device
 from apps.web.models.ip_log import IpLog
-from apps.web.models.rewards import RewardsTableInstance, RewardsRequest, RewardsPageRequest
+from apps.web.models.rewards import RewardsTableInstance, RewardsRequest, RewardsPageRequest, Rewards
 from apps.web.api.rewardapi import RewardApiInstance
 from utils.utils import get_verified_user
 from datetime import date
 import threading
+import concurrent.futures
 
 router = APIRouter()
 
@@ -210,6 +211,103 @@ async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified
         "row" :rewards_history,
         "total": total
     }
+
+@router.post("/invite_total")
+async def get_invite_total(user=Depends(get_verified_user)):
+    if user is not None:
+        invite_total = RewardsTableInstance.get_invitee_total()
+        invite_reward_total = RewardsTableInstance.get_invitee_reward_total()
+        invite_issue_total = RewardsTableInstance.get_issue_invitee_reward_total()
+        return {
+            "invite_total": invite_total,
+            "invite_reward_total": invite_reward_total,
+            "invite_issue_total": invite_issue_total
+        }
+
+register_rewards_locks_dict = {}
+@router.post("/sync_regist_rewards")
+async def sync_regist_rewards(user=Depends(get_verified_user)):
+    global register_rewards_locks_dict
+    # 若用户对应的锁不存在，则创建并添加到字典
+    register_rewards_lock =  "system-async-register-rewards"
+    if register_rewards_lock not in register_rewards_locks_dict:
+        register_rewards_locks_dict[register_rewards_lock] = threading.Lock()
+    register_rewards_lock = register_rewards_locks_dict[register_rewards_lock]
+    register_rewards_lock.acquire()
+    try:
+        if user is not None:
+            rewards = RewardsTableInstance.sync_regist_rewards()
+            with concurrent.futures.ThreadPoolExecutor(max_workers = 20) as executor:
+                executor.map(send_regist_reward, rewards)
+            return {"ok": True, "message": "Success"}
+    except Exception as e:
+        print(f"Exception: {e}")
+        raise HTTPException(status_code=500, detail="Failed to received reward")
+    finally:
+        # 释放锁，以便该用户其他线程能获取锁并执行方法
+        print("====================register_rewards_lock.release==================")
+        register_rewards_lock.release()
+
+invite_rewards_locks_dict = {}
+@router.post("/sync_invite_rewards")
+async def sync_invite_rewards(user=Depends(get_verified_user)):
+    global invite_rewards_locks_dict
+    # 若用户对应的锁不存在，则创建并添加到字典
+    invite_rewards_lock =  "system-async-invite-rewards"
+    if invite_rewards_lock not in invite_rewards_locks_dict:
+        invite_rewards_locks_dict[invite_rewards_lock] = threading.Lock()
+    invite_rewards_lock = invite_rewards_locks_dict[invite_rewards_lock]
+    invite_rewards_lock.acquire()
+    try:
+        if user is not None:
+            rewards = RewardsTableInstance.sync_invite_rewards()
+            with concurrent.futures.ThreadPoolExecutor(max_workers = 20) as executor:
+                executor.map(send_invite_reward, rewards)
+            return {"ok": True, "message": "Success"}
+    except Exception as e:
+        print(f"Exception: {e}")
+        raise HTTPException(status_code=500, detail="Failed to received reward")
+    finally:
+        # 释放锁，以便该用户其他线程能获取锁并执行方法
+        print("====================register_rewards_lock.release==================")
+        invite_rewards_lock.release()
+
+def send_regist_reward(reward: Rewards):
+    if reward is not None:
+        ## 判断领取那种奖励
+        if reward.invitee is not None:
+            ## 获取奖励记录校验是那种奖励
+            rewards = RewardsTableInstance.get_rewards_by_invitee(reward.invitee)
+            if len(rewards) == 2:
+                inviteReward = None;
+                inviteeReward = None;   
+                for reward in rewards:
+                    if reward.reward_type == 'invite':
+                        if reward.show:
+                            inviteReward = reward
+                    else:
+                        inviteeReward = reward
+                ## 领取邀请奖励
+                RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
+        else:
+            ## 领取注册奖励
+            RewardApiInstance.registReward(reward.id, reward.user_id)
+
+def send_invite_reward(reward: Rewards):
+    if reward is not None and reward.invitee is not None and reward.invitee != '':
+        ## 获取邀请奖励信息
+        rewards = RewardsTableInstance.get_rewards_by_invitee(reward.invitee)
+        if len(rewards) == 2:
+            inviteReward = None;
+            inviteeReward = None;   
+            for reward in rewards:
+                if reward.reward_type == 'invite':
+                    if reward.show:
+                        inviteReward = reward
+                else:
+                    inviteeReward = reward
+            ## 领取邀请奖励
+            RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
 
 @router.get("/dbc_rate")
 async def get_dbc_rate(user=Depends(get_verified_user)): 

@@ -68,3 +68,4 @@ alibabacloud-facebody20191230==5.1.2
 oss2==2.18.6
 aliyun-python-sdk-viapiutils==1.0
 viapi-utils==1.0.1
+tweepy==4.14.0

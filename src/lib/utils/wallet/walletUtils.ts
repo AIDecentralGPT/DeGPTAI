@@ -101,17 +101,15 @@ export async function handleSigninAsIntialStatus() {
 // }
 
 export async function closeWallet(channel:string) {
+  console.log("===================================closeWallet")
   currentWalletData.update(() => DefaultCurrentWalletData)
 
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("walletImported");
 
-  await printSignIn(channel).then((res) => {
-    console.log("printSignIn的res", res);
-    user.set(res);
-    forceUpdate();
-  });
+  await printSignIn(channel);
+  forceUpdate();
   // $chats = [];
 
   goto("/");

@@ -4,6 +4,7 @@ from playhouse.db_url import connect
 from config import SRC_LOG_LEVELS, DATA_DIR, DATABASE_URL
 import os
 import logging
+import functools
 
 
 log = logging.getLogger(__name__)
@@ -17,9 +18,27 @@ if os.path.exists(f"{DATA_DIR}/ollama.db"):
 else:
     pass
 
+
 DB = connect(DATABASE_URL)
 log.info(f"Connected to a {DB.__class__.__name__} database.")
+
 router = Router(DB, migrate_dir="apps/web/internal/migrations", logger=log)
 router.run()
+
 DB.close()
 DB.connect(reuse_if_open=True)
+
+# 定义切面装饰器，用于包裹数据库操作函数
+def aspect_database_operations(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if not DB.is_closed():
+            DB.close()
+        DB.connect(reuse_if_open=True)
+        try:
+            # 执行被装饰的数据库操作函数
+            result = func(*args, **kwargs)
+            return result
+        except Exception as e:
+            return e
+    return wrapper

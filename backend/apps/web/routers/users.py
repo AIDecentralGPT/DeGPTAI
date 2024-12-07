@@ -5,13 +5,12 @@ from typing import List, Union, Optional, Any
 
 from fastapi import APIRouter
 from pydantic import BaseModel
-import time
-import uuid
 import logging
 
 from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserTotalModel, UserDisperModel
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
+from apps.web.models.rewards import RewardsTableInstance
 from apps.web.models.vip import VIPStatuses, VIPStatusModelResp, VipTotalModel
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
@@ -24,22 +23,18 @@ from utils.utils import (
     get_current_user,
     get_admin_user,
     create_token,
-    create_api_key,
 )
 
 from utils.misc import parse_duration, validate_email_format
 
 
 # --------钱包相关--------
-from substrateinterface import Keypair, KeypairType
-from substrateinterface.utils.ss58 import ss58_decode
-from substrateinterface.utils.hasher import blake2_256
-import json
 from web3 import Web3
 w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
 # from web3.auto import w3
-from eth_account.messages import encode_defunct, _hash_eip191_message
 import asyncio
+
+from apps.web.models.twitterLib import twitter_lib
 
 
 
@@ -505,6 +500,30 @@ async def third_total(user=Depends(get_current_user)):
         status_code=status.HTTP_403_FORBIDDEN,
         detail=ERROR_MESSAGES.ACTION_PROHIBITED,
     )
-       
+
+# 获取用户注册奖励统计数据      
+@router.post("/regist/total")
+async def regist_total(user=Depends(get_current_user)):
+
+    if user is not None:
+        regist_total = Users.get_regist_total()
+        reward_total = Users.get_regist_reward_total()
+        issue_total = RewardsTableInstance.get_issue_reward()
+        return {
+            "regist_total": regist_total,
+            "reward_total": reward_total,
+            "issue_total": issue_total
+        }
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
 
 
+# 校验用户是否已关注推特账号 
+@router.get("/check/twitter", response_model=bool)
+async def third_total(request: Request):
+    account = request.query_params.get("account")
+    print("================================", account)
+    return twitter_lib.check_follow_status(account, "service@decentralgpt.org")

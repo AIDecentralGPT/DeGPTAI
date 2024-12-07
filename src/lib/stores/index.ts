@@ -70,8 +70,9 @@ export const deApiBaseUrl = writable({
 	url: 'https://usa-chat.degpt.ai/api'
 });
 
-
-
+// 推特相关
+export const showFollowTwitterModal = writable(false);
+export const showFollowTGGroupModal = writable(false);
 
 // 钱包数据
 export let currentWalletData = writable(DefaultCurrentWalletData)

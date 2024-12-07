@@ -180,7 +180,6 @@ export const printSignIn = async (channel: string) => {
   // localStorage.removeItem("pair");
 
   const userInfo = await res.json();
-  console.log("userInfo", res, res.code, userInfo);
 
   localStorage.token = userInfo?.token;
 

@@ -45,7 +45,10 @@
       transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
         const coinType = (item?.tx_types?.[0] === "coin_transfer") ? "DBC" : "DGC";
         if (coinType === "DGC") {
-          const toHash = item.decoded_input.parameters[0].value;
+          let toHash = item?.to?.hash;
+          if (item.decoded_input) {
+            toHash = item?.decoded_input?.parameters[0].value;
+          }
           let coinAmount = '0.00000';
           if (item.decoded_input?.parameters[1]?.value) {
             coinAmount = Number(ethers.formatUnits(item.decoded_input.parameters[1].value, "ether")).toFixed(5);
