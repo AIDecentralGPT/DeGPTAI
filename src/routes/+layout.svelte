@@ -8,6 +8,7 @@
     WEBUI_NAME,
     mobile,
     deApiBaseUrl,
+    inviterId,
     channel,
     settings,
   } from "$lib/stores";
@@ -98,6 +99,22 @@
     };
   }
 
+  // 获取请求携带参数
+  async function initUrlParam() {
+    const queryParams = new URLSearchParams($page.url.search);
+    
+    // 获取邀请信息
+    let inviterVal = queryParams.get("inviter");
+    if (inviterVal) {
+      await inviterId.set(inviterVal);
+    }
+    // 获取渠道
+    let channelName = queryParams.get("channel");
+    if (channelName) {
+      await channel.set(channelName);
+    }
+  }
+
   async function checkLogin() {
     // 加载 FingerprintJS 库
     const fp = await FingerprintJS.load();
@@ -107,13 +124,6 @@
     const visitorId = result.visitorId;
     console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
     localStorage.setItem("visitor_id", visitorId);
-
-    // 获取渠道
-    const queryParams = new URLSearchParams($page.url.search);
-    let channelName = queryParams.get("channel");
-    if (channelName) {
-      await channel.set(channelName);
-    }
 
     if (localStorage?.token) {
       // 获取缓存用户信息
@@ -229,6 +239,7 @@
     await initData();
     await initLanguage();
     if (currentAddress.indexOf("userVerifying") < 0) {
+      await initUrlParam();
       await checkLogin();
       loaded = true;
       await intiLocationInfo();
