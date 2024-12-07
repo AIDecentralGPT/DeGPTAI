@@ -329,7 +329,7 @@
               if (regist_reward_per == '100') {
                 toast.success($i18n.t("There is no data that can be synchronized."));
               } else {
-                toast.success("The synchronous request was sent successfully.");
+                toast.success($i18n.t("The synchronous request was sent successfully."));
                 syncregisterreward();
               }
             }}
@@ -396,7 +396,7 @@
               if (invite_reward_per == '100') {
                 toast.success($i18n.t("There is no data that can be synchronized."));
               } else {
-                toast.success("The synchronous request was sent successfully.");
+                toast.success($i18n.t("The synchronous request was sent successfully."));
                 syncinviteereward()
               }
             }}
