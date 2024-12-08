@@ -7,7 +7,11 @@
     getdisperVip,
     getRewardsTotal,
   } from "$lib/apis/users";
-  import { getInviteRewardTotal, syncRegisterReward, syncInviteReward } from "$lib/apis/rewards";
+  import {
+    getInviteRewardTotal,
+    syncRegisterReward,
+    syncInviteReward,
+  } from "$lib/apis/rewards";
   import { goto } from "$app/navigation";
   import BarChart from "$lib/components/common/echarts/BarChart.svelte";
   import LineChart from "$lib/components/common/echarts/LineChart.svelte";
@@ -107,7 +111,7 @@
         regist_reward_per = reward_total == 0 ? "100" : "0";
       } else {
         let reward_per = (issue_total * 100) / reward_total;
-        if (reward_per > 100) {
+        if (reward_per >= 100) {
           regist_reward_per = "100";
         } else {
           regist_reward_per = reward_per.toFixed(1);
@@ -326,10 +330,14 @@
           <button
             class="text-sm text-gray-700 font-semibold"
             on:click={async () => {
-              if (regist_reward_per == '100') {
-                toast.success($i18n.t("There is no data that can be synchronized."));
+              if (regist_reward_per == "100") {
+                toast.success(
+                  $i18n.t("There is no data that can be synchronized.")
+                );
               } else {
-                toast.success($i18n.t("The synchronous request was sent successfully."));
+                toast.success(
+                  $i18n.t("The synchronous request was sent successfully.")
+                );
                 syncregisterreward();
               }
             }}
@@ -370,7 +378,7 @@
           </div>
           <div class="flex-1 flex justify-center items-center">
             <div
-              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 border-green-800 rounded-full
+              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 rounded-full
               {regist_reward_per == '100'
                 ? 'border-green-800'
                 : 'border-yellow-600'}"
@@ -393,11 +401,15 @@
           <button
             class="text-sm text-gray-700 font-semibold"
             on:click={async () => {
-              if (invite_reward_per == '100') {
-                toast.success($i18n.t("There is no data that can be synchronized."));
+              if (invite_reward_per == "100") {
+                toast.success(
+                  $i18n.t("There is no data that can be synchronized.")
+                );
               } else {
-                toast.success($i18n.t("The synchronous request was sent successfully."));
-                syncinviteereward()
+                toast.success(
+                  $i18n.t("The synchronous request was sent successfully.")
+                );
+                syncinviteereward();
               }
             }}
           >
@@ -436,7 +448,7 @@
           </div>
           <div class="flex-1 flex justify-center items-center">
             <div
-              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 border-green-800 rounded-full
+              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 rounded-full
               {invite_reward_per == '100'
                 ? 'border-green-800'
                 : 'border-yellow-600'}"
