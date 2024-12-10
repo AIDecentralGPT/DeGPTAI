@@ -582,21 +582,24 @@ export const addTextSlowly = async (target, text) => {
 }
 
 
-export const isWebView = () => {
-	// 在uni-app环境中，可以通过plus对象来判断是否在WebView中
-	let isWebView = false;
-	if (typeof plus !== 'undefined') {
-		if (plus && plus.navigator && plus.navigator.isWebview()) {
-			console.log("当前是App内WebView环境");
-			isWebView = true;
+export const checkUniapp = () => {
+	// 在uni-app环境中，判断是否是打包的app
+	try {
+		let platform = uni.getSystemInfoSync().platform;
+		if (platform === 'android' || platform === 'ios') {
+			// 在移动端打包的应用
+			console.log("==========", platform)
+			return true;
 		} else {
-			console.log("当前是App环境，但不是WebView环境");
+			// 在浏览器或其他平台
+			console.log("=====获取到uni但不在app中=====")
+			return false;
 		}
-	} else {
-		console.log("当前不是App环境");
+	} catch(e) {
+		console.log("=====没有获取到uni=====")
+		return false;
 	}
-
-	return isWebView;
+	
 }
 
 

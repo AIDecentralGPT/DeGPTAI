@@ -6,7 +6,7 @@
   import {
     getModels as _getModels,
     copyToClipboard,
-    isWebView,
+    checkUniapp,
   } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
@@ -209,7 +209,7 @@
                 {$i18n.t("Download DeGPT to obtain rewards")}
               </div>
               <div class="flex flex-row mt-1 px-2">
-                {#if isWebView()}
+                {#if checkUniapp()}
                   <div></div>
                 {:else}
                   <button
