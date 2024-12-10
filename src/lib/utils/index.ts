@@ -23,11 +23,11 @@ export const getModels = async (token: string) => {
 			console.log(error);
 			return null;
 		}),
-	
+
 	]);
 
 	console.log("models", models);
-	
+
 
 	models = models.filter((models) => models).reduce((a, e, i, arr) => a.concat(e), []);
 
@@ -185,12 +185,12 @@ export const generateInitialsImage = (name) => {
 
 	let initials = "";
 	if (sanitizedName.length > 12) {
-		initials = sanitizedName.substring(2,4);
+		initials = sanitizedName.substring(2, 4);
 	} else {
 		if (sanitizedName.length < 3) {
 			initials = sanitizedName;
 		} else {
-			initials = sanitizedName.substring(0,2);
+			initials = sanitizedName.substring(0, 2);
 		}
 	}
 	ctx.fillText(initials.toUpperCase(), canvas.width / 2, canvas.height / 2);
@@ -238,10 +238,10 @@ export const compareVersion = (latest, current) => {
 	return current === '0.0.0'
 		? false
 		: current.localeCompare(latest, undefined, {
-				numeric: true,
-				sensitivity: 'case',
-				caseFirst: 'upper'
-		  }) < 0;
+			numeric: true,
+			sensitivity: 'case',
+			caseFirst: 'upper'
+		}) < 0;
 };
 
 export const findWordIndices = (text) => {
@@ -572,13 +572,31 @@ export const getTimeRange = (timestamp) => {
 
 
 export const addTextSlowly = async (target, text) => {
-  for (const char of text) {
-    target += char;
-    // 这里可以设置一个适当的延迟来模拟逐字符显示
-    await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
-    // 更新界面或进行其他操作
-  }
-  return target;
+	for (const char of text) {
+		target += char;
+		// 这里可以设置一个适当的延迟来模拟逐字符显示
+		await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
+		// 更新界面或进行其他操作
+	}
+	return target;
+}
+
+
+export const isWebView = () => {
+	// 在uni-app环境中，可以通过plus对象来判断是否在WebView中
+	var isWebView = false;
+	try {
+		if (plus && plus.navigator && plus.navigator.isWebview()) {
+			console.log("是在uniapp中打开的")
+			isWebView = true;
+		} else {
+			isWebView = false;
+		}
+	} catch (error) {
+		isWebView = false;
+	}
+
+	return isWebView;
 }
 
 
