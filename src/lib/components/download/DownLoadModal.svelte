@@ -10,7 +10,7 @@
 <Modal bind:show size="sm">
   <div class="xs:h-auto flex flex-col w-full p-5">
     <div class=" flex justify-between dark:text-gray-300 pb-1">
-      <div class=" text-lg font-medium self-center">
+      <div class=" text-base font-medium self-center">
         {$i18n.t("Download")}
       </div>
 
@@ -33,7 +33,10 @@
         </svg>
       </button>
     </div>
-    <div class="flex flex-row pt-5">
+    <div class="flex flex-col pt-2">
+      <div class="flex my-2">
+        { $i18n.t("You can copy the website below:") }
+      </div>
       <div class="flex-1 relative">
         <p
           class="text-ellipsis overflow-hidden whitespace-nowrap pr-[35px] opacity-50
