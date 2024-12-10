@@ -36,6 +36,7 @@
       <button
         class=""
         on:click={() => {
+          window.postMessage({key: 'https://x.com/DecentralGPT'}, 'https://x.com/DecentralGPT');
           window.open("https://x.com/DecentralGPT", "_blank")
         }}
       ><svg
