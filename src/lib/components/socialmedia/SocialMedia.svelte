@@ -2,6 +2,7 @@
   import { getContext } from "svelte";
   import { showLoginInfoModal,user } from "$lib/stores";
   import Tooltip from '$lib/components/common/Tooltip.svelte';
+  import { isWebView } from "$lib/utils/index"
   const i18n = getContext("i18n");
 </script>
 
@@ -36,7 +37,9 @@
       <button
         class=""
         on:click={() => {
-          window.postMessage({key: 'https://x.com/DecentralGPT'}, 'https://x.com/DecentralGPT');
+          if (isWebView()) {
+            window.postMessage({key: 'https://x.com/DecentralGPT'}, 'https://x.com/DecentralGPT');
+          }
           window.open("https://x.com/DecentralGPT", "_blank")
         }}
       ><svg

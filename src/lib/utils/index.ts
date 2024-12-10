@@ -582,13 +582,13 @@ export const addTextSlowly = async (target, text) => {
 }
 
 
-export const isWebView = () => {
+export const isWebView = () =>{
 	// 在uni-app环境中，可以通过plus对象来判断是否在WebView中
-	var isWebView = false;
+	let isWebView = false;
 	try {
 		if (plus && plus.navigator && plus.navigator.isWebview()) {
-			console.log("是在uniapp中打开的")
 			isWebView = true;
+			console.log("是在uniapp中打开的")
 		} else {
 			isWebView = false;
 		}
