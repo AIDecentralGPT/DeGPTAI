@@ -585,18 +585,15 @@ export const addTextSlowly = async (target, text) => {
 export const checkUniapp = () => {
 	// 在uni-app环境中，判断是否是打包的app
 	try {
-		let platform = uni.getSystemInfoSync().platform;
-		if (platform === 'android' || platform === 'ios') {
-			// 在移动端打包的应用
-			console.log("==========", platform)
+		if (typeof plus !== "undefined") {
+			console.log("=====在uni中运行=====", plus)
 			return true;
 		} else {
-			// 在浏览器或其他平台
-			console.log("=====获取到uni但不在app中=====")
+			console.log("=====不在uni中运行=====")
 			return false;
 		}
 	} catch(e) {
-		console.log("=====没有获取到uni=====")
+		console.log("=====检测到异常=====", e)
 		return false;
 	}
 	
