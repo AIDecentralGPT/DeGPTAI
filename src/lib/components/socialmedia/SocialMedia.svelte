@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { showLoginInfoModal,user } from "$lib/stores";
   import Tooltip from '$lib/components/common/Tooltip.svelte';
-  import { isWebView } from "$lib/utils/index"
+  import { isWebView } from "$lib/utils"
   const i18n = getContext("i18n");
 </script>
 
