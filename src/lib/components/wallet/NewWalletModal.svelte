@@ -24,7 +24,6 @@
     downloadKeyStore,
     handleWalletSignIn,
   } from "$lib/utils/wallet/ether/utils.js";
-  import { i } from "vitest/dist/reporters-yx5ZTtEV";
 
   const i18n = getContext("i18n");
 
