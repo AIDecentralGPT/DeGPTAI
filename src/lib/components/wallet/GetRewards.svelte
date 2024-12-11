@@ -79,7 +79,7 @@
     <div class="flex flex-col self-end">
       {#if !checkUniapp() }
         <div class="flex flex-row">
-          <span class="text-base mt-1">
+          <span class="text-base ml-10 mt-1">
             {$i18n.t("Download DeGPT to obtain rewards")}
           </span>
           <button
@@ -91,7 +91,7 @@
             {$i18n.t("Download")}
           </button>
         </div>
-        <div class="flex flex-row mt-1">
+        <div class="flex flex-row ml-10 mt-1">
           <span class="text-sm">
             {$i18n.t("For more information, please")}
           </span> 
