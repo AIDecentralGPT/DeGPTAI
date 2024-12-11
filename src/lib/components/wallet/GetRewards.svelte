@@ -78,12 +78,12 @@
     </div>
     <div class="flex flex-col self-end">
       {#if !checkUniapp() }
-        <div class="flex flex-row">
+        <div class="flex flex-row items-center">
           <span class="text-base ml-10 mt-1">
             {$i18n.t("Download DeGPT to obtain rewards")}
           </span>
           <button
-            class="primaryButton text-sm ml-10 text-gray-100 rounded-md mt-1 px-2"
+            class="primaryButton text-sm ml-10 text-gray-100 rounded-md mt-1 px-2 py-1 whitespace-nowrap"
             on:click={() => {
               $showDownLoad = true;
             }}
@@ -91,7 +91,7 @@
             {$i18n.t("Download")}
           </button>
         </div>
-        <div class="flex flex-row ml-10 mt-1">
+        <div class="flex flex-wrap ml-10 mt-1">
           <span class="text-sm">
             {$i18n.t("For more information, please")}
           </span> 
