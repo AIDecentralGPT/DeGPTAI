@@ -12,6 +12,7 @@
     showNewWalletModal,
     showRewardDetailModal,
     showDownLoad,
+    mobile,
   } from "$lib/stores";
 
   import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
@@ -69,14 +70,15 @@
 </script>
 
 <div>
-  <div class="flex gap-3 items-center my-4 flex-wrap justify-between mt-20">
+  <div class="flex gap-3 my-4 mt-20
+    {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
     <div class="flex flex-col">
       <ModelDeSelector />
       <span class="text-xl ml-10 mt-1">
         {$i18n.t("Unlimited DGC Reward Task")}
       </span>
     </div>
-    <div class="flex flex-col self-end">
+    <div class="flex flex-col {$mobile? '' : 'self-end'}">
       {#if !checkUniapp() }
         <div class="flex flex-wrap items-center">
           <span class="text-base ml-10 mt-1">
@@ -106,7 +108,7 @@
         </div> 
       {/if}
     </div>
-    <div class="flex fs-12 self-end">
+    <div class="flex fs-12 {$mobile? '' : 'self-end'}">
       {#if $user?.id?.startsWith("0x")}
         <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
