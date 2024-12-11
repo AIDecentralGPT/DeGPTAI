@@ -37,12 +37,7 @@
       <button
         class=""
         on:click={() => {
-          if (checkUniapp()) {
-            window.postMessage({key: 'x-decentral'}, "https://test.degpt.ai");
-            // window.open("https://x.com/DecentralGPT", "_blank")
-          } else {
-            window.open("https://x.com/DecentralGPT", "_blank")
-          } 
+          window.open("https://x.com/DecentralGPT", "_blank") 
         }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"

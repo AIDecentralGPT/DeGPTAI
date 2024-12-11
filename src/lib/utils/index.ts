@@ -586,14 +586,11 @@ export const checkUniapp = () => {
 	// 在uni-app环境中，判断是否是打包的app
 	try {
 		if (typeof plus !== "undefined") {
-			console.log("=====在uni中运行=====", plus)
 			return true;
 		} else {
-			console.log("=====不在uni中运行=====")
 			return false;
 		}
 	} catch(e) {
-		console.log("=====检测到异常=====", e)
 		return false;
 	}
 }
