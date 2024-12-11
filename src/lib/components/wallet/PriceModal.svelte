@@ -128,7 +128,7 @@
               <div>
                 {$i18n.t("Access to ")}
                 <span class=" dark:text-gray-100 text-zinc-950"
-                  >Llama 3.1, Qwen 2.5, Nemotron 3.1, Nvidia 3.1, Deepseek coder2.0, Qwen 2.5 Code</span
+                  >Llmma 3.3, Pixtral Large 1.0, Qwen 2.5, Nemotron 3.1, Nvidia 3.1, Deepseek coder2.0, Qwen 2.5 Code</span
                 >
               </div>
             </li>
@@ -271,7 +271,7 @@
               <div>
                 {$i18n.t("Access to ")}
                 <span class=" dark:text-gray-100 text-zinc-950"
-                  >Llama 3.1, Qwen 2.5, Nemotron 3.1, Nvidia 3.1, Deepseek coder2.0, Qwen 2.5 Code</span
+                  >Llmma 3.3, Pixtral Large 1.0, Qwen 2.5, Nemotron 3.1, Nvidia 3.1, Deepseek coder2.0, Qwen 2.5 Code</span
                 >
               </div>
             </li>

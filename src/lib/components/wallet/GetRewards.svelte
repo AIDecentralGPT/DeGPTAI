@@ -95,7 +95,7 @@
           <span class="text-sm">
             {$i18n.t("For more information, please")}
           </span> 
-          <a class="text-sm text-blue-600" href="https://www.decentralgpt.org" target="_blank">{$i18n.t("sign in")}</a>
+          <a class="text-sm text-blue-600 mx-1" href="https://www.decentralgpt.org" target="_blank">{$i18n.t("sign in")}</a>
           <span class="text-sm">
             {$i18n.t("official website")}
           </span>

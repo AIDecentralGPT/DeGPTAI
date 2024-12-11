@@ -120,7 +120,7 @@
 											<select
 												class="w-full rounded-lg py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none"
 												bind:value={modelId}
-												placeholder="Select a model"
+												placeholder="{$i18n.t('Select a model')}"
 											>
 												<option value="" disabled selected>{$i18n.t('Select a model')}</option>
 												{#each $models.filter((model) => model.id) as model}

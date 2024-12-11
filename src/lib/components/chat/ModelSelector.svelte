@@ -23,9 +23,11 @@
       if (selectedModels.length === 1) {
         return selectedModels[0] === "" ? $models[0]?.model : model;
       } else {
-        return $models.map((m) => m.id).includes(model) ? model : ""; 
+        if ($models.map((m) => m.id).includes(model)) {
+          return model;
+        }
       }
-    });
+    }).filter(item => item!== undefined);
   }
 
   async function updateSelList(list: any) {
