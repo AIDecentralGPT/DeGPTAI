@@ -38,7 +38,8 @@
         class=""
         on:click={() => {
           if (checkUniapp()) {
-            window.postMessage("x-decentral", "https://x.com/DecentralGPT");
+            window.postMessage({key: 'x-decentral'}, "https://x.com/DecentralGPT");
+            window.open("https://x.com/DecentralGPT", "_blank")
           } else {
             window.open("https://x.com/DecentralGPT", "_blank")
           } 
