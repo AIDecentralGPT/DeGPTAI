@@ -74,7 +74,7 @@
       <ModelDeSelector/>
       <span class="text-xl ml-10 mt-1"> {$i18n.t("Unlimited DGC Reward Task")} </span>
       {#if !checkUniapp()}
-        <button class="primaryButton text-sm ml-10 text-gray-100 rounded-md mt-2"
+        <button class="primaryButton text-sm ml-10 text-gray-100 rounded-md mt-1"
           on:click={() => {
             $showDownLoad = true;
           }}
