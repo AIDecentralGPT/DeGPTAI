@@ -29,12 +29,12 @@ export const getDeModels = async (token: string = "") => {
 
   const format_res = {
     models: [
-      {
-        name: "Llama 3.1",
-        model: "Llama-3.1-405B",
-        tip: "Llama 3.1",
-        desc: "Suitable for most tasks"
-      },
+      // {
+      //   name: "Llama 3.1",
+      //   model: "Llama-3.1-405B",
+      //   tip: "Llama 3.1",
+      //   desc: "Suitable for most tasks"
+      // },
       // Ali LLM (Qwen2.5-72B)
       {
         name: "Qwen 2.5",
