@@ -77,7 +77,7 @@
       </span>
     </div>
     <div class="flex flex-col self-end">
-      {#if !checkUniapp()}
+      {#if !checkUniapp() }
         <div class="flex flex-row">
           <span class="text-base mt-1">
             {$i18n.t("Download DeGPT to obtain rewards")}
@@ -95,7 +95,7 @@
           <span class="text-sm">
             {$i18n.t("For more information, please")}
           </span> 
-          <a class="text-sm text-blue-600" href="https://www.decentralgpt.org" target="_blank">登陆</a>
+          <a class="text-sm text-blue-600" href="https://www.decentralgpt.org" target="_blank">{$i18n.t("sign in")}</a>
           <span class="text-sm">
             {$i18n.t("official website")}
           </span>

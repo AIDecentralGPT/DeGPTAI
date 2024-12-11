@@ -596,8 +596,22 @@ export const checkUniapp = () => {
 		console.log("=====检测到异常=====", e)
 		return false;
 	}
-	
 }
 
+export const checkPlatform = () => {
+	// 在uni-app环境中，判断是否是打包的app
+	try {
+		const userAgent = navigator.userAgent.toLowerCase();
+		if (userAgent.indexOf('iphone') !== -1 || userAgent.indexOf('ipad') !== -1 || userAgent.indexOf('ipod') !== -1) {
+			return 'ios';
+		} else if (userAgent.indexOf('android') !== -1) {
+			return 'android';
+		} else {
+			return 'other';
+		}
+	} catch(e) {
+		return 'other';
+	}
+}
 
 
