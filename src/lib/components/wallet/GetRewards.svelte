@@ -78,12 +78,12 @@
     </div>
     <div class="flex flex-col self-end">
       {#if !checkUniapp() }
-        <div class="flex flex-row items-center">
+        <div class="flex flex-wrap items-center">
           <span class="text-base ml-10 mt-1">
             {$i18n.t("Download DeGPT APP")}
           </span>
           <button
-            class="primaryButton text-xs text-gray-100 rounded-md ml-6 mt-1 px-2 py-1 whitespace-nowrap"
+            class="primaryButton text-xs text-gray-100 rounded-md ml-2 mt-1 px-2 py-1 whitespace-nowrap"
             on:click={() => {
               $showDownLoad = true;
             }}
@@ -92,15 +92,18 @@
           </button>
         </div>
         <div class="flex flex-wrap ml-10 mt-1">
-          <span class="text-sm">
-            {$i18n.t("More info")},
-          </span> 
-          <a class="text-sm text-blue-600 mx-1" href="https://www.decentralgpt.org" target="_blank">{$i18n.t("Visit")}</a>
-          <span class="text-sm">
-            {$i18n.t("official website")}
-          </span>
-        </div>
-        
+          <a class="text-sm" href="https://www.decentralgpt.org" target="_blank">
+            <span>
+              {$i18n.t("More info")},
+            </span>
+            <span class="text-blue-600">
+              {$i18n.t("Visit")}
+            </span>
+            <span>
+              {$i18n.t("official website")}
+            </span>
+          </a>
+        </div> 
       {/if}
     </div>
     <div class="flex fs-12 self-end">
