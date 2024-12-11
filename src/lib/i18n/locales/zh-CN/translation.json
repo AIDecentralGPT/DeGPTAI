@@ -757,5 +757,7 @@
   "About DGC": "关于 DGC",
   "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "在任何交易平台的主网启动之前，DGC 代币被标记为积分。当 DGC 正式上线时，这些积分将按照 1:1 的比例进行转换。DGC 团队将确保这一转换过程顺利进行，并防止对这一政策的任何滥用。",
   "About DBC": "关于 DBC",
-  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "深脑链（DeepBrainChain）是世界上首个人工智能公链。其原生代币 DBC 在该项目中被用作燃气费（手续费）。任何 DGC 交易都需要一定数量的名义上的 DBC。"
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "深脑链（DeepBrainChain）是世界上首个人工智能公链。其原生代币 DBC 在该项目中被用作燃气费（手续费）。任何 DGC 交易都需要一定数量的名义上的 DBC。",
+  "For more information, please": "了解更多，请",
+  "official website": "官方网站"
 }

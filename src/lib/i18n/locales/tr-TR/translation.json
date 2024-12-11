@@ -758,5 +758,7 @@
   "About DGC": "DGC Hakkında",
   "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "Herhangi bir ticaret platformunun ana ağına (mainnet) başlamadan önce, DGC tokenleri puan olarak işaretlenir. DGC resmi olarak başladığında, bu puanlar 1:1 oranında dönüştürülür. DGC takımının bu geçişin sorunsuz geçtiğinden ve bu politikanın herhangi bir kötüye kullanımından emin olması gerekir.",
   "About DBC": "DBC Hakkında",
-  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain, dünyanın ilk yapay zeka (AI) açık zinciridir. İlgili proje için, yerel tokenı olan DBC, gaz ücreti olarak kullanılır. Herhangi bir DGC işlemi belirli bir miktarda nominal DBC'ye ihtiyaç duyar."
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain, dünyanın ilk yapay zeka (AI) açık zinciridir. İlgili proje için, yerel tokenı olan DBC, gaz ücreti olarak kullanılır. Herhangi bir DGC işlemi belirli bir miktarda nominal DBC'ye ihtiyaç duyar.",
+  "For more information, please": "Daha fazla bilgi için, lütfen",
+  "official website": "resmi web sitesi"
 }
