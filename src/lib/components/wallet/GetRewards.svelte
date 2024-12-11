@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
-  import { getModels as _getModels } from "$lib/utils";
+  import { getModels as _getModels, checkUniapp } from "$lib/utils";
   import ModelDeSelector from "$lib/components/chat/ModelDeSelector.svelte";
 
   import {
@@ -10,10 +10,13 @@
     showShareModal,
     showRewardsHistoryModal,
     showNewWalletModal,
-    showRewardDetailModal
+    showRewardDetailModal,
+    showDownLoad
   } from "$lib/stores";
 
   import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
+
+  import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
 
   const i18n = getContext("i18n");
 
@@ -70,6 +73,14 @@
     <div class="flex flex-col">
       <ModelDeSelector/>
       <span class="text-xl ml-10 mt-1"> {$i18n.t("Unlimited DGC Reward Task")} </span>
+      {#if !checkUniapp()}
+        <button class="primaryButton text-sm ml-10 text-gray-100 rounded-md mt-2"
+          on:click={() => {
+            $showDownLoad = true;
+          }}
+        > {$i18n.t("Download DeGPT to obtain rewards")} 
+        </button>
+      {/if}
     </div>
     <div class="flex fs-12 self-end">
       {#if $user?.id?.startsWith("0x")}
@@ -178,6 +189,8 @@
     {/each}
   </div>
 </div>
+
+<DownLoadModal bind:show={ $showDownLoad } />
 
 
 <style>

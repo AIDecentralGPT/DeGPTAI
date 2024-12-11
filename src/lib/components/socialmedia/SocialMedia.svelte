@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { showLoginInfoModal,user } from "$lib/stores";
   import Tooltip from '$lib/components/common/Tooltip.svelte';
-  import { checkUniapp } from "$lib/utils"
+  import { checkUniapp } from "$lib/utils";
   const i18n = getContext("i18n");
 </script>
 
@@ -38,9 +38,10 @@
         class=""
         on:click={() => {
           if (checkUniapp()) {
-            window.postMessage({key: 'https://x.com/DecentralGPT'}, 'https://x.com/DecentralGPT');
-          }
-          window.open("https://x.com/DecentralGPT", "_blank")
+            window.postMessage("x-decentral", "https://x.com/DecentralGPT");
+          } else {
+            window.open("https://x.com/DecentralGPT", "_blank")
+          } 
         }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"

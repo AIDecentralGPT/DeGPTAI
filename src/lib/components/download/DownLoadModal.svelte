@@ -40,13 +40,13 @@
       <div class="flex-1 relative">
         <p
           class="text-ellipsis overflow-hidden whitespace-nowrap pr-[35px] opacity-50
-          px-5 py-3 rounded-md w-full leading-3 outline-none border dark:border-none dark:bg-gray-850 text-lg"
+          px-5 py-3 rounded-md w-full leading-3 outline-none border dark:border-none dark:bg-gray-850 text-base"
         >
-          www.deepbrainchain.org
+          https://www.decentralgpt.org/
         </p>
         <button
           on:click={async () => {
-            const res = await copyToClipboard("www.deepbrainchain.org");
+            const res = await copyToClipboard("https://www.decentralgpt.org/");
             if (res) {
               toast.success($i18n.t("Copying to clipboard was successful!"));
             }
