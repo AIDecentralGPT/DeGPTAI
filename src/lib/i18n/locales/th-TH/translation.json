@@ -566,6 +566,7 @@
   "Yes": "ใช่",
   "You": "คุณ",
   "You can copy the private key below:": "คุณสามารถคัดลอกคีย์ส่วนตัวด้านล่าง:",
+  "You can copy the website below:": "คุณสามารถคัดลอกเว็บไซต์ด้านล่างได้:",
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "คุณสามารถเชิญเพื่อนได้ถึง 10 คนต่อวัน, มีรางวัลสูงสุด 10,000 DGC ต่อวัน.",
   "You have no archived conversations.": "คุณไม่มีแชทที่เก็บไว้",
   "You have shared this chat": "คุณได้แชร์แชทนี้",
@@ -718,6 +719,12 @@
   "Invite Rewards": "รางวัลสำหรับการเชิญ",
   "There is no data that can be synchronized.": "ไม่มีข้อมูลที่สามารถสั่งซิงค์ได้",
   "The synchronous request was sent successfully.": "คำขอแบบสynchronous ส่งสำเร็จแล้ว.",
+  "Please enter a valid email address.": "กรุณาป้อนที่อยู่อีเมลที่ถูกต้อง",
+  "Please enter the verification code.": "กรุณาป้อนรหัสการยืนยัน",
+  "The verification code record does not exist": "ไม่มีบันทึกรหัสการยืนยัน",
+  "The verification code has expired": "รหัสการยืนยันหมดอายุแล้ว",
+  "The verification code has been verified successfully": "รหัสการยืนยันถูกตรวจสอบสำเร็จแล้ว",
+  "The verification code is invalid": "รหัสการยืนยันไม่ถูกต้อง",
   "I. New User Creation Reward": "I. ค่าตอบแทนสำหรับการสร้างผู้ใช้ใหม่",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "หลังจากเสร็จสิ้นการยืนยันผู้ใช้ใหม่แล้ว รับค่าตอบแทน <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC",
   "II. Referral Reward": "II. ค่าตอบแทนสำหรับการแนะนำ",
@@ -750,5 +757,8 @@
   "About DGC": "เกี่ยวกับ DGC",
   "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "ก่อนการเปิดตัวบนโครงการหลักของแพลตฟอร์มการซื้อขายใด ๆ, โทเค็น DGC จะถูกกำหนดเป็นแต้ม. เหตุการณ์เหล่านี้จะถูกแปลงในอัตราส่วน 1:1 เมื่อ DGC เปิดตัวอย่างเป็นทางการ. ทีม DGC จะรับประกันว่าการเปลี่ยนแปลงนี้จะดำเนินต่อไปอย่างราบรื่นและป้องกันการประพฤติตัวอย่างไม่เหมาะสมของนโยบายนี้.",
   "About DBC": "เกี่ยวกับ DBC",
-  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain เป็นโครงการประชาชน AI แรกในโลก. โทเค็นดั้งเดิมของมันคือ DBC ซึ่งถูกใช้เป็นค่าธรรมเนียมแก๊สในโครงการนี้. การทำธุรกรรม DGC ใด ๆ จะต้องมี DBC แบบมีชื่อเรียกจำนวนหนึ่ง."
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain เป็นโครงการประชาชน AI แรกในโลก. โทเค็นดั้งเดิมของมันคือ DBC ซึ่งถูกใช้เป็นค่าธรรมเนียมแก๊สในโครงการนี้. การทำธุรกรรม DGC ใด ๆ จะต้องมี DBC แบบมีชื่อเรียกจำนวนหนึ่ง.",
+  "For more information, please": "สำหรับข้อมูลเพิ่มเติม โปรด",
+  "official website": "เว็บไซต์สำนักงาน",
+  "sign in": "เข้าสู่ระบบ"
 }

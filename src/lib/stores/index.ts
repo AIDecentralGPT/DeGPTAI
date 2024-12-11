@@ -64,6 +64,9 @@ export const showCoinIntruModal = writable(false);
 export const showCoinIntruType = writable('dgc');
 export const dbcRate = writable({rate: 0.0002, time: ""});
 
+// 下载相关
+export const showDownLoad = writable(false);
+
 // 默认模型请求地址
 export const deApiBaseUrl = writable({
 	name: 'America', 

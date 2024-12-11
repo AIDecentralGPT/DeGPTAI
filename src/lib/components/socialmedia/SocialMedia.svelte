@@ -2,6 +2,7 @@
   import { getContext } from "svelte";
   import { showLoginInfoModal,user } from "$lib/stores";
   import Tooltip from '$lib/components/common/Tooltip.svelte';
+  import { checkUniapp } from "$lib/utils";
   const i18n = getContext("i18n");
 </script>
 
@@ -33,12 +34,11 @@
     <div class=" text-base leading-6">{$i18n.t('Join Our Community')}:</div>
 
     <div class="flex gap-4 items-center">
-      <a
-      class=""
-      href="https://x.com/DecentralGPT"
-      target="_blank"
-      aria-label="X"
-      rel="noopener"
+      <button
+        class=""
+        on:click={() => {
+          window.open("https://x.com/DecentralGPT", "_blank") 
+        }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -60,13 +60,12 @@
             /></g
           ></g
         ></svg
-      ></a>
-      <a
-      class=""
-      href="https://t.me/DecentralGPT"
-      target="_blank"
-      aria-label="Telegram"
-      rel="noopener"
+      ></button>
+      <button
+        class=""
+        on:click={() => {
+          window.open("https://t.me/DecentralGPT", "_blank")
+        }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -88,13 +87,12 @@
             /></g
           ></g
         ></svg
-      ></a>
-      <a
-      class=""
-      href="https://medium.com/@DecentralGPT"
-      target="_blank"
-      aria-label="Medium "
-      rel="noopener"
+      ></button>
+      <button
+        class=""
+        on:click={() => {
+          window.open("https://medium.com/@DecentralGPT", "_blank")
+        }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -116,7 +114,7 @@
             /></g
           ></g
         ></svg
-      ></a>
+      ></button>
     </div>
   </div>
 </section>

@@ -567,6 +567,7 @@
   "Yes": "Ja",
   "You": "Sie",
   "You can copy the private key below:": "Sie können den privaten Schlüssel unten kopieren:",
+  "You can copy the website below:": "Sie können die unten stehende Website kopieren:",
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "Sie können bis zu 10 Freunde pro Tag einladen, mit einer maximalen Belohnung von 10,000 DGC pro Tag.",
   "You have no archived conversations.": "Sie haben keine archivierten Gespräche.",
   "You have shared this chat": "Sie haben diesen Chat geteilt",
@@ -719,6 +720,12 @@
   "Invite Rewards": "Einladungsbelohnungen",
   "There is no data that can be synchronized.": "Es gibt keine Daten, die synchronisiert werden können.",
   "The synchronous request was sent successfully.": "Die synchrone Anfrage wurde erfolgreich gesendet.",
+  "Please enter a valid email address.": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+  "Please enter the verification code.": "Bitte geben Sie den Verifizierungscode ein.",
+  "The verification code record does not exist": "Das Verifizierungscoderecord existiert nicht",
+  "The verification code has expired": "Der Verifizierungscode ist abgelaufen",
+  "The verification code has been verified successfully": "Der Verifizierungscode wurde erfolgreich verifiziert",
+  "The verification code is invalid": "Der Verifizierungscode ist ungültig",
   "I. New User Creation Reward": "I. Belohnung für die Erstellung eines neuen Benutzers",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Nach der Vervollständigung der Authentifizierung eines neuen Benutzers erhält man eine <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC-Belohnung.",
   "II. Referral Reward": "II. Empfehlungsbelohnung",
@@ -751,5 +758,8 @@
   "About DGC": "Über DGC",
   "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "Bevor DGC auf dem Hauptnetz irgendeiner Handelsplattform gestartet wird, werden die DGC-Token als Punkte markiert. Diese Punkte werden im Verhältnis 1:1 konvertiert, wenn DGC offiziell gestartet wird. Das DGC-Team wird sicherstellen, dass dieser Übergang reibungslos verläuft und jegliche Missbrauch dieser Politik verhindern.",
   "About DBC": "Über DBC",
-  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain ist die weltweit erste KI-Öffentliche Kette. Sein eigenes Token, DBC, wird in diesem Projekt als Gasgebühr genutzt. Jede DGC-Transaktion erfordert eine bestimmte Menge an nominalen DBCs."
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain ist die weltweit erste KI-Öffentliche Kette. Sein eigenes Token, DBC, wird in diesem Projekt als Gasgebühr genutzt. Jede DGC-Transaktion erfordert eine bestimmte Menge an nominalen DBCs.",
+  "For more information, please": "Für weitere Informationen, bitten wir Sie",
+  "official website": "offizielle Website",
+  "sign in": "anmelden"
 }

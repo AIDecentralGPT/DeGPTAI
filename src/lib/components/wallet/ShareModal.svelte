@@ -61,7 +61,7 @@
               </svg>
             </div>
             <h3 class="text-lg font-bold mb-2">01</h3>
-            <p class="text-sm text-gray-100">
+            <p class="text-sm">
               {$i18n.t('Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC')}
             </p>
           </div>
@@ -98,7 +98,7 @@
               </svg>
             </div>
             <h3 class="text-lg font-bold mb-2">02</h3>
-            <p class="text-sm text-gray-100">
+            <p class="text-sm">
               {$i18n.t('The user you invite must complete wallet creation and KYC verification process before you can receive the reward')}
             </p>
           </div>

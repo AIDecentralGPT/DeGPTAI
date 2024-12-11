@@ -566,6 +566,7 @@
   "Yes": "Да",
   "You": "Вы",
   "You can copy the private key below:": "Вы можете скопировать приватный ключ ниже:",
+  "You can copy the website below:": "Вы можете скопировать веб-сайт ниже:",
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "Вы можете приглашать до 10 друзей в день, с максимальным вознаграждением 10,000 DGC в день.",
   "You have no archived conversations.": "У вас нет архивированных чатов.",
   "You have shared this chat": "Вы поделились этим чатом",
@@ -718,6 +719,12 @@
   "Invite Rewards": "Награды за приглашение",
   "There is no data that can be synchronized.": "Нет данных, которые можно было бы синхронизировать.",
   "The synchronous request was sent successfully.": "Синхронный запрос был успешно отправлен.",
+  "Please enter a valid email address.": "Пожалуйста, введите действительный адрес электронной почты.",
+  "Please enter the verification code.": "Пожалуйста, введите код верификации.",
+  "The verification code record does not exist": "Запись кода верификации не существует.",
+  "The verification code has expired": "Код верификации истёк.",
+  "The verification code has been verified successfully": "Код верификации был успешно проверен.",
+  "The verification code is invalid": "Код верификации недействителен.",
   "I. New User Creation Reward": "I. Премия за создание нового пользователя",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "После завершения аутентификации нового пользователя получите премию в <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Премия за рекомендацию",
@@ -750,5 +757,8 @@
   "About DGC": "О DGC",
   "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "До запуска на основной сети любой торговой платформы токены DGC помечаются как очки. Эти очки будут преобразованы в соотношении 1:1, когда DGC официально запустится. Команда DGC 确保这种转换顺利进行并防止对这项政策的任何滥用。",
   "About DBC": "О DBC",
-  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain - это первая публичная цепь ИИ в мире. Его собственный токен, DBC, используется в качестве комиссии за газ в этом проекте. Любая транзакция DGC требует определенного количества номинальных DBC."
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain - это первая публичная цепь ИИ в мире. Его собственный токен, DBC, используется в качестве комиссии за газ в этом проекте. Любая транзакция DGC требует определенного количества номинальных DBC.",
+  "For more information, please": "Для получения дополнительной информации, пожалуйста",
+  "official website": "официальный сайт",
+  "sign in": "войти"
 }

@@ -690,16 +690,16 @@ async def verify_code(verify_code_request: VerifyCodeRequest):
     record = email_code_operations.get_by_email(email)
     
     if not record:
-        raise HTTPException(status_code=404, detail="验证码记录不存在")
+        raise HTTPException(status_code=404, detail="The verification code record does not exist")
     
     if email_code_operations.is_expired(record.created_at):
-        raise HTTPException(status_code=400, detail="验证码已过期")
+        raise HTTPException(status_code=400, detail="The verification code has expired")
     
     print("record.code", record.code, "code", code)
     if record.code == code:
-        return {"message": "验证码验证成功"}
+        return {"message": "The verification code has been verified successfully"}
     else:
-        raise HTTPException(status_code=400, detail="验证码无效")
+        raise HTTPException(status_code=400, detail="The verification code is invalid")
 
 
 # 生成人脸识别库

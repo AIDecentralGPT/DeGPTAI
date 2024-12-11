@@ -620,6 +620,7 @@
   "Yesterday": "昨天",
   "You": "您",
   "You can copy the private key below:": "您可以复制下面的私钥：",
+  "You can copy the website below:": "您可以复制下面的网址:",
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "您每天最多可以邀请 10 个朋友，每天的最高奖励为 10,000 个 DGC。",
   "You have no archived conversations.": "您没有已存档的对话记录。",
   "You have shared this chat": "您已经分享了此聊天记录",
@@ -718,6 +719,12 @@
   "Invite Rewards": "邀请奖励",
   "There is no data that can be synchronized.": "没有可同步的数据。",
   "The synchronous request was sent successfully.": "同步请求已成功发送。",
+  "Please enter a valid email address.": "请输入有效的电子邮箱地址。",
+  "Please enter the verification code.": "请输入验证码。",
+  "The verification code record does not exist": "验证码记录不存在",
+  "The verification code has expired": "验证码已过期",
+  "The verification code has been verified successfully": "验证码验证成功",
+  "The verification code is invalid": "验证码无效",
   "I. New User Creation Reward": "I. 新用户创建奖励",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "完成新用户认证后，可获得一个<span style='color: rgba(184, 142, 86, 1);'>1000</span>个 DGC 的奖励。",
   "II. Referral Reward": "II. 推荐奖励",
@@ -750,5 +757,8 @@
   "About DGC": "关于 DGC",
   "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "在任何交易平台的主网启动之前，DGC 代币被标记为积分。当 DGC 正式上线时，这些积分将按照 1:1 的比例进行转换。DGC 团队将确保这一转换过程顺利进行，并防止对这一政策的任何滥用。",
   "About DBC": "关于 DBC",
-  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "深脑链（DeepBrainChain）是世界上首个人工智能公链。其原生代币 DBC 在该项目中被用作燃气费（手续费）。任何 DGC 交易都需要一定数量的名义上的 DBC。"
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "深脑链（DeepBrainChain）是世界上首个人工智能公链。其原生代币 DBC 在该项目中被用作燃气费（手续费）。任何 DGC 交易都需要一定数量的名义上的 DBC。",
+  "For more information, please": "了解更多，请",
+  "official website": "官方网站",
+  "sign in": "登录"
 }

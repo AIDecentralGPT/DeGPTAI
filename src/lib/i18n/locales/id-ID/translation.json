@@ -567,6 +567,7 @@
   "Yes": "Ya",
   "You": "Anda",
   "You can copy the private key below:": "Anda dapat salin kunci pribadi di bawah:",
+  "You can copy the website below:": "Anda dapat menyalin situs web di bawah ini:",
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "Anda dapat mengundang hingga 10 teman per hari, dengan hadiah maksimum 10,000 DGC per hari.",
   "You have no archived conversations.": "Anda tidak memiliki obrolan yang diarsipkan.",
   "You have shared this chat": "Anda telah berbagi obrolan ini",
@@ -719,6 +720,12 @@
   "Invite Rewards": "Hadiah Undangan",
   "There is no data that can be synchronized.": "Tidak ada data yang dapat disinkronisasi.",
   "The synchronous request was sent successfully.": "Permintaan sinkron telah dikirimkan dengan sukses.",
+  "Please enter a valid email address.": "Silakan masukkan alamat email yang valid.",
+  "Please enter the verification code.": "Silakan masukkan kode verifikasi.",
+  "The verification code record does not exist": "Catatan kode verifikasi tidak ada",
+  "The verification code has expired": "Kode verifikasi telah kedaluwarsa",
+  "The verification code has been verified successfully": "Kode verifikasi telah diverifikasi dengan sukses",
+  "The verification code is invalid": "Kode verifikasi tidak valid",
   "I. New User Creation Reward": "I. Hadiah Pembuatan Pengguna Baru",
   "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward.": "Setelah menyelesaikan autentikasi pengguna baru, terima hadiah sebesar <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC.",
   "II. Referral Reward": "II. Hadiah Rujukan",
@@ -751,5 +758,8 @@
   "About DGC": "Tentang DGC",
   "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "Sebelum diluncurkan pada mainnet dari platform perdagangan apapun, token DGC ditandai sebagai poin. Poin-poin ini akan dikonversi dengan rasio 1:1 ketika DGC secara resmi diluncurkan. Tim DGC akan memastikan bahwa transisi ini berjalan lancar dan mencegah penyalahgunaan kebijakan ini.",
   "About DBC": "Tentang DBC",
-  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain adalah rantai publik AI pertama di dunia. Token aslinya, DBC, digunakan sebagai biaya gas dalam proyek ini. Setiap transaksi DGC memerlukan sejumlah DBC nominal tertentu."
+  "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain adalah rantai publik AI pertama di dunia. Token aslinya, DBC, digunakan sebagai biaya gas dalam proyek ini. Setiap transaksi DGC memerlukan sejumlah DBC nominal tertentu.",
+  "For more information, please": "Untuk informasi lebih lanjut, silakan",
+  "official website": "situs web resmi",
+  "sign in": "masuk"
 }
