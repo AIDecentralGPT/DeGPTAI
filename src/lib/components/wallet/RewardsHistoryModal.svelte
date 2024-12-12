@@ -87,7 +87,9 @@
     })
       .then((result) => {
         loading = false;
-        rewardsHistory = result;
+        if (result) {
+          rewardsHistory = result;
+        }
         console.log("rewardsHistory", rewardsHistory);
       })
       .catch((error) => {
@@ -107,7 +109,6 @@
       rewardApiMethod = inviteCheck;
     }
     if (rewardApiMethod === null) {
-      console.log("===============方法未找到===============");
       return;
     }
     await rewardApiMethod(localStorage.token, id)
@@ -292,34 +293,43 @@
                 {#if historyItem.status}
                   {historyItem.reward_amount} {historyItem.amount_type}
                 {:else}
-                  <div class="flex direction-column amount-styl">
+                  <div class="flex direction-column { historyItem.expird ? 'amount-expird-styl' : 'amount-styl' }">
                     <div class="obtain-amount">
                       {historyItem.reward_amount}
                       {historyItem.amount_type}
                     </div>
-                    <button
-                      class="obtain-styl cursor-pointer"
-                      style={obtainLoad && selItem == historyItem?.id
-                        ? "background: rgba(251, 251, 251, 0.8)"
-                        : ""}
-                      disabled={obtainLoad && selItem == historyItem?.id}
-                      on:click={() => {
-                        selItem = historyItem?.id;
-                        if ($user?.verified) {
-                          updateReward(historyItem.id, historyItem.reward_type);
-                        } else {
-                          toast.warning(
-                            $i18n.t("Please complete the KYC verification !")
-                          );
-                        }
-                      }}
-                    >
-                      {#if obtainLoad && selItem == historyItem?.id}
-                        <span>Obtain in...</span>
-                      {:else}
-                        <span>Obtain now</span>
-                      {/if}
-                    </button>
+                    {#if historyItem.expird}
+                      <button
+                        class="obtain-styl cursor-pointer"
+                      >
+                        <span>{ $i18n.t("Reward expird") }</span>
+                      </button>
+                    {:else}
+                      <button
+                        class="obtain-styl cursor-pointer"
+                        style={obtainLoad && selItem == historyItem?.id
+                          ? "background: rgba(251, 251, 251, 0.8)"
+                          : ""}
+                        disabled={obtainLoad && selItem == historyItem?.id}
+                        on:click={() => {
+                          selItem = historyItem?.id;
+                          if ($user?.verified) {
+                            updateReward(historyItem.id, historyItem.reward_type);
+                          } else {
+                            toast.warning(
+                              $i18n.t("Please complete the KYC verification !")
+                            );
+                          }
+                        }}
+                      >
+                        {#if obtainLoad && selItem == historyItem?.id}
+                          <span>{ $i18n.t("Obtain in...") }</span>
+                        {:else}
+                          <span>{ $i18n.t("Obtain now") }</span>
+                        {/if}
+                      </button>
+                    {/if}
+                    
                   </div>
                 {/if}
               </td>
@@ -421,6 +431,12 @@
 
   .amount-styl {
     background-color: #b88e56;
+    border-radius: 5px;
+    padding: 8px;
+  }
+
+  .amount-expird-styl {
+    background-color: #b6b6b6;
     border-radius: 5px;
     padding: 8px;
   }
