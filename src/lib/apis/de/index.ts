@@ -6,7 +6,7 @@ export const getDeBaseUrls = async () => {
   const baseUrls = [
     {
       name: "America",
-      url: "https://usa-chat.degpt.ai/api",
+      url: "https://usa-chat.degpt.aii/api",
     },
     {
       name: "Singapore",
@@ -44,7 +44,7 @@ export const getDeModels = async (token: string = "") => {
       },
       // Nvidia LLM(Nemotron 70B)
       {
-        name: "Nemotron 3.1", 
+        name: "Nemotron 3.1",
         model: "Llama-3.1-Nemotron-70B",
         tip: "Nemotron 3.1",
         desc: "Suitable for most tasks"
@@ -58,7 +58,7 @@ export const getDeModels = async (token: string = "") => {
       },
       // DeepSeek(Coder V2)
       {
-        name: "Deepseek coder2.0", 
+        name: "Deepseek coder2.0",
         model: "DeepSeek-Coder-V2",
         tip: "Deepseek coder2.0",
         desc: "Optimize code writing"
@@ -71,7 +71,7 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Optimize code writing"
       // },
       {
-        name: "Qwen 2.5 Code", 
+        name: "Qwen 2.5 Code",
         model: "Qwen2.5-Coder-32B",
         tip: "Qwen 2.5 Code",
         desc: "Optimize code writing"
@@ -85,7 +85,7 @@ export const getDeModels = async (token: string = "") => {
   }));
 };
 
-// 和De的模型对话给提问内容添加一个简语
+// 和De的模型对话
 export const generateDeOpenAIChatCompletion = async (
   token: string = "",
   body: object,
@@ -96,30 +96,51 @@ export const generateDeOpenAIChatCompletion = async (
 
   let error = null;
 
-  const res = await fetch(`${url}/v0/chat/completion/proxy`, {
-    signal: controller.signal,
-    method: "POST",
-    headers: {
-      // Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...body,
-      project: "DecentralGPT",
-      stream: true,
-    }),
-  }).catch((err) => {
-    console.log("err", err);
-    error = err;
-    return null;
-  });
+  let urls = await getDeBaseUrls();
+  let index = urls.findIndex(item => item.url === url);
+  if (index !== -1) {
+    // 移除该元素
+    let koreaItem = urls.splice(index, 1)[0];
+    // 将该元素添加到数组的开头
+    urls.unshift(koreaItem);
+  }
+  let urlIndex = 0;
+  let res = await getDeOpenAIChatCompletion(urlIndex, urls, controller, body, error);
 
   if (error) {
     throw error;
   }
-
   return [res, controller];
 };
+
+const getDeOpenAIChatCompletion = async (urlIndex:any, urls: any, controller:any, body:Object, error: any) => {
+  let res: any;
+  try {
+    res = await fetch(`${urls[urlIndex].url}/v0/chat/completion/proxy`, {
+      signal: controller.signal,
+      method: "POST",
+      headers: {
+        // Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...body,
+        project: "DecentralGPT",
+        stream: true,
+      }),
+    });
+  } catch(err) {
+    urlIndex++;
+    if (urlIndex > 2) {
+      error = err;
+      res = null;
+    } else {
+      res = await getDeOpenAIChatCompletion(urlIndex, urls, controller, body, error);
+    }
+  }
+  
+  return res;
+}
 
 // 型对话给提问内容添加一个简语
 export const generateDeTitle = async (
@@ -130,47 +151,56 @@ export const generateDeTitle = async (
   url: string
 ) => {
   let error = null;
+  let res: any;
+
+  let urls = await getDeBaseUrls();
+  let index = urls.findIndex(item => item.url === url);
+  if (index !== -1) {
+    // 移除该元素
+    let koreaItem = urls.splice(index, 1)[0];
+    // 将该元素添加到数组的开头
+    urls.unshift(koreaItem);
+  }
 
   template = promptTemplate(template, prompt);
 
-  console.log("generateDeTitle", url);
-
-  const res = await fetch(`${url}/v0/chat/completion/proxy`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: model,
-      // node_id: nodeList?.[0],
-      messages: [
-        {
-          role: "user",
-          content: template,
+  for (const domain of urls) {
+    try {
+      const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      ],
-      stream: false,
-      project: "DecentralGPT",
-      // Restricting the max tokens to 50 to avoid long titles
-      max_tokens: 50,
-    }),
-  })
-    .then(async (res) => {
-      // if (!res.ok) throw await res.json();
-      return res.json();
-    })
-    .catch((err) => {
-      console.log(err);
-      if ("detail" in err) {
-        error = err.detail;
+        body: JSON.stringify({
+          model: model,
+          // node_id: nodeList?.[0],
+          messages: [
+            {
+              role: "user",
+              content: template,
+            },
+          ],
+          stream: false,
+          project: "DecentralGPT",
+          // Restricting the max tokens to 50 to avoid long titles
+          max_tokens: 50,
+        })
+      });
+      res = await result.json();
+      break;
+    } catch (err) {
+      console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
+      if (domain.name == urls[urls.length - 1].name) {
+        error = err;
       }
-      return null;
-    });
+    }
+  }
 
   if (error) {
     throw error;
   }
+
   return (
     res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
   );
