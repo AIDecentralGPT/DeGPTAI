@@ -6,7 +6,7 @@ export const getDeBaseUrls = async () => {
   const baseUrls = [
     {
       name: "America",
-      url: "https://usa-chat.degpt.aii/api",
+      url: "https://usa-chat.degpt.ai/api",
     },
     {
       name: "Singapore",
