@@ -68,6 +68,7 @@ class RewardsModel(BaseModel):
     status: bool
     show: bool
     amount_type: str
+    expird: bool = False
 
 # 定义 Rewards 操作类
 class RewardsTable:

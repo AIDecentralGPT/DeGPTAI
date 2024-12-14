@@ -147,6 +147,10 @@ async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user
         if rewards_history is None:
             raise HTTPException(status_code=400, detail="You Rewards History not found")
         
+        # 校验奖励时间是否过期
+        if rewards_history.reward_date.date() != date.today():
+            raise HTTPException(status_code=400, detail="You Rewards History has expired")
+        
         # 是否已领取校验
         if rewards_history.status:
             return {"ok": True, "data": rewards_history}
@@ -157,9 +161,6 @@ async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user
             return {"ok": True, "data": result}
         else:
             raise HTTPException(status_code=500, detail="Clockin rewards can only be obtained once within a 24-hour period，you can try later.")
-    except Exception as e:
-        print(f"Exception: {e}")
-        raise HTTPException(status_code=500, detail="Failed to received reward")
     finally:
         # 释放锁，以便该用户其他线程能获取锁并执行方法
         user_lock.release()
@@ -203,9 +204,11 @@ async def get_reward_count(user=Depends(get_verified_user)):
 @router.post("/reward_history")
 async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified_user)):
     
-    print("=============page=============", request);
-    # 查询 clock_in 类型奖励的次数
+    # 查询奖励记录
     rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id, request.pageNum, request.pageSize)
+    for rewards in rewards_history:
+        if rewards.reward_type == 'clock_in' and rewards.reward_date.date() != date.today():
+            rewards.expird = True
     total = RewardsTableInstance.get_rewards_count_by_user_id(user.id);
 
     return {

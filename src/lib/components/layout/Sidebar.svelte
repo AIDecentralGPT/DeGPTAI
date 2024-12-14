@@ -289,10 +289,10 @@
   <ShareModal bind:show={$showShareModal} />
 {/if}
 
-<!-- 邀请朋友获取奖励弹窗（已注释） -->
-{#if showRewardsModal}
+<!-- 邀请朋友列表（已注释） -->
+<!-- {#if showRewardsModal}
   <RewardsModal bind:show={$showRewardsModal} />
-{/if}
+{/if} -->
 
 <!-- 奖励记录弹窗 -->
 {#if showRewardsHistoryModal}

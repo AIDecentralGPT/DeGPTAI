@@ -139,20 +139,10 @@
               token: res?.token,
               isPro: proInfo ? proInfo.is_pro : false,
               proEndDate: proInfo ? proInfo.end_date : null,
+              models: res?.models
             });
           }
           localStorage.user = JSON.stringify($user);
-
-          // 更新setting
-          if (res?.models) {
-            settings.set({
-              ...$settings,
-              models: res.models.split(","),
-            });
-          } else {
-            settings.set({ ...$settings, models: $config.models });
-          }
-          localStorage.setItem("settings", JSON.stringify($settings));
 
           // 校验钱包
           if (localStorage.walletImported) {
@@ -243,6 +233,7 @@
       await checkLogin();
       loaded = true;
       await intiLocationInfo();
+      await initUserModels();
     } else {
       loaded = true;
     }
