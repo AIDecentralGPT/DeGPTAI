@@ -70,9 +70,9 @@
 </script>
 
 <div>
-  <div class="flex gap-3 my-4 mt-20
+  <div class="flex gap-3 my-2 mt-20
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
-    <div class="flex flex-col">
+    <div class="flex flex-col pb-5">
       <ModelDeSelector />
       <span class="text-xl ml-10 mt-1">
         {$i18n.t("Unlimited DGC Reward Task")}
@@ -108,7 +108,7 @@
         </div> 
       {/if}
     </div>
-    <div class="flex fs-12 {$mobile? '' : 'self-end'}">
+    <div class="flex fs-12 pb-6 {$mobile? '' : 'self-end'}">
       {#if $user?.id?.startsWith("0x")}
         <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
