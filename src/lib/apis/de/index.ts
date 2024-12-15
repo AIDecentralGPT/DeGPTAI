@@ -12,10 +12,6 @@ export const getDeBaseUrls = async () => {
       name: "Singapore",
       url: "https://singapore-chat.degpt.ai/api",
     },
-    // {
-    //   name: "Europe",
-    //   url: "https://malaysia-chat.degpt.ai/api",
-    // },
     {
       name: "Korea",
       url: "https://korea-chat.degpt.ai/api",
@@ -91,21 +87,31 @@ export const generateDeOpenAIChatCompletion = async (
   body: object,
   url: string
 ): Promise<[Response | null, AbortController]> => {
-  const controller = new AbortController();
-  setTimeout(() => controller.abort(), 300000);
 
+  let controller: any;
+  let res: any;
   let error = null;
 
-  let urls = await getDeBaseUrls();
-  let index = urls.findIndex(item => item.url === url);
+  let urlObjs = await getDeBaseUrls();
+  let index = urlObjs.findIndex(item => item.url === url);
   if (index !== -1) {
     // 移除该元素
-    let koreaItem = urls.splice(index, 1)[0];
+    let koreaItem = urlObjs.splice(index, 1)[0];
     // 将该元素添加到数组的开头
-    urls.unshift(koreaItem);
+    urlObjs.unshift(koreaItem);
   }
-  let urlIndex = 0;
-  let res = await getDeOpenAIChatCompletion(urlIndex, urls, controller, body, error);
+
+  for (const urlObj of urlObjs) {
+    try {
+      res = await getDeOpenAIChatCompletion(urlObj, body, controller);
+      break;
+    } catch (err) {
+      if (urlObj.name === urlObjs[urlObjs.length-1].name) {
+        error = err;
+        res = null;
+      }
+    }
+  }
 
   if (error) {
     throw error;
@@ -113,32 +119,34 @@ export const generateDeOpenAIChatCompletion = async (
   return [res, controller];
 };
 
-const getDeOpenAIChatCompletion = async (urlIndex:any, urls: any, controller:any, body:Object, error: any) => {
+// ai会话请求封装
+const getDeOpenAIChatCompletion = async (
+  urlObj: any,
+  body: Object,
+  controller: any
+) => {
   let res: any;
-  try {
-    res = await fetch(`${urls[urlIndex].url}/v0/chat/completion/proxy`, {
-      signal: controller.signal,
-      method: "POST",
-      headers: {
-        // Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...body,
-        project: "DecentralGPT",
-        stream: true,
-      }),
-    });
-  } catch(err) {
-    urlIndex++;
-    if (urlIndex > 2) {
-      error = err;
-      res = null;
-    } else {
-      res = await getDeOpenAIChatCompletion(urlIndex, urls, controller, body, error);
-    }
-  }
-  
+  controller = new AbortController();
+  const overallTimeout = setTimeout(() => {
+    controller.abort();
+    throw new Error('请求超时，5秒内未收到回复');
+  }, 5000);
+  res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
+    signal: controller.signal,
+    method: "POST",
+    headers: {
+      // Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...body,
+      project: "DecentralGPT",
+      stream: true,
+    }),
+  }).finally(() => {
+    clearTimeout(overallTimeout);
+  });
+
   return res;
 }
 
