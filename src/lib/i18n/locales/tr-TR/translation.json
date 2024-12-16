@@ -737,6 +737,7 @@
   "III. Clock in Reward": "III. Giriş Kaydı Ödülü",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Doğrulama tamamlandıktan sonra <span style='color: rgba(184, 142, 86, 1);'>60</span> gün boyunca giriş kaydı ödülü geçerli olacak.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Bir gün boyunca giriş yapıp giriş kaydı yaptırabilirsiniz ve <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC ödülü kazanabilirsiniz; maksimum <span style='color: rgba(184, 142, 86, 1);'>30</span> giriş kaydı ödülü.",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC ödülleri Müşteri Tanıma Sürecini KYC tamamlamayı gerektirir ve aynı gün talep edilmelidir; talep edilmezse geçersizleşecektir.",
   "Show me a code snippet": "Bana bir kod parçacığını göster",
   "of a website's sticky header": "bir web sitesinin sabit başlığının",
   "Explain options trading": "Opsiyon ticaretini açıklayın",

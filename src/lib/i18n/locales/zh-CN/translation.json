@@ -736,6 +736,7 @@
   "III. Clock in Reward": "III. 签到奖励",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "签到奖励在完成认证后的<span style='color: rgba(184, 142, 86, 1);'>60</span>天内有效。",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "每日登录并签到可赚取<span style='color: rgba(184, 142, 86, 1);'>100</span>个 DGC 奖励；最多可获得<span style='color: rgba(184, 142, 86, 1);'>30</span>次签到奖励。",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> 个 DGC 奖励需要完成 KYC 流程，并且必须在同一天内领取；若未领取将会过期。",
   "Show me a code snippet": "给我展示一段代码片段",
   "of a website's sticky header": "一个网站的粘性头部（固定头部）的",
   "Explain options trading": "解释一下期权交易",

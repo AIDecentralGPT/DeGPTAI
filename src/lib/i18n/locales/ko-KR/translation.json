@@ -737,6 +737,7 @@
   "III. Clock in Reward": "III. 출근 기록 보상",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "인증이 완료된 후 <span style='color: rgba(184, 142, 86, 1);'>60</span>일 동안 출근 기록 보상이 유효합니다.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "<span style='color: rgba(184, 142, 86, 1);'>1</span>일 동안 로그인하고 출근 기록을 남기는 경우 <span style='color: rgba(184, 142, 86, 1);'>100</span>개의 DGC 보상을 받을 수 있습니다. 출근 기록 보상은 최대 <span style='color: rgba(184, 142, 86, 1);'>30</span>회까지 가능합니다.",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC 보상은 고객인식 KYC 절차를 완료해야 하며, 같은 날에 청구해야 합니다. 청구하지 않으면 만료됩니다.",
   "Show me a code snippet": "코드 조각을 보여주세요",
   "of a website's sticky header": "웹사이트의 고정 헤더의",
   "Explain options trading": "옵션 거래를 설명해주세요",

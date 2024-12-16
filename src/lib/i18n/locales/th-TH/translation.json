@@ -736,6 +736,7 @@
   "III. Clock in Reward": "III. ค่าตอบแทนสำหรับการเช็คอิน",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "ค่าตอบแทนสำหรับการเช็คอินมีผลใช้งานได้ในระยะเวลา <span style='color: rgba(184, 142, 86, 1);'>60</span> วันหลังจากเสร็จสิ้นการยืนยัน",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "การเข้าสู่ระบบและเช็คอินในระยะเวลา <span style='color: rgba(184, 142, 86, 1);'>1</span> วันสามารถทำเงินได้ค่าตอบแทน <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; สูงสุดคือ <span style='color: rgba(184, 142, 86, 1);'>30</span> ค่าตอบแทนสำหรับการเช็คอิน",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "รางวัล <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC ต้องทำการเตรียมข้อมูลการรู้จักลูกค้า KYC และต้องขอสิทธิ์ในวันเดียวกัน หากไม่ขอสิทธิ์จะหมดอายุ.",
   "Show me a code snippet": "แสดงชิ้นส่วนของโค้ดให้ฉันดู",
   "of a website's sticky header": "ของหัวข้อแน่นของเว็บไซต์",
   "Explain options trading": "อธิบายการซื้อขายออปชัน",

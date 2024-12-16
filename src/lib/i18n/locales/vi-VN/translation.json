@@ -728,6 +728,7 @@
   "III. Clock in Reward": "III. Thưởng cho việc check-in",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Phần thưởng cho việc check-in có hiệu lực trong <span style='color: rgba(184, 142, 86, 1);'>60</span> ngày sau khi hoàn thành xác thực.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Đăng nhập và check-in trong <span style='color: rgba(184, 142, 86, 1);'>1</span> ngày có thể kiếm được phần thưởng <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; tối đa <span style='color: rgba(184, 142, 86, 1);'>30</span> phần thưởng cho việc check-in.",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "Phần thưởng <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC yêu cầu phải hoàn thành quy trình Kiểm tra Thông tin Khách hàng KYC và phải được yêu cầu trong cùng một ngày; nếu không được yêu cầu thì sẽ hết hạn.",
   "Show me a code snippet": "Hiển thị cho tôi một đoạn mã code",
   "of a website's sticky header": "của tiêu đề dính của một trang web",
   "Explain options trading": "Giải thích về giao dịch quyền chọn",

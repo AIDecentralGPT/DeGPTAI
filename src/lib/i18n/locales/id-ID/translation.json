@@ -737,6 +737,7 @@
   "III. Clock in Reward": "III. Hadiah Absensi",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Hadiah absensi berlaku selama <span style='color: rgba(184, 142, 86, 1);'>60</span> hari setelah autentikasi selesai.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Masuk ke akun dan melakukan absensi selama <span style='color: rgba(184, 142, 86, 1);'>1</span> hari dapat menghasilkan hadiah sebesar <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; maksimum <span style='color: rgba(184, 142, 86, 1);'>30</span> hadiah absensi.",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "Hadiah <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC memerlukan penyelesaian Prosedur Pengetahuan Pelanggan KYC, dan harus diambil pada hari yang sama; akan kadaluarsa jika tidak diambil.",
   "Show me a code snippet": "Tunjukkan kepada saya potongan kode",
   "of a website's sticky header": "dari judul tetap situs web",
   "Explain options trading": "Jelaskan perdagangan opsi",

@@ -3,21 +3,26 @@
   import { goto } from "$app/navigation";
   import { writable } from "svelte/store";
   import { createWeb3Modal } from "@web3modal/wagmi";
-  import {
-    watchConnections,
-    getAccount,
-    watchAccount,
-  } from "@wagmi/core";
+  import { watchConnections, getAccount, watchAccount } from "@wagmi/core";
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   import { closeWallet } from "$lib/utils/wallet/walletUtils";
-  import { threesideAccount, user, theme, channel, settings, config as storeConfig } from "$lib/stores";
+  import {
+    threesideAccount,
+    user,
+    theme,
+    channel,
+    settings,
+    config as storeConfig,
+  } from "$lib/stores";
   import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
+  import { addErrorLog } from "$lib/apis/errorlog";
+
   const i18n = getContext("i18n");
 
   // 定义存储
   const walletAddress = writable("");
   const walletBalance = writable(0);
-  let modal: any = {options: {themeMode: 'dark'}};
+  let modal: any = { options: { themeMode: "dark" } };
 
   onMount(() => {
     watchConnections(config, {
@@ -33,7 +38,7 @@
     });
 
     modal = createWeb3Modal({
-      themeMode: 'dark',
+      themeMode: "dark",
       wagmiConfig: config,
       projectId,
       enableAnalytics: true,
@@ -43,9 +48,12 @@
 
   const initUserModels = () => {
     if ($user?.models) {
-      settings.set({...$settings, models: $user?.models.split(",")});
+      settings.set({ ...$settings, models: $user?.models.split(",") });
     } else {
-      settings.set({...$settings, models: $storeConfig?.default_models.split(",")});
+      settings.set({
+        ...$settings,
+        models: $storeConfig?.default_models.split(","),
+      });
     }
     localStorage.setItem("settings", JSON.stringify($settings));
     goto("/");
@@ -53,7 +61,7 @@
     setTimeout(() => {
       newChatButton?.click();
     }, 0);
-  }
+  };
 
   function clearConnector() {
     config.state.connections.forEach((item) => {
@@ -62,38 +70,41 @@
   }
 
   function changeModalTheme() {
-    if ($theme === 'system' || $theme === 'light') {
-      modal.setThemeMode('light');
+    if ($theme === "system" || $theme === "light") {
+      modal.setThemeMode("light");
     } else {
-      modal.setThemeMode('dark');
+      modal.setThemeMode("dark");
     }
   }
 
   watchAccount(config, {
     async onChange() {
-      let account = getAccount(config);
-      $threesideAccount = account;
-      if (account.status === "connected") {
-        console.log("==================connected=================")
-        if (!$user?.id?.startsWith("0x")) {
-          await handleWalletSignIn({
-            walletImported: {
-              address: account?.address,
-            },
-            address_type: "threeSide",
-            channel: $channel
-          });
+      try {
+        let account = getAccount(config);
+        $threesideAccount = account;
+        if (account.status === "connected") {
+          if (!$user?.id?.startsWith("0x")) {
+            await handleWalletSignIn({
+              walletImported: {
+                address: account?.address,
+              },
+              address_type: "threeSide",
+              channel: $channel,
+            });
 
+            // 更新用户模型
+            initUserModels();
+          }
+        }
+        if (account.status === "disconnected") {
+          user.set({});
+          await closeWallet($channel);
+          clearConnector();
           // 更新用户模型
           initUserModels();
         }
-      }
-      if (account.status === "disconnected") {
-        user.set({});
-        await closeWallet($channel);
-        clearConnector();
-        // 更新用户模型
-        initUserModels();
+      } catch (error) {
+        addErrorLog(error.toString());
       }
     },
   });

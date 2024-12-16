@@ -20,6 +20,7 @@
     downloadKeyStore,
     handleWalletSignIn,
   } from "$lib/utils/wallet/ether/utils.js";
+  import { addErrorLog } from "$lib/apis/errorlog";
 
   const i18n = getContext("i18n");
 
@@ -268,42 +269,46 @@
                 style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
                 type="submit"
                 on:click={async () => {
-                  if (!password) {
-                    toast.error("Please enter your password");
-                  }
-                  loading = true;
+                  try {
+                    if (!password) {
+                      toast.error("Please enter your password");
+                    }
+                    loading = true;
 
-                  // 1. 创建钱包
-                  const { wallet, keystore, accountPrivateKey } =
-                    await createAccount(password);
-                  console.log("wallet", wallet);
-                  keystoreJson = keystore;
-                  // 2. 请求服务端登录钱包账户
-                  await handleWalletSignIn({
-                    walletImported: wallet,
-                    password,
-                    address_type: "dbc",
-                    inviterId: $inviterId,
-                    channel: $channel,
-                  });
+                    // 1. 创建钱包
+                    const { wallet, keystore, accountPrivateKey } =
+                      await createAccount(password);
+                    console.log("wallet", wallet);
+                    keystoreJson = keystore;
+                    // 2. 请求服务端登录钱包账户
+                    await handleWalletSignIn({
+                      walletImported: wallet,
+                      password,
+                      address_type: "dbc",
+                      inviterId: $inviterId,
+                      channel: $channel,
+                    });
 
-                  loading = false;
+                    loading = false;
 
-                  // 更新用户模型
-                  initUserModels();
+                    // 更新用户模型
+                    initUserModels();
 
-                  // 3. 展示钱包面板数据
-                  walletCreatedData = wallet;
-                  updateWalletData(wallet);
+                    // 3. 展示钱包面板数据
+                    walletCreatedData = wallet;
+                    updateWalletData(wallet);
 
-                  // 4. 自动下载json文件
-                  if (keystore) {
-                    downloadKeyStore(keystore);
-                    toast.success(
-                      $i18n.t(
-                        "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key"
-                      )
-                    );
+                    // 4. 自动下载json文件
+                    if (keystore) {
+                      downloadKeyStore(keystore);
+                      toast.success(
+                        $i18n.t(
+                          "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key"
+                        )
+                      );
+                    }
+                  } catch (error) {
+                    addErrorLog(error.toString());
                   }
                 }}
               >
