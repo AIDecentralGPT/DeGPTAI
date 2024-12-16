@@ -736,6 +736,7 @@
   "III. Clock in Reward": "III. Récompense pour le pointage",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "La récompense pour le pointage est valide pendant <span style='color: rgba(184, 142, 86, 1);'>60</span> jours après la fin de l'authentification.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Se connecter et effectuer le pointage pendant <span style='color: rgba(184, 142, 86, 1);'>1</span> jour permet d'obtenir des récompenses de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC ; maximum de <span style='color: rgba(184, 142, 86, 1);'>30</span> récompenses pour le pointage.",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "Les récompenses de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC exigent la réalisation de la procédure de Connaissance de votre client KYC et doivent être réclamées le même jour ; elles prendront fin si elles ne sont pas réclamées.",
   "Show me a code snippet": "Montrez-moi un extrait de code",
   "of a website's sticky header": "d'un en-tête fixe d'un site web",
   "Explain options trading": "Expliquez le trading d'options",

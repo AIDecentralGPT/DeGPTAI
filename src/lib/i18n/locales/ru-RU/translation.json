@@ -736,6 +736,7 @@
   "III. Clock in Reward": "III. Премия за отметку времени",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Премия за отметку времени действительна в течение <span style='color: rgba(184, 142, 86, 1);'>60</span> дней после завершения аутентификации.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Войдя в систему и отметившись в течение <span style='color: rgba(184, 142, 86, 1);'>1</span> дня, можно заработать <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC в виде премии; максимальное количество премий за отметку времени - <span style='color: rgba(184, 142, 86, 1);'>30</span>.",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "Награда в размере <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC требует завершения процедуры идентификации клиента KYC, и ее необходимо забрать в тот же день. Если ее не забрать, награда истечёт.",
   "Show me a code snippet": "Покажите мне фрагмент кода",
   "of a website's sticky header": "фиксированного заголовка веб-сайта",
   "Explain options trading": "Объясните торговлю опциями",

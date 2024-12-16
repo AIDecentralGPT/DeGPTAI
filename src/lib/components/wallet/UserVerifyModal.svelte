@@ -14,6 +14,7 @@
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
+  import { addErrorLog } from '$lib/apis/errorlog';
 
   const i18n = getContext("i18n");
 
@@ -245,13 +246,19 @@
   };
 
   onMount(() => {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-    // 检查是否为移动端设备
-    isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
+    try {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-    // 时间校准
-    serveTime();
+      // 检查是否为移动端设备
+      isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
+
+      // 时间校准
+      serveTime();
+    } catch (error) {
+      addErrorLog(error.toString());
+    }
+    
   });
 
   function initParam() {
@@ -264,7 +271,12 @@
 
   // 显示初始化Socket
   $: if (show) {
-    initSocket();
+    try {
+      initSocket();
+    } catch(error) {
+      addErrorLog(error.toString());
+    }
+    
   }
 
   // 隐藏关闭Socket
@@ -279,7 +291,7 @@
 
   // 在组件卸载时关闭 WebSocket 连接
   onDestroy(() => {
-    if (scoket) {
+    if (socket) {
       socket.close();
     }
   });

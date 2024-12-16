@@ -22,7 +22,7 @@
   import "../app.css";
 
   // 打开调试模式
-  import VConsole from 'vconsole';
+  import VConsole from "vconsole";
   const vConsole = new VConsole();
 
   import "tippy.js/dist/tippy.css";
@@ -36,6 +36,7 @@
   import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
   import { getLanguages } from "$lib/i18n/index";
   import { signOut } from "$lib/utils/wallet/ether/utils";
+  import { addErrorLog } from '$lib/apis/errorlog';
 
   setContext("i18n", i18n);
   let loaded = false;
@@ -102,7 +103,7 @@
   // 获取请求携带参数
   async function initUrlParam() {
     const queryParams = new URLSearchParams($page.url.search);
-    
+
     // 获取邀请信息
     let inviterVal = queryParams.get("inviter");
     if (inviterVal) {
@@ -139,7 +140,7 @@
               token: res?.token,
               isPro: proInfo ? proInfo.is_pro : false,
               proEndDate: proInfo ? proInfo.end_date : null,
-              models: res?.models
+              models: res?.models,
             });
           }
           localStorage.user = JSON.stringify($user);
@@ -225,17 +226,21 @@
   };
 
   onMount(async () => {
-    let currentAddress = window.location.href;
-    await initData();
-    await initLanguage();
-    if (currentAddress.indexOf("userVerifying") < 0) {
-      await initUrlParam();
-      await checkLogin();
-      loaded = true;
-      await intiLocationInfo();
-      await initUserModels();
-    } else {
-      loaded = true;
+    try {
+      let currentAddress = window.location.href;
+      await initData();
+      await initLanguage();
+      if (currentAddress.indexOf("userVerifying") < 0) {
+        await initUrlParam();
+        await checkLogin();
+        loaded = true;
+        await intiLocationInfo();
+        await initUserModels();
+      } else {
+        loaded = true;
+      }
+    } catch (error) {
+      addErrorLog(error.toString());
     }
   });
 </script>

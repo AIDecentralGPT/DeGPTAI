@@ -737,6 +737,7 @@
   "III. Clock in Reward": "III. Recompensa por Registro de Asistencia",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "La recompensa por registro de asistencia es válida durante <span style='color: rgba(184, 142, 86, 1);'>60<span> días después de completar la autenticación.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Iniciar sesión y registrar la asistencia durante <span style='color: rgba(184, 142, 86, 1);'>1</span> día puede generar recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; máximo de <span style='color: rgba(184, 142, 86, 1);'>30</span> recompensas por registro de asistencia",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "Las recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC requieren la finalización del proceso de Conocimiento de su Cliente KYC y deben ser reclamadas el mismo día; expirarán si no se reclaman.",
   "Show me a code snippet": "Muestrame un fragmento de código",
   "of a website's sticky header": "de un encabezado fijo de un sitio web",
   "Explain options trading": "Explica el trading de opciones",

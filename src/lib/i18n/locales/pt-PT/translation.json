@@ -737,6 +737,7 @@
   "III. Clock in Reward": "III. Recompensa por Check-in",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "A recompensa por check-in é válida por <span style='color: rgba(184, 142, 86, 1);'>60</span> dias após a conclusão da autenticação.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Fazer login e check-in por <span style='color: rgba(184, 142, 86, 1);'>1</span> dia pode ganhar recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; máximo de <span style='color: rgba(184, 142, 86, 1);'>30</span> recompensas por check-in.",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "As recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC exigem a conclusão do processo de Conhecimento do Cliente KYC e devem ser reclamadas no mesmo dia; expirarão se não forem reclamadas.",
   "Show me a code snippet": "Mostre-me um trecho de código",
   "of a website's sticky header": "de um cabeçalho fixo de um site web",
   "Explain options trading": "Explique o trading de opções",

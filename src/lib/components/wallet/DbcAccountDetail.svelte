@@ -18,6 +18,7 @@
     config,
     channel
   } from "$lib/stores";
+  import { addErrorLog } from '$lib/apis/errorlog';
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getDbcRate } from "$lib/apis/wallet/index";
   import { goto } from "$app/navigation";
@@ -339,7 +340,11 @@
           class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
-            $showUserVerifyModal = true;
+            try {
+              $showUserVerifyModal = true;
+            } catch (error) {
+              await addErrorLog(error.toString());
+            }     
           }}
         >
           {$i18n.t("Complete KYC")}

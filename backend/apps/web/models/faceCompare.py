@@ -1,6 +1,7 @@
 from alibabacloud_cloudauth_intl20220809.client import Client as CloudauthClient
 from alibabacloud_cloudauth_intl20220809 import models as cloudauth_models
 from alibabacloud_tea_openapi import models as open_api_models
+from alibabacloud_tea_util import models as util_models
 from apps.web.models.auths import ( MetaInfo )
 import time
 
@@ -42,14 +43,20 @@ class FaceCompare:
             return_url= FACE_URL + "?user_id=" + metaInfo['user_id'] + "&timestamp=" + str(timestamp),
             # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
-            security_level="02",
+            security_level="02"
             # languageConfig="****",
             # styleConfig="****",
             # scene_code="****"
         )
 
+        #设置重试次数
+        runtime = util_models.RuntimeOptions(
+            autoretry=True,
+            max_attempts=5
+        )
+
         # 调用初始化API
-        response = self.client.initialize(request)
+        response = self.client.initialize_with_options(request, runtime)
         print("initialize_response", response, FACE_URL + "?user_id=" + metaInfo['user_id'])
         return response
 

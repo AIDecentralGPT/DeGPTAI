@@ -737,6 +737,7 @@
   "III. Clock in Reward": "III. 出勤打刻報酬",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "認証完了後の<span style='color: rgba(184, 142, 86, 1);'>60</span>日間、出勤打刻報酬は有効です。",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "<span style='color: rgba(184, 142, 86, 1);'>1</span> 日間ログインして出勤打刻を行うと、<span style='color: rgba(184, 142, 86, 1);'>100</span>個の DGC 報酬を獲得できます。出勤打刻報酬は最大<span style='color: rgba(184, 142, 86, 1);'>30</span>回までです。",
+  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC の報酬は、顧客の身元確認 KYC を完了する必要があり、それは同日に請求しなければなりません。請求しない場合は失効します。",
   "Show me a code snippet": "コードの断片を見せてください",
   "of a website's sticky header": "ウェブサイトの固定ヘッダーの",
   "Explain options trading": "オプション取引を説明してください",
