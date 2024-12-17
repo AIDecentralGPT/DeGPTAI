@@ -240,7 +240,7 @@
         loaded = true;
       }
     } catch (error) {
-      addErrorLog(error.toString());
+      addErrorLog("首页初始化", error.toString());
     }
   });
 </script>

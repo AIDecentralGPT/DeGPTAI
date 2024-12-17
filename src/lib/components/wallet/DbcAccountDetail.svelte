@@ -343,7 +343,7 @@
             try {
               $showUserVerifyModal = true;
             } catch (error) {
-              await addErrorLog(error.toString());
+              await addErrorLog("kyc认证按钮", error.toString());
             }     
           }}
         >

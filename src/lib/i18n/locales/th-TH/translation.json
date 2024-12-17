@@ -766,5 +766,8 @@
   "Download DeGPT APP": "ดาวน์โหลดแอป DeGPT",
   "More info": "ข้อมูลเพิ่มเติม",
   "Visit": "ไปเยือน",
-  "official website": "เว็บไซต์สำนักงาน"
+  "official website": "เว็บไซต์สำนักงาน",
+  "Code":"รหัส",
+  "Enter email address":"กรุณากรอกที่อยู่อีเมล",
+  "Enter verification code":"กรุณากรอกรหัสยืนยัน"
 }

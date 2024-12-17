@@ -7,7 +7,7 @@ router = APIRouter()
 @router.post("/add")
 async def add_err_log(errlog: ErrorLogRequest):
     try:
-        errorlog = ErrorLogInstance.insert_errorlog(errlog.err)
+        errorlog = ErrorLogInstance.insert_errorlog(errlog.name, errlog.err)
         return errorlog
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

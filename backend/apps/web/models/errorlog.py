@@ -16,6 +16,7 @@ from apps.web.internal.db import DB, aspect_database_operations  # 导入数据�
 # 定义ErrorLog模型
 class ErrorLog(Model):
     id = CharField(unique=True)  # 定义唯一的字符字段id
+    name = CharField()  # 名称
     err = TextField()  # 错误信息
     created_at = BigIntegerField()  # 定义大整数字段created_at
     updated_at = BigIntegerField()  # 定义大整数字段updated_at
@@ -27,12 +28,14 @@ class ErrorLog(Model):
 # 定义Pydantic模型ErrorLog
 class ErrorLogModel(BaseModel):
     id: str  # 定义id字段，类型为字符串
+    name: str  # 定义名称字段，类型为字符串
     err: str  # 定义错误信息字段，类型为字符串
     created_at: int  # 定义created_at字段，类型为整型，表示epoch时间戳
     updated_at: int  # 定义updated_at字段，类型为整型，表示epoch时间戳
 
 # 定义Pydantic模型ErrorLog
 class ErrorLogRequest(BaseModel):
+    name: str  # 定义名称字段，类型为字符串
     err: str  # 定义错误信息字段，类型为字符串
 
 
@@ -45,6 +48,7 @@ class ErrorLogTable:
     # 插入新用户
     def insert_errorlog(
         self,
+        name: str,
         err: str
     ) -> Optional[ErrorLogModel]:
         
@@ -52,6 +56,7 @@ class ErrorLogTable:
         errLog = ErrorLogModel(
             **{
                 "id": str(uuid.uuid4()),
+                "name": name,
                 "err": err,
                 "created_at": int(time.time()),
                 "updated_at": int(time.time())
