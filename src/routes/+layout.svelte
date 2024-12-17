@@ -230,7 +230,7 @@
       let currentAddress = window.location.href;
       await initData();
       await initLanguage();
-      if (currentAddress.indexOf("userVerifying") < 0) {
+      if (currentAddress.indexOf("userVerifying") < 0 && currentAddress.indexOf("thirdFrame") < 0) {
         await initUrlParam();
         await checkLogin();
         loaded = true;

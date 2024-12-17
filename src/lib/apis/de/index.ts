@@ -33,6 +33,20 @@ export const getDeModels = async (token: string = "") => {
       // },
       // Ali LLM (Qwen2.5-72B)
       {
+        name: "Llama3.3",
+        model: "Llama3.3-70B",
+        tip: "Llama3.3",
+        desc: "Support image recognition"
+      },
+      // Pixtral-124B
+      {
+        name: "Pixtral",
+        model: "Pixtral-124B",
+        tip: "Pixtral",
+        desc: "Support image recognition"
+      },
+      // Ali LLM (Qwen2.5-72B)
+      {
         name: "Qwen 2.5",
         model: "Qwen2.5-72B",
         tip: "Qwen 2.5",
