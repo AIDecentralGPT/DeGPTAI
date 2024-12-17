@@ -91,7 +91,7 @@
           console.log("verification-code:", res);
         });
       } else {
-        toast.error("Please enter a valid email address.");
+        toast.error($i18n.t("Please enter a valid email address."));
       }
     }
   }
@@ -256,7 +256,7 @@
       // 时间校准
       serveTime();
     } catch (error) {
-      addErrorLog(error.toString());
+      addErrorLog("kyc认证初始化", error.toString());
     }
     
   });
@@ -274,7 +274,7 @@
     try {
       initSocket();
     } catch(error) {
-      addErrorLog(error.toString());
+      addErrorLog("socket初始化", error.toString());
     }
     
   }
@@ -341,28 +341,28 @@
       {/if}
 
       {#if current === 1}
-        <div class="w-4/5 flex flex-col">
+        <div class="flex flex-col w-full md:w-4/5">
           <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
-          <div class="flex flex-col mb-3">
+          <div class="flex flex-col w-full mb-3">
             <div
-              class="mb-1 pt-0.5 flex justify-start w-full flex-col gap-2 items-baseline md:items-center md:flex-row"
+              class="flex justify-start gap-2 flex-col  md:flex-row md:items-center w-full mb-1 pt-0.5 items-baseline"
             >
               <label
                 for="email"
-                class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
-                >Email:</label
+                class="block text-sm font-medium dark:text-white text-black border-gray-300 w-[55px] md:text-right"
+                >{$i18n.t("Email")}:</label
               >
-              <div class="flex items-center justify-around flex-1 space-x-4">
+              <div class="flex justify-between items-center w-full md:flex-1 space-x-4">
                 <input
                   aria-label="email"
                   id="emailInput"
                   type="email"
-                  placeholder="Enter email address"
+                  placeholder="{$i18n.t("Enter email address")}"
                   bind:value={email}
-                  class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"
+                  class="flex-1 min-w-36 px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg"
                 />
                 <button
-                  class="w-[90px] px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg flex items-center justify-center {countdown >
+                  class="w-[90px] px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 whitespace-nowrap transition rounded-lg flex items-center justify-center {countdown >
                   0
                     ? 'opacity-50 cursor-not-allowed'
                     : ''}"
@@ -374,7 +374,7 @@
                     {countdown}s
                   {/if}
                   {#if countdown === 0}
-                    Send
+                    {$i18n.t("Send")}
                   {/if}
                 </button>
               </div>
@@ -382,20 +382,20 @@
           </div>
 
           <div
-            class="mb-6 pt-0.5 w-full flex justify-start flex-col gap-2 items-baseline md:items-center md:flex-row"
+            class="flex justify-start gap-2 flex-col items-baseline md:items-center md:flex-row mb-6 pt-0.5 w-full"
           >
             <label
               for="code"
-              class="block text-sm font-medium dark:bg-zinc-950 dark:text-white bg-white text-black border-gray-300 w-[60px]"
-              >Code:</label
+              class="block text-sm font-medium dark:text-white text-black border-gray-300 w-[55px] md:text-right"
+              >{$i18n.t("Code")}:</label
             >
             <input
               aria-label="code"
               id="verificationCodeInput"
               type="text"
-              placeholder="Enter verification code"
+              placeholder="{$i18n.t("Enter verification code")}"
               bind:value={code}
-              class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg flex-1"
+              class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg w-full md:flex-1"
             />
           </div>
         </div>

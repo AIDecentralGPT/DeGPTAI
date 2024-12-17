@@ -192,7 +192,7 @@
   "Edit Doc": "编辑文档",
   "Edit User": "编辑用户",
   "email": "电子邮件",
-  "Email": "电子邮件",
+  "Email": "邮箱",
   "Embedding Model": "嵌入模型",
   "Embedding Model Engine": "嵌入模型引擎",
   "Embedding model set to {{embedding_model}}":" 嵌入模型设置为 {{embedding_model}}",
@@ -766,5 +766,8 @@
   "Download DeGPT APP": "下载 DeGPT 应用",
   "More info": "更多信息",
   "Visit": "访问",
-  "official website": "官方网站"
+  "official website": "官方网站",
+  "Code":"验证码",
+  "Enter email address":"输入电子邮件地址",
+  "Enter verification code":"输入验证码"
 }

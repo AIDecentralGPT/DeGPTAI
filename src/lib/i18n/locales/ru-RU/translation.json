@@ -195,8 +195,8 @@
   "Edit": "Редактировать",
   "Edit Doc": "Редактировать документ",
   "Edit User": "Редактировать пользователя",
-  "email": "электронная почта",
-  "Email": "Электронная почта",
+  "email": "e-mail",
+  "Email": "E-mail",
   "Embedding Model": "Модель внедрения",
   "Embedding Model Engine": "Двигатель модели внедрения",
   "Enable Chat History": "Включить историю чата",
@@ -766,5 +766,8 @@
   "Download DeGPT APP": "Скачать приложение DeGPT",
   "More info": "Больше информации",
   "Visit": "Посетить",
-  "official website": "официальный сайт"
+  "official website": "официальный сайт",
+  "Code":"Код",
+  "Enter email address":"Введите адрес электронной почты",
+  "Enter verification code":"Введите код подтверждения"
 }

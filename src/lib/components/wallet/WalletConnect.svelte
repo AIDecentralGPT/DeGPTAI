@@ -104,7 +104,7 @@
           initUserModels();
         }
       } catch (error) {
-        addErrorLog(error.toString());
+        addErrorLog("第三方登陆", error.toString());
       }
     },
   });

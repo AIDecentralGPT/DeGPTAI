@@ -196,8 +196,8 @@
   "Edit": "Editar",
   "Edit Doc": "Editar documento",
   "Edit User": "Editar usuario",
-  "email": "correo electrónico",
-  "Email": "Correo electrónico",
+  "email": "correo",
+  "Email": "Correo",
   "Embedding Model": "Modelo de incrustación",
   "Embedding Model Engine": "Motor de modelo de incrustación",
   "Enable Chat History": "Habilitar historial de chat",
@@ -767,5 +767,8 @@
   "Download DeGPT APP": "Descargar la aplicación DeGPT",
   "More info": "Más información",
   "Visit": "Visitar",
-  "official website": "sitio web oficial"
+  "official website": "sitio web oficial",
+  "Code":"Código",
+  "Enter email address":"Ingrese la dirección de correo electrónico",
+  "Enter verification code":"Ingrese el código de verificación"
 }

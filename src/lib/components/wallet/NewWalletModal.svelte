@@ -308,7 +308,7 @@
                       );
                     }
                   } catch (error) {
-                    addErrorLog(error.toString());
+                    addErrorLog('账号登陆', error.toString());
                   }
                 }}
               >

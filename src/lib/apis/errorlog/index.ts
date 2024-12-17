@@ -1,7 +1,7 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 
-export const addErrorLog = async (err: string) => {
+export const addErrorLog = async (name: string, err: string) => {
 	let error = null;
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/errorlog/add`, {
@@ -10,6 +10,7 @@ export const addErrorLog = async (err: string) => {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
+			name: name,
 			err: err
 		})
 	})
