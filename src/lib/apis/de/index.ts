@@ -144,7 +144,7 @@ const getDeOpenAIChatCompletion = async (
   const overallTimeout = setTimeout(() => {
     controller.abort();
     throw new Error('请求超时，5秒内未收到回复');
-  }, 5000);
+  }, 10000);
   res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
     signal: controller.signal,
     method: "POST",
