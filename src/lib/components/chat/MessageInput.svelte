@@ -56,8 +56,8 @@
 
   export let files:any[] = [];
 
-  export let fileUploadEnabled = true;
-  export let speechRecognitionEnabled = true;
+  export let fileUploadEnabled = false;
+  // export let speechRecognitionEnabled = true;
 
   export let prompt = "";
   export let messages:any[] = [];
