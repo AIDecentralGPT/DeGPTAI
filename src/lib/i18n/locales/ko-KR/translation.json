@@ -669,7 +669,7 @@
   "Wallet Adress": "지갑 주소",
   "Your kyc rewards have not been credited.": "당신의 KYC 보상은 아직 크레딧 처리되지 않았습니다.",
   "Please use your mobile phone to scan the QR code below for identity verification": "본인 인증을 위해 아래의 QR 코드를 모바일 폰으로 스캔하세요.",
-  "Preparing to switch to the face verification page": "얼굴 인증 페이지로 전환하기 위한 준비를 하고 있습니다.",
+  "Preparing to switch to the face verification page": "얼굴 인증 페이지로 전환하기 위한 준비를 하고 있습니다",
   "QR code is valid for 5 minutes": "QR 코드는 5분 동안 유효합니다.",
   "Region": "지역",
   "Connected to": "연결된",
@@ -770,5 +770,8 @@
   "official website": "공식 웹사이트",
   "Code":"코드",
   "Enter email address":"이메일 주소를 입력하세요",
-  "Enter verification code":"확인 코드를 입력하세요"
+  "Enter verification code":"확인 코드를 입력하세요",
+  "Previous": "이전의",
+  "Finish": "완료",
+  "Next": "다음의"
 }

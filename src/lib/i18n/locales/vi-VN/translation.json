@@ -669,7 +669,7 @@
   "Wallet Adress": "Địa chỉ ví",
   "Your kyc rewards have not been credited.": "Các phần thưởng KYC của bạn vẫn chưa được ghi vào tài khoản.",
   "Please use your mobile phone to scan the QR code below for identity verification": "Vui lòng sử dụng điện thoại di động của bạn để quét mã QR bên dưới để xác thực danh tính.",
-  "Preparing to switch to the face verification page": "Đang chuẩn bị chuyển sang trang xác thực khuôn mặt.",
+  "Preparing to switch to the face verification page": "Đang chuẩn bị chuyển sang trang xác thực khuôn mặt",
   "QR code is valid for 5 minutes": "Mã QR có hiệu lực trong 5 phút.",
   "Region": "Vùng",
   "Connected to": "Kết nối với",
@@ -761,5 +761,8 @@
   "official website": "trang web chính thức",
   "Code":"Mã",
   "Enter email address":"Nhập địa chỉ email",
-  "Enter verification code":"Nhập mã xác minh"
+  "Enter verification code":"Nhập mã xác minh",
+  "Previous": "trước đó",
+  "Finish": "hoàn thành",
+  "Next": "tiếp theo"
 }

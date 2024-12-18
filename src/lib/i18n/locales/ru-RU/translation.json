@@ -668,7 +668,7 @@
   "Wallet Adress": "Адрес кошелька",
   "Your kyc rewards have not been credited.": "Ваши вознаграждения за KYC еще не были зачислены.",
   "Please use your mobile phone to scan the QR code below for identity verification": "Пожалуйста, используйте свой мобильный телефон для сканирования QR-кода ниже для проверки идентификации.",
-  "Preparing to switch to the face verification page": "Подготовка к переходу на страницу верификации лиц.",
+  "Preparing to switch to the face verification page": "Подготовка к переходу на страницу верификации лиц",
   "QR code is valid for 5 minutes": "QR-код действителен на 5 минут.",
   "Region": "Регион",
   "Connected to": "Подключено к",
@@ -769,5 +769,8 @@
   "official website": "официальный сайт",
   "Code":"Код",
   "Enter email address":"Введите адрес электронной почты",
-  "Enter verification code":"Введите код подтверждения"
+  "Enter verification code":"Введите код подтверждения",
+  "Previous": "предыдущий",
+  "Finish": "закончить",
+  "Next": "следующий"
 }

@@ -668,7 +668,7 @@
   "Wallet Adress": "钱包地址",
   "Your kyc rewards have not been credited.": "您的 KYC 奖励未到账",
   "Please use your mobile phone to scan the QR code below for identity verification": "请用您的手机扫描下方二维码进行身份验证。",
-  "Preparing to switch to the face verification page": "准备切换到面部验证页面。",
+  "Preparing to switch to the face verification page": "准备切换到面部验证页面",
   "QR code is valid for 5 minutes": "二维码在 5 分钟内有效。",
   "Region": "地区",
   "Connected to": "已连接到",
@@ -769,5 +769,8 @@
   "official website": "官方网站",
   "Code":"验证码",
   "Enter email address":"输入电子邮件地址",
-  "Enter verification code":"输入验证码"
+  "Enter verification code":"输入验证码",
+  "Previous": "上一步",
+  "Finish": "完成",
+  "Next": "下一步"
 }
