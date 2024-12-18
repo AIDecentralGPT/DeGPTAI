@@ -711,8 +711,6 @@ async def create_face():
 # 获取人脸识别连接
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
-        # 获取查询参数
-    print("face_liveness Query Parameters:", user.id)
 
     if True:
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
