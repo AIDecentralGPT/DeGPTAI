@@ -123,10 +123,12 @@ export const generateDeOpenAIChatCompletion = async (
   }
 
   for (const urlObj of urlObjs) {
+    controller = new AbortController();
     try {
       res = await getDeOpenAIChatCompletion(urlObj, body, controller);
       break;
     } catch (err) {
+      controller.abort();
       if (urlObj.name === urlObjs[urlObjs.length-1].name) {
         error = err;
         res = null;
@@ -137,6 +139,7 @@ export const generateDeOpenAIChatCompletion = async (
   if (error) {
     throw error;
   }
+
   return [res, controller];
 };
 
@@ -147,7 +150,6 @@ const getDeOpenAIChatCompletion = async (
   controller: any
 ) => {
   let res: any;
-  controller = new AbortController();
   const overallTimeout = setTimeout(() => {
     controller.abort();
     throw new Error('请求超时，5秒内未收到回复');
