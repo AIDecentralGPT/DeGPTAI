@@ -871,7 +871,7 @@ async def faceliveness_check_for_ws(id: str):
                 if user_exit is not None :
                     return {
                         "passed": False,
-                        "message": "Your face has been used",
+                        "message": "You have already bound your face KYC with another wallet. Only one wallet can be bound.",
                         "address": user_exit.id
                     }
             else:

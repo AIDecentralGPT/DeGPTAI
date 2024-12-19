@@ -216,6 +216,7 @@
   //////////////////////////
 
   const submitPrompt = async (userPrompt, _user = null) => {
+    console.log("===========================222222===================");
     console.log("submitPrompt", $chatId);
 
     selectedModels = selectedModels.map((modelId) =>

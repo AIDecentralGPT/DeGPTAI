@@ -101,7 +101,6 @@ export async function handleSigninAsIntialStatus() {
 // }
 
 export async function closeWallet(channel:string) {
-  console.log("===================================closeWallet")
   currentWalletData.update(() => DefaultCurrentWalletData)
 
   localStorage.removeItem("token");

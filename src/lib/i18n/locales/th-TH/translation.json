@@ -653,7 +653,7 @@
   "Obtain in...": "รับมาได้ใน...",
   "Try again": "ลองใหม่",
   "Time expired, try again": "เวลาถึงกำหนดแล้ว,ลองใหม่",
-  "Your face has been used": "ใบหน้าของคุณถูกใช้ไปแล้ว",
+  "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "คุณได้ผูกการตรวจสอบ KYC ด้วยการรับรู้ใบหน้าไปกับกระเป๋าเงินอื่นแล้ว เท่านั้นกระเป๋าเงินหนึ่งกระเป๋าเท่านั้นที่จะถูกผูก.",
   "Your kyc rewards have been credited.": "รางวัลจาก KYC ของคุณได้ถูกcreditedแล้ว",
   "The identity validate fail": "การตรวจสอบตัวตนล้มเหลว",
   "Your haven't started live testing yet": "คุณยังไม่ได้เริ่มทดสอบสด",

@@ -453,7 +453,7 @@
                   {#if checkQrResult}
                     {#if address}
                       <div class="flex flex-row items-center">
-                        {$i18n.t("Your face has been used")}
+                        {$i18n.t("You have already bound your face KYC with another wallet. Only one wallet can be bound.")}
                       </div>
                       <div class="flex">
                         <p

@@ -653,7 +653,7 @@
   "Obtain in...": "Obtenir dans...",
   "Try again": "Essaye encore",
   "Time expired, try again": "Le temps est écoulé, essaie encore",
-  "Your face has been used": "Votre visage a déjà été utilisé",
+  "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Vous avez déjà lié votre reconnaissance faciale pour la vérification KYC à un autre portefeuille. Seul un portefeuille peut être lié.",
   "Your kyc rewards have been credited.": "Vos récompenses de KYC ont été créditées.",
   "The identity validate fail": "La validation de l'identité a échoué",
   "Your haven't started live testing yet": "Vous n'avez pas encore commencé les tests en direct",
