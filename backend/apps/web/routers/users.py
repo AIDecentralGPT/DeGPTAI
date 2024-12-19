@@ -396,13 +396,7 @@ async def get_user_info(request: Request,  user=Depends(get_current_user)):
     # print("isPro session_user", session_user)
     if user:
         try:
-            token = create_token(
-                    data={"id": user.id},
-                    expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
-            )
             response = {
-                "token": token,
-                "token_type": "Bearer",
                 "id": user.id,
                 "email": user.email,
                 "name": user.name,

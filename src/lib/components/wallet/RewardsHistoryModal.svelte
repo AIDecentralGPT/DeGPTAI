@@ -5,17 +5,14 @@
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
-  import { 
-    user,
-    showFollowTwitterModal,
-    showFollowTGGroupModal,
-   } from "$lib/stores";
+  import { user } from "$lib/stores";
   import {
     getRewardsHistory,
     creatWalletCheck,
     inviteCheck,
     clockInCheck,
   } from "$lib/apis/rewards";
+  import { getUserInfo } from "$lib/apis/users";
 
   const i18n = getContext("i18n");
 
@@ -311,10 +308,15 @@
                           ? "background: rgba(251, 251, 251, 0.8)"
                           : ""}
                         disabled={obtainLoad && selItem == historyItem?.id}
-                        on:click={() => {
+                        on:click={async () => {
                           selItem = historyItem?.id;
+                          const userInfo = await getUserInfo(localStorage.token);
+                          await user.set({
+                            ...$user,
+                            verified: userInfo?.verified
+                          });
                           if ($user?.verified) {
-                            updateReward(historyItem.id, historyItem.reward_type);
+                            await updateReward(historyItem.id, historyItem.reward_type);
                           } else {
                             toast.warning(
                               $i18n.t("Please complete the KYC verification !")

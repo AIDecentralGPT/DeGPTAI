@@ -137,7 +137,6 @@
             const proInfo = await isPro(localStorage.token);
             await user.set({
               ...localUser,
-              token: res?.token,
               isPro: proInfo ? proInfo.is_pro : false,
               proEndDate: proInfo ? proInfo.end_date : null,
               models: res?.models,
@@ -230,7 +229,7 @@
       let currentAddress = window.location.href;
       await initData();
       await initLanguage();
-      if (currentAddress.indexOf("userVerifying") < 0 && currentAddress.indexOf("thirdFrame") < 0) {
+      if (currentAddress.indexOf("userVerifying") < 0) {
         await initUrlParam();
         await checkLogin();
         loaded = true;

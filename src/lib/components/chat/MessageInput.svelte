@@ -359,7 +359,7 @@
   };
 
   onMount(() => {
-    window.setTimeout(() => chatTextAreaElement?.focus(), 0);
+    // window.setTimeout(() => chatTextAreaElement?.focus(), 0);
 
     const dropZone = document.querySelector("body");
 
