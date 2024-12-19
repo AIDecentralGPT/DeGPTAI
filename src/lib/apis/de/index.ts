@@ -32,21 +32,21 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Suitable for most tasks"
       // },
       // Ali LLM (Qwen2.5-72B)
-      {
-        name: "Llama3.3",
-        model: "Llama3.3-70B",
-        tip: "Llama3.3",
-        support: "text",
-        desc: "Suitable for most tasks"
-      },
-      // Pixtral-124B
-      {
-        name: "Pixtral Large 1.0",
-        model: "Pixtral-124B",
-        tip: "Pixtral Large 1.0",
-        support: "image",
-        desc: "Support image recognition"
-      },
+      // {
+      //   name: "Llama3.3",
+      //   model: "Llama3.3-70B",
+      //   tip: "Llama3.3",
+      //   support: "text",
+      //   desc: "Suitable for most tasks"
+      // },
+      // // Pixtral-124B
+      // {
+      //   name: "Pixtral Large 1.0",
+      //   model: "Pixtral-124B",
+      //   tip: "Pixtral Large 1.0",
+      //   support: "image",
+      //   desc: "Support image recognition"
+      // },
       // Ali LLM (Qwen2.5-72B)
       {
         name: "Qwen 2.5",
