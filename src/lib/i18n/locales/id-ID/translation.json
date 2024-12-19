@@ -654,7 +654,7 @@
   "Obtain in...": "Dapatkan dalam...",
   "Try again": "Coba lagi",
   "Time expired, try again": "Waktu telah habis, coba lagi",
-  "Your face has been used": "Wajah Anda telah digunakan",
+  "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Anda sudah mengikat verifikasi wajah KYC Anda dengan dompet lain. Hanya satu dompet yang bisa diikat.",
   "Your kyc rewards have been credited.": "Hadiah KYC Anda telah dikreditkan.",
   "The identity validate fail": "Validasi identitas gagal",
   "Your haven't started live testing yet": "Anda belum memulai pengujian langsung",

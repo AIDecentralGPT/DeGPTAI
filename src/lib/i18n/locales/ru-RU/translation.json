@@ -653,7 +653,7 @@
   "Obtain in...": "Получить в...",
   "Try again": "Попробуйте еще раз",
   "Time expired, try again": "Время истекло, попробуйте еще раз",
-  "Your face has been used": "Ваше лицо уже было использовано",
+  "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Вы уже привязали идентификацию по лицу для KYC к другому кошельку. Можно привязать только один кошелек.",
   "Your kyc rewards have been credited.": "Ваши награды за KYC были зачислены.",
   "The identity validate fail": "Проверка идентификации не удалась",
   "Your haven't started live testing yet": "Вы еще не начали тестирование вживую",

@@ -653,7 +653,7 @@
   "Obtain in...": "获取中…… ",
   "Try again": "再试一次",
   "Time expired, try again": "时间已过期，请再试一次",
-  "Your face has been used": "您的面部已认证过",
+  "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "你已经用其他钱包进行过人脸KYC绑定，只能绑定一个钱包。",
   "Your kyc rewards have been credited.": "您的 KYC 奖励已入账",
   "The identity validate fail": "身份验证失败",
   "Your haven't started live testing yet": "您还尚未开始直播测试",

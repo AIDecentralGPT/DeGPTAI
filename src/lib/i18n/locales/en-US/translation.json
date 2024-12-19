@@ -654,7 +654,7 @@
   "Obtain in...": "",
   "Try again": "",
   "Time expired, try again": "",
-  "Your face has been used": "",
+  "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "",
   "Your kyc rewards have been credited.": "",
   "The identity validate fail": "",
   "Your haven't started live testing yet": "",

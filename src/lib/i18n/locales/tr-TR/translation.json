@@ -654,7 +654,7 @@
   "Obtain in...": "İçinde alın...",
   "Try again": "Tekrar deneyin",
   "Time expired, try again": "Süre doldu, tekrar deneyin",
-  "Your face has been used": "Yüzünüz kullanılmıştı",
+  "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Zaten başka bir cüzdana yüz KYC'sini bağlamışsınız. Sadece bir cüzdan bağlanabilir.",
   "Your kyc rewards have been credited.": "KYC ödülleriniz tahsil edilmiştir.",
   "The identity validate fail": "Kimlik doğrulaması başarısız oldu",
   "Your haven't started live testing yet": "Canlı testleri henüz başlamadınız",
