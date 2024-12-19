@@ -33,9 +33,26 @@ export const getDeModels = async (token: string = "") => {
       // },
       // Ali LLM (Qwen2.5-72B)
       {
+        name: "Llama3.3",
+        model: "Llama3.3-70B",
+        tip: "Llama3.3",
+        support: "text",
+        desc: "Suitable for most tasks"
+      },
+      // Pixtral-124B
+      {
+        name: "Pixtral Large 1.0",
+        model: "Pixtral-124B",
+        tip: "Pixtral Large 1.0",
+        support: "image",
+        desc: "Support image recognition"
+      },
+      // Ali LLM (Qwen2.5-72B)
+      {
         name: "Qwen 2.5",
         model: "Qwen2.5-72B",
         tip: "Qwen 2.5",
+        support: "text",
         desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nemotron 70B)
@@ -43,6 +60,7 @@ export const getDeModels = async (token: string = "") => {
         name: "Nemotron 3.1",
         model: "Llama-3.1-Nemotron-70B",
         tip: "Nemotron 3.1",
+        support: "text",
         desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nvidia 3.1)
@@ -50,6 +68,7 @@ export const getDeModels = async (token: string = "") => {
         name: "Nvidia 3.1",
         model: "NVLM-D-72B",
         tip: "Nvidia 3.1",
+        support: "image",
         desc: "Support image recognition"
       },
       // DeepSeek(Coder V2)
@@ -57,6 +76,7 @@ export const getDeModels = async (token: string = "") => {
         name: "Deepseek coder2.0",
         model: "DeepSeek-Coder-V2",
         tip: "Deepseek coder2.0",
+        support: "text",
         desc: "Optimize code writing"
       },
       // Code LLM (Codestral-22B-v0.1)
@@ -70,6 +90,7 @@ export const getDeModels = async (token: string = "") => {
         name: "Qwen 2.5 Code",
         model: "Qwen2.5-Coder-32B",
         tip: "Qwen 2.5 Code",
+        support: "text",
         desc: "Optimize code writing"
       }
     ],
@@ -102,10 +123,12 @@ export const generateDeOpenAIChatCompletion = async (
   }
 
   for (const urlObj of urlObjs) {
+    controller = new AbortController();
     try {
       res = await getDeOpenAIChatCompletion(urlObj, body, controller);
       break;
     } catch (err) {
+      controller.abort();
       if (urlObj.name === urlObjs[urlObjs.length-1].name) {
         error = err;
         res = null;
@@ -116,6 +139,7 @@ export const generateDeOpenAIChatCompletion = async (
   if (error) {
     throw error;
   }
+
   return [res, controller];
 };
 
@@ -126,11 +150,10 @@ const getDeOpenAIChatCompletion = async (
   controller: any
 ) => {
   let res: any;
-  controller = new AbortController();
   const overallTimeout = setTimeout(() => {
     controller.abort();
     throw new Error('请求超时，5秒内未收到回复');
-  }, 5000);
+  }, 10000);
   res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
     signal: controller.signal,
     method: "POST",

@@ -3,6 +3,8 @@
   import { showLoginInfoModal,user } from "$lib/stores";
   import Tooltip from '$lib/components/common/Tooltip.svelte';
   import { checkUniapp } from "$lib/utils";
+  import { goto } from "$app/navigation";
+
   const i18n = getContext("i18n");
 </script>
 
@@ -35,9 +37,8 @@
 
     <div class="flex gap-4 items-center">
       <button
-        class=""
         on:click={() => {
-          window.open("https://x.com/DecentralGPT", "_blank") 
+          window.open("https://x.com/DecentralGPT", "_blank");
         }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -62,9 +63,8 @@
         ></svg
       ></button>
       <button
-        class=""
         on:click={() => {
-          window.open("https://t.me/DecentralGPT", "_blank")
+          window.open("https://t.me/DecentralGPT", "_blank");
         }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +89,6 @@
         ></svg
       ></button>
       <button
-        class=""
         on:click={() => {
           window.open("https://medium.com/@DecentralGPT", "_blank")
         }}

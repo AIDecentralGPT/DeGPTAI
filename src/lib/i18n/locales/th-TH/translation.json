@@ -769,5 +769,8 @@
   "official website": "เว็บไซต์สำนักงาน",
   "Code":"รหัส",
   "Enter email address":"กรุณากรอกที่อยู่อีเมล",
-  "Enter verification code":"กรุณากรอกรหัสยืนยัน"
+  "Enter verification code":"กรุณากรอกรหัสยืนยัน",
+  "Previous": "ก่อนหน้า",
+  "Finish": "เสร็จสิ้น",
+  "Next": "ต่อไป"
 }

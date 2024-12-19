@@ -66,7 +66,7 @@
   let autoScroll = true;
   let processing = "";
   let messagesContainerElement: HTMLDivElement;
-  let currentRequestId = null;
+  let currentRequestId: any = null;
 
   let showModelSelector = true;
 

@@ -57,7 +57,7 @@
   export let files:any[] = [];
 
   export let fileUploadEnabled = true;
-  export let speechRecognitionEnabled = true;
+  // export let speechRecognitionEnabled = true;
 
   export let prompt = "";
   export let messages:any[] = [];
@@ -359,7 +359,7 @@
   };
 
   onMount(() => {
-    window.setTimeout(() => chatTextAreaElement?.focus(), 0);
+    // window.setTimeout(() => chatTextAreaElement?.focus(), 0);
 
     const dropZone = document.querySelector("body");
 

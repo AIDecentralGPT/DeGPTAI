@@ -669,7 +669,7 @@
   "Wallet Adress": "Cüzdan Adresi",
   "Your kyc rewards have not been credited.": "KYC ödülleriniz henüz kredilere eklenmedi.",
   "Please use your mobile phone to scan the QR code below for identity verification": "Kimlik doğrulama için aşağıdaki QR kodu telefonunuzla tarayın.",
-  "Preparing to switch to the face verification page": "Yüz doğrulama sayfasına geçişe hazırlanıyor.",
+  "Preparing to switch to the face verification page": "Yüz doğrulama sayfasına geçişe hazırlanıyor",
   "QR code is valid for 5 minutes": "QR kodu 5 dakika boyunca geçerlidir.",
   "Region": "Bölge",
   "Connected to": "Bağlı olan",
@@ -770,5 +770,8 @@
   "official website": "resmi web sitesi",
   "Code":"Kod",
   "Enter email address":"E-posta adresini girin",
-  "Enter verification code":"Doğrulama kodunu girin"
+  "Enter verification code":"Doğrulama kodunu girin",
+  "Previous": "önceki",
+  "Finish": "bitirmek",
+  "Next": "sonraki"
 }

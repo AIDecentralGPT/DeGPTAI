@@ -16,11 +16,12 @@
     dbcRate,
     settings,
     config,
-    channel
+    channel,
   } from "$lib/stores";
-  import { addErrorLog } from '$lib/apis/errorlog';
+  import { addErrorLog } from "$lib/apis/errorlog";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getDbcRate } from "$lib/apis/wallet/index";
+  import { getUserInfo } from "$lib/apis/users";
   import { goto } from "$app/navigation";
 
   const i18n = getContext("i18n");
@@ -36,21 +37,23 @@
     // 第一次获取
     if ($dbcRate?.time) {
       // 大于5分钟重新获取一次
-      const diffInMilliseconds = Math.abs(new Date().getTime() - new Date($dbcRate.time).getTime());
+      const diffInMilliseconds = Math.abs(
+        new Date().getTime() - new Date($dbcRate.time).getTime()
+      );
       if (diffInMilliseconds > 1000 * 60) {
-        getDbcRate(localStorage.token).then(result => {
+        getDbcRate(localStorage.token).then((result) => {
           if (result) {
-            dbcRate.set({rate: result, time: new Date().toLocaleString()})
+            dbcRate.set({ rate: result, time: new Date().toLocaleString() });
           }
-        })
+        });
       }
     } else {
-      getDbcRate(localStorage.token).then(result => {
+      getDbcRate(localStorage.token).then((result) => {
         if (result) {
-          dbcRate.set({rate: result, time: new Date().toLocaleString()})
+          dbcRate.set({ rate: result, time: new Date().toLocaleString() });
         }
-      })  
-    }  
+      });
+    }
   }
 
   // 更新用户模型
@@ -92,7 +95,6 @@
           >
             <!-- {$currentWalletData?.walletInfo?.address} -->
             {$user?.id}
-
           </p>
           <button
             on:click={async () => {
@@ -135,11 +137,10 @@
     </div>
 
     <!-- 二级按钮 -->
-    {#if $user?.address_type === 'threeSide'}
+    {#if $user?.address_type === "threeSide"}
       <div class="flex justify-center">
-        <w3m-button class="v-btn" label="组件方式打开"/>
+        <w3m-button class="v-btn" label="组件方式打开" />
       </div>
-      
     {:else}
       <div class="flex justify-start gap-2 mt-1 mb5">
         <button
@@ -182,9 +183,7 @@
   <!-- 钱包余额 -->
   <!-- 标题 -->
   <div class="flex justify-between items-center">
-    <div
-      class="opacity-80 text-base font-medium leading-6 flex items-center"
-    >
+    <div class="opacity-80 text-base font-medium leading-6 flex items-center">
       {$i18n.t("Wallet Balance")}
     </div>
     <div class="flex">
@@ -213,21 +212,25 @@
       </button>
 
       <button
-        on:click={ async () => {
+        on:click={async () => {
           updateWalletLoad = true;
           await updateWalletData($currentWalletData?.walletInfo);
           await refreshDbcRate();
           updateWalletLoad = false;
-        }}>
-          <svg class="{updateWalletLoad? 'animate-spin' : 'animate-none'}"
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 24 24"
-            >
-              <path fill="#71717a"
-                d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"/>
-          </svg>
+        }}
+      >
+        <svg
+          class={updateWalletLoad ? "animate-spin" : "animate-none"}
+          xmlns="http://www.w3.org/2000/svg"
+          width="1em"
+          height="1em"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="#71717a"
+            d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
+          />
+        </svg>
       </button>
     </div>
   </div>
@@ -240,7 +243,7 @@
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          DGC 
+          DGC
         </div>
         <div
           class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
@@ -251,17 +254,22 @@
 
       <div class="flex flex-row opacity-50 leading-normal text-xs">
         1DGC=0.0005u
-        <button class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
-          on:click={ async () => {
-              $showCoinIntruModal = true;
-              $showCoinIntruType = 'dgc';
-          }}>
-            ?
+        <button
+          class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+          on:click={async () => {
+            $showCoinIntruModal = true;
+            $showCoinIntruType = "dgc";
+          }}
+        >
+          ?
         </button>
       </div>
 
       <div class="opacity-50 leading-normal text-xs">
-        Total ${floorToFixed(Number($currentWalletData?.dgcBalance) * 0.0005, 4)}u
+        Total ${floorToFixed(
+          Number($currentWalletData?.dgcBalance) * 0.0005,
+          4
+        )}u
       </div>
     </div>
     <div
@@ -271,7 +279,7 @@
         <div
           class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
         >
-          DBC 
+          DBC
         </div>
         <div
           class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
@@ -281,16 +289,21 @@
       </div>
       <div class="flex flex-row opacity-50 leading-normal text-xs">
         1DBC={floorToFixed($dbcRate?.rate, 5)}u
-        <button class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
-          on:click={ async () => {
+        <button
+          class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+          on:click={async () => {
             $showCoinIntruModal = true;
-            $showCoinIntruType = 'dbc';
-          }}>
-            ?
+            $showCoinIntruType = "dbc";
+          }}
+        >
+          ?
         </button>
       </div>
       <div class="opacity-50 leading-normal text-xs">
-        Total ${floorToFixed(Number($currentWalletData?.dbcBalance) * $dbcRate?.rate, 4)}u
+        Total ${floorToFixed(
+          Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
+          4
+        )}u
       </div>
     </div>
   </div>
@@ -330,7 +343,7 @@
       </button>
       {#if $user?.verified}
         <button
-          class=" px-4 py-2 primaryButton text-gray-800 transition rounded-lg text-xs"
+          class="px-4 py-2 primaryButton text-gray-800 transition rounded-lg text-xs"
           type="submit"
         >
           {$i18n.t("Authed KYC")}
@@ -341,10 +354,17 @@
           type="submit"
           on:click={async () => {
             try {
-              $showUserVerifyModal = true;
+              const userInfo = await getUserInfo(localStorage.token);
+              await user.set({
+                ...$user,
+                verified: userInfo?.verified
+              });
+              if (!$user?.verified) {
+                $showUserVerifyModal = true;
+              }
             } catch (error) {
               await addErrorLog("kyc认证按钮", error.toString());
-            }     
+            }
           }}
         >
           {$i18n.t("Complete KYC")}
@@ -355,5 +375,4 @@
 </div>
 
 <style>
-
 </style>

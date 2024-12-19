@@ -83,7 +83,7 @@
         let account = getAccount(config);
         $threesideAccount = account;
         if (account.status === "connected") {
-          if (!$user?.id?.startsWith("0x")) {
+          if (!$user?.id === undefined || !$user?.id?.startsWith("0x")) {
             await handleWalletSignIn({
               walletImported: {
                 address: account?.address,

@@ -14,7 +14,7 @@
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
-  import { addErrorLog } from '$lib/apis/errorlog';
+  import { addErrorLog } from "$lib/apis/errorlog";
 
   const i18n = getContext("i18n");
 
@@ -77,6 +77,7 @@
   let code = "";
   let countdown = 0;
   let countdownInterval: any = null;
+  let nextLoading = false;
 
   function validateEmail(email: string) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -120,6 +121,7 @@
         valid = false;
         return;
       }
+      nextLoading = true;
       await verifyCode(email, code)
         .then(() => {
           email = email;
@@ -130,6 +132,7 @@
           toast.error($i18n.t(error));
           valid = false;
         });
+      nextLoading = false;
     } else if (current === 2) {
       show = false;
     }
@@ -246,19 +249,19 @@
   };
 
   onMount(() => {
-
     try {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
       // 检查是否为移动端设备
-      isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
+      isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(
+        userAgent
+      );
 
       // 时间校准
       serveTime();
     } catch (error) {
       addErrorLog("kyc认证初始化", error.toString());
     }
-    
   });
 
   function initParam() {
@@ -273,10 +276,9 @@
   $: if (show) {
     try {
       initSocket();
-    } catch(error) {
+    } catch (error) {
       addErrorLog("socket初始化", error.toString());
     }
-    
   }
 
   // 隐藏关闭Socket
@@ -345,19 +347,21 @@
           <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
           <div class="flex flex-col w-full mb-3">
             <div
-              class="flex justify-start gap-2 flex-col  md:flex-row md:items-center w-full mb-1 pt-0.5 items-baseline"
+              class="flex justify-start gap-2 flex-col md:flex-row md:items-center w-full mb-1 pt-0.5 items-baseline"
             >
               <label
                 for="email"
                 class="block text-sm font-medium dark:text-white text-black border-gray-300 w-[55px] md:text-right"
                 >{$i18n.t("Email")}:</label
               >
-              <div class="flex justify-between items-center w-full md:flex-1 space-x-4">
+              <div
+                class="flex justify-between items-center w-full md:flex-1 space-x-4"
+              >
                 <input
                   aria-label="email"
                   id="emailInput"
                   type="email"
-                  placeholder="{$i18n.t("Enter email address")}"
+                  placeholder={$i18n.t("Enter email address")}
                   bind:value={email}
                   class="flex-1 min-w-36 px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg"
                 />
@@ -393,7 +397,7 @@
               aria-label="code"
               id="verificationCodeInput"
               type="text"
-              placeholder="{$i18n.t("Enter verification code")}"
+              placeholder={$i18n.t("Enter verification code")}
               bind:value={code}
               class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg w-full md:flex-1"
             />
@@ -546,9 +550,22 @@
             </div>
           {/if}
           {#if isMobile}
-            <p>
-              {$i18n.t("Preparing to switch to the face verification page")}
-            </p>
+            <div class="text-center">
+              <div>
+                {$i18n.t("Preparing to switch to the face verification page")}
+              </div>
+              <div class="flex justify-center mt-2">
+                <svg
+                  class="animate-spin ml-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2em"
+                  height="2em"
+                  fill="currentColor"
+                  viewBox="0 0 1024 1024">
+                  <path d="M144.205 202.496a136.678 136.678 0 1 0 273.357 0 136.678 136.678 0 1 0-273.357 0zM41.728 492.902a119.578 119.578 0 1 0 239.155 0 119.578 119.578 0 1 0-239.155 0zM144.23 749.158a102.502 102.502 0 1 0 205.005 0 102.502 102.502 0 1 0-205.005 0zM435.2 861.926a89.6 89.6 0 1 0 179.2 0 89.6 89.6 0 1 0-179.2 0z m289.843-95.666a85.427 85.427 0 1 0 170.855 0 85.427 85.427 0 1 0-170.855 0z m136.704-290.433a68.326 68.326 0 1 0 136.653 0 68.326 68.326 0 1 0-136.653 0zM759.22 219.571a51.251 51.251 0 1 0 102.502 0 51.251 51.251 0 1 0-102.503 0zM512 85.376a34.176 34.176 0 1 0 68.352 0 34.176 34.176 0 1 0-68.352 0z"/>
+                </svg>
+              </div>
+            </div>
           {/if}
 
           <!-- <button on:click={getFaceRes}> 
@@ -568,10 +585,12 @@
       {/if}
 
       <div class="flex justify-end gap-4 absolute bottom-8 right-2">
-        <button
-          class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
-          on:click={previousStep}>Previous</button
-        >
+        {#if current !== 1}
+          <button
+            class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
+            on:click={previousStep}>{$i18n.t("Previous")}</button
+          >
+        {/if}
 
         {#if current === 2}
           {#if qrCodeFinish}
@@ -579,22 +598,50 @@
               class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
               on:click={getFaceRes}
             >
-              Finish</button
+              {$i18n.t("Finish")}</button
             >
           {:else}
             <button
               disabled
               class="px-4 py-2 primaryButton text-gray-600 transition rounded-lg w-[100px]"
             >
-              Finish</button
+              {$i18n.t("Finish")}</button
             >
           {/if}
         {/if}
         {#if current !== 2}
           <button
-            class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg w-[100px]"
-            on:click={nextStep}>Next</button
+            class=" px-4 py-2 flex justify-center items-center primaryButton text-gray-100 transition rounded-lg w-[100px]"
+            disabled={nextLoading}
+            on:click={nextStep}
           >
+            {#if nextLoading}
+              <svg
+                class=" w-4 h-4 mr-1"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                ><style>
+                  .spinner_ajPY {
+                    transform-origin: center;
+                    animation: spinner_AtaB 0.75s infinite linear;
+                  }
+                  @keyframes spinner_AtaB {
+                    100% {
+                      transform: rotate(360deg);
+                    }
+                  }
+                </style><path
+                  d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+                  opacity=".25"
+                /><path
+                  d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+                  class="spinner_ajPY"
+                /></svg
+              >
+            {/if}
+            {$i18n.t("Next")}
+          </button>
         {/if}
       </div>
     </div>

@@ -43,15 +43,14 @@ class FaceCompare:
             return_url= FACE_URL + "?user_id=" + metaInfo['user_id'] + "&timestamp=" + str(timestamp),
             # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
-            security_level="02"
-            # languageConfig="****",
+            security_level="02",
+            language_config="en"
             # styleConfig="****",
             # scene_code="****"
         )
 
         # 调用初始化API
         response = self.client.initialize(request)
-        print("initialize_response", response, FACE_URL + "?user_id=" + metaInfo['user_id'])
         return response
 
 
@@ -63,8 +62,6 @@ class FaceCompare:
         # 假设从初始化响应中获取交易ID
         transaction_id = init_response.body.result.transaction_id
         merchant_biz_id="c2371516-d114-4872-8de0-b9d2a42f9f7c" #常态，唯一业务标识
-
-        print("merchant_biz_id", merchant_biz_id)
         
         return {
             # "initialize_response": init_response,

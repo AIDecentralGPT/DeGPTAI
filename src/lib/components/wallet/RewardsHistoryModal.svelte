@@ -5,17 +5,14 @@
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
-  import { 
-    user,
-    showFollowTwitterModal,
-    showFollowTGGroupModal,
-   } from "$lib/stores";
+  import { user } from "$lib/stores";
   import {
     getRewardsHistory,
     creatWalletCheck,
     inviteCheck,
     clockInCheck,
   } from "$lib/apis/rewards";
+  import { getUserInfo } from "$lib/apis/users";
 
   const i18n = getContext("i18n");
 
@@ -293,16 +290,18 @@
                 {#if historyItem.status}
                   {historyItem.reward_amount} {historyItem.amount_type}
                 {:else}
-                  <div class="flex direction-column { historyItem.expird ? 'amount-expird-styl' : 'amount-styl' }">
+                  <div
+                    class="flex direction-column {historyItem.expird
+                      ? 'amount-expird-styl'
+                      : 'amount-styl'}"
+                  >
                     <div class="obtain-amount">
                       {historyItem.reward_amount}
                       {historyItem.amount_type}
                     </div>
                     {#if historyItem.expird}
-                      <button
-                        class="obtain-styl cursor-pointer"
-                      >
-                        <span>{ $i18n.t("Reward expird") }</span>
+                      <button class="obtain-styl cursor-pointer">
+                        <span>{$i18n.t("Reward expird")}</span>
                       </button>
                     {:else}
                       <button
@@ -311,10 +310,17 @@
                           ? "background: rgba(251, 251, 251, 0.8)"
                           : ""}
                         disabled={obtainLoad && selItem == historyItem?.id}
-                        on:click={() => {
+                        on:click={async () => {
+                          if (!$user?.verified) {
+                            const userInfo = await getUserInfo(localStorage.token);
+                            await user.set({
+                              ...$user,
+                              verified: userInfo?.verified,
+                            });
+                          }
                           selItem = historyItem?.id;
                           if ($user?.verified) {
-                            updateReward(historyItem.id, historyItem.reward_type);
+                            await updateReward(historyItem.id,historyItem.reward_type);
                           } else {
                             toast.warning(
                               $i18n.t("Please complete the KYC verification !")
@@ -323,13 +329,12 @@
                         }}
                       >
                         {#if obtainLoad && selItem == historyItem?.id}
-                          <span>{ $i18n.t("Obtain in...") }</span>
+                          <span>{$i18n.t("Obtain in...")}</span>
                         {:else}
-                          <span>{ $i18n.t("Obtain now") }</span>
+                          <span>{$i18n.t("Obtain now")}</span>
                         {/if}
                       </button>
                     {/if}
-                    
                   </div>
                 {/if}
               </td>

@@ -81,20 +81,20 @@
     document.getElementById("splash-screen")?.remove();
 
     // 创建并插入Google Analytics的script标签
-    const script = document.createElement("script");
-    script.src = "https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2";
-    script.async = true;
-    document.head.appendChild(script);
+    // const script = document.createElement("script");
+    // script.src = "https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2";
+    // script.async = true;
+    // document.head.appendChild(script);
 
-    // 初始化Google Analytics
-    script.onload = () => {
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-ELT9ER83T2");
-    };
+    // // 初始化Google Analytics
+    // script.onload = () => {
+    //   window.dataLayer = window.dataLayer || [];
+    //   function gtag() {
+    //     dataLayer.push(arguments);
+    //   }
+    //   gtag("js", new Date());
+    //   gtag("config", "G-ELT9ER83T2");
+    // };
 
     return () => {
       window.removeEventListener("resize", onResize);
@@ -138,10 +138,10 @@
             const proInfo = await isPro(localStorage.token);
             await user.set({
               ...localUser,
-              token: res?.token,
               isPro: proInfo ? proInfo.is_pro : false,
               proEndDate: proInfo ? proInfo.end_date : null,
               models: res?.models,
+              verified: res?.verified
             });
           }
           localStorage.user = JSON.stringify($user);

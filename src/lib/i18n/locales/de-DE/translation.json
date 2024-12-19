@@ -669,7 +669,7 @@
   "Wallet Adress": "Wallet-Adresse",
   "Your kyc rewards have not been credited.": "Ihre KYC-Belohnungen wurden noch nicht gutgeschrieben.",
   "Please use your mobile phone to scan the QR code below for identity verification": "Bitte verwenden Sie Ihr Mobiltelefon, um den unten stehenden QR-Code zur Identitätsverifikation zu scannen.",
-  "Preparing to switch to the face verification page": "Vorbereitung zum Wechsel auf die Gesichtserkennungsüberprüfungsseite.",
+  "Preparing to switch to the face verification page": "Vorbereitung zum Wechsel auf die Gesichtserkennungsüberprüfungsseite",
   "QR code is valid for 5 minutes": "Der QR-Code ist 5 Minuten lang gültig.",
   "Region": "Region",
   "Connected to": "Mit verbunden",
@@ -770,5 +770,8 @@
   "official website": "offizielle Website",
   "Code":"Code",
   "Enter email address":"E-Mail-Adresse eingeben",
-  "Enter verification code":"Verifizierungscode eingeben"
+  "Enter verification code":"Verifizierungscode eingeben",
+  "Previous":"vorherig",
+  "Finish":"fertig",
+  "Next":"nächster"
 }
