@@ -52,7 +52,7 @@
 
   // 返回首页
   function gotoHome() {
-    goto(`/`);
+    window.location.href = "https://test.degpt.ai"
   }
 
 </script>

@@ -551,8 +551,20 @@
           {/if}
           {#if isMobile}
             <div class="text-center">
-              <div>{$i18n.t("Preparing to switch to the face verification page")}</div>
-              <div class="ellipsis whitespace-nowrap"></div>
+              <div>
+                {$i18n.t("Preparing to switch to the face verification page")}
+              </div>
+              <div class="flex justify-center mt-2">
+                <svg
+                  class="animate-spin ml-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2em"
+                  height="2em"
+                  fill="currentColor"
+                  viewBox="0 0 1024 1024">
+                  <path d="M144.205 202.496a136.678 136.678 0 1 0 273.357 0 136.678 136.678 0 1 0-273.357 0zM41.728 492.902a119.578 119.578 0 1 0 239.155 0 119.578 119.578 0 1 0-239.155 0zM144.23 749.158a102.502 102.502 0 1 0 205.005 0 102.502 102.502 0 1 0-205.005 0zM435.2 861.926a89.6 89.6 0 1 0 179.2 0 89.6 89.6 0 1 0-179.2 0z m289.843-95.666a85.427 85.427 0 1 0 170.855 0 85.427 85.427 0 1 0-170.855 0z m136.704-290.433a68.326 68.326 0 1 0 136.653 0 68.326 68.326 0 1 0-136.653 0zM759.22 219.571a51.251 51.251 0 1 0 102.502 0 51.251 51.251 0 1 0-102.503 0zM512 85.376a34.176 34.176 0 1 0 68.352 0 34.176 34.176 0 1 0-68.352 0z"/>
+                </svg>
+              </div>
             </div>
           {/if}
 
@@ -655,29 +667,5 @@
   }
   .pos-rel {
     position: relative;
-  }
-
-  .ellipsis {
-    position: relative;
-    display: inline-block;
-  }
-  .ellipsis::after {
-    content: ".";
-    position: absolute;
-    animation: ellipsis 1.5s infinite;
-  }
-  @keyframes ellipsis {
-    0% {
-      content: ".";
-    }
-    33.33% {
-      content: "..";
-    }
-    66.66% {
-      content: "...";
-    }
-    100% {
-      content: ".";
-    }
   }
 </style>
