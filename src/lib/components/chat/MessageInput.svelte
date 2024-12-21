@@ -4,7 +4,6 @@
   import {
     mobile,
     modelfiles,
-    models,
     settings,
     showNewWalletModal,
     showOpenWalletModal,
@@ -70,17 +69,6 @@
       chatTextAreaElement.style.height = "";
       chatTextAreaElement.style.height = Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
     }
-  }
-
-  $: if ($settings) {
-    let filterModels = $models.filter(item => $settings.models.includes(item.model));
-    let imageFlag = false;
-    filterModels.forEach(item => {
-      if (item.support === 'image') {
-        imageFlag = true;
-      }
-    })
-    fileUploadEnabled = imageFlag;
   }
 
   let mediaRecorder:any;

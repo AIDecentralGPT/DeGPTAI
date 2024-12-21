@@ -350,7 +350,7 @@ async function handleWalletSignIn({
 
     if (walletSignInResult.token) {
       await chats.set([]); 
-      await chats.set(await getChatList(localStorage.token));
+      //await chats.set(await getChatList(localStorage.token));
     }
 
     console.log("walletSignInResult", walletSignInResult);

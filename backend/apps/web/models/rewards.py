@@ -15,7 +15,8 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 # 初始化Web3
-w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))
+# w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io')) 旧 合约 RPC
+w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新 合约 RPC
 router = APIRouter()
 import os
 
@@ -29,7 +30,9 @@ abi_path = os.path.join(current_dir, 'abi.json')
 with open(abi_path, 'r') as abi_file:
     DGC_ABI = json.load(abi_file)
 
-DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'  # 替换为实际地址
+# DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'  # 旧 合约地址
+DGC_TOKEN_CONTRACT_ADDRESS = '0x04024865D3ba51e9c2F4adDd7A20AA0dA496309A'  # 新 合约地址
+
 dgc_contract = w3.eth.contract(address=DGC_TOKEN_CONTRACT_ADDRESS, abi=DGC_ABI['abi'])
 
 # 定义 Rewards 表
@@ -76,6 +79,7 @@ class RewardsTable:
         self.db = db
         db.create_tables([Rewards])
 
+    # 添加奖励记录
     def insert_reward(self, user_id: str, reward_amount: float, reward_date: datetime, reward_type: str, transfer_hash: str, invitee: str, status: bool, show: bool, amount_type: str) -> Optional[RewardsModel]:
         reward = RewardsModel(
             id=str(uuid.uuid4()),
@@ -99,7 +103,8 @@ class RewardsTable:
         except Exception as e:
             log.error(f"insert_reward: {e}")
             return None
-        
+
+    # 更新奖励状态    
     def update_reward(self, id: str, transfer_hash: str, status: bool) -> Optional[RewardsModel]:
         try:
             query = Rewards.update(transfer_hash=transfer_hash, status=status).where(Rewards.id==id)
@@ -111,6 +116,7 @@ class RewardsTable:
             log.error(f"update_reward: {e}")
             return None
 
+    # 通过用户ID获取奖励记录 分页
     def get_rewards_by_user_id(self, user_id: str, pageNum: Optional[int]=1, pageSize: Optional[int]=10) -> Optional[List[RewardsModel]]:
         try:
             rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.show == True)).order_by(Rewards.reward_date.desc()).paginate(pageNum, pageSize);
@@ -118,6 +124,8 @@ class RewardsTable:
         except Exception as e:
             log.error(f"get_rewards_by_user_id: {e}")
             return None
+    
+    # 通过用户ID获取奖励总数
     def get_rewards_count_by_user_id(self, user_id: str) -> Optional[int]:
         try:
             total = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.show == True)).count();
@@ -126,6 +134,7 @@ class RewardsTable:
             log.error(f"get_rewards_by_user_id: {e}")
             return 0
     
+    # 通过ID获取奖励信息
     def get_rewards_by_id(self, id: str) -> Optional[RewardsModel]:
         try:
             rewards = Rewards.get_or_none(Rewards.id == id)
@@ -139,6 +148,7 @@ class RewardsTable:
             log.error(f"get_rewards_by_id: {e}")
             return None
     
+    # 通过用户ID获取用户创建钱包奖励
     def get_create_rewards_by_userid(self, user_id: str) -> Optional[RewardsModel]:
         try:
             rewards = Rewards.get_or_none(Rewards.user_id == user_id, Rewards.reward_type == 'new_wallet')
@@ -152,6 +162,7 @@ class RewardsTable:
             log.error(f"get_rewards_by_id: {e}")
             return None
     
+    # 通过邀请码获取奖励记录
     def get_rewards_by_invitee(self, invitee: str) -> Optional[List[RewardsModel]]:
         try:
             rewards = Rewards.select().where(Rewards.invitee == invitee)
@@ -160,6 +171,7 @@ class RewardsTable:
             log.error(f"get_rewards_by_id: {e}")
             return None
 
+    # 通过用户ID和奖励类型获取用户某天的奖励信息
     def get_rewards_by_user_id_and_date_and_reward_type(self, user_id: str, reward_date: date, reward_type: str) -> Optional[List[RewardsModel]]:
         try:
             rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.reward_type == reward_type) & (Rewards.show == True)
@@ -168,33 +180,36 @@ class RewardsTable:
         except Exception as e:
             log.error(f"get_rewards_by_user_id_and_date: {e}")
             return None
-        
+
+    # 接口调用创建记录    
     def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> Optional[RewardsModel]:
         try:
             # 插入奖励记录
             rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, "***************", invitee, False, show, "DGC")
             return rewards
         except Exception as e:
-            print("send_reward:", e)
+            print("create_reward:", e)
             return None
-        
+
+    # 接口调用创建DBC记录     
     def create_dbc_reward(self, recipient_address: str, amount: float, reward_type: str, tx_hash: str, invitee: Optional[str] = None) -> Optional[RewardsModel]:
         try:
             # 插入奖励记录
             rewards = self.insert_reward(recipient_address, amount, datetime.now(), reward_type, tx_hash, invitee, True, True, "DBC")
             return rewards
         except Exception as e:
-            print("send_reward:", e)
+            print("create_dbc_reward:", e)
             return None
 
-    def send_reward(self, reward_id: str, recipient_address: str, amount: float, reward_type: str) ->  Optional[RewardsModel]:
+    # 指定账户给用户转账DGC
+    def send_dgc_reward(self, reward_id: str, recipient_address: str, amount: float) ->  Optional[RewardsModel]:
         try:
-            sender_private_key = '0xdbee5204091639ded19bef844221ac09216a56cee27682451e288e9b50853ce3'
+            sender_private_key = '0x39a2cd7e8425c48367894bb43ef701e0f44edf4942b4444ab0961b2191aa06d7'
             sender_address = Account.from_key(sender_private_key).address
 
             nonce = w3.eth.get_transaction_count(sender_address)
             gas_price = w3.eth.gas_price
-            gas_limit = 250000  # 增加 gas limit，适用于复杂的合约调用
+            gas_limit = 25000  # 增加 gas limit，适用于复杂的合约调用
 
             # 将amount转换为DGC的最小单位
             amount_wei = w3.to_wei(amount, 'ether')  # 将 amount 转换为 wei 单位
@@ -203,8 +218,8 @@ class RewardsTable:
 
             # 调用合约的 transfer 函数
             tx = dgc_contract.functions.transfer(recipient_address, int(amount_wei)).build_transaction({
-                # 'chainId': w3.eth.chain_id,
                 'from': sender_address,
+                'chainId': w3.eth.chain_id,
                 'nonce': nonce,
                 'gas': gas_limit,
                 'gasPrice': gas_price,
@@ -214,20 +229,67 @@ class RewardsTable:
             signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key)
             tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
 
+            print("==============dgc=================", tx_hash.hex())
+
             # 更新记录
-            result = self.update_reward(reward_id, tx_hash.hex(), True)
-            return result
+            if reward_id is not None:
+                result = self.update_reward(reward_id, tx_hash.hex(), True)
+                return result
         
         except Exception as e:
-            print("send_reward:", e)
+            print("send_dgc_reward:", e)
+            return None
+        
+    # 指定账户给用户转账DBC
+    def send_dbc_reward(self, reward_id: str, recipient_address: str, amount: float) ->  Optional[RewardsModel]:
+        try:
+            sender_private_key = '0xdbee5204091639ded19bef844221ac09216a56cee27682451e288e9b50853ce3'
+            sender_address = Account.from_key(sender_private_key).address
+
+            nonce = w3.eth.get_transaction_count(sender_address)
+            gas_price = w3.eth.gas_price
+            gas_limit = 25000  # 增加 gas limit，适用于复杂的合约调用
+
+            # 将amount转换为DGC的最小单位
+            amount = 0.01
+            amount_wei = w3.to_wei(amount, 'ether')  # 将 amount 转换为 wei 单位
+
+            # 组合tx
+            tx = {
+                'from': sender_address,
+                'nonce': nonce,
+                'to': recipient_address,
+                'value': amount_wei,
+                'gas': gas_limit,  # 标准的以太坊转账 gas 用量
+                'gasPrice': gas_price,
+                'chainId': w3.eth.chain_id  # 获取当前网络的 chainId
+            }
+
+            print("=================================", tx)
+
+            # 签名交易
+            signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key)
+            tx_hash = w3.eth.send_transaction(signed_txn.rawTransaction)
+            print("==============dbc=================", tx_hash.hex())
+
+            # 更新记录
+            if reward_id is not None:
+                result = self.update_reward(reward_id, tx_hash.hex(), True)
+                return result
+        
+        except Exception as e:
+            print("send_dbc_reward:", e)
             return None
 
+    # 获取创建钱包奖励总数
     def get_issue_reward(self) -> int:
         return Rewards.select().where(Rewards.reward_type=="new_wallet", Rewards.amount_type == 'DGC', Rewards.status==True).count()
 
+    # 获取邀请奖励总数
     def get_invitee_total(self) -> int:
         return Rewards.select().where(Rewards.reward_type=="invite", Rewards.show==True).count()
-    
+
+    # 获取邀请奖励应发放总数    
     def get_invitee_reward_total(self) -> int:
         try:
             sql = "select count(r.*) as count from rewards r \
@@ -242,10 +304,12 @@ class RewardsTable:
         except Exception as e:
             print(f"执行查询时出现错误: {e}")
             return 0
-    
+
+    # 获取邀请奖励已发放总数
     def get_issue_invitee_reward_total(self) -> int:
         return Rewards.select().where(Rewards.reward_type=="invite", Rewards.status == True, Rewards.show==True).count()
-    
+
+    # 获取30分钟前KYC已认证未发放的注册奖励    
     def sync_regist_rewards(self) -> Optional[List[RewardsModel]]:
         try:
             ten_minutes_ago = datetime.now() - timedelta(minutes = 30)
@@ -261,7 +325,8 @@ class RewardsTable:
         except Exception as e:
             print(f"执行查询时出现错误: {e}")
             return None
-        
+
+    # 获取30分钟前KYC已认证未发放的邀请奖励     
     def sync_invite_rewards(self) -> Optional[List[RewardsModel]]:
         try:
             ten_minutes_ago = datetime.now() - timedelta(minutes = 30)

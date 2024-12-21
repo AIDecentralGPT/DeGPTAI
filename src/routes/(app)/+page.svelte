@@ -409,16 +409,16 @@
       _chatId
     );
 
-    const docs = messages
-      .filter((message) => message?.files ?? null)
-      .map((message) =>
-        message.files.filter(
-          (item) => item.type === "doc" || item.type === "collection"
-        )
-      )
-      .flat(1);
+    // const docs = messages
+    //   .filter((message) => message?.files ?? null)
+    //   .map((message) =>
+    //     message.files.filter(
+    //       (item) => item.type === "doc" || item.type === "collection"
+    //     )
+    //   )
+    //   .flat(1);
 
-    console.log(docs);
+    // console.log(docs);
 
     scrollToBottom();
 
