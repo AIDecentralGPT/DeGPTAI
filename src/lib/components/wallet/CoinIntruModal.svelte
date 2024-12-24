@@ -43,7 +43,7 @@
 </script>
 
 <Modal bind:show size={$showCoinIntruType === "dgc" ? "md" : "sm"}>
-  <div class="xs:h-auto flex flex-col w-full">
+  <div class="flex flex-col overflow-y-auto w-full h-[80vh]">
     <div class="p-6 pt-0 shadow-md mt-0 flex-1">
       <div class="flex flex-col item-center pt-5">
         {#if $showCoinIntruType === "dgc"}
@@ -66,11 +66,10 @@
             </div>
             <div class="ml-4">
               {#each coinIntrus[0].imp_step.step2.list as item, index}
-                <div class="flex flex-row items-center">
-                  <div class="flex justify-center items-center size-3.5 mr-2 bg-orange-200 rounded-full text-gray-800 text-xs font-bold">{index + 1}</div>
-                  <span class="text-orange-200 text-base">{$i18n.t(item.tip)}：</span>
-                  <div class="flex flex-row items-center">
-                    <span class="text-orange-200 text-base">{ item.info }</span>
+                <div class="flex">
+                  <div class="size-4 min-w-4 mt-1.5 mr-2 bg-orange-200 rounded-full text-gray-800 text-xs font-bold text-center">{index + 1}</div>
+                  <div>
+                    <span class="text-orange-200 text-base break-all">{$i18n.t(item.tip)}：{ item.info }</span>
                     <button
                       on:click={async () => {
                         const res = await copyToClipboard(item.info, false);
@@ -118,6 +117,43 @@
             </div>
             <div class="text-orange-200 text-base">
               {$i18n.t(coinIntrus[0].imp_step.step3.info)}
+              <button
+                on:click={async () => {
+                  const res = await copyToClipboard(coinIntrus[0].imp_step.step3.info, false);
+                  if (res) {
+                    toast.success(
+                      $i18n.t("Copying to clipboard was successful!")
+                    );
+                  }
+                }}
+                type="button"
+                class="px-3 py-2 leading-3 text-orange-200 rounded-md text-xs"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 512 512"
+                ><rect
+                  width="336"
+                  height="336"
+                  x="128"
+                  y="128"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                  rx="57"
+                  ry="57"
+                  /><path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="32"
+                      d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                      /></svg>
+              </button>
             </div>
           </div>
           <p class="text-orange-200 text-base font-bold mt-2">
