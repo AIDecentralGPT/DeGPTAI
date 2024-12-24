@@ -5,7 +5,8 @@ from apps.web.models.rewards import RewardsTableInstance, RewardsModel
 import threading
 
 #接口请求地址
-baseUrl = "http://34.234.201.126:8081"
+#baseUrl = "http://34.234.201.126:8081" # 旧地址
+baseUrl = "http://34.234.201.126:8082" # 新地址
 
 class RewardApi: 
 
