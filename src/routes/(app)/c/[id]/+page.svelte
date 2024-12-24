@@ -193,7 +193,7 @@
 
 // 2. 点击提交按钮，触发检查
 const submitPrompt = async (userPrompt, _user = null) => {
-	// console.log("===========================11111===================");
+	console.log("===========================11111===================");
 	console.log('submitPrompt', $chatId);
 	console.log("点击了", firstResAlready);
 			

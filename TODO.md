@@ -71,7 +71,6 @@ Creating的时候，加上 灰色背景
 自定义钱包，转账有问题，（购买的时候）
 购买的时候加上loading
 
-transferDgc和walletconnectSendDGCTransaction，现在购买订阅pro的请求，逻辑还没做完
 
 发放奖励，邀请要限制十个人
 

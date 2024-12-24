@@ -56,13 +56,13 @@ export const getDeModels = async (token: string = "") => {
         desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nemotron 70B)
-      {
-        name: "Nemotron 3.1",
-        model: "Llama-3.1-Nemotron-70B",
-        tip: "Nemotron 3.1",
-        support: "text",
-        desc: "Suitable for most tasks"
-      },
+      // {
+      //   name: "Nemotron 3.1",
+      //   model: "Llama-3.1-Nemotron-70B",
+      //   tip: "Nemotron 3.1",
+      //   support: "text",
+      //   desc: "Suitable for most tasks"
+      // },
       // Nvidia LLM(Nvidia 3.1)
       // {
       //   name: "Nvidia 3.1",

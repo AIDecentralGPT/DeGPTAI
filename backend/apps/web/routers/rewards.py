@@ -31,16 +31,6 @@ async def check_ip(user_id: str, ip_address: str):
         IpLog.create(user=user, ip_address=ip_address)
         return True  # IP地址未使用过，已添加
 
-# 用户领取奖励
-@router.post("/rewards/{user_id}/claim")
-async def claim_reward(request: Request, user_id: str, device_id: str, user=Depends(get_verified_user)):
-
-    success = RewardsTableInstance.send_reward(user_id, 200)
-    if success:
-        return {"message": "Reward sent successfully"}
-    else:
-        raise HTTPException(status_code=500, detail="Failed to send reward")
-
 # 用户创建领取奖励
 user_locks_dict = {}
 @router.post("/creat_wallet_check")

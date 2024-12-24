@@ -10,7 +10,8 @@ import { getDbcBalance } from "./dbc";
 import { toast } from "svelte-sonner";
 
 // DGC 合约地址
-const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 请替换为实际地址
+//const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧地址
+const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新地址
 
 // // ERC-20 ABI
 // const ERC20_ABI = [
@@ -21,8 +22,11 @@ const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26';
 //   // 其他你可能需要的 ERC-20 方法
 // ];
 // 定义 RPC URL 和 Chain ID
-const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
-const chainId = 19850818; // 或者 DGC 的 Chain ID
+// const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
+const rpcUrl = "https://rpc.dbcwallet.io";  // 新 的 RPC URL
+
+// const chainId = 19850818; // 旧 的 Chain ID
+const chainId = 19880818; // 新 的 Chain ID
 
 // 创建 provider
 const provider = new ethers.JsonRpcProvider(rpcUrl);

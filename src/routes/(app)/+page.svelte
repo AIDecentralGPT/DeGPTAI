@@ -216,12 +216,22 @@
   //////////////////////////
 
   const submitPrompt = async (userPrompt, _user = null) => {
-    console.log("===========================222222===================");
     console.log("submitPrompt", $chatId);
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
     );
+    
+    // 校验模型是否支持文件类型
+    if (files.length > 0) {
+      let imageModels = $models.filter(item => item.support == "image");
+      selectedModels = imageModels.filter(item => selectedModels.includes(item.model))
+        .map(item => item.model);
+      if (selectedModels.length == 0) {
+        toast.error("不支持");
+        return;
+      }
+    }
 
     console.log("selectedModels", selectedModels);
 
@@ -409,16 +419,16 @@
       _chatId
     );
 
-    const docs = messages
-      .filter((message) => message?.files ?? null)
-      .map((message) =>
-        message.files.filter(
-          (item) => item.type === "doc" || item.type === "collection"
-        )
-      )
-      .flat(1);
+    // const docs = messages
+    //   .filter((message) => message?.files ?? null)
+    //   .map((message) =>
+    //     message.files.filter(
+    //       (item) => item.type === "doc" || item.type === "collection"
+    //     )
+    //   )
+    //   .flat(1);
 
-    console.log(docs);
+    // console.log(docs);
 
     scrollToBottom();
 
@@ -441,8 +451,7 @@
                 }
               : undefined,
             ...messages,
-          ]
-            .filter((message) => message)
+          ].filter((message) => message)
             .filter((message) => message.content != "")
             .map((message, idx, arr) => ({
               role: message.role,
