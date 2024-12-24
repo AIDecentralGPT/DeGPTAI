@@ -49,7 +49,7 @@ export const getChatList = async (token: string = '') => {
 	// 	return 
 	// }
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/chats/123`, {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/chats/`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',

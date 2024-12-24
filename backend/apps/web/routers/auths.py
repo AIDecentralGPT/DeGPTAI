@@ -893,7 +893,7 @@ async def faceliveness_check_for_ws(id: str):
                 print("rewards_history", rewards_history)
                 if rewards_history is not None and rewards_history.status == False:
                     ## 判断领取那种奖励
-                    if rewards_history.invitee is not None:
+                    if rewards_history.invitee is not None and rewards_history.invitee != '':
                         ## 获取奖励记录校验是那种奖励
                         rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
                         if len(rewards) == 2:

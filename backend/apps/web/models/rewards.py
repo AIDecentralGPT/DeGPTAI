@@ -10,6 +10,7 @@ from eth_account import Account
 from playhouse.shortcuts import model_to_dict
 import json
 from fastapi import APIRouter
+import time
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -31,7 +32,7 @@ with open(abi_path, 'r') as abi_file:
     DGC_ABI = json.load(abi_file)
 
 # DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'  # 旧 合约地址
-DGC_TOKEN_CONTRACT_ADDRESS = '0x04024865D3ba51e9c2F4adDd7A20AA0dA496309A'  # 新 合约地址
+DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'  # 新 合约地址
 
 dgc_contract = w3.eth.contract(address=DGC_TOKEN_CONTRACT_ADDRESS, abi=DGC_ABI['abi'])
 
@@ -202,23 +203,22 @@ class RewardsTable:
             return None
 
     # 指定账户给用户转账DGC
-    def send_dgc_reward(self, reward_id: str, recipient_address: str, amount: float) ->  Optional[RewardsModel]:
+    def send_dgc_reward(self, index: int, recipient_address: str, amount: float) ->  str:
         try:
-            sender_private_key = '0x39a2cd7e8425c48367894bb43ef701e0f44edf4942b4444ab0961b2191aa06d7'
-            sender_address = Account.from_key(sender_private_key).address
+            sender_private_key = ['0x39a2cd7e8425c48367894bb43ef701e0f44edf4942b4444ab0961b2191aa06d7', '0x9e02e05c71825df2a73ca49da5d4353c27c2a8e5d016e5d8dd03c5a20d6d5895']
+            sender_address = Account.from_key(sender_private_key[index]).address
 
             nonce = w3.eth.get_transaction_count(sender_address)
             gas_price = w3.eth.gas_price
-            gas_limit = 25000  # 增加 gas limit，适用于复杂的合约调用
+            gas_limit = 300000  # 增加 gas limit，适用于复杂的合约调用
 
-            # 将amount转换为DGC的最小单位
-            amount_wei = w3.to_wei(amount, 'ether')  # 将 amount 转换为 wei 单位
+            # 将 amount 转换为 wei 单位
+            amount_wei = w3.to_wei(amount, 'ether')
 
-            print("amount", amount, "amount_wei", amount_wei, "w3.eth.chain_id", w3.eth.chain_id)
+            print(sender_address, recipient_address, amount, "amount_wei", amount_wei, "chain_id", w3.eth.chain_id)
 
             # 调用合约的 transfer 函数
             tx = dgc_contract.functions.transfer(recipient_address, int(amount_wei)).build_transaction({
-                'from': sender_address,
                 'chainId': w3.eth.chain_id,
                 'nonce': nonce,
                 'gas': gas_limit,
@@ -226,60 +226,92 @@ class RewardsTable:
             })
 
             # 签名交易
-            signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key)
+            signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key[index])
             tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
 
             print("==============dgc=================", tx_hash.hex())
 
+            time.sleep(6)
+            receipt = w3.eth.get_transaction_receipt(tx_hash)
+
+            if receipt:
+                if receipt['status'] == 1:
+                    return {'hash': tx_hash.hex(), 'status': True}
+                else:
+                    return {'hash': tx_hash.hex(), 'status': False}
+            else:
+                return {'hash': tx_hash.hex(), 'status': False}
+
             # 更新记录
-            if reward_id is not None:
-                result = self.update_reward(reward_id, tx_hash.hex(), True)
-                return result
+            # if reward_id is not None:
+            #     result = self.update_reward(reward_id, tx_hash.hex(), True)
+            #     return result
         
         except Exception as e:
             print("send_dgc_reward:", e)
-            return None
+            return {'hash': None, 'status': False}
         
     # 指定账户给用户转账DBC
-    def send_dbc_reward(self, reward_id: str, recipient_address: str, amount: float) ->  Optional[RewardsModel]:
+    def send_dbc_reward(self, index: int, recipient_address: str, amount: float) ->  str:
         try:
-            sender_private_key = '0xdbee5204091639ded19bef844221ac09216a56cee27682451e288e9b50853ce3'
-            sender_address = Account.from_key(sender_private_key).address
+            sender_private_key = ['0x39a2cd7e8425c48367894bb43ef701e0f44edf4942b4444ab0961b2191aa06d7', '0x9e02e05c71825df2a73ca49da5d4353c27c2a8e5d016e5d8dd03c5a20d6d5895']
+            sender_address = Account.from_key(sender_private_key[index]).address
 
             nonce = w3.eth.get_transaction_count(sender_address)
             gas_price = w3.eth.gas_price
-            gas_limit = 25000  # 增加 gas limit，适用于复杂的合约调用
+            gas_limit = 21000  # 增加 gas limit，适用于复杂的合约调用
 
             # 将amount转换为DGC的最小单位
-            amount = 0.01
             amount_wei = w3.to_wei(amount, 'ether')  # 将 amount 转换为 wei 单位
 
             # 组合tx
             tx = {
-                'from': sender_address,
+                'chainId': w3.eth.chain_id,  # 获取当前网络的 chainId
                 'nonce': nonce,
                 'to': recipient_address,
                 'value': amount_wei,
                 'gas': gas_limit,  # 标准的以太坊转账 gas 用量
-                'gasPrice': gas_price,
-                'chainId': w3.eth.chain_id  # 获取当前网络的 chainId
+                'gasPrice': gas_price            
             }
 
-            print("=================================", tx)
-
             # 签名交易
-            signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key)
-            tx_hash = w3.eth.send_transaction(signed_txn.rawTransaction)
+            signed_txn = w3.eth.account.sign_transaction(tx, sender_private_key[index])
+            tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+
             print("==============dbc=================", tx_hash.hex())
 
+            time.sleep(6)
+            receipt = w3.eth.get_transaction_receipt(tx_hash)
+            if receipt:
+                if receipt['status'] == 1:
+                    return {'hash': tx_hash.hex(), 'status': True}
+                else:
+                    return {'hash': tx_hash.hex(), 'status': False}
+            else:
+                return {'hash': tx_hash.hex(), 'status': False}
+
             # 更新记录
-            if reward_id is not None:
-                result = self.update_reward(reward_id, tx_hash.hex(), True)
-                return result
+            # if reward_id is not None:
+            #     result = self.update_reward(reward_id, tx_hash.hex(), True)
+            #     return result
         
         except Exception as e:
             print("send_dbc_reward:", e)
-            return None
+            return {'hash': None, 'status': False}
+        
+    # 校验交易结果
+    def check_reward(self, tx_hash: str) ->  Optional[bool]:
+        try:
+            receipt = w3.eth.get_transaction_receipt(tx_hash)
+            if receipt:
+                if receipt['status'] == 1:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        except Exception as e:
+            return False
 
     # 获取创建钱包奖励总数
     def get_issue_reward(self) -> int:

@@ -3,52 +3,158 @@
   export let show = false;
   import { getContext } from "svelte";
   import { showCoinIntruType } from "$lib/stores";
+  import { copyToClipboard } from "$lib/utils";
+  import { toast } from "svelte-sonner";
   const i18n = getContext("i18n");
 
   let coinIntrus = [
     {
       title: "About DGC",
-      description: "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy."
+      wallet_tip: "Instructions for importing private keys into wallets",
+      wallet_inst:"The private keys of wallets created on the website can be imported into the following wallets, such as Metamask, imToken...",
+      imp_tip: "Steps for importing wallets",
+      imp_step: {
+        step1: {
+          tip: "Click on [Add Custom Network]",
+        },
+        step2: {
+          tip: "Enter the following information",
+          list: [
+            { tip: "Network Name", info: "DeepBrain Chain Mainnet" },
+            { tip: "Chain RPC Address", info: "https://rpc.dbcwallet.io" },
+            { tip: "Chain ID", info: "19880818" },
+            { tip: "Coin Symbol", info: "DBC" },
+          ],
+        },
+        step3: {
+          tip: "The contract address of DGC",
+          info: "0x04024865D3ba51e9c2F4adDd7A20AA0dA496309A",
+        },
+      },
+      inst: "Instructions",
+      desc: "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.",
+      help: "If the problem remains unresolved, please join the Telegram group and follow us on X",
     },
     {
       title: "About DBC",
-      description: "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs."
-    }
+      description: "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.",
+    },
   ];
-
 </script>
 
-<Modal bind:show size="sm">
+<Modal bind:show size={$showCoinIntruType === "dgc" ? "md" : "sm"}>
   <div class="xs:h-auto flex flex-col w-full">
     <div class="p-6 pt-0 shadow-md mt-0 flex-1">
       <div class="flex flex-col item-center pt-5">
-        {#if $showCoinIntruType === 'dgc'}
+        {#if $showCoinIntruType === "dgc"}
           <h1 class="text-orange-200 text-center font-bold">{$i18n.t(coinIntrus[0].title)}</h1>
-          <p class="text-orange-200 text-xl">{$i18n.t(coinIntrus[0].description)}</p>
+          <p class="text-orange-200 text-base font-bold">
+            1. {$i18n.t(coinIntrus[0].wallet_tip)}：
+          </p>
+          <div class="text-orange-200 text-base">
+            {$i18n.t(coinIntrus[0].wallet_inst)}
+          </div>
+          <p class="text-orange-200 text-base font-bold mt-2">
+            2. {$i18n.t(coinIntrus[0].imp_tip)}：
+          </p>
+          <div>
+            <div class="text-orange-200 text-base">
+              ① {$i18n.t(coinIntrus[0].imp_step.step1.tip)}
+            </div>
+            <div class="text-orange-200 text-base">
+              ② {$i18n.t(coinIntrus[0].imp_step.step2.tip)}：
+            </div>
+            <div class="ml-4">
+              {#each coinIntrus[0].imp_step.step2.list as item, index}
+                <div class="flex flex-row items-center">
+                  <div class="flex justify-center items-center size-3.5 mr-2 bg-orange-200 rounded-full text-gray-800 text-xs font-bold">{index + 1}</div>
+                  <span class="text-orange-200 text-base">{$i18n.t(item.tip)}：</span>
+                  <div class="flex flex-row items-center">
+                    <span class="text-orange-200 text-base">{ item.info }</span>
+                    <button
+                      on:click={async () => {
+                        const res = await copyToClipboard(item.info, false);
+                        if (res) {
+                          toast.success(
+                            $i18n.t("Copying to clipboard was successful!")
+                          );
+                        }
+                      }}
+                      type="button"
+                      class="px-3 py-2 leading-3 text-orange-200 rounded-md text-xs"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 512 512"
+                        ><rect
+                          width="336"
+                          height="336"
+                          x="128"
+                          y="128"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="32"
+                          rx="57"
+                          ry="57"
+                        /><path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="32"
+                          d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"
+                        /></svg
+                      >
+                    </button>
+                  </div>
+                </div>
+              {/each}
+            </div>
+            <div class="text-orange-200 text-base">
+              ③ {$i18n.t(coinIntrus[0].imp_step.step3.tip)}
+            </div>
+            <div class="text-orange-200 text-base">
+              {$i18n.t(coinIntrus[0].imp_step.step3.info)}
+            </div>
+          </div>
+          <p class="text-orange-200 text-base font-bold mt-2">
+            3. {$i18n.t(coinIntrus[0].inst)}
+          </p>
+          <div class="text-orange-200 text-base">
+            {$i18n.t(coinIntrus[0].desc)}
+          </div>
+          <p class="text-orange-200 text-base font-bold mt-2">
+            4. {$i18n.t(coinIntrus[0].help)}
+          </p>
         {:else}
-          <h1 class="text-orange-200 text-center font-bold">{$i18n.t(coinIntrus[1].title)}</h1>
-          <p class="text-orange-200 text-xl">{$i18n.t(coinIntrus[1].description)}</p>
+          <h1 class="text-orange-200 text-center font-bold">
+            {$i18n.t(coinIntrus[1].title)}
+          </h1>
+          <p class="text-orange-200 text-base">
+            {$i18n.t(coinIntrus[1].description)}
+          </p>
         {/if}
       </div>
       <div class="text-center pt-5">
-        <button class="primaryButton px-2 py-1 rounded-lg text-lg"
+        <button
+          class="primaryButton px-2 py-1 rounded-lg text-lg"
           on:click={async () => {
             show = false;
-          }}>
+          }}
+        >
           {$i18n.t("I konw")}
         </button>
-      </div> 
+      </div>
     </div>
   </div>
 </Modal>
 
 <style>
   h1 {
-    font-size: 24px;
+    font-size: 20px;
     margin-bottom: 16px;
-  }
-  p {
-    font-size: 16px;
-    margin: 8px 0;
   }
 </style>

@@ -9,8 +9,10 @@ import dayjs from 'dayjs';
 import { Base64 } from 'js-base64';
 
 // 定义 RPC URL 和 Chain ID
-const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 或者 DGC 的 RPC URL
-const chainId = 19850818; // 或者 DGC 的 Chain ID
+// const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
+const rpcUrl = "https://rpc.dbcwallet.io"; // 新 的 RPC URL
+// const chainId = 19850818; // 旧 的 Chain ID
+const chainId = 19880818; //新 的 Chain ID
 
 // 创建 provider
 const provider = new ethers.JsonRpcProvider(rpcUrl);
@@ -350,7 +352,7 @@ async function handleWalletSignIn({
 
     if (walletSignInResult.token) {
       await chats.set([]); 
-      //await chats.set(await getChatList(localStorage.token));
+      await chats.set(await getChatList(localStorage.token));
     }
 
     console.log("walletSignInResult", walletSignInResult);

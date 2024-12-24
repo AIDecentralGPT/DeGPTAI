@@ -64,21 +64,21 @@ export const getDeModels = async (token: string = "") => {
         desc: "Suitable for most tasks"
       },
       // Nvidia LLM(Nvidia 3.1)
-      {
-        name: "Nvidia 3.1",
-        model: "NVLM-D-72B",
-        tip: "Nvidia 3.1",
-        support: "image",
-        desc: "Support image recognition"
-      },
+      // {
+      //   name: "Nvidia 3.1",
+      //   model: "NVLM-D-72B",
+      //   tip: "Nvidia 3.1",
+      //   support: "image",
+      //   desc: "Support image recognition"
+      // },
       // DeepSeek(Coder V2)
-      {
-        name: "Deepseek coder2.0",
-        model: "DeepSeek-Coder-V2",
-        tip: "Deepseek coder2.0",
-        support: "text",
-        desc: "Optimize code writing"
-      },
+      // {
+      //   name: "Deepseek coder2.0",
+      //   model: "DeepSeek-Coder-V2",
+      //   tip: "Deepseek coder2.0",
+      //   support: "text",
+      //   desc: "Optimize code writing"
+      // },
       // Code LLM (Codestral-22B-v0.1)
       // {
       //   name: "Codestral 0.1", 
