@@ -28,7 +28,7 @@
         },
         step3: {
           tip: "The contract address of DGC",
-          info: "0x04024865D3ba51e9c2F4adDd7A20AA0dA496309A",
+          info: "0x18386F368e7C211E84324337fA8f62d5093272E1",
         },
       },
       inst: "Instructions",
