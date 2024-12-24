@@ -34,6 +34,15 @@ class WalletTable:
         self.db = db
         db.create_tables([Wallet])
 
+    # 批量添加用户余额
+    def batch_wallet(self, wallets: List[WalletModel]) -> bool:
+        try:
+            Wallet.insert_many(wallets).execute()
+            return True
+        except Exception as e:
+            print("=======================", e)
+            return False
+
     # 更新DGC奖励状态    
     def update_wallet_dgc(self, user_id: str, dgc_hash: str, dgc_status: bool) -> bool:
         try:
