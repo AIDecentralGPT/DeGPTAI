@@ -31,7 +31,7 @@ class RewardApi:
             # 打印响应内容
             print("===========registReward===========", response.text)
             response_json = json.loads(response.text);
-            if response_json['code'] == 0:       
+            if response_json['code'] == 0:
                 # 更新记录
                 dgc_hash = response_json['result']['Data']['DGCTxHash']
                 result = RewardsTableInstance.update_reward(reward_id, dgc_hash, True)
@@ -41,23 +41,22 @@ class RewardApi:
             else:
                 return None
         except Exception as e:
-            print("registReward:", e)
+            print("===========registReward===========:", e)
             return None
 
     #邀请奖励
     def inviteReward(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
         try:
-            # 用户领取注册奖励
-            inviteeResult = self.registReward(invitee.id, invitee.user_id);
-            if inviteeResult == None:
-                return None
-
+            # 获取记录判断是否已经领取，领取不可再次领取
+            reward = RewardsTableInstance.get_rewards_by_id(invite.id)
+            if reward.status:
+                return reward
             # 用户领取邀请奖励
             ##拼接请求地址
             url = f"{self.apiUrl}/claim_invite_reward"
             ##请求体
             data = {"inviter_id": invite.user_id, "invitee_id": invitee.user_id, "inviter_amount": int(invite.reward_amount), "invitee_amount": 0}
-            print("===========inviteReward参数===========:", data);
+            print("===========inviteReward-data===========", data)
             ## 发送POST请求
             response = requests.post(url, json.dumps(data))
             ## 校验请求是否成功
@@ -67,30 +66,25 @@ class RewardApi:
             response_json = json.loads(response.text)
             if (response_json['code'] == 0):       
                 ## 更新记录
-                RewardsTableInstance.update_reward(invite.id, response_json['result']['Data']['inviterTxHash'], True)
-                return inviteeResult
+                return RewardsTableInstance.update_reward(invite.id, response_json['result']['Data']['inviterTxHash'], True)
             else:
                 return None
         except Exception as e:
-            print("inviteReward:", e)
+            print("===========inviteReward===========", e)
             return None
 
 
-     #邀请奖励多线程
-    
-    def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
+    # 邀请奖励线程   
+    def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel):
+        thread = threading.Thread(target=self.inviteRewardMore, kwargs={"invite": invite, "invitee": invitee})
+        thread.start()
 
-        create_thread = threading.Thread(target=self.registReward, kwargs={"reward_id": invitee.id, "user_id": invitee.user_id})
-        invite_thread = threading.Thread(target=self.inviteReward, kwargs={"invite": invite, "invitee": invitee})
-
-        create_thread.start()
-        invite_thread.start()
-
-        create_thread.join()
-        invite_thread.join()
-
-        createResult = RewardsTableInstance.get_rewards_by_id(invitee.id)
-        return createResult
+    # 邀请奖励失败做重复执行
+    def inviteRewardMore(self, invite: RewardsModel, invitee: RewardsModel):
+        if invite is not None:
+            result = self.inviteReward(invite, invitee)
+            if result is None:
+                result = self.inviteReward(invite, invitee)
     
     #每日奖励
     def dailyReward(self, reward_id: str, user_id: str) ->  Optional[RewardsModel]:

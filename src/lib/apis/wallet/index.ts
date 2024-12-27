@@ -5,7 +5,7 @@ export const getTransactions = async (address: string) => {
 
   const res = await Promise.all([
     fetch(
-      `https://testnet.dbcscan.io/api/v2/addresses/${address}/transactions`,
+      `https://www.dbcscan.io/api/v2/addresses/${address}/transactions`,
       {
         method: "GET",
         headers: {
@@ -14,7 +14,7 @@ export const getTransactions = async (address: string) => {
         },
       }
     ),
-    fetch(`https://testnet.dbcscan.io/api/v2/addresses/${address}/token-transfers?type=`, {
+    fetch(`https://www.dbcscan.io/api/v2/addresses/${address}/token-transfers?type=`, {
       method: "GET",
       headers: {
         Accept: "application/json",

@@ -1,13 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from apps.web.models.errorlog import ErrorLogInstance, ErrorLogRequest
 
-import os
-
 
 router = APIRouter()
-
-# 获取当前文件的目录
-current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 添加IP记录
 @router.post("/add")
