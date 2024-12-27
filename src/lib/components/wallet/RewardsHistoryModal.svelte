@@ -110,7 +110,7 @@
     }
     await rewardApiMethod(localStorage.token, id)
       .then((res) => {
-        console.log("Clock In Check res", res);
+        console.log("Rewards Check res", res);
         if (res?.ok) {
           const checkReward = res.data;
           const index = rewardsHistory?.row.findIndex(
@@ -130,9 +130,9 @@
         }
       })
       .catch((res) => {
-        console.log("Clock In Check  error", res);
+        console.log("Rewards Check  error", res);
       });
-    console.log("Clock In Check res update", rewardsHistory);
+    console.log("Rewards Check res update", rewardsHistory);
     obtainLoad = false;
   }
 

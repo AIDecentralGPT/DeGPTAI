@@ -57,34 +57,19 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
         if not user_find.verified:
             raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
         
-        # 判断领取那种奖励
-        if rewards_history.invitee is not None:
-            # 赋值奖励信息
-            inviteReward = None;
-            inviteeReward = None;
+        # 领取注册奖励
+        rewards_history = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+
+        # 判断是否有邀请奖励
+        if rewards_history.invitee is not None and rewards_history.invitee != '':
             rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-            if len(rewards) != 2:
-                raise HTTPException(status_code=500, detail="Failed to received reward")       
-            for reward in rewards:
-                if reward.reward_type == 'invite':
-                    if reward.show:
-                        inviteReward = reward
-                else:
-                    inviteeReward = reward
-            # 领取邀请奖励
-            result = RewardApiInstance.inviteReward(inviteReward, inviteeReward)
-            if result is not None:
-                return {"ok": True, "data": result}
-            else:
-                raise HTTPException(status_code=500, detail="Failed to received reward")
-        else:
-            # 领取注册奖励
-            result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-            if result is not None:
-                return {"ok": True, "data": result}
-            else:
-                raise HTTPException(status_code=500, detail="Failed to received reward")
-            
+            if len(rewards) == 2:    
+                # 领取邀请奖励
+                inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
+                if inviteReward is not None:
+                    RewardApiInstance.inviteReward(inviteReward, rewards_history)
+
+        return {"ok": True, "data": rewards_history}
     except Exception as e:
         print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Failed to received reward")
@@ -159,7 +144,7 @@ async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user
 @router.post("/invite_check")
 async def invite_check(request: RewardsRequest, user=Depends(get_verified_user)):
 
-    # 获取签到记录
+    # 获取奖励记录
     rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
     if rewards_history is None:
         raise HTTPException(status_code=400, detail="You Rewards History not found")
@@ -168,9 +153,21 @@ async def invite_check(request: RewardsRequest, user=Depends(get_verified_user))
         if rewards_history.status:
             return {"ok": True, "data": rewards_history}
         else:
-            raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.") 
+            rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+            if len(rewards) == 2:
+                inviteeReward = next((item for item in rewards if item.reward_type == 'new_wallet'), None)
+                if inviteeReward is None:
+                    raise HTTPException(status_code=400, detail="You Rewards History not found")
+                else:
+                    if inviteeReward.status:
+                       rewards_history = RewardApiInstance.inviteReward(rewards_history, inviteeReward)
+                       return {"ok": True, "data": rewards_history}
+                    else:
+                       raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.")  
+            else:
+                raise HTTPException(status_code=400, detail="You Rewards History not found")
     else: 
-        raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.")     
+        raise HTTPException(status_code=400, detail="You Rewards History not found")
     
 @router.get("/reward_count")
 async def get_reward_count(user=Depends(get_verified_user)):

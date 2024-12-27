@@ -904,16 +904,11 @@ async def faceliveness_check_for_ws(id: str):
                         ## 获取奖励记录校验是那种奖励
                         rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
                         if len(rewards) == 2:
-                            inviteReward = None;
-                            inviteeReward = None;   
-                            for reward in rewards:
-                                if reward.reward_type == 'invite':
-                                    if reward.show:
-                                        inviteReward = reward
-                                else:
-                                    inviteeReward = reward
+                            inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
                             # 领取邀请奖励
-                            threading.Thread(target=RewardApiInstance.inviteRewardThread, kwargs={"invite": inviteReward, "invitee": inviteeReward})
+                            if inviteReward is not None:
+                                print("=====================执行邀请奖励线程========================")
+                                threading.Thread(target=RewardApiInstance.inviteRewardThread, kwargs={"invite": inviteReward, "invitee": rewards_history})
                             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
