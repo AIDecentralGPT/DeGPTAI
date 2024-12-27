@@ -43,7 +43,7 @@
 </script>
 
 <Modal bind:show size={$showCoinIntruType === "dgc" ? "md" : "sm"}>
-  <div class="flex flex-col overflow-y-auto w-full h-[80vh]">
+  <div class="flex flex-col overflow-y-auto w-full max-h-[80vh]">
     <div class="p-6 pt-0 shadow-md mt-0 flex-1">
       <div class="flex flex-col item-center pt-5">
         {#if $showCoinIntruType === "dgc"}
