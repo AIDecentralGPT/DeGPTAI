@@ -40,7 +40,7 @@ class RewardApi:
             else:
                 return None
         except Exception as e:
-            print("registReward:", e)
+            print("===========registReward===========:", e)
             return None
 
     #邀请奖励
@@ -56,7 +56,6 @@ class RewardApi:
             url = f"{self.apiUrl}/claim_invite_reward"
             ##请求体
             data = {"inviter_id": invite.user_id, "invitee_id": invitee.user_id, "inviter_amount": int(invite.reward_amount), "invitee_amount": 0}
-            print("===========inviteReward参数===========:", data);
             ## 发送POST请求
             response = requests.post(url, json.dumps(data))
             ## 校验请求是否成功
@@ -71,7 +70,7 @@ class RewardApi:
             else:
                 return None
         except Exception as e:
-            print("inviteReward:", e)
+            print("===========inviteReward===========", e)
             return None
 
 
