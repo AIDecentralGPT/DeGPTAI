@@ -2,6 +2,7 @@ import requests
 import json
 from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
+import threading
 
 #接口请求地址
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
@@ -73,13 +74,17 @@ class RewardApi:
             return None
 
 
-    #邀请奖励多线程   
-    def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
+    # 邀请奖励线程   
+    def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel):
+        threading.Thread(target=self.inviteRewardMore, kwargs={"invite": invite, "invitee": invitee})
+
+    # 邀请奖励失败做重复执行
+    def inviteRewardMore(self, invite: RewardsModel, invitee: RewardsModel):
+        print("==================邀请奖励线程执行================")
         if invite is not None:
             result = self.inviteReward(invite, invitee)
             if result is None:
                 result = self.inviteReward(invite, invitee)
-            return result
     
     #每日奖励
     def dailyReward(self, reward_id: str, user_id: str) ->  Optional[RewardsModel]:

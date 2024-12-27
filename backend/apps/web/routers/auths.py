@@ -69,7 +69,6 @@ from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
 from datetime import datetime
 
 from apps.web.api.rewardapi import RewardApi
-import threading
 
 router = APIRouter()
 
@@ -907,8 +906,7 @@ async def faceliveness_check_for_ws(id: str):
                             inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
                             # 领取邀请奖励
                             if inviteReward is not None:
-                                print("=====================执行邀请奖励线程========================")
-                                threading.Thread(target=RewardApiInstance.inviteRewardThread, kwargs={"invite": inviteReward, "invitee": rewards_history})
+                                RewardApiInstance.inviteRewardThread(inviteReward, rewards_history)
                             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
