@@ -2,7 +2,6 @@ import requests
 import json
 from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
-import threading
 
 #接口请求地址
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
@@ -31,7 +30,7 @@ class RewardApi:
             # 打印响应内容
             print("===========registReward===========", response.text)
             response_json = json.loads(response.text);
-            if response_json['code'] == 0:       
+            if response_json['code'] == 0:
                 # 更新记录
                 dgc_hash = response_json['result']['Data']['DGCTxHash']
                 result = RewardsTableInstance.update_reward(reward_id, dgc_hash, True)
@@ -79,18 +78,10 @@ class RewardApi:
      #邀请奖励多线程
     
     def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel) ->  Optional[RewardsModel]:
-
-        create_thread = threading.Thread(target=self.registReward, kwargs={"reward_id": invitee.id, "user_id": invitee.user_id})
-        invite_thread = threading.Thread(target=self.inviteReward, kwargs={"invite": invite, "invitee": invitee})
-
-        create_thread.start()
-        invite_thread.start()
-
-        create_thread.join()
-        invite_thread.join()
-
-        createResult = RewardsTableInstance.get_rewards_by_id(invitee.id)
-        return createResult
+        result = self.inviteReward(invite, invitee)
+        if result is None:
+            result = self.inviteReward(invite, invitee)
+        return result
     
     #每日奖励
     def dailyReward(self, reward_id: str, user_id: str) ->  Optional[RewardsModel]:

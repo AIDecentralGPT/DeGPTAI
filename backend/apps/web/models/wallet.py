@@ -16,7 +16,7 @@ class Wallet(Model):
 
     class Meta:
         database = DB
-        table_name = 'wallet'
+        table_name = 'wallet_user'
 
 # 定义 Wallet 的 Pydantic 模型
 class WalletModel(BaseModel):

@@ -69,6 +69,7 @@ from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
 from datetime import datetime
 
 from apps.web.api.rewardapi import RewardApi
+import threading
 
 router = APIRouter()
 
@@ -892,7 +893,13 @@ async def faceliveness_check_for_ws(id: str):
                 rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user.id)
                 print("rewards_history", rewards_history)
                 if rewards_history is not None and rewards_history.status == False:
-                    ## 判断领取那种奖励
+                    ## 领取注册奖励
+                    result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+                    ## 领取失败进行二次领取
+                    if result is None:
+                        result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+
+                    ## 判断是否有注册奖励
                     if rewards_history.invitee is not None and rewards_history.invitee != '':
                         ## 获取奖励记录校验是那种奖励
                         rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
@@ -906,12 +913,8 @@ async def faceliveness_check_for_ws(id: str):
                                 else:
                                     inviteeReward = reward
                             # 领取邀请奖励
-                            RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
-                    else:
-                        ## 领取注册奖励
-                        RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-                          
-            
+                            threading.Thread(target=RewardApiInstance.inviteRewardThread, kwargs={"invite": inviteReward, "invitee": inviteeReward})
+                            
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
             # 'Result': {

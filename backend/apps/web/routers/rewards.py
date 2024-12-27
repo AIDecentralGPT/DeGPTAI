@@ -233,8 +233,12 @@ async def sync_regist_rewards(user=Depends(get_verified_user)):
     try:
         if user is not None:
             rewards = RewardsTableInstance.sync_regist_rewards()
+            results = []
             with concurrent.futures.ThreadPoolExecutor(max_workers = 20) as executor:
-                executor.map(send_regist_reward, rewards)
+                for result in executor.map(send_regist_reward, rewards):
+                    results.append(result)
+            while len(results) != len(rewards):
+                print("=================注册奖励同步进行中=================")
             return {"ok": True, "message": "Success"}
     except Exception as e:
         print(f"Exception: {e}")
@@ -257,9 +261,13 @@ async def sync_invite_rewards(user=Depends(get_verified_user)):
     invite_rewards_lock.acquire()
     try:
         if user is not None:
+            results = []
             rewards = RewardsTableInstance.sync_invite_rewards()
             with concurrent.futures.ThreadPoolExecutor(max_workers = 20) as executor:
-                executor.map(send_invite_reward, rewards)
+                for result in executor.map(send_invite_reward, rewards):
+                    results.append(result)
+            while len(results) != len(rewards):
+                print("=================邀请奖励同步进行中=================")
             return {"ok": True, "message": "Success"}
     except Exception as e:
         print(f"Exception: {e}")
@@ -271,24 +279,8 @@ async def sync_invite_rewards(user=Depends(get_verified_user)):
 
 def send_regist_reward(reward: Rewards):
     if reward is not None:
-        ## 判断领取那种奖励
-        if reward.invitee is not None:
-            ## 获取奖励记录校验是那种奖励
-            rewards = RewardsTableInstance.get_rewards_by_invitee(reward.invitee)
-            if len(rewards) == 2:
-                inviteReward = None;
-                inviteeReward = None;   
-                for reward in rewards:
-                    if reward.reward_type == 'invite':
-                        if reward.show:
-                            inviteReward = reward
-                    else:
-                        inviteeReward = reward
-                ## 领取邀请奖励
-                RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
-        else:
-            ## 领取注册奖励
-            RewardApiInstance.registReward(reward.id, reward.user_id)
+        ## 领取注册奖励
+        RewardApiInstance.registReward(reward.id, reward.user_id)
 
 def send_invite_reward(reward: Rewards):
     if reward is not None and reward.invitee is not None and reward.invitee != '':
@@ -304,7 +296,8 @@ def send_invite_reward(reward: Rewards):
                 else:
                     inviteeReward = reward
             ## 领取邀请奖励
-            RewardApiInstance.inviteRewardThread(inviteReward, inviteeReward) 
+            RewardApiInstance.inviteReward(inviteReward, inviteeReward) 
+    return reward.id
 
 @router.get("/dbc_rate")
 async def get_dbc_rate(user=Depends(get_verified_user)): 

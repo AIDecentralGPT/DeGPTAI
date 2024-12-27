@@ -222,6 +222,7 @@ class RewardsTable:
 
     # 指定账户给用户转账DGC
     def send_dgc_reward(self, index: int, recipient_address: str, amount: float) -> str:
+        txn_hash = None
         try:
             sender_private_key = ['0x39a2cd7e8425c48367894bb43ef701e0f44edf4942b4444ab0961b2191aa06d7',
                                   '0x9e02e05c71825df2a73ca49da5d4353c27c2a8e5d016e5d8dd03c5a20d6d5895',
@@ -232,13 +233,18 @@ class RewardsTable:
                                   '0x17edb80023ec4d2e5523b6c8af4726f4eb04a6de47e6d5ebe4faa280734b4b45',
                                   '0xa7cbeaa4fd847a06f39e99bb2ac964ef401e309f5f338e3859cdb9eee8956c6c',
                                   '0x1d4dce74b4744a2075beb00554702438fd985d52ca63a5f13319ae2f4821a96a',
-                                  '0x3a5e8b58af86f5b737d7cace0f5e1a15583b3d1b305408f8cbc96f8c91ae8d9c']
+                                  '0x3a5e8b58af86f5b737d7cace0f5e1a15583b3d1b305408f8cbc96f8c91ae8d9c',
+                                  '0x4734051a779819fe347f4b1d4e6496170b9b88be35ce2414042d52a3c66f2a3a',
+                                  '0xfc8961c66bfccf41d6b58f3213a83c775b11ea6c15aeb92a2ec6b50669cfd488',
+                                  '0xcebc4cc3399a78f5d5bde51d29898b5e6de636c56e221f7ec8cda705d70c20da',
+                                  '0x8b8bf2e93546eafe50a34182f070cfc82666418eff58405e3055b9437a43db8c',
+                                  '0x518a4c3fb16e1dfa65229e82664d34e7ad6e174e45cec05201571a6c5f3cc7f7']
             sender_address = Account.from_key(
                 sender_private_key[index]).address
 
             nonce = w3.eth.get_transaction_count(sender_address)
             gas_price = w3.eth.gas_price
-            gas_limit = 300000  # 增加 gas limit，适用于复杂的合约调用
+            gas_limit = 400000  # 增加 gas limit，适用于复杂的合约调用
 
             # 将 amount 转换为 wei 单位
             amount_wei = w3.to_wei(amount, 'ether')
@@ -258,19 +264,20 @@ class RewardsTable:
             signed_txn = w3.eth.account.sign_transaction(
                 tx, sender_private_key[index])
             tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+            txn_hash = tx_hash.hex()
 
-            print("==============dgc=================", tx_hash.hex())
+            print("==============dgc=================", txn_hash)
 
             time.sleep(6)
             receipt = w3.eth.get_transaction_receipt(tx_hash)
 
             if receipt:
                 if receipt['status'] == 1:
-                    return {'hash': tx_hash.hex(), 'status': True}
+                    return {'hash': txn_hash, 'status': True}
                 else:
-                    return {'hash': tx_hash.hex(), 'status': False}
+                    return {'hash': txn_hash, 'status': False}
             else:
-                return {'hash': tx_hash.hex(), 'status': False}
+                return {'hash': txn_hash, 'status': False}
 
             # 更新记录
             # if reward_id is not None:
@@ -279,10 +286,11 @@ class RewardsTable:
 
         except Exception as e:
             print("send_dgc_reward:", e)
-            return {'hash': None, 'status': False}
+            return {'hash': txn_hash, 'status': False}
 
     # 指定账户给用户转账DBC
     def send_dbc_reward(self, index: int, recipient_address: str, amount: float) -> str:
+        txn_hash = None
         try:
             sender_private_key = ['0x39a2cd7e8425c48367894bb43ef701e0f44edf4942b4444ab0961b2191aa06d7',
                                   '0x9e02e05c71825df2a73ca49da5d4353c27c2a8e5d016e5d8dd03c5a20d6d5895',
@@ -293,7 +301,12 @@ class RewardsTable:
                                   '0x17edb80023ec4d2e5523b6c8af4726f4eb04a6de47e6d5ebe4faa280734b4b45',
                                   '0xa7cbeaa4fd847a06f39e99bb2ac964ef401e309f5f338e3859cdb9eee8956c6c',
                                   '0x1d4dce74b4744a2075beb00554702438fd985d52ca63a5f13319ae2f4821a96a',
-                                  '0x3a5e8b58af86f5b737d7cace0f5e1a15583b3d1b305408f8cbc96f8c91ae8d9c']
+                                  '0x3a5e8b58af86f5b737d7cace0f5e1a15583b3d1b305408f8cbc96f8c91ae8d9c',
+                                  '0x4734051a779819fe347f4b1d4e6496170b9b88be35ce2414042d52a3c66f2a3a',
+                                  '0xfc8961c66bfccf41d6b58f3213a83c775b11ea6c15aeb92a2ec6b50669cfd488',
+                                  '0xcebc4cc3399a78f5d5bde51d29898b5e6de636c56e221f7ec8cda705d70c20da',
+                                  '0x8b8bf2e93546eafe50a34182f070cfc82666418eff58405e3055b9437a43db8c',
+                                  '0x518a4c3fb16e1dfa65229e82664d34e7ad6e174e45cec05201571a6c5f3cc7f7']
             sender_address = Account.from_key(
                 sender_private_key[index]).address
 
@@ -318,6 +331,7 @@ class RewardsTable:
             signed_txn = w3.eth.account.sign_transaction(
                 tx, sender_private_key[index])
             tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+            txn_hash = tx_hash.hex()
 
             print("==============dbc=================", tx_hash.hex())
 
@@ -325,11 +339,11 @@ class RewardsTable:
             receipt = w3.eth.get_transaction_receipt(tx_hash)
             if receipt:
                 if receipt['status'] == 1:
-                    return {'hash': tx_hash.hex(), 'status': True}
+                    return {'hash': txn_hash, 'status': True}
                 else:
-                    return {'hash': tx_hash.hex(), 'status': False}
+                    return {'hash': txn_hash, 'status': False}
             else:
-                return {'hash': tx_hash.hex(), 'status': False}
+                return {'hash': txn_hash, 'status': False}
 
             # 更新记录
             # if reward_id is not None:
@@ -338,7 +352,7 @@ class RewardsTable:
 
         except Exception as e:
             print("send_dbc_reward:", e)
-            return {'hash': None, 'status': False}
+            return {'hash': txn_hash, 'status': False}
 
     # 校验交易结果
     def check_reward(self, tx_hash: str) -> Optional[bool]:

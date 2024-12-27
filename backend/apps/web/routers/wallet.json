@@ -3,7 +3,7 @@
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x73bf0F2a651A916cFDd5903a4c1DA24857F8590b",
+                "hash": "0xeABf440251018C70F5d318660A66914D1C750Cfd",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -15,25 +15,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "553999000000000000000000000000"
+            "value": "200000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xCC35c1491617d0Bd0FADa419C47570916B9cCc49",
+                "hash": "0xdfF30C80835F3B3D05C6445F21D765edAEc0b0F7",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -45,25 +45,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "900350000000000000000000000"
+            "value": "200000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x22aB6Fc51f0585BDD01f8F2d8d66394EeD09e170",
+                "hash": "0x6Ae23F7C1389743afeCf11c5bee736afCf3d5317",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -75,25 +75,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "91297410000000000000000000"
+            "value": "200000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x2e32F7eeB9d59eA935dF3a45496D7BB6f87972e9",
+                "hash": "0x43694644dB0a34836577e11Eb9df5f442DB44e4a",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -105,59 +105,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "2023700000000000000000000"
+            "value": "200000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x8588fb0Fec459d44a75135EE74E532a34539C749",
-                "implementation_name": null,
-                "implementations": [
-                    {
-                        "name": null
-                    }
-                ],
-                "is_contract": true,
-                "is_verified": null,
-                "metadata": null,
-                "name": null,
-                "private_tags": [],
-                "public_tags": [],
-                "watchlist_names": []
-            },
-            "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
-                "circulating_market_cap": null,
-                "decimals": "18",
-                "exchange_rate": null,
-                "holders": "5098",
-                "icon_url": null,
-                "name": "DecentralGPT",
-                "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
-                "type": "ERC-20",
-                "volume_24h": null
-            },
-            "token_id": null,
-            "value": "156000000000000000000000"
-        },
-        {
-            "address": {
-                "ens_domain_name": null,
-                "hash": "0xEc14Fe434E872FAB5D2AA422d2eA37A51a076673",
+                "hash": "0x29D85c8d42a623176e456E16f495F14948fcc994",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -169,25 +135,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "109099000000000000000000"
+            "value": "200000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8",
+                "hash": "0x660FA26FD08557e68cD5dFB0CB073b159401C644",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -199,25 +165,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "72950000000000000000000"
+            "value": "120000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xA61acc4f2769F7B598976f5F0Cc610A456BE7D15",
+                "hash": "0xe2bE1B82B30565c348Fe6C1eFb0faA12E402C6a1",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -229,25 +195,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "57300000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xb4D212CA6313aF39fcD8A64cf1c739c8AdaD0D1C",
+                "hash": "0xD93Ee8ba4E0dDFB9480a2d3d053231656CAD97bf",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -259,25 +225,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "52400000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xabD1D468d8eadA255aA2a7240C1796AD12983698",
+                "hash": "0xcFfde2afdF4Bd6f686f7c3d14Fb7b74D42B6eB38",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -289,25 +255,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "50600000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xF870D966E60C7bFa907CaA7Bb307D176b2b81364",
+                "hash": "0xCBe0c161Df1eFB3B95E3B233D27E7262399C11db",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -319,25 +285,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "49400000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xEb19291C1Df308C5c55c3b4F9923f293198DbBb1",
+                "hash": "0xbFF62a9c019912FF7Ef433CC4bD9F17de9197634",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -349,25 +315,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "49400000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xde8784011e1C864E37697faE28a6E19ae4E6DD9d",
+                "hash": "0xb2de558E7E9cDCa55782ABf56B75397E21f04C61",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -379,25 +345,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "47500000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x1dEec9E183f00779193534C24f5903B650DD5129",
+                "hash": "0xb2B6FAbeEA088045CDA72887d154AA18942A4745",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -409,25 +375,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "39100000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x1B8788BeEd864Fd4c07FDd6b1BF01b3B33F99F3d",
+                "hash": "0xAe525B7795774611a21261fC0cb7e67A572771Ab",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -439,25 +405,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "37300000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xF139Cc0507c045e3d26c694b54b47a7653908ADc",
+                "hash": "0xa6e6796CA4929F1d9CB2DE33fCa39B49e2FaD5fb",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -469,25 +435,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "32000000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x1E667E9fCE27Fb6AD3eb5c854db066A83386367b",
+                "hash": "0xa2Ce6b1b2187daa2F1e6e0E5304fAF2801539F21",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -499,25 +465,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "30000000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x3DD8bB103434Ce3E9CBb9f816179C02E9Ac8eb4b",
+                "hash": "0xa0ECa0705930B27A7F77C6660af693C89ebd2008",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -529,25 +495,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "26000000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x14e301594BF15E1932d0feCBA7E4d05Dc48CC523",
+                "hash": "0x90CC34b75Be6dA68E1d6674B8075E99DcDd531D0",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -559,25 +525,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "25300000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xdbC0Bf7d1Dc427E15C1d3aBbeE09Da855B19DFd6",
+                "hash": "0x8AC8414eCC33E8e1e34e0a28EBdE6cf0d344F892",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -589,25 +555,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "24000000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xC3DA055EA9a29AdB79C1400ECFC1544E69a4506C",
+                "hash": "0x82212f8Be5F01d45F3B437d1aa98958eCCccF7C2",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -619,25 +585,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "19600000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x6d0d03216B1C9374bC55c339A67B36586F999060",
+                "hash": "0x7dCED6690F52E38EB5807d89849372F22B84a329",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -649,25 +615,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "19500000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xd96551270Ba5dbEb87C8A9F485F0eCeF95fA6DCF",
+                "hash": "0x7ca3D0F0B6849C892EB79aEA817ABdf6817ddB4c",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -679,25 +645,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "19400000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x1399105dBAa60c5a5426A73Bfb7A55006ff4a294",
+                "hash": "0x798Ef3B0f7D61a2e8B57E7452cEec548565DB7a7",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -709,25 +675,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "19400000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xB3634087EC35B6ABc8392D2Af3dC9db07e240BF7",
+                "hash": "0x75A53287BC5a6B15EE15D64F645708082A6E32Ab",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -739,25 +705,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "19300000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x1A0610F36A00fc3eFf73f062A2E9A6bC1eaD3098",
+                "hash": "0x6fC0f0eb7fB548F45dA0F6Af6607bbE40717c0B0",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -769,25 +735,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "19100000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x03Ce957bB4FF4e315D62cF491e352a479b890432",
+                "hash": "0x668d4dADfd58eD1bcAb144E5753a86405D4349F3",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -799,25 +765,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "17086999999999999999999"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xFAdB46B0D384ab26b7A647B314DD7F28e7F80973",
+                "hash": "0x4FB89bFafC7dC1B9BFF6000E652EC3df38D1d38B",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -829,25 +795,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "15700000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x4623f89c969f72041f7707B9a4E7D1aE7BCd4225",
+                "hash": "0x48449716d086D9B05e5F21F3F7f5442a58Bb7Ddb",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -859,25 +825,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "15402000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x5F1f72bd9e5E1C782A7f0D3ECCeb8D668E399D97",
+                "hash": "0x431cCeef91d43E2647e60efD3ae6647557C9928A",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -889,25 +855,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "15000000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xf91c2d64b9D452F621e3E9f31dB693B4218E1edf",
+                "hash": "0x41EB048d9ca71aB3dE7c3201ece314b1f1536ab4",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -919,25 +885,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "14600000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xCc76962C3D2f1673390F67191801f09B80c887E2",
+                "hash": "0x3db52F12e29e0b69aAb1dB5EEa971cCEeaC9a40F",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -949,25 +915,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "14380000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xB0020E483762744278a291FCA9C5f707173f906E",
+                "hash": "0x388F393Cab2cc41232A81335DDdA7c4f74a474D7",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -979,25 +945,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "14300000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x08b5c8C5939c8Be6cC88e23AbCf1D198C2dD88C4",
+                "hash": "0x1f5FDD116c2eFaC5c749B9D4E26e2da6aA48d198",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1009,25 +975,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "14000000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x9E1C74A33b1345F28EF53B9C4AEb2fFC95db56b4",
+                "hash": "0x0f5CC0B9ac28A8e53829E1B46b63cBA67095f681",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1039,25 +1005,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13500000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x0E512133d915D724cC1b316A44FaE37A34DBe39e",
+                "hash": "0x04eBc57A36E6Aa7aC8b95DBE4E130DBDF39574EA",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1069,25 +1035,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13500000000000000000000"
+            "value": "100000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x87Dc056Eb574AC4191750B72ab3032dCFbDeCC71",
+                "hash": "0x7E903f7Df1291acEF32ee75d2fDDaFF60FdF627f",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1099,25 +1065,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13400000000000000000000"
+            "value": "90000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xc0CcE0Dcd6340D3c7D79bE49A53a7946E7C127C9",
+                "hash": "0xe0d8f1503C07ed4f1e820F0C182710E0969b46cb",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1129,25 +1095,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13200000000000000000000"
+            "value": "88000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x77b166efe993F9514Cb37052eb5cEaDdE487B244",
+                "hash": "0x3a7BBCbF66BeC5D8f6283271B3e76D09604850f3",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1159,25 +1125,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13200000000000000000000"
+            "value": "50000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xfcB2C9D219161b0427F807E97C67f3542ae20b7E",
+                "hash": "0x915080A3FB3c88B3605501EA144E54231CAa57B3",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1189,25 +1155,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13100000000000000000000"
+            "value": "20000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xE139A4CA87a83BD0c78e69d1cD8c4670d577C3a6",
+                "hash": "0x6D72b33268b3c61023971F10F89C6698032BA301",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1219,25 +1185,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13100000000000000000000"
+            "value": "20000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xd13497D3F58F2E32F7bccA8A7056af4398d828e3",
+                "hash": "0xD26555Ee83daC1D8E6BCA08C176CA566B42A5803",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1249,25 +1215,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13100000000000000000000"
+            "value": "11000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xa2610174f9e6e19a38CC0Ec886FD4273dBe5E93e",
+                "hash": "0x71fa8bd4BfDAaFeE86dEfB7Ad05e02Ed3B0E44Bd",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1279,25 +1245,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13100000000000000000000"
+            "value": "10000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x5fAaaB0da06454a7C528E8c271632f0CA0DAA5A3",
+                "hash": "0x1FCeb96F186c98e54f5905C2E5398Da31CC9b849",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1309,25 +1275,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "13100000000000000000000"
+            "value": "2000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xA415f8004A89eB044226B707CD9493aD4581578F",
+                "hash": "0xEec914Ca900bE4F2EDA8aB2141F7f47B0878c6Ce",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1339,25 +1305,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "12300000000000000000000"
+            "value": "1000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xC005B76a0e4Ce23A5CBf3066D379f65f8549ED4d",
+                "hash": "0xee8470Fbbc5B7C0D34F6B53c15DB0E1bd062b782",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1369,25 +1335,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "11300000000000000000000"
+            "value": "1000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x64ED9Fa30CdcC1c30d274e09866344E37AA7b16C",
+                "hash": "0xD49A55C3a305bAF9f15EC58dDBD2f492954bFf18",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1399,25 +1365,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "11200000000000000000000"
+            "value": "1000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0xf9c92AA3BF713C6F02DFb0144832f437945f8F49",
+                "hash": "0x2844d894F1dD1b2373a2962a46aC129c89a82a4d",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1429,25 +1395,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "9300000000000000000000"
+            "value": "1000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x097a2ec2d09e4F8c8b9D302b06c53D2B32713F11",
+                "hash": "0x171Aa3bfd193FD0D385d6E8Bd3a34260F7641Df5",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1459,25 +1425,25 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "8200000000000000000000"
+            "value": "1000000000000000000"
         },
         {
             "address": {
                 "ens_domain_name": null,
-                "hash": "0x062D0745b729f3100fEFe2946B8c2dDC27CE4165",
+                "hash": "0x44EB4fAF130aB095D84EA6244e2b6d0680bDD795",
                 "implementation_name": null,
                 "implementations": [],
                 "is_contract": false,
@@ -1489,20 +1455,50 @@
                 "watchlist_names": []
             },
             "token": {
-                "address": "0xC260ed583545d036ed99AA5C76583a99B7E85D26",
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
                 "circulating_market_cap": null,
                 "decimals": "18",
                 "exchange_rate": null,
-                "holders": "5098",
+                "holders": "5255",
                 "icon_url": null,
                 "name": "DecentralGPT",
                 "symbol": "DGC",
-                "total_supply": "555000000000000000000000000000",
+                "total_supply": "1000000000000000000000000000000",
                 "type": "ERC-20",
                 "volume_24h": null
             },
             "token_id": null,
-            "value": "8200000000000000000000"
+            "value": "500000000000000000"
+        },
+        {
+            "address": {
+                "ens_domain_name": null,
+                "hash": "0xdA21b57F6A29e173363216BeA9087981dDeDa854",
+                "implementation_name": null,
+                "implementations": [],
+                "is_contract": false,
+                "is_verified": null,
+                "metadata": null,
+                "name": null,
+                "private_tags": [],
+                "public_tags": [],
+                "watchlist_names": []
+            },
+            "token": {
+                "address": "0x18386F368e7C211E84324337fA8f62d5093272E1",
+                "circulating_market_cap": null,
+                "decimals": "18",
+                "exchange_rate": null,
+                "holders": "5255",
+                "icon_url": null,
+                "name": "DecentralGPT",
+                "symbol": "DGC",
+                "total_supply": "1000000000000000000000000000000",
+                "type": "ERC-20",
+                "volume_24h": null
+            },
+            "token_id": null,
+            "value": "100000000000000000"
         }
     ]
 }

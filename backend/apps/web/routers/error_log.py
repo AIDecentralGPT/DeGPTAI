@@ -8,6 +8,7 @@ import concurrent.futures
 import os
 import json
 from typing import List
+import asyncio
 from web3 import Web3
 
 w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io'))
@@ -45,23 +46,20 @@ async def batch_wallet_add():
     return result
 
 # 同步用户DGC余额
-wallet_locks_dict = {}
-@router.get("/batch/wallet/dgc")
-async def batch_wallet_dgc():
-    global wallet_locks_dict
-    # 若用户对应的锁不存在，则创建并添加到字典
-    wallet_lock =  "system-async-wallet"
-    if wallet_lock not in wallet_locks_dict:
-        wallet_locks_dict[wallet_lock] = threading.Lock()
-    wallet_lock = wallet_locks_dict[wallet_lock]
-    wallet_lock.acquire()
-    try:
-        repeatFlag = True
-        while repeatFlag:
-            wallets = WalletTableInstance.get_wallet_dgc_page(100)
+stop_event = asyncio.Event()
+dgc_lock = threading.Lock()
+dgc_worker = None
+
+def batch_wallet_dgc():
+    global dgc_lock
+    global stop_event
+    dgc_lock.acquire()    
+    try:  
+        while not stop_event.is_set():
+            wallets = WalletTableInstance.get_wallet_dgc_page(11)
             if wallets is not None and len(wallets) > 0:
                 results = []
-                with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=11) as executor:
                     # 使用 executor.map 执行任务
                     for result in executor.map(send_wallet_dgc, range(len(wallets)), wallets):
                         results.append(result)
@@ -69,14 +67,34 @@ async def batch_wallet_dgc():
                     print("===================多线程执行中===================", len(results))
                 print("====================多线程已执行结束===================", results)
             else:
-                repeatFlag = False
+                stop_event.set()
         return True
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         # 释放锁，以便该用户其他线程能获取锁并执行方法
         print("====================wallet_lock.release==================")
-        wallet_lock.release()
+        dgc_lock.release()
+
+# 启动同步DGC
+@router.get("/batch/wallet/dgc/start")
+async def batch_wallet_dgc_stop():
+    global dgc_worker
+    global stop_event
+    stop_event.clear()  # 重置 stop_event 状态
+    if dgc_worker is None or not dgc_worker.is_alive():
+        dgc_worker = threading.Thread(target=batch_wallet_dgc)
+        dgc_worker.start()
+    print("============启动DGC==========")
+    return {"message": "DGC Worker started"}
+
+# 停止同步DGC
+@router.get("/batch/wallet/dgc/stop")
+async def batch_wallet_dgc_stop():  
+    global stop_event
+    stop_event.set()
+    print("============停止DGC==========")
+    return {"message": "DGC Worker stop"}
 
 # 同步用户DBC余额
 wallet_locks_dict = {}
@@ -92,10 +110,10 @@ async def batch_wallet_dbc():
     try:
         repeatFlag = True
         while repeatFlag:
-            wallets = WalletTableInstance.get_wallet_dbc_page(100)
+            wallets = WalletTableInstance.get_wallet_dbc_page(15)
             if wallets is not None and len(wallets) > 0:
                 results = []
-                with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
                     # 使用 executor.map 执行任务
                     for result in executor.map(send_wallet_dbc, range(len(wallets)), wallets):
                         results.append(result)
