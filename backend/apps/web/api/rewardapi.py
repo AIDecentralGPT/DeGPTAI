@@ -76,11 +76,11 @@ class RewardApi:
 
     # 邀请奖励线程   
     def inviteRewardThread(self, invite: RewardsModel, invitee: RewardsModel):
-        threading.Thread(target=self.inviteRewardMore, kwargs={"invite": invite, "invitee": invitee})
+        thread = threading.Thread(target=self.inviteRewardMore, kwargs={"invite": invite, "invitee": invitee})
+        thread.start()
 
     # 邀请奖励失败做重复执行
     def inviteRewardMore(self, invite: RewardsModel, invitee: RewardsModel):
-        print("==================邀请奖励线程执行================")
         if invite is not None:
             result = self.inviteReward(invite, invitee)
             if result is None:

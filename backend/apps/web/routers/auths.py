@@ -825,21 +825,21 @@ async def faceliveness_check_for_ws(id: str):
             }
 
         # 校验时间是否超时
-        face_time = user.face_time
-        if (face_time is None):
-            return {
-                "passed": False,
-                "message": "Time expired, try again"
-            }
+        # face_time = user.face_time
+        # if (face_time is None):
+        #     return {
+        #         "passed": False,
+        #         "message": "Time expired, try again"
+        #     }
         
-        now_time = datetime.now()
+        # now_time = datetime.now()
         # 计算时间差
-        time_difference = now_time - face_time
-        if (time_difference.total_seconds() > 300):
-            return {
-                "passed": False,
-                "message": "Time expired, try again"
-            }
+        # time_difference = now_time - face_time
+        # if (time_difference.total_seconds() > 300):
+        #     return {
+        #         "passed": False,
+        #         "message": "Time expired, try again"
+        #     }
         
         # 获取查询参数
         merchant_biz_id = user.merchant_biz_id
@@ -898,15 +898,15 @@ async def faceliveness_check_for_ws(id: str):
                     if result is None:
                         result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
 
-                    ## 判断是否有注册奖励
-                    if rewards_history.invitee is not None and rewards_history.invitee != '':
-                        ## 获取奖励记录校验是那种奖励
-                        rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-                        if len(rewards) == 2:
-                            inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
-                            # 领取邀请奖励
-                            if inviteReward is not None:
-                                RewardApiInstance.inviteRewardThread(inviteReward, rewards_history)
+                # 判断是否有注册奖励
+                if rewards_history is not None and rewards_history.invitee is not None and rewards_history.invitee != '':
+                    ## 获取奖励记录校验是那种奖励
+                    rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+                    if len(rewards) == 2:
+                        inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
+                        ### 领取邀请奖励
+                        if inviteReward is not None:
+                            RewardApiInstance.inviteRewardThread(inviteReward, rewards_history)
                             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
