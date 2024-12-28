@@ -199,7 +199,7 @@ class UsersTable:
             if user.inviter_id is not None and user.inviter_id != '':
                 # 获取邀请人信息
                 invite_user_ret = User.get_or_none(User.id == inviter_id)
-
+                # 邀请人存在创建注册奖励和邀请奖励
                 if invite_user_ret is not None:
                     # 生成关联字符串
                     invitee = str(uuid.uuid4())
@@ -217,6 +217,9 @@ class UsersTable:
                         RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
                         print("邀请人得奖励0", user.inviter_id)
                         RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
+                else:
+                   # 邀请人信息未获取到只创建注册奖励
+                    RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True) 
             else:
                 # 注册奖励
                 RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
