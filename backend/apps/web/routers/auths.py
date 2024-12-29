@@ -712,7 +712,7 @@ async def create_face():
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
 
-    if True:
+    if user.id.startswith("0x"):
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         response = face_compare.face_liveness({
             "deviceType": form_data.metaInfo.deviceType,
