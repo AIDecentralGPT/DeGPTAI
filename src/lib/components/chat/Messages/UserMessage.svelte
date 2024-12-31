@@ -225,7 +225,7 @@
 					<div class="flex {$settings?.chatBubble ?? true ? 'justify-end' : ''} mb-2">
 						<div
 							class="rounded-3xl {$settings?.chatBubble ?? true
-								? `max-w-[90%] px-5 py-2  bg-gray-50 dark:bg-gray-850 ${
+								? `max-w-[90%] px-5 py-2  bg-gray-100 dark:bg-gray-850 ${
 										message.files ? 'rounded-tr-lg' : ''
 								  }`
 								: ''}  "

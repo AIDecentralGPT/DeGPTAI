@@ -179,7 +179,7 @@
             </button>
         </UserMenu>
          
-        {#if isMobile}
+        <!-- {#if isMobile}
           <LanguageMenu className="max-w-[122px]">
             <button class="text-sm px-1 py-2 flex flex-row items-center">
               <svg class="icon fill-gray-700 dark:fill-gray-100" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5351" width="26" height="26">
@@ -205,7 +205,7 @@
               </button>
             </LanguageMenu>
           </div>
-        {/if}    
+        {/if}     -->
       </div>
     </div>
   </div>

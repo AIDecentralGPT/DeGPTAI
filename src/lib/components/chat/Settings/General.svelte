@@ -186,10 +186,9 @@ onMount(() => {
 						placeholder="Select a language"
 						on:change={(e) => {
 							$i18n.changeLanguage(lang);
-						}}
-					>
+						}}>
 						{#each languages as language}
-							<option value={language['code']}>{language['title']}</option>
+							<option class="leading-5" value={language['code']}>{language['title']}</option>
 						{/each}
 					</select>
 				</div>

@@ -83,7 +83,7 @@
   <!-- <div class="py-2 px-3"> -->
   {#if $showLoginInfoModal}
     <!-- 地址展示 -->
-    <div class="opacity-80 text-base font-medium leading-6">
+    <div class="opacity-80 text-sm font-medium leading-6">
       {$i18n.t("Wallet Address")}
     </div>
     <div class="pt-0.5">
@@ -144,7 +144,7 @@
     {:else}
       <div class="flex justify-start gap-2 mt-1 mb5">
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showTransferModal = true;
@@ -153,7 +153,7 @@
           {$i18n.t("Transfer")}
         </button>
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showExportWalletJsonModal = true;
@@ -162,7 +162,7 @@
           {$i18n.t("Export Wallet")}
         </button>
         <button
-          class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             await closeWallet($channel);
@@ -183,7 +183,7 @@
   <!-- 钱包余额 -->
   <!-- 标题 -->
   <div class="flex justify-between items-center">
-    <div class="opacity-80 text-base font-medium leading-6 flex items-center">
+    <div class="opacity-80 text-sm font-medium leading-6 flex items-center">
       {$i18n.t("Wallet Balance")}
     </div>
     <div class="flex">
@@ -237,74 +237,73 @@
   <!-- 余额详情 -->
   <div class="flex flex-col gap-2">
     <div
-      class="flex justify-between px-5 py-2 pe-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+      class="flex flex-col px-4 py-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
     >
-      <div class="flex gap-1">
-        <div
-          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          DGC
+      <div class="flex justify-between">
+        <div class="flex gap-1">
+          <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
+            DGC
+          </div>
+          <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
+            {floorToFixed(Number($currentWalletData?.dgcBalance), 2)}
+          </div>
         </div>
-        <div
-          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          {floorToFixed(Number($currentWalletData?.dgcBalance), 2)}
+        <div class="flex flex-row opacity-50 leading-normal text-xs">     
+          <button
+            class="size-4 primaryButton saturate-200 text-white rounded-full"
+            on:click={async () => {
+              $showCoinIntruModal = true;
+              $showCoinIntruType = "dgc";
+            }}>
+            ?
+          </button>
         </div>
       </div>
-
-      <div class="flex flex-row opacity-50 leading-normal text-xs">
-        1DGC=0.0005u
-        <button
-          class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
-          on:click={async () => {
-            $showCoinIntruModal = true;
-            $showCoinIntruType = "dgc";
-          }}
-        >
-          ?
-        </button>
-      </div>
-
-      <div class="opacity-50 leading-normal text-xs">
-        Total ${floorToFixed(
-          Number($currentWalletData?.dgcBalance) * 0.0005,
-          4
-        )}u
+        
+      <div class="flex justify-between">
+        <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">1DGC=0.0005u</div>
+        <div class="opacity-50 leading-normal text-xs">
+          Total ${floorToFixed(
+            Number($currentWalletData?.dgcBalance) * 0.0005,
+            4
+          )}u
+        </div>
       </div>
     </div>
     <div
-      class="flex justify-between px-5 py-2 pe-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+      class="flex flex-col px-4 py-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
     >
-      <div class="flex gap-1">
-        <div
-          class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          DBC
+      <div class="flex justify-between">
+        <div class="flex gap-1">
+          <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
+            DBC
+          </div>
+          <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
+            {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+          </div>
         </div>
-        <div
-          class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal"
-        >
-          {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+        <div class="flex flex-row opacity-50 leading-normal text-xs">
+          <button
+            class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+            on:click={async () => {
+              $showCoinIntruModal = true;
+              $showCoinIntruType = "dbc";
+            }}>
+            ?
+          </button>
         </div>
       </div>
-      <div class="flex flex-row opacity-50 leading-normal text-xs">
-        1DBC={floorToFixed($dbcRate?.rate, 5)}u
-        <button
-          class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
-          on:click={async () => {
-            $showCoinIntruModal = true;
-            $showCoinIntruType = "dbc";
-          }}
-        >
-          ?
-        </button>
-      </div>
-      <div class="opacity-50 leading-normal text-xs">
-        Total ${floorToFixed(
-          Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
-          4
-        )}u
-      </div>
+      <div class="flex justify-between">
+        <div class="flex flex-row opacity-50 leading-normal text-xs">
+          1DBC={floorToFixed($dbcRate?.rate, 5)}u 
+        </div>
+        <div class="opacity-50 leading-normal text-xs">
+          Total ${floorToFixed(
+            Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
+            4
+          )}u
+        </div>
+      </div> 
     </div>
   </div>
 
@@ -312,7 +311,7 @@
   {#if $showLoginInfoModal}
     <div class="flex justify-start gap-2 mt-1 mb-2">
       <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
+        class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           // $showBuyCoinModal = true;
@@ -333,7 +332,7 @@
         {$i18n.t("Rewards")}
       </button> -->
       <button
-        class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-gray-800 text-gray-100 transition rounded-lg text-xs"
+        class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           $showTransactionsModal = true;
@@ -343,14 +342,14 @@
       </button>
       {#if $user?.verified}
         <button
-          class="px-4 py-2 primaryButton text-gray-800 transition rounded-lg text-xs"
+          class="px-3 py-2 primaryButton text-gray-800 transition rounded-lg text-xs"
           type="submit"
         >
           {$i18n.t("Authed KYC")}
         </button>
       {:else}
         <button
-          class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 primaryButton text-gray-100 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             try {
