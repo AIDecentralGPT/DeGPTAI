@@ -144,7 +144,7 @@
     {:else}
       <div class="flex justify-start gap-2 mt-1 mb5">
         <button
-          class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showTransferModal = true;
@@ -153,7 +153,7 @@
           {$i18n.t("Transfer")}
         </button>
         <button
-          class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             $showExportWalletJsonModal = true;
@@ -162,7 +162,7 @@
           {$i18n.t("Export Wallet")}
         </button>
         <button
-          class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             await closeWallet($channel);
@@ -311,7 +311,7 @@
   {#if $showLoginInfoModal}
     <div class="flex justify-start gap-2 mt-1 mb-2">
       <button
-        class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
+        class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           // $showBuyCoinModal = true;
@@ -332,7 +332,7 @@
         {$i18n.t("Rewards")}
       </button> -->
       <button
-        class=" px-3 py-2 dark:bg-white dark:text-zinc-950 bg-gray-600 text-gray-100 transition rounded-lg text-xs"
+        class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           $showTransactionsModal = true;
@@ -342,14 +342,14 @@
       </button>
       {#if $user?.verified}
         <button
-          class="px-3 py-2 primaryButton text-gray-800 transition rounded-lg text-xs"
+          class="px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
           type="submit"
         >
           {$i18n.t("Authed KYC")}
         </button>
       {:else}
         <button
-          class=" px-3 py-2 primaryButton text-gray-100 transition rounded-lg text-xs"
+          class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
           type="submit"
           on:click={async () => {
             try {
