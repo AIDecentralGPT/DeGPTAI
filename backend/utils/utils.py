@@ -191,11 +191,10 @@ def get_current_user(
             )
         else:
             # 更新用户的最后活跃时间
-            # try:
-            #     Users.update_user_last_active_by_id(user.id)
-            # except Exception as e:
-            # print("get_current_user - user-error", e)
-            print("==================")
+            try:
+                Users.update_user_last_active_by_id(user.id)
+            except Exception as e:
+                print("get_current_user - user-error", e)
             
         # print("最终的user", user)
         # 返回当前用户

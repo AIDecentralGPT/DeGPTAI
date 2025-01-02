@@ -525,5 +525,4 @@ async def regist_total(user=Depends(get_current_user)):
 @router.get("/check/twitter", response_model=bool)
 async def third_total(request: Request):
     account = request.query_params.get("account")
-    print("================================", account)
     return twitter_lib.check_follow_status(account, "service@decentralgpt.org")

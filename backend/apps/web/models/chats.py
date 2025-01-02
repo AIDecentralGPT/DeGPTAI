@@ -226,7 +226,7 @@ class ChatTable:
         self, user_id: str, skip: int = 0, limit: int = 50
     ) -> List[ChatModel]:
         chats = Chat.select(Chat.id, Chat.user_id, Chat.title, Chat.archived, Chat.created_at, Chat.updated_at).where(Chat.archived == False).where(Chat.user_id == user_id).order_by(Chat.updated_at.desc())
-        return [ ChatModel(**model_to_dict(chat)) for chat in chats ]
+        return [ChatModel(**model_to_dict(chat)) for chat in chats]
 
     def get_chat_list_by_chat_ids(
         self, chat_ids: List[str], skip: int = 0, limit: int = 50

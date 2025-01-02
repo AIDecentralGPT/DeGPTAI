@@ -45,31 +45,33 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
     try:
         # 获取签到记录
         rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
-        if rewards_history is None:
-            raise HTTPException(status_code=400, detail="You Rewards History not found")
-        
-        # 是否已领取校验
-        if rewards_history.status:
-            return {"ok": True, "data": rewards_history}
-        
-        # 校验用户是否已经完成kyc认证
-        user_find = Users.get_user_by_id(user.id)
-        if not user_find.verified:
-            raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
-        
-        # 领取注册奖励
-        rewards_history = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-
-        # 判断是否有邀请奖励
-        if rewards_history.invitee is not None and rewards_history.invitee != '':
-            rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-            if len(rewards) == 2:    
-                # 领取邀请奖励
-                inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
-                if inviteReward is not None:
-                    RewardApiInstance.inviteReward(inviteReward, rewards_history)
-
+        rewards_history.expird = True
         return {"ok": True, "data": rewards_history}
+        # if rewards_history is None:
+        #     raise HTTPException(status_code=400, detail="You Rewards History not found")
+        
+        # # 是否已领取校验
+        # if rewards_history.status:
+        #     return {"ok": True, "data": rewards_history}
+        
+        # # 校验用户是否已经完成kyc认证
+        # user_find = Users.get_user_by_id(user.id)
+        # if not user_find.verified:
+        #     raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
+        
+        # # 领取注册奖励
+        # rewards_history = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+
+        # # 判断是否有邀请奖励
+        # if rewards_history.invitee is not None and rewards_history.invitee != '':
+        #     rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+        #     if len(rewards) == 2:    
+        #         # 领取邀请奖励
+        #         inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
+        #         if inviteReward is not None:
+        #             RewardApiInstance.inviteReward(inviteReward, rewards_history)
+
+        # return {"ok": True, "data": rewards_history}
     except Exception as e:
         print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Failed to received reward")
@@ -150,22 +152,24 @@ async def invite_check(request: RewardsRequest, user=Depends(get_verified_user))
         raise HTTPException(status_code=400, detail="You Rewards History not found")
 
     if rewards_history.reward_type == 'invite':
-        if rewards_history.status:
-            return {"ok": True, "data": rewards_history}
-        else:
-            rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-            if len(rewards) == 2:
-                inviteeReward = next((item for item in rewards if item.reward_type == 'new_wallet'), None)
-                if inviteeReward is None:
-                    raise HTTPException(status_code=400, detail="You Rewards History not found")
-                else:
-                    if inviteeReward.status:
-                       rewards_history = RewardApiInstance.inviteReward(rewards_history, inviteeReward)
-                       return {"ok": True, "data": rewards_history}
-                    else:
-                       raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.")  
-            else:
-                raise HTTPException(status_code=400, detail="You Rewards History not found")
+        rewards_history.expird = True
+        return {"ok": True, "data": rewards_history}
+        # if rewards_history.status:
+        #     return {"ok": True, "data": rewards_history}
+        # else:
+        #     rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+        #     if len(rewards) == 2:
+        #         inviteeReward = next((item for item in rewards if item.reward_type == 'new_wallet'), None)
+        #         if inviteeReward is None:
+        #             raise HTTPException(status_code=400, detail="You Rewards History not found")
+        #         else:
+        #             if inviteeReward.status:
+        #                rewards_history = RewardApiInstance.inviteReward(rewards_history, inviteeReward)
+        #                return {"ok": True, "data": rewards_history}
+        #             else:
+        #                raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.")  
+        #     else:
+        #         raise HTTPException(status_code=400, detail="You Rewards History not found")
     else: 
         raise HTTPException(status_code=400, detail="You Rewards History not found")
     
