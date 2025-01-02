@@ -30,13 +30,8 @@
 
   import { WEBUI_BASE_URL } from "$lib/constants";
   import i18n, { initI18n } from "$lib/i18n";
-  import FingerprintJS from "@fingerprintjs/fingerprintjs";
-  import { getUserInfo, isPro } from "$lib/apis/users";
-  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
-  import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
   import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
   import { getLanguages } from "$lib/i18n/index";
-  import { signOut } from "$lib/utils/wallet/ether/utils";
   import { addErrorLog } from '$lib/apis/errorlog';
 
   setContext("i18n", i18n);
@@ -117,62 +112,6 @@
     }
   }
 
-  async function checkLogin() {
-    // 加载 FingerprintJS 库
-    const fp = await FingerprintJS.load();
-    // 获取设备指纹
-    const result = await fp.get();
-    // `result.visitorId` 是设备指纹 ID
-    const visitorId = result.visitorId;
-    console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
-    localStorage.setItem("visitor_id", visitorId);
-
-    if (localStorage?.token) {
-      // 获取缓存用户信息
-      let localUser = null;
-      try {
-        localUser = JSON.parse(localStorage?.user);
-        if (localUser?.address_type == "dbc") {
-          let res = await getUserInfo(localStorage.token);
-          if (res?.id === localUser?.id) {
-            const proInfo = await isPro(localStorage.token);
-            await user.set({
-              ...localUser,
-              isPro: proInfo ? proInfo.is_pro : false,
-              proEndDate: proInfo ? proInfo.end_date : null,
-              models: res?.models,
-              verified: res?.verified
-            });
-          }
-          localStorage.user = JSON.stringify($user);
-
-          // 校验钱包
-          if (localStorage.walletImported) {
-            let walletImported = JSON.parse(localStorage.walletImported);
-            if (walletImported) {
-              const walletImportedInfo = await unlockWalletWithPrivateKey(
-                walletImported?.privateKey
-              );
-              updateWalletData(walletImportedInfo?.data);
-            }
-          }
-        } else {
-          await signOut($channel);
-          // 更新用户模型
-          await initUserModels();
-        }
-      } catch (error) {
-        await signOut($channel);
-        // 更新用户模型
-        await initUserModels();
-      }
-    } else {
-      await signOut($channel);
-      // 更新用户模型
-      await initUserModels();
-    }
-  }
-
   async function intiLocationInfo() {
     await getRegionInfo().then((data) => {
       const regionDict = getRegionDict();
@@ -208,38 +147,16 @@
     }
   }
 
-  // 更新用户模型
-  const initUserModels = async () => {
-    if ($user?.models) {
-      settings.set({ ...$settings, models: $user?.models.split(",") });
-    } else {
-      settings.set({
-        ...$settings,
-        models: $config?.default_models.split(","),
-      });
-    }
-    localStorage.setItem("settings", JSON.stringify($settings));
-    goto("/");
-    const newChatButton = document.getElementById("new-chat-button");
-    setTimeout(() => {
-      newChatButton?.click();
-    }, 0);
-  };
-
   onMount(async () => {
     try {
       let currentAddress = window.location.href;
       await initData();
       await initLanguage();
+      await initUrlParam();
+      loaded = true;
       if (currentAddress.indexOf("userVerifying") < 0) {
-        await initUrlParam();
-        await checkLogin();
-        loaded = true;
         await intiLocationInfo();
-        await initUserModels();
-      } else {
-        loaded = true;
-      }
+      } 
     } catch (error) {
       addErrorLog("首页初始化", error.toString());
     }

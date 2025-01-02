@@ -368,7 +368,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
     )
 
 @router.post("/is_pro", response_model=Optional[VIPStatusModelResp])
-async def isPro( session_user=Depends(get_current_user)):
+async def isPro(session_user=Depends(get_current_user)):
     # print("isPro session_user", session_user)
     if session_user:
         try:

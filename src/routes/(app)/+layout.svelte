@@ -23,7 +23,12 @@
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
 	import ShortcutsModal from "$lib/components/chat/ShortcutsModal.svelte";
 	import Tooltip from "$lib/components/common/Tooltip.svelte";
-    import { signOut } from "$lib/utils/wallet/ether/utils";
+
+	import FingerprintJS from "@fingerprintjs/fingerprintjs";
+	import { updateWalletData } from "$lib/utils/wallet/walletUtils";
+	import { getUserInfo, isPro } from "$lib/apis/users";
+	import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
+	import { signOut } from "$lib/utils/wallet/ether/utils";
 
 	const i18n = getContext("i18n");
 
@@ -39,6 +44,62 @@
 
 		return _getModels(localStorage.token);
 	};
+
+	async function checkLogin() {
+    // 加载 FingerprintJS 库
+    const fp = await FingerprintJS.load();
+    // 获取设备指纹
+    const result = await fp.get();
+    // `result.visitorId` 是设备指纹 ID
+    const visitorId = result.visitorId;
+    console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
+    localStorage.setItem("visitor_id", visitorId);
+
+    if (localStorage?.token) {
+      // 获取缓存用户信息
+      let localUser = null;
+      try {
+        localUser = JSON.parse(localStorage?.user);
+        if (localUser?.address_type == "dbc") {
+          let res = await getUserInfo(localStorage.token);
+          if (res?.id === localUser?.id) {
+            const proInfo = await isPro(localStorage.token);
+            await user.set({
+              ...localUser,
+              isPro: proInfo ? proInfo.is_pro : false,
+              proEndDate: proInfo ? proInfo.end_date : null,
+              models: res?.models,
+              verified: res?.verified
+            });
+          }
+          localStorage.user = JSON.stringify($user);
+
+          // 校验钱包
+          if (localStorage.walletImported) {
+            let walletImported = JSON.parse(localStorage.walletImported);
+            if (walletImported) {
+              const walletImportedInfo = await unlockWalletWithPrivateKey(
+                walletImported?.privateKey
+              );
+              updateWalletData(walletImportedInfo?.data);
+            }
+          }
+        } else {
+          await signOut($channel);
+          // 更新用户模型
+          await initUserModels();
+        }
+      } catch (error) {
+        await signOut($channel);
+        // 更新用户模型
+        await initUserModels();
+      }
+    } else {
+      await signOut($channel);
+      // 更新用户模型
+      await initUserModels();
+    }
+  }
 
 	// 更新用户模型
   const initUserModels = async() => {
@@ -65,31 +126,10 @@
 			await channel.set(channelName);
 		}
 		if ($config) {
-			if (localStorage.token) {
-				// // Get Session User Info
-				// const sessionUser = await getSessionUser(
-				// 	localStorage.token,
-				// 	$channel
-				// ).catch((error) => {
-				// 	return null;
-				// });
-
-				// if (sessionUser) {
-				// 	// Save Session User to Store
-				// 	await user.set({
-				// 		...$user,
-				// 		...sessionUser,
-				// 	});
-				// 	console.log("============sessionUser2===========");
-				// } else {
-				// 	// 更新用户模型
-				// 	await initUserModels();
-				// }
-				// 更新用户模型
-				await initUserModels();
-			} else {
-				// await goto('/auth');
-			}
+			// 用户登陆校验
+			await checkLogin();
+			// 用户选中模型加载
+			await initUserModels();
 		}
 
 		if ($user === undefined) {

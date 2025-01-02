@@ -161,7 +161,6 @@ def get_current_user(
     # except Exception as e:
     #         print("auth_token.credentials", e)
 
-
     print("auth_token", auth_token)
 
     # 根据API密钥进行认证
@@ -192,11 +191,11 @@ def get_current_user(
             )
         else:
             # 更新用户的最后活跃时间
-            try:
-                Users.update_user_last_active_by_id(user.id)
-            except Exception as e:
-                print("get_current_user - user-error", e)
-                
+            # try:
+            #     Users.update_user_last_active_by_id(user.id)
+            # except Exception as e:
+            # print("get_current_user - user-error", e)
+            print("==================")
             
         # print("最终的user", user)
         # 返回当前用户
