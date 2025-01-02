@@ -112,8 +112,8 @@
     }
   }
 
-  async function intiLocationInfo() {
-    await getRegionInfo().then((data) => {
+  function intiLocationInfo() {
+    getRegionInfo().then((data) => {
       const regionDict = getRegionDict();
       if (data) {
         regionDict.Singapore.forEach((item) => {
@@ -155,7 +155,7 @@
       await initUrlParam();
       loaded = true;
       if (currentAddress.indexOf("userVerifying") < 0) {
-        await intiLocationInfo();
+        intiLocationInfo();
       } 
     } catch (error) {
       addErrorLog("首页初始化", error.toString());
