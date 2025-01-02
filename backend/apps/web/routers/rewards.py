@@ -198,7 +198,9 @@ async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified
     # 查询奖励记录
     rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id, request.pageNum, request.pageSize)
     for rewards in rewards_history:
-        if rewards.reward_type == 'clock_in' and rewards.reward_date.date() != date.today():
+        if rewards.reward_type != 'clock_in':
+            rewards.expird = True
+        elif rewards.reward_type == 'clock_in' and rewards.reward_date.date() != date.today():
             rewards.expird = True
     total = RewardsTableInstance.get_rewards_count_by_user_id(user.id);
 
