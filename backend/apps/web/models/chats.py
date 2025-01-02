@@ -225,19 +225,15 @@ class ChatTable:
     def get_chat_list_by_user_id(
         self, user_id: str, skip: int = 0, limit: int = 50
     ) -> List[ChatModel]:
-        print("=====================", user_id)
-        try:
-            return [
-                ChatModel(**model_to_dict(chat))
-                for chat in Chat.select(Chat.id, Chat.user_id, Chat.title, Chat.archived, Chat.created_at, Chat.updated_at)
-                .where(Chat.archived == False)
-                .where(Chat.user_id == user_id)
-                .order_by(Chat.updated_at.desc())
-                # .limit(limit)
-                # .offset(skip)
-            ]
-        except Exception as e:
-            print("=====================", e)
+        return [
+            ChatModel(**model_to_dict(chat))
+            for chat in Chat.select(Chat.id, Chat.user_id, Chat.title, Chat.archived, Chat.created_at, Chat.updated_at)
+            .where(Chat.archived == False)
+            .where(Chat.user_id == user_id)
+            .order_by(Chat.updated_at.desc())
+            # .limit(limit)
+            # .offset(skip)
+        ]
 
     def get_chat_list_by_chat_ids(
         self, chat_ids: List[str], skip: int = 0, limit: int = 50
