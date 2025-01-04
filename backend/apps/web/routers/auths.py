@@ -775,6 +775,12 @@ async def faceliveness_check(user=Depends(get_current_user)):
         # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
         
         faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+
+        if face_lib.check_face_image(faceImg) == False:
+            return {
+                "passed": False,
+                "message": "Fail"
+            } 
         
         # face_lib.add_face_data(faceImg)
         face_id = face_lib.search_face(faceImg)
@@ -859,15 +865,22 @@ async def faceliveness_check_for_ws(id: str):
             
             # 2. 获取人脸照片
             faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+
+            # 3. 校验图片真实性
+            if face_lib.check_face_image(faceImg) == False:
+                return {
+                    "passed": False,
+                    "message": "The identity validate fail",
+                }
                         
-            # 3. 搜索该人脸照片在库中是否存在
+            # 4. 搜索该人脸照片在库中是否存在
             face_id = face_lib.search_face(faceImg)
             print("face_id", face_id)
             
             if face_id is not None:
                 print("user check:", face_id)
                 user_exit = Users.get_user_id_by_face_id(face_id)
-                # 4. 存在就告诉你，该人脸已经被检测过了！
+                # 5. 存在就告诉你，该人脸已经被检测过了！
                 if user_exit is not None :
                     return {
                         "passed": False,
