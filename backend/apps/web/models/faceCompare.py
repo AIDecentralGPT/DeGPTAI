@@ -115,5 +115,4 @@ class FaceCompare:
         return response
         # return "success"
 
-
 face_compare = FaceCompare()

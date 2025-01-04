@@ -775,6 +775,12 @@ async def faceliveness_check(user=Depends(get_current_user)):
         # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
         
         faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+
+        if face_lib.check_face_image(faceImg) == False:
+            return {
+                "passed": False,
+                "message": "Fail"
+            } 
         
         # face_lib.add_face_data(faceImg)
         face_id = face_lib.search_face(faceImg)
@@ -807,6 +813,40 @@ async def faceliveness_check(user=Depends(get_current_user)):
 
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+    
+# 查询人脸图片
+@router.get("/faceliveness_image")
+async def faceliveness_image():
+        # 获取查询参数
+    # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
+    merchant_biz_id = 'c2371516-d114-4872-8de0-b9d2a42f9f7c'
+    transaction_id = 'hks4a517fd3014b25602e6635469d0af'
+    
+    print("form_data.", merchant_biz_id, transaction_id)
+
+    if True:
+        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
+        # response = face_compare.check_result({
+        #     "transaction_id": form_data.transaction_id,
+        #     "merchant_biz_id":form_data.merchant_biz_id,
+        # })
+        response = face_compare.check_result(
+            transaction_id= transaction_id,
+            merchant_biz_id=merchant_biz_id,
+        )
+   
+
+        # print("face compare success", response, response.body.result.ext_face_info, response.body)
+        # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
+        
+        faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+
+        # 校验图片真实性
+        flag = face_lib.check_face_image(faceImg)
+        return {
+            "pass": flag,
+            "base64": faceImg
+        }
 
 
 # 检查人脸是否通过
@@ -825,21 +865,21 @@ async def faceliveness_check_for_ws(id: str):
             }
 
         # 校验时间是否超时
-        # face_time = user.face_time
-        # if (face_time is None):
-        #     return {
-        #         "passed": False,
-        #         "message": "Time expired, try again"
-        #     }
+        face_time = user.face_time
+        if (face_time is None):
+            return {
+                "passed": False,
+                "message": "Time expired, try again"
+            }
         
-        # now_time = datetime.now()
+        now_time = datetime.now()
         # 计算时间差
-        # time_difference = now_time - face_time
-        # if (time_difference.total_seconds() > 300):
-        #     return {
-        #         "passed": False,
-        #         "message": "Time expired, try again"
-        #     }
+        time_difference = now_time - face_time
+        if (time_difference.total_seconds() > 300):
+            return {
+                "passed": False,
+                "message": "Time expired, try again"
+            }
         
         # 获取查询参数
         merchant_biz_id = user.merchant_biz_id
@@ -859,15 +899,22 @@ async def faceliveness_check_for_ws(id: str):
             
             # 2. 获取人脸照片
             faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+
+            # 3. 校验图片真实性
+            if face_lib.check_face_image(faceImg) == False:
+                return {
+                    "passed": False,
+                    "message": "The identity validate fail",
+                }
                         
-            # 3. 搜索该人脸照片在库中是否存在
+            # 4. 搜索该人脸照片在库中是否存在
             face_id = face_lib.search_face(faceImg)
             print("face_id", face_id)
             
             if face_id is not None:
                 print("user check:", face_id)
                 user_exit = Users.get_user_id_by_face_id(face_id)
-                # 4. 存在就告诉你，该人脸已经被检测过了！
+                # 5. 存在就告诉你，该人脸已经被检测过了！
                 if user_exit is not None :
                     return {
                         "passed": False,

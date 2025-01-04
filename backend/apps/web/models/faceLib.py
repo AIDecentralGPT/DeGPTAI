@@ -2,8 +2,8 @@ import io
 import base64
 from alibabacloud_tea_openapi.models import Config
 from alibabacloud_tea_util.models import RuntimeOptions
-from alibabacloud_facebody20191230.models import CreateFaceDbRequest, AddFaceEntityRequest, GetFaceEntityRequest, AddFaceAdvanceRequest, SearchFaceAdvanceRequest, DeleteFaceRequest
-from alibabacloud_facebody20191230.client import Client
+from alibabacloud_facebody20191230.models import CreateFaceDbRequest, AddFaceEntityRequest, GetFaceEntityRequest, AddFaceAdvanceRequest, SearchFaceAdvanceRequest, DeleteFaceRequest, DetectLivingFaceRequest, DetectLivingFaceRequestTasks
+from alibabacloud_facebody20191230.client import Client 
 from viapi.fileutils import FileUtils
 
 from apps.web.models.users import Users
@@ -160,6 +160,21 @@ class FaceLib:
             # 获取整体报错信息
             print("search_face_user error",error)
 
-
+    # 校验人脸的来源真实性
+    def check_face_image(self, face_base64: str):
+        # 初始化Client
+        client = Client(self.config)
+        # 构建结果检查请求
+        try:
+            detect_living_face_request = DetectLivingFaceRequest(tasks=[DetectLivingFaceRequestTasks(image_data=face_base64)])
+            response= client.detect_living_face_with_options(detect_living_face_request, self.runtime_option)
+            print("============check_face_image==============", response.body.data)
+            if response.body.data.elements[0].results[0].suggestion == 'pass':
+                return True
+            else:
+                return False
+        except Exception as error:
+            print("============check_face_image==============", error)
+            return False
 
 face_lib = FaceLib()
