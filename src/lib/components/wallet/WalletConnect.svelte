@@ -111,6 +111,8 @@
 
             // 更新用户模型
             initUserModels();
+            // 更新语言模型
+            await initLanguage();
           }
         }
         if (account.status === "disconnected") {
