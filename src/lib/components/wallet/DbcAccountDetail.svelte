@@ -22,6 +22,7 @@
   import { getDbcRate } from "$lib/apis/wallet/index";
   import { getUserInfo } from "$lib/apis/users";
   import { goto } from "$app/navigation";
+  import { getLanguages } from "$lib/i18n/index";
 
   const i18n = getContext("i18n");
 
@@ -72,6 +73,22 @@
       newChatButton?.click();
     }, 0);
   };
+
+  // 更新用户语言
+  async function initLanguage() {
+    if ($user?.language) {
+      $i18n.changeLanguage($user?.language);
+    } else {
+      let browserLanguage = navigator.language;
+      const languages = await getLanguages();
+      let localLanguage = languages.filter(
+        (item) => item.code == browserLanguage
+      );
+      if (localLanguage.length > 0) {
+        $i18n.changeLanguage(browserLanguage);
+      }
+    }
+  }
 
   onMount(async () => {
     await refreshDbcRate();
@@ -166,6 +183,8 @@
           await closeWallet($channel);
           // 更新用户模型
           await initUserModels();
+          // 更新语言模型
+          await initLanguage();
         }}
       >
         {$i18n.t("Close Wallet")}

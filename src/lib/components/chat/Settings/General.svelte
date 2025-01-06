@@ -5,6 +5,7 @@
 	const dispatch = createEventDispatcher();
 
 	import { models, user, theme, mobile } from '$lib/stores';
+	import { updateUserLanguage } from "$lib/apis/users";
 
 	const i18n = getContext('i18n');
 
@@ -323,7 +324,7 @@ onMount(() => {
 	<div class="flex justify-end pt-3 text-sm font-medium">
 		<button
 			class="  px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-			on:click={() => {
+			on:click={async () => {
 				saveSettings({
 					system: system !== '' ? system : undefined,
 					options: {
@@ -343,6 +344,7 @@ onMount(() => {
 					},
 					keepAlive: keepAlive ? (isNaN(keepAlive) ? keepAlive : parseInt(keepAlive)) : undefined
 				});
+				await updateUserLanguage(localStorage.token, lang);
 				dispatch('save');
 			}}
 		>

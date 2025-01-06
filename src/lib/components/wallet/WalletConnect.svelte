@@ -16,6 +16,7 @@
   } from "$lib/stores";
   import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   import { addErrorLog } from "$lib/apis/errorlog";
+  import { getLanguages } from "$lib/i18n/index";
 
   const i18n = getContext("i18n");
 
@@ -63,6 +64,22 @@
     }, 0);
   };
 
+  // 更新用户语言
+  const initLanguage = async () => {
+    if ($user?.language) {
+      $i18n.changeLanguage($user?.language);
+    } else {
+      let browserLanguage = navigator.language;
+      const languages = await getLanguages();
+      let localLanguage = languages.filter(
+        (item) => item.code == browserLanguage
+      );
+      if (localLanguage.length > 0) {
+        $i18n.changeLanguage(browserLanguage);
+      }
+    }
+  }
+
   function clearConnector() {
     config.state.connections.forEach((item) => {
       config.state.connections.delete(item.connector.uid);
@@ -102,6 +119,8 @@
           clearConnector();
           // 更新用户模型
           initUserModels();
+          // 更新语言模型
+          await initLanguage();
         }
       } catch (error) {
         addErrorLog("第三方登陆", error.toString());

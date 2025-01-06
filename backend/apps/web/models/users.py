@@ -56,6 +56,7 @@ class User(Model):
     face_time = CharField(null=True)
     channel = CharField(null=True)
     models = CharField(null=True)
+    language = CharField(null=True)
 
     class Meta:
         database = DB  # 指定数据库
@@ -84,6 +85,7 @@ class UserModel(BaseModel):
     address: Optional[str] = None
     channel: Optional[str] = None
     models: Optional[str] = None
+    language: Optional[str] = None
 
 # 定义Pydantic近15天统计数据模型UserLatelyModel
 class UserLatelyModel(BaseModel):
@@ -131,6 +133,10 @@ class UserUpdateForm(BaseModel):
 # 更新用户选择模型
 class UserModelsUpdateForm(BaseModel):
     models: str  # 定义模型字段，类型为字符串
+
+# 更新用户选择语言
+class UserLanguageUpdateForm(BaseModel):
+    language: str  # 定义language字段，类型为字符串
 
 # 定义UsersTable类，用于操作User表
 class UsersTable:
@@ -450,6 +456,16 @@ class UsersTable:
     def update_user_models(self, id: str, models: str) -> bool:
         try:
             query = User.update(models=models).where(User.id == id)
+            result = query.execute()
+            return True if result == 1 else False
+        except Exception as e:
+            print(f"update_user_id Exception: {e}")
+            return False
+        
+    # 更新用户选择语言
+    def update_user_language(self, id: str, language: str) -> bool:
+        try:
+            query = User.update(language=language).where(User.id == id)
             result = query.execute()
             return True if result == 1 else False
         except Exception as e:

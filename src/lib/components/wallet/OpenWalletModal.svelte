@@ -7,6 +7,7 @@
   import { handleWalletSignIn, unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils.js";
   import { importWallet } from "$lib/utils/wallet/ether/utils.js";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils.js";
+  import { getLanguages } from "$lib/i18n/index";
 
   const i18n = getContext("i18n");
 
@@ -53,6 +54,22 @@
     setTimeout(() => {
       newChatButton?.click();
     }, 0);
+  }
+
+  // 更新用户语言
+  async function initLanguage() {
+    if ($user?.language) {
+      $i18n.changeLanguage($user?.language);
+    } else {
+      let browserLanguage = navigator.language;
+      const languages = await getLanguages();
+      let localLanguage = languages.filter(
+        (item) => item.code == browserLanguage
+      );
+      if (localLanguage.length > 0) {
+        $i18n.changeLanguage(browserLanguage);
+      }
+    }
   }
 
   $: if (!show) {(async () => {
@@ -161,6 +178,8 @@
 
                 // 更新用户模型
                 initUserModels();
+                // 更新用户语言
+                await initLanguage();
 
                 updateWalletData(walletImported);
 
@@ -286,6 +305,8 @@
 
                   // 更新用户模型
                   initUserModels();
+                  // 更新用户语言
+                  await initLanguage();
 
                   updateWalletData(walletImported);
 

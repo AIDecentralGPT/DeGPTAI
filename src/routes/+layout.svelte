@@ -140,7 +140,8 @@
               isPro: proInfo ? proInfo.is_pro : false,
               proEndDate: proInfo ? proInfo.end_date : null,
               models: res?.models,
-              verified: res?.verified
+              verified: res?.verified,
+              language: res?.language
             });
           }
           localStorage.user = JSON.stringify($user);
@@ -197,13 +198,17 @@
   }
 
   async function initLanguage() {
-    let browserLanguage = navigator.language;
-    const languages = await getLanguages();
-    let localLanguage = languages.filter(
-      (item) => item.code == browserLanguage
-    );
-    if (localLanguage.length > 0) {
-      $i18n.changeLanguage(browserLanguage);
+    if ($user?.language) {
+      $i18n.changeLanguage($user?.language);
+    } else {
+      let browserLanguage = navigator.language;
+      const languages = await getLanguages();
+      let localLanguage = languages.filter(
+        (item) => item.code == browserLanguage
+      );
+      if (localLanguage.length > 0) {
+        $i18n.changeLanguage(browserLanguage);
+      }
     }
   }
 
@@ -229,10 +234,10 @@
     try {
       let currentAddress = window.location.href;
       await initData();
-      await initLanguage();
       if (currentAddress.indexOf("userVerifying") < 0) {
         await initUrlParam();
         await checkLogin();
+        await initLanguage();
         loaded = true;
         await intiLocationInfo();
         await initUserModels();

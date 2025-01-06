@@ -7,7 +7,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 import logging
 
-from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserTotalModel, UserDisperModel
+from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserTotalModel, UserDisperModel, UserLanguageUpdateForm
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
 from apps.web.models.rewards import RewardsTableInstance
@@ -404,7 +404,8 @@ async def get_user_info(request: Request,  user=Depends(get_current_user)):
                 "profile_image_url": user.profile_image_url,
                 "address_type": user.address_type,
                 "verified": user.verified,
-                "models": user.models
+                "models": user.models,
+                "language": user.language
             }
             return response
                     
@@ -418,6 +419,18 @@ async def update_user_role(form_data: UserModelsUpdateForm, user=Depends(get_cur
 
     if user is not None:
         return Users.update_user_models(user.id, form_data.models)
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=ERROR_MESSAGES.ACTION_PROHIBITED,
+    )
+
+# 更新用户选择语言       
+@router.post("/update/language", response_model=bool)
+async def update_user_role(form_data: UserLanguageUpdateForm, user=Depends(get_current_user)):
+
+    if user is not None:
+        return Users.update_user_language(user.id, form_data.language)
 
     raise HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,

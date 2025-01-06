@@ -4,6 +4,7 @@
   import { goto } from "$app/navigation";
 
   import { getModels as _getModels, copyToClipboard } from "$lib/utils";
+  import { getLanguages } from "$lib/i18n/index";
 
   import Modal from "../common/Modal.svelte";
   import {
@@ -41,6 +42,7 @@
     }
   };
 
+  // 更新用户模型
   const initUserModels = () => {
     if ($user?.models) {
       settings.set({ ...$settings, models: $user?.models.split(",") });
@@ -57,6 +59,22 @@
       newChatButton?.click();
     }, 0);
   };
+
+  // 更新用户语言
+  async function initLanguage() {
+    if ($user?.language) {
+      $i18n.changeLanguage($user?.language);
+    } else {
+      let browserLanguage = navigator.language;
+      const languages = await getLanguages();
+      let localLanguage = languages.filter(
+        (item) => item.code == browserLanguage
+      );
+      if (localLanguage.length > 0) {
+        $i18n.changeLanguage(browserLanguage);
+      }
+    }
+  }
 
   let isMobile = false;
   $: if (!show) {
@@ -293,6 +311,8 @@
 
                     // 更新用户模型
                     initUserModels();
+                    // 更新用户语言
+                    await initLanguage();
 
                     // 3. 展示钱包面板数据
                     walletCreatedData = wallet;
