@@ -785,5 +785,6 @@
   "Enter verification code":"Doğrulama kodunu girin",
   "Previous": "önceki",
   "Finish": "bitirmek",
-  "Next": "sonraki"
+  "Next": "sonraki",
+  "Not supported": "Desteklenmiyor"
 }

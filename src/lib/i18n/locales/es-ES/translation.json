@@ -785,5 +785,6 @@
   "Enter verification code":"Ingrese el código de verificación",
   "Previous": "anterior",
   "Finish": "terminar",
-  "Next": "siguiente"
+  "Next": "siguiente",
+  "Not supported": "No soportado"
 }

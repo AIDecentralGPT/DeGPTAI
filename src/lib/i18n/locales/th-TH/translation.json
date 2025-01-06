@@ -784,5 +784,6 @@
   "Enter verification code":"กรุณากรอกรหัสยืนยัน",
   "Previous": "ก่อนหน้า",
   "Finish": "เสร็จสิ้น",
-  "Next": "ต่อไป"
+  "Next": "ต่อไป",
+  "Not supported": "ไม่ได้รับการสนับสนุน"
 }

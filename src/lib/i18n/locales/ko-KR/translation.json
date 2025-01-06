@@ -785,5 +785,6 @@
   "Enter verification code":"확인 코드를 입력하세요",
   "Previous": "이전의",
   "Finish": "완료",
-  "Next": "다음의"
+  "Next": "다음의",
+  "Not supported": "지원되지 않습니다"
 }

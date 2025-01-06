@@ -785,5 +785,6 @@
   "Enter verification code":"確認コードを入力してください",
   "Previous": "前の",
   "Finish": "終了",
-  "Next": "次の"
+  "Next": "次の",
+  "Not supported": "サポートされていません"
 }

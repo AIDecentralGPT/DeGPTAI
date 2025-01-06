@@ -23,7 +23,7 @@
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
 	import ShortcutsModal from "$lib/components/chat/ShortcutsModal.svelte";
 	import Tooltip from "$lib/components/common/Tooltip.svelte";
-    import { signOut } from "$lib/utils/wallet/ether/utils";
+  import { signOut } from "$lib/utils/wallet/ether/utils";
 
 	const i18n = getContext("i18n");
 
@@ -347,7 +347,6 @@
 					</div>
 				</div>
 			{/if}
-
 			<Sidebar />
 			<slot />
 		{/if}

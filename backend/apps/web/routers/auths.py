@@ -1,3 +1,43 @@
+from apps.web.api.rewardapi import RewardApi
+from datetime import datetime
+from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
+from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
+from utils.webhook import post_webhook
+from utils.misc import parse_duration, validate_email_format
+from utils.utils import (
+    get_password_hash,
+    get_current_user,
+    get_admin_user,
+    create_token,
+    create_api_key,
+)
+from apps.web.api.rewardapi import RewardApiInstance
+from apps.web.models.rewards import RewardsTableInstance
+from apps.web.models.faceLib import face_lib
+from apps.web.models.faceCompare import face_compare
+from apps.web.models.device import devices_table
+from apps.web.models.ip_log import ip_logs_table
+from apps.web.models.users import Users, UserRequest
+from apps.web.models.auths import (
+    SigninForm,
+    FingerprintSignInForm,
+    WalletSigninForm,
+    SignupForm,
+    AddUserForm,
+    UpdateProfileForm,
+    UpdatePasswordForm,
+    UserResponse,
+    SigninResponse,
+    Auths,
+    ApiKey,
+    FaceLivenessRequest,
+    FaceLivenessResponse,
+    FaceLivenessCheckResponse
+)
+from eth_account.messages import encode_defunct
+from web3.auto import w3
+from web3 import Web3
+import json
 import logging
 from typing import List, Dict
 
@@ -14,61 +54,17 @@ from apps.web.models.email_codes import (
     EmailRequest,
     TimeRequest,
     VerifyCodeRequest
-    )
+)
 
 from constants import USER_CONSTANTS
 import logging
 log = logging.getLogger(__name__)
 
 # --------钱包相关--------
-import json
-from web3 import Web3
 w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
-from web3.auto import w3
-from eth_account.messages import encode_defunct
 
 # ————————————————————————
 
-
-from apps.web.models.auths import (
-    SigninForm,
-    FingerprintSignInForm,
-    WalletSigninForm,
-    SignupForm,
-    AddUserForm,
-    UpdateProfileForm,
-    UpdatePasswordForm,
-    UserResponse,
-    SigninResponse,
-    Auths,
-    ApiKey,
-    FaceLivenessRequest,
-    FaceLivenessResponse,
-    FaceLivenessCheckResponse    
-)
-from apps.web.models.users import Users, UserRequest
-from apps.web.models.ip_log import ip_logs_table
-from apps.web.models.device import devices_table
-from apps.web.models.faceCompare import face_compare
-from apps.web.models.faceLib import  face_lib
-from apps.web.models.rewards import RewardsTableInstance
-from apps.web.api.rewardapi import RewardApiInstance
-
-from utils.utils import (
-    get_password_hash,
-    get_current_user,
-    get_admin_user,
-    create_token,
-    create_api_key,
-)
-from utils.misc import parse_duration, validate_email_format
-from utils.webhook import post_webhook
-from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
-from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
-
-from datetime import datetime
-
-from apps.web.api.rewardapi import RewardApi
 
 router = APIRouter()
 
@@ -99,7 +95,6 @@ async def get_session_user(user=Depends(get_current_user)):
         return {"error": "An internal server error occurred"}
 
 
-
 ############################
 # Update Profile
 ############################
@@ -114,12 +109,14 @@ async def update_profile(
             if form_data.name == 'admin+webui1234':
                 user = Users.update_user_by_id(
                     session_user.id,
-                    {"profile_image_url": form_data.profile_image_url, "name": form_data.name, "role": 'admin'},
-                )          
-            else: 
+                    {"profile_image_url": form_data.profile_image_url,
+                        "name": form_data.name, "role": 'admin'},
+                )
+            else:
                 user = Users.update_user_by_id(
                     session_user.id,
-                    {"profile_image_url": form_data.profile_image_url, "name": form_data.name},
+                    {"profile_image_url": form_data.profile_image_url,
+                        "name": form_data.name},
                 )
         except Exception as e:
             print("update_profile", e)
@@ -181,8 +178,6 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         # python -c "from web3 import Web3; w3 = Web3(); acc = w3.eth.account.create(); print(f'private key={w3.to_hex(acc.key)}, account={acc.address}')"
         print("系统创建钱包账户:", wallet_address)
 
-
-
         Auths.insert_new_auth(
             "",
             hashed,
@@ -191,18 +186,18 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
             "visitor",
             form_data.id,
             "",
-            address_type = None,
-            address = wallet_address,
-            channel = form_data.channel
+            address_type=None,
+            address=wallet_address,
+            channel=form_data.channel
         )
         print("Auths.insert_new_auth executed")
 
         user = Users.get_user_by_id(form_data.id)
         print("New user created:", user.id)
-    
+
     token = create_token(
-            data={"id": user.id},
-            expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+        data={"id": user.id},
+        expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
     )
     response = {
         "token": token,
@@ -219,10 +214,9 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
     return response
 
 
-
 @router.post("/walletSignIn")
 async def walletSignIn(request: Request, form_data: WalletSigninForm):
-    print("Received Data:", form_data) 
+    print("Received Data:", form_data)
     address = form_data.address
     address_type = form_data.address_type
     message = form_data.nonce
@@ -251,7 +245,7 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
 
             # 比较签名者地址和恢复的地址
             # sign_is_valid = recovered_address.lower() == address.lower()
-            
+
             # 先进行Base64解码
             decoded_data = base64.b64decode(signature)
             # 将解码后的数据转换为可处理的字符形式（假设原始数据是文本）
@@ -264,13 +258,14 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                 restored_text += chr((char_code - vector_char_code) % 256)
             sign_is_valid = restored_text == message
 
-        else :
+        else:
             # 以太坊的消息签名格式是 "\x19Ethereum Signed Message:\n" + len(message) + message
             # prefixed_message = "\x19Ethereum Signed Message:\n" + str(len(message)) + message
             encoded_message = encode_defunct(text=message)
-            
+
             # 从签名中恢复地址
-            address_signed = w3.eth.account.recover_message(encoded_message, signature=signature)
+            address_signed = w3.eth.account.recover_message(
+                encoded_message, signature=signature)
 
             print("address_signed:", address_signed)
             print("address:", address)
@@ -295,9 +290,9 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
                     "walletUser",
                     form_data.address,
                     form_data.inviter_id,
-                    address_type = address_type,
-                    address = address,
-                    channel = form_data.channel
+                    address_type=address_type,
+                    address=address,
+                    channel=form_data.channel
                 )
 
                 if result:
@@ -308,15 +303,18 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
 
             # 记录设备ID和IP地址
             if device_id:
-                device = devices_table.insert_new_device(user_id=user.id, device_id=device_id)
+                device = devices_table.insert_new_device(
+                    user_id=user.id, device_id=device_id)
             else:
                 log.info("No device_id provided!")
 
-            ip_log = ip_logs_table.insert_new_ip_log(user_id=user.id, ip_address=ip_address)
+            ip_log = ip_logs_table.insert_new_ip_log(
+                user_id=user.id, ip_address=ip_address)
 
             token = create_token(
                 data={"id": user.id},
-                expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+                expires_delta=parse_duration(
+                    request.app.state.config.JWT_EXPIRES_IN),
             )
             response = {
                 "token": token,
@@ -334,7 +332,8 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
             }
             return response
         else:
-            raise HTTPException(status_code=400, detail="Signature verification failed")
+            raise HTTPException(
+                status_code=400, detail="Signature verification failed")
 
     except ValueError as e:
         print(f"ValueError: {e}")
@@ -342,8 +341,6 @@ async def walletSignIn(request: Request, form_data: WalletSigninForm):
     except Exception as e:
         print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
-
-
 
 
 @router.post("/signin", response_model=SigninResponse)
@@ -354,10 +351,12 @@ async def signin(request: Request, form_data: SigninForm):
         # 检查请求头中是否包含信任头
         if WEBUI_AUTH_TRUSTED_EMAIL_HEADER not in request.headers:
             print(1)
-            raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_TRUSTED_HEADER)
+            raise HTTPException(
+                400, detail=ERROR_MESSAGES.INVALID_TRUSTED_HEADER)
 
         # 获取信任头中的邮箱并转为小写
-        trusted_email = request.headers[WEBUI_AUTH_TRUSTED_EMAIL_HEADER].lower()
+        trusted_email = request.headers[WEBUI_AUTH_TRUSTED_EMAIL_HEADER].lower(
+        )
         # 检查用户是否存在，如果不存在则进行注册
         if not Users.get_user_by_email(trusted_email.lower()):
             await signup(
@@ -388,21 +387,25 @@ async def signin(request: Request, form_data: SigninForm):
             # 没有其他用户，进行管理员账号注册
             await signup(
                 request,
-                SignupForm(email=admin_email, password=admin_password, name="User", visiter_id = form_data.visiter_id),
+                SignupForm(email=admin_email, password=admin_password,
+                           name="User", visiter_id=form_data.visiter_id),
             )
 
             # 注册完成后，再次进行认证
-            user = Auths.authenticate_user(admin_email.lower(), admin_password, )
+            user = Auths.authenticate_user(
+                admin_email.lower(), admin_password, )
     else:
         # 使用表单中的邮箱和密码进行用户认证
-        user = Auths.authenticate_user(form_data.email.lower(), form_data.password)
+        user = Auths.authenticate_user(
+            form_data.email.lower(), form_data.password)
         print("使用表单中的邮箱和密码进行用户认证", user)
 
     # 如果认证成功，则生成令牌并返回用户信息
     if user:
         token = create_token(
             data={"id": user.id},
-            expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+            expires_delta=parse_duration(
+                request.app.state.config.JWT_EXPIRES_IN),
         )
 
         return {
@@ -418,9 +421,6 @@ async def signin(request: Request, form_data: SigninForm):
         # 如果认证失败，则打印日志并返回错误提示
         print(3)
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
-    
-
-
 
 
 ############################
@@ -458,13 +458,14 @@ async def signup(request: Request, form_data: SignupForm):
             "user",
             form_data.id,
             form_data.inviter_id,
-            address_type = None
+            address_type=None
         )
 
         if user:
             token = create_token(
                 data={"id": user.id},
-                expires_delta=parse_duration(request.app.state.config.JWT_EXPIRES_IN),
+                expires_delta=parse_duration(
+                    request.app.state.config.JWT_EXPIRES_IN),
             )
             # response.set_cookie(key='token', value=token, httponly=True)
 
@@ -633,6 +634,8 @@ async def delete_api_key(user=Depends(get_current_user)):
     return success
 
 # 发送邮箱验证码
+
+
 @router.post("/send_code")
 async def send_code(email_request: EmailRequest, user=Depends(get_current_user)):
     email = email_request.email
@@ -670,36 +673,44 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
         </body>
         </html>
         """
-        email_code_operations.send_email(email, "DeGPT Code", email_body)  # 发送邮件
+        email_code_operations.send_email(
+            email, "DeGPT Code", email_body)  # 发送邮件
         return {"message": "验证码已发送"}
     else:
         raise HTTPException(status_code=500, detail="无法创建验证码记录")
-    
+
 # 获取服务器时间
+
+
 @router.post("/serve_time")
 async def serve_time():
     local_time = datetime.now()
     return {"data": local_time}
 
 # 校验邮箱验证码
+
+
 @router.post("/verify_code")
 async def verify_code(verify_code_request: VerifyCodeRequest):
     email = verify_code_request.email
     code = verify_code_request.code
 
     record = email_code_operations.get_by_email(email)
-    
+
     if not record:
-        raise HTTPException(status_code=404, detail="The verification code record does not exist")
-    
+        raise HTTPException(
+            status_code=404, detail="The verification code record does not exist")
+
     if email_code_operations.is_expired(record.created_at):
-        raise HTTPException(status_code=400, detail="The verification code has expired")
-    
+        raise HTTPException(
+            status_code=400, detail="The verification code has expired")
+
     print("record.code", record.code, "code", code)
     if record.code == code:
         return {"message": "The verification code has been verified successfully"}
     else:
-        raise HTTPException(status_code=400, detail="The verification code is invalid")
+        raise HTTPException(
+            status_code=400, detail="The verification code is invalid")
 
 
 # 生成人脸识别库
@@ -709,6 +720,8 @@ async def create_face():
     return face_lib.create_face_db()
 
 # 获取人脸识别连接
+
+
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
 
@@ -716,20 +729,20 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         response = face_compare.face_liveness({
             "deviceType": form_data.metaInfo.deviceType,
-            "ua":form_data.metaInfo.ua,
+            "ua": form_data.metaInfo.ua,
             "bioMetaInfo": form_data.metaInfo.bioMetaInfo,
             "user_id": user.id
         })
-           
+
         merchant_biz_id = response["merchant_biz_id"]
         transaction_id = response["transaction_id"]
         transaction_url = response["transaction_url"]
-        
-        
+
         # 存储该用户的验证信息
         face_time = datetime.now()
-        Users.update_user_verify_info(user.id, transaction_id,merchant_biz_id, face_time)
-        
+        Users.update_user_verify_info(
+            user.id, transaction_id, merchant_biz_id, face_time)
+
         return {
             "merchant_biz_id": merchant_biz_id,
             "transaction_id": transaction_id,
@@ -741,22 +754,23 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 # 人脸绑定
+
+
 @router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
 async def faceliveness_bind(user: UserRequest):
     passedInfo = await faceliveness_check_for_ws(user.user_id)
-    await manager.broadcast(json.dumps(passedInfo), user.user_id) 
+    await manager.broadcast(json.dumps(passedInfo), user.user_id)
     return passedInfo
-        
 
 
 # 人脸识别校验
 @router.post("/faceliveness_check", response_model=FaceLivenessCheckResponse)
 async def faceliveness_check(user=Depends(get_current_user)):
-        # 获取查询参数
+    # 获取查询参数
     # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
     merchant_biz_id = user.merchant_biz_id
     transaction_id = user.transaction_id
-    
+
     print("form_data.", merchant_biz_id, transaction_id)
 
     if True:
@@ -766,34 +780,33 @@ async def faceliveness_check(user=Depends(get_current_user)):
         #     "merchant_biz_id":form_data.merchant_biz_id,
         # })
         response = face_compare.check_result(
-            transaction_id= transaction_id,
+            transaction_id=transaction_id,
             merchant_biz_id=merchant_biz_id,
         )
-   
 
         # print("face compare success", response, response.body.result.ext_face_info, response.body)
         # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
-        
+
         faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
 
         if face_lib.check_face_image(faceImg) == False:
             return {
                 "passed": False,
                 "message": "Fail"
-            } 
-        
+            }
+
         # face_lib.add_face_data(faceImg)
         face_id = face_lib.search_face(faceImg)
         print("face_id", face_id)
-        
+
         user_id = Users.get_user_id_by_face_id(face_id)
-        print("user_id",face_id, user_id)
-        if user_id is None :
+        print("user_id", face_id, user_id)
+        if user_id is None:
             return {
                 "passed": False,
                 "message": "Fail"
             }
-            
+
         # 'Message': 'success',
         # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
         # 'Result': {
@@ -813,40 +826,40 @@ async def faceliveness_check(user=Depends(get_current_user)):
 
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
-    
+
 # 查询人脸图片
-@router.get("/faceliveness_image")
-async def faceliveness_image():
-        # 获取查询参数
+
+
+@router.get("/faceliveness_image/{tranid}")
+async def faceliveness_image(tranid: str):
+    # 获取查询参数
     # print("Query Parameters:", form_data,form_data.merchant_biz_id, form_data.transaction_id )
     merchant_biz_id = 'c2371516-d114-4872-8de0-b9d2a42f9f7c'
-    transaction_id = 'hks4a517fd3014b25602e6635469d0af'
-    
+    transaction_id = tranid
+
     print("form_data.", merchant_biz_id, transaction_id)
 
-    if True:
-        # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
-        # response = face_compare.check_result({
-        #     "transaction_id": form_data.transaction_id,
-        #     "merchant_biz_id":form_data.merchant_biz_id,
-        # })
-        response = face_compare.check_result(
-            transaction_id= transaction_id,
-            merchant_biz_id=merchant_biz_id,
-        )
-   
+    # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
+    # response = face_compare.check_result({
+    #     "transaction_id": form_data.transaction_id,
+    #     "merchant_biz_id":form_data.merchant_biz_id,
+    # })
+    response = face_compare.check_result(
+        transaction_id=transaction_id,
+        merchant_biz_id=merchant_biz_id,
+    )
 
-        # print("face compare success", response, response.body.result.ext_face_info, response.body)
-        # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
-        
-        faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+    # print("face compare success", response, response.body.result.ext_face_info, response.body)
+    # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
 
-        # 校验图片真实性
-        flag = face_lib.check_face_image(faceImg)
-        return {
-            "pass": flag,
-            "base64": faceImg
-        }
+    faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
+
+    # 校验图片真实性
+    flag = face_lib.check_face_image(faceImg)
+    return {
+        "pass": flag,
+        "base64": faceImg
+    }
 
 
 # 检查人脸是否通过
@@ -871,7 +884,7 @@ async def faceliveness_check_for_ws(id: str):
                 "passed": False,
                 "message": "Time expired, try again"
             }
-        
+
         now_time = datetime.now()
         # 计算时间差
         time_difference = now_time - face_time
@@ -880,23 +893,21 @@ async def faceliveness_check_for_ws(id: str):
                 "passed": False,
                 "message": "Time expired, try again"
             }
-        
+
         # 获取查询参数
         merchant_biz_id = user.merchant_biz_id
         transaction_id = user.transaction_id
-        
+
         if merchant_biz_id is not None and transaction_id is not None:
             # 1. 获取人脸检测返回的信息（包含照片base64信息
             response = face_compare.check_result(
-                transaction_id= transaction_id,
+                transaction_id=transaction_id,
                 merchant_biz_id=merchant_biz_id,
             )
-    
 
             # print("face compare success", response, response.body.result.ext_face_info, response.body)
             # print("ext_face_info",  json.loads(response.body.result.ext_face_info)['faceImg'], )
-            
-            
+
             # 2. 获取人脸照片
             faceImg = json.loads(response.body.result.ext_face_info)['faceImg']
 
@@ -906,16 +917,16 @@ async def faceliveness_check_for_ws(id: str):
                     "passed": False,
                     "message": "The identity validate fail",
                 }
-                        
+
             # 4. 搜索该人脸照片在库中是否存在
             face_id = face_lib.search_face(faceImg)
             print("face_id", face_id)
-            
+
             if face_id is not None:
                 print("user check:", face_id)
                 user_exit = Users.get_user_id_by_face_id(face_id)
                 # 5. 存在就告诉你，该人脸已经被检测过了！
-                if user_exit is not None :
+                if user_exit is not None:
                     return {
                         "passed": False,
                         "message": "You have already bound your face KYC with another wallet. Only one wallet can be bound.",
@@ -927,34 +938,41 @@ async def faceliveness_check_for_ws(id: str):
                 face_lib.add_face_sample(id_str)
                 # 在人脸样本添加对应的人脸数据
                 face_id = face_lib.add_face_data(faceImg, id_str)
-            
+
             # 判断该face_id是否有过
             if response.body.result.passed:
-                user_update_result = Users.update_user_verified(user.id, True, face_id)
+                user_update_result = Users.update_user_verified(
+                    user.id, True, face_id)
                 # return user_update_result
                 print("user_update_result", user_update_result)
 
                 # 更新用户注册奖励
-                ## 获取用户注册奖励信息
-                rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user.id)
+                # 获取用户注册奖励信息
+                rewards_history = RewardsTableInstance.get_create_rewards_by_userid(
+                    user.id)
                 print("rewards_history", rewards_history)
                 if rewards_history is not None and rewards_history.status == False:
-                    ## 领取注册奖励
-                    result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-                    ## 领取失败进行二次领取
+                    # 领取注册奖励
+                    result = RewardApiInstance.registReward(
+                        rewards_history.id, rewards_history.user_id)
+                    # 领取失败进行二次领取
                     if result is None:
-                        result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+                        result = RewardApiInstance.registReward(
+                            rewards_history.id, rewards_history.user_id)
 
                 # 判断是否有注册奖励
                 if rewards_history is not None and rewards_history.invitee is not None and rewards_history.invitee != '':
-                    ## 获取奖励记录校验是那种奖励
-                    rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+                    # 获取奖励记录校验是那种奖励
+                    rewards = RewardsTableInstance.get_rewards_by_invitee(
+                        rewards_history.invitee)
                     if len(rewards) == 2:
-                        inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
-                        ### 领取邀请奖励
+                        inviteReward = next(
+                            (item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
+                        # 领取邀请奖励
                         if inviteReward is not None:
-                            RewardApiInstance.inviteRewardThread(inviteReward, rewards_history)
-                            
+                            RewardApiInstance.inviteRewardThread(
+                                inviteReward, rewards_history)
+
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
             # 'Result': {
@@ -972,21 +990,20 @@ async def faceliveness_check_for_ws(id: str):
                 "passed": passed,
                 "message": message
             }
-            
-            
+
         else:
             return {
                 "passed": False,
                 "message": "Your haven't started live testing yet"
             }
-        
+
     except Exception as e:
         print(f"Error in faceliveness_check_for_ws: {e}")
         # 根据需要执行错误处理，例如记录日志或通知客户端
         return {
-                "passed": False,
-                "message": "The identity validate fail"
-            }
+            "passed": False,
+            "message": "The identity validate fail"
+        }
 
 
 class ConnectionManager:
@@ -1009,7 +1026,9 @@ class ConnectionManager:
         for connection in connections:
             await connection.send_text(message)
 
+
 manager = ConnectionManager()
+
 
 @router.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
@@ -1019,7 +1038,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
             data = await websocket.receive_text()
             print("socket接收到得信息", data)
             # if (data == "heart"):
-            #    await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id) 
+            #    await manager.broadcast(f"{passedInfo['passed']}-{passedInfo['message']}", user_id)
             # else:
             #     passedInfo = await faceliveness_check_for_ws(user_id)  # 传递 user_id
             #     print("passed",passedInfo,  passedInfo['passed'])

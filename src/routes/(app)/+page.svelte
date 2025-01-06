@@ -228,7 +228,7 @@
       selectedModels = imageModels.filter(item => selectedModels.includes(item.model))
         .map(item => item.model);
       if (selectedModels.length == 0) {
-        toast.error("不支持");
+        toast.error($i18n.t("Not supported"));
         return;
       }
     }

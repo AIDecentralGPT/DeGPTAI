@@ -31,7 +31,20 @@ export const getDeModels = async (token: string = "") => {
       //   tip: "Llama 3.1",
       //   desc: "Suitable for most tasks"
       // },
-      // Ali LLM (Qwen2.5-72B)
+      {
+        name: "DeepSeek 3.0",
+        model: "DeepSeek 3.0-671B",
+        tip: "DeepSeek 3.0",
+        support: "text",
+        desc: "Suitable for most tasks"
+      },
+      {
+        name: "Qwen o1",
+        model: "QVQ-72B",
+        tip: "Qwen o1",
+        support: "text",
+        desc: "Suitable for most tasks"
+      },
       {
         name: "Llama3.3",
         model: "Llama3.3-70B",
@@ -39,23 +52,20 @@ export const getDeModels = async (token: string = "") => {
         support: "text",
         desc: "Suitable for most tasks"
       },
-      // Pixtral-124B
       {
         name: "Pixtral Large 1.0",
         model: "Pixtral-124B",
         tip: "Pixtral Large 1.0",
         support: "image",
         desc: "Support image recognition"
-      },
-      // Ali LLM (Qwen2.5-72B)
-      {
-        name: "Qwen 2.5",
-        model: "Qwen2.5-72B",
-        tip: "Qwen 2.5",
-        support: "text",
-        desc: "Suitable for most tasks"
-      },
-      // Nvidia LLM(Nemotron 70B)
+      }
+      // {
+      //   name: "Qwen 2.5",
+      //   model: "Qwen2.5-72B",
+      //   tip: "Qwen 2.5",
+      //   support: "text",
+      //   desc: "Suitable for most tasks"
+      // },
       // {
       //   name: "Nemotron 3.1",
       //   model: "Llama-3.1-Nemotron-70B",
@@ -63,7 +73,6 @@ export const getDeModels = async (token: string = "") => {
       //   support: "text",
       //   desc: "Suitable for most tasks"
       // },
-      // Nvidia LLM(Nvidia 3.1)
       // {
       //   name: "Nvidia 3.1",
       //   model: "NVLM-D-72B",
@@ -71,7 +80,6 @@ export const getDeModels = async (token: string = "") => {
       //   support: "image",
       //   desc: "Support image recognition"
       // },
-      // DeepSeek(Coder V2)
       // {
       //   name: "Deepseek coder2.0",
       //   model: "DeepSeek-Coder-V2",
@@ -79,20 +87,19 @@ export const getDeModels = async (token: string = "") => {
       //   support: "text",
       //   desc: "Optimize code writing"
       // },
-      // Code LLM (Codestral-22B-v0.1)
       // {
       //   name: "Codestral 0.1", 
       //   model: "Codestral-22B-v0.1",
       //   tip: "Codestral 0.1",
       //   desc: "Optimize code writing"
       // },
-      {
-        name: "Qwen 2.5 Code",
-        model: "Qwen2.5-Coder-32B",
-        tip: "Qwen 2.5 Code",
-        support: "text",
-        desc: "Optimize code writing"
-      }
+      // {
+      //   name: "Qwen 2.5 Code",
+      //   model: "Qwen2.5-Coder-32B",
+      //   tip: "Qwen 2.5 Code",
+      //   support: "text",
+      //   desc: "Optimize code writing"
+      // }
     ],
   };
   return (format_res?.models ?? []).map((model) => ({

@@ -784,5 +784,6 @@
   "Enter verification code":"输入验证码",
   "Previous": "上一步",
   "Finish": "完成",
-  "Next": "下一步"
+  "Next": "下一步",
+  "Not supported": "不支持"
 }

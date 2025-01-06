@@ -1,38 +1,11 @@
 <script>
   import { getContext } from "svelte";
-  import { showLoginInfoModal,user } from "$lib/stores";
-  import Tooltip from '$lib/components/common/Tooltip.svelte';
-  import { checkUniapp } from "$lib/utils";
-  import { goto } from "$app/navigation";
 
   const i18n = getContext("i18n");
 </script>
 
 <section>
-  <hr class="dark:border-gray-800 p-0" />
-  <div class="flex justify-center h-[18px]">
-    {#if $user?.id?.startsWith('0x')}
-      {#if $showLoginInfoModal}
-        <Tooltip content={$i18n.t('Hide')}>
-          <button class="bg-gray-300 px-2 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
-            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="10" height="10">
-              <path d="M512 785.0666667c-17.066667 0-34.133333-8.533333-51.2-17.066667L51.2 349.8666667c-25.6-25.6-25.6-68.266667 0-93.866667 25.6-25.6 68.266667-25.6 93.866667 0L512 622.9333337l366.933333-366.933334c25.6-25.6 68.266667-25.6 93.866667 0 25.6 25.6 25.6 68.266667 0 93.866667l-418.133333 418.133333c-8.533333 8.533333-25.6 17.066667-42.666667 17.066667z" fill="#000000"/>
-            </svg>
-          </button>
-        </Tooltip> 
-      {:else}
-        <Tooltip content={$i18n.t('Show')}>
-          <button class="bg-gray-300 px-2 rounded-b-md" on:click={() => { $showLoginInfoModal = !$showLoginInfoModal; }}>
-            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="10" height="10">
-              <path d="M512 238.9333333c17.066667 0 34.133333 8.533333 51.2 17.066667L972.8 674.1333333c25.6 25.6 25.6 68.266667 0 93.86666701-25.6 25.6-68.266667 25.6-93.866667-1e-8L512 401.0666663l-366.933333 366.933334c-25.6 25.6-68.266667 25.6-93.866667 1e-8-25.6-25.6-25.6-68.266667 0-93.86666701l418.133333-418.133333c8.533333-8.533333 25.6-17.066667 42.666667-17.066667z" fill="#000000"/>
-            </svg>
-          </button>
-        </Tooltip>
-      {/if}
-    {/if}
-  </div>
-
-  <div class="flex justify-between gap-6 px-3 pb-1">
+  <div class="flex justify-between gap-6 px-3 pt-2 pb-1">
     <div class="text-sm leading-6">{$i18n.t('Join Our Community')}:</div>
 
     <div class="flex gap-4 items-center">
