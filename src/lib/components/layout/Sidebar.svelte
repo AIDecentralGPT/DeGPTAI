@@ -895,7 +895,7 @@
     </div>
   </div>
 
-  <div id="wallet-view" class="min-w-[270px] max-w-[320px] absolute bottom-1 left-0 dark:bg-black bg-white pb-[40px] rounded border-gray-800 transition ease-in-out delay-1500 {showWalletView ? 'scale-100' : 'hidden scale-0'}"
+  <div id="wallet-view" class="min-w-[270px] max-w-[320px] absolute bottom-1 left-1 dark:bg-black bg-white pb-[40px] rounded border-gray-800 transition ease-in-out delay-1500 {showWalletView ? 'scale-100' : 'hidden scale-0'}"
     style="border-width: 1px;"
     on:mouseover={showWalletFun}
     on:mouseleave={closeWalletFun}>
