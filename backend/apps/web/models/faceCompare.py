@@ -41,8 +41,8 @@ class FaceCompare:
             meta_info=str(metaInfo), # 动态，传入
             # return_url="https://www.aliyun.com",    
             return_url= FACE_URL + "?user_id=" + metaInfo['user_id'] + "&timestamp=" + str(timestamp),
-            # return_url="http://43.242.202.166:3000" ,
             product_code="FACE_LIVENESS",
+            model='PHOTINUS_LIVENESS',
             security_level="02",
             language_config="en"
             # styleConfig="****",
