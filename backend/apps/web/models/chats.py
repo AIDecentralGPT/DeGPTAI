@@ -34,7 +34,7 @@ class ChatModel(BaseModel):
     id: str
     user_id: str
     title: str
-    chat: str
+    chat: Optional[str] = None
 
     created_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
@@ -225,15 +225,8 @@ class ChatTable:
     def get_chat_list_by_user_id(
         self, user_id: str, skip: int = 0, limit: int = 50
     ) -> List[ChatModel]:
-        return [
-            ChatModel(**model_to_dict(chat))
-            for chat in Chat.select()
-            .where(Chat.archived == False)
-            .where(Chat.user_id == user_id)
-            .order_by(Chat.updated_at.desc())
-            # .limit(limit)
-            # .offset(skip)
-        ]
+        chats = Chat.select(Chat.id, Chat.user_id, Chat.title, Chat.archived, Chat.created_at, Chat.updated_at).where(Chat.archived == False).where(Chat.user_id == user_id).order_by(Chat.updated_at.desc())
+        return [ChatModel(**model_to_dict(chat)) for chat in chats]
 
     def get_chat_list_by_chat_ids(
         self, chat_ids: List[str], skip: int = 0, limit: int = 50

@@ -368,7 +368,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
     )
 
 @router.post("/is_pro", response_model=Optional[VIPStatusModelResp])
-async def isPro( session_user=Depends(get_current_user)):
+async def isPro(session_user=Depends(get_current_user)):
     # print("isPro session_user", session_user)
     if session_user:
         try:
@@ -538,5 +538,4 @@ async def regist_total(user=Depends(get_current_user)):
 @router.get("/check/twitter", response_model=bool)
 async def third_total(request: Request):
     account = request.query_params.get("account")
-    print("================================", account)
     return twitter_lib.check_follow_status(account, "service@decentralgpt.org")

@@ -199,36 +199,36 @@ class UsersTable:
         print("User.create result", result.id)
 
         # 在这里给新钱包发送奖励
-        if result and UsersTable.is_ethereum_address(result.id):
-            print("============创建注册奖励1============")
-            # 添加邀请建立
-            if user.inviter_id is not None and user.inviter_id != '':
-                # 获取邀请人信息
-                invite_user_ret = User.get_or_none(User.id == inviter_id)
-                # 邀请人存在创建注册奖励和邀请奖励
-                if invite_user_ret is not None:
-                    # 生成关联字符串
-                    invitee = str(uuid.uuid4())
+        # if result and UsersTable.is_ethereum_address(result.id):
+        #     print("============创建注册奖励1============")
+        #     # 添加邀请建立
+        #     if user.inviter_id is not None and user.inviter_id != '':
+        #         # 获取邀请人信息
+        #         invite_user_ret = User.get_or_none(User.id == inviter_id)
+        #         # 邀请人存在创建注册奖励和邀请奖励
+        #         if invite_user_ret is not None:
+        #             # 生成关联字符串
+        #             invitee = str(uuid.uuid4())
 
-                    # 校验邀请人是否KYC认证
-                    invite_user_dict = model_to_dict(invite_user_ret)
-                    invite_user = UserModel(**invite_user_dict)
-                    if invite_user.verified:
-                        # 注册奖励绑定邀请人
-                        RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
-                        print("邀请人得奖励", user.inviter_id)
-                        RewardsTableInstance.create_reward(user.inviter_id, 6000, "invite", True, invitee)
-                    else:
-                        # 注册奖励绑定邀请人
-                        RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
-                        print("邀请人得奖励0", user.inviter_id)
-                        RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
-                else:
-                   # 邀请人信息未获取到只创建注册奖励
-                    RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True) 
-            else:
-                # 注册奖励
-                RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
+        #             # 校验邀请人是否KYC认证
+        #             invite_user_dict = model_to_dict(invite_user_ret)
+        #             invite_user = UserModel(**invite_user_dict)
+        #             if invite_user.verified:
+        #                 # 注册奖励绑定邀请人
+        #                 RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
+        #                 print("邀请人得奖励", user.inviter_id)
+        #                 RewardsTableInstance.create_reward(user.inviter_id, 6000, "invite", True, invitee)
+        #             else:
+        #                 # 注册奖励绑定邀请人
+        #                 RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
+        #                 print("邀请人得奖励0", user.inviter_id)
+        #                 RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
+        #         else:
+        #            # 邀请人信息未获取到只创建注册奖励
+        #             RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True) 
+        #     else:
+        #         # 注册奖励
+        #         RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
         
         # return user info:
         return user  # 返回创建的用户 

@@ -8,11 +8,11 @@
   let rewards = [
     {
       title: "I. New User Creation Reward",
-      description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward."
+      description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward,The activity lasts until January 2nd, 2025."
     },
     {
       title: "II. Referral Reward",
-      description: "Each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>6000</span> DGC reward."
+      description: "Each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>6000</span> DGC reward,The activity lasts until January 2nd, 2025."
     },
     {
       title: "III. Clock in Reward",
