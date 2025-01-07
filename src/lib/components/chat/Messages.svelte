@@ -291,7 +291,7 @@
 				{#each messages as message, messageIdx}
 					<div class=" w-full {messageIdx === messages.length - 1 ? 'pb-28' : ''}">
 						<div
-							class="flex flex-col justify-between px-8 lg:px-20 mb-3 {$settings?.fullScreenMode ?? null
+							class="flex flex-col justify-between px-6 md:px-20 mb-3 {$settings?.fullScreenMode ?? null
 								? 'max-w-full'
 								: 'max-w-full'} mx-auto rounded-lg group"
 						>
