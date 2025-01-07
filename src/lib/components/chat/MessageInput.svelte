@@ -447,7 +447,7 @@
 {#if dragged}
   <div
     class="fixed {$showSidebar
-      ? 'left-0 md:left-[270px] md:w-[calc(100%-270px)]'
+      ? 'left-0 md:left-[246px] md:w-[calc(100%-246px)]'
       : 'left-0'}  w-full h-full flex z-50 touch-none pointer-events-none"
     id="dropzone"
     role="region"
@@ -467,7 +467,7 @@
 
 <div
   class="fixed bottom-0 {$showSidebar
-    ? 'left-0 md:left-[270px]'
+    ? 'left-0 md:left-[246px]'
     : 'left-0'} right-0"
 >
   <div class="w-full">
