@@ -80,12 +80,12 @@
     </div>
     <div class="flex flex-col self-start">
       {#if !checkUniapp() }
-        <div class="flex flex-wrap items-center">
-          <span class="text-base mt-1">
+        <div class="flex justify-center items-center">
+          <span class="text-base region-text-color font-bold">
             {$i18n.t("Download DeGPT APP")}
           </span>
           <button
-            class="primaryButton text-xs text-gray-100 rounded-md ml-2 mt-1 px-2 py-1 whitespace-nowrap"
+            class="primaryButton text-xs text-gray-100 rounded-md ml-2 px-2 py-1 whitespace-nowrap"
             on:click={() => {
               $showDownLoad = true;
             }}
@@ -242,13 +242,13 @@
   .mt-20 {
     margin-top: 20px;
   }
-  .ml-10 {
-    margin-left: 10px;
-  }
   .mr-10 {
     margin-right: 10px;
   }
   .direction-column {
     flex-direction: column;
+  }
+  .region-text-color {
+    color: rgba(184, 142, 86, 1);
   }
 </style>
