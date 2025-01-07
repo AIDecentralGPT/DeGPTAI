@@ -74,9 +74,9 @@
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
     <div class="flex flex-col pb-5">
       <ModelDeSelector />
-      <span class="text-xl ml-10 mt-1">
+      <!-- <span class="text-xl ml-10 mt-1">
         {$i18n.t("Unlimited DGC Reward Task")}
-      </span>
+      </span> -->
     </div>
     <div class="flex flex-col {$mobile? '' : 'self-end'}">
       {#if !checkUniapp() }
