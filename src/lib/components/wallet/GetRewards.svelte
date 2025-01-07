@@ -50,14 +50,18 @@
     // }
   ];
 
-  let rewardsCount = {};
+  let rewardsCount: any = {};
 
   async function getCount() {
     if ($user) {
       const res = await getRewardsCount(localStorage.token);
       if (res) {
         Object.keys(res).forEach((key) => {
-          rewardsCount[key] = res[key].length;
+          if (res[key]) {
+            rewardsCount[key] = res[key].length;
+          } else {
+            rewardsCount[key] = 0;
+          }          
         });
         console.log("rewardsCount", rewardsCount);
       }

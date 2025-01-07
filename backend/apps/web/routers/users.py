@@ -30,7 +30,9 @@ from utils.misc import parse_duration, validate_email_format
 
 # --------钱包相关--------
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
+#w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
+w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新以太坊主网
+
 # from web3.auto import w3
 import asyncio
 
@@ -310,22 +312,15 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
 
     if session_user:
         try:
-            # # 在这里添加你的业务逻辑，比如查询数据库
-            # users = Users.get_users_invited(session_user.id)
-            # print("users", users)
-
+            # 获取交易Hash信息
             tx_hash = form_data.tx
             # tx = w3.eth.get_transaction(tx_hash)
-                       
-            # try:
+            
             tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
-            print("receipt", tx_receipt)
+            # print("receipt", tx_receipt)
+            print("receipt", tx_receipt.status)
 
             if tx_receipt.status == 1:
-                # # 获取交易回执
-                # tx_receipt = w3.eth.get_transaction_receipt(tx_hash)
-                # 打印交易回执
-                print("Transaction Receipt:", tx_receipt)
                 # 解析事件日志
                 for log in tx_receipt['logs']:
                     # 打印日志信息
@@ -379,7 +374,7 @@ async def isPro(session_user=Depends(get_current_user)):
             # print("vip_status", vip_status)
             # is_pro = vip_status and VIPStatuses.is_vip_active(user_id)
             if vip_status is None:
-                return None;
+                return None
             is_pro = bool(vip_status and VIPStatuses.is_vip_active(user_id))
 
             # print("isPro", is_pro, vip_status, VIPStatuses.is_vip_active(user_id), user_id, session_user.id, session_user.role)

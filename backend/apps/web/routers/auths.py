@@ -61,7 +61,8 @@ import logging
 log = logging.getLogger(__name__)
 
 # --------钱包相关--------
-w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
+#w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
+w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新以太坊主网
 
 # ————————————————————————
 

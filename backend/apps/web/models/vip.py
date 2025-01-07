@@ -31,7 +31,8 @@ from substrateinterface.utils.ss58 import ss58_decode
 from substrateinterface.utils.hasher import blake2_256
 import json
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 使用以太坊主网
+#w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
+w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新以太坊主网
 # from web3.auto import w3
 from eth_account.messages import encode_defunct, _hash_eip191_message
 from eth_account import Account
