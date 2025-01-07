@@ -110,7 +110,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("Unlimited messages, interactions and history")}
+              {$i18n.t("Extended access rights for message, image understanding, advanced data analysis, and web browsing")}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -128,7 +128,7 @@
               <div>
                 {$i18n.t("Access to ")}
                 <span class=" dark:text-gray-100 text-zinc-950"
-                  >Llmma 3.3, Pixtral Large 1.0, Qwen 2.5, Nemotron 3.1, Nvidia 3.1, Deepseek coder2.0, Qwen 2.5 Code</span
+                  >Llmma 3.3, Pixtral Large 1.0, DeepSeek 3.0, Qwen o1</span
                 >
               </div>
             </li>
@@ -175,7 +175,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("For users who have created a wallet, the daily limit is 50 times. For users who have not created a wallet, the daily limit is 10 times.")}
+              {$i18n.t("For users who have created a wallet, the daily limit is 50 times. For users who have not created a wallet, the daily limit is 5 times.")}
             </li>
           </ul>
         </div>
@@ -253,7 +253,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("Everything in Free")}
+              {$i18n.t("Extended access rights for message, image understanding, advanced data analysis, and web browsing")}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -271,7 +271,7 @@
               <div>
                 {$i18n.t("Access to ")}
                 <span class=" dark:text-gray-100 text-zinc-950"
-                  >Llmma 3.3, Pixtral Large 1.0, Qwen 2.5, Nemotron 3.1, Nvidia 3.1, Deepseek coder2.0, Qwen 2.5 Code</span
+                  >Llmma 3.3, Pixtral Large 1.0, DeepSeek 3.0, Qwen o1</span
                 >
               </div>
             </li>
@@ -320,7 +320,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("For VlP users, the daily limit is 500 times.")}
+              {$i18n.t("For o1 and other models, the daily limit is 1000 times.")}
             </li>
           </ul>
         </div>
