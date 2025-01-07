@@ -682,7 +682,7 @@
   "Download DeGPT to obtain rewards": "ดาวน์โหลด DeGPT เพื่อรับรางวัล",
   "Switch Models": "สลับแบบจำลอง",
   "Suitable for most tasks": "เหมาะสำหรับงานส่วนใหญ่",
-  "Use advanced reasoning and take photos to solve math problems": "ใช้การให้เหตุผลที่สูงขั้นและถ่ายรูปเพื่อแก้ปัญหาโจทย์คณิตศาสตร์",
+  "Take photos to solve math problems": "ถ่ายรูปเพื่อแก้ปัญหาคณิตศาสตร์",
   "Support image recognition": "รองรับการจำแนกภาพ",
   "Optimize code writing": "ปรับปรุงการเขียนโค้ด",
   "Please select at least one model.": "กรุณาเลือกแบบจำลองอย่างน้อยหนึ่งแบบ",

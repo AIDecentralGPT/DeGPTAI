@@ -683,7 +683,7 @@
   "Download DeGPT to obtain rewards": "報酬を得るために DeGPT をダウンロードしてください。",
   "Switch Models": "モデルを切り替える",
   "Suitable for most tasks": "多くのタスクに適しています",
-  "Use advanced reasoning and take photos to solve math problems": "高度な推論を使用し、写真を撮って数学の問題を解決します",
+  "Take photos to solve math problems": "数学問題を解決するために写真を撮る",
   "Support image recognition": "画像認識をサポートしています",
   "Optimize code writing": "コードの書き方を最適化します",
   "Please select at least one model.": "少なくとも 1 つのモデルを選択してください。",
