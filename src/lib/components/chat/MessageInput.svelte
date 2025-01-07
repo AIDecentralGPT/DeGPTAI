@@ -474,7 +474,7 @@
     <div
       class="px-2.5 md:px-16 -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center"
     >
-      <div class="flex flex-col max-w-5xl w-full">
+      <div class="flex flex-col w-full">
         <div class="relative">
           {#if autoScroll === false && messages.length > 0}
             <div
@@ -584,7 +584,7 @@
     </div>
 
     <div class="bg-white dark:bg-gray-900">
-      <div class="max-w-6xl px-2.5 md:px-16 mx-auto inset-x-0">
+      <div class="px-2.5 md:px-32 mx-auto inset-x-0">
         {#if messages?.filter((item) => item.role === "assistant").length >= 5 && $userStore?.role === "visitor"}
           <div
             class="flex gap-1 items-center flex-wrap flex-1 justify-between mb-2 p-4 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
@@ -676,7 +676,7 @@
           />
           <form
             dir={$settings?.chatDirection ?? "LTR"}
-            class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-50 dark:bg-gray-850 dark:text-gray-100"
+            class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100"
             on:submit|preventDefault={() => {
               submitPrompt(prompt, user);
             }}
@@ -873,7 +873,7 @@
               <textarea
                 id="chat-textarea"
                 bind:this={chatTextAreaElement}
-                class="scrollbar-hidden bg-gray-50 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
+                class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
                   ? ''
                   : ' pl-4'} rounded-xl resize-none h-[48px]"
                 placeholder={chatInputPlaceholder !== ""
@@ -1171,7 +1171,7 @@
                       id="send-message-button"
                       class="{prompt !== ''
                         ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
-                        : 'text-white bg-gray-200 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
+                        : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
                       type="submit"
                       disabled={prompt === ""}
                     >

@@ -324,7 +324,7 @@ onMount(() => {
 	</div>
 
 	<div class="flex justify-end pt-3 text-sm font-medium">
-		<button
+		<!-- <button
 			class="  px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
 			on:click={async () => {
 				saveSettings({
@@ -350,6 +350,6 @@ onMount(() => {
 			}}
 		>
 			{$i18n.t('Save')}
-		</button>
+		</button> -->
 	</div>
 </div>

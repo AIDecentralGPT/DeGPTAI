@@ -28,7 +28,7 @@
 </script>
 
 <div>
-  <button class="flex flex-row items-center cursor-pointer ml-2"
+  <button class="flex flex-row items-center cursor-pointer"
     on:click={() => {
       show = true;
     }}>

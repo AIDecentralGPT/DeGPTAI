@@ -72,16 +72,16 @@
 <div>
   <div class="flex gap-3 my-2 mt-20
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
-    <div class="flex flex-col pb-5">
+    <div class="flex flex-col pb-6">
       <ModelDeSelector />
       <!-- <span class="text-xl ml-10 mt-1">
         {$i18n.t("Unlimited DGC Reward Task")}
       </span> -->
     </div>
-    <div class="flex flex-col {$mobile? '' : 'self-end'}">
+    <div class="flex flex-col self-start">
       {#if !checkUniapp() }
         <div class="flex flex-wrap items-center">
-          <span class="text-base ml-10 mt-1">
+          <span class="text-base mt-1">
             {$i18n.t("Download DeGPT APP")}
           </span>
           <button
@@ -93,7 +93,7 @@
             {$i18n.t("Download")}
           </button>
         </div>
-        <div class="flex flex-wrap ml-10 mt-1">
+        <!-- <div class="flex flex-wrap ml-10 mt-1">
           <a class="text-sm" href="https://www.decentralgpt.org" target="_blank">
             <span>
               {$i18n.t("More info")},
@@ -105,13 +105,21 @@
               {$i18n.t("official website")}
             </span>
           </a>
-        </div> 
+        </div>  -->
       {/if}
     </div>
-    <div class="flex fs-12 pb-6 {$mobile? '' : 'self-end'}">
+    <div class="flex fs-12 self-end">
+      <button
+          class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
+          on:click={() => {
+            window.open("https://www.decentralgpt.org", "_blank");
+          }}
+        >
+          <span> {$i18n.t("Visit")} {$i18n.t("official website")}</span>
+      </button>
       {#if $user?.id?.startsWith("0x")}
         <button
-          class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
+          class="flex gap-1 items-center cursor-pointer primaryButton ml-2 text-gray-100 rounded-lg px-2 py-1"
           on:click={() => {
             $showRewardsHistoryModal = true;
           }}
@@ -130,9 +138,8 @@
           <span> {$i18n.t("Rewards History")} </span>
         </button>
       {/if}
-
       <button
-        class="flex gap-1 items-center cursor-pointer primaryButton ml-10 mr-10 text-gray-100 rounded-lg px-2 py-1"
+        class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1"
         on:click={() => {
           $showRewardDetailModal = true;
         }}

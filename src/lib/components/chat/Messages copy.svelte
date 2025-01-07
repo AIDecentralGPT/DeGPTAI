@@ -300,7 +300,7 @@
 						<div
 							class="flex flex-col justify-between px-5 mb-3 {$settings?.fullScreenMode ?? null
 								? 'max-w-full'
-								: 'max-w-5xl'} mx-auto rounded-lg group"
+								: 'max-w-full'} mx-auto rounded-lg group"
 						>
 						<!-- 角色是用户 -->
 							{#if message.role === 'user'}

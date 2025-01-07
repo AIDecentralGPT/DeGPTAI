@@ -225,13 +225,13 @@
               </div>
               <div class="flex flex-row mt-1 px-2">
                 <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-900"
+                  class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-100"
                   on:click={() => {
                     window.open("/static/app/degptv1.0_0712.apk", "_blank");
                   }}
                 >
                   <svg
-                    class="icon mr-1 fill-white dark:fill-gray-900"
+                    class="icon mr-1 fill-white"
                     viewBox="0 0 1024 1024"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
@@ -253,7 +253,7 @@
                   <span>Google Play</span>
                 </button> -->
                 <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-900"
+                  class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-100"
                   on:click={() => {
                     window.open(
                       "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
@@ -262,7 +262,7 @@
                   }}
                 >
                   <svg
-                    class="icon fill-white dark:fill-gray-900"
+                    class="icon fill-white"
                     viewBox="0 0 1024 1024"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
