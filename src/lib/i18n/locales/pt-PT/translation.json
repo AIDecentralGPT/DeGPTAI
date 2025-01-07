@@ -498,6 +498,7 @@
   "The score should be a value between 0.0 (0%) and 1.0 (100%).": "A pontuação deve ser um valor entre 0.0 (0%) e 1.0 (100%).",
   "For users who have created a wallet, the daily limit is 50 times. For users who have not created a wallet, the daily limit is 5 times.": "Para os usuários que criaram uma carteira, o limite diário é de 50 vezes. Para os usuários que não criaram uma carteira, o limite diário é de 5 vezes.",
   "For VlP users, the daily limit is 500 times.": "Para os usuários VIP, o limite diário é de 500 vezes.",
+  "For o1 and other models, the daily limit is 1000 times.": "Para o o1 e outros modelos, o limite diário é de 1000 vezes.",
   "The user you invite must complete wallet creation and KYC verification process before you can receive the reward": "O usuário que você convida deve completar o processo de criação de carteira e a verificação KYC antes de você receber a recompensa",
   "This ensures that your valuable conversations are securely saved to your backend database. Thank you!": "Isso garante que suas valiosas conversas sejam salvas com segurança em seu banco de dados de backend. Obrigado!",
   "This is an exclusive service for pro users. \n Please upgrade your pro permissions first!": "Este é um serviço exclusivo para usuários pro. \n Por favor, atualize suas permissões pro primeiro!",

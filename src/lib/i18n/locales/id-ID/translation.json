@@ -498,6 +498,7 @@
   "The score should be a value between 0.0 (0%) and 1.0 (100%).": "Skor harus berupa nilai antara 0.0 (0%) dan 1.0 (100%).",
   "For users who have created a wallet, the daily limit is 50 times. For users who have not created a wallet, the daily limit is 5 times.": "Untuk pengguna yang telah membuat dompet, batas hariannya adalah 50 kali. Untuk pengguna yang belum membuat dompet, batas hariannya adalah 5 kali.",
   "For VlP users, the daily limit is 500 times.": "Untuk pengguna VIP, batas hariannya adalah 500 kali.",
+  "For o1 and other models, the daily limit is 1000 times.": "Untuk o1 dan model-model lainnya, batas hariannya adalah 1000 kali.",
   "The user you invite must complete wallet creation and KYC verification process before you can receive the reward": "Pengguna yang Anda undang harus menyelesaikan proses pembuatan dompet dan proses verifikasi KYC sebelum Anda dapat menerima hadiah",
   "This ensures that your valuable conversations are securely saved to your backend database. Thank you!": "Ini memastikan bahwa obrolan berharga Anda disimpan dengan aman ke database backend Anda. Terima kasih!",
   "This is an exclusive service for pro users. \n Please upgrade your pro permissions first!": "Ini adalah layanan eksklusif untuk pengguna pro. \n Mohon tingkatkan izin pro Anda terlebih dahulu!",
