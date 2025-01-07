@@ -59,7 +59,7 @@
     <!-- flex flex-col md:space-x-4 -->
     <div class=" w-full p-4 px-8">
       <!-- 输入密码 -->
-      <div class="mb-6 pt-0.5 max-w-[300px]">
+      <div class="mb-6 pt-0.5 max-w-[270px]">
         <div class="flex flex-col w-full">
           <div class="flex-1 relative">
             {#if showPassword}
