@@ -29,7 +29,7 @@
 </script>
 
 {#key mounted}
-	<div class="m-auto w-full px-8 lg:px-32 pb-16">
+	<div class="m-auto w-full px-8 lg:px-20 pb-16">
 		<div class="flex justify-start">
 			<div class="flex space-x-4 mb-1" in:fade={{ duration: 200 }}></div>
 		</div>

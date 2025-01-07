@@ -584,7 +584,7 @@
     </div>
 
     <div class="bg-white dark:bg-gray-900">
-      <div class="px-2.5 md:px-32 mx-auto inset-x-0">
+      <div class="px-2.5 md:px-20 mx-auto inset-x-0">
         {#if messages?.filter((item) => item.role === "assistant").length >= 5 && $userStore?.role === "visitor"}
           <div
             class="flex gap-1 items-center flex-wrap flex-1 justify-between mb-2 p-4 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
