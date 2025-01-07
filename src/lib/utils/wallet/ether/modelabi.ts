@@ -15,8 +15,10 @@ const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1';
 // const modelUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 合约RPC网址
 const modelUrl = "https://rpc.dbcwallet.io"; // 新 合约RPC网址
 
-// 模型合约地址
-const MODEL_TOKEN_CONTRACT_ADDRESS = '0x8588fb0Fec459d44a75135EE74E532a34539C749';
+// 模型旧合约地址
+// const MODEL_TOKEN_CONTRACT_ADDRESS = '0x8588fb0Fec459d44a75135EE74E532a34539C749';
+// 模型新合约地址
+const MODEL_TOKEN_CONTRACT_ADDRESS = '0x2e0a85CB5352d7C542D632EdB4949DF879f8e981';
 
 // 创建 provider
 const provider = new ethers.JsonRpcProvider(modelUrl);
