@@ -447,7 +447,7 @@
 {#if dragged}
   <div
     class="fixed {$showSidebar
-      ? 'left-0 md:left-[340px] md:w-[calc(100%-340px)]'
+      ? 'left-0 md:left-[270px] md:w-[calc(100%-270px)]'
       : 'left-0'}  w-full h-full flex z-50 touch-none pointer-events-none"
     id="dropzone"
     role="region"
@@ -467,7 +467,7 @@
 
 <div
   class="fixed bottom-0 {$showSidebar
-    ? 'left-0 md:left-[340px]'
+    ? 'left-0 md:left-[270px]'
     : 'left-0'} right-0"
 >
   <div class="w-full">
@@ -617,7 +617,7 @@
           </div>
         {/if}
 
-        <div class=" pb-2">
+        <div class=" pb-4">
           <input
             bind:this={filesInputElement}
             bind:files={inputFiles}

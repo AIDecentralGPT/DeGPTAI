@@ -16,8 +16,8 @@
 
 	// General
 	let themes = ['dark', 'light', 'rose-pine dark', 'rose-pine-dawn light', 'oled-dark'];
-	// let selectedTheme = 'system';
-	let selectedTheme = 'dark';
+	let selectedTheme = 'light';
+	// let selectedTheme = 'dark';
 
 	let languages = [];
 	let lang = $i18n.language;
@@ -71,7 +71,8 @@
 	};
 
 	onMount(async () => {
-		selectedTheme = localStorage.theme ?? 'dark';
+		selectedTheme = localStorage.theme ?? 'light';
+		// selectedTheme = localStorage.theme ?? 'dark';
 		console.log("localStorage.theme", localStorage.theme);
 		
 

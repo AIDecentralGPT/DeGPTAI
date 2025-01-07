@@ -54,7 +54,8 @@
   };
 
   const initChart = () => {
-    $theme = $theme ?? "dark";
+    $theme = $theme ?? "light";
+    // $theme = $theme ?? "dark";
     const textColor = $theme.indexOf("dark") >= 0 ? "#000" : "#000";
     option.textStyle.color = textColor;
     option.title.textStyle.color = textColor;

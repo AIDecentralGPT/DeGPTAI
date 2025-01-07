@@ -68,7 +68,8 @@
   const initChart = () => {
     option.xAxis[0].data = xData;
     option.series[0].data = seriesData;
-    $theme = $theme ?? "dark";
+    $theme = $theme ?? "light";
+    // $theme = $theme ?? "dark";
     const textColor = $theme.indexOf("dark") >= 0 ? "#000" : "#000";
     option.textStyle.color = textColor;
     option.title.textStyle.color = textColor;

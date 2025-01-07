@@ -65,6 +65,7 @@
 
     // -----------------
     theme.set(localStorage.theme);
+    console.log("==========localStorage.theme=========", localStorage.theme)
 
     mobile.set(window.innerWidth < BREAKPOINT);
     const onResize = () => {
