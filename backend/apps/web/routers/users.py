@@ -318,7 +318,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
             
             tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
             # print("receipt", tx_receipt)
-            print("receipt", tx_receipt.status)
+            print("receipt", tx_receipt)
 
             if tx_receipt.status == 1:
                 # 解析事件日志

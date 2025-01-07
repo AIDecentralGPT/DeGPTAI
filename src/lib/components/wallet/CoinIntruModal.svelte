@@ -47,29 +47,29 @@
     <div class="p-6 pt-0 shadow-md mt-0 flex-1">
       <div class="flex flex-col item-center pt-5">
         {#if $showCoinIntruType === "dgc"}
-          <h1 class="text-orange-200 text-center font-bold">{$i18n.t(coinIntrus[0].title)}</h1>
-          <p class="text-orange-200 text-base font-bold">
+          <h1 class="text-color text-center font-bold">{$i18n.t(coinIntrus[0].title)}</h1>
+          <p class="text-color text-base font-bold">
             1. {$i18n.t(coinIntrus[0].wallet_tip)}：
           </p>
-          <div class="text-orange-200 text-base">
+          <div class="text-color text-base">
             {$i18n.t(coinIntrus[0].wallet_inst)}
           </div>
-          <p class="text-orange-200 text-base font-bold mt-2">
+          <p class="text-color text-base font-bold mt-2">
             2. {$i18n.t(coinIntrus[0].imp_tip)}：
           </p>
           <div>
-            <div class="text-orange-200 text-base">
+            <div class="text-color text-base">
               ① {$i18n.t(coinIntrus[0].imp_step.step1.tip)}
             </div>
-            <div class="text-orange-200 text-base">
+            <div class="text-color text-base">
               ② {$i18n.t(coinIntrus[0].imp_step.step2.tip)}：
             </div>
             <div class="ml-4">
               {#each coinIntrus[0].imp_step.step2.list as item, index}
                 <div class="flex">
-                  <div class="size-4 min-w-4 mt-1.5 mr-2 bg-orange-200 rounded-full text-gray-800 text-xs font-bold text-center">{index + 1}</div>
+                  <div class="size-4 min-w-4 mt-1.5 mr-2 bg-color rounded-full text-gray-50 text-xs font-bold text-center">{index + 1}</div>
                   <div>
-                    <span class="text-orange-200 text-base break-all">{$i18n.t(item.tip)}：{ item.info }</span>
+                    <span class="text-color text-base break-all">{$i18n.t(item.tip)}：{ item.info }</span>
                     <button
                       on:click={async () => {
                         const res = await copyToClipboard(item.info, false);
@@ -80,7 +80,7 @@
                         }
                       }}
                       type="button"
-                      class="px-3 py-2 leading-3 text-orange-200 rounded-md text-xs"
+                      class="px-3 py-2 leading-3 text-color rounded-md text-xs"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -112,10 +112,10 @@
                 </div>
               {/each}
             </div>
-            <div class="text-orange-200 text-base">
+            <div class="text-color text-base">
               ③ {$i18n.t(coinIntrus[0].imp_step.step3.tip)}
             </div>
-            <div class="text-orange-200 text-base">
+            <div class="text-color text-base">
               {$i18n.t(coinIntrus[0].imp_step.step3.info)}
               <button
                 on:click={async () => {
@@ -127,7 +127,7 @@
                   }
                 }}
                 type="button"
-                class="px-3 py-2 leading-3 text-orange-200 rounded-md text-xs"
+                class="px-3 py-2 leading-3 text-color rounded-md text-xs"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -156,27 +156,27 @@
               </button>
             </div>
           </div>
-          <p class="text-orange-200 text-base font-bold mt-2">
+          <p class="text-color text-base font-bold mt-2">
             3. {$i18n.t(coinIntrus[0].inst)}
           </p>
-          <div class="text-orange-200 text-base">
+          <div class="text-color text-base">
             {$i18n.t(coinIntrus[0].desc)}
           </div>
-          <p class="text-orange-200 text-base font-bold mt-2">
+          <p class="text-color text-base font-bold mt-2">
             4. {$i18n.t(coinIntrus[0].help)}
           </p>
         {:else}
-          <h1 class="text-orange-200 text-center font-bold">
+          <h1 class="text-color text-center font-bold">
             {$i18n.t(coinIntrus[1].title)}
           </h1>
-          <p class="text-orange-200 text-base">
+          <p class="text-color text-base">
             {$i18n.t(coinIntrus[1].description)}
           </p>
         {/if}
       </div>
       <div class="text-center pt-5">
         <button
-          class="primaryButton px-2 py-1 rounded-lg text-lg"
+          class="primaryButton px-2 py-1 rounded-lg text-lg text-gray-50"
           on:click={async () => {
             show = false;
           }}
@@ -192,5 +192,11 @@
   h1 {
     font-size: 20px;
     margin-bottom: 16px;
+  }
+  .text-color {
+    color: rgba(184, 142, 86, 1);
+  }
+  .bg-color{
+    background-color: rgba(184, 142, 86, 1);
   }
 </style>
