@@ -16,6 +16,8 @@
 		showChangelog,
 		config,
 		channel,
+		chats,
+		tags
 	} from "$lib/stores";
 	import { page } from "$app/stores";
 
@@ -29,6 +31,7 @@
 	import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
 	import { signOut } from "$lib/utils/wallet/ether/utils";
 	import { getLanguages } from "$lib/i18n/index";
+	import { getChatList } from "$lib/apis/chats";
 
 	const i18n = getContext("i18n");
 
@@ -55,50 +58,81 @@
     console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
     localStorage.setItem("visitor_id", visitorId);
 
+		// 初始化访客
+		await user.set({
+			id: visitorId,
+			name: visitorId,
+			role: "visitor"
+		});
+
     if (localStorage?.token) {
       // 获取缓存用户信息
-      let localUser = null;
       try {
-        localUser = JSON.parse(localStorage?.user);
+        let localUser = JSON.parse(localStorage?.user);
         if (localUser?.address_type == "dbc") {
-          let res = await getUserInfo(localStorage.token);
-          if (res?.id === localUser?.id) {
-            const proInfo = await isPro(localStorage.token);
-            await user.set({
-              ...localUser,
-              isPro: proInfo ? proInfo.is_pro : false,
-              proEndDate: proInfo ? proInfo.end_date : null,
-              models: res?.models,
-              verified: res?.verified,
-							language: res?.language
-            });
-          }
-          localStorage.user = JSON.stringify($user);
+          getUserInfo(localStorage.token).then(async (res) => {
+						if (res?.id === localUser?.id) {
+							const proInfo = await isPro(localStorage.token);
+							await user.set({
+								...localUser,
+								isPro: proInfo ? proInfo.is_pro : false,
+								proEndDate: proInfo ? proInfo.end_date : null,
+								models: res?.models,
+								verified: res?.verified,
+								language: res?.language
+							});
+						}
+						localStorage.user = JSON.stringify($user);
 
-          // 校验钱包
-          if (localStorage.walletImported) {
-            let walletImported = JSON.parse(localStorage.walletImported);
-            if (walletImported) {
-              const walletImportedInfo = await unlockWalletWithPrivateKey(
-                walletImported?.privateKey
-              );
-              updateWalletData(walletImportedInfo?.data);
-            }
-          }
+						// 校验钱包
+						if (localStorage.walletImported) {
+							let walletImported = JSON.parse(localStorage.walletImported);
+							if (walletImported) {
+								const walletImportedInfo = await unlockWalletWithPrivateKey(
+									walletImported?.privateKey
+								);
+								updateWalletData(walletImportedInfo?.data);
+							}
+						}
+
+						// 更新用户模型
+						await initUserModels();
+						// 更新系统语言
+						await initLanguage();
+						// 更新用户聊天记录
+						await updateChats();
+					});
+          
         } else {
-          await signOut($channel);
-          // 更新用户模型
-          await initUserModels();
+          signOut($channel).then(async() => {
+						// 更新用户模型
+						await initUserModels();
+						// 更新系统语言
+						await initLanguage();
+						// 更新用户聊天记录
+						await updateChats();
+					});
+          
         }
       } catch (error) {
-        await signOut($channel);
-        // 更新用户模型
-        await initUserModels();
+        signOut($channel).then(async() => {
+					// 更新用户模型
+					await initUserModels();
+					// 更新系统语言
+					await initLanguage();
+					// 更新用户聊天记录
+					await updateChats();
+				});
       }
     } else {
-      await signOut($channel);
-      // 更新用户模型
-      await initUserModels();
+      signOut($channel).then(async() => {
+				// 更新用户模型
+				await initUserModels();
+				// 更新系统语言
+				await initLanguage();
+				// 更新用户聊天记录
+				await updateChats();
+			});
     }
   }
 
@@ -136,6 +170,15 @@
     }
   }
 
+	// 更新用户聊天记录
+	async function updateChats() {
+    if (localStorage.token){
+      const chatList = await getChatList(localStorage.token);
+      chats.set(chatList);
+      tags.set([]);
+    } 
+  }
+
 	onMount(async () => {
 		const queryParams = new URLSearchParams($page.url.search);
 		let channelName = queryParams.get("channel");
@@ -145,10 +188,6 @@
 		if ($config) {
 			// 用户登陆校验
 			await checkLogin();
-			// 用户选中模型加载
-			await initUserModels();
-			// 更新系统语言
-			await initLanguage();
 		}
 
 		if ($user === undefined) {

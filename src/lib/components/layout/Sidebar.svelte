@@ -126,9 +126,11 @@
   $: $pageUpdateNumber, updateChats();
 
   async function updateChats() {
-    const chatList = await getChatList(localStorage.token);
-    chats.set(chatList);
-    tags.set([]);
+    if (localStorage.token){
+      const chatList = await getChatList(localStorage.token);
+      chats.set(chatList);
+      tags.set([]);
+    } 
   }
 
   onMount(async () => {
