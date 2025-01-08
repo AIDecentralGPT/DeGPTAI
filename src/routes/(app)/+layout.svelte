@@ -69,7 +69,8 @@
               isPro: proInfo ? proInfo.is_pro : false,
               proEndDate: proInfo ? proInfo.end_date : null,
               models: res?.models,
-              verified: res?.verified
+              verified: res?.verified,
+							language: res?.language
             });
           }
           localStorage.user = JSON.stringify($user);
