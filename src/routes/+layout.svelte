@@ -14,7 +14,7 @@
   import { goto } from "$app/navigation";
   import { Toaster } from "svelte-sonner";
 
-  import { getBackendConfig } from "$lib/apis";
+  import { getBackendConfig, defaultBackendConfig } from "$lib/apis";
 
   import "../tailwind.css";
   import "../app.css";
@@ -38,7 +38,7 @@
   async function initData() {
     let backendConfig = null;
     try {
-      backendConfig = await getBackendConfig();
+      backendConfig = await defaultBackendConfig();
     } catch (error) {
       console.error("Error loading backend config:", error);
     }
@@ -109,8 +109,8 @@
     }
   }
 
-  async function intiLocationInfo() {
-    await getRegionInfo().then((data) => {
+  function intiLocationInfo() {
+    getRegionInfo().then((data) => {
       const regionDict = getRegionDict();
       if (data) {
         regionDict.Singapore.forEach((item) => {

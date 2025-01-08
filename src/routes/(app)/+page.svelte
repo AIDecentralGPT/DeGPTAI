@@ -235,6 +235,8 @@
 
     console.log("selectedModels", selectedModels);
 
+    console.log("===========messages==========", messages);
+
     // const selectedModelsValid = selectedModels
     if (selectedModels.length < 1) {
       toast.error($i18n.t("Model not selected"));
@@ -411,13 +413,7 @@
     _chatId
   ) => {
     const responseMessage = history.messages[responseMessageId];
-    console.log(
-      "sendPromptDeOpenAI",
-      model,
-      userPrompt,
-      responseMessageId,
-      _chatId
-    );
+    console.log("============responseMessage===========", responseMessage);
 
     // const docs = messages
     //   .filter((message) => message?.files ?? null)
