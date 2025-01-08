@@ -76,7 +76,7 @@
 <div>
   <div class="flex gap-3 my-2 mt-20
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
-    <div class="flex flex-col pb-6">
+    <div class="flex flex-col {$mobile ? '' : 'pb-6'}">
       <ModelDeSelector />
       <!-- <span class="text-xl ml-10 mt-1">
         {$i18n.t("Unlimited DGC Reward Task")}
@@ -154,7 +154,7 @@
         </div>  -->
       {/if}
     </div>
-    <div class="flex text-xs self-end">
+    <div class="flex text-xs {$mobile ? 'self-start' : 'self-end'}">
       <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
           on:click={() => {
