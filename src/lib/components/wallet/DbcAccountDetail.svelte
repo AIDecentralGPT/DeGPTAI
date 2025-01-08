@@ -90,8 +90,8 @@
     }
   }
 
-  onMount(async () => {
-    await refreshDbcRate();
+  onMount(() => {
+    refreshDbcRate();
   });
 </script>
 

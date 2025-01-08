@@ -195,6 +195,22 @@
 const submitPrompt = async (userPrompt, _user = null) => {
 	console.log('submitPrompt', $chatId);
 	console.log("点击了", firstResAlready);
+
+	selectedModels = selectedModels.map((modelId) =>
+    $models.map((m) => m.id).includes(modelId) ? modelId : ""
+  );
+    
+  // 校验模型是否支持文件类型
+  if (files.length > 0) {
+    let imageModels = $models.filter(item => item.support == "image");
+    selectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
+    if (selectedModels.length == 0) {
+      toast.error($i18n.t("Not supported"));
+      return;
+    }
+  }
+
+  console.log("selectedModels", selectedModels);
 			
 	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
 	await tick()
