@@ -8,6 +8,7 @@
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
 	import { user as _user } from '$lib/stores';
+	import Image from '$lib/components/common/Image.svelte'
 
 	const i18n = getContext('i18n');
 
@@ -54,6 +55,7 @@
 	const deleteMessageHandler = async () => {
 		dispatch('delete', message.id);
 	};
+	let imageUrl = "";
 </script>
 
 <div class=" flex w-full user-message" dir={$settings.chatDirection}>
@@ -101,7 +103,8 @@
 					{#each message.files as file}
 						<div class={$settings?.chatBubble ?? true ? 'self-end' : ''}>
 							{#if file.type === 'image'}
-								<img src={file.url} alt="input" class=" max-h-96 rounded-lg" draggable="false" />
+								<Image src={file.url} alt="Uploaded Image" className="object-cover object-center max-w-96 max-h-64 rounded-lg cursor-pointer"/>
+								<!-- <img src={file.url} alt="input" class="object-cover object-center max-w-96 max-h-64 rounded-lg cursor-pointer" draggable="false" /> -->
 							{:else if file.type === 'doc'}
 								<button
 									class="h-16 w-72 flex items-center space-x-3 px-2.5 dark:bg-gray-850 rounded-xl border border-gray-200 dark:border-none text-left"
@@ -225,7 +228,7 @@
 					<div class="flex {$settings?.chatBubble ?? true ? 'justify-end' : ''} mb-2">
 						<div
 							class="rounded-3xl {$settings?.chatBubble ?? true
-								? `max-w-[90%] px-5 py-2  bg-gray-50 dark:bg-gray-850 ${
+								? `max-w-[90%] px-5 py-2  bg-gray-100 dark:bg-gray-850 ${
 										message.files ? 'rounded-tr-lg' : ''
 								  }`
 								: ''}  "

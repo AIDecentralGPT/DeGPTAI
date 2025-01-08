@@ -47,14 +47,14 @@
 </script>
 
 <DropdownMenu.Root bind:open={show}>
-  <DropdownMenu.Trigger class="relative w-full">
-    <div class="text-left mt-0.5 ml-1 text-[0.7rem] text-gray-500">
+  <DropdownMenu.Trigger class="relative text-left">
+    <span class="mt-0.5 ml-1 text-[0.7rem] text-gray-500">
       {$i18n.t("Click to select more models")}
-    </div>
+    </span>
   </DropdownMenu.Trigger>
 
   <DropdownMenu.Content
-    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[240px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[300px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
     transition={flyAndScale}
     side={$mobile ? "bottom" : "bottom-start"}
     sideOffset={4}

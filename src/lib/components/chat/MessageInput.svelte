@@ -31,7 +31,8 @@
   import Models from "./MessageInput/Models.svelte";
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
-	import { user as userStore } from '$lib/stores';
+  import { user as userStore } from "$lib/stores";
+  import Compressor from "compressorjs";
 
   const i18n = getContext("i18n");
 
@@ -42,37 +43,38 @@
   export let selectedModel = "";
 
   let chatTextAreaElement: HTMLTextAreaElement;
-  let filesInputElement:any;
+  let filesInputElement: any;
 
-  let promptsElement:any;
-  let documentsElement:any;
-  let modelsElement:any;
+  let promptsElement: any;
+  let documentsElement: any;
+  let modelsElement: any;
 
-  let inputFiles:any;
+  let inputFiles: any;
   let dragged = false;
 
-  let user:any = null;
+  let user: any = null;
   let chatInputPlaceholder = "";
 
-  export let files:any[] = [];
+  export let files: any[] = [];
 
   export let fileUploadEnabled = true;
   // export let speechRecognitionEnabled = true;
 
   export let prompt = "";
-  export let messages:any[] = [];
+  export let messages: any[] = [];
 
-  let speechRecognition:any;
+  let speechRecognition: any;
 
   $: if (prompt) {
     if (chatTextAreaElement) {
       chatTextAreaElement.style.height = "";
-      chatTextAreaElement.style.height = Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+      chatTextAreaElement.style.height =
+        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
     }
   }
 
-  let mediaRecorder:any;
-  let audioChunks:any[] = [];
+  let mediaRecorder: any;
+  let audioChunks: any[] = [];
   let isRecording = false;
   const MIN_DECIBELS = -45;
 
@@ -387,7 +389,6 @@
 
         if (inputFiles && inputFiles.length > 0) {
           inputFiles.forEach((file) => {
-            console.log(file, file.name.split(".").at(-1));
             if (
               ["image/gif", "image/webp", "image/jpeg", "image/png"].includes(
                 file["type"]
@@ -446,7 +447,7 @@
 {#if dragged}
   <div
     class="fixed {$showSidebar
-      ? 'left-0 md:left-[340px] md:w-[calc(100%-340px)]'
+      ? 'left-0 md:left-[246px] md:w-[calc(100%-246px)]'
       : 'left-0'}  w-full h-full flex z-50 touch-none pointer-events-none"
     id="dropzone"
     role="region"
@@ -466,14 +467,14 @@
 
 <div
   class="fixed bottom-0 {$showSidebar
-    ? 'left-0 md:left-[340px]'
+    ? 'left-0 md:left-[246px]'
     : 'left-0'} right-0"
 >
   <div class="w-full">
     <div
       class="px-2.5 md:px-16 -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center"
     >
-      <div class="flex flex-col max-w-5xl w-full">
+      <div class="flex flex-col w-full">
         <div class="relative">
           {#if autoScroll === false && messages.length > 0}
             <div
@@ -583,42 +584,40 @@
     </div>
 
     <div class="bg-white dark:bg-gray-900">
-      <div class="max-w-6xl px-2.5 md:px-16 mx-auto inset-x-0">
-
-        {#if messages?.filter((item) => item.role === "assistant").length>=5 && $userStore?.role === 'visitor'}
-        <div
-          class="flex gap-1 items-center flex-wrap flex-1 justify-between mb-2 p-4 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
-        >
-          <span>
-            {$i18n.t(
-              "Get smarter replies, upload files and pictures, and enjoy more features."
-            )}
-          </span>
-
-          <div class="flex gap-2">
-            <button
-            class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-            on:click={async () => {
-              $showOpenWalletModal = true;
-            }}
+      <div class="px-2.5 md:px-20 mx-auto inset-x-0">
+        {#if messages?.filter((item) => item.role === "assistant").length >= 5 && $userStore?.role === "visitor"}
+          <div
+            class="flex gap-1 items-center flex-wrap flex-1 justify-between mb-2 p-4 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
           >
-              {$i18n.t("Open Wallet")}
-          </button>
+            <span>
+              {$i18n.t(
+                "Get smarter replies, upload files and pictures, and enjoy more features."
+              )}
+            </span>
 
-          <button
-          class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-          on:click={async () => {
-            $showNewWalletModal = true;
-          }}
-        >
-            {$i18n.t("Create Wallet")}
-        </button>
+            <div class="flex gap-2">
+              <button
+                class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+                on:click={async () => {
+                  $showOpenWalletModal = true;
+                }}
+              >
+                {$i18n.t("Open Wallet")}
+              </button>
+
+              <button
+                class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+                on:click={async () => {
+                  $showNewWalletModal = true;
+                }}
+              >
+                {$i18n.t("Create Wallet")}
+              </button>
+            </div>
           </div>
-         
-        </div>
         {/if}
 
-        <div class=" pb-2">
+        <div class=" pb-4">
           <input
             bind:this={filesInputElement}
             bind:files={inputFiles}
@@ -677,7 +676,7 @@
           />
           <form
             dir={$settings?.chatDirection ?? "LTR"}
-            class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-50 dark:bg-gray-850 dark:text-gray-100"
+            class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100"
             on:submit|preventDefault={() => {
               submitPrompt(prompt, user);
             }}
@@ -874,7 +873,7 @@
               <textarea
                 id="chat-textarea"
                 bind:this={chatTextAreaElement}
-                class="scrollbar-hidden bg-gray-50 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
+                class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
                   ? ''
                   : ' pl-4'} rounded-xl resize-none h-[48px]"
                 placeholder={chatInputPlaceholder !== ""
@@ -1172,7 +1171,7 @@
                       id="send-message-button"
                       class="{prompt !== ''
                         ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
-                        : 'text-white bg-gray-200 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
+                        : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
                       type="submit"
                       disabled={prompt === ""}
                     >

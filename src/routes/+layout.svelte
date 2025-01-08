@@ -3,14 +3,12 @@
   import { onMount, setContext } from "svelte";
   import {
     config,
-    user,
     theme,
     WEBUI_NAME,
     mobile,
     deApiBaseUrl,
     inviterId,
-    channel,
-    settings,
+    channel
   } from "$lib/stores";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
@@ -31,7 +29,6 @@
   import { WEBUI_BASE_URL } from "$lib/constants";
   import i18n, { initI18n } from "$lib/i18n";
   import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
-  import { getLanguages } from "$lib/i18n/index";
   import { addErrorLog } from '$lib/apis/errorlog';
 
   setContext("i18n", i18n);
@@ -112,8 +109,8 @@
     }
   }
 
-  function intiLocationInfo() {
-    getRegionInfo().then((data) => {
+  async function intiLocationInfo() {
+    await getRegionInfo().then((data) => {
       const regionDict = getRegionDict();
       if (data) {
         regionDict.Singapore.forEach((item) => {
@@ -136,22 +133,10 @@
     });
   }
 
-  async function initLanguage() {
-    let browserLanguage = navigator.language;
-    const languages = await getLanguages();
-    let localLanguage = languages.filter(
-      (item) => item.code == browserLanguage
-    );
-    if (localLanguage.length > 0) {
-      $i18n.changeLanguage(browserLanguage);
-    }
-  }
-
   onMount(async () => {
     try {
       let currentAddress = window.location.href;
       await initData();
-      await initLanguage();
       await initUrlParam();
       loaded = true;
       if (currentAddress.indexOf("userVerifying") < 0) {

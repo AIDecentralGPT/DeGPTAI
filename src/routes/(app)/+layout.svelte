@@ -23,12 +23,12 @@
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
 	import ShortcutsModal from "$lib/components/chat/ShortcutsModal.svelte";
 	import Tooltip from "$lib/components/common/Tooltip.svelte";
-
 	import FingerprintJS from "@fingerprintjs/fingerprintjs";
 	import { updateWalletData } from "$lib/utils/wallet/walletUtils";
 	import { getUserInfo, isPro } from "$lib/apis/users";
 	import { unlockWalletWithPrivateKey } from "$lib/utils/wallet/ether/utils";
 	import { signOut } from "$lib/utils/wallet/ether/utils";
+	import { getLanguages } from "$lib/i18n/index";
 
 	const i18n = getContext("i18n");
 
@@ -69,7 +69,8 @@
               isPro: proInfo ? proInfo.is_pro : false,
               proEndDate: proInfo ? proInfo.end_date : null,
               models: res?.models,
-              verified: res?.verified
+              verified: res?.verified,
+							language: res?.language
             });
           }
           localStorage.user = JSON.stringify($user);
@@ -119,6 +120,22 @@
     }, 0);
   };
 
+	// 更新用户语言
+	async function initLanguage() {
+    if ($user?.language) {
+      $i18n.changeLanguage($user?.language);
+    } else {
+      let browserLanguage = navigator.language;
+      const languages = await getLanguages();
+      let localLanguage = languages.filter(
+        (item) => item.code == browserLanguage
+      );
+      if (localLanguage.length > 0) {
+        $i18n.changeLanguage(browserLanguage);
+      }
+    }
+  }
+
 	onMount(async () => {
 		const queryParams = new URLSearchParams($page.url.search);
 		let channelName = queryParams.get("channel");
@@ -130,6 +147,8 @@
 			await checkLogin();
 			// 用户选中模型加载
 			await initUserModels();
+			// 更新系统语言
+			await initLanguage();
 		}
 
 		if ($user === undefined) {
@@ -387,7 +406,6 @@
 					</div>
 				</div>
 			{/if}
-
 			<Sidebar />
 			<slot />
 		{/if}

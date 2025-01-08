@@ -109,8 +109,8 @@
 					class=" snap-center min-w-80 w-full max-w-full m-1 border {history.messages[
 						currentMessageId
 					].model === model
-						? 'border-gray-100 dark:border-gray-700 border-[1.5px]'
-						: 'border-gray-50 dark:border-gray-850 '} transition p-5 rounded-3xl"
+						? 'border-gray-200 dark:border-gray-700 border-[1.5px]'
+						: 'border-gray-100 dark:border-gray-850 '} transition p-5 rounded-3xl"
 					on:click={() => {
 						currentMessageId = groupedMessages[model].messages[groupedMessagesIdx[model]].id;
 

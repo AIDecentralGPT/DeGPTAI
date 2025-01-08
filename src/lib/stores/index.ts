@@ -11,8 +11,8 @@ export const MODEL_DOWNLOAD_POOL = writable({});
 
 export const mobile = writable(false);
 
-// export const theme = writable('system');
-export const theme = writable('dark');
+export const theme = writable('light');
+// export const theme = writable('dark');
 export const chatId = writable('');
 
 export const chats = writable([]);
@@ -59,7 +59,6 @@ export const showRewardDetailModal = writable(false);
 export const showTransactionsModal = writable(false);
 export const showUserVerifyModal = writable(false);
 export const showConfirmUpgradeModal = writable(false);
-export const showLoginInfoModal = writable(true);
 export const showCoinIntruModal = writable(false);
 export const showCoinIntruType = writable('dgc');
 export const dbcRate = writable({rate: 0.0002, time: ""});

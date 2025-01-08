@@ -228,7 +228,7 @@
       selectedModels = imageModels.filter(item => selectedModels.includes(item.model))
         .map(item => item.model);
       if (selectedModels.length == 0) {
-        toast.error("不支持");
+        toast.error($i18n.t("Not supported"));
         return;
       }
     }
@@ -847,7 +847,7 @@
 
 <div
   class="min-h-screen max-h-screen {$showSidebar
-    ? 'md:max-w-[calc(100%-340px)]'
+    ? 'md:max-w-[calc(100%-246px)]'
     : ''} w-full max-w-full flex flex-col"
 >
   <Navbar

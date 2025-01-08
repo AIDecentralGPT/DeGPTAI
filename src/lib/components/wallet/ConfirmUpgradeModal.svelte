@@ -128,6 +128,8 @@
             proEndDate: userPro ? userPro.end_date : null,
           });
         }
+      } else {
+        toast.error($i18n.t("Upgrading pro failed!"));
       }
     } else {
       toast.error($i18n.t(result.message));

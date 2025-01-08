@@ -20,6 +20,7 @@ const modelUrl = "https://rpc.dbcwallet.io"; // 新 合约RPC网址
 // 模型新合约地址
 const MODEL_TOKEN_CONTRACT_ADDRESS = '0x2e0a85CB5352d7C542D632EdB4949DF879f8e981';
 
+
 // 创建 provider
 const provider = new ethers.JsonRpcProvider(modelUrl);
 

@@ -20,5 +20,5 @@
 		showImagePreview = true;
 	}}
 >
-	<img src={_src} alt={alt} class={`max-h-96 rounded-lg ${className ? className : ''}`} draggable="false" />
+	<img src={_src} alt={alt} class={`max-h-64 rounded-lg ${className ? className : ''}`} draggable="false" />
 </button>

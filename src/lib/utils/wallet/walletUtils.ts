@@ -16,7 +16,7 @@ export async function handleSigninAsIntialStatus() {
     await printSignIn("").then((res) => {
       if (res.token) {
         localStorage.token = res.token;
-        user.set(res);
+        user.set(res); 
         forceUpdate();
       }
     });
@@ -44,18 +44,6 @@ export async function handleSigninAsIntialStatus() {
         localStorage.token = res.token;
         user.set(res);
         forceUpdate();
-
-        console.log("111", get(pageUpdateNumber));
-
-        console.log(222, get(chats));
-
-        // 触发页面组件更新，回到初始化状态
-        // pageUpdateNumber.subscribe(value => {
-        //     pageUpdateNumber.set(value + 1);
-        //     console.log(
-        //       "value", value
-        //     );
-        // });
       }
     });
   }
@@ -109,7 +97,7 @@ export async function closeWallet(channel:string) {
 
   await printSignIn(channel);
   forceUpdate();
-  // $chats = [];
+  
 
   goto("/");
 }

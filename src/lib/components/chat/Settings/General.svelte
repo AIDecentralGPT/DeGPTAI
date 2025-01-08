@@ -5,6 +5,7 @@
 	const dispatch = createEventDispatcher();
 
 	import { models, user, theme, mobile } from '$lib/stores';
+	import { updateUserLanguage } from "$lib/apis/users";
 
 	const i18n = getContext('i18n');
 
@@ -15,8 +16,8 @@
 
 	// General
 	let themes = ['dark', 'light', 'rose-pine dark', 'rose-pine-dawn light', 'oled-dark'];
-	// let selectedTheme = 'system';
-	let selectedTheme = 'dark';
+	let selectedTheme = 'light';
+	// let selectedTheme = 'dark';
 
 	let languages = [];
 	let lang = $i18n.language;
@@ -70,7 +71,8 @@
 	};
 
 	onMount(async () => {
-		selectedTheme = localStorage.theme ?? 'dark';
+		selectedTheme = localStorage.theme ?? 'light';
+		// selectedTheme = localStorage.theme ?? 'dark';
 		console.log("localStorage.theme", localStorage.theme);
 		
 
@@ -163,15 +165,15 @@ onMount(() => {
 				<div class=" self-center text-xs font-medium">{$i18n.t('Theme')}</div>
 				<div class="flex items-center relative">
 					<select
-						class=" dark:bg-gray-900 w-fit pr-8 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
+						class=" dark:bg-gray-900 w-fit pr-5 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
 						bind:value={selectedTheme}
 						placeholder="Select a theme"
 						on:change={() => themeChangeHandler(selectedTheme)}
 					>
-						<option value="system">⚙️ {$i18n.t('System')}</option>
-						<option value="dark">🌑 {$i18n.t('Dark')}</option>
-						<option value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
-						<option value="light">☀️ {$i18n.t('Light')}</option>
+						<option class="leading-5 text-center" value="system">⚙️ {$i18n.t('System')}</option>
+						<option class="leading-5 text-center" value="dark">🌑 {$i18n.t('Dark')}</option>
+						<option class="leading-5 text-center" value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
+						<option class="leading-5 text-center" value="light">☀️ {$i18n.t('Light')}</option>
 					</select>
 				</div>
 			</div>
@@ -181,15 +183,15 @@ onMount(() => {
 				<div class=" self-center text-xs font-medium">{$i18n.t('Language')}</div>
 				<div class="flex items-center relative">
 					<select
-						class=" dark:bg-gray-900 w-fit pr-8 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
+						class=" dark:bg-gray-900 w-fit pr-5 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
 						bind:value={lang}
 						placeholder="Select a language"
 						on:change={(e) => {
 							$i18n.changeLanguage(lang);
-						}}
-					>
+							updateUserLanguage(localStorage.token, lang);
+						}}>
 						{#each languages as language}
-							<option value={language['code']}>{language['title']}</option>
+							<option class="leading-5 text-center" value={language['code']}>{language['title']}</option>
 						{/each}
 					</select>
 				</div>
@@ -322,9 +324,9 @@ onMount(() => {
 	</div>
 
 	<div class="flex justify-end pt-3 text-sm font-medium">
-		<button
+		<!-- <button
 			class="  px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-			on:click={() => {
+			on:click={async () => {
 				saveSettings({
 					system: system !== '' ? system : undefined,
 					options: {
@@ -348,6 +350,6 @@ onMount(() => {
 			}}
 		>
 			{$i18n.t('Save')}
-		</button>
+		</button> -->
 	</div>
 </div>

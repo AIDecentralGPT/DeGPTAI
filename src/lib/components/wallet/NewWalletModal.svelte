@@ -4,6 +4,7 @@
   import { goto } from "$app/navigation";
 
   import { getModels as _getModels, copyToClipboard } from "$lib/utils";
+  import { getLanguages } from "$lib/i18n/index";
 
   import Modal from "../common/Modal.svelte";
   import {
@@ -41,6 +42,7 @@
     }
   };
 
+  // 更新用户模型
   const initUserModels = () => {
     if ($user?.models) {
       settings.set({ ...$settings, models: $user?.models.split(",") });
@@ -57,6 +59,22 @@
       newChatButton?.click();
     }, 0);
   };
+
+  // 更新用户语言
+  async function initLanguage() {
+    if ($user?.language) {
+      $i18n.changeLanguage($user?.language);
+    } else {
+      let browserLanguage = navigator.language;
+      const languages = await getLanguages();
+      let localLanguage = languages.filter(
+        (item) => item.code == browserLanguage
+      );
+      if (localLanguage.length > 0) {
+        $i18n.changeLanguage(browserLanguage);
+      }
+    }
+  }
 
   let isMobile = false;
   $: if (!show) {
@@ -207,13 +225,13 @@
               </div>
               <div class="flex flex-row mt-1 px-2">
                 <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-900"
+                  class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-100"
                   on:click={() => {
                     window.open("/static/app/degptv1.0_0712.apk", "_blank");
                   }}
                 >
                   <svg
-                    class="icon mr-1 fill-white dark:fill-gray-900"
+                    class="icon mr-1 fill-white"
                     viewBox="0 0 1024 1024"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +253,7 @@
                   <span>Google Play</span>
                 </button> -->
                 <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-900"
+                  class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-100"
                   on:click={() => {
                     window.open(
                       "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
@@ -244,7 +262,7 @@
                   }}
                 >
                   <svg
-                    class="icon fill-white dark:fill-gray-900"
+                    class="icon fill-white"
                     viewBox="0 0 1024 1024"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
@@ -293,6 +311,8 @@
 
                     // 更新用户模型
                     initUserModels();
+                    // 更新用户语言
+                    await initLanguage();
 
                     // 3. 展示钱包面板数据
                     walletCreatedData = wallet;
