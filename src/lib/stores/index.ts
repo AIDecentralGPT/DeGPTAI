@@ -63,6 +63,10 @@ export const showCoinIntruModal = writable(false);
 export const showCoinIntruType = writable('dgc');
 export const dbcRate = writable({rate: 0.0002, time: ""});
 
+
+// 页面初始化完成标识
+export const initPageFlag = writable(false);
+
 // 下载相关
 export const showDownLoad = writable(false);
 

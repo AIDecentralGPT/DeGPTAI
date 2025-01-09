@@ -7,7 +7,8 @@
     chatId,
     showArchivedChats,
     showSidebar,
-    user
+    user,
+    initPageFlag
   } from "$lib/stores";
 
   import ShareChatModal from "../chat/ShareChatModal.svelte";
@@ -154,31 +155,31 @@
             </div>
           </button>
         </Tooltip>
-
-        <UserMenu
-          className="max-w-[200px]"
-          role={$user?.role}
-          on:show={(e) => {
-            if (e.detail === "archived-chat") {
-              showArchivedChats.set(true);
-            }
-          }}>
-            <button
-              class="select-none flex rounded-xl p-1.5 w-full hover:bg-gray-100 dark:hover:bg-gray-850 transition"
-              aria-label="User Menu"
-            >
-              <div class=" self-center">
-                <div class="size-8 object-cover rounded-full bg-primary">
-                  <img
-                    src={ $user.profile_image_url=="" ? generateInitialsImage($user.name) : $user.profile_image_url }
-                    alt="profile"
-                    class=" rounded-full size-8 object-cover"
-                  />
+        {#if $initPageFlag}
+          <UserMenu
+            className="max-w-[200px]"
+            role={$user?.role}
+            on:show={(e) => {
+              if (e.detail === "archived-chat") {
+                showArchivedChats.set(true);
+              }
+            }}>
+              <button
+                class="select-none flex rounded-xl p-1.5 w-full hover:bg-gray-100 dark:hover:bg-gray-850 transition"
+                aria-label="User Menu"
+              >
+                <div class=" self-center">
+                  <div class="size-8 object-cover rounded-full bg-primary">
+                    <img
+                      src={ $user.profile_image_url=="" ? generateInitialsImage($user.name) : $user.profile_image_url }
+                      alt="profile"
+                      class=" rounded-full size-8 object-cover"
+                    />
+                  </div>
                 </div>
-              </div>
-            </button>
-        </UserMenu>
-         
+              </button>
+          </UserMenu>
+        {/if}
         <!-- {#if isMobile}
           <LanguageMenu className="max-w-[122px]">
             <button class="text-sm px-1 py-2 flex flex-row items-center">
