@@ -589,7 +589,7 @@
           }
         }
 
-        console.log("history", history, $chatId, _chatId);
+        //console.log("history", history, $chatId, _chatId);
 
         if ($chatId == _chatId) {
           if ($settings.saveChatHistory ?? true) {
