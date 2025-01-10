@@ -210,7 +210,7 @@
     {#each items as item, index}
       {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id?.startsWith("0x"))}
         <div
-          class="flex direction-column justify-center gap-2 w-full lg:w-1/2 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
+          class="flex direction-column justify-center gap-2 w-full lg:w-2/5 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
         >
           <div
             class="flex justify-start items-center gap-2 w-[180px] lg:w-auto"

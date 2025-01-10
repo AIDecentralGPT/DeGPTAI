@@ -88,8 +88,17 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
   }
 }
 
-
-
+// 转账 DGC 所需gasLimit
+export async function tranGasLimit(privateKey: any) {
+  const wallet = new ethers.Wallet(privateKey, provider);
+  // 获取签名者
+  const signer = wallet.connect(provider);
+  const contractWithSigner = dgcContract.connect(signer);
+  const amountWei = ethers.parseUnits("1");
+  // 估算gas费
+  const gasEstimate = await contractWithSigner.transfer.estimateGas(DGC_TOKEN_CONTRACT_ADDRESS, amountWei);
+  return gasEstimate;
+}
 
 // 获取 DGC 的实时价格
 export async function getDgcPrice() {
