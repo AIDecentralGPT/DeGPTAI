@@ -115,14 +115,10 @@
     let _messages = [];
 
     let currentMessage = history.messages[history.currentId];
-    // console.log("currentMessage", currentMessage);
 
     while (currentMessage !== null) {
       _messages.unshift({ ...currentMessage });
-      currentMessage =
-        currentMessage.parentId !== null
-          ? history.messages[currentMessage.parentId]
-          : null;
+      currentMessage = currentMessage.parentId !== null ? history.messages[currentMessage.parentId] : null;
     }
 
     // console.log("_messages", _messages);
@@ -235,8 +231,6 @@
 
     console.log("selectedModels", selectedModels);
 
-    console.log("===========messages==========", messages);
-
     // const selectedModelsValid = selectedModels
     if (selectedModels.length < 1) {
       toast.error($i18n.t("Model not selected"));
@@ -321,12 +315,7 @@
   const sendPrompt = async (prompt, parentId, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
-      (modelId
-        ? [modelId]
-        : atSelectedModel !== ""
-        ? [atSelectedModel.id]
-        : selectedModels
-      ).map(async (modelId, index) => {
+      (modelId ? [modelId] : atSelectedModel !== "" ? [atSelectedModel.id] : selectedModels).map(async (modelId, index) => {
         console.log("modelId", modelId);
         const model = $models.filter((m) => m.id === modelId).at(0);
 
@@ -413,7 +402,6 @@
     _chatId
   ) => {
     const responseMessage = history.messages[responseMessageId];
-    console.log("============responseMessage===========", responseMessage);
 
     // const docs = messages
     //   .filter((message) => message?.files ?? null)
@@ -425,6 +413,20 @@
     //   .flat(1);
 
     // console.log(docs);
+
+    // 获取上一个对应模型回复的消息
+    const modelmessage = messages;
+    if (messages.length > 2) {
+      let checkmessage = modelmessage[messages.length - 3];
+      let checkchildrenIds = history.messages[checkmessage.parentId].childrenIds;
+      checkchildrenIds.forEach(item => {
+        let sonMessage = history.messages[item];
+        if (sonMessage.model == model.id) {
+          checkmessage.content = sonMessage.content;
+        }
+      });
+    }
+    
 
     scrollToBottom();
 
@@ -446,14 +448,12 @@
                   }`,
                 }
               : undefined,
-            ...messages,
+            ...modelmessage,
           ].filter((message) => message)
             .filter((message) => message.content != "")
             .map((message, idx, arr) => ({
               role: message.role,
-              ...((message.files?.filter((file) => file.type === "image")
-                .length > 0 ??
-                false) &&
+              ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
               message.role === "user"
                 ? {
                     content: [

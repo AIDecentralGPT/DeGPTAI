@@ -22,7 +22,7 @@
 <div name="content">
   <hr class=" dark:border-gray-800 my-1 p-0" />
 
-  <div class="flex flex-row gap-2 px-3">
+  <div class="flex flex-row gap-2 px-2">
     <!-- 升级计划 -->
     <button
       on:click={() => {
@@ -48,7 +48,7 @@
   {#if !($user?.id && $user?.id?.startsWith('0x'))}
     <div>
       <button
-        class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+        class="flex rounded-md py-2 px-2 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
         on:click={async () => {
           $showNewWalletModal = true;
         }}
@@ -69,7 +69,7 @@
       </button>
 
       <button
-        class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+        class="flex rounded-md py-2 px-2 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
         on:click={async () => {
           $showOpenWalletModal = true;
         }}

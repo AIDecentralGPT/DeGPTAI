@@ -22,7 +22,8 @@
     showUserVerifyModal,
     showCoinIntruModal,
     showFollowTwitterModal,
-    showFollowTGGroupModal
+    showFollowTGGroupModal,
+    initPageFlag
   } from "$lib/stores";
   import { getCurrentPair } from "$lib/utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
@@ -872,12 +873,14 @@
         {/if}
       </div> -->
       <div class="flex flex-row gap-2 px-3">
-        <button class="primaryButton px-3 py-2 rounded-lg transition mt-2 mb-2"
-          on:mouseover = {showWalletFun}>
-          <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-            <path d="M976.896 883.712q0 19.456-6.656 36.352t-18.944 29.696-28.672 19.968-35.84 7.168l-743.424 0q-19.456 0-36.864-7.168t-30.72-19.968-20.992-29.696-7.68-36.352l0-510.976q0-38.912 27.136-66.048t66.048-27.136l743.424 0q38.912 0 66.048 27.136t27.136 66.048l0 139.264-232.448 0q-38.912 0-66.048 26.624t-27.136 65.536q1.024 26.624 11.264 47.104 8.192 17.408 27.136 31.744t54.784 14.336l232.448 0 0 186.368zM837.632 232.448l-464.896 0q55.296-28.672 104.448-55.296 43.008-22.528 84.992-45.056t65.536-34.816q35.84-19.456 64-17.92t47.616 9.728q22.528 11.264 38.912 29.696zM698.368 604.16q0-19.456 13.312-32.768t32.768-13.312 32.768 13.312 13.312 32.768-13.312 33.28-32.768 13.824-32.768-13.824-13.312-33.28z" fill="#ffffff"/>
-          </svg>
-        </button>
+        {#if $initPageFlag}
+          <button class="primaryButton px-3 py-2 rounded-lg transition mt-2 mb-2"
+            on:mouseover = {showWalletFun}>
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+              <path d="M976.896 883.712q0 19.456-6.656 36.352t-18.944 29.696-28.672 19.968-35.84 7.168l-743.424 0q-19.456 0-36.864-7.168t-30.72-19.968-20.992-29.696-7.68-36.352l0-510.976q0-38.912 27.136-66.048t66.048-27.136l743.424 0q38.912 0 66.048 27.136t27.136 66.048l0 139.264-232.448 0q-38.912 0-66.048 26.624t-27.136 65.536q1.024 26.624 11.264 47.104 8.192 17.408 27.136 31.744t54.784 14.336l232.448 0 0 186.368zM837.632 232.448l-464.896 0q55.296-28.672 104.448-55.296 43.008-22.528 84.992-45.056t65.536-34.816q35.84-19.456 64-17.92t47.616 9.728q22.528 11.264 38.912 29.696zM698.368 604.16q0-19.456 13.312-32.768t32.768-13.312 32.768 13.312 13.312 32.768-13.312 33.28-32.768 13.824-32.768-13.824-13.312-33.28z" fill="#ffffff"/>
+            </svg>
+          </button>
+        {/if}
         <button class="primaryButton px-3 py-2 text-gray-100 transition rounded-lg mt-2 mb-2"
           on:click={async () => {
             await goto("/");
@@ -897,7 +900,7 @@
     </div>
   </div>
 
-  <div id="wallet-view" class="min-w-[246px] max-w-[320px] absolute bottom-1 left-1 dark:bg-black bg-white pb-[40px] rounded border-gray-800 transition ease-in-out delay-1500 {showWalletView ? 'scale-100' : 'hidden scale-0'}"
+  <div id="wallet-view" class="min-w-[246px] max-w-[306px] absolute bottom-1 left-1 dark:bg-gray-950 bg-gray-50 pb-[40px] rounded dark:border-gray-800 border-gray-200 transition ease-in-out delay-1500 {showWalletView ? 'scale-100' : 'hidden scale-0'}"
     style="border-width: 1px;"
     on:mouseover={showWalletFun}
     on:mouseleave={closeWalletFun}>

@@ -5,7 +5,7 @@
 
   import Modal from "../common/Modal.svelte";
   import { transferDbc } from "$lib/utils/wallet/ether/dbc";
-  import { transferDgc } from "$lib/utils/wallet/ether/dgc";
+  import { transferDgc, tranGasLimit } from "$lib/utils/wallet/ether/dgc";
   import { provider } from "$lib/utils/wallet/ether/utils";
   import { ethers } from "ethers";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
@@ -47,15 +47,47 @@
     };
   }
 
-  function handleAmountChange(data) {
-    console.log("data1", data);
+  $: if (transferType) {
+    handleAmountChange();
+  }
 
+  async function handleAmountChange() {
     if (amount) {
-      // 在这里调用 provider.getFeeData()
-      provider.getFeeData().then((data) => {
-        console.log("data", data);
-        gas = data; // 更新 gas 变量
-      });
+      if (transferType === "DBC") {
+        // 获取gasLimit
+        const transaction = {
+          to: '0xEc9011d12CCBE93C7213C176dEFEa998bfbBA21b',
+          value: ethers.parseUnits('1')
+        };
+        const gasLimit = await provider.estimateGas(transaction);
+        // 在这里调用 provider.getFeeData()
+        await provider.getFeeData().then((data) => {
+          const gasPrice = BigInt(data?.gasPrice) * gasLimit;
+          const maxFeePerGas = BigInt(data?.maxFeePerGas) * gasLimit;
+          const maxPriorityFeePerGas = data?.maxPriorityFeePerGas;
+          // 更新 gas 变量
+          gas = {
+            gasPrice,
+            maxFeePerGas,
+            maxPriorityFeePerGas
+          }
+        });
+      } else {
+        // 获取预估gasLimit
+        const gasLimit = await tranGasLimit($currentWalletData?.walletInfo?.privateKey);
+        // 在这里调用 provider.getFeeData()
+        await provider.getFeeData().then((data) => {
+          const gasPrice = BigInt(data?.gasPrice) * gasLimit;
+          const maxFeePerGas = BigInt(data?.maxFeePerGas) * gasLimit;
+          const maxPriorityFeePerGas = data?.maxPriorityFeePerGas;
+          // 更新 gas 变量
+          gas = {
+            gasPrice,
+            maxFeePerGas,
+            maxPriorityFeePerGas
+          }
+        });
+      }
     }
   }
 
@@ -237,20 +269,14 @@
       </div> -->
 
       {#if amount && gas}
-      <div class="-mt-2">
-        {$i18n.t("Estimated fuel costs:")}
-
-        {`${ethers.formatUnits(gas?.gasPrice)} < ${ethers.formatUnits(
-          gas?.maxFeePerGas
-        )} DBC `}
-
-        <div>
-          {`Maximum cost: < ${ethers.formatUnits(gas?.maxFeePerGas)} DBC`}
+        <div class="flex flex-row mt-2">
+          <div>{$i18n.t("Estimated fuel costs:")}</div>
+          <div>{ `${ ethers.formatUnits(gas?.gasPrice) } - ${ ethers.formatUnits(gas?.maxFeePerGas)} DBC `}</div>
+          <div class="ml-2">{$i18n.t("Maximum cost:")}{` ${ ethers.formatUnits(gas?.maxFeePerGas) } DBC`}</div>
         </div>
-      </div>
-    {/if}
+      {/if}
 
-      <div class="flex justify-end">
+      <div class="flex justify-end mt-1">
         <button
           disabled={loading}
           class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"

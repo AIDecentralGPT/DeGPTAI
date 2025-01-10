@@ -17,7 +17,8 @@
 		config,
 		channel,
 		chats,
-		tags
+		tags,
+		initPageFlag
 	} from "$lib/stores";
 	import { page } from "$app/stores";
 
@@ -62,6 +63,7 @@
 		await user.set({
 			id: visitorId,
 			name: visitorId,
+			profile_image_url: "",
 			role: "visitor"
 		});
 
@@ -94,13 +96,14 @@
 								updateWalletData(walletImportedInfo?.data);
 							}
 						}
-
 						// 更新用户模型
 						await initUserModels();
 						// 更新系统语言
 						await initLanguage();
 						// 更新用户聊天记录
 						await updateChats();
+						// 初始化完成
+						$initPageFlag = true;
 					});
           
         } else {
@@ -111,6 +114,8 @@
 						await initLanguage();
 						// 更新用户聊天记录
 						await updateChats();
+						// 初始化完成
+						$initPageFlag = true;
 					});
           
         }
@@ -122,6 +127,8 @@
 					await initLanguage();
 					// 更新用户聊天记录
 					await updateChats();
+					// 初始化完成
+					$initPageFlag = true;
 				});
       }
     } else {
@@ -132,6 +139,8 @@
 				await initLanguage();
 				// 更新用户聊天记录
 				await updateChats();
+				// 初始化完成
+				$initPageFlag = true;
 			});
     }
   }

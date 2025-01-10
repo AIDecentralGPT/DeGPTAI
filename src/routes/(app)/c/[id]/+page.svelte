@@ -387,6 +387,19 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		console.log(docs);
 
+		// 获取上一个对应模型回复的消息
+    const modelmessage = messages;
+    if (messages.length > 2) {
+      let checkmessage = modelmessage[messages.length - 3];
+      let checkchildrenIds = history.messages[checkmessage.parentId].childrenIds;
+      checkchildrenIds.forEach(item => {
+        let sonMessage = history.messages[item];
+        if (sonMessage.model == model.id) {
+          checkmessage.content = sonMessage.content;
+        }
+      });
+    }
+
 		scrollToBottom();
 
 		console.log("$settings.system", $settings.system, );

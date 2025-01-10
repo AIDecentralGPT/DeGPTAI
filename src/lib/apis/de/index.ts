@@ -133,8 +133,13 @@ export const generateDeOpenAIChatCompletion = async (
     controller = new AbortController();
     try {
       res = await getDeOpenAIChatCompletion(urlObj, body, controller);
-      break;
+      if (res.status == 200) {
+        break;
+      } else {
+        throw new Error("接口异常");
+      }   
     } catch (err) {
+      console.log("=============model-proxy-error=============", err);
       controller.abort();
       if (urlObj.name === urlObjs[urlObjs.length-1].name) {
         error = err;
@@ -146,7 +151,7 @@ export const generateDeOpenAIChatCompletion = async (
   if (error) {
     throw error;
   }
-
+  
   return [res, controller];
 };
 
@@ -159,7 +164,7 @@ const getDeOpenAIChatCompletion = async (
   let res: any;
   const overallTimeout = setTimeout(() => {
     controller.abort();
-    throw new Error('请求超时，5秒内未收到回复');
+    throw new Error('请求超时，10秒内未收到回复');
   }, 10000);
   res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
     signal: controller.signal,
