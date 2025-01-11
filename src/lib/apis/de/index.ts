@@ -32,6 +32,13 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Suitable for most tasks"
       // },
       {
+        name: "Llama3.3",
+        model: "Llama3.3-70B",
+        tip: "Llama3.3",
+        support: "text",
+        desc: "Suitable for most tasks"
+      },
+      {
         name: "DeepSeek 3.0",
         model: "DeepSeek-V3",
         tip: "DeepSeek 3.0",
@@ -44,13 +51,6 @@ export const getDeModels = async (token: string = "") => {
         tip: "Qwen o1",
         support: "image",
         desc: "Take photos to solve math problems"
-      },
-      {
-        name: "Llama3.3",
-        model: "Llama3.3-70B",
-        tip: "Llama3.3",
-        support: "text",
-        desc: "Suitable for most tasks"
       },
       {
         name: "Pixtral Large 1.0",
