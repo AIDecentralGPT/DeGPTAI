@@ -129,24 +129,44 @@ export const generateDeOpenAIChatCompletion = async (
     urlObjs.unshift(koreaItem);
   }
 
+  let repeatUrl = urlObjs[0];
+  let errorUrl = [];
   for (const urlObj of urlObjs) {
     controller = new AbortController();
     try {
-      res = await getDeOpenAIChatCompletion(urlObj, body, controller);
+      res = await getDeOpenAIChatCompletion(urlObj, body, controller, true);
       if (res.status == 200) {
         break;
       } else {
-        throw new Error("接口异常");
-      }   
+        throw new Error("error");
+      } 
     } catch (err) {
-      console.log("=============model-proxy-error=============", err);
       controller.abort();
+      if (err?.message == "error") {
+        errorUrl.push(urlObj);
+      }
       if (urlObj.name === urlObjs[urlObjs.length-1].name) {
-        error = err;
-        res = null;
+        try {
+          let checkUrl = urlObjs.filter(item =>!errorUrl.includes(item));
+          if (checkUrl.length > 0 && !checkUrl.includes(repeatUrl)) {
+            repeatUrl = checkUrl[0];
+          }
+          controller = new AbortController();
+          res = await getDeOpenAIChatCompletion(repeatUrl, body, controller, false);
+          if (res.status == 200) {
+            break;
+          } else {
+            throw new Error("error");
+          }
+        } catch(err) {
+          error = err;
+          res = null;
+        }
+        
       }
     }
   }
+  
 
   if (error) {
     throw error;
@@ -159,13 +179,17 @@ export const generateDeOpenAIChatCompletion = async (
 const getDeOpenAIChatCompletion = async (
   urlObj: any,
   body: Object,
-  controller: any
+  controller: any,
+  timeFlag: boolean
 ) => {
   let res: any;
-  const overallTimeout = setTimeout(() => {
-    controller.abort();
-    throw new Error('请求超时，10秒内未收到回复');
-  }, 10000);
+  let overallTimeout = null
+  if (timeFlag) {
+    overallTimeout = setTimeout(() => {
+      controller.abort();
+      throw new Error('timeout');
+    }, 10000);
+  }
   res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
     signal: controller.signal,
     method: "POST",
@@ -179,7 +203,9 @@ const getDeOpenAIChatCompletion = async (
       stream: true,
     }),
   }).finally(() => {
-    clearTimeout(overallTimeout);
+    if (overallTimeout) {
+      clearTimeout(overallTimeout);
+    }
   });
 
   return res;
