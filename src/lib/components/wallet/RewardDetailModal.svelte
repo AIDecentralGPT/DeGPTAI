@@ -12,7 +12,7 @@
     },
     {
       title: "II. Referral Reward",
-      description: "Each user who successfully creates a wallet and invites others to create a KYC wallet will receive a <span style='color: rgba(184, 142, 86, 1);'>6000</span> DGC reward,The activity lasts until January 2nd, 2025."
+      description: "Each user who successfully creates a KYC wallet and invites others to create a KYC wallet and inviter complete thie check-in 3 times in a row will receive a <span style='color: rgba(184, 142, 86, 1);'>6000</span> DGC reward,The activity lasts until January 2nd, 2025."
     },
     {
       title: "III. Clock in Reward",
