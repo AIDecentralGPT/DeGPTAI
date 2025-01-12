@@ -74,7 +74,7 @@
         });
       } else {
         // 获取预估gasLimit
-        const gasLimit = await tranGasLimit($currentWalletData?.walletInfo?.privateKey);
+        const gasLimit = await tranGasLimit($currentWalletData?.walletInfo);
         // 在这里调用 provider.getFeeData()
         await provider.getFeeData().then((data) => {
           const gasPrice = BigInt(data?.gasPrice) * gasLimit;

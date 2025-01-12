@@ -28,6 +28,7 @@
 
 	import Name from './Name.svelte';
 	import ProfileImage from './ProfileImage.svelte';
+	import Thinking from './Thinking.svelte';
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
 	import Image from '$lib/components/common/Image.svelte';
@@ -361,7 +362,9 @@
 				{:else}
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
-
+				{#if message.content == ''}
+					<Thinking/>
+				{/if}
 				{#if message.timestamp}
 					<span
 						class=" self-center invisible group-hover:visible text-gray-400 text-xs font-medium uppercase"

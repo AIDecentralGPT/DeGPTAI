@@ -32,7 +32,6 @@
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
-  import Compressor from "compressorjs";
 
   const i18n = getContext("i18n");
 
@@ -389,11 +388,7 @@
 
         if (inputFiles && inputFiles.length > 0) {
           inputFiles.forEach((file) => {
-            if (
-              ["image/gif", "image/webp", "image/jpeg", "image/png"].includes(
-                file["type"]
-              )
-            ) {
+            if (["image/gif", "image/webp", "image/jpeg", "image/png"].includes(file["type"])) {
               let reader = new FileReader();
               reader.onload = (event) => {
                 files = [
@@ -629,14 +624,7 @@
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
                 _inputFiles.forEach((file) => {
-                  if (
-                    [
-                      "image/gif",
-                      "image/webp",
-                      "image/jpeg",
-                      "image/png",
-                    ].includes(file["type"])
-                  ) {
+                  if (["image/gif","image/webp","image/jpeg","image/png"].includes(file["type"])) {
                     let reader = new FileReader();
                     reader.onload = (event) => {
                       files = [
