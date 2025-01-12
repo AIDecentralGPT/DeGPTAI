@@ -462,13 +462,15 @@
     const modelmessage = messages;
     if (messages.length > 2) {
       let checkmessage = modelmessage[messages.length - 3];
-      let checkchildrenIds = history.messages[checkmessage.parentId].childrenIds;
-      checkchildrenIds.forEach(item => {
-        let sonMessage = history.messages[item];
-        if (sonMessage.model == model.id) {
-          checkmessage.content = sonMessage.content;
-        }
-      });
+      let checkchildrenIds = history.messages[checkmessage.parentId]?.childrenIds;
+      if (checkchildrenIds) {
+        checkchildrenIds.forEach(item => {
+          let sonMessage = history.messages[item];
+          if (sonMessage.model == model.id) {
+            checkmessage.content = sonMessage.content;
+          }
+        });
+      }
     }
     
 
