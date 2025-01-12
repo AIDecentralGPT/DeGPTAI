@@ -286,7 +286,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
           ];
         }
 
-        responseMap[model] = responseMessage;
+        responseMap[model?.id] = responseMessage;
 
         await tick();
       }
@@ -341,9 +341,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						// 创建响应消息
 						let responseMessageId = uuidv4();
 						let responseMessage = {}
-						if (responseMap[model]) {
-							responseMessageId = responseMap[model].id;
-							responseMessage = responseMap[model];
+						if (responseMap[model?.id]) {
+							responseMessageId = responseMap[model?.id].id;
+							responseMessage = responseMap[model?.id];
 						} else {
 							// Create response message
 							responseMessage = {

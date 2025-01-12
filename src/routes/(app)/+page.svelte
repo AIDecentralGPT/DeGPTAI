@@ -303,14 +303,14 @@
             ];
           }
 
-          responseMap[model] = responseMessage;
-
-          await tick();
+          responseMap[model?.id] = responseMessage;
         }
       });
 
       // Wait until history/message have been updated
       await tick();
+
+      console.log(responseMap);
 
       // Create new chat if only one message in messages
       if (messages.length == 2) {
@@ -356,9 +356,9 @@
         if (model) {
           let responseMessageId = uuidv4();
           let responseMessage = {}
-          if (responseMap[model]) {
-            responseMessageId = responseMap[model].id;
-            responseMessage = responseMap[model];
+          if (responseMap[model?.id]) {
+            responseMessageId = responseMap[model?.id].id;
+            responseMessage = responseMap[model?.id];
           } else {
             // Create response message
             responseMessage = {
