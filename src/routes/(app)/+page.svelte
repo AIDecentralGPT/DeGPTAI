@@ -273,8 +273,8 @@
         history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
       }
 
-      let responseMap: any = {};
       // Create Simulate ResopnseMessage
+      let responseMap: any = {};
       selectedModels.map(async (modelId) => {
         const model = $models.filter((m) => m.id === modelId).at(0);
         if (model) {
@@ -313,7 +313,7 @@
       await tick();
 
       // Create new chat if only one message in messages
-      if (messages.length == 1) {
+      if (messages.length == 2) {
         if ($settings.saveChatHistory ?? true) {
           chat = await createNewChat(localStorage.token, {
             id: $chatId,
@@ -415,7 +415,7 @@
           }
           responseMessage.userContext = userContext;
 
-          await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
+          await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 
           // if (model?.external) {
           // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
@@ -429,6 +429,12 @@
       })
     );
 
+    if (messages.length == 2) {
+      window.history.replaceState(history.state, "", `/c/${_chatId}`);
+      const _title = await generateDeChatTitle(prompt);
+      await setChatTitle(_chatId, _title);
+    }
+
     firstResAlready = false; // 所有模型响应结束后，还原firstResAlready为初始状态false
     await chats.set(await getChatList(localStorage.token));
   };
@@ -436,7 +442,6 @@
   // De的openai走这里！
   const sendPromptDeOpenAI = async (
     model,
-    userPrompt,
     responseMessageId,
     _chatId
   ) => {
@@ -654,13 +659,6 @@
     if (autoScroll) {
       scrollToBottom();
     }
-
-    if (messages.length == 2) {
-      window.history.replaceState(history.state, "", `/c/${_chatId}`);
-
-      const _title = await generateDeChatTitle(userPrompt);
-      await setChatTitle(_chatId, _title);
-    }
   };
 
   const handleOpenAIError = async (
@@ -738,12 +736,7 @@
       const model = $models.filter((m) => m.id === responseMessage.model).at(0);
 
       if (model) {
-        await sendPromptDeOpenAI(
-          model,
-          history.messages[responseMessage.parentId].content,
-          responseMessage.id,
-          _chatId
-        );
+        await sendPromptDeOpenAI(model, responseMessage.id, _chatId);
 
         // if (model?.external) {
         // 	await sendPromptOpenAI(

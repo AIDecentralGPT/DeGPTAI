@@ -256,11 +256,47 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
 		}
 
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+    selectedModels.map(async (modelId) => {
+      const model = $models.filter((m) => m.id === modelId).at(0);
+      if (model) {
+        // Create response message
+        let responseMessageId = uuidv4();
+        let responseMessage = {
+          parentId: userMessageId,
+          id: responseMessageId,
+          childrenIds: [],
+          role: "assistant",
+          content: "",
+          model: model.id,
+          userContext: null,
+          timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+        };
+
+        // Add message to history and Set currentId to messageId
+        history.messages[responseMessageId] = responseMessage;
+        history.currentId = responseMessageId;
+
+        // Append messageId to childrenIds of parent message
+        if (userMessageId !== null) {
+          history.messages[userMessageId].childrenIds = [
+            ...history.messages[userMessageId].childrenIds,
+            responseMessageId,
+          ];
+        }
+
+        responseMap[model] = responseMessage;
+
+        await tick();
+      }
+    });
+
 		// 等待 history/message 更新完成
 		await tick();
 
 		// 如果 messages 中只有一条消息，则创建新的聊天
-		if (messages.length == 1) {
+		if (messages.length == 2) {
 			if ($settings.saveChatHistory ?? true) {
 				// 3\1. 创建新的会话
 				chat = await createNewChat(localStorage.token, {
@@ -287,12 +323,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		files = [];
 
 		// 发送提示
-		await sendPrompt(userPrompt, userMessageId);
+		await sendPrompt(userPrompt, userMessageId, responseMap);
 	}
 };
 
 	// 3\2. 继续聊天会话
-	const sendPrompt = async (prompt, parentId, modelId = null) => {
+	const sendPrompt = async (prompt, parentId, responseMap, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		// 对每个模型都做请求
 		await Promise.all(
@@ -304,28 +340,36 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					if (model) {
 						// 创建响应消息
 						let responseMessageId = uuidv4();
-						let responseMessage = {
-							parentId: parentId,
-							id: responseMessageId,
-							childrenIds: [],
-							role: 'assistant',
-							content: '',
-							model: model.id,
-							userContext: null,
-							timestamp: Math.floor(Date.now() / 1000) // Unix epoch
-						};
+						let responseMessage = {}
+						if (responseMap[model]) {
+							responseMessageId = responseMap[model].id;
+							responseMessage = responseMap[model];
+						} else {
+							// Create response message
+							responseMessage = {
+								parentId: parentId,
+								id: responseMessageId,
+								childrenIds: [],
+								role: "assistant",
+								content: "",
+								model: model.id,
+								userContext: null,
+								timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+							};
 
-						// 将消息添加到历史记录并设置 currentId 为 messageId
-						history.messages[responseMessageId] = responseMessage;
-						history.currentId = responseMessageId;
+							// Add message to history and Set currentId to messageId
+							history.messages[responseMessageId] = responseMessage;
+							history.currentId = responseMessageId;
 
-						// 将 messageId 附加到父消息的 childrenIds 中
-						if (parentId !== null) {
-							history.messages[parentId].childrenIds = [
-								...history.messages[parentId].childrenIds,
-								responseMessageId
-							];
+							// Append messageId to childrenIds of parent message
+							if (parentId !== null) {
+								history.messages[parentId].childrenIds = [
+									...history.messages[parentId].childrenIds,
+									responseMessageId,
+								];
+							}
 						}
+
 						// 等待 history/message 更新完成
 						await tick();
 
@@ -358,7 +402,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						console.log("responseMessage:", responseMessage);
 						
 
-						await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
+						await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 
 					} else {
 						console.error($i18n.t(`Model {{modelId}} not found`, { }));
@@ -370,12 +414,18 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			)
 		);
 
+		if (messages.length == 2) {
+      window.history.replaceState(history.state, "", `/c/${_chatId}`);
+      const _title = await generateDeChatTitle(prompt);
+      await setChatTitle(_chatId, _title);
+    }
+
 		firstResAlready = false // 所有模型响应结束后，还原firstResAlready为初始状态false
 		await chats.set(await getChatList(localStorage.token));
 	};
 
 	// 对话DeGpt
-	const sendPromptDeOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
+	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {
 			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = messages
@@ -560,13 +610,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		if (autoScroll) {
 			scrollToBottom();
-		}
-
-		if (messages.length == 2) {
-			window.history.replaceState(history.state, '', `/c/${_chatId}`);
-
-			const _title = await generateDeChatTitle(userPrompt);
-			await setChatTitle(_chatId, _title);
 		}
 	};
 
@@ -1115,7 +1158,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				// 	);
 				await sendPromptDeOpenAI(
 					model,
-					history.messages[responseMessage.parentId].content,
 					responseMessage.id,
 					_chatId
 				);
