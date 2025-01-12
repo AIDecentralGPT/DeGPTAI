@@ -415,15 +415,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		);
 
 		// 所有模型响应结束后，还原firstResAlready为初始状态false
-    firstResAlready = false; 
-
-		// 更新聊天记录
-		if ($settings.saveChatHistory ?? true) {
-			chat = await updateChatById(localStorage.token, _chatId, {
-				messages: messages,
-				history: history
-			});
-		}
+    firstResAlready = false;
 
     // 加载聊天列表（赋值聊天title）
     if (messages.length == 2) {
@@ -597,6 +589,16 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					if (autoScroll) {
 						scrollToBottom();
 					}
+
+					// 更新聊天记录
+          if (_chatId === $chatId) {  
+            if ($settings.saveChatHistory ?? true) {
+              await updateChatById(localStorage.token, _chatId, {
+                messages: messages,
+                history: history
+              });
+            }
+          }
 				}
 			} else {
 				await handleOpenAIError(null, res, model, responseMessage);
