@@ -474,21 +474,19 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				localStorage.token,
 				{
 					model: model.id,
-					stream: true,
 					messages: [
 						$settings.system || (responseMessage?.userContext ?? null)
 							? {
 									role: 'system',
 									content: `${$settings?.system ?? ''}${
 										responseMessage?.userContext ?? null
-											? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join('\n')}`
-											: ''
-									}`
+											? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join('\n')}` : ''}`
 							  }
 							: undefined,
-						...messages
+						...modelmessage
 					]
 						.filter((message) => message)
+						.filter((message) => message.content != "")
 						.map((message, idx, arr) => ({
 							role: message.role,
 							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
