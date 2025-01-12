@@ -429,14 +429,18 @@
       })
     );
 
+    // 所有模型响应结束后，还原firstResAlready为初始状态false
+    firstResAlready = false; 
+
+    // 加载聊天列表（赋值聊天title）
     if (messages.length == 2) {
       window.history.replaceState(history.state, "", `/c/${_chatId}`);
       const _title = await generateDeChatTitle(prompt);
       await setChatTitle(_chatId, _title);
+    } else {
+      await chats.set(await getChatList(localStorage.token));
     }
-
-    firstResAlready = false; // 所有模型响应结束后，还原firstResAlready为初始状态false
-    await chats.set(await getChatList(localStorage.token));
+    
   };
 
   // De的openai走这里！
