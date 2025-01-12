@@ -589,16 +589,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 					if (autoScroll) {
 						scrollToBottom();
 					}
-
-					// 更新聊天记录
-          if (_chatId === $chatId) {  
-            if ($settings.saveChatHistory ?? true) {
-              await updateChatById(localStorage.token, _chatId, {
-                messages: messages,
-                history: history
-              });
-            }
-          }
 				}
 			} else {
 				await handleOpenAIError(null, res, model, responseMessage);
@@ -609,6 +599,17 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		messages = messages;
 
 		stopResponseFlag = false;
+
+		// 更新聊天记录
+		if (_chatId === $chatId) {  
+      if ($settings.saveChatHistory ?? true) {
+        await updateChatById(localStorage.token, _chatId, {
+          messages: messages,
+          history: history
+        });
+      }
+    }
+
 		await tick();
 
 		if (autoScroll) {

@@ -633,16 +633,6 @@
           if (autoScroll) {
             scrollToBottom();
           }
-
-          // 更新聊天记录
-          if (_chatId === $chatId) {  
-            if ($settings.saveChatHistory ?? true) {
-              await updateChatById(localStorage.token, _chatId, {
-                messages: messages,
-                history: history
-              });
-            }
-          }
         }
       } else {
         await handleOpenAIError(null, res, model, responseMessage);
@@ -653,6 +643,17 @@
     messages = messages;
 
     stopResponseFlag = false;
+    
+    // 更新聊天记录
+    if (_chatId === $chatId) {  
+      if ($settings.saveChatHistory ?? true) {
+        await updateChatById(localStorage.token, _chatId, {
+          messages: messages,
+          history: history
+        });
+      }
+    }
+
     await tick();
 
     if (autoScroll) {
