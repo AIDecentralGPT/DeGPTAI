@@ -797,5 +797,6 @@
   "Explain this picture": "Объясните это изображение",
   "What is the main idea of this picture?":"Какова главная идея этого изображения?",
   "What does the symbol in the picture represent?":"Что представляет собой символ на изображении?",
-  "Help me solve problems": "Помогите мне решить проблемы"
+  "Help me solve problems": "Помогите мне решить проблемы",
+  "Last for {{ time }} seconds": "Длится {{ time }} секунд"
 }

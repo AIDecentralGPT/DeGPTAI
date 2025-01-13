@@ -798,5 +798,6 @@
   "Explain this picture": "この絵を説明してください",
   "What is the main idea of this picture?":"この絵の主要なアイデアは何ですか？",
   "What does the symbol in the picture represent?":"絵の中の記号は何を表していますか？",
-  "Help me solve problems": "問題を解決するのを手伝ってください"
+  "Help me solve problems": "問題を解決するのを手伝ってください",
+  "Last for {{ time }} seconds": "{{time}} 秒間続きます"
 }

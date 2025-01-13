@@ -798,5 +798,6 @@
   "Explain this picture": "Explica esta imagen",
   "What is the main idea of this picture?": "¿Cuál es la idea principal de esta imagen?",
   "What does the symbol in the picture represent?": "¿Qué representa el símbolo en la imagen?",
-  "Help me solve problems": "Ayúdame a resolver problemas"
+  "Help me solve problems": "Ayúdame a resolver problemas",
+  "Last for {{ time }} seconds": "Dura {{ time }} segundos"
 }

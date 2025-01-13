@@ -798,6 +798,7 @@
   "Explain this picture": "",
   "What is the main idea of this picture?": "",
   "What does the symbol in the picture represent?": "",
-  "Help me solve problems": ""
+  "Help me solve problems": "",
+  "Last for {{ time }} seconds": ""
 }
 

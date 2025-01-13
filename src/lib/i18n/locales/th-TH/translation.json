@@ -797,5 +797,6 @@
   "Explain this picture": "อธิบายภาพนี้ด้วย",
   "What is the main idea of this picture?": "ความคิดหลักของภาพนี้คืออะไร?",
   "What does the symbol in the picture represent?": "สัญลักษณ์ในภาพนี้แทนอะไร?",
-  "Help me solve problems": "ช่วยฉันแก้ปัญหา"
+  "Help me solve problems": "ช่วยฉันแก้ปัญหา",
+  "Last for {{ time }} seconds": "ดำเนินต่อไปเป็นเวลา {{ time }} วินาที"
 }

@@ -549,6 +549,7 @@
           res.body,
           $settings.splitLargeChunks
         );
+        responseMessage.replytime = Math.floor(Date.now() / 1000);
         for await (const update of textStream) {
           const { value, done, citations, error } = update;
           if (error) {

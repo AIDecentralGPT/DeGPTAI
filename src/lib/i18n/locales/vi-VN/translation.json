@@ -787,5 +787,6 @@
   "Thinking...": "Đang suy nghĩ...",
   "What does this picture mean?": "Bức tranh này có nghĩa là gì?",
   "Explain this picture": "Giải thích bức tranh này",
-  "Help me solve problems": "Trợ giúp tôi giải quyết các vấn đề"
+  "Help me solve problems": "Trợ giúp tôi giải quyết các vấn đề",
+  "Last for {{ time }} seconds": "Để lại {{ time }} giây"
 }
