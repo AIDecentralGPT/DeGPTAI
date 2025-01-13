@@ -203,11 +203,13 @@ const submitPrompt = async (userPrompt, _user = null) => {
   // 校验模型是否支持文件类型
   if (files.length > 0) {
     let imageModels = $models.filter(item => item.support == "image");
-    selectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
-    if (selectedModels.length == 0) {
+    let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
+    if (checkSelectedModels.length == 0) {
       toast.error($i18n.t("Not supported"));
       return;
-    }
+    } else {
+			selectedModels = checkSelectedModels;
+		}
   }
 
   console.log("selectedModels", selectedModels);
@@ -295,6 +297,10 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		// 等待 history/message 更新完成
 		await tick();
 
+		// 重置聊天输入文本区
+		prompt = '';
+		files = [];
+
 		// 如果 messages 中只有一条消息，则创建新的聊天
 		if (messages.length == 2) {
 			if ($settings.saveChatHistory ?? true) {
@@ -318,9 +324,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			}
 			await tick();
 		}
-		// 重置聊天输入文本区
-		prompt = '';
-		files = [];
 
 		// 发送提示
 		await sendPrompt(userPrompt, userMessageId, responseMap);

@@ -221,11 +221,13 @@
     // 校验模型是否支持文件类型
     if (files.length > 0) {
       let imageModels = $models.filter(item => item.support == "image");
-      selectedModels = imageModels.filter(item => selectedModels.includes(item.model))
+      let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
         .map(item => item.model);
-      if (selectedModels.length == 0) {
+      if (checkSelectedModels.length == 0) {
         toast.error($i18n.t("Not supported"));
         return;
+      } else {
+        selectedModels = checkSelectedModels;
       }
     }
 
@@ -310,7 +312,9 @@
       // Wait until history/message have been updated
       await tick();
 
-      console.log(responseMap);
+      // Reset chat input textarea
+      prompt = "";
+      files = [];
 
       // Create new chat if only one message in messages
       if (messages.length == 2) {
@@ -335,10 +339,6 @@
         }
         await tick();
       }
-
-      // Reset chat input textarea
-      prompt = "";
-      files = [];
 
       // Send prompt
       await sendPrompt(userPrompt, userMessageId, responseMap);
