@@ -658,15 +658,15 @@
                         let compressedDataUrl;
                         let quality = 1; // 初始质量为 1，表示无损
                         while (true) {
-                          compressedDataUrl = canvas.toDataURL(file?.type, quality);
-                          if (compressedDataUrl.length <= 300 * 1024) {
+                          compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                          if (compressedDataUrl.length <= 200 * 1024) {
                             break;
                           }
                           quality -= 0.1; // 逐渐降低质量
-                          if (quality < 0) {
+                          if (quality < 0.1) {
                             break; // 防止质量过低
                           }
-                        }
+                        };  
                         files = [
                           ...files,
                           {
