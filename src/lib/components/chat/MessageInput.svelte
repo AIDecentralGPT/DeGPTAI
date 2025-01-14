@@ -391,13 +391,34 @@
             if (["image/gif", "image/webp", "image/jpeg", "image/png"].includes(file["type"])) {
               let reader = new FileReader();
               reader.onload = (event) => {
-                files = [
-                  ...files,
-                  {
-                    type: "image",
-                    url: `${event.target.result}`,
-                  },
-                ];
+                const img = new Image();
+                img.onload = function() {
+                  const canvas = document.createElement('canvas');
+                  let ctx = canvas.getContext('2d');
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+                  ctx?.drawImage(img, 0, 0);
+                  let compressedDataUrl;
+                  let quality = 1; // 初始质量为 1，表示无损
+                  while (true) {
+                    compressedDataUrl = canvas.toDataURL(file?.type, quality);
+                    if (compressedDataUrl.length <= 300 * 1024) {
+                      break;
+                    }
+                    quality -= 0.1; // 逐渐降低质量
+                    if (quality < 0) {
+                      break; // 防止质量过低
+                    }
+                  }
+                  files = [
+                    ...files,
+                    {
+                      type: "image",
+                      url: compressedDataUrl,
+                    },
+                  ];
+                };
+                img.src = event.target.result;
               };
               reader.readAsDataURL(file);
             } else if (
@@ -620,20 +641,41 @@
             accept="image/*"
             hidden
             multiple
-            on:change={async () => {
+            on:change={() => {
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
                 _inputFiles.forEach((file) => {
                   if (["image/gif","image/webp","image/jpeg","image/png"].includes(file["type"])) {
                     let reader = new FileReader();
                     reader.onload = (event) => {
-                      files = [
-                        ...files,
-                        {
-                          type: "image",
-                          url: `${event.target.result}`,
-                        },
-                      ];
+                      const img = new Image();
+                      img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let ctx = canvas.getContext('2d');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx?.drawImage(img, 0, 0);
+                        let compressedDataUrl;
+                        let quality = 1; // 初始质量为 1，表示无损
+                        while (true) {
+                          compressedDataUrl = canvas.toDataURL(file?.type, quality);
+                          if (compressedDataUrl.length <= 300 * 1024) {
+                            break;
+                          }
+                          quality -= 0.1; // 逐渐降低质量
+                          if (quality < 0) {
+                            break; // 防止质量过低
+                          }
+                        }
+                        files = [
+                          ...files,
+                          {
+                            type: "image",
+                            url: compressedDataUrl,
+                          },
+                        ];
+                      };
+                      img.src = event.target.result;
                       inputFiles = null;
                       filesInputElement.value = "";
                     };
