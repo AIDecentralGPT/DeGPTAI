@@ -526,14 +526,14 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			// 6. 创建openai对话数据流
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
-
+				responseMessage.replytime = Math.floor(Date.now() / 1000);
 				for await (const update of textStream) {
 					const { value, done, citations, error } = update;
 
 					if(value && !firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
-				firstResAlready = true;
-				history.currentId = responseMessageId;
-			}
+						firstResAlready = true;
+						history.currentId = responseMessageId;
+					}
 					if (error) {
 						await handleOpenAIError(error, null, model, responseMessage);
 						break;
