@@ -28,6 +28,7 @@
 
 	import Name from './Name.svelte';
 	import ProfileImage from './ProfileImage.svelte';
+	import Thinking from './Thinking.svelte';
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
 	import Image from '$lib/components/common/Image.svelte';
@@ -339,6 +340,17 @@
 		return modelName
 	}
 
+	// 校验图片模型
+	const checkModelImage = (model) => {
+		// console.log("models", $models);
+		const checkModel = $models.filter((item) => item?.model === model);
+		if (checkModel.length > 0 && checkModel[0]?.support === 'image') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
@@ -361,7 +373,13 @@
 				{:else}
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
-
+				{#if message.content == ''}
+					<Thinking/>
+				{:else}
+					{#if message?.replytime && checkModelImage(message.model)}
+						<span class="text-xs">{ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) }</span>
+					{/if}	
+				{/if}
 				{#if message.timestamp}
 					<span
 						class=" self-center invisible group-hover:visible text-gray-400 text-xs font-medium uppercase"

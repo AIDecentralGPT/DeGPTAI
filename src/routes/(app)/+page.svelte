@@ -117,7 +117,7 @@
     let currentMessage = history.messages[history.currentId];
 
     while (currentMessage !== null) {
-      _messages.unshift({ ...currentMessage });
+      _messages.unshift({ ...currentMessage }); // _messages开头添加元素
       currentMessage = currentMessage.parentId !== null ? history.messages[currentMessage.parentId] : null;
     }
 
@@ -221,11 +221,13 @@
     // 校验模型是否支持文件类型
     if (files.length > 0) {
       let imageModels = $models.filter(item => item.support == "image");
-      selectedModels = imageModels.filter(item => selectedModels.includes(item.model))
+      let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
         .map(item => item.model);
-      if (selectedModels.length == 0) {
+      if (checkSelectedModels.length == 0) {
         toast.error($i18n.t("Not supported"));
         return;
+      } else {
+        selectedModels = checkSelectedModels;
       }
     }
 
@@ -237,10 +239,7 @@
     } else if (messages.length != 0 && messages.at(-1).done != true) {
       // Response not done
       console.log("wait");
-    } else if (
-      files.length > 0 &&
-      files.filter((file) => file.upload_status === false).length > 0
-    ) {
+    } else if (files.length > 0 && files.filter((file) => file.upload_status === false).length > 0) {
       // Upload not done
       toast.error(
         $i18n.t(
@@ -276,11 +275,49 @@
         history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
       }
 
+      // Create Simulate ResopnseMessage
+      let responseMap: any = {};
+      selectedModels.map(async (modelId) => {
+        const model = $models.filter((m) => m.id === modelId).at(0);
+        if (model) {
+          // Create response message
+          let responseMessageId = uuidv4();
+          let responseMessage = {
+            parentId: userMessageId,
+            id: responseMessageId,
+            childrenIds: [],
+            role: "assistant",
+            content: "",
+            model: model.id,
+            userContext: null,
+            timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+          };
+
+          // Add message to history and Set currentId to messageId
+          history.messages[responseMessageId] = responseMessage;
+          history.currentId = responseMessageId;
+
+          // Append messageId to childrenIds of parent message
+          if (userMessageId !== null) {
+            history.messages[userMessageId].childrenIds = [
+              ...history.messages[userMessageId].childrenIds,
+              responseMessageId,
+            ];
+          }
+
+          responseMap[model?.id] = responseMessage;
+        }
+      });
+
       // Wait until history/message have been updated
       await tick();
 
+      // Reset chat input textarea
+      prompt = "";
+      files = [];
+
       // Create new chat if only one message in messages
-      if (messages.length == 1) {
+      if (messages.length == 2) {
         if ($settings.saveChatHistory ?? true) {
           chat = await createNewChat(localStorage.token, {
             id: $chatId,
@@ -303,48 +340,50 @@
         await tick();
       }
 
-      // Reset chat input textarea
-      prompt = "";
-      files = [];
-
       // Send prompt
-      await sendPrompt(userPrompt, userMessageId);
+      await sendPrompt(userPrompt, userMessageId, responseMap);
     }
   };
 
-  const sendPrompt = async (prompt, parentId, modelId = null) => {
+  const sendPrompt = async (prompt, parentId, responseMap, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
+      // 此判断毫无意义-判断结果就是selectedModels
       (modelId ? [modelId] : atSelectedModel !== "" ? [atSelectedModel.id] : selectedModels).map(async (modelId, index) => {
         console.log("modelId", modelId);
         const model = $models.filter((m) => m.id === modelId).at(0);
 
         if (model) {
-          // Create response message
           let responseMessageId = uuidv4();
-          let responseMessage = {
-            parentId: parentId,
-            id: responseMessageId,
-            childrenIds: [],
-            role: "assistant",
-            content: "",
-            model: model.id,
-            userContext: null,
-            timestamp: Math.floor(Date.now() / 1000), // Unix epoch
-          };
+          let responseMessage = {}
+          if (responseMap[model?.id]) {
+            responseMessageId = responseMap[model?.id].id;
+            responseMessage = responseMap[model?.id];
+          } else {
+            // Create response message
+            responseMessage = {
+              parentId: parentId,
+              id: responseMessageId,
+              childrenIds: [],
+              role: "assistant",
+              content: "",
+              model: model.id,
+              userContext: null,
+              timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+            };
 
-          // Add message to history and Set currentId to messageId
-          history.messages[responseMessageId] = responseMessage;
-          history.currentId = responseMessageId;
+            // Add message to history and Set currentId to messageId
+            history.messages[responseMessageId] = responseMessage;
+            history.currentId = responseMessageId;
 
-          // Append messageId to childrenIds of parent message
-          if (parentId !== null) {
-            history.messages[parentId].childrenIds = [
-              ...history.messages[parentId].childrenIds,
-              responseMessageId,
-            ];
+            // Append messageId to childrenIds of parent message
+            if (parentId !== null) {
+              history.messages[parentId].childrenIds = [
+                ...history.messages[parentId].childrenIds,
+                responseMessageId,
+              ];
+            }
           }
-
           await tick();
 
           let userContext = null;
@@ -376,7 +415,7 @@
           }
           responseMessage.userContext = userContext;
 
-          await sendPromptDeOpenAI(model, prompt, responseMessageId, _chatId);
+          await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 
           // if (model?.external) {
           // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
@@ -390,14 +429,23 @@
       })
     );
 
-    firstResAlready = false; // 所有模型响应结束后，还原firstResAlready为初始状态false
-    await chats.set(await getChatList(localStorage.token));
+    // 所有模型响应结束后，还原firstResAlready为初始状态false
+    firstResAlready = false;
+
+    // 加载聊天列表（赋值聊天title）
+    if (messages.length == 2) {
+      window.history.replaceState(history.state, "", `/c/${_chatId}`);
+      const _title = await generateDeChatTitle(prompt);
+      await setChatTitle(_chatId, _title);
+    } else {
+      await chats.set(await getChatList(localStorage.token));
+    }
+
   };
 
   // De的openai走这里！
   const sendPromptDeOpenAI = async (
     model,
-    userPrompt,
     responseMessageId,
     _chatId
   ) => {
@@ -418,13 +466,15 @@
     const modelmessage = messages;
     if (messages.length > 2) {
       let checkmessage = modelmessage[messages.length - 3];
-      let checkchildrenIds = history.messages[checkmessage.parentId].childrenIds;
-      checkchildrenIds.forEach(item => {
-        let sonMessage = history.messages[item];
-        if (sonMessage.model == model.id) {
-          checkmessage.content = sonMessage.content;
-        }
-      });
+      let checkchildrenIds = history.messages[checkmessage.parentId]?.childrenIds;
+      if (checkchildrenIds) {
+        checkchildrenIds.forEach(item => {
+          let sonMessage = history.messages[item];
+          if (sonMessage.model == model.id) {
+            checkmessage.content = sonMessage.content;
+          }
+        });
+      }
     }
     
 
@@ -441,11 +491,7 @@
                   role: "system",
                   content: `${$settings?.system ?? ""}${
                     responseMessage?.userContext ?? null
-                      ? `\n\nUser Context:\n${(
-                          responseMessage?.userContext ?? []
-                        ).join("\n")}`
-                      : ""
-                  }`,
+                      ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
                 }
               : undefined,
             ...modelmessage,
@@ -503,6 +549,7 @@
           res.body,
           $settings.splitLargeChunks
         );
+        responseMessage.replytime = Math.floor(Date.now() / 1000);
         for await (const update of textStream) {
           const { value, done, citations, error } = update;
           if (error) {
@@ -588,19 +635,6 @@
             scrollToBottom();
           }
         }
-
-        //console.log("history", history, $chatId, _chatId);
-
-        if ($chatId == _chatId) {
-          if ($settings.saveChatHistory ?? true) {
-            chat = await updateChatById(localStorage.token, _chatId, {
-              messages: messages,
-              history: history,
-            });
-            await tick();
-            await chats.set(await getChatList(localStorage.token));
-          }
-        }
       } else {
         await handleOpenAIError(null, res, model, responseMessage);
       }
@@ -610,17 +644,21 @@
     messages = messages;
 
     stopResponseFlag = false;
+    
+    // 更新聊天记录
+    if (_chatId === $chatId) {  
+      if ($settings.saveChatHistory ?? true) {
+        await updateChatById(localStorage.token, _chatId, {
+          messages: messages,
+          history: history
+        });
+      }
+    }
+
     await tick();
 
     if (autoScroll) {
       scrollToBottom();
-    }
-
-    if (messages.length == 2) {
-      window.history.replaceState(history.state, "", `/c/${_chatId}`);
-
-      const _title = await generateDeChatTitle(userPrompt);
-      await setChatTitle(_chatId, _title);
     }
   };
 
@@ -699,12 +737,7 @@
       const model = $models.filter((m) => m.id === responseMessage.model).at(0);
 
       if (model) {
-        await sendPromptDeOpenAI(
-          model,
-          history.messages[responseMessage.parentId].content,
-          responseMessage.id,
-          _chatId
-        );
+        await sendPromptDeOpenAI(model, responseMessage.id, _chatId);
 
         // if (model?.external) {
         // 	await sendPromptOpenAI(

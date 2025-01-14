@@ -32,7 +32,6 @@
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
-  import Compressor from "compressorjs";
 
   const i18n = getContext("i18n");
 
@@ -389,20 +388,37 @@
 
         if (inputFiles && inputFiles.length > 0) {
           inputFiles.forEach((file) => {
-            if (
-              ["image/gif", "image/webp", "image/jpeg", "image/png"].includes(
-                file["type"]
-              )
-            ) {
+            if (["image/gif", "image/webp", "image/jpeg", "image/png"].includes(file["type"])) {
               let reader = new FileReader();
               reader.onload = (event) => {
-                files = [
-                  ...files,
-                  {
-                    type: "image",
-                    url: `${event.target.result}`,
-                  },
-                ];
+                const img = new Image();
+                img.onload = function() {
+                  const canvas = document.createElement('canvas');
+                  let ctx = canvas.getContext('2d');
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+                  ctx?.drawImage(img, 0, 0);
+                  let compressedDataUrl;
+                  let quality = 1; // 初始质量为 1，表示无损
+                  while (true) {
+                    compressedDataUrl = canvas.toDataURL(file?.type, quality);
+                    if (compressedDataUrl.length <= 300 * 1024) {
+                      break;
+                    }
+                    quality -= 0.1; // 逐渐降低质量
+                    if (quality < 0) {
+                      break; // 防止质量过低
+                    }
+                  }
+                  files = [
+                    ...files,
+                    {
+                      type: "image",
+                      url: compressedDataUrl,
+                    },
+                  ];
+                };
+                img.src = event.target.result;
               };
               reader.readAsDataURL(file);
             } else if (
@@ -625,27 +641,41 @@
             accept="image/*"
             hidden
             multiple
-            on:change={async () => {
+            on:change={() => {
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
                 _inputFiles.forEach((file) => {
-                  if (
-                    [
-                      "image/gif",
-                      "image/webp",
-                      "image/jpeg",
-                      "image/png",
-                    ].includes(file["type"])
-                  ) {
+                  if (["image/gif","image/webp","image/jpeg","image/png"].includes(file["type"])) {
                     let reader = new FileReader();
                     reader.onload = (event) => {
-                      files = [
-                        ...files,
-                        {
-                          type: "image",
-                          url: `${event.target.result}`,
-                        },
-                      ];
+                      const img = new Image();
+                      img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let ctx = canvas.getContext('2d');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx?.drawImage(img, 0, 0);
+                        let compressedDataUrl;
+                        let quality = 1; // 初始质量为 1，表示无损
+                        while (true) {
+                          compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                          if (compressedDataUrl.length <= 200 * 1024) {
+                            break;
+                          }
+                          quality -= 0.1; // 逐渐降低质量
+                          if (quality < 0.1) {
+                            break; // 防止质量过低
+                          }
+                        };  
+                        files = [
+                          ...files,
+                          {
+                            type: "image",
+                            url: compressedDataUrl,
+                          },
+                        ];
+                      };
+                      img.src = event.target.result;
                       inputFiles = null;
                       filesInputElement.value = "";
                     };
@@ -841,6 +871,53 @@
                     </div>
                   </div>
                 {/each}
+              </div>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("What does this picture mean?");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("What does this picture mean?") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("Explain this picture");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("Explain this picture") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("What is the main idea of this picture?");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("What is the main idea of this picture?") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("What does the symbol in the picture represent?");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("What does the symbol in the picture represent?") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("Help me solve problems");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("Help me solve problems") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
               </div>
             {/if}
 
