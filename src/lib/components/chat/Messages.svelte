@@ -5,7 +5,7 @@
 	import { tick, getContext } from 'svelte';
 
 	import { toast } from 'svelte-sonner';
-	import { getChatList, updateChatById } from '$lib/apis/chats';
+	import { getChatList, updateChatById, conversationRefresh } from '$lib/apis/chats';
 
 	import UserMessage from './Messages/UserMessage.svelte';
 	import ResponseMessage from './Messages/ResponseMessage.svelte';
@@ -81,8 +81,20 @@
 		history.messages[userMessageId] = userMessage;
 		history.currentId = userMessageId;
 
+		// 校验模型已使用次数
+    let modelLimit = {}
+    for (const item of selectedModels) {
+      const {passed, message} = await conversationRefresh(localStorage.token, item);
+      if (!passed) {
+        modelLimit[item] = message;
+      }  
+    }
+
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+
 		await tick();
-		await sendPrompt(userPrompt, userMessageId);
+		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
 	};
 
 	const updateChatMessages = async () => {
