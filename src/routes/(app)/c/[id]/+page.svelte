@@ -30,7 +30,8 @@
 		getChatById,
 		getChatList,
 		getTagsById,
-		updateChatById
+		updateChatById,
+		conversationRefresh
 	} from '$lib/apis/chats';
 	import { generateOpenAIChatCompletion, generateTitle } from '$lib/apis/openai';
 
@@ -213,6 +214,15 @@ const submitPrompt = async (userPrompt, _user = null) => {
   }
 
   console.log("selectedModels", selectedModels);
+
+	// 校验模型已使用次数
+	let modelLimit = {}
+    for (const item of selectedModels) {
+    const {passed, message} = await conversationRefresh(localStorage.token, item);
+    if (!passed) {
+      modelLimit[item] = message;
+    }  
+  }
 			
 	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
 	await tick()
@@ -326,12 +336,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		}
 
 		// 发送提示
-		await sendPrompt(userPrompt, userMessageId, responseMap);
+		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
 	}
 };
 
 	// 3\2. 继续聊天会话
-	const sendPrompt = async (prompt, parentId, responseMap, modelId = null) => {
+	const sendPrompt = async (prompt, parentId, responseMap, modelLimit, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		// 对每个模型都做请求
 		await Promise.all(
@@ -404,8 +414,19 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 						console.log("responseMessage:", responseMessage);
 						
-
-						await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+						// 校验是否超过次数
+						if (modelLimit[model.id]) {
+							responseMessage.content = modelLimit[model.id];
+							responseMessage.error = true;
+							history.messages[responseMessageId] = responseMessage;
+							scrollToBottom();
+							await updateChatById(localStorage.token, _chatId, {
+								messages: messages,
+								history: history
+							});
+						} else {
+							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+						}
 
 					} else {
 						console.error($i18n.t(`Model {{modelId}} not found`, { }));

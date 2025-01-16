@@ -32,6 +32,7 @@
     getChatList,
     getTagsById,
     updateChatById,
+    conversationRefresh
   } from "$lib/apis/chats";
   import {
     cancelOllamaRequest,
@@ -233,6 +234,15 @@
 
     console.log("selectedModels", selectedModels);
 
+    // 校验模型已使用次数
+    let modelLimit = {}
+    for (const item of selectedModels) {
+      const {passed, message} = await conversationRefresh(localStorage.token, item);
+      if (!passed) {
+        modelLimit[item] = message;
+      }  
+    }
+
     // const selectedModelsValid = selectedModels
     if (selectedModels.length < 1) {
       toast.error($i18n.t("Model not selected"));
@@ -341,11 +351,11 @@
       }
 
       // Send prompt
-      await sendPrompt(userPrompt, userMessageId, responseMap);
+      await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
     }
   };
 
-  const sendPrompt = async (prompt, parentId, responseMap, modelId = null) => {
+  const sendPrompt = async (prompt, parentId, responseMap, modelLimit, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
       // 此判断毫无意义-判断结果就是selectedModels
@@ -415,8 +425,19 @@
           }
           responseMessage.userContext = userContext;
 
-          await sendPromptDeOpenAI(model, responseMessageId, _chatId);
-
+          // 校验是否超过次数
+          if (modelLimit[model.id]) {
+            responseMessage.content = modelLimit[model.id];
+            responseMessage.error = true;
+            history.messages[responseMessageId] = responseMessage;
+            scrollToBottom();
+            await updateChatById(localStorage.token, _chatId, {
+              messages: messages,
+              history: history
+            });
+          } else {
+            await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+          }
           // if (model?.external) {
           // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
           // } else if (model) {

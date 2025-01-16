@@ -38,13 +38,13 @@ export const getDeModels = async (token: string = "") => {
         support: "text",
         desc: "Suitable for most tasks"
       },
-      {
-        name: "DeepSeek 3.0",
-        model: "DeepSeek-V3",
-        tip: "DeepSeek 3.0",
-        support: "text",
-        desc: "Suitable for most tasks"
-      },
+      // {
+      //   name: "DeepSeek 3.0",
+      //   model: "DeepSeek-V3",
+      //   tip: "DeepSeek 3.0",
+      //   support: "text",
+      //   desc: "Suitable for most tasks"
+      // },
       {
         name: "Qwen o1",
         model: "QVQ-72B-Preview",
