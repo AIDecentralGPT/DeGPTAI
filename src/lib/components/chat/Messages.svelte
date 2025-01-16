@@ -81,8 +81,11 @@
 		history.messages[userMessageId] = userMessage;
 		history.currentId = userMessageId;
 
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+
 		await tick();
-		await sendPrompt(userPrompt, userMessageId);
+		await sendPrompt(userPrompt, userMessageId, responseMap);
 	};
 
 	const updateChatMessages = async () => {
