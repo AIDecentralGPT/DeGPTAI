@@ -190,18 +190,6 @@ const getDeOpenAIChatCompletion = async (
       throw new Error('timeout');
     }, 10000);
   }
-  const encoder = new TextEncoder();
-  const jsonString = JSON.stringify({
-    ...body,
-    project: "DecentralGPT",
-    stream: true,
-  });
-  const stream = new ReadableStream({
-    start(controller) {
-      controller.enqueue(encoder.encode(jsonString));
-      controller.close();
-    }
-  });
   res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
     signal: controller.signal,
     method: "POST",
@@ -209,8 +197,11 @@ const getDeOpenAIChatCompletion = async (
       // Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: stream,
-    duplex: 'half'
+    body: JSON.stringify({
+      ...body,
+      project: "DecentralGPT",
+      stream: true,
+    })
   }).finally(() => {
     if (overallTimeout) {
       clearTimeout(overallTimeout);
