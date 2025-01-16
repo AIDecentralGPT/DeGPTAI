@@ -420,6 +420,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 							responseMessage.error = true;
 							history.messages[responseMessageId] = responseMessage;
 							scrollToBottom();
+							stopResponseFlag = false;
 							await updateChatById(localStorage.token, _chatId, {
 								messages: messages,
 								history: history
