@@ -416,15 +416,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						
 						// 校验是否超过次数
 						if (modelLimit[model.id]) {
-							responseMessage.content = modelLimit[model.id];
-							responseMessage.error = true;
-							history.messages[responseMessageId] = responseMessage;
-							scrollToBottom();
-							stopResponseFlag = false;
-							await updateChatById(localStorage.token, _chatId, {
-								messages: messages,
-								history: history
-							});
+							await handleLimitError(modelLimit[model.id], responseMessage)
 						} else {
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 						}
@@ -1138,6 +1130,19 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		messages = messages;
 	};
+
+	const handleLimitError = async (content: string, responseMessage: any) => {
+    responseMessage.content = content;
+    responseMessage.replytime = Math.floor(Date.now() / 1000);
+    responseMessage.error = true;
+    responseMessage.done = true;
+    messages = messages;
+    scrollToBottom();
+    await updateChatById(localStorage.token, $chatId, {
+      messages: messages,
+      history: history
+    });
+  }
 
 	const stopResponse = () => {
 		stopResponseFlag = true;
