@@ -751,7 +751,10 @@
       //   ]
       // }
     }
-    scrollToBottom();
+    await tick();
+    if (autoScroll) {
+      scrollToBottom();
+    }
   }
 
   const handleOpenAIError = async (

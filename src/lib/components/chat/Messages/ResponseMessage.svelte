@@ -1010,12 +1010,12 @@
 							{#each message?.web?.websearch ?? [] as item}
 								<div class="flex flex-col rounded-lg border-[1px] border-gray-300 m-2 py-2 px-3">
 									<div class="flex flex-row">
-										<div class="w-6 h-10 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
+										<div class="w-6 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
 											<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='16'/%3E%3Cline x1='8' y1='12' x2='16' y2='12'/%3E%3C/svg%3E" alt="" class="w-6 h-6 object-contain">
 										</div>
 										<div class="ml-1">
-											<div class="w-[300px] font-bold line-clamp-1 text-ellipsis">{item.title}</div>
-											<div class="flex flex-row items-center w-[300px] text-sm">
+											<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{item.title}</div>
+											<div class="flex flex-row items-center w-[300px] text-xs">
 												<a class="flex-start line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
 												<svg 
 													xmlns="http://www.w3.org/2000/svg" 
@@ -1030,7 +1030,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="text-sm text-grey-600 w-[300px] line-clamp-3 text-ellipsis">{item.content}</div>
+									<div class="text-xs text-grey-600 w-[300px] line-clamp-3 text-ellipsis mt-1">{item.content}</div>
 								</div>
 							{/each}
 						</div>
