@@ -1166,12 +1166,12 @@
                   <div class="self-star mb-2 ml-1 mr-1">
                     <Tooltip content={$i18n.t("Search the web")}>
                       <button
-                        class="flex flex-row items-center bg-gray-50 hover:bg-[#333333cc] text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-[#ffffffcc] transition rounded-full px-3 py-1.5
-                         {search ? 'bg-[#333333] dark:bg-[#ffffff]' : 'bg-gray-50 dark:bg-gray-800'}"
+                        class="flex flex-row items-center hover:bg-[#333333cc] text-gray-800 dark:text-white dark:hover:bg-[#ffffffcc] transition rounded-full px-3 py-1.5
+                         { search ? 'bg-[#333333] dark:bg-[#ffffff]' : 'bg-gray-50 dark:bg-gray-800' }"
                         type="button"
-                        on:click={() => {
-                          console.log("=====================", search);
+                        on:click={async () => {
                           search = !search;
+                          await tick();
                         }}
                       >
                         <svg
