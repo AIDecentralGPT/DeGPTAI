@@ -535,7 +535,8 @@
   "Update and Copy Link": "Perbarui dan salin tautan",
   "Update password": "Perbarui kata sandi",
   "Upload a GGUF model": "Unggah model GGUF",
-  "Upload files": "Unggah file",
+  "Attach files": "Lampirkan berkas",
+  "Attach files is unavailable": "Lampirkan berkas tidak tersedia",
   "Upload Progress": "Progres unggah",
   "URL Mode": "Mode URL",
   "Use '#' in the prompt input to load and select your documents.": "Gunakan '#' pada input permintaan untuk memuat dan memilih dokumen Anda.",
@@ -799,5 +800,7 @@
   "What is the main idea of this picture?": "Apa gagasan utama gambar ini?",
   "What does the symbol in the picture represent?": "Apa yang diwakili oleh simbol dalam gambar itu?",
   "Help me solve problems": "Bantu saya menyelesaikan masalah - masalah",
-  "Last for {{ time }} seconds": "Berlangsung selama {{ time }} detik"
+  "Last for {{ time }} seconds": "Berlangsung selama {{ time }} detik",
+  "Search the web": "Cari di web",
+  "search": "cari"
 }

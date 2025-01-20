@@ -47,6 +47,7 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
+	import { tavilySearch } from "$lib/apis/websearch"
 
 	const i18n = getContext('i18n');
 
@@ -88,6 +89,7 @@
 	let title = '';
 	let prompt = '';
 	let files = [];
+	let search = false;
 
 	let messages = [];
 	let history = {
@@ -215,9 +217,14 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
   console.log("selectedModels", selectedModels);
 
+	// 如果开启网络搜索只选择一个模型回复
+	if (search) {
+    selectedModels = [selectedModels[0]];
+  }
+
 	// 校验模型已使用次数
 	let modelLimit = {}
-    for (const item of selectedModels) {
+  for (const item of selectedModels) {
     const {passed, message} = await conversationRefresh(localStorage.token, item);
     if (!passed) {
       modelLimit[item] = message;
@@ -278,9 +285,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
         let responseMessage = {
           parentId: userMessageId,
           id: responseMessageId,
+					search: search,
+					type: "text",
           childrenIds: [],
           role: "assistant",
           content: "",
+					web: {},
           model: model.id,
           userContext: null,
           timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -297,10 +307,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
             responseMessageId,
           ];
         }
-
         responseMap[model?.id] = responseMessage;
-
-        await tick();
       }
     });
 
@@ -337,6 +344,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		// 发送提示
 		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
+
 	}
 };
 
@@ -362,9 +370,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
 							responseMessage = {
 								parentId: parentId,
 								id: responseMessageId,
+								search: search,
+								type: "text",
 								childrenIds: [],
 								role: "assistant",
 								content: "",
+								web: {},
 								model: model.id,
 								userContext: null,
 								timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -603,10 +614,14 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						document.getElementById(`speak-button-${responseMessage.id}`)?.click();
 					}
 
+
+
 					if (autoScroll) {
 						scrollToBottom();
 					}
 				}
+
+				await handleSearchWeb(responseMessage);
 			} else {
 				await handleOpenAIError(null, res, model, responseMessage);
 			}
@@ -1093,6 +1108,70 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		}
 	};
 
+	// 获取搜索网页
+  const handleSearchWeb= async(responseMessage: any) => {
+    if (search) {
+      let lastMessage = messages.filter(item => item?.role == 'user')[0];
+      let webResult = await tavilySearch(localStorage.token, lastMessage.content);
+      if (webResult?.results) {
+        responseMessage.web = {
+          websearch: webResult.results
+        }
+      }
+      // responseMessage.web = {
+      //   ...responseMessage.web,
+      //   thirdsearch: [
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     }
+      //   ]
+      // }
+    }
+    scrollToBottom();
+  }
+
 	const handleOpenAIError = async (error, res: Response | null, model, responseMessage) => {
 		let errorMessage = '';
 		let innerError;
@@ -1347,6 +1426,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 
 	<MessageInput
 		bind:files
+		bind:search
 		bind:prompt
 		bind:autoScroll
 		bind:selectedModel={atSelectedModel}

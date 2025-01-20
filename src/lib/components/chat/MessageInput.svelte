@@ -54,7 +54,11 @@
   let user: any = null;
   let chatInputPlaceholder = "";
 
+  // 文件选择
   export let files: any[] = [];
+
+  // 搜索网页开启标志
+  export let search = false;
 
   export let fileUploadEnabled = true;
   // export let speechRecognitionEnabled = true;
@@ -921,32 +925,7 @@
               </div>
             {/if}
 
-            <div class=" flex">
-              {#if fileUploadEnabled}
-                <div class=" self-end mb-2 ml-1">
-                  <Tooltip content={$i18n.t("Upload files")}>
-                    <button
-                      class="bg-gray-50 hover:bg-gray-100 text-gray-800 dark:bg-gray-850 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
-                      type="button"
-                      on:click={() => {
-                        filesInputElement.click();
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        class="w-[1.2rem] h-[1.2rem]"
-                      >
-                        <path
-                          d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
-                        />
-                      </svg>
-                    </button>
-                  </Tooltip>
-                </div>
-              {/if}
-
+            <div class="flex flex-col">
               <textarea
                 id="chat-textarea"
                 bind:this={chatTextAreaElement}
@@ -1156,136 +1135,187 @@
                   }
                 }}
               />
-
-              <div class="self-end mb-2 flex space-x-1 mr-1">
-                {#if messages.length == 0 || messages.at(-1).done == true}
-                  <!-- <Tooltip content={$i18n.t("Record voice")}>
-                    {#if speechRecognitionEnabled}
-                      <button
-                        id="voice-input-button"
-                        class=" text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-850 transition rounded-full p-1.5 mr-0.5 self-center"
-                        type="button"
-                        on:click={() => {
-                          speechRecognitionHandler();
-                        }}
-                      >
-                        {#if isRecording}
-                          <svg
-                            class=" w-5 h-5 translate-y-[0.5px]"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            ><style>
-                              .spinner_qM83 {
-                                animation: spinner_8HQG 1.05s infinite;
-                              }
-                              .spinner_oXPr {
-                                animation-delay: 0.1s;
-                              }
-                              .spinner_ZTLf {
-                                animation-delay: 0.2s;
-                              }
-                              @keyframes spinner_8HQG {
-                                0%,
-                                57.14% {
-                                  animation-timing-function: cubic-bezier(
-                                    0.33,
-                                    0.66,
-                                    0.66,
-                                    1
-                                  );
-                                  transform: translate(0);
-                                }
-                                28.57% {
-                                  animation-timing-function: cubic-bezier(
-                                    0.33,
-                                    0,
-                                    0.66,
-                                    0.33
-                                  );
-                                  transform: translateY(-6px);
-                                }
-                                100% {
-                                  transform: translate(0);
-                                }
-                              }
-                            </style><circle
-                              class="spinner_qM83"
-                              cx="4"
-                              cy="12"
-                              r="2.5"
-                            /><circle
-                              class="spinner_qM83 spinner_oXPr"
-                              cx="12"
-                              cy="12"
-                              r="2.5"
-                            /><circle
-                              class="spinner_qM83 spinner_ZTLf"
-                              cx="20"
-                              cy="12"
-                              r="2.5"
-                            /></svg
-                          >
-                        {:else}
+              <div class="flex justify-between">
+                <div class="flex flex-row">
+                  <!-- 图片上传 -->
+                  {#if fileUploadEnabled}
+                    <div class="self-star mb-2 ml-1 mr-1">
+                      <Tooltip content={$i18n.t("Attach files")}>
+                        <button
+                          class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
+                          type="button"
+                          on:click={() => {
+                            filesInputElement.click();
+                          }}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
+                            viewBox="0 0 16 16"
                             fill="currentColor"
-                            class="w-5 h-5 translate-y-[0.5px]"
+                            class="w-[1.2rem] h-[1.2rem]"
                           >
-                            <path d="M7 4a3 3 0 016 0v6a3 3 0 11-6 0V4z" />
                             <path
-                              d="M5.5 9.643a.75.75 0 00-1.5 0V10c0 3.06 2.29 5.585 5.25 5.954V17.5h-1.5a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-1.5v-1.546A6.001 6.001 0 0016 10v-.357a.75.75 0 00-1.5 0V10a4.5 4.5 0 01-9 0v-.357z"
+                              d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
                             />
                           </svg>
-                        {/if}
+                        </button>
+                      </Tooltip>
+                    </div>
+                  {/if}
+                  <!-- 网络搜索 -->
+                  <div class="self-star mb-2 ml-1 mr-1">
+                    <Tooltip content={$i18n.t("Search the web")}>
+                      <button
+                        class="flex flex-row items-center bg-gray-50 hover:bg-[#333333cc] text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-[#ffffffcc] transition rounded-full px-3 py-1.5
+                         {search ? 'bg-[#333333] dark:bg-[#ffffff]' : 'bg-gray-50 dark:bg-gray-800'}"
+                        type="button"
+                        on:click={() => {
+                          search = !search;
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 1024 1024"
+                          class="w-[1rem] h-[1rem]" 
+                          fill="#D0A870">
+                          <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
+                        </svg>
+                        <span class="ml-1 text-sm font-bold text-[#D0A870]">{$i18n.t("search")}</span>
                       </button>
-                    {/if}
-                  </Tooltip> -->
-
-                  <Tooltip content={$i18n.t("Send message")}>
+                    </Tooltip>
+                  </div>  
+                </div>
+                
+                <div class="self-end mb-2 flex space-x-1 mr-1">
+                  {#if messages.length == 0 || messages.at(-1).done == true}
+                    <!-- <Tooltip content={$i18n.t("Record voice")}>
+                      {#if speechRecognitionEnabled}
+                        <button
+                          id="voice-input-button"
+                          class=" text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-850 transition rounded-full p-1.5 mr-0.5 self-center"
+                          type="button"
+                          on:click={() => {
+                            speechRecognitionHandler();
+                          }}
+                        >
+                          {#if isRecording}
+                            <svg
+                              class=" w-5 h-5 translate-y-[0.5px]"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                              ><style>
+                                .spinner_qM83 {
+                                  animation: spinner_8HQG 1.05s infinite;
+                                }
+                                .spinner_oXPr {
+                                  animation-delay: 0.1s;
+                                }
+                                .spinner_ZTLf {
+                                  animation-delay: 0.2s;
+                                }
+                                @keyframes spinner_8HQG {
+                                  0%,
+                                  57.14% {
+                                    animation-timing-function: cubic-bezier(
+                                      0.33,
+                                      0.66,
+                                      0.66,
+                                      1
+                                    );
+                                    transform: translate(0);
+                                  }
+                                  28.57% {
+                                    animation-timing-function: cubic-bezier(
+                                      0.33,
+                                      0,
+                                      0.66,
+                                      0.33
+                                    );
+                                    transform: translateY(-6px);
+                                  }
+                                  100% {
+                                    transform: translate(0);
+                                  }
+                                }
+                              </style><circle
+                                class="spinner_qM83"
+                                cx="4"
+                                cy="12"
+                                r="2.5"
+                              /><circle
+                                class="spinner_qM83 spinner_oXPr"
+                                cx="12"
+                                cy="12"
+                                r="2.5"
+                              /><circle
+                                class="spinner_qM83 spinner_ZTLf"
+                                cx="20"
+                                cy="12"
+                                r="2.5"
+                              /></svg
+                            >
+                          {:else}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              class="w-5 h-5 translate-y-[0.5px]"
+                            >
+                              <path d="M7 4a3 3 0 016 0v6a3 3 0 11-6 0V4z" />
+                              <path
+                                d="M5.5 9.643a.75.75 0 00-1.5 0V10c0 3.06 2.29 5.585 5.25 5.954V17.5h-1.5a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-1.5v-1.546A6.001 6.001 0 0016 10v-.357a.75.75 0 00-1.5 0V10a4.5 4.5 0 01-9 0v-.357z"
+                              />
+                            </svg>
+                          {/if}
+                        </button>
+                      {/if}
+                    </Tooltip> -->
+  
+                    <Tooltip content={$i18n.t("Send message")}>
+                      <button
+                        id="send-message-button"
+                        class="{prompt !== ''
+                          ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
+                          : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
+                        type="submit"
+                        disabled={prompt === ""}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                          class="w-5 h-5"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </Tooltip>
+                  {:else}
                     <button
-                      id="send-message-button"
-                      class="{prompt !== ''
-                        ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
-                        : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
-                      type="submit"
-                      disabled={prompt === ""}
+                      class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
+                      on:click={stopResponse}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
+                        viewBox="0 0 24 24"
                         fill="currentColor"
                         class="w-5 h-5"
                       >
                         <path
                           fill-rule="evenodd"
-                          d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
+                          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 01-1.313-1.313V9.564z"
                           clip-rule="evenodd"
                         />
                       </svg>
                     </button>
-                  </Tooltip>
-                {:else}
-                  <button
-                    class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
-                    on:click={stopResponse}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-5 h-5"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 01-1.313-1.313V9.564z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                {/if}
-              </div>
+                  {/if}
+                </div>
+              </div>  
             </div>
           </form>
 

@@ -41,22 +41,25 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
 
         # 判断用户是否超出次数
         if conversation is not None:
-            print("============================", modellimit.normal != -1, modellimit.normal <= conversation.chat_num)
             if vipflag:
-                print("====================vip=====================")
-                if modellimit.vip != -1 and modellimit.vip <= conversation.chat_num:
+                if modellimit.vip <= conversation.chat_num:
                     return {
                         "passed": False,
                         "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
                     }
             else:
-                print("====================normal=====================")
-                if modellimit.normal != -1 and modellimit.normal <= conversation.chat_num:
-                    print("=========================================")
-                    return {
-                        "passed": False,
-                        "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
-                    }
+                if user.id.startswith("0x"):
+                    if modellimit.wallet <= conversation.chat_num:
+                        return {
+                            "passed": False,
+                            "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
+                        }
+                else:
+                    if modellimit.normal <= conversation.chat_num:
+                        return {
+                            "passed": False,
+                            "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
+                        }
 
         if conversation is None:
             ConversationInstance.insert(user.id, conversation_req.model)

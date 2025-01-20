@@ -534,7 +534,8 @@
   "Update and Copy Link": "อัปเดตและคัดลอกลิงค์",
   "Update password": "อัปเดตรหัสผ่าน",
   "Upload a GGUF model": "อัปโหลดโมเดล GGUF",
-  "Upload files": "อัปโหลดไฟล์",
+  "Attach files": "แนบไฟล์",
+  "Attach files is unavailable": "ไม่สามารถแนบไฟล์ได้",
   "Upload Progress": "ความคืบหน้าในการอัปโหลด",
   "URL Mode": "โหมด URL",
   "Use '#' in the prompt input to load and select your documents.": "ใช้ '#' ในอินพุตคำแนะนำเพื่อโหลดและเลือกเอกสารของคุณ.",
@@ -798,5 +799,7 @@
   "What is the main idea of this picture?": "ความคิดหลักของภาพนี้คืออะไร?",
   "What does the symbol in the picture represent?": "สัญลักษณ์ในภาพนี้แทนอะไร?",
   "Help me solve problems": "ช่วยฉันแก้ปัญหา",
-  "Last for {{ time }} seconds": "ดำเนินต่อไปเป็นเวลา {{ time }} วินาที"
+  "Last for {{ time }} seconds": "ดำเนินต่อไปเป็นเวลา {{ time }} วินาที",
+  "Search the web": "ค้นหาในเว็บ",
+  "search": "ค้นหา"
 }

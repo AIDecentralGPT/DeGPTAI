@@ -535,7 +535,8 @@
   "Update and Copy Link": "Actualizar y copiar enlace",
   "Update password": "Actualizar contraseña",
   "Upload a GGUF model": "Subir un modelo GGUF",
-  "Upload files": "Subir archivos",
+  "Attach files": "Adjuntar archivos",
+  "Attach files is unavailable": "Adjuntar archivos no está disponible",
   "Upload Progress": "Progreso de subida",
   "URL Mode": "Modo URL",
   "Use '#' in the prompt input to load and select your documents.": "Usa '#' en la entrada de indicio para cargar y seleccionar tus documentos.",
@@ -799,5 +800,7 @@
   "What is the main idea of this picture?": "¿Cuál es la idea principal de esta imagen?",
   "What does the symbol in the picture represent?": "¿Qué representa el símbolo en la imagen?",
   "Help me solve problems": "Ayúdame a resolver problemas",
-  "Last for {{ time }} seconds": "Dura {{ time }} segundos"
+  "Last for {{ time }} seconds": "Dura {{ time }} segundos",
+  "Search the web": "Buscar en la web",
+  "search": "buscar"
 }

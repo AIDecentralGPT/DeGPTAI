@@ -535,7 +535,8 @@
   "Update and Copy Link": "Cập nhật và sao chép liên kết",
   "Update password": "Cập nhật mật khẩu",
   "Upload a GGUF model": "Tải lên một mô hình GGUF",
-  "Upload files": "Tải lên các tệp",
+  "Attach files": "Đính kèm tệp tin",
+  "Attach files is unavailable": "Không thể đính kèm tệp tin",
   "Upload Progress": "Tiến trình tải lên",
   "URL Mode": "Chế độ địa chỉ URL",
   "Use '#' in the prompt input to load and select your documents.": "Sử dụng '#' trong đầu vào của gợi ý để tải và chọn tài liệu của bạn.",
@@ -788,5 +789,7 @@
   "What does this picture mean?": "Bức tranh này có nghĩa là gì?",
   "Explain this picture": "Giải thích bức tranh này",
   "Help me solve problems": "Trợ giúp tôi giải quyết các vấn đề",
-  "Last for {{ time }} seconds": "Để lại {{ time }} giây"
+  "Last for {{ time }} seconds": "Để lại {{ time }} giây",
+  "Search the web": "Tìm kiếm trên web",
+  "search": "tìm kiếm"
 }

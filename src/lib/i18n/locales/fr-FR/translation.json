@@ -534,7 +534,8 @@
   "Update and Copy Link": "Mettre à jour et copier le lien",
   "Update password": "Mettre à jour le mot de passe",
   "Upload a GGUF model": "Télécharger un modèle GGUF",
-  "Upload files": "Télécharger des fichiers",
+  "Attach files": "Joindre des fichiers",
+  "Attach files is unavailable": "Joindre des fichiers n'est pas disponible",
   "Upload Progress": "Progression du téléchargement",
   "URL Mode": "Mode URL",
   "Use '#' in the prompt input to load and select your documents.": "Utiliser '#' dans l'entrée de prompt pour charger et sélectionner vos documents.",
@@ -798,5 +799,7 @@
   "What is the main idea of this picture?": "Quelle est l'idée principale de cette image?",
   "What does the symbol in the picture represent?": "Que représente le symbole dans l'image?",
   "Help me solve problems": "Aidez - moi à résoudre des problèmes",
-  "Last for {{ time }} seconds": "Dure {{ time }} secondes"
+  "Last for {{ time }} seconds": "Dure {{ time }} secondes",
+  "Search the web": "Rechercher sur le web",
+  "search": "recherche"
 }

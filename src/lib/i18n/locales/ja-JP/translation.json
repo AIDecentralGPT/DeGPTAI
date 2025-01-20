@@ -537,7 +537,8 @@
   "Update and Copy Link": "更新してリンクをコピーする",
   "Update password": "パスワードを更新する",
   "Upload a GGUF model": "GGUF モデルをアップロードする",
-  "Upload files": "ファイルをアップロードする",
+  "Attach files": "ファイルを添付する",
+  "Attach files is unavailable": "ファイルの添付ができません",
   "Upload Progress": "アップロードの進捗",
   "URL Mode": "URL モード",
   "Use '#' in the prompt input to load and select your documents.": "プロンプト入力で '#' を使用して、ドキュメントを読み込んで選択します。",
@@ -799,5 +800,7 @@
   "What is the main idea of this picture?":"この絵の主要なアイデアは何ですか？",
   "What does the symbol in the picture represent?":"絵の中の記号は何を表していますか？",
   "Help me solve problems": "問題を解決するのを手伝ってください",
-  "Last for {{ time }} seconds": "{{time}} 秒間続きます"
+  "Last for {{ time }} seconds": "{{time}} 秒間続きます",
+  "Search the web": "ウェブで検索する",
+  "search": "検索"
 }

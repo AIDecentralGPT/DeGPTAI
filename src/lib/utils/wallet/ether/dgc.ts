@@ -13,6 +13,9 @@ import { toast } from "svelte-sonner";
 //const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧地址
 const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新地址
 
+// XAA 合约地址
+// const DGC_TOKEN_CONTRACT_ADDRESS = '0x16d83F6B17914a4e88436251589194CA5AC0f452'; // XAA地址
+
 // // ERC-20 ABI
 // const ERC20_ABI = [
 //   "function balanceOf(address owner) view returns (uint256)",
@@ -70,16 +73,17 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
     toast.error("The DBC balance is not enough to pay gas.");
     return;
   }
-  
   const tx = {
     to: DGC_TOKEN_CONTRACT_ADDRESS,
     value: 0,
     data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
     gasPrice: gasPrice, // 设置燃气价格
+    // gasLimit: gasLimit
   };
 
   try {
     const txResponse = await wallet.sendTransaction(tx);
+    console.log("========================", txResponse);
     return txResponse;
   } catch (error) {
     console.log("==============transferDgc=============", error) ;

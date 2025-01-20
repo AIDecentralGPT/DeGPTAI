@@ -342,7 +342,6 @@
 										{regenerateResponse}
 										on:save={async (e) => {
 											console.log('save', e);
-
 											const message = e.detail;
 											history.messages[message.id] = message;
 											await updateChatById(localStorage.token, chatId, {
@@ -372,7 +371,6 @@
 												messages: messages,
 												history: history
 											});
-
 											if (autoScroll) {
 												const element = document.getElementById('messages-container');
 												autoScroll =
@@ -390,7 +388,7 @@
 				{/each}
 
 				{#if bottomPadding}
-					<div class="  pb-20" />
+					<div class="pb-40" />
 				{/if}
 			{/key}
 		</div>

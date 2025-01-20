@@ -534,7 +534,8 @@
   "Update and Copy Link": "Обновить и скопировать ссылку",
   "Update password": "Обновить пароль",
   "Upload a GGUF model": "Загрузить модель GGUF",
-  "Upload files": "Загрузить файлы",
+  "Attach files": "Прикрепить файлы",
+  "Attach files is unavailable": "Прикрепление файлов недоступно",
   "Upload Progress": "Прогресс загрузки",
   "URL Mode": "Режим URL",
   "Use '#' in the prompt input to load and select your documents.": "Использовать '#' в поле ввода запроса для загрузки и выбора ваших документов.",
@@ -798,5 +799,7 @@
   "What is the main idea of this picture?":"Какова главная идея этого изображения?",
   "What does the symbol in the picture represent?":"Что представляет собой символ на изображении?",
   "Help me solve problems": "Помогите мне решить проблемы",
-  "Last for {{ time }} seconds": "Длится {{ time }} секунд"
+  "Last for {{ time }} seconds": "Длится {{ time }} секунд",
+  "Search the web": "Поиск в интернете",
+  "search": "поиск"
 }

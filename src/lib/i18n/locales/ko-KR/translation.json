@@ -535,7 +535,8 @@
   "Update and Copy Link": "업데이트 및 링크 복사",
   "Update password": "비밀번호 업데이트",
   "Upload a GGUF model": "GGUF 모델 업로드",
-  "Upload files": "파일 업로드",
+  "Attach files": "파일 첨부",
+  "Attach files is unavailable": "파일 첨부가 불가능합니다.",
   "Upload Progress": "업로드 진행도",
   "URL Mode": "URL 모드",
   "Use '#' in the prompt input to load and select your documents.": "프롬프트 입력에 '#'를 사용하여 문서를 로드하고 선택하세요.",
@@ -799,5 +800,7 @@
   "What is the main idea of this picture?": "이 그림의 주요 아이디어는 무엇입니까?",
   "What does the symbol in the picture represent?": "그림 속 기호는 무엇을 나타내는 것입니까?",
   "Help me solve problems": "문제 해결을 돕 me 주세요.",
-  "Last for {{ time }} seconds": "{{ time }} 초 동안 지속됩니다"
+  "Last for {{ time }} seconds": "{{ time }} 초 동안 지속됩니다",
+  "Search the web": "웹에서 검색하다",
+  "search": "검색"
 }
