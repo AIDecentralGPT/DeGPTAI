@@ -989,9 +989,9 @@
 			</div>
 			{#if message?.web?.websearch ||  message?.web?.thirdsearch}
 				<div class="flex justify-between">
-					<div class="">
+					<div class="w-[calc(100%-50px)]">
 						{#if message?.web?.websearch}
-							<div class="flex flex-col h-[201px] rounded-lg border-[1px] border-gray-300 m-2">
+							<div class="flex flex-col w-full rounded-lg border-[1px] border-gray-300 m-2">
 								<div class="flex justify-between items-center h-[55px] p-6 { webShow ? '' : 'border-b-[1px]' } border-gray-300">
 									<div>Web Search</div>
 									<button on:click={() => {
@@ -1007,7 +1007,7 @@
 										</svg>
 									</button>
 								</div>
-								<div class="transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
+								<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 									<div class="flex flex-row px-4 py-2 mr-2">
 										{#each message?.web?.websearch ?? [] as item}
 											<div class="flex flex-col rounded-lg border-[1px] border-gray-300 m-2 py-2 px-3">
@@ -1049,7 +1049,7 @@
 							</div>
 						{/if}
 					</div>
-					<button class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+					<button class="flex self-start w-[50px] rounded-md py-2 px-3 w-full transition pl-[20px]">
 						<div class="self-center mr-3">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
