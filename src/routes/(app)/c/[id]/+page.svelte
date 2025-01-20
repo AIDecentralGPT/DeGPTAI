@@ -1170,9 +1170,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
       // }
     }
     await tick();
-    if (autoScroll) {
-      scrollToBottom();
-    }
+    scrollToBottom();
   }
 
 	const handleOpenAIError = async (error, res: Response | null, model, responseMessage) => {
