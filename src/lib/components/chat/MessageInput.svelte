@@ -1170,6 +1170,7 @@
                          {search ? 'bg-[#333333] dark:bg-[#ffffff]' : 'bg-gray-50 dark:bg-gray-800'}"
                         type="button"
                         on:click={() => {
+                          console.log("=====================", search);
                           search = !search;
                         }}
                       >
