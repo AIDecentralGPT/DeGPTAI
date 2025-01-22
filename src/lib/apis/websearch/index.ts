@@ -1,10 +1,10 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 // 获取tavily搜索结果
-export const tavilySearch = async (token: string, keywords: string) => {
+export const tavilySearch = async (token: string, keyword: string) => {
 
   let error = null;
-	const res = await fetch(`${WEBUI_API_BASE_URL}/tavily/search`, {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/third/tavily/search`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -12,7 +12,7 @@ export const tavilySearch = async (token: string, keywords: string) => {
 			authorization: `Bearer ${token}`
 		},
     body: JSON.stringify({
-			keywords: keywords
+			keyword: keyword
 		})
 	}).then(async (res) => {
 		if (!res.ok) 

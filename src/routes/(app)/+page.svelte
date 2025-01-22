@@ -304,6 +304,8 @@
           let responseMessage = {
             parentId: userMessageId,
             id: responseMessageId,
+            search: search,
+						order: ['web', 'image', 'text'],
             childrenIds: [],
             role: "assistant",
             content: "",
@@ -385,6 +387,8 @@
             responseMessage = {
               parentId: parentId,
               id: responseMessageId,
+              search: search,
+						  order: ['web', 'image', 'text'],
               childrenIds: [],
               role: "assistant",
               content: "",
