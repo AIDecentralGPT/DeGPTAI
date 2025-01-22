@@ -8,13 +8,13 @@ from apps.web.api.youtube import YoutubeClientInstance, YoutubeSearchForm
 router = APIRouter()
 
 @router.post("/tavily/search", response_model=dict)
-async def search(form: TavilySearchForm):
+async def tavilySearch(form: TavilySearchForm):
     print("==============================", form.keyword)
     response = TavilyClientInstance.search(form.keyword)
     return response
 
 @router.post("/youtube/search", response_model=dict)
-async def search(form: YoutubeSearchForm):
+async def youtubeSearch(form: YoutubeSearchForm):
     print("==============================", form.keyword)
     response = YoutubeClientInstance.search(form.keyword)
     return response

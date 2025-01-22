@@ -9,8 +9,8 @@ api_key = "AIzaSyDwSyljiZVnzknJF-vjhPKh8R52nQGU_qI"
 
 class YoutubeClient:
   def search(self, keyword: str):
-    youtube = build('youtube', 'v3', developerKey=api_key)
     try:
+        youtube = build('youtube', 'v3', developerKey=api_key)
         # 调用 search().list() 方法进行搜索
         request = youtube.search().list(
             part="snippet",
