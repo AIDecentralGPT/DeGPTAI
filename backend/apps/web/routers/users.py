@@ -36,7 +36,7 @@ w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新以太坊主网
 # from web3.auto import w3
 import asyncio
 
-from apps.web.models.twitterLib import twitter_lib
+from apps.web.api.twitter import TwitterApi
 
 
 
@@ -533,4 +533,4 @@ async def regist_total(user=Depends(get_current_user)):
 @router.get("/check/twitter", response_model=bool)
 async def third_total(request: Request):
     account = request.query_params.get("account")
-    return twitter_lib.check_follow_status(account, "service@decentralgpt.org")
+    return TwitterApi.check_follow_status(account, "service@decentralgpt.org")

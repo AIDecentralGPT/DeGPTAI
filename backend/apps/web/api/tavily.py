@@ -15,4 +15,4 @@ class tavilyClient:
       print("=======================", e)
       return None
   
-TavilyClientInstance = tavilyClient()
+TavilyClientApi = tavilyClient()

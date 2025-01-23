@@ -1,10 +1,15 @@
 import tweepy
+from pydantic import BaseModel
 
 consumer_key = 'q9r7Zv527UosaDGPcYDJZ8wih'
 consumer_secret = 'dbIBdjsKpqffGMNZ8bHqLg9N8uTnBz0py4aCy9397C2vJknFgz'
 bearer_token = 'AAAAAAAAAAAAAAAAAAAAADX0vAEAAAAA%2FGkhIQJvPdj0YR%2FsQT8dJak0OgI%3Dh0TUAu5TFYUFKO5pRnSfhg1k8KXBO4KTGKmszkqwGrK6hUwbl5'
 access_token = '1726080863979610112-xWTMVvhOHAPJa0C81lwVNYWzQEUL6F'
 access_token_secret = 'glwphg8uY4Mlr7etrYxu8PB6PbVFzH0tTp7tmx8Jd8Ly8'
+
+
+class TwitterSearchForm(BaseModel):
+  keyword: str
 
 class TwitterLib:
     def __init__(self):
@@ -14,7 +19,7 @@ class TwitterLib:
         # 创建API对象，用于后续操作
         self.api = tweepy.API(auth)
 
-    def check_follow_status(self, follower_username, target_username):
+    def check_follow_status(self, follower_username: str, target_username: str):
         try:
             # 获取关注者的用户对象
             follower_user = self.api.get_user(screen_name=follower_username)
@@ -30,4 +35,13 @@ class TwitterLib:
             print(f"出现错误：{e}")
             return False
         
-twitter_lib = TwitterLib()
+    def search(self, keword: str):
+        try:
+            # 搜索包含特定关键词的推文
+            tweets = self.api.search_tweets(q=keword, count=20)
+            return tweets
+        except Exception as e:
+            print(f"出现错误：{e}")
+            return None
+        
+TwitterApi = TwitterLib()

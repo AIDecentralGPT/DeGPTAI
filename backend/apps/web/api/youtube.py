@@ -11,6 +11,7 @@ class YoutubeClient:
   def search(self, keyword: str):
     try:
         youtube = build('youtube', 'v3', developerKey=api_key)
+        print("=========================", youtube)
         # 调用 search().list() 方法进行搜索
         request = youtube.search().list(
             part="snippet",
@@ -25,8 +26,8 @@ class YoutubeClient:
             video_title = item["snippet"]["title"]
             print(f"Video ID: {video_id}, Title: {video_title}")
         return response.get("items", [])
-    except HttpError as e:
+    except Exception as e:
         print(f"发生错误: {e}")
         return None
   
-YoutubeClientInstance = YoutubeClient()
+YoutubeClientApi = YoutubeClient()
