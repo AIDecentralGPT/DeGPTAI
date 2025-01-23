@@ -59,6 +59,14 @@ export const getDeModels = async (token: string = "") => {
         support: "image",
         desc: "Support image recognition"
       }
+      ,
+      {
+        name: "sana",
+        model: "sana",
+        tip: "sana",
+        support: "image",
+        desc: "Support image recognition"
+      }
       // {
       //   name: "Qwen 2.5",
       //   model: "Qwen2.5-72B",
