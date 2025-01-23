@@ -1115,7 +1115,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
     if (search) {
       let lastMessage = messages.filter(item => item?.role == 'user')[0];
       let webResult = await tavilySearch(localStorage.token, lastMessage.content);
-      if (webResult?.results) {
+      if (webResult?.ok) {
         responseMessage.web = {
           websearch: webResult.data
         }
