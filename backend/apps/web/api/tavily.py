@@ -10,7 +10,7 @@ class tavilyClient:
   def search(self, keyword: str):
     try:
       response = tavily_client.search(keyword)
-      return response
+      return response['results']
     except Exception as e:
       print("=======================", e)
       return None

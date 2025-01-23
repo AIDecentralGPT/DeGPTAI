@@ -10,12 +10,11 @@ router = APIRouter()
 
 @router.post("/tavily/search", response_model=dict)
 async def tavilySearch(form: TavilySearchForm):
-    print("==============================", form.keyword)
-    response = TavilyClientApi.search(form.keyword)
-    if response is None:
+    data = TavilyClientApi.search(form.keyword)
+    if data is None:
         raise HTTPException(status_code=500, detail="未获取到信息")
     else:
-        return response
+        return { "ok": True, "data": data }
 
 @router.post("/youtube/search", response_model=dict)
 async def youtubeSearch(form: YoutubeSearchForm):
@@ -28,9 +27,16 @@ async def youtubeSearch(form: YoutubeSearchForm):
     
 @router.post("/twitter/search", response_model=dict)
 async def twitterSearch(form: TwitterSearchForm):
-    print("==============================", form.keyword)
-    response = TwitterApi.search(form.keyword)
-    if response is None:
+    data = TwitterApi.search(form.keyword)
+    if data is None:
         raise HTTPException(status_code=500, detail="未获取到信息")
     else:
-        return response
+        return { "ok": True, "data": data }
+    
+@router.post("/twitter/html/search", response_model=dict)
+async def twitterSearch(form: TwitterSearchForm):
+    data = TwitterApi.searchHtml(form.keyword)
+    if data is None:
+        raise HTTPException(status_code=500, detail="未获取到信息")
+    else:
+        return { "ok": True, "data": data }

@@ -701,7 +701,7 @@
       let webResult = await tavilySearch(localStorage.token, lastMessage.content);
       if (webResult?.results) {
         responseMessage.web = {
-          websearch: webResult.results
+          websearch: webResult.data
         }
       }
       // responseMessage.web = {
