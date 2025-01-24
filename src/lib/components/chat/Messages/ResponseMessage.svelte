@@ -484,7 +484,7 @@
 				<div class="flex flex-wrap mt-3">
 					{#each message?.web?.thirdsearch ?? [] as item}
 						<div class="flex flex-col p-1 lg:w-1/5 w-1/3">
-							<Image src={item.thumb} alt="Uploaded Image" className="object-cover object-center w-full rounded-lg cursor-pointer"/>
+							<Image src={item.media_urls[0]} alt="Uploaded Image" className="object-cover object-center w-full rounded-lg cursor-pointer"/>
 						</div>
 					{/each}
 				</div>
