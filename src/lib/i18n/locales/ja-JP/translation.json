@@ -802,5 +802,7 @@
   "Help me solve problems": "問題を解決するのを手伝ってください",
   "Last for {{ time }} seconds": "{{time}} 秒間続きます",
   "Search the web": "ウェブで検索する",
-  "search": "検索"
+  "search": "検索",
+  "Web Search": "ウェブ検索",
+  "Web Searching ...": "ウェブ検索中..."
 }

@@ -802,5 +802,7 @@
   "Help me solve problems": "Bana problemleri çözmemde yardım et",
   "Last for {{ time }} seconds": "{{ time }} saniye sürer",
   "Search the web": "Web'de Ara",
-  "search": "arama"
+  "search": "arama",
+  "Web Search": "Web araması",
+  "Web Searching ...": "Web'de aranıyor ..."
 }

@@ -802,5 +802,7 @@
   "Help me solve problems": "문제 해결을 돕 me 주세요.",
   "Last for {{ time }} seconds": "{{ time }} 초 동안 지속됩니다",
   "Search the web": "웹에서 검색하다",
-  "search": "검색"
+  "search": "검색",
+  "Web Search": "웹 검색",
+  "Web Searching ...": "웹 검색 중..."
 }

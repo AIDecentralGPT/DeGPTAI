@@ -803,5 +803,7 @@
   "Help me solve problems": "Helfen Sie mir, Probleme zu lösen",
   "Last for {{ time }} seconds": "Dauert {{ time }} Sekunden lang",
   "Search the web": "Im Internet suchen",
-  "search": "Suche"
+  "search": "Suche",
+  "Web Search": "Websuche",
+  "Web Searching ...": "Websuche läuft ..."
 }

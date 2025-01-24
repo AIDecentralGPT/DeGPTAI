@@ -801,5 +801,7 @@
   "Help me solve problems": "帮我解题",
   "Last for {{ time }} seconds": "持续{{ time }}秒",
   "Search the web": "搜索网页",
-  "search": "搜索"
+  "search": "搜索",
+  "Web Search": "网络搜索",
+  "Web Searching ...": "正在进行网络搜索..."
 }

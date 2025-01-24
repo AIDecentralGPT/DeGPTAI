@@ -802,5 +802,7 @@
   "Help me solve problems": "Bantu saya menyelesaikan masalah - masalah",
   "Last for {{ time }} seconds": "Berlangsung selama {{ time }} detik",
   "Search the web": "Cari di web",
-  "search": "cari"
+  "search": "cari",
+  "Web Search": "Pencarian web",
+  "Web Searching ...": "Sedang melakukan pencarian web ..."
 }

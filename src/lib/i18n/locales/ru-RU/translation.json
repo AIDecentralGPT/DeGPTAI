@@ -801,5 +801,7 @@
   "Help me solve problems": "Помогите мне решить проблемы",
   "Last for {{ time }} seconds": "Длится {{ time }} секунд",
   "Search the web": "Поиск в интернете",
-  "search": "поиск"
+  "search": "поиск",
+  "Web Search": "Поиск в интернете",
+  "Web Searching ...": "Выполняется поиск в интернете ..."
 }

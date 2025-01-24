@@ -801,5 +801,7 @@
   "Help me solve problems": "Aidez - moi à résoudre des problèmes",
   "Last for {{ time }} seconds": "Dure {{ time }} secondes",
   "Search the web": "Rechercher sur le web",
-  "search": "recherche"
+  "search": "recherche",
+  "Web Search": "Recherche sur le web",
+  "Web Searching ...": "Recherche en cours sur le web ..."
 }

@@ -417,10 +417,15 @@
 					{/each}
 				</div>
 			{/if}
-			{#if message?.web?.websearch}
-				<div class="flex flex-col w-full rounded-lg border-[1px] border-gray-300 mt-2">
-					<div class="flex justify-between items-center h-[35px] lg:h-[55px] p-3 lg:p-6 { webShow ? '' : 'border-b-[1px]' } border-gray-300">
-						<div>Web Search</div>
+			<!-- 网页搜索 -->
+			{#if message?.search}
+				<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
+					<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
+						{#if message?.web?.websearch}
+							<div class="text-sm font-bold">{ $i18n.t("Web Search") }</div>
+						{:else}
+							<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div>
+						{/if}
 						<button on:click={() => {
 							handleWebHidden();
 						}}>
@@ -434,38 +439,47 @@
 							</svg>
 						</button>
 					</div>
-					<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
-						<div class="flex flex-row px-1 lg:px-4 py-2 mr-2">
-							{#each message?.web?.websearch ?? [] as item}
-								<div class="flex flex-col rounded-lg border-[1px] border-gray-300 m-2 py-2 px-3">
-									<div class="flex flex-row">
-										<div class="w-6 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
-											<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='16'/%3E%3Cline x1='8' y1='12' x2='16' y2='12'/%3E%3C/svg%3E" alt="" class="w-6 h-6 object-contain">
-										</div>
-										<div class="ml-1">
-											<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{item.title}</div>
-											<div class="flex flex-row items-center w-[300px] text-xs">
-												<a class="flex-start line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
-												<svg 
-													xmlns="http://www.w3.org/2000/svg" 
-													width="45" 
-													height="45" 
-													viewBox="0 0 24 24" 
-													fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-													class="lucide lucide-external-link h-3 w-3 ml-1">
-													<path d="M15 3h6v6"></path><path d="M10 14 21 3"/>
-													<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+					{#if message?.web?.websearch}
+						<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
+							<div class="flex flex-row px-4 mr-2">
+								{#each message?.web?.websearch ?? [] as item}
+									<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
+										<div class="flex flex-row">
+											<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-[1.2rem] h-[1.2rem] s-Fb8Dy0t5csK5">
+													<path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" class="s-Fb8Dy0t5csK5"></path>
 												</svg>
 											</div>
+											<div class="ml-2">
+												<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{item.title}</div>
+												<div class="flex flex-row items-center w-[300px] text-xs">
+													<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
+													<svg 
+														xmlns="http://www.w3.org/2000/svg" 
+														width="55" 
+														height="55" 
+														viewBox="0 0 24 24" 
+														fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+														class="lucide lucide-external-link h-3 w-3 ml-2">
+														<path d="M15 3h6v6"></path><path d="M10 14 21 3"/>
+														<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+													</svg>
+												</div>
+											</div>
 										</div>
+										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{item.content}</div>
 									</div>
-									<div class="text-xs text-grey-600 w-[300px] line-clamp-3 text-ellipsis mt-1">{item.content}</div>
-								</div>
-							{/each}
+								{/each}
+							</div>
 						</div>
-					</div>
-				</div>			
+					{:else}
+						<div class="bg-white rounded-2xl mx-4 mb-4 p-2">
+							<Skeleton />
+						</div>			
+					{/if}
+				</div>
 			{/if}
+			<!-- 图片搜索 -->
 			{#if message?.web?.thirdsearch}
 				<div class="flex flex-wrap mt-3">
 					{#each message?.web?.thirdsearch ?? [] as item}
@@ -475,6 +489,7 @@
 					{/each}
 				</div>
 			{/if}
+			<!-- 文本输出 -->
 			<div
 					class="prose chat-{message.role} w-full max-w-full dark:prose-invert prose-headings:my-0 prose-p:m-0 prose-p:-mb-6 prose-pre:my-0 prose-table:my-0 prose-blockquote:my-0 prose-img:my-0 prose-ul:-my-4 prose-ol:-my-4 prose-li:-my-3 prose-ul:-mb-6 prose-ol:-mb-8 prose-ol:p-0 prose-li:-mb-4 whitespace-pre-line"
 				>

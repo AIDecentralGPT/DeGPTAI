@@ -791,5 +791,7 @@
   "Help me solve problems": "Trợ giúp tôi giải quyết các vấn đề",
   "Last for {{ time }} seconds": "Để lại {{ time }} giây",
   "Search the web": "Tìm kiếm trên web",
-  "search": "tìm kiếm"
+  "search": "tìm kiếm",
+  "Web Search": "Tìm kiếm trên web",
+  "Web Searching ...": "Đang tìm kiếm trên web ..."
 }
