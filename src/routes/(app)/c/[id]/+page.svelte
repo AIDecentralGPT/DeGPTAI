@@ -47,7 +47,7 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
-	import { tavilySearch } from "$lib/apis/websearch"
+	import { tavilySearch, twitterSearch } from "$lib/apis/websearch"
 
 	const i18n = getContext('i18n');
 
@@ -431,6 +431,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						if (modelLimit[model.id]) {
 							await handleLimitError(modelLimit[model.id], responseMessage)
 						} else {
+							// 搜索网页
+							handleSearchWeb(responseMessage);
+							// 搜索twitter
+							handleSearchTwitter(responseMessage);
+							// 文本搜索
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 						}
 
@@ -622,8 +627,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						scrollToBottom();
 					}
 				}
-
-				await handleSearchWeb(responseMessage);
 			} else {
 				await handleOpenAIError(null, res, model, responseMessage);
 			}
@@ -1170,6 +1173,22 @@ const submitPrompt = async (userPrompt, _user = null) => {
       //     }
       //   ]
       // }
+    }
+    await tick();
+    scrollToBottom();
+  }
+
+	// 获取搜索twitter
+  const handleSearchTwitter= async(responseMessage: any) => {
+    if (search) {
+      let lastMessage = messages.filter(item => item?.role == 'user')[0];
+      let webResult = await twitterSearch(localStorage.token, lastMessage.content);
+      if (webResult?.ok) {
+        responseMessage.web = {
+          ...responseMessage.web,
+          thirdsearch: webResult.data
+        }
+      }
     }
     await tick();
     scrollToBottom();

@@ -57,7 +57,7 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
-  import { tavilySearch } from "$lib/apis/websearch"
+  import { tavilySearch, twitterSearch } from "$lib/apis/websearch"
 
   let inviter: any = "";
   let channelName: any = "";
@@ -445,6 +445,11 @@
           if (modelLimit[model.id]) {
             await handleLimitError(modelLimit[model.id], responseMessage);
           } else {
+            // 搜索网页
+						handleSearchWeb(responseMessage);
+						// 搜索twitter
+						handleSearchTwitter(responseMessage);
+						// 文本搜索
             await sendPromptDeOpenAI(model, responseMessageId, _chatId);
           }
           // if (model?.external) {
@@ -665,8 +670,6 @@
             scrollToBottom();
           }
         }
-
-        await handleSearchWeb(responseMessage);
       } else {
         await handleOpenAIError(null, res, model, responseMessage);
       }
@@ -754,6 +757,22 @@
       //     }
       //   ]
       // }
+    }
+    await tick();
+    scrollToBottom();
+  }
+
+  // 获取搜索twitter
+  const handleSearchTwitter= async(responseMessage: any) => {
+    if (search) {
+      let lastMessage = messages.filter(item => item?.role == 'user')[0];
+      let webResult = await twitterSearch(localStorage.token, lastMessage.content);
+      if (webResult?.ok) {
+        responseMessage.web = {
+          ...responseMessage.web,
+          thirdsearch: webResult.data
+        }
+      }
     }
     await tick();
     scrollToBottom();
