@@ -446,7 +446,7 @@
             await handleLimitError(modelLimit[model.id], responseMessage);
           } else {
             // 搜索网页
-						handleSearchWeb(responseMessage);
+						await handleSearchWeb(responseMessage);
 						// 搜索twitter
 						handleSearchTwitter(responseMessage);
 						// 文本搜索

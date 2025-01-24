@@ -11,10 +11,10 @@ import { toast } from "svelte-sonner";
 
 // DGC 合约地址
 //const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧地址
-// const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新地址
+const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新地址
 
 // XAA 合约地址
-const DGC_TOKEN_CONTRACT_ADDRESS = '0x16d83F6B17914a4e88436251589194CA5AC0f452'; // XAA地址
+// const DGC_TOKEN_CONTRACT_ADDRESS = '0x16d83F6B17914a4e88436251589194CA5AC0f452'; // XAA地址
 
 // // ERC-20 ABI
 // const ERC20_ABI = [
@@ -78,7 +78,7 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
     value: 0,
     data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
     gasPrice: gasPrice, // 设置燃气价格
-    gasLimit: gasLimit
+    // gasLimit: gasLimit
   };
 
   try {

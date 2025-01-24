@@ -478,17 +478,18 @@
 						</div>			
 					{/if}
 				</div>
+				<!-- 图片搜索 -->
+				{#if message?.web?.thirdsearch}
+					<div class="flex flex-wrap mt-3">
+						{#each message?.web?.thirdsearch ?? [] as item}
+							<div class="flex flex-col p-1 lg:w-1/5 w-1/3 aspect-square">
+								<Image src={item.media_urls[0]} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+							</div>
+						{/each}
+					</div>
+				{/if}
 			{/if}
-			<!-- 图片搜索 -->
-			{#if message?.web?.thirdsearch}
-				<div class="flex flex-wrap mt-3">
-					{#each message?.web?.thirdsearch ?? [] as item}
-						<div class="flex flex-col p-1 lg:w-1/5 w-1/3">
-							<Image src={item.media_urls[0]} alt="Uploaded Image" className="object-cover object-center w-full rounded-lg cursor-pointer"/>
-						</div>
-					{/each}
-				</div>
-			{/if}
+			
 			<!-- 文本输出 -->
 			<div
 					class="prose chat-{message.role} w-full max-w-full dark:prose-invert prose-headings:my-0 prose-p:m-0 prose-p:-mb-6 prose-pre:my-0 prose-table:my-0 prose-blockquote:my-0 prose-img:my-0 prose-ul:-my-4 prose-ol:-my-4 prose-li:-my-3 prose-ul:-mb-6 prose-ol:-mb-8 prose-ol:p-0 prose-li:-mb-4 whitespace-pre-line"
