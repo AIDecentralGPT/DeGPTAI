@@ -71,6 +71,7 @@
 
 	let selectedCitation = null;
 
+	let deepseekthink = false;
 	$: tokens = marked.lexer(sanitizeResponseContent(message?.content));
 
 	const renderer = new marked.Renderer();

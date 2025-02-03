@@ -32,11 +32,11 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Suitable for most tasks"
       // },
       {
-        name: "DeepSeek",
+        name: "DeepSeek-R1",
         model: "DeepSeek-R1",
         tip: "DeepSeek",
         support: "text",
-        desc: "Suitable for most tasks"
+        desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing"
       },
       {
         name: "Llama3.3",
