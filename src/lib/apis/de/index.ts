@@ -33,7 +33,7 @@ export const getDeModels = async (token: string = "") => {
       // },
       {
         name: "DeepSeek",
-        model: "DeepSeek-R",
+        model: "DeepSeek-R1",
         tip: "DeepSeek",
         support: "text",
         desc: "Suitable for most tasks"
