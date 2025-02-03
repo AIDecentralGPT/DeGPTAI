@@ -32,6 +32,13 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Suitable for most tasks"
       // },
       {
+        name: "DeepSeek",
+        model: "DeepSeek-R",
+        tip: "DeepSeek",
+        support: "text",
+        desc: "Suitable for most tasks"
+      },
+      {
         name: "Llama3.3",
         model: "Llama3.3-70B",
         tip: "Llama3.3",
