@@ -34,7 +34,7 @@ export const defaultBackendConfig = async () => {
     "auth": true,
     "default_locale": "en-US",
     "images": false,
-    "default_models": "Llama3.3-70B,DeepSeek-V3",
+    "default_models": "DeepSeek-R1,Llama3.3-70B",
     "default_prompt_suggestions": [
         {
             "title": [
