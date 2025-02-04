@@ -5,7 +5,7 @@
 	import { tick, getContext } from 'svelte';
 
 	import { toast } from 'svelte-sonner';
-	import { getChatList, updateChatById } from '$lib/apis/chats';
+	import { getChatList, updateChatById, conversationRefresh } from '$lib/apis/chats';
 
 	import UserMessage from './Messages/UserMessage.svelte';
 	import ResponseMessage from './Messages/ResponseMessage.svelte';
@@ -81,11 +81,21 @@
 		history.messages[userMessageId] = userMessage;
 		history.currentId = userMessageId;
 
+		// 校验模型已使用次数
+    let modelLimit = {}
+    for (const item of selectedModels) {
+      const {passed, message} = await conversationRefresh(localStorage.token, item);
+      if (!passed) {
+        modelLimit[item] = message;
+      }  
+    }
+
 		// Create Simulate ResopnseMessage
 		let responseMap: any = {};
 
 		await tick();
-		await sendPrompt(userPrompt, userMessageId, responseMap);
+
+		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
 	};
 
 	const updateChatMessages = async () => {
@@ -333,7 +343,6 @@
 										{regenerateResponse}
 										on:save={async (e) => {
 											console.log('save', e);
-
 											const message = e.detail;
 											history.messages[message.id] = message;
 											await updateChatById(localStorage.token, chatId, {
@@ -363,7 +372,6 @@
 												messages: messages,
 												history: history
 											});
-
 											if (autoScroll) {
 												const element = document.getElementById('messages-container');
 												autoScroll =
@@ -381,7 +389,7 @@
 				{/each}
 
 				{#if bottomPadding}
-					<div class="  pb-20" />
+					<div class="pb-40" />
 				{/if}
 			{/key}
 		</div>

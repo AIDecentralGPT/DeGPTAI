@@ -20,8 +20,7 @@
     showSidebar,
     showUserVerifyModal,
     user,
-    deApiBaseUrl,
-    modelLimits,  } from "$lib/stores";
+    deApiBaseUrl } from "$lib/stores";
   import { copyToClipboard, splitStream, addTextSlowly } from "$lib/utils";
 
   import {
@@ -32,6 +31,7 @@
     getChatList,
     getTagsById,
     updateChatById,
+    conversationRefresh
   } from "$lib/apis/chats";
   import {
     cancelOllamaRequest,
@@ -56,6 +56,8 @@
     OLLAMA_API_BASE_URL,
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
+
+  import { tavilySearch, twitterSearch } from "$lib/apis/websearch"
 
   let inviter: any = "";
   let channelName: any = "";
@@ -101,6 +103,7 @@
   let title = "";
   let prompt = "";
   let files = [];
+  let search = false;
   let messages = [];
   let history = {
     messages: {},
@@ -212,7 +215,7 @@
   //////////////////////////
 
   const submitPrompt = async (userPrompt, _user = null) => {
-    console.log("submitPrompt", $chatId);
+    console.log("submitPrompt", $chatId, userPrompt);
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -232,6 +235,22 @@
     }
 
     console.log("selectedModels", selectedModels);
+
+    // 如果开启网络搜索只选择一个模型回复
+    if (search) {
+      selectedModels = [selectedModels[0]];
+    }
+
+    
+
+    // 校验模型已使用次数
+    let modelLimit = {}
+    for (const item of selectedModels) {
+      const {passed, message} = await conversationRefresh(localStorage.token, item);
+      if (!passed) {
+        modelLimit[item] = message;
+      }  
+    }
 
     // const selectedModelsValid = selectedModels
     if (selectedModels.length < 1) {
@@ -285,9 +304,12 @@
           let responseMessage = {
             parentId: userMessageId,
             id: responseMessageId,
+            search: search,
+						order: ['web', 'image', 'text'],
             childrenIds: [],
             role: "assistant",
             content: "",
+            web: {},
             model: model.id,
             userContext: null,
             timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -341,11 +363,12 @@
       }
 
       // Send prompt
-      await sendPrompt(userPrompt, userMessageId, responseMap);
+      await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
+
     }
   };
 
-  const sendPrompt = async (prompt, parentId, responseMap, modelId = null) => {
+  const sendPrompt = async (prompt, parentId, responseMap, modelLimit, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
       // 此判断毫无意义-判断结果就是selectedModels
@@ -364,9 +387,12 @@
             responseMessage = {
               parentId: parentId,
               id: responseMessageId,
+              search: search,
+						  order: ['web', 'image', 'text'],
               childrenIds: [],
               role: "assistant",
               content: "",
+              web: {},
               model: model.id,
               userContext: null,
               timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -415,8 +441,17 @@
           }
           responseMessage.userContext = userContext;
 
-          await sendPromptDeOpenAI(model, responseMessageId, _chatId);
-
+          // 校验是否超过次数
+          if (modelLimit[model.id]) {
+            await handleLimitError(modelLimit[model.id], responseMessage);
+          } else {
+            // 搜索网页
+						await handleSearchWeb(responseMessage);
+						// 搜索twitter
+						handleSearchTwitter(responseMessage);
+						// 文本搜索
+            await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+          }
           // if (model?.external) {
           // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
           // } else if (model) {
@@ -662,6 +697,87 @@
     }
   };
 
+  // 获取搜索网页
+  const handleSearchWeb= async(responseMessage: any) => {
+    if (search) {
+      let lastMessage = messages.filter(item => item?.role == 'user')[0];
+      let webResult = await tavilySearch(localStorage.token, lastMessage.content);
+      if (webResult?.ok) {
+        responseMessage.web = {
+          websearch: webResult.data
+        }
+      }
+      // responseMessage.web = {
+      //   ...responseMessage.web,
+      //   thirdsearch: [
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     }
+      //   ]
+      // }
+    }
+    await tick();
+    scrollToBottom();
+  }
+
+  // 获取搜索twitter
+  const handleSearchTwitter= async(responseMessage: any) => {
+    if (search) {
+      let lastMessage = messages.filter(item => item?.role == 'user')[0];
+      let webResult = await twitterSearch(localStorage.token, lastMessage.content);
+      if (webResult?.ok) {
+        responseMessage.web = {
+          ...responseMessage.web,
+          thirdsearch: webResult.data
+        }
+      }
+    }
+    await tick();
+    scrollToBottom();
+  }
+
   const handleOpenAIError = async (
     error,
     res: Response | null,
@@ -704,6 +820,19 @@
 
     messages = messages;
   };
+
+  const handleLimitError = async (content: string, responseMessage: any) => {
+    responseMessage.content = content;
+    responseMessage.replytime = Math.floor(Date.now() / 1000);
+    responseMessage.error = true;
+    responseMessage.done = true;
+    messages = messages;
+    scrollToBottom();
+    await updateChatById(localStorage.token, $chatId, {
+      messages: messages,
+      history: history
+    });
+  }
 
   const stopResponse = () => {
     stopResponseFlag = true;
@@ -924,6 +1053,7 @@
 
 <MessageInput
   bind:files
+  bind:search
   bind:prompt
   bind:autoScroll
   bind:selectedModel={atSelectedModel}

@@ -30,7 +30,8 @@
 		getChatById,
 		getChatList,
 		getTagsById,
-		updateChatById
+		updateChatById,
+		conversationRefresh
 	} from '$lib/apis/chats';
 	import { generateOpenAIChatCompletion, generateTitle } from '$lib/apis/openai';
 
@@ -46,6 +47,7 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
+	import { tavilySearch, twitterSearch } from "$lib/apis/websearch"
 
 	const i18n = getContext('i18n');
 
@@ -87,6 +89,7 @@
 	let title = '';
 	let prompt = '';
 	let files = [];
+	let search = false;
 
 	let messages = [];
 	let history = {
@@ -213,6 +216,20 @@ const submitPrompt = async (userPrompt, _user = null) => {
   }
 
   console.log("selectedModels", selectedModels);
+
+	// 如果开启网络搜索只选择一个模型回复
+	if (search) {
+    selectedModels = [selectedModels[0]];
+  }
+
+	// 校验模型已使用次数
+	let modelLimit = {}
+  for (const item of selectedModels) {
+    const {passed, message} = await conversationRefresh(localStorage.token, item);
+    if (!passed) {
+      modelLimit[item] = message;
+    }  
+  }
 			
 	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
 	await tick()
@@ -268,9 +285,13 @@ const submitPrompt = async (userPrompt, _user = null) => {
         let responseMessage = {
           parentId: userMessageId,
           id: responseMessageId,
+					search: search,
+					order: ['web', 'image', 'text'],
+					type: "text",
           childrenIds: [],
           role: "assistant",
           content: "",
+					web: {},
           model: model.id,
           userContext: null,
           timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -287,10 +308,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
             responseMessageId,
           ];
         }
-
         responseMap[model?.id] = responseMessage;
-
-        await tick();
       }
     });
 
@@ -326,12 +344,13 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		}
 
 		// 发送提示
-		await sendPrompt(userPrompt, userMessageId, responseMap);
+		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
+
 	}
 };
 
 	// 3\2. 继续聊天会话
-	const sendPrompt = async (prompt, parentId, responseMap, modelId = null) => {
+	const sendPrompt = async (prompt, parentId, responseMap, modelLimit, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		// 对每个模型都做请求
 		await Promise.all(
@@ -352,9 +371,13 @@ const submitPrompt = async (userPrompt, _user = null) => {
 							responseMessage = {
 								parentId: parentId,
 								id: responseMessageId,
+								search: search,
+								order: ['web', 'image', 'text'],
+								type: "text",
 								childrenIds: [],
 								role: "assistant",
 								content: "",
+								web: {},
 								model: model.id,
 								userContext: null,
 								timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -404,8 +427,17 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 						console.log("responseMessage:", responseMessage);
 						
-
-						await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+						// 校验是否超过次数
+						if (modelLimit[model.id]) {
+							await handleLimitError(modelLimit[model.id], responseMessage)
+						} else {
+							// 搜索网页
+							handleSearchWeb(responseMessage);
+							// 搜索twitter
+							handleSearchTwitter(responseMessage);
+							// 文本搜索
+							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+						}
 
 					} else {
 						console.error($i18n.t(`Model {{modelId}} not found`, { }));
@@ -588,6 +620,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						await tick();
 						document.getElementById(`speak-button-${responseMessage.id}`)?.click();
 					}
+
+
 
 					if (autoScroll) {
 						scrollToBottom();
@@ -1079,6 +1113,87 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		}
 	};
 
+	// 获取搜索网页
+  const handleSearchWeb= async(responseMessage: any) => {
+    if (search) {
+      let lastMessage = messages.filter(item => item?.role == 'user')[0];
+      let webResult = await tavilySearch(localStorage.token, lastMessage.content);
+      if (webResult?.ok) {
+        responseMessage.web = {
+          websearch: webResult.data
+        }
+      }
+      // responseMessage.web = {
+      //   ...responseMessage.web,
+      //   thirdsearch: [
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     },
+      //     {
+      //       title: '123123123123123123123123',
+      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
+      //       desc: "2222222222222222222222222222222222222222222222222"
+      //     }
+      //   ]
+      // }
+    }
+    await tick();
+    scrollToBottom();
+  }
+
+	// 获取搜索twitter
+  const handleSearchTwitter= async(responseMessage: any) => {
+    if (search) {
+      let lastMessage = messages.filter(item => item?.role == 'user')[0];
+      let webResult = await twitterSearch(localStorage.token, lastMessage.content);
+      if (webResult?.ok) {
+        responseMessage.web = {
+          ...responseMessage.web,
+          thirdsearch: webResult.data
+        }
+      }
+    }
+    await tick();
+    scrollToBottom();
+  }
+
 	const handleOpenAIError = async (error, res: Response | null, model, responseMessage) => {
 		let errorMessage = '';
 		let innerError;
@@ -1116,6 +1231,19 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		messages = messages;
 	};
+
+	const handleLimitError = async (content: string, responseMessage: any) => {
+    responseMessage.content = content;
+    responseMessage.replytime = Math.floor(Date.now() / 1000);
+    responseMessage.error = true;
+    responseMessage.done = true;
+    messages = messages;
+    scrollToBottom();
+    await updateChatById(localStorage.token, $chatId, {
+      messages: messages,
+      history: history
+    });
+  }
 
 	const stopResponse = () => {
 		stopResponseFlag = true;
@@ -1320,6 +1448,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 
 	<MessageInput
 		bind:files
+		bind:search
 		bind:prompt
 		bind:autoScroll
 		bind:selectedModel={atSelectedModel}

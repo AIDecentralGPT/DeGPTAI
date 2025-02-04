@@ -7,7 +7,7 @@ import json
 import uuid
 import time
 
-from apps.web.internal.db import DB
+from apps.web.internal.db import DB, aspect_database_operations
 
 ####################
 # Chat DB Schema
@@ -222,6 +222,7 @@ class ChatTable:
             # .offset(skip)
         ]
 
+    @aspect_database_operations
     def get_chat_list_by_user_id(
         self, user_id: str, skip: int = 0, limit: int = 50
     ) -> List[ChatModel]:

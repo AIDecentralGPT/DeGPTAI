@@ -351,6 +351,7 @@ class UsersTable:
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户的last_active_at
+    @aspect_database_operations
     def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
         try:
             print("update_user_last_active_by_id")

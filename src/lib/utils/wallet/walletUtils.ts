@@ -113,6 +113,7 @@ export async function updateWalletData(walletInfo: any) {
 
   await showWallet(walletInfo)
 
+  // const dbcBalance = await getDbcBalance(walletAdress);
   const dbcBalance = await getDbcBalance(walletAdress);
   const dgcBalance = await getDgcBalance(walletAdress);
   currentWalletData.update((data) => {

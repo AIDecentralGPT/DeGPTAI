@@ -405,7 +405,7 @@ async function getGas() {
   const gasPrice = (await provider.getFeeData()).gasPrice;
 
   // 设置 gasLimit，可以根据具体情况设定一个合理的值
-  const gasLimit = 21000; // 这里假设转账交易的 gasLimit
+  const gasLimit = 210000; // 这里假设转账交易的 gasLimit
 
   return {
     gasPrice: gasPrice,

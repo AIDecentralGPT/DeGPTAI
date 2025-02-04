@@ -32,6 +32,13 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Suitable for most tasks"
       // },
       {
+        name: "DeepSeek-R1",
+        model: "DeepSeek-R1",
+        tip: "DeepSeek-R1",
+        support: "text",
+        desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing"
+      },
+      {
         name: "Llama3.3",
         model: "Llama3.3-70B",
         tip: "Llama3.3",
@@ -59,6 +66,13 @@ export const getDeModels = async (token: string = "") => {
         support: "image",
         desc: "Support image recognition"
       }
+      // {
+      //   name: "sana",
+      //   model: "sana",
+      //   tip: "sana",
+      //   support: "image",
+      //   desc: "Support image recognition"
+      // }
       // {
       //   name: "Qwen 2.5",
       //   model: "Qwen2.5-72B",
