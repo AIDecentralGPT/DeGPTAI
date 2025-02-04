@@ -25,6 +25,18 @@ async def youtubeSearch(form: YoutubeSearchForm):
     else:
         return response
     
+@router.post("/youtube/html/search", response_model=dict)
+async def youtubeHtmlSearch(form: YoutubeSearchForm):
+    print("==============================", form.keyword)
+    html = YoutubeClientApi.fetch_youtube_page(form.keyword)
+    if html:
+        videos = YoutubeClientApi.parse_youtube_page(html)
+        for video in videos:
+            print(f"Title: {video['title']}, Link: {video['link']}")
+        return { "ok": True, "data": videos }
+    else:
+        raise HTTPException(status_code=500, detail="未获取到信息")
+    
 @router.post("/twitter/search", response_model=dict)
 async def twitterSearch(form: TwitterSearchForm):
     data = TwitterApi.search(form.keyword)
