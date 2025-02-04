@@ -71,8 +71,30 @@
 
 	let selectedCitation = null;
 
-	let deepseekthink = false;
-	$: tokens = marked.lexer(sanitizeResponseContent(message?.content));
+	$: tokens = deepseekAnalysis(message?.content);
+
+	function deepseekAnalysis(content: any) {
+		if (content.startsWith("<think>")) {
+			let firstIndex = content.indexOf('</think>');
+			if (firstIndex == -1) {
+				return [{type: "thinking", raw: content.replace("<think>", "")}];	
+			} else {
+				let token = content.split('</think>');
+				let thinkObj = {type: "thinking", raw: token[0].replace("<think>", "")};
+				if (token.length > 1) {
+					return [
+						thinkObj,
+						...marked.lexer(sanitizeResponseContent(token[1]))
+					]
+				} else {
+					return [thinkObj];
+				}	
+			}
+		} else {
+			console.log("开头不包含<think>");
+			return marked.lexer(sanitizeResponseContent(content));
+		}
+	}
 
 	const renderer = new marked.Renderer();
 
@@ -369,6 +391,8 @@
 		}
 	}
 
+	let thinkHiden = false;
+
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
@@ -562,7 +586,26 @@
 								<Skeleton />
 							{:else}
 								{#each tokens as token, tokenIdx}
-									{#if token.type === 'code'}
+									{#if token.type === 'thinking'}
+										<button class="flex"
+											on:click={() => {
+											  thinkHiden = !thinkHiden;
+											}}>
+											<span>思考中...</span>
+											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+												class=" self-center ml-2 size-5 transition duration-150 {thinkHiden ? 'rotate-180' : ''}">
+												<path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+											</svg>
+										</button>
+										<div class="border-l-2 border-slate-200 pl-3 my-2 transition duration-150 {thinkHiden?'hidden':''}">
+											{@html marked.parse(token.raw, {
+												...defaults,
+												gfm: true,
+												breaks: true,
+												renderer
+											})}
+										</div>	
+									{:else if token.type === 'code'}
 										<CodeBlock
 											id={`${message.id}-${tokenIdx}`}
 											lang={token.lang}
