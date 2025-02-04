@@ -91,7 +91,6 @@
 				}	
 			}
 		} else {
-			console.log("开头不包含<think>");
 			return marked.lexer(sanitizeResponseContent(content));
 		}
 	}

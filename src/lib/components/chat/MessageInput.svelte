@@ -926,220 +926,12 @@
             {/if}
 
             <div class="flex flex-col">
-              <textarea
-                id="chat-textarea"
-                bind:this={chatTextAreaElement}
-                class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
-                  ? ''
-                  : ' pl-4'} rounded-xl resize-none h-[48px]"
-                placeholder={chatInputPlaceholder !== ""
-                  ? chatInputPlaceholder
-                  : isRecording
-                  ? $i18n.t("Listening...")
-                  : $i18n.t("Send a Message")}
-                bind:value={prompt}
-                on:keypress={(e) => {
-                  if (
-                    !$mobile ||
-                    !(
-                      "ontouchstart" in window ||
-                      navigator.maxTouchPoints > 0 ||
-                      navigator.msMaxTouchPoints > 0
-                    )
-                  ) {
-                    if (e.keyCode == 13 && !e.shiftKey) {
-                      e.preventDefault();
-                    }
-                    if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
-                      submitPrompt(prompt, user);
-                    }
-                  }
-                }}
-                on:keydown={async (e) => {
-                  const isCtrlPressed = e.ctrlKey || e.metaKey; // metaKey is for Cmd key on Mac
-
-                  // Check if Ctrl + R is pressed
-                  if (
-                    prompt === "" &&
-                    isCtrlPressed &&
-                    e.key.toLowerCase() === "r"
-                  ) {
-                    e.preventDefault();
-                    console.log("regenerate");
-
-                    const regenerateButton = [
-                      ...document.getElementsByClassName(
-                        "regenerate-response-button"
-                      ),
-                    ]?.at(-1);
-
-                    regenerateButton?.click();
-                  }
-
-                  if (prompt === "" && e.key == "ArrowUp") {
-                    e.preventDefault();
-
-                    const userMessageElement = [
-                      ...document.getElementsByClassName("user-message"),
-                    ]?.at(-1);
-
-                    const editButton = [
-                      ...document.getElementsByClassName(
-                        "edit-user-message-button"
-                      ),
-                    ]?.at(-1);
-
-                    console.log(userMessageElement);
-
-                    userMessageElement.scrollIntoView({ block: "center" });
-                    editButton?.click();
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowUp"
-                  ) {
-                    e.preventDefault();
-
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectUp();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowDown"
-                  ) {
-                    e.preventDefault();
-
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectDown();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Enter"
-                  ) {
-                    e.preventDefault();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-
-                    if (commandOptionButton) {
-                      commandOptionButton?.click();
-                    } else {
-                      document.getElementById("send-message-button")?.click();
-                    }
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Tab"
-                  ) {
-                    e.preventDefault();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-
-                    commandOptionButton?.click();
-                  } else if (e.key === "Tab") {
-                    const words = findWordIndices(prompt);
-
-                    if (words.length > 0) {
-                      const word = words.at(0);
-                      const fullPrompt = prompt;
-
-                      prompt = prompt.substring(0, word?.endIndex + 1);
-                      await tick();
-
-                      e.target.scrollTop = e.target.scrollHeight;
-                      prompt = fullPrompt;
-                      await tick();
-
-                      e.preventDefault();
-                      e.target.setSelectionRange(
-                        word?.startIndex,
-                        word.endIndex + 1
-                      );
-                    }
-
-                    e.target.style.height = "";
-                    e.target.style.height =
-                      Math.min(e.target.scrollHeight, 200) + "px";
-                  }
-
-                  if (e.key === "Escape") {
-                    console.log("Escape");
-                    selectedModel = "";
-                  }
-                }}
-                rows="1"
-                on:input={(e) => {
-                  e.target.style.height = "";
-                  e.target.style.height =
-                    Math.min(e.target.scrollHeight, 200) + "px";
-                  user = null;
-                }}
-                on:focus={(e) => {
-                  e.target.style.height = "";
-                  e.target.style.height =
-                    Math.min(e.target.scrollHeight, 200) + "px";
-                }}
-                on:paste={(e) => {
-                  const clipboardData = e.clipboardData || window.clipboardData;
-
-                  if (clipboardData && clipboardData.items) {
-                    for (const item of clipboardData.items) {
-                      if (item.type.indexOf("image") !== -1) {
-                        const blob = item.getAsFile();
-                        const reader = new FileReader();
-
-                        reader.onload = function (e) {
-                          files = [
-                            ...files,
-                            {
-                              type: "image",
-                              url: `${e.target.result}`,
-                            },
-                          ];
-                        };
-
-                        reader.readAsDataURL(blob);
-                      }
-                    }
-                  }
-                }}
-              />
+              <!-- 文本输入移动到下面 -->
               <div class="flex justify-between">
-                <div class="flex flex-row">
+                <div class="flex flex-1 flex-row items-center mr-1">
                   <!-- 图片上传 -->
                   {#if fileUploadEnabled}
-                    <div class="self-star mb-2 ml-1 mr-1">
+                    <div class="self-star ml-1">
                       <Tooltip content={$i18n.t("Attach files")}>
                         <button
                           class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
@@ -1162,8 +954,218 @@
                       </Tooltip>
                     </div>
                   {/if}
+                  <!-- 文本输入 -->
+                  <textarea
+                    id="chat-textarea"
+                    bind:this={chatTextAreaElement}
+                    class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
+                      ? ''
+                      : ' pl-4'} rounded-xl resize-none h-[48px]"
+                    placeholder={chatInputPlaceholder !== ""
+                      ? chatInputPlaceholder
+                      : isRecording
+                      ? $i18n.t("Listening...")
+                      : $i18n.t("Send a Message")}
+                    bind:value={prompt}
+                    on:keypress={(e) => {
+                      if (
+                        !$mobile ||
+                        !(
+                          "ontouchstart" in window ||
+                          navigator.maxTouchPoints > 0 ||
+                          navigator.msMaxTouchPoints > 0
+                        )
+                      ) {
+                        if (e.keyCode == 13 && !e.shiftKey) {
+                          e.preventDefault();
+                        }
+                        if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
+                          submitPrompt(prompt, user);
+                        }
+                      }
+                    }}
+                    on:keydown={async (e) => {
+                      const isCtrlPressed = e.ctrlKey || e.metaKey; // metaKey is for Cmd key on Mac
+
+                      // Check if Ctrl + R is pressed
+                      if (
+                        prompt === "" &&
+                        isCtrlPressed &&
+                        e.key.toLowerCase() === "r"
+                      ) {
+                        e.preventDefault();
+                        console.log("regenerate");
+
+                        const regenerateButton = [
+                          ...document.getElementsByClassName(
+                            "regenerate-response-button"
+                          ),
+                        ]?.at(-1);
+
+                        regenerateButton?.click();
+                      }
+
+                      if (prompt === "" && e.key == "ArrowUp") {
+                        e.preventDefault();
+
+                        const userMessageElement = [
+                          ...document.getElementsByClassName("user-message"),
+                        ]?.at(-1);
+
+                        const editButton = [
+                          ...document.getElementsByClassName(
+                            "edit-user-message-button"
+                          ),
+                        ]?.at(-1);
+
+                        console.log(userMessageElement);
+
+                        userMessageElement.scrollIntoView({ block: "center" });
+                        editButton?.click();
+                      }
+
+                      if (
+                        ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                        e.key === "ArrowUp"
+                      ) {
+                        e.preventDefault();
+
+                        (
+                          promptsElement ||
+                          documentsElement ||
+                          modelsElement
+                        ).selectUp();
+
+                        const commandOptionButton = [
+                          ...document.getElementsByClassName(
+                            "selected-command-option-button"
+                          ),
+                        ]?.at(-1);
+                        commandOptionButton.scrollIntoView({ block: "center" });
+                      }
+
+                      if (
+                        ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                        e.key === "ArrowDown"
+                      ) {
+                        e.preventDefault();
+
+                        (
+                          promptsElement ||
+                          documentsElement ||
+                          modelsElement
+                        ).selectDown();
+
+                        const commandOptionButton = [
+                          ...document.getElementsByClassName(
+                            "selected-command-option-button"
+                          ),
+                        ]?.at(-1);
+                        commandOptionButton.scrollIntoView({ block: "center" });
+                      }
+
+                      if (
+                        ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                        e.key === "Enter"
+                      ) {
+                        e.preventDefault();
+
+                        const commandOptionButton = [
+                          ...document.getElementsByClassName(
+                            "selected-command-option-button"
+                          ),
+                        ]?.at(-1);
+
+                        if (commandOptionButton) {
+                          commandOptionButton?.click();
+                        } else {
+                          document.getElementById("send-message-button")?.click();
+                        }
+                      }
+
+                      if (
+                        ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                        e.key === "Tab"
+                      ) {
+                        e.preventDefault();
+
+                        const commandOptionButton = [
+                          ...document.getElementsByClassName(
+                            "selected-command-option-button"
+                          ),
+                        ]?.at(-1);
+
+                        commandOptionButton?.click();
+                      } else if (e.key === "Tab") {
+                        const words = findWordIndices(prompt);
+
+                        if (words.length > 0) {
+                          const word = words.at(0);
+                          const fullPrompt = prompt;
+
+                          prompt = prompt.substring(0, word?.endIndex + 1);
+                          await tick();
+
+                          e.target.scrollTop = e.target.scrollHeight;
+                          prompt = fullPrompt;
+                          await tick();
+
+                          e.preventDefault();
+                          e.target.setSelectionRange(
+                            word?.startIndex,
+                            word.endIndex + 1
+                          );
+                        }
+
+                        e.target.style.height = "";
+                        e.target.style.height =
+                          Math.min(e.target.scrollHeight, 200) + "px";
+                      }
+
+                      if (e.key === "Escape") {
+                        console.log("Escape");
+                        selectedModel = "";
+                      }
+                    }}
+                    rows="1"
+                    on:input={(e) => {
+                      e.target.style.height = "";
+                      e.target.style.height =
+                        Math.min(e.target.scrollHeight, 200) + "px";
+                      user = null;
+                    }}
+                    on:focus={(e) => {
+                      e.target.style.height = "";
+                      e.target.style.height =
+                        Math.min(e.target.scrollHeight, 200) + "px";
+                    }}
+                    on:paste={(e) => {
+                      const clipboardData = e.clipboardData || window.clipboardData;
+
+                      if (clipboardData && clipboardData.items) {
+                        for (const item of clipboardData.items) {
+                          if (item.type.indexOf("image") !== -1) {
+                            const blob = item.getAsFile();
+                            const reader = new FileReader();
+
+                            reader.onload = function (e) {
+                              files = [
+                                ...files,
+                                {
+                                  type: "image",
+                                  url: `${e.target.result}`,
+                                },
+                              ];
+                            };
+
+                            reader.readAsDataURL(blob);
+                          }
+                        }
+                      }
+                    }}
+                  />
                   <!-- 网络搜索 -->
-                  <div class="self-star mb-2 ml-1 mr-1">
+                  <!-- <div class="self-star mb-2 ml-1 mr-1">
                     <Tooltip content={$i18n.t("Search the web")}>
                       <button
                         class="flex flex-row items-center hover:bg-[#333333cc] text-gray-800 dark:text-white dark:hover:bg-[#ffffffcc] transition rounded-full px-3 py-1.5
@@ -1184,7 +1186,7 @@
                         <span class="ml-1 text-sm font-bold text-[#D0A870]">{$i18n.t("search")}</span>
                       </button>
                     </Tooltip>
-                  </div>  
+                  </div>   -->
                 </div>
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">

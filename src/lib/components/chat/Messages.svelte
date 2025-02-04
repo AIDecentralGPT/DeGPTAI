@@ -83,12 +83,13 @@
 
 		// 校验模型已使用次数
     let modelLimit = {}
-    for (const item of selectedModels) {
-      const {passed, message} = await conversationRefresh(localStorage.token, item);
-      if (!passed) {
-        modelLimit[item] = message;
-      }  
-    }
+		// 屏蔽模型次数限制
+    // for (const item of selectedModels) {
+    //   const {passed, message} = await conversationRefresh(localStorage.token, item);
+    //   if (!passed) {
+    //     modelLimit[item] = message;
+    //   }  
+    // }
 
 		// Create Simulate ResopnseMessage
 		let responseMap: any = {};
