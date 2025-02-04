@@ -591,7 +591,11 @@
 											on:click={() => {
 											  thinkHiden = !thinkHiden;
 											}}>
-											<span>思考中...</span>
+											{#if message.done}
+												<span>{ $i18n.t("have thought deeply") } ({ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) })</span>
+											{:else}
+												<span>{ $i18n.t("thinking...") }</span>
+											{/if}
 											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
 												class=" self-center ml-2 size-5 transition duration-150 {thinkHiden ? 'rotate-180' : ''}">
 												<path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
