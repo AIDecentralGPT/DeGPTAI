@@ -53,7 +53,7 @@
 				"content": "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning."
 			}
 		],
-		"default_models": "Llama3.3-70B,Pixtral-124B"
+		"default_models": "DeepSeek-R1,Llama3.3-70B"
 	},
 	"openai": {
 		"api_base_urls": [
