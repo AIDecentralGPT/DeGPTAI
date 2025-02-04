@@ -42,8 +42,8 @@ class YoutubeClient:
         return None
     
   def parse_youtube_page(self, html: str):
-    print("=========================", html)
     soup = BeautifulSoup(html, 'html.parser')
+    print("=========================", soup)
     videos = []
     for video in soup.find_all('a', {'class': 'yt-uix-tile-link'}):
         title = video.get('title')
