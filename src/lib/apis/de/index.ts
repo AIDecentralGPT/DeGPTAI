@@ -246,7 +246,7 @@ export const generateDeTitle = async (
   }
 
   template = promptTemplate(template, prompt);
-
+  model = model=='DeepSeek-R1' ? 'Llama3.3-70B' : model;
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
