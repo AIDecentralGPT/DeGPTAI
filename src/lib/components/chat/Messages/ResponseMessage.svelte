@@ -591,7 +591,10 @@
 											  thinkHiden = !thinkHiden;
 											}}>
 											{#if message.done}
-												<span>{ $i18n.t("have thought deeply") } ({ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) })</span>
+												<div class="flex flex-wrap">
+													<span class="flex-start">{ $i18n.t("have thought deeply") } </span>
+													<span class="flex-start">({ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) })</span>
+												</div>
 											{:else}
 												<span>{ $i18n.t("thinking...") }</span>
 											{/if}
