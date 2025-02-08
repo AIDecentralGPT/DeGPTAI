@@ -277,6 +277,7 @@
   $: if (show) {
     try {
       initSocket();
+      initParam();
     } catch (error) {
       addErrorLog("socket初始化", error.toString());
     }
@@ -332,9 +333,11 @@
       } 
     }
   }
+
+  const mousedownValid = false; 
 </script>
 
-<Modal bind:show size="lg">
+<Modal bind:show mousedownValid={ mousedownValid } size="lg">
   <div class="text-gray-700 dark:text-gray-100 px-5 pt-4 pb-4 relative">
     <div class="flex justify-between dark:text-gray-300">
       <div class="text-lg font-medium self-center">
