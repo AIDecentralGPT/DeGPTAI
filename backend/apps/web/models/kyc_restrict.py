@@ -92,17 +92,12 @@ class KycRestrictTable:
             log.error(f"get_by_userid: {e}")
             return None
         
-    # 通过IP获取记录
+    # 通过IP获取绑定成功记录
     def get_by_ip(self, ip_address: str) -> Optional[List[KycRestrictModel]]:
         try:
-            check_date = datetime.now() - timedelta(minutes=10)
-            # 删除10分钟未认证完成的数据
-            deleteExec = KycRestrict.delete().where((KycRestrict.status == False) & (KycRestrict.created_date < check_date)
-                        & (KycRestrict.ip_address == ip_address))
-            deleteExec.execute()
             # 获取同已IP下10分钟之内的数据
             kycrestricts = KycRestrict.select().where((KycRestrict.ip_address == ip_address)
-                        & (KycRestrict.created_date > check_date))
+                        & (KycRestrict.status == True))
             kycrestricts_list = [KycRestrictModel(**model_to_dict(kycrestrict)) for kycrestrict in kycrestricts]
             return kycrestricts_list
         except Exception as e:
