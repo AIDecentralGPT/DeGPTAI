@@ -369,14 +369,20 @@
         type="submit"
         on:click={async () => {
           try {
-            const userInfo = await checkKyc(localStorage.token);
-            await user.set({
-              ...$user,
-              verified: userInfo?.verified
-            });
-            if (!$user?.verified) {
-              $showUserVerifyModal = true;
+            const ret = await checkKyc(localStorage.token);
+            if (ret.pass) {
+              const userInfo = ret.data;
+              await user.set({
+                ...$user,
+                verified: userInfo?.verified
+              });
+              if (!$user?.verified) {
+                $showUserVerifyModal = true;
+              }
+            } else {
+              toast.error($i18n.t(ret.message))
             }
+            
           } catch (error) {
             await addErrorLog("kyc认证按钮", error.toString());
           }

@@ -449,7 +449,7 @@ class RewardsTable:
     def get_invitee_today_history(self, user_id: str) -> Optional[List[RewardsModel]]:
         try:
             #获取今天邀请用户数
-            reward_date = datetime.date.today()
+            reward_date = datetime.now()
             rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.reward_type == 'invite') 
                                     & (SQL('date(reward_date)') == reward_date))
             reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]

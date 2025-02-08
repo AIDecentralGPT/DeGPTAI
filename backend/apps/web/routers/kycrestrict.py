@@ -19,9 +19,9 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
                 time_difference = datetime.now() - kycrestrict.created_date
                 if time_difference > timedelta(minutes=10):
                     kycrestrict = KycRestrictInstance.update_date(user.id)
-                    return user
+                    return {"pass": True, "data": user}
                 else:
-                    raise HTTPException(status_code=400, detail="The KYC verification is in progress")
+                    {"pass": False, "message": "You can only perform KYC verification once every 10 minutes, Please try again later."}
         
         # 判断同一个IP是否正在进中kyc的有两个
         client_ip = request.client.host
@@ -31,15 +31,18 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
                 # 计算时间差
                 time_difference = datetime.now() - kycrestrict.created_date
                 if time_difference > timedelta(minutes=10):
+                    # 移除超过10分钟数据
                     kycrestricts.remove(kycrestrict)
-                    KycRestrictInstance.remove(kycrestrict.user_id)
+                    # 如果超过10分钟未认证成功则删除认证数据
+                    if kycrestrict.status == False:
+                        KycRestrictInstance.remove(kycrestrict.user_id)
         if  kycrestricts is not None and len(kycrestricts) >= 2:
-            raise HTTPException(status_code=400, detail="A single IP address can be used for a maximum of two KYC verifications")
+            return {"pass": False, "message": "A single IP address can be used for a maximum of two KYC verifications"}
         kycrestrict = KycRestrictInstance.insert(user.id, client_ip, None, None)
-        if kycrestrict is None:
-            raise HTTPException(status_code=400, detail="Check kyc failed")
+        if  kycrestrict is None:
+            return {"pass": False, "message": "Check kyc failed, Please try again."}
         else:
-            return user
+            return {"pass": True, "data": user}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
