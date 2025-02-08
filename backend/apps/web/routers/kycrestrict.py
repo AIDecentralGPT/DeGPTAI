@@ -10,6 +10,8 @@ router = APIRouter()
 @router.post("/check_kyc")
 async def check_kyc(request: Request, user=Depends(get_verified_user)):
     try:
+        if user.verified:
+            return {"pass": True, "data": user}
         # 获取客户端IP
         client_ip = request.client.host
         # 判断同一个IP认证kyc成功的是否有两个
@@ -18,8 +20,11 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
             return {"pass": False, "message": "A single IP address can be used for a maximum of two KYC verifications"}
         # 校验用户是否再kyc认证中
         kycrestrict = KycRestrictInstance.get_by_userid(user.id)
-        if kycrestrict is not None and kycrestrict.status == False:
-            kycrestrict = KycRestrictInstance.update_date(user.id, client_ip)      
+        if kycrestrict is not None:
+            if kycrestrict.status == False:
+                kycrestrict = KycRestrictInstance.update_date(user.id, client_ip)
+            else:
+                return {"pass": True, "data": user} 
         else:
             kycrestrict = KycRestrictInstance.insert(user.id, client_ip, None, None)
             if  kycrestrict is None:
