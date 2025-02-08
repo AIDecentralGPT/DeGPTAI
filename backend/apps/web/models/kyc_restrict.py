@@ -116,7 +116,7 @@ class KycRestrictTable:
     # 更新创建时间
     def update_date(self, user_id: str) -> Optional[KycRestrictModel]:
         try:
-            query = KycRestrict.update(created_date=datetime.now()).where(KycRestrict.user_id == user_id)
+            query = KycRestrict.update(captcha_code=None, email=None, created_date=datetime.now()).where(KycRestrict.user_id == user_id)
             query.execute()  # 执行更新操作
             # 查询更新后数据
             kycrestrict = KycRestrict.get(KycRestrict.user_id == user_id)

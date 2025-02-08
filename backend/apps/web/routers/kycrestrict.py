@@ -16,7 +16,7 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
             if kycrestrict.status:
                 return user
             else:
-                time_difference = datetime.datetime.now() - kycrestrict.created_date
+                time_difference = datetime.now() - kycrestrict.created_date
                 if time_difference > 10:
                     kycrestrict = KycRestrictInstance.update_date(user.id)
                     return user
@@ -29,7 +29,7 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
         if  kycrestricts is not None and len(kycrestricts) >= 2:
             for kycrestrict in kycrestricts:
                 # 计算时间差
-                time_difference = datetime.datetime.now() - kycrestrict.created_date
+                time_difference = datetime.now() - kycrestrict.created_date
                 if time_difference > 10:
                     kycrestricts.remove(kycrestrict)
                     KycRestrictInstance.remove(kycrestrict.user_id)
