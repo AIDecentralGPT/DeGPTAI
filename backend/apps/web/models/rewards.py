@@ -433,6 +433,30 @@ class RewardsTable:
             print(f"执行查询时出现错误: {e}")
             return None
 
+    # 获取用户近三天的签到记录
+    def get_triduum_history(self, user_id: str) -> Optional[List[RewardsModel]]:
+        try:
+            #获取三天前的时间
+            three_days_ago = datetime.date.today() - datetime.timedelta(days=2)
+            rewards = Rewards.select().where(Rewards.user_id == user_id, Rewards.reward_date > three_days_ago)
+            reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]
+            return reward_list
+        except Exception as e:
+            print(f"执行查询时出现错误: {e}")
+            return None 
+        
+    # 判断用户今天邀请用户是否超过24人
+    def get_invitee_today_history(self, user_id: str) -> Optional[List[RewardsModel]]:
+        try:
+            #获取今天邀请用户数
+            reward_date = datetime.date.today()
+            rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.reward_type == 'invite') 
+                                    & (SQL('date(reward_date)') == reward_date))
+            reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]
+            return reward_list
+        except Exception as e:
+            print(f"执行查询时出现错误: {e}")
+            return None 
 
 # 初始化 Rewards 表
 RewardsTableInstance = RewardsTable(DB)

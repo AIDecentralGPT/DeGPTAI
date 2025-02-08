@@ -956,27 +956,6 @@ async def faceliveness_check_for_ws(id: str):
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
                 # return user_update_result
                 print("user_update_result", user_update_result)
-
-                # # 更新用户注册奖励
-                # ## 获取用户注册奖励信息
-                # rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user.id)
-                # print("rewards_history", rewards_history)
-                # if rewards_history is not None and rewards_history.status == False:
-                #     ## 领取注册奖励
-                #     result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-                #     ## 领取失败进行二次领取
-                #     if result is None:
-                #         result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-
-                # # 判断是否有注册奖励
-                # if rewards_history is not None and rewards_history.invitee is not None and rewards_history.invitee != '':
-                #     ## 获取奖励记录校验是那种奖励
-                #     rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-                #     if len(rewards) == 2:
-                #         inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
-                #         ### 领取邀请奖励
-                #         if inviteReward is not None:
-                #             RewardApiInstance.inviteRewardThread(inviteReward, rewards_history)
                             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',
