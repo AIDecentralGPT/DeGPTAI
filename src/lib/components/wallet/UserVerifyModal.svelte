@@ -123,7 +123,7 @@
         return;
       }
       nextLoading = true;
-      await verifyCode(email, code)
+      await verifyCode(localStorage.token, email, code)
         .then(() => {
           email = email;
           current = current + 1;
