@@ -22,15 +22,19 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
                     return user
                 else:
                     raise HTTPException(status_code=400, detail="The KYC verification is in progress")
+        
+        # 判断同一个IP是否正在进中kyc的有两个
         client_ip = request.client.host
         kycrestricts = KycRestrictInstance.get_by_ip(client_ip)
-        if kycrestricts is not None and len(kycrestricts) > 2:
-            raise HTTPException(status_code=400, detail="Ip limit failed")
-            # for kycrestrict in kycrestricts:
-            #     # 计算时间差
-            #     time_difference = datetime.datetime.now() - kycrestrict.created_date
-            #     if time_difference > 10:
-            #         kycrestricts.remove(kycrestrict)
+        if  kycrestricts is not None and len(kycrestricts) >= 2:
+            for kycrestrict in kycrestricts:
+                # 计算时间差
+                time_difference = datetime.datetime.now() - kycrestrict.created_date
+                if time_difference > 10:
+                    kycrestricts.remove(kycrestrict)
+                    KycRestrictInstance.remove(kycrestrict.user_id)
+        if  kycrestricts is not None and len(kycrestricts) >= 2:
+            raise HTTPException(status_code=400, detail="A single IP address can be used for a maximum of two KYC verifications")
         kycrestrict = KycRestrictInstance.insert(user.id, client_ip, None, None)
         if kycrestrict is None:
             raise HTTPException(status_code=400, detail="Check kyc failed")

@@ -181,5 +181,20 @@ class KycRestrictTable:
             log.error(f"update_reward: {e}")
             return None
         
+    # 移除kyc认证结果
+    def remove(self, user_id: str) -> bool:
+        try:
+            query = KycRestrict.delete().where(KycRestrict.user_id == user_id)
+            rows_deleted = query.execute()
+            if rows_deleted > 0:
+                print(f"KycRestrict 为 {user_id} 的记录已成功删除")
+                return True
+            else:
+                print(f"未找到 KycRestrict 为 {user_id} 的记录")
+                return False
+        except Exception as e:
+            log.error(f"update_reward: {e}")
+            return False
+        
 # 初始化 KycRestrict 表
 KycRestrictInstance = KycRestrictTable(DB)
