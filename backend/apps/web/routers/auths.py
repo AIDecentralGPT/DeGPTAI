@@ -40,6 +40,7 @@ from web3 import Web3
 import json
 import logging
 from typing import List, Dict
+from utils.utils import get_verified_user
 
 from fastapi import Request, WebSocket, WebSocketDisconnect
 from fastapi import Depends, HTTPException, status
@@ -55,6 +56,8 @@ from apps.web.models.email_codes import (
     TimeRequest,
     VerifyCodeRequest
 )
+
+from apps.web.models.kyc_restrict import KycRestrictInstance
 
 from constants import USER_CONSTANTS
 import logging
@@ -642,6 +645,12 @@ async def delete_api_key(user=Depends(get_current_user)):
 @router.post("/send_code")
 async def send_code(email_request: EmailRequest, user=Depends(get_current_user)):
     email = email_request.email
+
+    # 校验邮箱是否已经认证过
+    emailRet = KycRestrictInstance.check_email(email)
+    if emailRet == False:
+        raise HTTPException(status_code=500, detail="One email can only be used for KYC verification once")
+
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
     if result:
@@ -694,7 +703,7 @@ async def serve_time():
 
 
 @router.post("/verify_code")
-async def verify_code(verify_code_request: VerifyCodeRequest):
+async def verify_code(verify_code_request: VerifyCodeRequest, user=Depends(get_verified_user)):
     email = verify_code_request.email
     code = verify_code_request.code
 
@@ -708,8 +717,8 @@ async def verify_code(verify_code_request: VerifyCodeRequest):
         raise HTTPException(
             status_code=400, detail="The verification code has expired")
 
-    print("record.code", record.code, "code", code)
     if record.code == code:
+        KycRestrictInstance.update_email(user.id, email)
         return {"message": "The verification code has been verified successfully"}
     else:
         raise HTTPException(

@@ -23,6 +23,7 @@
   import { getUserInfo } from "$lib/apis/users";
   import { goto } from "$app/navigation";
   import { getLanguages } from "$lib/i18n/index";
+  import { checkKyc } from "$lib/apis/kycrestrict";
 
   const i18n = getContext("i18n");
 
@@ -368,7 +369,7 @@
         type="submit"
         on:click={async () => {
           try {
-            const userInfo = await getUserInfo(localStorage.token);
+            const userInfo = await checkKyc(localStorage.token);
             await user.set({
               ...$user,
               verified: userInfo?.verified
