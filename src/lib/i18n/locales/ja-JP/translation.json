@@ -810,5 +810,6 @@
   "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "深く考え、数学や創作的な文章執筆などのタスクにおいて o3 のパフォーマンスに匹敵する成果を出す",
   "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC 認証は 10 分に 1 回までに制限されています，後でもう一度お試しください。",
   "A single IP address can be used for a maximum of two KYC verifications": "単一の IP アドレスは、最大で 2 回の KYC 認証に使用できます。",
-  "Check kyc failed, Please try again.": "KYC 認証に失敗しました。もう一度試してください。"
+  "Check kyc failed, Please try again.": "KYC 認証に失敗しました。もう一度試してください。",
+  "One email can only be used for KYC verification once": "1 つのメールアドレスは KYC 認証に 1 回しか使用できません"
 }

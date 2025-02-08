@@ -649,8 +649,8 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
 
     # 校验邮箱是否已经认证过
     emailRet = KycRestrictInstance.check_email(email)
-    if emailRet == False:
-        raise HTTPException(status_code=500, detail="One email can only be used for KYC verification once")
+    if emailRet:
+        return {"pass": False, "message": "One email can only be used for KYC verification once"}
 
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
@@ -686,9 +686,9 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
         </body>
         </html>
         """
-        email_code_operations.send_email(
-            email, "DeGPT Code", email_body)  # 发送邮件
-        return {"message": "验证码已发送"}
+        # 发送邮件
+        email_code_operations.send_email(email, "DeGPT Code", email_body) 
+        return {"pass": True, "message": "验证码已发送"}
     else:
         raise HTTPException(status_code=500, detail="无法创建验证码记录")
 

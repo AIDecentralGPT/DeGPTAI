@@ -809,5 +809,6 @@
   "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "深度思考，在数学、创意写作等任务性能上比肩o3",
   "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC 认证每 10 分钟只能进行一次。请稍后再试。",
   "A single IP address can be used for a maximum of two KYC verifications": "单个 IP 地址最多可用于两次 KYC 认证。",
-  "Check kyc failed, Please try again.": "KYC 验证失败。请再次尝试。"
+  "Check kyc failed, Please try again.": "KYC 验证失败。请再次尝试。",
+  "One email can only be used for KYC verification once": "一个邮件地址只能用于 KYC 验证一次"
 }

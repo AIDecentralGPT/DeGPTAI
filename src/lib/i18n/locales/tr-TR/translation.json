@@ -810,5 +810,6 @@
   "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Derin düşünceler yapın ve matematik ve yaratıcı yazma gibi görevlerde o3'ün performansına ulaşın",
   "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC doğrulaması her 10 dakikada bir kez yapılabilir, Lütfen daha sonra tekrar deneyin.",
   "A single IP address can be used for a maximum of two KYC verifications": "Tek bir IP adresi en fazla iki kez KYC doğrulaması için kullanılabilir.",
-  "Check kyc failed, Please try again.": "KYC doğrulaması başarısız oldu. Lütfen tekrar deneyin."
+  "Check kyc failed, Please try again.": "KYC doğrulaması başarısız oldu. Lütfen tekrar deneyin.",
+  "One email can only be used for KYC verification once": "Bir e-posta adresi sadece bir kez KYC doğrulaması için kullanılabilir"
 }

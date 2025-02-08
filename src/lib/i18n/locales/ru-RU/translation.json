@@ -809,5 +809,6 @@
   "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Думайте глубоко и достигайте такого же уровня выполнения, как o3, в таких задачах, как математика и креативная писательство",
   "KYC verification is limited to once every 10 minutes, Please try again later.": "Верификация KYC ограничена одной процедурой каждые 10 минут, Пожалуйста, попробуйте еще раз позже.",
   "A single IP address can be used for a maximum of two KYC verifications": "Одна IP - адрес может быть использована максимум дважды для верификации KYC.",
-  "Check kyc failed, Please try again.": "Верификация KYC не удалась. Пожалуйста, попробуйте еще раз."
+  "Check kyc failed, Please try again.": "Верификация KYC не удалась. Пожалуйста, попробуйте еще раз.",
+  "One email can only be used for KYC verification once": "Адрес электронной почты может быть использован только один раз для верификации KYC"
 }

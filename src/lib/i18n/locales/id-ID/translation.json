@@ -810,5 +810,6 @@
   "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Pikirkan secara mendalam dan cocokkan kinerja o3 dalam tugas seperti matematika dan penulisan kreatif",
   "KYC verification is limited to once every 10 minutes, Please try again later.": "Verifikasi KYC dibatasi hanya boleh dilakukan sekali setiap 10 menit. Silakan coba lagi nanti.",
   "A single IP address can be used for a maximum of two KYC verifications": "Sebuah alamat IP tunggal dapat digunakan maksimal untuk dua kali verifikasi KYC.",
-  "Check kyc failed, Please try again.": "Verifikasi KYC gagal. Silakan coba lagi."
+  "Check kyc failed, Please try again.": "Verifikasi KYC gagal. Silakan coba lagi.",
+  "One email can only be used for KYC verification once": "Satu alamat email hanya dapat digunakan sekali untuk verifikasi KYC"
 }

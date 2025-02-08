@@ -85,12 +85,15 @@
     return emailRegex.test(email);
   }
 
-  function sendVerificationCode() {
+  async function sendVerificationCode() {
     if (countdown === 0) {
       if (validateEmail(email)) {
-        startCountdown();
         sendCode(localStorage.token, email).then((res) => {
-          console.log("verification-code:", res);
+          if (res.pass) {
+            startCountdown();
+          } else {
+            toast.error($i18n.t(res.message));
+          }
         });
       } else {
         toast.error($i18n.t("Please enter a valid email address."));
@@ -329,7 +332,7 @@
     if(captchaRes.ret === 0){
       let result = await bindCaptcha(localStorage.token, JSON.stringify(captchaRes));
       if (result) {
-        sendVerificationCode();
+        await sendVerificationCode();
       } 
     }
   }
