@@ -10,6 +10,8 @@ router = APIRouter()
 @router.post("/check_kyc")
 async def check_kyc(request: Request, user=Depends(get_verified_user)):
     try:
+        # 获取客户端IP
+        client_ip = request.client.host
         # 校验用户是否再kyc认证中
         kycrestrict = KycRestrictInstance.get_by_userid(user.id)
         if kycrestrict is not None:
@@ -18,13 +20,12 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
             else:
                 time_difference = datetime.now() - kycrestrict.created_date
                 if time_difference > timedelta(minutes=10):
-                    kycrestrict = KycRestrictInstance.update_date(user.id)
+                    kycrestrict = KycRestrictInstance.update_date(user.id, client_ip)
                     return {"pass": True, "data": user}
                 else:
-                    {"pass": False, "message": "You can only perform KYC verification once every 10 minutes, Please try again later."}
+                    return {"pass": False, "message": "KYC verification is limited to once every 10 minutes. Please try again later."}
         
         # 判断同一个IP是否正在进中kyc的有两个
-        client_ip = request.client.host
         kycrestricts = KycRestrictInstance.get_by_ip(client_ip)
         if  kycrestricts is not None and len(kycrestricts) >= 2:
             for kycrestrict in kycrestricts:

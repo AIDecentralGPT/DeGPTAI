@@ -97,7 +97,9 @@ class KycRestrictTable:
         try:
             check_date = datetime.now() - timedelta(minutes=10)
             # 删除10分钟未认证完成的数据
-            KycRestrict.delete().where((KycRestrict.status == False) & (KycRestrict.created_date > check_date))
+            deleteExec = KycRestrict.delete().where((KycRestrict.status == False) & (KycRestrict.created_date < check_date)
+                        & (KycRestrict.ip_address == ip_address))
+            deleteExec.execute()
             # 获取同已IP下10分钟之内的数据
             kycrestricts = KycRestrict.select().where((KycRestrict.ip_address == ip_address)
                             & (KycRestrict.created_date > check_date))
@@ -119,9 +121,9 @@ class KycRestrictTable:
             return False
         
     # 更新创建时间
-    def update_date(self, user_id: str) -> Optional[KycRestrictModel]:
+    def update_date(self, user_id: str, ip_address: str) -> Optional[KycRestrictModel]:
         try:
-            query = KycRestrict.update(captcha_code=None, email=None, created_date=datetime.now()).where(KycRestrict.user_id == user_id)
+            query = KycRestrict.update(ip_address=ip_address, captcha_code=None, email=None, created_date=datetime.now()).where(KycRestrict.user_id == user_id)
             query.execute()  # 执行更新操作
             # 查询更新后数据
             kycrestrict = KycRestrict.get(KycRestrict.user_id == user_id)
