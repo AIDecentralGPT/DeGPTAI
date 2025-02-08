@@ -58,6 +58,7 @@ from apps.web.models.email_codes import (
 )
 
 from apps.web.models.kyc_restrict import KycRestrictInstance
+from apps.web.api.captcha import CaptchaApiInstance
 
 from constants import USER_CONSTANTS
 import logging
@@ -905,6 +906,21 @@ async def faceliveness_check_for_ws(id: str):
                 "passed": False,
                 "message": "Time expired, try again"
             }
+        
+        # 校验用户是否完成所有kyc认证流程
+        kycrestrict = KycRestrictInstance.get_by_userid(user.id)
+        email_check = KycRestrictInstance.check_email(kycrestrict.email)
+        if email_check:
+            return {
+                    "passed": False,
+                    "message": "The identity validate fail",
+                }
+        captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code)
+        if captcha_check:
+            return {
+                    "passed": False,
+                    "message": "The identity validate fail",
+                }
 
         # 获取查询参数
         merchant_biz_id = user.merchant_biz_id
@@ -954,6 +970,8 @@ async def faceliveness_check_for_ws(id: str):
             # 更新kyc认证
             if response.body.result.passed:
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
+                # 更新KYC流程状态
+                KycRestrictInstance.update_kyc(user.id)
                 # return user_update_result
                 print("user_update_result", user_update_result)
                             
