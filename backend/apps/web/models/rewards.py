@@ -437,7 +437,7 @@ class RewardsTable:
     def get_triduum_history(self, user_id: str) -> Optional[List[RewardsModel]]:
         try:
             #获取三天前的时间
-            three_days_ago = datetime.date.today() - datetime.timedelta(days=2)
+            three_days_ago = datetime.now() - timedelta(days=2)
             rewards = Rewards.select().where(Rewards.user_id == user_id, Rewards.reward_date > three_days_ago)
             reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]
             return reward_list
