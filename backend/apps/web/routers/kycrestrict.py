@@ -34,7 +34,7 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
                 if time_difference > timedelta(minutes=10):
                     # 移除超过10分钟数据
                     kycrestricts.remove(kycrestrict)
-                    # 如果超过10分钟未认证成功则删除认证数据
+                    # 如果超过10分钟未认证成功则删除数据
                     if kycrestrict.status == False:
                         KycRestrictInstance.remove(kycrestrict.user_id)
         if  kycrestricts is not None and len(kycrestricts) >= 2:

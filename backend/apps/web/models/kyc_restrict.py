@@ -103,7 +103,8 @@ class KycRestrictTable:
             # 获取同已IP下10分钟之内的数据
             kycrestricts = KycRestrict.select().where((KycRestrict.ip_address == ip_address)
                             & (KycRestrict.created_date > check_date))
-            [KycRestrictModel(**model_to_dict(kycrestrict)) for kycrestrict in kycrestricts]
+            kycrestricts_list = [KycRestrictModel(**model_to_dict(kycrestrict)) for kycrestrict in kycrestricts]
+            return kycrestricts_list
         except Exception as e:
             log.error(f"get_by_ip: {e}")
             return None
