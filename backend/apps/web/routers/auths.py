@@ -909,6 +909,11 @@ async def faceliveness_check_for_ws(id: str):
         
         # 校验用户是否完成所有kyc认证流程
         kycrestrict = KycRestrictInstance.get_by_userid(user.id)
+        if kycrestrict is None:
+            return {
+                    "passed": False,
+                    "message": "The identity validate fail",
+                }
         email_check = KycRestrictInstance.check_email(kycrestrict.email)
         if email_check:
             return {

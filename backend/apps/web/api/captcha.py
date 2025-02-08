@@ -23,6 +23,7 @@ class CaptchaApi:
         post_data = urllib.parse.urlencode(bodys).encode('utf-8')
         response = http.request('POST', Url, body=post_data, headers=headers)
         content = response.data.decode('utf-8')
+        print("==========================", content, content['CaptchaMsg'])
         if content:
             return content['CaptchaMsg'] == 'OK'
         else:
