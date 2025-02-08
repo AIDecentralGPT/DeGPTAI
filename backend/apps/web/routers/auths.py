@@ -900,12 +900,12 @@ async def faceliveness_check_for_ws(id: str):
 
         now_time = datetime.now()
         # 计算时间差
-        time_difference = now_time - face_time
-        if (time_difference.total_seconds() > 300):
-            return {
-                "passed": False,
-                "message": "Time expired, try again"
-            }
+        # time_difference = now_time - face_time
+        # if (time_difference.total_seconds() > 300):
+        #     return {
+        #         "passed": False,
+        #         "message": "Time expired, try again"
+        #     }
         
         # 校验用户是否完成所有kyc认证流程
         kycrestrict = KycRestrictInstance.get_by_userid(user.id)
@@ -920,8 +920,8 @@ async def faceliveness_check_for_ws(id: str):
                     "passed": False,
                     "message": "The identity validate fail",
                 }
-        captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code)
-        if captcha_check:
+        captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code, kycrestrict.ip_address)
+        if captcha_check == False:
             return {
                     "passed": False,
                     "message": "The identity validate fail",

@@ -8,7 +8,7 @@ Url = 'https://fscaptcha.market.alicloudapi.com/'
 class CaptchaApi:
     # 获取滑动验证信息
     def checkCaptcha(self, captcha_code: str, client_ip: str) -> bool:
-        captcha_json = json.decoder(captcha_code)
+        captcha_json = json.loads(captcha_code)
         bodys = {}
         http = urllib3.PoolManager()
         headers = {
@@ -23,9 +23,12 @@ class CaptchaApi:
         post_data = urllib.parse.urlencode(bodys).encode('utf-8')
         response = http.request('POST', Url, body=post_data, headers=headers)
         content = response.data.decode('utf-8')
-        print("==========================", content, content['CaptchaMsg'])
         if content:
-            return content['CaptchaMsg'] == 'OK'
+            content_json = json.loads(content)
+            if content_json.get("code") == "200":
+                return content_json.get("data").get("CaptchaMsg") == 'OK'
+            else:
+                return False
         else:
             return False
 

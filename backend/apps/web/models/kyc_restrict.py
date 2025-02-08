@@ -112,8 +112,9 @@ class KycRestrictTable:
     # 校验email是否已注册过
     def check_email(self, email: str) -> bool:
         try:
-            kycrestrict = KycRestrict.select().where(KycRestrict.email == email, KycRestrict.status == True)
-            if kycrestrict is not None:
+            kycrestricts = KycRestrict.select().where(KycRestrict.email == email, KycRestrict.status == True)
+            kycrestrict_list = [KycRestrictModel(**model_to_dict(kycrestrict)) for kycrestrict in kycrestricts]
+            if kycrestrict_list is not None and len(kycrestrict_list) > 0:
                 return True
             else:
                 return False
