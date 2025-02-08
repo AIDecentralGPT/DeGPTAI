@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from utils.utils import get_verified_user
 from apps.web.models.kyc_restrict import KycRestrictInstance, CheckKycRequest, BindEmailRequest, BindCaptchaRequest, BindTrackingRequest
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 router = APIRouter()
@@ -17,7 +17,7 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
                 return user
             else:
                 time_difference = datetime.now() - kycrestrict.created_date
-                if time_difference > 10:
+                if time_difference > timedelta(minutes=10):
                     kycrestrict = KycRestrictInstance.update_date(user.id)
                     return user
                 else:
@@ -30,7 +30,7 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
             for kycrestrict in kycrestricts:
                 # 计算时间差
                 time_difference = datetime.now() - kycrestrict.created_date
-                if time_difference > 10:
+                if time_difference > timedelta(minutes=10):
                     kycrestricts.remove(kycrestrict)
                     KycRestrictInstance.remove(kycrestrict.user_id)
         if  kycrestricts is not None and len(kycrestricts) >= 2:
