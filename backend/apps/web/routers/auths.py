@@ -958,6 +958,12 @@ async def faceliveness_check_for_ws(id: str):
             if response.body.result.passed:
                 # 校验用户是否完成所有kyc认证流程
                 kycrestrict = KycRestrictInstance.get_by_userid(user.id)
+                kycrestricts = KycRestrictInstance.get_by_ip(kycrestrict.ip_address)
+                if  kycrestricts is not None and len(kycrestricts) >= 2:
+                    return {
+                            "passed": False,
+                            "message": "A single IP address can be used for a maximum of two KYC verifications",
+                        }
                 if kycrestrict is None:
                     return {
                             "passed": False,
