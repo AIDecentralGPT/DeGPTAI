@@ -796,5 +796,8 @@
   "search": "tìm kiếm",
   "Web Search": "Tìm kiếm trên web",
   "Web Searching ...": "Đang tìm kiếm trên web ...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Hãy suy nghĩ sâu sắc và đạt hiệu suất tương đương với o3 trong các nhiệm vụ như toán học và viết sáng tạo"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Hãy suy nghĩ sâu sắc và đạt hiệu suất tương đương với o3 trong các nhiệm vụ như toán học và viết sáng tạo",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "Xác minh KYC chỉ được thực hiện một lần mỗi 10 phút, Vui lòng thử lại sau.",
+  "A single IP address can be used for a maximum of two KYC verifications": "Một địa chỉ IP duy nhất có thể được sử dụng tối đa hai lần cho việc xác minh KYC.",
+  "Check kyc failed, Please try again.": "Xác minh KYC đã thất bại. Vui lòng thử lại."
 }

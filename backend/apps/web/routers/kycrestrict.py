@@ -23,7 +23,7 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
                     kycrestrict = KycRestrictInstance.update_date(user.id, client_ip)
                     return {"pass": True, "data": user}
                 else:
-                    return {"pass": False, "message": "KYC verification is limited to once every 10 minutes. Please try again later."}
+                    return {"pass": False, "message": "KYC verification is limited to once every 10 minutes, Please try again later."}
         
         # 判断同一个IP是否正在进中kyc的有两个
         kycrestricts = KycRestrictInstance.get_by_ip(client_ip)

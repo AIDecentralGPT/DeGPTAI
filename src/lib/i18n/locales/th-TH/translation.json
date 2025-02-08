@@ -806,5 +806,8 @@
   "search": "ค้นหา",
   "Web Search": "การค้นหาเว็บ",
   "Web Searching ...": "กำลังค้นหาเว็บ ...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "คิดอย่างลึกซึ้งและให้ประสิทธิภาพเท่ากับ o3 ในการทำงานเช่น คณิตศาสตร์ และการเขียนสร้างสรรค์"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "คิดอย่างลึกซึ้งและให้ประสิทธิภาพเท่ากับ o3 ในการทำงานเช่น คณิตศาสตร์ และการเขียนสร้างสรรค์",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "การยืนยัน KYC จำกัดให้ทำได้เพียงครั้งเดียว ทุกๆ 10 นาที โปรดลองอีกครั้งในภายหลัง",
+  "A single IP address can be used for a maximum of two KYC verifications": "ที่อยู่ IP เดียวสามารถใช้สำหรับการยืนยัน KYC ได้สูงสุดสองครั้ง",
+  "Check kyc failed, Please try again.": "การยืนยัน KYC ล้มเหลว โปรดลองอีกครั้ง"
 }
