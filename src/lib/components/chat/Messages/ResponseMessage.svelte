@@ -394,7 +394,7 @@
 	let thinkHiden = false;
 
 	function highlightedText(content: string, keyword: string) {
-    const regex = new RegExp(keyword, "gi");
+    const regex = new RegExp(`\\b${keyword}\\b`, "gi");
     return content.replace(regex, match => `<span class="font-bold">${match}</span>`);
   }
 
@@ -496,7 +496,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{highlightedText(item.content, item.keyword??"")}</div>
+										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, item.keyword??"")}</div>
 									</div>
 								{/each}
 							</div>
