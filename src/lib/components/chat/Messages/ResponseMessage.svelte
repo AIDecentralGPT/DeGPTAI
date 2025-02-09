@@ -393,6 +393,11 @@
 
 	let thinkHiden = false;
 
+	function highlightedText(content: string, keyword: string) {
+    const regex = new RegExp(keyword, "gi");
+    return content.replace(regex, match => `<span class="font-bold">${match}</span>`);
+  }
+
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
@@ -442,29 +447,28 @@
 					{/each}
 				</div>
 			{/if}
-			<!-- 网页搜索 -->
+			<!-- 网络搜索 -->
 			{#if message?.search}
-				<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
-					<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
-						{#if message?.web?.websearch}
+				<!-- 网站搜索 -->
+				{#if message?.web?.websearch}
+					<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
+						<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
 							<div class="text-sm font-bold">{ $i18n.t("Web Search") }</div>
-						{:else}
-							<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div>
-						{/if}
-						<button on:click={() => {
-							handleWebHidden();
-						}}>
-							<svg 
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 15 15"
-								width="15" height="15"  
-								fill="currentColor"  
-								class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
-								<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
-							</svg>
-						</button>
-					</div>
-					{#if message?.web?.websearch}
+							<!-- {:else}
+								<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div> -->
+							<button on:click={() => {
+								handleWebHidden();
+							}}>
+								<svg 
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 15 15"
+									width="15" height="15"  
+									fill="currentColor"  
+									class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
+									<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+								</svg>
+							</button>
+						</div>	
 						<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 							<div class="flex flex-row px-4 mr-2">
 								{#each message?.web?.websearch ?? [] as item}
@@ -492,17 +496,17 @@
 												</div>
 											</div>
 										</div>
-										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{item.content}</div>
+										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{highlightedText(item.content, item.keyword??"")}</div>
 									</div>
 								{/each}
 							</div>
 						</div>
-					{:else}
-						<div class="bg-white rounded-2xl mx-4 mb-4 p-2">
-							<Skeleton />
-						</div>			
-					{/if}
-				</div>
+						<!-- {:else}
+							<div class="bg-white rounded-2xl mx-4 mb-4 p-2">
+								<Skeleton />
+							</div>			 -->	
+					</div>
+				{/if}
 				<!-- 图片搜索 -->
 				{#if message?.web?.thirdsearch}
 					<div class="flex flex-wrap mt-3">

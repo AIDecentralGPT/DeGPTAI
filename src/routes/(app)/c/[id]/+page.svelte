@@ -286,6 +286,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
           parentId: userMessageId,
           id: responseMessageId,
 					search: search,
+					keyword: userPrompt,
 					order: ['web', 'image', 'text'],
 					type: "text",
           childrenIds: [],
@@ -372,6 +373,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 								parentId: parentId,
 								id: responseMessageId,
 								search: search,
+								keyword: prompt,
 								order: ['web', 'image', 'text'],
 								type: "text",
 								childrenIds: [],
@@ -1116,63 +1118,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 获取搜索网页
   const handleSearchWeb= async(responseMessage: any) => {
     if (search) {
-      let lastMessage = messages.filter(item => item?.role == 'user')[0];
-      let webResult = await tavilySearch(localStorage.token, lastMessage.content);
+      let webResult = await tavilySearch(localStorage.token, responseMessage.keyword);
       if (webResult?.ok) {
         responseMessage.web = {
           websearch: webResult.data
         }
       }
-      // responseMessage.web = {
-      //   ...responseMessage.web,
-      //   thirdsearch: [
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     }
-      //   ]
-      // }
     }
     await tick();
     scrollToBottom();
@@ -1181,8 +1132,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 获取搜索twitter
   const handleSearchTwitter= async(responseMessage: any) => {
     if (search) {
-      let lastMessage = messages.filter(item => item?.role == 'user')[0];
-      let webResult = await twitterSearch(localStorage.token, lastMessage.content);
+      let webResult = await twitterSearch(localStorage.token, responseMessage.keyword);
       if (webResult?.ok) {
         responseMessage.web = {
           ...responseMessage.web,
