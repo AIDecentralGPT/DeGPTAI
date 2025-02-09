@@ -394,8 +394,8 @@
 	let thinkHiden = false;
 
 	function highlightedText(content: string, keyword: string) {
-    const regex = new RegExp(`\\b${keyword}\\b`, "gi");
-    return content.replace(regex, match => `<span class="font-bold">${match}</span>`);
+    const regex = new RegExp(keyword, "gi");
+    return content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
   }
 
 </script>
@@ -480,7 +480,7 @@
 												</svg>
 											</div>
 											<div class="ml-2">
-												<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{item.title}</div>
+												<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message.keyword??"")}</div>
 												<div class="flex flex-row items-center w-[300px] text-xs">
 													<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
 													<svg 
@@ -496,7 +496,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, item.keyword??"")}</div>
+										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message.keyword??"")}</div>
 									</div>
 								{/each}
 							</div>
