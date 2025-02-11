@@ -101,7 +101,7 @@
 						// 更新系统语言
 						await initLanguage();
 						// 更新用户聊天记录
-						await updateChats();
+						// await updateChats();
 						// 初始化完成
 						$initPageFlag = true;
 					});

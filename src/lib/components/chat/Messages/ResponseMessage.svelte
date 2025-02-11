@@ -511,9 +511,9 @@
 				{#if message?.web?.thirdsearch}
 					<div class="flex flex-wrap mt-3">
 						{#each message?.web?.thirdsearch ?? [] as item}
-							{#if item.media_urls[0]}
+							{#if item.thumb_url}
 								<div class="flex flex-col p-1 lg:w-1/5 w-1/3 aspect-square">
-									<Image src={item.media_urls[0]} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+									<Image src={item.thumb_url} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
 								</div>
 							{/if}
 						{/each}
