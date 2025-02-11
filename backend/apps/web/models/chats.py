@@ -239,7 +239,6 @@ class ChatTable:
             chat_list = [ChatModel(**chat_dict) for chat_dict in chat_dicts]
             return chat_list
         else:
-            print("===============================", chat_dicts)
             chat_list = [ChatModel(**chat_dict) for chat_dict in chat_dicts]
             return chat_list
 
