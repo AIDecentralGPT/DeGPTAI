@@ -239,14 +239,14 @@ class UsersTable:
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
             # 从Redis获取用户信息
-            user_dict = RedisClientInstance.get_value_by_key(id)
+            user_dict = RedisClientInstance.get_value_by_key(f"user:{id}")
             if user_dict is None:
                 user = User.get_or_none(User.id == id)  # 查询数据库中的用户
                 if user is None:
                     return None
                 else:
                     user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-                    RedisClientInstance.add_key_value(id, user_dict)
+                    RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                     user_model = UserModel(**user_dict)  # 将字典转换为Pydantic模型  
                     return user_model
             else:
@@ -334,7 +334,7 @@ class UsersTable:
             query.execute()  # 执行更新操作
             user = User.get(User.id == id)  # 查询更新后的用户
             user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-            RedisClientInstance.add_key_value(id, user_dict)
+            RedisClientInstance.add_key_value(f"user:{id}", user_dict)
             return UserModel(**user_dict)  # 将数据库对象转换为Pydantic模型并返回
         except:
             return None  # 如果更新失败，返回None
@@ -351,7 +351,7 @@ class UsersTable:
 
             user = User.get(User.id == id)  # 查询更新后的用户
             user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-            RedisClientInstance.add_key_value(id, user_dict)
+            RedisClientInstance.add_key_value(f"user:{id}", user_dict)
             return UserModel(**user_dict)  # 将数据库对象转换为Pydantic模型并返回
         except:
             return None  # 如果更新失败，返回None
@@ -393,7 +393,7 @@ class UsersTable:
                 # 删除用户
                 query = User.delete().where(User.id == id)  # 删除用户记录
                 query.execute()  # 执行删除操作
-                RedisClientInstance.delete_key(id)
+                RedisClientInstance.delete_key(f"user:{id}")
                 return True  # 如果删除成功，返回True
             else:
                 return False  # 如果删除失败，返回False
@@ -444,7 +444,7 @@ class UsersTable:
             if result == 1:
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-                RedisClientInstance.add_key_value(id, user_dict)
+                RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
                 return False
@@ -460,7 +460,7 @@ class UsersTable:
             if result == 1:
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-                RedisClientInstance.add_key_value(id, user_dict)
+                RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
                 return False
@@ -476,7 +476,7 @@ class UsersTable:
             if result == 1:
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-                RedisClientInstance.add_key_value(id, user_dict)
+                RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
                 return False
@@ -492,7 +492,7 @@ class UsersTable:
             if result == 1:
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-                RedisClientInstance.add_key_value(id, user_dict)
+                RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
                 return False
