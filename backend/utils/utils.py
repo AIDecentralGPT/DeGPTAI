@@ -180,8 +180,6 @@ def get_current_user(
         # 根据id获取用户
         user = Users.get_user_by_id(data["id"])
 
-        # print("user", user)
-
         # 如果用户不存在
         if user is None:
             # 抛出HTTP异常，状态码为401，错误详情为无效的token
@@ -194,8 +192,7 @@ def get_current_user(
             try:
                 Users.update_user_last_active_by_id(user.id)
             except Exception as e:
-                print("get_current_user - user-error", e)
-            
+                print("get_current_user - user-error", e) 
         # print("最终的user", user)
         # 返回当前用户
         return user

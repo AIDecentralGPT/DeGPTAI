@@ -14,6 +14,8 @@ from apps.web.models.chats import Chats  # 导入Chats模型
 from apps.web.models.rewards import RewardsTableInstance
 from fastapi import APIRouter, Depends, HTTPException, Request
 from apps.web.models.vip import VIPStatus
+from apps.redis.redis_client import RedisClientInstance
+import json
 
 
 ####################
@@ -236,20 +238,25 @@ class UsersTable:
     @aspect_database_operations
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:
-            print("开始根据id获取用户", id)
-            user = User.get_or_none(User.id == id)  # 查询数据库中的用户
-            if user is None:
-                return None
+            # 从Redis获取用户信息
+            user_dict = RedisClientInstance.get_value_by_key(id)
+            if user_dict is None:
+                user = User.get_or_none(User.id == id)  # 查询数据库中的用户
+                if user is None:
+                    return None
+                else:
+                    user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+                    RedisClientInstance.add_key_value(id, user_dict)
+                    user_model = UserModel(**user_dict)  # 将字典转换为Pydantic模型  
+                    return user_model
             else:
-                user_dict = model_to_dict(user)  # 将数据库对象转换为字典
-                user_model = UserModel(**user_dict)  # 将字典转换为Pydantic模型
+                user_model = UserModel(**user_dict)
                 print("获取完毕用户")
                 # print("用户模型：", user_model)
                 return user_model
         except Exception as e:
             print(f"get_user_by_id补货错误: {e}")
-            return None  # 如果查询失败，返回None
-        
+            return None  # 如果查询失败，返回None        
 
     # 获取邀请的所有用户
     def get_users_invited(self, inviter_id: str) -> List[UserModel]:
@@ -282,15 +289,12 @@ class UsersTable:
     # 获取用户列表
     def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "", verified: str = "", channel: str = "") -> List[UserModel]:
         query = User.select()
-
         # 角色筛选
         if role:
             query = query.where(User.role == role)
-
         # 搜索
         if search:
             query = query.where((User.name.contains(search)) | (User.id.contains(search)))
-
         # KYC认证筛选
         if verified:
             query = query.where(User.verified == verified)
@@ -328,9 +332,10 @@ class UsersTable:
         try:
             query = User.update(role=role).where(User.id == id)  # 更新用户角色
             query.execute()  # 执行更新操作
-
             user = User.get(User.id == id)  # 查询更新后的用户
-            return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
+            user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+            RedisClientInstance.add_key_value(id, user_dict)
+            return UserModel(**user_dict)  # 将数据库对象转换为Pydantic模型并返回
         except:
             return None  # 如果更新失败，返回None
 
@@ -345,7 +350,9 @@ class UsersTable:
             query.execute()  # 执行更新操作
 
             user = User.get(User.id == id)  # 查询更新后的用户
-            return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
+            user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+            RedisClientInstance.add_key_value(id, user_dict)
+            return UserModel(**user_dict)  # 将数据库对象转换为Pydantic模型并返回
         except:
             return None  # 如果更新失败，返回None
 
@@ -361,11 +368,9 @@ class UsersTable:
             user = User.get(User.id == id)  # 查询更新后的用户
             # print("update_user_last_active_by_id33333", user)
             # print(4444, UserModel(**model_to_dict(user)))
-
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
         except Exception as e:
             print("update_user_last_active_by_id error", e)
-            
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户信息
@@ -384,12 +389,11 @@ class UsersTable:
         try:
             # 删除用户的聊天记录
             result = Chats.delete_chats_by_user_id(id)  # 调用Chats模型的删除方法
-
             if result:
                 # 删除用户
                 query = User.delete().where(User.id == id)  # 删除用户记录
                 query.execute()  # 执行删除操作
-
+                RedisClientInstance.delete_key(id)
                 return True  # 如果删除成功，返回True
             else:
                 return False  # 如果删除失败，返回False
@@ -437,7 +441,13 @@ class UsersTable:
         try:
             query = User.update(transaction_id=transaction_id, merchant_biz_id =merchant_biz_id, face_time = face_time).where(User.id == id)
             result = query.execute()
-            return True if result == 1 else False
+            if result == 1:
+                user = User.get(User.id == id)  # 查询更新后的用户
+                user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+                RedisClientInstance.add_key_value(id, user_dict)
+                return True
+            else:
+                return False
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
@@ -447,7 +457,13 @@ class UsersTable:
         try:
             query = User.update(verified=verified, face_id =face_id).where(User.id == id)
             result = query.execute()
-            return True if result == 1 else False
+            if result == 1:
+                user = User.get(User.id == id)  # 查询更新后的用户
+                user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+                RedisClientInstance.add_key_value(id, user_dict)
+                return True
+            else:
+                return False
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
@@ -457,7 +473,13 @@ class UsersTable:
         try:
             query = User.update(models=models).where(User.id == id)
             result = query.execute()
-            return True if result == 1 else False
+            if result == 1:
+                user = User.get(User.id == id)  # 查询更新后的用户
+                user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+                RedisClientInstance.add_key_value(id, user_dict)
+                return True
+            else:
+                return False
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False
@@ -467,7 +489,13 @@ class UsersTable:
         try:
             query = User.update(language=language).where(User.id == id)
             result = query.execute()
-            return True if result == 1 else False
+            if result == 1:
+                user = User.get(User.id == id)  # 查询更新后的用户
+                user_dict = model_to_dict(user)  # 将数据库对象转换为字典
+                RedisClientInstance.add_key_value(id, user_dict)
+                return True
+            else:
+                return False
         except Exception as e:
             print(f"update_user_id Exception: {e}")
             return False

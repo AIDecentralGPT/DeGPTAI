@@ -8,6 +8,7 @@ import uuid
 import time
 
 from apps.web.internal.db import DB, aspect_database_operations
+from apps.redis.redis_client import RedisClientInstance
 
 ####################
 # Chat DB Schema
@@ -108,6 +109,8 @@ class ChatTable:
         # 调用Chat的create方法创建新的聊天记录，并返回结果
         try:
             result = Chat.create(**chat.model_dump()) # **是用来解构的
+            # 更新redis聊天列表
+            self.refresh_chat_redis(user_id)
         except Exception as e:
             print(1, e)
             
@@ -125,6 +128,8 @@ class ChatTable:
             query.execute()
 
             chat = Chat.get(Chat.id == id)
+            # 更新redis聊天列表
+            self.refresh_chat_redis(chat.user_id)
             return ChatModel(**model_to_dict(chat))
         except:
             return None
@@ -226,8 +231,17 @@ class ChatTable:
     def get_chat_list_by_user_id(
         self, user_id: str, skip: int = 0, limit: int = 50
     ) -> List[ChatModel]:
-        chats = Chat.select(Chat.id, Chat.user_id, Chat.title, Chat.archived, Chat.created_at, Chat.updated_at).where(Chat.archived == False).where(Chat.user_id == user_id).order_by(Chat.updated_at.desc())
-        return [ChatModel(**model_to_dict(chat)) for chat in chats]
+        chat_dicts = RedisClientInstance.get_value_by_key(f"chat-{user_id}")
+        if chat_dicts is None:
+            chats = Chat.select(Chat.id, Chat.user_id, Chat.title, Chat.archived, Chat.created_at, Chat.updated_at).where(Chat.archived == False).where(Chat.user_id == user_id).order_by(Chat.updated_at.desc())
+            chat_dicts = [model_to_dict(chat) for chat in chats]
+            RedisClientInstance.add_key_value(f"chat-{user_id}", chat_dicts)
+            chat_list = [ChatModel(**chat_dict) for chat_dict in chat_dicts]
+            return chat_list
+        else:
+            print("===============================", chat_dicts)
+            chat_list = [ChatModel(**chat_dict) for chat_dict in chat_dicts]
+            return chat_list
 
     def get_chat_list_by_chat_ids(
         self, chat_ids: List[str], skip: int = 0, limit: int = 50
@@ -239,6 +253,11 @@ class ChatTable:
             .where(Chat.id.in_(chat_ids))
             .order_by(Chat.updated_at.desc())
         ]
+    
+    def refresh_chat_redis(self, user_id: str):
+        chats = Chat.select(Chat.id, Chat.user_id, Chat.title, Chat.archived, Chat.created_at, Chat.updated_at).where(Chat.archived == False).where(Chat.user_id == user_id).order_by(Chat.updated_at.desc())
+        chat_dicts = [model_to_dict(chat) for chat in chats]
+        RedisClientInstance.add_key_value(f"chat-{user_id}", chat_dicts)
 
     def get_chat_by_id(self, id: str) -> Optional[ChatModel]:
         try:
