@@ -24,7 +24,7 @@ class RedisClient:
             value_json = json.dumps(value)
             result = self.redis_client.set(key, value_json)
             return result
-        except redis.RedisError as e:
+        except Exception as e:
             print("添加键值对时发生错误", e)
             return False
         
@@ -32,16 +32,16 @@ class RedisClient:
         try:
             value = self.redis_client.get(key)
             return json.loads(value)
-        except redis.RedisError:
-            print("查询键值对时发生错误")
+        except Exception as e:
+            print("查询键值对时发生错误", e)
             return None
         
     def delete_key(self, key):
         try:
             result = self.redis_client.delete(key)
             return result
-        except redis.RedisError:
-            print("删除键值对时发生错误")
+        except Exception as e:
+            print("删除键值对时发生错误", e)
             return 0
         
 RedisClientInstance = RedisClient()

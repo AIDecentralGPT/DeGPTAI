@@ -849,7 +849,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:Jxyandcyq8
 ####################################
 # Redis
 ####################################
-REDIS_HOST='127.0.0.1'
+REDIS_HOST='34.234.201.126'
 REDIS_PORT=6379
 REDIS_DB=6
 REDIS_PWD='redis_aJjtGF'
