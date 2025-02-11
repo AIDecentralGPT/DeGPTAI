@@ -4,6 +4,7 @@ from utils.utils import get_verified_user
 from apps.web.api.tavily import TavilyClientApi, TavilySearchForm
 from apps.web.api.youtube import YoutubeClientApi, YoutubeSearchForm
 from apps.web.api.twitter import TwitterApi, TwitterSearchForm
+import random
 
 
 router = APIRouter()
@@ -15,27 +16,21 @@ async def tavilySearch(form: TavilySearchForm):
         raise HTTPException(status_code=500, detail="未获取到信息")
     else:
         return { "ok": True, "data": data }
-
-@router.post("/youtube/search", response_model=dict)
-async def youtubeSearch(form: YoutubeSearchForm):
-    print("==============================", form.keyword)
-    response = YoutubeClientApi.search(form.keyword)
-    if response is None:
-        raise HTTPException(status_code=500, detail="未获取到信息")
-    else:
-        return response
     
-@router.post("/youtube/html/search", response_model=dict)
-async def youtubeHtmlSearch(form: YoutubeSearchForm):
-    print("==============================", form.keyword)
-    html = YoutubeClientApi.fetch_youtube_page(form.keyword)
-    if html:
-        videos = YoutubeClientApi.parse_youtube_page(html)
-        for video in videos:
-            print(f"Title: {video['title']}, Link: {video['link']}")
-        return { "ok": True, "data": videos }
-    else:
-        raise HTTPException(status_code=500, detail="未获取到信息")
+
+@router.post("/video/search", response_model=dict)
+async def videoSearch(form: YoutubeSearchForm):
+    data = []
+    twitterData = TwitterApi.search(form.keyword)
+    if twitterData is not None:
+        data.extend(twitterData)
+    youtubeData = YoutubeClientApi.search(form.keyword)
+    if youtubeData is not None:
+        data.extend(youtubeData)
+    # 打乱列表顺序
+    random.shuffle(data)
+    return { "ok": True, "data": data }
+
     
 @router.post("/twitter/search", response_model=dict)
 async def twitterSearch(form: TwitterSearchForm):
@@ -44,11 +39,11 @@ async def twitterSearch(form: TwitterSearchForm):
         raise HTTPException(status_code=500, detail="未获取到信息")
     else:
         return { "ok": True, "data": data }
-    
-@router.post("/twitter/html/search", response_model=dict)
-async def twitterSearch(form: TwitterSearchForm):
-    data = TwitterApi.searchHtml(form.keyword)
-    if data is None:
+
+@router.post("/youtube/search", response_model=dict)
+async def youtubeSearch(form: YoutubeSearchForm):
+    videos = YoutubeClientApi.search(form.keyword)
+    if videos is None:
         raise HTTPException(status_code=500, detail="未获取到信息")
     else:
-        return { "ok": True, "data": data }
+        return { "ok": True, "data": videos }

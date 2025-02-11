@@ -44,7 +44,7 @@ class TwitterLib:
     def search(self, keword: str):
         try:
             # 搜索包含特定关键词的推文
-            tweets = self.client.search_recent_tweets(query=keword, max_results=10, 
+            tweets = self.client.search_recent_tweets(query=keword, max_results=6, 
                 expansions='attachments.media_keys', media_fields=['preview_image_url', 'url'])
             # 存储媒体对象，键为media_key，值为媒体对象
             media = {m["media_key"]: m for m in tweets.includes.get('media', [])}
@@ -60,9 +60,10 @@ class TwitterLib:
                     # 移除链接后的文本内容
                     text_without_urls = url_pattern.sub('', tweet_text).strip()
                     tweet_info = {
-                        "text": text_without_urls,
-                        "urls": urls,
-                        "media_urls": []
+                        "title": text_without_urls,
+                        "url": urls[0],
+                        "thumb_url": "",
+                        "source": "twitter"
                     }
                     attachments = tweet.data.get('attachments')
                     if attachments and 'media_keys' in attachments:
@@ -71,9 +72,9 @@ class TwitterLib:
                                 # 获取媒体对象
                                 media_info = media[media_key]
                                 if 'preview_image_url' in media_info:
-                                    tweet_info["media_urls"].append(media_info['preview_image_url'])
+                                    tweet_info["thumb_url"] = media_info['preview_image_url']
                                 elif 'url' in media_info:
-                                    tweet_info["media_urls"].append(media_info['url'])
+                                    tweet_info["thumb_url"] = media_info['url']
                     tweet_list.append(tweet_info)
                 return tweet_list
             else:

@@ -30,11 +30,11 @@ export const tavilySearch = async (token: string, keyword: string) => {
 	return res;
 };
 
-// 获取twitter搜索结果
-export const twitterSearch = async (token: string, keyword: string) => {
+// 获取video搜索结果
+export const videoSearch = async (token: string, keyword: string) => {
 
   let error = null;
-	const res = await fetch(`${WEBUI_API_BASE_URL}/third/twitter/search`, {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/third/video/search`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

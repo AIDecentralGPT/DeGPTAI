@@ -57,7 +57,7 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
-  import { tavilySearch, twitterSearch } from "$lib/apis/websearch"
+  import { tavilySearch, videoSearch } from "$lib/apis/websearch"
 
   let inviter: any = "";
   let channelName: any = "";
@@ -716,7 +716,7 @@
   // 获取搜索twitter
   const handleSearchTwitter= async(responseMessage: any) => {
     if (search) {
-      let webResult = await twitterSearch(localStorage.token, responseMessage.keyword);
+      let webResult = await videoSearch(localStorage.token, responseMessage.keyword);
       if (webResult?.ok) {
         responseMessage.web = {
           ...responseMessage.web,

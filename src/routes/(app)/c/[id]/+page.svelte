@@ -47,7 +47,7 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
-	import { tavilySearch, twitterSearch } from "$lib/apis/websearch"
+	import { tavilySearch, videoSearch } from "$lib/apis/websearch"
 
 	const i18n = getContext('i18n');
 
@@ -1132,7 +1132,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 获取搜索twitter
   const handleSearchTwitter= async(responseMessage: any) => {
     if (search) {
-      let webResult = await twitterSearch(localStorage.token, responseMessage.keyword);
+      let webResult = await videoSearch(localStorage.token, responseMessage.keyword);
       if (webResult?.ok) {
         responseMessage.web = {
           ...responseMessage.web,
