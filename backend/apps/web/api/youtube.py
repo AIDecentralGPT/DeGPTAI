@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class YoutubeSearchForm(BaseModel):
   keyword: str
 
-API_KEY = "AIzaSyC98_8BPSAcbTg-cYoGfK7hmE58PnzARQU"
+API_KEY = "AIzaSyBZdpM96UwO9x15p2Gi07PmCxwThMl7xVM"
 
 class YoutubeClient:
   def search(self, keyword: str):
