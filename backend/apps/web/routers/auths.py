@@ -648,9 +648,9 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
     email = email_request.email
 
     # 校验邮箱是否已经认证过
-    emailRet = KycRestrictInstance.check_email(email)
-    if emailRet:
-        return {"pass": False, "message": "One email can only be used for KYC verification once"}
+    # emailRet = KycRestrictInstance.check_email(email)
+    # if emailRet:
+    #     return {"pass": False, "message": "One email can only be used for KYC verification once"}
 
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
@@ -969,12 +969,12 @@ async def faceliveness_check_for_ws(id: str):
                             "passed": False,
                             "message": "The identity validate fail",
                         }
-                email_check = KycRestrictInstance.check_email(kycrestrict.email)
-                if email_check:
-                    return {
-                            "passed": False,
-                            "message": "The identity validate fail",
-                        }
+                # email_check = KycRestrictInstance.check_email(kycrestrict.email)
+                # if email_check:
+                #     return {
+                #             "passed": False,
+                #             "message": "The identity validate fail",
+                #         }
                 captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code, kycrestrict.ip_address)
                 if captcha_check == False:
                     return {
