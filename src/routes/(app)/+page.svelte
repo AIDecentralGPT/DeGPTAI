@@ -561,7 +561,6 @@
                 : message?.raContent ?? message.content,
             }),
       }));
-      console.log("========================", send_message);
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {

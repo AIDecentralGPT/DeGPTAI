@@ -430,7 +430,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 							await handleLimitError(modelLimit[model.id], responseMessage)
 						} else {
 							// 搜索网页
-							handleSearchWeb(responseMessage);
+							handleSearchWeb(responseMessage, responseMessageId);
 							// 文本搜索
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 						}
@@ -491,55 +491,59 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		console.log("$settings.system", $settings.system, );
 		
 		try {
-			console.log("model", model);
+			let send_message = [
+        $settings.system || (responseMessage?.userContext ?? null)
+          ? {
+              role: "system",
+              content: `${$settings?.system ?? ""}${
+              responseMessage?.userContext ?? null
+                ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
+            } : undefined,
+            ...modelmessage,
+        ].filter((message) => message);
+      if (search) {
+        send_message.forEach((item, index) => {
+          if (item?.role != 'user' && item?.web?.content) {
+            send_message[index-1].content = item?.web?.content;
+          }
+        })
+      }
+      send_message = send_message.map((message, idx, arr) => ({
+        role: message.role,
+        ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+        message.role === "user"
+          ? {
+              content: [
+                {
+                  type: "text",
+                  text:
+                    arr.length - 1 !== idx
+                      ? message.content
+                      : message?.raContent ?? message.content,
+                },
+                ...message.files
+                  .filter((file) => file.type === "image")
+                    .map((file) => ({
+                      type: "image_url",
+                      image_url: {
+                        url: file.url,
+                      },
+                    })),
+              ],
+            }
+          : {
+            content:
+              arr.length - 1 !== idx
+                ? message.content
+                : message?.raContent ?? message.content,
+            }),
+      }));
 			
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
 					model: model.id,
-					messages: [
-						$settings.system || (responseMessage?.userContext ?? null)
-							? {
-									role: 'system',
-									content: `${$settings?.system ?? ''}${
-										responseMessage?.userContext ?? null
-											? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join('\n')}` : ''}`
-							  }
-							: undefined,
-						...modelmessage
-					]
-						.filter((message) => message)
-						.filter((message) => message.content != "")
-						.map((message, idx, arr) => ({
-							role: message.role,
-							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
-							message.role === 'user'
-								? {
-										content: [
-											{
-												type: 'text',
-												text:
-													arr.length - 1 !== idx
-														? message.content
-														: message?.raContent ?? message.content
-											},
-											...message.files
-												.filter((file) => file.type === 'image')
-												.map((file) => ({
-													type: 'image_url',
-													image_url: {
-														url: file.url
-													}
-												}))
-										]
-								  }
-								: {
-										content:
-											arr.length - 1 !== idx
-												? message.content
-												: message?.raContent ?? message.content
-								  })
-						})),
+					messages: send_message,
 				},
 				$deApiBaseUrl?.url
 			);
@@ -616,8 +620,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						await tick();
 						document.getElementById(`speak-button-${responseMessage.id}`)?.click();
 					}
-
-
 
 					if (autoScroll) {
 						scrollToBottom();
@@ -929,10 +931,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		}
 	};
 
-
-
-
-
 	// 5. 给openai发请求
 	const sendPromptOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
@@ -1110,11 +1108,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	};
 
 	// 获取搜索网页
-  const handleSearchWeb= async(responseMessage: any) => {
+  const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
     if (search) {
       let webResult = await webSearch(localStorage.token, responseMessage.keyword);
       if (webResult?.ok) {
-        responseMessage.web = webResult.data
+        responseMessage.web = webResult.data;
+				history.messages[responseMessageId] = responseMessage;
       }
     }
     await tick();
