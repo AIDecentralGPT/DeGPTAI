@@ -309,7 +309,6 @@ export const generateSearchKeyword = async (
     // 将该元素添加到数组的开头
     urls.unshift(koreaItem);
   }
-
   template = promptTemplate(template, prompt);
   model = model=='DeepSeek-R1' ? 'Llama3.3-70B' : model;
   for (const domain of urls) {

@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Sao chép vào clipboard thành công!",
   "Create": "Tạo",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Tạo một cụm từ ngắn gọn, từ 3 - 5 từ làm tiêu đề cho truy vấn sau, tuân thủ nghiêm ngặt giới hạn từ 3 - 5 từ và tránh sử dụng từ 'title':",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Tạo một cụm từ ngắn gọn 3-10 từ làm từ khóa cho truy vấn sau, tuân thủ chặt chẽ giới hạn 3-10 từ:",
   "Create a modelfile": "Tạo một tệp mô hình",
   "Create Account": "Tạo tài khoản",
   "Create new key": "Tạo khóa mới",

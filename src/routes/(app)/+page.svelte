@@ -44,6 +44,7 @@
   import {
     generateDeOpenAIChatCompletion,
     generateDeTitle,
+    generateSearchKeyword
   } from "$lib/apis/de";
 
   import { queryMemory } from "$lib/apis/memories";
@@ -58,6 +59,7 @@
   } from "$lib/constants";
 
   import { webSearch } from "$lib/apis/websearch"
+    import { json } from "@sveltejs/kit";
 
   let inviter: any = "";
   let channelName: any = "";
@@ -361,7 +363,6 @@
         }
         await tick();
       }
-
       // Send prompt
       await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
 
@@ -510,7 +511,6 @@
       }
     }
     
-
     scrollToBottom();
 
     try {
@@ -531,7 +531,8 @@
           }
         })
       }
-      send_message = send_message.map((message, idx, arr) => ({
+      send_message = send_message.filter((item) => item.content != '')
+      .map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
         message.role === "user"
@@ -704,7 +705,8 @@
   // 获取搜索网页
   const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
     if (search) {
-      let webResult = await webSearch(localStorage.token, responseMessage.keyword);
+      const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
+      let webResult = await webSearch(localStorage.token, ai_keyword);
       if (webResult?.ok) {
         responseMessage.web = webResult.data;
         history.messages[responseMessageId] = responseMessage;
@@ -833,9 +835,6 @@
         model?.external ?? false
           ? $settings?.title?.modelExternal ?? selectedModels[0]
           : $settings?.title?.model ?? selectedModels[0];
-      const titleModel = $models.find((model) => model.id === titleModelId);
-
-      console.log(titleModel);
       const title = await generateDeTitle(
         localStorage.token,
         $settings?.title?.prompt ??
@@ -844,6 +843,33 @@
           ) + " {{prompt}}",
         titleModelId,
         userPrompt,
+        $deApiBaseUrl?.url
+      );
+
+      return title;
+    } else {
+      return `${userPrompt}`;
+    }
+  };
+
+  const generateSearchChatKeyword = async (userPrompt: any) => {
+    if ($settings?.title?.auto ?? true) {
+      const model = $models.find((model) => model.id === selectedModels[0]);
+
+      const titleModelId =
+        model?.external ?? false
+          ? $settings?.title?.modelExternal ?? selectedModels[0]
+          : $settings?.title?.model ?? selectedModels[0];
+      // 获取关键词
+      let content = messages.filter(item => item.role == 'user').map(item => item.content).join(',');
+      const title = await generateSearchKeyword(
+        localStorage.token,
+        $settings?.title?.prompt ??
+          $i18n.t(
+            "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:"
+          ) + " {{prompt}}",
+        titleModelId,
+        content,
         $deApiBaseUrl?.url
       );
 

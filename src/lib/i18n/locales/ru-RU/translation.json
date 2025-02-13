@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Копирование в буфер обмена было успешным!",
   "Create": "Создать",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Создать краткую фразу из 3 - 5 слов в качестве заголовка для следующего запроса, строго соблюдая предел в 3 - 5 слов и избежать использования слова 'title':",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Создайте краткую фразу из 3-10 слов в качестве поискового ключа для следующего запроса, строго соблюдая лимит в 3-10 слов:",
   "Create a modelfile": "Создать файл модели",
   "Create Account": "Создать аккаунт",
   "Create new key": "Создать новый ключ",

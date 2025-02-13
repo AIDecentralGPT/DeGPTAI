@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Penyalinan ke clipboard berhasil!",
   "Create": "Buat",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Buat sebuah frasa singkat, 3 - 5 kata sebagai judul untuk pertanyaan berikut, sangat mengikuti batas 3 - 5 kata dan menghindari penggunaan kata 'judul':",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Buat frasa singkat 3-10 kata sebagai kata kunci pencarian untuk kueri berikut, patuhi ketat batasan 3-10 kata:",
   "Create a modelfile": "Buat sebuah file model",
   "Create Account": "Buat Akun",
   "Create new key": "Buat kunci baru",

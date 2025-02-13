@@ -21,7 +21,7 @@
 	import { copyToClipboard, splitStream, convertMessagesToHistory, addTextSlowly } from '$lib/utils';
 
 	import { generateChatCompletion, cancelOllamaRequest } from '$lib/apis/ollama';
-	import { generateDeOpenAIChatCompletion, generateDeTitle } from '$lib/apis/de';
+	import { generateDeOpenAIChatCompletion, generateDeTitle, generateSearchKeyword } from '$lib/apis/de';
 	import {
 		addTagById,
 		createNewChat,
@@ -931,6 +931,33 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		}
 	};
 
+	const generateSearchChatKeyword = async (userPrompt: any) => {
+    if ($settings?.title?.auto ?? true) {
+      const model = $models.find((model) => model.id === selectedModels[0]);
+
+      const titleModelId =
+        model?.external ?? false
+          ? $settings?.title?.modelExternal ?? selectedModels[0]
+          : $settings?.title?.model ?? selectedModels[0];
+      // 获取关键词
+      let content = messages.filter(item => item.role == 'user').map(item => item.content).join(',');
+      const title = await generateSearchKeyword(
+        localStorage.token,
+        $settings?.title?.prompt ??
+          $i18n.t(
+            "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:"
+          ) + " {{prompt}}",
+        titleModelId,
+        content,
+        $deApiBaseUrl?.url
+      );
+
+      return title;
+    } else {
+      return `${userPrompt}`;
+    }
+  };
+
 	// 5. 给openai发请求
 	const sendPromptOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
@@ -1110,7 +1137,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 获取搜索网页
   const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
     if (search) {
-      let webResult = await webSearch(localStorage.token, responseMessage.keyword);
+			const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
+      let webResult = await webSearch(localStorage.token, ai_keyword);
       if (webResult?.ok) {
         responseMessage.web = webResult.data;
 				history.messages[responseMessageId] = responseMessage;

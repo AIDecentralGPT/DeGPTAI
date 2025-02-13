@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Panoya kopyalama başarılı oldu!",
   "Create": "Oluştur",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Aşağıdaki sorgu için bir başlık olarak 3 - 5 kelimelik kısaltılmış bir ifade oluşturun, 3 - 5 kelime sınırını sıkıca takip edin ve 'başlık' kelimesini kullanmaktan kaçının:",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Aşağıdaki sorgu için 3-10 kelimelik kısa bir ifadeyi arama anahtar kelimesi olarak oluşturun, 3-10 kelime sınırını kesinlikle kabul edin:",
   "Create a modelfile": "Bir model dosyası oluştur",
   "Create Account": "Hesap Oluştur",
   "Create new key": "Yeni anahtar oluştur",

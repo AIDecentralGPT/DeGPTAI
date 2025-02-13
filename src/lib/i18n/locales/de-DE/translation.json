@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Kopieren in die Zwischenablage war erfolgreich!",
   "Create": "Erstellen",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Erstellen Sie eine prägnante, 3 - 5 Wörter umfassende Phrase als Überschrift für die folgende Abfrage, streng an die 3 - 5 Wortgrenze halten und die Verwendung des Wortes 'Titel' vermeiden:",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Erstellen Sie eine prägnante 3-10 Wort Phrase als Suchbegriff für die folgende Abfrage, wobei die 3-10 Wort Grenze strikt eingehalten werden muss:",
   "Create a modelfile": "Eine Modell-Datei erstellen",
   "Create Account": "Konto erstellen",
   "Create new key": "Neuen Schlüssel erstellen",
