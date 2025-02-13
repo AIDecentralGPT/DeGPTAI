@@ -288,3 +288,68 @@ export const generateDeTitle = async (
     res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
   );
 };
+
+
+// 获取搜索关键词语
+export const generateSearchKeyword = async (
+  token: string = "",
+  template: string,
+  model: string,
+  prompt: string,
+  url: string
+) => {
+  let error = null;
+  let res: any;
+
+  let urls = await getDeBaseUrls();
+  let index = urls.findIndex(item => item.url === url);
+  if (index !== -1) {
+    // 移除该元素
+    let koreaItem = urls.splice(index, 1)[0];
+    // 将该元素添加到数组的开头
+    urls.unshift(koreaItem);
+  }
+
+  template = promptTemplate(template, prompt);
+  model = model=='DeepSeek-R1' ? 'Llama3.3-70B' : model;
+  for (const domain of urls) {
+    try {
+      const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: model,
+          // node_id: nodeList?.[0],
+          messages: [
+            {
+              role: "user",
+              content: template,
+            },
+          ],
+          stream: false,
+          project: "DecentralGPT",
+          // Restricting the max tokens to 50 to avoid long titles
+          max_tokens: 50,
+        })
+      });
+      res = await result.json();
+      break;
+    } catch (err) {
+      console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
+      if (domain.name == urls[urls.length - 1].name) {
+        error = err;
+      }
+    }
+  }
+
+  if (error) {
+    throw error;
+  }
+
+  return (
+    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
+  );
+};

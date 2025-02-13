@@ -47,7 +47,7 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
-	import { tavilySearch, videoSearch } from "$lib/apis/websearch"
+	import { webSearch } from "$lib/apis/websearch"
 
 	const i18n = getContext('i18n');
 
@@ -287,8 +287,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
           id: responseMessageId,
 					search: search,
 					keyword: userPrompt,
-					order: ['web', 'image', 'text'],
-					type: "text",
           childrenIds: [],
           role: "assistant",
           content: "",
@@ -374,8 +372,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 								id: responseMessageId,
 								search: search,
 								keyword: prompt,
-								order: ['web', 'image', 'text'],
-								type: "text",
 								childrenIds: [],
 								role: "assistant",
 								content: "",
@@ -435,8 +431,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						} else {
 							// 搜索网页
 							handleSearchWeb(responseMessage);
-							// 搜索twitter
-							handleSearchTwitter(responseMessage);
 							// 文本搜索
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 						}
@@ -1118,26 +1112,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 获取搜索网页
   const handleSearchWeb= async(responseMessage: any) => {
     if (search) {
-      let webResult = await tavilySearch(localStorage.token, responseMessage.keyword);
+      let webResult = await webSearch(localStorage.token, responseMessage.keyword);
       if (webResult?.ok) {
-        responseMessage.web = {
-          websearch: webResult.data
-        }
-      }
-    }
-    await tick();
-    scrollToBottom();
-  }
-
-	// 获取搜索twitter
-  const handleSearchTwitter= async(responseMessage: any) => {
-    if (search) {
-      let webResult = await videoSearch(localStorage.token, responseMessage.keyword);
-      if (webResult?.ok) {
-        responseMessage.web = {
-          ...responseMessage.web,
-          thirdsearch: webResult.data
-        }
+        responseMessage.web = webResult.data
       }
     }
     await tick();

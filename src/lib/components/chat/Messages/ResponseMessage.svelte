@@ -394,8 +394,12 @@
 	let thinkHiden = false;
 
 	function highlightedText(content: string, keyword: string) {
-    const regex = new RegExp(keyword, "gi");
-    return content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+		let keywords = keyword.split("/");
+		keywords.forEach((item) => {
+			const regex = new RegExp(item, "gi");
+			content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+		})
+    return content;
   }
 
 </script>
@@ -480,7 +484,7 @@
 												</svg>
 											</div>
 											<div class="ml-2">
-												<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message.keyword??"")}</div>
+												<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.web?.keyword??"")}</div>
 												<div class="flex flex-row items-center w-[300px] text-xs">
 													<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
 													<svg 
@@ -496,7 +500,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message.keyword??"")}</div>
+										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.web?.keyword??"")}</div>
 									</div>
 								{/each}
 							</div>
@@ -508,9 +512,9 @@
 					</div>
 				{/if}
 				<!-- 图片搜索 -->
-				{#if message?.web?.thirdsearch}
+				{#if message?.web?.thumbearch}
 					<div class="flex flex-wrap mt-3">
-						{#each message?.web?.thirdsearch ?? [] as item}
+						{#each message?.web?.thumbearch ?? [] as item}
 							{#if item.thumb_url}
 								<div class="flex flex-col p-1 lg:w-1/5 w-1/3 aspect-square">
 									<Image src={item.thumb_url} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>

@@ -1,7 +1,6 @@
 import tweepy
 from pydantic import BaseModel
 import re
-import requests
 from bs4 import BeautifulSoup
 
 
@@ -44,7 +43,7 @@ class TwitterLib:
     def search(self, keword: str):
         try:
             # 搜索包含特定关键词的推文
-            tweets = self.client.search_recent_tweets(query=keword, max_results=6, 
+            tweets = self.client.search_recent_tweets(query=keword, max_results=8, 
                 expansions='attachments.media_keys', media_fields=['preview_image_url', 'url'])
             # 存储媒体对象，键为media_key，值为媒体对象
             media = {m["media_key"]: m for m in tweets.includes.get('media', [])}
@@ -82,20 +81,5 @@ class TwitterLib:
         except Exception as e:
             print(f"出现错误：{e}")
             return None
-        
-    def searchHtml(self, keyword: str):
-        # 要请求的网址
-        url = f'https://x.com/search?q={keyword}&src=typed_query'
-        try:
-            # 发送 GET 请求
-            response = requests.get(url)
-            soup = BeautifulSoup(response.content, "html.parser")
-            tweets = soup.find_all("div", class_="tweet")
-            print(tweets)
-        except requests.exceptions.HTTPError as http_err:
-            print(f'HTTP 错误发生: {http_err}')
-        except requests.exceptions.RequestException as req_err:
-            print(f'请求发生错误: {req_err}')
-        return None
 
 TwitterApi = TwitterLib()

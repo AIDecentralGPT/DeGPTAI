@@ -57,7 +57,7 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
-  import { tavilySearch, videoSearch } from "$lib/apis/websearch"
+  import { webSearch } from "$lib/apis/websearch"
 
   let inviter: any = "";
   let channelName: any = "";
@@ -306,7 +306,6 @@
             id: responseMessageId,
             search: search,
             keyword: userPrompt,
-						order: ['web', 'image', 'text'],
             childrenIds: [],
             role: "assistant",
             content: "",
@@ -390,7 +389,6 @@
               id: responseMessageId,
               search: search,
               keyword: prompt,
-						  order: ['web', 'image', 'text'],
               childrenIds: [],
               role: "assistant",
               content: "",
@@ -448,9 +446,7 @@
             await handleLimitError(modelLimit[model.id], responseMessage);
           } else {
             // 搜索网页
-						await handleSearchWeb(responseMessage);
-						// 搜索twitter
-						handleSearchTwitter(responseMessage);
+						await handleSearchWeb(responseMessage, responseMessageId);
 						// 文本搜索
             await sendPromptDeOpenAI(model, responseMessageId, _chatId);
           }
@@ -518,52 +514,59 @@
     scrollToBottom();
 
     try {
+      let send_message = [
+        $settings.system || (responseMessage?.userContext ?? null)
+          ? {
+              role: "system",
+              content: `${$settings?.system ?? ""}${
+              responseMessage?.userContext ?? null
+                ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
+            } : undefined,
+            ...modelmessage,
+        ].filter((message) => message);
+      if (search) {
+        send_message.forEach((item, index) => {
+          if (item?.role != 'user' && item?.web?.content) {
+            send_message[index-1].content = item?.web?.content;
+          }
+        })
+      }
+      send_message = send_message.map((message, idx, arr) => ({
+        role: message.role,
+        ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+        message.role === "user"
+          ? {
+              content: [
+                {
+                  type: "text",
+                  text:
+                    arr.length - 1 !== idx
+                      ? message.content
+                      : message?.raContent ?? message.content,
+                },
+                ...message.files
+                  .filter((file) => file.type === "image")
+                    .map((file) => ({
+                      type: "image_url",
+                      image_url: {
+                        url: file.url,
+                      },
+                    })),
+              ],
+            }
+          : {
+            content:
+              arr.length - 1 !== idx
+                ? message.content
+                : message?.raContent ?? message.content,
+            }),
+      }));
+      console.log("========================", send_message);
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
           model: model.id,
-          messages: [
-            $settings.system || (responseMessage?.userContext ?? null)
-              ? {
-                  role: "system",
-                  content: `${$settings?.system ?? ""}${
-                    responseMessage?.userContext ?? null
-                      ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
-                }
-              : undefined,
-            ...modelmessage,
-          ].filter((message) => message)
-            .filter((message) => message.content != "")
-            .map((message, idx, arr) => ({
-              role: message.role,
-              ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
-              message.role === "user"
-                ? {
-                    content: [
-                      {
-                        type: "text",
-                        text:
-                          arr.length - 1 !== idx
-                            ? message.content
-                            : message?.raContent ?? message.content,
-                      },
-                      ...message.files
-                        .filter((file) => file.type === "image")
-                        .map((file) => ({
-                          type: "image_url",
-                          image_url: {
-                            url: file.url,
-                          },
-                        })),
-                    ],
-                  }
-                : {
-                    content:
-                      arr.length - 1 !== idx
-                        ? message.content
-                        : message?.raContent ?? message.content,
-                  }),
-            })),
+          messages: send_message
         },
         $deApiBaseUrl?.url
       );
@@ -700,28 +703,12 @@
   };
 
   // 获取搜索网页
-  const handleSearchWeb= async(responseMessage: any) => {
+  const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
     if (search) {
-      let webResult = await tavilySearch(localStorage.token, responseMessage.keyword);
+      let webResult = await webSearch(localStorage.token, responseMessage.keyword);
       if (webResult?.ok) {
-        responseMessage.web = {
-          websearch: webResult.data
-        }
-      }
-    }
-    await tick();
-    scrollToBottom();
-  }
-
-  // 获取搜索twitter
-  const handleSearchTwitter= async(responseMessage: any) => {
-    if (search) {
-      let webResult = await videoSearch(localStorage.token, responseMessage.keyword);
-      if (webResult?.ok) {
-        responseMessage.web = {
-          ...responseMessage.web,
-          thirdsearch: webResult.data
-        }
+        responseMessage.web = webResult.data;
+        history.messages[responseMessageId] = responseMessage;
       }
     }
     await tick();
