@@ -525,6 +525,62 @@
 						</div>
 					{/if}
 				{/if}
+				{#if message?.search_type == 'youtube'}
+					<!-- youtube搜索 -->
+					{#if message?.search_data?.web}
+						<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
+							<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
+								<div class="text-sm font-bold">{ $i18n.t("YouTube Search") }</div>
+								<!-- {:else}
+									<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div> -->
+								<button on:click={() => {
+									handleWebHidden();
+								}}>
+									<svg 
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 15 15"
+										width="15" height="15"  
+										fill="currentColor"  
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
+										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+									</svg>
+								</button>
+							</div>	
+							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
+								<div class="flex flex-row px-4 mr-2">
+									{#each message?.search_data?.web ?? [] as item}
+										<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
+											<div class="flex flex-row">
+												<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-[1.2rem] h-[1.2rem] s-Fb8Dy0t5csK5">
+														<path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" class="s-Fb8Dy0t5csK5"></path>
+													</svg>
+												</div>
+												<div class="ml-2">
+													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.web?.keyword??"")}</div>
+													<div class="flex flex-row items-center w-[300px] text-xs">
+														<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
+														<svg 
+															xmlns="http://www.w3.org/2000/svg" 
+															width="55" 
+															height="55" 
+															viewBox="0 0 24 24" 
+															fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+															class="lucide lucide-external-link h-3 w-3 ml-2">
+															<path d="M15 3h6v6"></path><path d="M10 14 21 3"/>
+															<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+														</svg>
+													</div>
+												</div>
+											</div>
+											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.web?.keyword??"")}</div>
+										</div>
+									{/each}
+								</div>
+							</div>
+						</div>
+					{/if}
+				{/if}
 			{/if}
 			
 			<!-- 文本输出 -->
