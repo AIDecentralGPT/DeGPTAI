@@ -527,9 +527,9 @@
 				{/if}
 				{#if message?.search_type == 'youtube'}
 					<!-- youtube搜索 -->
-					{#if message?.search_data?.web}
-						<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
-							<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
+					{#if message?.search_data?.videos}
+						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
+							<div class="flex justify-between items-center p-6">
 								<div class="text-sm font-bold">{ $i18n.t("YouTube Search") }</div>
 								<!-- {:else}
 									<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div> -->
@@ -548,32 +548,23 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
-									{#each message?.search_data?.web ?? [] as item}
-										<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
-											<div class="flex flex-row">
-												<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-[1.2rem] h-[1.2rem] s-Fb8Dy0t5csK5">
-														<path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" class="s-Fb8Dy0t5csK5"></path>
-													</svg>
-												</div>
-												<div class="ml-2">
-													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.web?.keyword??"")}</div>
-													<div class="flex flex-row items-center w-[300px] text-xs">
-														<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
-														<svg 
-															xmlns="http://www.w3.org/2000/svg" 
-															width="55" 
-															height="55" 
-															viewBox="0 0 24 24" 
-															fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-															class="lucide lucide-external-link h-3 w-3 ml-2">
-															<path d="M15 3h6v6"></path><path d="M10 14 21 3"/>
-															<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-														</svg>
+									{#each message?.search_data?.videos ?? [] as item}
+										<div class="flex flex-col rounded-xl bg-white dark:bg-black mx-2 mb-4 pb-2">
+											<a class="flex flex-col w-[230px]" href="{item.video_url}" target="_blank">
+												<img class="rounded-t-xl" src={item.thumbnail_url} alt=""/>
+												<div class="px-3 py-2">
+													<span class="line-clamp-2 text-ellipsis">{item.title}</span>
+													<div class="flex flex-row items-center mt-1">
+														<div class="w-[20px]">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round h-4 w-4 text-red-500">
+																<circle cx="12" cy="8" r="5"></circle>
+																<path d="M20 21a8 8 0 0 0-16 0"></path>
+															</svg>
+														</div>
+														<span class="ml-1 line-clamp-1 text-ellipsis text-sm">{item.channel_title}</span>
 													</div>
 												</div>
-											</div>
-											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.web?.keyword??"")}</div>
+											</a>
 										</div>
 									{/each}
 								</div>
