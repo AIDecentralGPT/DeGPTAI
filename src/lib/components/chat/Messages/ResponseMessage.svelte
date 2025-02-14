@@ -454,7 +454,7 @@
 			<!-- 网络搜索 -->
 			{#if message?.search}
 				<!-- 网站搜索 -->
-				{#if message?.web?.websearch}
+				{#if message?.search_data?.web}
 					<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
 						<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
 							<div class="text-sm font-bold">{ $i18n.t("Web Search") }</div>
@@ -475,7 +475,7 @@
 						</div>	
 						<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 							<div class="flex flex-row px-4 mr-2">
-								{#each message?.web?.websearch ?? [] as item}
+								{#each message?.search_data?.web ?? [] as item}
 									<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
 										<div class="flex flex-row">
 											<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
@@ -512,12 +512,12 @@
 					</div>
 				{/if}
 				<!-- 图片搜索 -->
-				{#if message?.web?.thumbearch}
+				{#if message?.search_data?.images}
 					<div class="flex flex-wrap mt-3">
-						{#each message?.web?.thumbearch ?? [] as item}
-							{#if item.thumb_url}
+						{#each message?.search_data?.images ?? [] as item}
+							{#if item?.url}
 								<div class="flex flex-col p-1 lg:w-1/5 w-1/3 aspect-square">
-									<Image src={item.thumb_url} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+									<Image src={item.url} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
 								</div>
 							{/if}
 						{/each}

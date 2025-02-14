@@ -1,7 +1,7 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 // 获取tavily搜索结果
-export const webSearch = async (token: string, keyword: string) => {
+export const webSearch = async (token: string, keyword: string, type: string) => {
 
   let error = null;
 	const res = await fetch(`${WEBUI_API_BASE_URL}/third/web/search`, {
@@ -12,7 +12,8 @@ export const webSearch = async (token: string, keyword: string) => {
 			authorization: `Bearer ${token}`
 		},
     body: JSON.stringify({
-			keyword: keyword
+			keyword: keyword,
+			type: type
 		})
 	}).then(async (res) => {
 		if (!res.ok) 

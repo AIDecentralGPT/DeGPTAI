@@ -17,6 +17,7 @@ class YoutubeClient:
             "part": "snippet",
             "type": "video",
             "maxResults": 10,
+            "regionCode": 'en',
             "order": "relevance"
         }
         response = requests.get(url, params=params)

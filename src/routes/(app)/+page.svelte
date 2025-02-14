@@ -106,6 +106,7 @@
   let prompt = "";
   let files = [];
   let search = false;
+  let search_type = "web";
   let messages = [];
   let history = {
     messages: {},
@@ -307,11 +308,12 @@
             parentId: userMessageId,
             id: responseMessageId,
             search: search,
+            search_type: search_type,
+            search_data: {},
             keyword: userPrompt,
             childrenIds: [],
             role: "assistant",
             content: "",
-            web: {},
             model: model.id,
             userContext: null,
             timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -389,11 +391,12 @@
               parentId: parentId,
               id: responseMessageId,
               search: search,
+              search_type: search_type,
+              search_data: {},
               keyword: prompt,
               childrenIds: [],
               role: "assistant",
               content: "",
-              web: {},
               model: model.id,
               userContext: null,
               timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -706,9 +709,9 @@
   const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
     if (search) {
       const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
-      let webResult = await webSearch(localStorage.token, ai_keyword);
+      let webResult = await webSearch(localStorage.token, ai_keyword, responseMessage.search_type);
       if (webResult?.ok) {
-        responseMessage.web = webResult.data;
+        responseMessage.search_data = webResult.data;
         history.messages[responseMessageId] = responseMessage;
       }
     }
@@ -1016,6 +1019,7 @@
 <MessageInput
   bind:files
   bind:search
+  bind:search_type
   bind:prompt
   bind:autoScroll
   bind:selectedModel={atSelectedModel}
