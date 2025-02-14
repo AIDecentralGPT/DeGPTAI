@@ -16,7 +16,7 @@ class YoutubeClient:
             "q": keyword,
             "part": "snippet",
             "type": "video",
-            "maxResults": 10,
+            "maxResults": 15,
             "regionCode": 'en',
             "order": "relevance"
         }
@@ -27,22 +27,15 @@ class YoutubeClient:
         videos = []
         for item in data.get("items", []):
             video_id = item["id"]["videoId"]
-            snippet = item["snippet"]
-            
-            # video_info = {
-            #     "video_id": video_id,
-            #     "title": snippet["title"],
-            #     "description": snippet["description"],
-            #     "published_at": snippet["publishedAt"],
-            #     "channel_title": snippet["channelTitle"],
-            #     "thumbnail_url": snippet["thumbnails"]["high"]["url"],
-            #     "video_url": f"https://www.youtube.com/watch?v={video_id}"
-            # }
+            snippet = item["snippet"] 
             video_info = {
-               "title": snippet["title"],
-               "url": f"https://www.youtube.com/watch?v={video_id}",
-               "thumb_url": snippet["thumbnails"]["high"]["url"],
-               "source": "YouTube"
+                "video_id": video_id,
+                "title": snippet["title"],
+                "description": snippet["description"],
+                "published_at": snippet["publishedAt"],
+                "channel_title": snippet["channelTitle"],
+                "thumbnail_url": snippet["thumbnails"]["high"]["url"],
+                "video_url": f"https://www.youtube.com/watch?v={video_id}"
             }
             videos.append(video_info)
         return videos
