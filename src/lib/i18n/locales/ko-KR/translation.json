@@ -814,5 +814,6 @@
   "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC 인증은 10분에 한 번으로 제한됩니다, 나중에 다시 시도해 주세요.",
   "A single IP address can be used for a maximum of two KYC verifications": "단일 IP 주소는 최대 두 번의 KYC 인증에 사용할 수 있습니다.",
   "Check kyc failed, Please try again.": "KYC 인증에 실패했습니다. 다시 시도해 주세요.",
-  "One email can only be used for KYC verification once": "하나의 이메일 주소는 KYC 인증에 한 번만 사용할 수 있습니다"
+  "One email can only be used for KYC verification once": "하나의 이메일 주소는 KYC 인증에 한 번만 사용할 수 있습니다",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "위 질문에서 마지막으로 한 질문의 내용이 무엇에 대한 것인지 파악하고 내용만 출력하세요"
 }

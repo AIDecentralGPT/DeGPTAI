@@ -290,12 +290,9 @@ export const generateDeTitle = async (
 };
 
 
-// 获取搜索关键词语
+// 获取最后提问的词语
 export const generateSearchKeyword = async (
-  token: string = "",
-  template: string,
-  model: string,
-  prompt: string,
+  messages: Object,
   url: string
 ) => {
   let error = null;
@@ -309,8 +306,7 @@ export const generateSearchKeyword = async (
     // 将该元素添加到数组的开头
     urls.unshift(koreaItem);
   }
-  template = promptTemplate(template, prompt);
-  model = model=='DeepSeek-R1' ? 'Llama3.3-70B' : model;
+  let model = 'Llama3.3-70B';
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
@@ -322,12 +318,7 @@ export const generateSearchKeyword = async (
         body: JSON.stringify({
           model: model,
           // node_id: nodeList?.[0],
-          messages: [
-            {
-              role: "user",
-              content: template,
-            },
-          ],
+          messages: messages,
           stream: false,
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles

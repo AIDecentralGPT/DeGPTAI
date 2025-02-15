@@ -813,5 +813,6 @@
   "KYC verification is limited to once every 10 minutes, Please try again later.": "La vérification KYC est limitée à une fois toutes les 10 minutes. Veuillez réessayer plus tard.",
   "A single IP address can be used for a maximum of two KYC verifications": "Une seule adresse IP peut être utilisée au maximum deux fois pour les vérifications KYC.",
   "Check kyc failed, Please try again.": "La vérification KYC a échoué. Veuillez réessayer.",
-  "One email can only be used for KYC verification once": "Une adresse e-mail ne peut être utilisée qu'une seule fois pour la vérification KYC"
+  "One email can only be used for KYC verification once": "Une adresse e-mail ne peut être utilisée qu'une seule fois pour la vérification KYC",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Déterminez de quoi il s'agit dans le contenu de la dernière question parmi les questions ci - dessus et ne présentez que le contenu"
 }

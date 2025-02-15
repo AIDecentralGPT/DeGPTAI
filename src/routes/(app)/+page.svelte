@@ -878,27 +878,19 @@
     }
   };
 
-  const generateSearchChatKeyword = async (userPrompt: any) => {
+  const generateSearchChatKeyword = async (userPrompt: string) => {
     if ($settings?.title?.auto ?? true) {
-      const model = $models.find((model) => model.id === selectedModels[0]);
-
-      const titleModelId =
-        model?.external ?? false
-          ? $settings?.title?.modelExternal ?? selectedModels[0]
-          : $settings?.title?.model ?? selectedModels[0];
       // 获取关键词
-      let content = messages.filter(item => item.role == 'user').map(item => item.content).join(',');
+      let send_messages = messages.filter(item => item.role == 'user')
+        .map(item => ({role: item.role, content: item.content}));
+      send_messages.push({
+        role: "user",
+        content: $i18n.t("Obtain what the content of the final question is about, and only output the content it is about")
+      })
       const title = await generateSearchKeyword(
-        localStorage.token,
-        $settings?.title?.prompt ??
-          $i18n.t(
-            "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:"
-          ) + " {{prompt}}",
-        titleModelId,
-        content,
+        send_messages,
         $deApiBaseUrl?.url
       );
-
       return title;
     } else {
       return `${userPrompt}`;
