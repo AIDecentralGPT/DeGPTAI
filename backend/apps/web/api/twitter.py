@@ -9,6 +9,8 @@ bearer_token = 'AAAAAAAAAAAAAAAAAAAAADX0vAEAAAAA%2FGkhIQJvPdj0YR%2FsQT8dJak0OgI%
 access_token = '1726080863979610112-xWTMVvhOHAPJa0C81lwVNYWzQEUL6F'
 access_token_secret = 'glwphg8uY4Mlr7etrYxu8PB6PbVFzH0tTp7tmx8Jd8Ly8'
 
+social_key = "2183|XgR9gbE5uE5nuc9tWyJaYUseHczADvNNcdzUbp0Cb0ce6d96"
+
 
 class TwitterSearchForm(BaseModel):
   keyword: str
@@ -52,14 +54,29 @@ class TwitterLib:
             }
             response = requests.get(url, headers=headers, params=params)
             tweets = response.json()
-            print("============================", tweets)
             if tweets.get("data"):
-                print("=============有数据===============", tweets.get("data"))
                 return {"content": tweets.get("data")}
             else:
                 return None
         except Exception as e:
             print(f"出现错误：{e}")
+            return None
+        
+    def search_social(self, keword: str):
+        url = f'https://api.socialdata.tools/twitter/search?query={keword}&type=Latest'
+        headers = {
+            'Authorization': f'Bearer {social_key}',
+            'Accept': 'application/json'
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("tweets"):
+                return {"content": data.get("tweets")}
+            else:
+                return None
+            return data
+        else:
             return None
 
 TwitterApi = TwitterLib()
