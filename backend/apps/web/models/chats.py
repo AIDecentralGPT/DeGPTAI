@@ -181,7 +181,6 @@ class ChatTable:
         try:
             query = Chat.delete().where(Chat.user_id == f"shared-{chat_id}")
             query.execute()  # Remove the rows, return number of rows removed.
-
             return True
         except:
             return False
@@ -302,10 +301,12 @@ class ChatTable:
 
     def delete_chat_by_id(self, id: str) -> bool:
         try:
-            query = Chat.delete().where((Chat.id == id))
-            query.execute()  # Remove the rows, return number of rows removed.
-            flag = True and self.delete_shared_chat_by_chat_id(id)
+            # 获取chat信息
             chat = Chat.get(Chat.id == id)
+            if chat is not None:
+                query = Chat.delete().where((Chat.id == id))
+                query.execute()  # Remove the rows, return number of rows removed.
+                flag = True and self.delete_shared_chat_by_chat_id(id)
             # 更新redis聊天列表
             self.refresh_chat_redis(chat.user_id)   
             return flag
@@ -325,9 +326,7 @@ class ChatTable:
 
     def delete_chats_by_user_id(self, user_id: str) -> bool:
         try:
-
             self.delete_shared_chats_by_user_id(user_id)
-
             query = Chat.delete().where(Chat.user_id == user_id)
             query.execute()  # Remove the rows, return number of rows removed.
             # 更新redis聊天列表
