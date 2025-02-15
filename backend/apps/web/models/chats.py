@@ -305,10 +305,9 @@ class ChatTable:
             query = Chat.delete().where((Chat.id == id))
             query.execute()  # Remove the rows, return number of rows removed.
             flag = True and self.delete_shared_chat_by_chat_id(id)
-            if flag:
-                chat = Chat.get(Chat.id == id)
-                # 更新redis聊天列表
-                self.refresh_chat_redis(chat.user_id)
+            chat = Chat.get(Chat.id == id)
+            # 更新redis聊天列表
+            self.refresh_chat_redis(chat.user_id)   
             return flag
         except:
             return False
@@ -317,8 +316,10 @@ class ChatTable:
         try:
             query = Chat.delete().where((Chat.id == id) & (Chat.user_id == user_id))
             query.execute()  # Remove the rows, return number of rows removed.
-
-            return True and self.delete_shared_chat_by_chat_id(id)
+            flag = True and self.delete_shared_chat_by_chat_id(id)
+            # 更新redis聊天列表
+            self.refresh_chat_redis(user_id) 
+            return flag
         except:
             return False
 
@@ -329,7 +330,8 @@ class ChatTable:
 
             query = Chat.delete().where(Chat.user_id == user_id)
             query.execute()  # Remove the rows, return number of rows removed.
-
+            # 更新redis聊天列表
+            self.refresh_chat_redis(user_id)
             return True
         except:
             return False
@@ -343,7 +345,8 @@ class ChatTable:
 
             query = Chat.delete().where(Chat.user_id << shared_chat_ids)
             query.execute()  # Remove the rows, return number of rows removed.
-
+            # 更新redis聊天列表
+            self.refresh_chat_redis(user_id)
             return True
         except:
             return False
