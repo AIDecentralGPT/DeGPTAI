@@ -16,7 +16,7 @@ class YoutubeClient:
             "q": keyword,
             "part": "snippet",
             "type": "video",
-            "maxResults": 15,
+            "maxResults": 12,
             "order": "relevance"
         }
         response = requests.get(url, params=params)
@@ -37,7 +37,7 @@ class YoutubeClient:
                 "video_url": f"https://www.youtube.com/watch?v={video_id}"
             }
             videos.append(video_info)
-        return {"videos":videos}
+        return {"videos": videos}
     except Exception as e:
         print(f"发生错误: {e}")
         return None

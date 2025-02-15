@@ -1,10 +1,10 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 // 获取tavily搜索结果
-export const webSearch = async (token: string, keyword: string, type: string) => {
+export const thirdSearch = async (token: string, keyword: string, type: string) => {
 
   let error = null;
-	const res = await fetch(`${WEBUI_API_BASE_URL}/third/web/search`, {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/third/search`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

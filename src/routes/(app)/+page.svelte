@@ -58,8 +58,7 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
-  import { webSearch } from "$lib/apis/websearch"
-    import { json } from "@sveltejs/kit";
+  import { thirdSearch } from "$lib/apis/thirdsearch";
 
   let inviter: any = "";
   let channelName: any = "";
@@ -309,11 +308,12 @@
             id: responseMessageId,
             search: search,
             search_type: search_type,
-            search_data: {},
+            search_content: {},
             keyword: userPrompt,
             childrenIds: [],
             role: "assistant",
             content: "",
+            think_content: "",
             model: model.id,
             userContext: null,
             timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -371,7 +371,7 @@
     }
   };
 
-  const sendPrompt = async (prompt, parentId, responseMap, modelLimit, modelId = null) => {
+  const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
       // 此判断毫无意义-判断结果就是selectedModels
@@ -392,11 +392,12 @@
               id: responseMessageId,
               search: search,
               search_type: search_type,
-              search_data: {},
+              search_content: {},
               keyword: prompt,
               childrenIds: [],
               role: "assistant",
               content: "",
+              think_content: "",
               model: model.id,
               userContext: null,
               timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -684,6 +685,8 @@
     } catch (error) {
       await handleOpenAIError(error, null, model, responseMessage);
     }
+
+    await checkThinkContent(responseMessage);
     messages = messages;
 
     stopResponseFlag = false;
@@ -705,13 +708,33 @@
     }
   };
 
+  // 校验模型是否有think思考内容
+  const checkThinkContent = async(responseMessage: any) => {
+    if (responseMessage.content.startsWith("<think>")) {
+      const startIndex = responseMessage.content.indexOf('<think>');
+      const nextSearchIndex = startIndex + '<think>'.length;
+      const endIndex = responseMessage.content.indexOf('</think>', nextSearchIndex);
+      let extracted;
+      let remaining;
+      if (endIndex === -1) {
+        extracted = responseMessage.content.slice(startIndex);
+        remaining = responseMessage.content.slice(0, startIndex);
+      } else {
+        extracted = responseMessage.content.slice(startIndex, endIndex + '</think>'.length);
+        remaining = responseMessage.content.slice(0, startIndex) + responseMessage.content.slice(endIndex + '</think>'.length);
+      }
+      responseMessage.content = remaining;
+      responseMessage.think_content = extracted;
+    }
+  }
+
   // 获取搜索网页
   const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
     if (search) {
       const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
-      let webResult = await webSearch(localStorage.token, ai_keyword, responseMessage.search_type);
-      if (webResult?.ok) {
-        responseMessage.search_data = webResult.data;
+      let result = await thirdSearch(localStorage.token, ai_keyword, responseMessage.search_type);
+      if (result?.ok) {
+        responseMessage.search_content = result.data;
         history.messages[responseMessageId] = responseMessage;
       }
     }

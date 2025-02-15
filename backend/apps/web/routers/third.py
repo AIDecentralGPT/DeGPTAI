@@ -10,7 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 router = APIRouter()
 
 
-@router.post("/web/search", response_model=dict)
+@router.post("/search", response_model=dict)
 async def tavilySearch(form: TavilySearchForm):
     if form.type == 'twitter':
         data = TwitterApi.search(form.keyword)

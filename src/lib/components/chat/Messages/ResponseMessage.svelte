@@ -14,7 +14,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	import { config, settings, models } from '$lib/stores';
+	import { config, settings, models, theme } from '$lib/stores';
 
 	import { synthesizeOpenAISpeech } from '$lib/apis/audio';
 	import { imageGenerations } from '$lib/apis/images';
@@ -35,6 +35,7 @@
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import RateComment from './RateComment.svelte';
 	import CitationsModal from '$lib/components/chat/Messages/CitationsModal.svelte';
+	import TwitterEmbed from "$lib/components/twitter/TwitterEmbed.svelte";
 
 	export let modelfiles = [];
 	export let message;
@@ -71,7 +72,7 @@
 
 	let selectedCitation = null;
 
-	$: tokens = deepseekAnalysis(message?.content);
+	$: tokens = deepseekAnalysis((message?.think_content??'') + message?.content);
 
 	function deepseekAnalysis(content: any) {
 		if (content.startsWith("<think>")) {
@@ -91,7 +92,6 @@
 				}	
 			}
 		} else {
-			console.log("开头不包含<think>");
 			return marked.lexer(sanitizeResponseContent(content));
 		}
 	}
@@ -382,15 +382,6 @@
 		webFlag = !webFlag;
 	}
 
-	// 隐藏第三方搜索
-	const handleThirdHidden = (message) => {
-		if (message?.thirdflag) {
-			message.thirdflag = true;
-		} else {
-			message.thirdflag = !message.thirdflag;
-		}
-	}
-
 	let thinkHiden = false;
 
 	function highlightedText(content: string, keyword: string) {
@@ -401,6 +392,12 @@
 		})
     return content;
   }
+
+	// 监听主题变化
+	let currentTheme = $theme;
+	$: {
+		currentTheme = ($theme === "system" || $theme === "light") ? 'light' : 'dark';
+	}
 
 </script>
 
@@ -455,12 +452,10 @@
 			{#if message?.search}
 				{#if message?.search_type == 'web'}
 					<!-- 网站搜索 -->
-					{#if message?.search_data?.web}
+					{#if message?.search_content?.web}
 						<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
 								<div class="text-sm font-bold">{ $i18n.t("Web Search") }</div>
-								<!-- {:else}
-									<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div> -->
 								<button on:click={() => {
 									handleWebHidden();
 								}}>
@@ -476,7 +471,7 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
-									{#each message?.search_data?.web ?? [] as item}
+									{#each message?.search_content?.web ?? [] as item}
 										<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
 											<div class="flex flex-row">
 												<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
@@ -513,9 +508,9 @@
 						</div>
 					{/if}
 					<!-- 图片搜索 -->
-					{#if message?.search_data?.images}
+					{#if message?.search_content?.images}
 						<div class="flex flex-wrap mt-3">
-							{#each message?.search_data?.images ?? [] as item}
+							{#each message?.search_content?.images ?? [] as item}
 								{#if item?.url}
 									<div class="flex flex-col p-1 lg:w-1/5 w-1/3 aspect-square">
 										<Image src={item.url} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
@@ -527,12 +522,10 @@
 				{/if}
 				{#if message?.search_type == 'youtube'}
 					<!-- youtube搜索 -->
-					{#if message?.search_data?.videos}
+					{#if message?.search_content?.videos}
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center p-6">
 								<div class="text-sm font-bold">{ $i18n.t("YouTube Search") }</div>
-								<!-- {:else}
-									<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div> -->
 								<button on:click={() => {
 									handleWebHidden();
 								}}>
@@ -548,10 +541,10 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
-									{#each message?.search_data?.videos ?? [] as item}
+									{#each message?.search_content?.videos ?? [] as item}
 										<div class="flex flex-col rounded-xl bg-white dark:bg-black mx-2 mb-4 pb-2">
 											<a class="flex flex-col w-[230px]" href="{item.video_url}" target="_blank">
-												<img class="rounded-t-xl" src={item.thumbnail_url} alt=""/>
+												<img class="rounded-t-xl drag-none" src={item.thumbnail_url} alt=""/>
 												<div class="px-3 py-2">
 													<span class="line-clamp-2 text-ellipsis">{item.title}</span>
 													<div class="flex flex-row items-center mt-1">
@@ -566,6 +559,38 @@
 												</div>
 											</a>
 										</div>
+									{/each}
+								</div>
+							</div>
+						</div>
+					{/if}
+				{/if}
+				{#if message?.search_type == 'twitter'}
+					<!-- youtube搜索 -->
+					{#if message?.search_content?.content}
+						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
+							<div class="flex justify-between items-center p-6">
+								<div class="text-sm font-bold">{ $i18n.t("Twitter Search") }</div>
+								<button on:click={() => {
+									handleWebHidden();
+								}}>
+									<svg 
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 15 15"
+										width="15" height="15"  
+										fill="currentColor"  
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
+										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+									</svg>
+								</button>
+							</div>	
+							<div class="w-full transition ease-in-out delay-150 overflow-x-auto overflow-y-hidden {webShow ? 'h-0' : 'h-auto'}">
+								<div class="flex flex-row px-4 mr-2">
+									{#each message?.search_content?.content ?? [] as item}
+										<!-- 带自定义选项 -->
+										 <div class="mr-1 h-[300px]">
+											<TwitterEmbed tweetId="{item.id}" theme={currentTheme}/>
+										 </div>
 									{/each}
 								</div>
 							</div>
@@ -1183,4 +1208,11 @@
 		-ms-overflow-style: none; /* IE and Edge */
 		scrollbar-width: none; /* Firefox */
 	}
+
+	.drag-none {
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    user-drag: none;
+  }
 </style>

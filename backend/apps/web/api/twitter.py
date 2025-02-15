@@ -1,7 +1,6 @@
 import tweepy
 from pydantic import BaseModel
-import re
-from bs4 import BeautifulSoup
+import requests
 
 
 consumer_key = 'q9r7Zv527UosaDGPcYDJZ8wih'
@@ -43,39 +42,20 @@ class TwitterLib:
     def search(self, keword: str):
         try:
             # 搜索包含特定关键词的推文
-            tweets = self.client.search_recent_tweets(query=keword, max_results=8, 
-                expansions='attachments.media_keys', media_fields=['preview_image_url', 'url'])
-            # 存储媒体对象，键为media_key，值为媒体对象
-            media = {m["media_key"]: m for m in tweets.includes.get('media', [])}
-            # 定义匹配 URL 的正则表达式模式
-            url_pattern = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
-            # 用于存储最终结果的列表
-            tweet_list = []
-            if tweets.data:
-                for tweet in tweets.data:
-                    tweet_text = tweet.text
-                    # 查找所有链接
-                    urls = url_pattern.findall(tweet_text)
-                    # 移除链接后的文本内容
-                    text_without_urls = url_pattern.sub('', tweet_text).strip()
-                    tweet_info = {
-                        "title": text_without_urls,
-                        "url": urls[0],
-                        "thumb_url": "",
-                        "source": "twitter"
-                    }
-                    attachments = tweet.data.get('attachments')
-                    if attachments and 'media_keys' in attachments:
-                        for media_key in attachments['media_keys']:
-                            if media_key in media:
-                                # 获取媒体对象
-                                media_info = media[media_key]
-                                if 'preview_image_url' in media_info:
-                                    tweet_info["thumb_url"] = media_info['preview_image_url']
-                                elif 'url' in media_info:
-                                    tweet_info["thumb_url"] = media_info['url']
-                    tweet_list.append(tweet_info)
-                return tweet_list
+            headers = {"Authorization": f"Bearer {bearer_token}"}
+            # 搜索最近包含 "Python" 的推文（过去 7 天内）
+            url = "https://api.twitter.com/2/tweets/search/recent"
+            params = {
+                "query": keword,          # 搜索关键字
+                "max_results": 12,          # 返回数量
+                "tweet.fields": "created_at,public_metrics"
+            }
+            response = requests.get(url, headers=headers, params=params)
+            tweets = response.json()
+            print("============================", tweets)
+            if tweets.get("data"):
+                print("=============有数据===============", tweets.get("data"))
+                return {"content": tweets.get("data")}
             else:
                 return None
         except Exception as e:
