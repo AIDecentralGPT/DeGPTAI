@@ -3,23 +3,8 @@
     // 接收推文 ID 和主题作为属性
     export let tweetId;
     export let theme;
+    export let isTwitterScriptLoaded = false;
     let tweetContainer;
-    let isTwitterScriptLoaded = false;
-
-    const loadTwitterScript = () => {
-        if (isTwitterScriptLoaded) return;
-        const script = document.createElement('script');
-        script.src = 'https://platform.twitter.com/widgets.js';
-        script.charset = 'utf-8';
-        script.async = true;
-        script.onload = () => {
-            isTwitterScriptLoaded = true;
-            if (typeof twttr!== 'undefined' && tweetContainer) {
-                createTweetWithTheme();
-            }
-        };
-        document.head.appendChild(script);
-    };
 
     const createTweetWithTheme = () => {
         tweetContainer.innerHTML = '';
@@ -33,7 +18,9 @@
     };
 
     onMount(() => {
-        loadTwitterScript();
+        if (isTwitterScriptLoaded) {
+            createTweetWithTheme();
+        }
     });
 
     // 当主题属性改变时重新创建推文
@@ -48,4 +35,4 @@
     }
 </script>
 
-<div bind:this={tweetContainer} />
+<div class="w-[320px]" bind:this={tweetContainer} />
