@@ -814,5 +814,8 @@
   "A single IP address can be used for a maximum of two KYC verifications": "ที่อยู่ IP เดียวสามารถใช้สำหรับการยืนยัน KYC ได้สูงสุดสองครั้ง",
   "Check kyc failed, Please try again.": "การยืนยัน KYC ล้มเหลว โปรดลองอีกครั้ง",
   "One email can only be used for KYC verification once": "ที่อยู่อีเมล์หนึ่งสามารถใช้สำหรับการยืนยัน KYC ได้เพียงครั้งเดียวเท่านั้น",
-  "Obtain what the content of the last question in the above questions is about, and only output the content": "ระบุว่าข้อความของคำถามครั้งสุดท้ายในคำถามข้างต้นเกี่ยวกับอะไร และแสดงเฉพาะข้อความเท่านั้น"
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "ระบุว่าข้อความของคำถามครั้งสุดท้ายในคำถามข้างต้นเกี่ยวกับอะไร และแสดงเฉพาะข้อความเท่านั้น",
+  "Analyze based on the above YouTube search results:": "วิเคราะห์ตามผลการค้นหาใน YouTube ด้านบน:",
+  "Analyze based on the above Twitter search results": "วิเคราะห์ตามผลการค้นหาใน Twitter ด้านบน",
+  "Analyze based on the above web search results:": "วิเคราะห์ตามผลการค้นหาในเว็บด้านบน:"
 }

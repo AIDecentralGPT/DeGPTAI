@@ -815,5 +815,8 @@
   "A single IP address can be used for a maximum of two KYC verifications": "Tek bir IP adresi en fazla iki kez KYC doğrulaması için kullanılabilir.",
   "Check kyc failed, Please try again.": "KYC doğrulaması başarısız oldu. Lütfen tekrar deneyin.",
   "One email can only be used for KYC verification once": "Bir e-posta adresi sadece bir kez KYC doğrulaması için kullanılabilir",
-  "Obtain what the content of the last question in the above questions is about, and only output the content": "Yukarıdaki sorulardan son sorunun içeriği hakkında ne olduğunu belirleyin ve yalnızca içeriği yazdırın"
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Yukarıdaki sorulardan son sorunun içeriği hakkında ne olduğunu belirleyin ve yalnızca içeriği yazdırın",
+  "Analyze based on the above YouTube search results:": "Yukarıdaki YouTube arama sonuçlarına göre analiz yap:",
+  "Analyze based on the above Twitter search results": "Yukarıdaki Twitter arama sonuçlarına göre analiz yap",
+  "Analyze based on the above web search results:": "Yukarıdaki web arama sonuçlarına göre analiz yap:"
 }

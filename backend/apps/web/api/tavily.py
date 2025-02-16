@@ -2,6 +2,7 @@ from tavily import TavilyClient
 from pydantic import BaseModel
 import re
 import requests
+import jieba
 
 api_key = "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"
 tavily_client = TavilyClient(api_key=api_key)
@@ -15,9 +16,10 @@ class tavilyClient:
     try:
       response = tavily_client.search(
         query=keyword,
+        include_answer="basic",
         include_images=True,
         include_image_descriptions=True,
-        max_results=20
+        max_results=8
       )
       # 定义要屏蔽的 JavaScript 代码特征
       js_pattern = re.compile(r'var\s+hm\s*=\s*document\.createElement\("script"\);|function\s+bygjsw_switch_dark\(\)\{')
@@ -30,7 +32,8 @@ class tavilyClient:
       image_result = []
       for result in response.get('images', []):
           image_result.append(result)
-      return { "web": web_result, "images": image_result}
+      words = jieba.cut(keyword, cut_all=True)
+      return {"keyword": "/".join(words), "web": web_result, "images": image_result}
     except Exception as e:
       return None
   

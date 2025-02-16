@@ -49,7 +49,7 @@ class TwitterLib:
             url = "https://api.twitter.com/2/tweets/search/recent"
             params = {
                 "query": keword,          # 搜索关键字
-                "max_results": 12,          # 返回数量
+                "max_results": 10,          # 返回数量
                 "tweet.fields": "created_at,public_metrics"
             }
             response = requests.get(url, headers=headers, params=params)

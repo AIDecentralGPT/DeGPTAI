@@ -469,7 +469,7 @@
 					<!-- 网站搜索 -->
 					{#if message?.search_content?.web}
 						<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
-							<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-4">
+							<div class="flex justify-between items-center h-[45px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
 									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
 										<svg
@@ -482,7 +482,7 @@
 									</div>
 									<div class="flex flex-col ml-1">
 										<span class="text-sm">{ $i18n.t("Web Search") }</span>
-										<span class="text-xs"> {message?.search_content?.web.length} videos</span>
+										<span class="text-xs"> {message?.search_content?.web.length} Results</span>
 									</div>
 								</div>
 								<button on:click={() => {
@@ -509,7 +509,7 @@
 													</svg>
 												</div>
 												<div class="ml-2">
-													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.web?.keyword??"")}</div>
+													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.search_content?.keyword??"")}</div>
 													<div class="flex flex-row items-center w-[300px] text-xs">
 														<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
 														<svg 
@@ -525,7 +525,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.web?.keyword??"")}</div>
+											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.search_content?.keyword??"")}</div>
 										</div>
 									{/each}
 								</div>

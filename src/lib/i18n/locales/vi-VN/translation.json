@@ -804,5 +804,8 @@
   "A single IP address can be used for a maximum of two KYC verifications": "Một địa chỉ IP duy nhất có thể được sử dụng tối đa hai lần cho việc xác minh KYC.",
   "Check kyc failed, Please try again.": "Xác minh KYC đã thất bại. Vui lòng thử lại.",
   "One email can only be used for KYC verification once": "Một địa chỉ email chỉ có thể được sử dụng một lần cho việc xác minh KYC",
-  "Obtain what the content of the last question in the above questions is about, and only output the content": "Xác định nội dung của câu hỏi cuối cùng trong các câu hỏi trên là về điều gì, và chỉ xuất nội dung"
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Xác định nội dung của câu hỏi cuối cùng trong các câu hỏi trên là về điều gì, và chỉ xuất nội dung",
+  "Analyze based on the above YouTube search results:": "Phân tích dựa trên kết quả tìm kiếm YouTube trên:",
+  "Analyze based on the above Twitter search results": "Phân tích dựa trên kết quả tìm kiếm Twitter trên",
+  "Analyze based on the above web search results:": "Phân tích dựa trên kết quả tìm kiếm trên web trên:"
 }

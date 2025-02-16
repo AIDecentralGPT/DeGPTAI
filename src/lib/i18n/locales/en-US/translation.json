@@ -815,6 +815,9 @@
   "A single IP address can be used for a maximum of two KYC verifications": "",
   "Check kyc failed, Please try again.": "",
   "One email can only be used for KYC verification once": "",
-  "Obtain what the content of the last question in the above questions is about, and only output the content": ""
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "",
+  "Analyze based on the above YouTube search results:": "",
+  "Analyze based on the above Twitter search results": "",
+  "Analyze based on the above web search results:": ""
 }
 

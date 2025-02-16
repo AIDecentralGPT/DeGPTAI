@@ -815,5 +815,8 @@
   "A single IP address can be used for a maximum of two KYC verifications": "Una sola dirección IP se puede utilizar un máximo de dos veces para las verificaciones KYC.",
   "Check kyc failed, Please try again.": "La verificación KYC ha fallado. Por favor, inténtelo de nuevo.",
   "One email can only be used for KYC verification once": "Una dirección de correo electrónico solo se puede utilizar una vez para la verificación KYC",
-  "Obtain what the content of the last question in the above questions is about, and only output the content": "Determina de qué se trata el contenido de la última pregunta en las preguntas anteriores y solo muestra el contenido"
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Determina de qué se trata el contenido de la última pregunta en las preguntas anteriores y solo muestra el contenido",
+  "Analyze based on the above YouTube search results:": "Analizar basado en los resultados de búsqueda de YouTube anteriores:",
+  "Analyze based on the above Twitter search results": "Analizar basado en los resultados de búsqueda de Twitter anteriores",
+  "Analyze based on the above web search results:": "Analizar basado en los resultados de búsqueda web anteriores:"
 }

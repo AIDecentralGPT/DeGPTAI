@@ -225,7 +225,6 @@ async def get_all_tags(user=Depends(get_current_user)):
 @router.get("/{id}", response_model=Optional[ChatResponse])
 async def get_chat_by_id(id: str, user=Depends(get_current_user)):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
-
     if chat:
         return ChatResponse(**{**chat.model_dump(), "chat": json.loads(chat.chat)})
     else:

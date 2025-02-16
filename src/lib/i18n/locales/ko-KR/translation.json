@@ -815,5 +815,8 @@
   "A single IP address can be used for a maximum of two KYC verifications": "단일 IP 주소는 최대 두 번의 KYC 인증에 사용할 수 있습니다.",
   "Check kyc failed, Please try again.": "KYC 인증에 실패했습니다. 다시 시도해 주세요.",
   "One email can only be used for KYC verification once": "하나의 이메일 주소는 KYC 인증에 한 번만 사용할 수 있습니다",
-  "Obtain what the content of the last question in the above questions is about, and only output the content": "위 질문에서 마지막으로 한 질문의 내용이 무엇에 대한 것인지 파악하고 내용만 출력하세요"
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "위 질문에서 마지막으로 한 질문의 내용이 무엇에 대한 것인지 파악하고 내용만 출력하세요",
+  "Analyze based on the above YouTube search results:": "위의 YouTube 검색 결과를 바탕으로 분석하세요:",
+  "Analyze based on the above Twitter search results": "위의 Twitter 검색 결과를 바탕으로 분석하세요",
+  "Analyze based on the above web search results:": "위의 웹 검색 결과를 바탕으로 분석하세요:"
 }
