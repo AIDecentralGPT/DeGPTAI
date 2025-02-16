@@ -511,15 +511,15 @@ const submitPrompt = async (userPrompt, _user = null) => {
           let preMessage = send_message[index-1].content;
           if (item?.search_type == "youtube") {
             let analyContent = item?.search_content?.videos.map((vItem: any) => vItem?.description).join('\n');
-            analyContent = analyContent + "\n" + $i18n.t("Analyze based on the above YouTube search results:") + preMessage;
+            analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:") + preMessage;
             send_message[index-1].content = analyContent;
           } else if (item?.search_type == "twitter") {
             let analyContent = item?.search_content?.content.map((tItem: any) => tItem?.full_text).join('\n');
-            analyContent = analyContent + "\n" + $i18n.t("Analyze based on the above Twitter search results") + preMessage;
+            analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results") + preMessage;
             send_message[index-1].content = analyContent;
           } else {
             let analyContent = item?.search_content?.web.map((wItem: any) => wItem?.content).join('\n');
-            analyContent = analyContent + "\n" + $i18n.t("Analyze based on the above web search results:") + preMessage;
+            analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:") + preMessage;
             send_message[index-1].content = analyContent;
           }
         }

@@ -815,7 +815,7 @@
   "Check kyc failed, Please try again.": "Верификация KYC не удалась. Пожалуйста, попробуйте еще раз.",
   "One email can only be used for KYC verification once": "Адрес электронной почты может быть использован только один раз для верификации KYC",
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Определите, о чём идёт речь в содержании последнего вопроса из вышеперечисленных вопросов, и выведите только это содержание",
-  "Analyze based on the above YouTube search results:": "Проанализировать на основе вышеуказанных результатов поиска на YouTube:",
-  "Analyze based on the above Twitter search results": "Проанализировать на основе вышеуказанных результатов поиска на Twitter",
-  "Analyze based on the above web search results:": "Проанализировать на основе вышеуказанных результатов поиска в интернете:"
+  "Summarize based on the above YouTube search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска на YouTube:",
+  "Summarize based on the above Twitter search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в Twitter:",
+  "Summarize based on the above web search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в интернете:"
 }
