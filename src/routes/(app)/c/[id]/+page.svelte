@@ -511,25 +511,36 @@ const submitPrompt = async (userPrompt, _user = null) => {
             } : undefined,
             ...modelmessage,
         ].filter((message) => message);
+			
+			// 判断是否网络搜索重新赋值
 			send_message.forEach((item, index) => {
         // 判断不同类型提问不同内容
         if (item?.role != 'user' && item?.search) {
           let preMessage = send_message[index-1].content;
           if (item?.search_type == "youtube") {
-            let analyContent = item?.search_content?.videos.map((vItem: any) => vItem?.description).join('\n');
-            analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:") + preMessage;
-            send_message[index-1].content = analyContent;
+						if (item?.search_content?.videos) {
+							let analyContent = item?.search_content?.videos.map((vItem: any) => vItem?.description).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:") + preMessage;
+							send_message[index-1].content = analyContent;
+						}
           } else if (item?.search_type == "twitter") {
-            let analyContent = item?.search_content?.content.map((tItem: any) => tItem?.full_text).join('\n');
-            analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results:") + preMessage;
-            send_message[index-1].content = analyContent;
+						if (item?.search_content?.content) {
+							let analyContent = item?.search_content?.content.map((tItem: any) => tItem?.full_text).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results:") + preMessage;
+							send_message[index-1].content = analyContent;
+						}
           } else {
-            let analyContent = item?.search_content?.web.map((wItem: any) => wItem?.content).join('\n');
-            analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:") + preMessage;
-            send_message[index-1].content = analyContent;
+						if (item?.search_content?.web) {
+							let analyContent = item?.search_content?.web.map((wItem: any) => wItem?.content).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:") + preMessage;
+							send_message[index-1].content = analyContent;
+						}
           }
         }
       });
+			// 过滤掉error和 content为空数据
+			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
+			
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
@@ -560,7 +571,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
                 : message?.raContent ?? message.content,
             }),
       }));
-			
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
