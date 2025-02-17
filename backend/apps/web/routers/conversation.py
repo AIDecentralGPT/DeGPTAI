@@ -37,12 +37,9 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
         for model in conversation_req.models:
             modellimit = next((item for item in modellimits if item.model == model), None) if modellimits is not None else None
             conversation = next((item for item in conversations if item.model == model), None) if conversations is not None else None
-            if modellimit is None:
-                result.append({"passed": True, "model": model, "num": 0, "message": "ok"})
-            else:
+            if modellimit is not None:
                 if conversation is None:
                     ConversationInstance.insert(user.id, model)
-                    result.append({"passed": True, "model": model, "num": 0, "message": "ok"})
                 else:
                     # 判断用户是否超出次数
                     if vipflag:
