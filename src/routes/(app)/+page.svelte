@@ -680,6 +680,7 @@
     } catch (error) {
       await handleOpenAIError(error, null, model, responseMessage);
     }
+    await checkThinkContent(responseMessage);
     messages = messages;
 
     stopResponseFlag = false;
