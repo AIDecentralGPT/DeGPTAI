@@ -701,6 +701,27 @@
     }
   };
 
+  // 校验模型是否有think思考内容
+  const checkThinkContent = async(responseMessage: any) => {
+    let checkMessage = responseMessage.think_content + responseMessage.content;
+    if (checkMessage.startsWith("<think>")) {
+      const startIndex = checkMessage.indexOf('<think>');
+      const nextSearchIndex = startIndex + '<think>'.length;
+      const endIndex = checkMessage.indexOf('</think>', nextSearchIndex);
+      let extracted;
+      let remaining;
+      if (endIndex === -1) {
+        extracted = checkMessage.slice(startIndex);
+        remaining = checkMessage.slice(0, startIndex);
+      } else {
+        extracted = checkMessage.slice(startIndex, endIndex + '</think>'.length);
+        remaining = checkMessage.slice(0, startIndex) + checkMessage.slice(endIndex + '</think>'.length);
+      }
+      responseMessage.content = remaining;
+      responseMessage.think_content = extracted;
+    }
+  }
+
   // 获取搜索网页
   const handleSearchWeb= async(responseMessage: any) => {
     if (search) {

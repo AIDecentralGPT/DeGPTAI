@@ -71,7 +71,7 @@
 
 	let selectedCitation = null;
 
-	$: tokens = deepseekAnalysis(message?.content);
+	$: tokens = deepseekAnalysis((message?.think_content??'') + message?.content);
 
 	function deepseekAnalysis(content: any) {
 		if (content.startsWith("<think>")) {
