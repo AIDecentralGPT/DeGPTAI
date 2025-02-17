@@ -221,15 +221,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	if (search) {
     selectedModels = [selectedModels[0]];
   }
-
-	// 校验模型已使用次数
-	let modelLimit = {}
-  for (const item of selectedModels) {
-    const {passed, message} = await conversationRefresh(localStorage.token, item);
-    if (!passed) {
-      modelLimit[item] = message;
-    }  
-  }
 			
 	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
 	await tick()
@@ -312,6 +303,21 @@ const submitPrompt = async (userPrompt, _user = null) => {
         responseMap[model?.id] = responseMessage;
       }
     });
+
+		// 校验模型已使用次数
+		let modelLimit:any = {}
+    const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+        }) 
+      }
+    }
 
 		// 等待 history/message 更新完成
 		await tick();

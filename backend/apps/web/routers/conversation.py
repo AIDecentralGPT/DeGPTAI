@@ -24,55 +24,59 @@ router = APIRouter()
 @router.post("/refresh")
 async def conversationRefresh(conversation_req: ConversationRequest, user=Depends(get_current_user)):
     try:
+        # 获取模型的聊天次数
+        modellimits = ModelLimitInstance.get_info_by_models(conversation_req.models)
+
         # 获取今天的聊天次数
         date_time = date.today()
-        conversation = ConversationInstance.get_info_by_userid_model_date(user.id, conversation_req.model, date_time)
+        conversations = ConversationInstance.get_info_by_userid_models_date(user.id, conversation_req.models, date_time)
 
         # 获取用户是否为vip用户
         vipflag = VIPStatuses.is_vip_active(user.id)
-
-        # 获取模型的聊天次数
-        modellimit = ModelLimitInstance.get_info_by_model(conversation_req.model)
-        if modellimit is None:
-            return {
-                "passed": True,
-                "message": "There is no such model"
-            }
-
-        # 判断用户是否超出次数
-        if conversation is not None:
-            if vipflag:
-                if modellimit.vip <= conversation.chat_num:
-                    return {
-                        "passed": False,
-                        "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
-                    }
+        result = []
+        for model in conversation_req.models:
+            modellimit = next((item for item in modellimits if item.model == model), None) if modellimits is not None else None
+            conversation = next((item for item in conversations if item.model == model), None) if conversations is not None else None
+            if modellimit is None:
+                result.append({"passed": True, "model": model, "num": 0, "message": "ok"})
             else:
-                if user.id.startswith("0x"):
-                    if modellimit.wallet <= conversation.chat_num:
-                        return {
-                            "passed": False,
-                            "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
-                        }
+                if conversation is None:
+                    ConversationInstance.insert(user.id, model)
+                    result.append({"passed": True, "model": model, "num": 0, "message": "ok"})
                 else:
-                    if modellimit.normal <= conversation.chat_num:
-                        return {
-                            "passed": False,
-                            "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
-                        }
-
-        if conversation is None:
-            ConversationInstance.insert(user.id, conversation_req.model)
-        else:
-            ConversationInstance.update(conversation)
-        return {
-            "passed": True,
-            "message": "Success"
-        }
+                    # 判断用户是否超出次数
+                    if vipflag:
+                        if modellimit.vip <= conversation.chat_num:
+                            result.append({
+                                "passed": False,
+                                "model": model,
+                                "num": conversation.chat_num,
+                                "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
+                            })
+                    else:
+                        if user.id.startswith("0x"):
+                            if modellimit.wallet <= conversation.chat_num:
+                                result.append({
+                                    "passed": False,
+                                    "model": model,
+                                    "num": conversation.chat_num,
+                                    "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
+                                })
+                        else:
+                            if modellimit.normal <= conversation.chat_num:
+                                result.append({
+                                    "passed": False,
+                                    "model": model,
+                                    "num": conversation.chat_num,
+                                    "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
+                                })
+                    ConversationInstance.update(conversation)
+                    result.append({"passed": True, "model": model, "num": conversation.chat_num, "message": "ok"})
+        return {"passed": True, "data": result}
     except Exception as e:
-        print("==========================", e)
+        print("===========conversationRefresh==========", e)
         return {
-            "passed": True,
+            "passed": False,
             "message": "Failed"
         }
 

@@ -350,24 +350,9 @@
 		generatingImage = false;
 	};
 
-	// 加载twitter组件
-	let isTwitterScriptLoaded = false;
-	const loadTwitterScript = () => {
-    if (isTwitterScriptLoaded) return;
-    const script = document.createElement('script');
-    script.src = 'https://platform.twitter.com/widgets.js';
-    script.charset = 'utf-8';
-    script.async = true;
-    script.onload = () => {
-      isTwitterScriptLoaded = true;
-    };
-    document.head.appendChild(script);
-  };
-
 	onMount(async () => {
 		await tick();
 		renderStyling();
-		loadTwitterScript();
 	});
 
 	// 格式化模型名字
@@ -646,8 +631,8 @@
 								<div class="flex flex-row px-4 mr-2">
 									{#each message?.search_content?.content ?? [] as item}
 										<!-- 带自定义选项 -->
-										 	<div class="mr-1 h-[300px]">
-												<TwitterEmbed tweetId="{item.id_str}" theme={currentTheme} isTwitterScriptLoaded={isTwitterScriptLoaded}/>
+										 	<div class="mr-3 h-[300px]">
+												<TwitterEmbed data="{item}"/>
 										 	</div>
 									{/each}
 								</div>

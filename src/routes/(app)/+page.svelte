@@ -243,17 +243,6 @@
       selectedModels = [selectedModels[0]];
     }
 
-    
-
-    // 校验模型已使用次数
-    let modelLimit = {}
-    for (const item of selectedModels) {
-      const {passed, message} = await conversationRefresh(localStorage.token, item);
-      if (!passed) {
-        modelLimit[item] = message;
-      }  
-    }
-
     // const selectedModelsValid = selectedModels
     if (selectedModels.length < 1) {
       toast.error($i18n.t("Model not selected"));
@@ -295,7 +284,7 @@
       if (messages.length !== 0) {
         history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
       }
-
+      
       // Create Simulate ResopnseMessage
       let responseMap: any = {};
       selectedModels.map(async (modelId) => {
@@ -334,6 +323,21 @@
           responseMap[model?.id] = responseMessage;
         }
       });
+
+      // 校验模型已使用次数
+      let modelLimit:any = {}
+      const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
+      if (passed) {
+        for (const item of selectedModels) {
+          data.forEach((dItem:any) => {
+            if(dItem.model == item) {
+              if (!passed) {
+                modelLimit[dItem.model] = dItem.message;
+              }
+            }
+          }) 
+        }
+      }
 
       // Wait until history/message have been updated
       await tick();
