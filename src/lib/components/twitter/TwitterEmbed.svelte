@@ -41,7 +41,7 @@
 
 </script>
 
-<div class="w-[320px] p-4 rounded-xl bg-gray-50 border-[1px] border-inherit">
+<div class="w-[320px] p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border-[1px] border-inherit dark:border-gray-600">
     <a href="https://x.com/{data.screen_name}/status/{data.id_str}" target="_blank">
         <div class="flex justify-between">
             <div class="flex flex-row items-center mr-2">
@@ -68,8 +68,8 @@
         {#if data.entities?.media}
             <img class="w-full h-[320px] object-cover mt-2 rounded-xl" src={data.entities?.media[0]?.media_url_https} alt=""/>
         {/if}
-        <div class="text-sm mt-2">{formatDateToTwitterStyle(data.tweet_created_at)}</div>
-        <hr class="my-2"/>
+        <div class="text-sm mt-2 dark:text-gray-600">{formatDateToTwitterStyle(data.tweet_created_at)}</div>
+        <hr class="my-2 dark:border-gray-600"/>
         <div class="flex justify-between items-center">
             <div class="flex flex-row items-center">
                 <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[1.3rem] h-[1.3rem]" fill="#F91880">
@@ -78,7 +78,7 @@
                     </g>
                 </svg>
                 {#if data?.favorite_count != 0}
-                    <span class="text-sm font-black ml-1">{data.favorite_count}</span>
+                    <span class="text-sm font-black dark:text-gray-600 ml-1">{data.favorite_count}</span>
                 {/if}
             </div>
             <div class="flex flex-row items-center">
@@ -87,17 +87,17 @@
                         <path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01z"></path>
                     </g>
                 </svg>
-                <span class="text-sm font-black ml-1">Reply</span>
+                <span class="text-sm font-black ml-1 dark:text-gray-600">Reply</span>
             </div>
             <div class="flex flex-row items-center mr-10">
-                <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[1.2rem] h-[1.2rem]">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[1.2rem] h-[1.2rem] dark:fill-gray-600">
                     <g>
                         <path d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path>
                     </g>
                 </svg>
-                <span class="text-sm font-black ml-1">Copy link</span>
+                <span class="text-sm font-black ml-1 dark:text-gray-600">Copy link</span>
             </div>
         </div>
-        <div class="flex justify-center items-center w-full h-[35px] rounded-full mt-2 border-2 border-inherit text-sm font-black text-[#006FD6]"> Read more on X</div>
+        <div class="flex justify-center items-center w-full h-[35px] rounded-full mt-2 border-[1px] border-inherit dark:border-gray-600 text-sm font-black text-[#006FD6]"> Read more on X</div>
     </a>
 </div>
