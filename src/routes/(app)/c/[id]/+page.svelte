@@ -311,7 +311,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
       for (const item of selectedModels) {
         data.forEach((dItem:any) => {
           if(dItem.model == item) {
-            if (!passed) {
+            if (!dItem.passed) {
               modelLimit[dItem.model] = dItem.message;
             }
           }
@@ -540,7 +540,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
       });
 			// 过滤掉error和 content为空数据
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
-			
+
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&

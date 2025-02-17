@@ -331,7 +331,7 @@
         for (const item of selectedModels) {
           data.forEach((dItem:any) => {
             if(dItem.model == item) {
-              if (!passed) {
+              if (!dItem.passed) {
                 modelLimit[dItem.model] = dItem.message;
               }
             }
