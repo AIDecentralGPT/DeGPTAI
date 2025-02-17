@@ -47,7 +47,7 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
-	import { tavilySearch, twitterSearch } from "$lib/apis/websearch"
+	import { tavilySearch } from "$lib/apis/websearch"
 
 	const i18n = getContext('i18n');
 
@@ -292,6 +292,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
           childrenIds: [],
           role: "assistant",
           content: "",
+					think_content: "",
 					web: {},
           model: model.id,
           userContext: null,
@@ -378,6 +379,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 								childrenIds: [],
 								role: "assistant",
 								content: "",
+								think_content: "",
 								web: {},
 								model: model.id,
 								userContext: null,
@@ -434,8 +436,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						} else {
 							// 搜索网页
 							handleSearchWeb(responseMessage);
-							// 搜索twitter
-							handleSearchTwitter(responseMessage);
 							// 文本搜索
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 						}
@@ -560,6 +560,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 				responseMessage.replytime = Math.floor(Date.now() / 1000);
+				if (model.id == "DeepSeek-R1") {
+          responseMessage.think_content = "<think>";
+        }
 				for await (const update of textStream) {
 					const { value, done, citations, error } = update;
 
@@ -1124,73 +1127,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
           websearch: webResult.data
         }
       }
-      // responseMessage.web = {
-      //   ...responseMessage.web,
-      //   thirdsearch: [
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     },
-      //     {
-      //       title: '123123123123123123123123',
-      //       thumb: 'https://tse2.mm.bing.net/th?id=OIP.1zweTtjL0WV_S7laJqlkIwHaHT&w=200&h=197&c=7',
-      //       desc: "2222222222222222222222222222222222222222222222222"
-      //     }
-      //   ]
-      // }
-    }
-    await tick();
-    scrollToBottom();
-  }
-
-	// 获取搜索twitter
-  const handleSearchTwitter= async(responseMessage: any) => {
-    if (search) {
-      let lastMessage = messages.filter(item => item?.role == 'user')[0];
-      let webResult = await twitterSearch(localStorage.token, lastMessage.content);
-      if (webResult?.ok) {
-        responseMessage.web = {
-          ...responseMessage.web,
-          thirdsearch: webResult.data
-        }
-      }
-    }
+		}
     await tick();
     scrollToBottom();
   }
