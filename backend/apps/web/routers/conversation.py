@@ -71,7 +71,6 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
                                     "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
                                 })
                     ConversationInstance.update(conversation)
-                    result.append({"passed": True, "model": model, "num": conversation.chat_num, "message": "ok"})
         return {"passed": True, "data": result}
     except Exception as e:
         print("===========conversationRefresh==========", e)
