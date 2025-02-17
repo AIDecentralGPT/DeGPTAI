@@ -606,6 +606,10 @@
           $settings.splitLargeChunks
         );
         responseMessage.replytime = Math.floor(Date.now() / 1000);
+        // 判断模型添加think头
+        if (model.id == "DeepSeek-R1") {
+          responseMessage.think_content = "<think>";
+        }
         for await (const update of textStream) {
           const { value, done, citations, error } = update;
           if (error) {
@@ -722,18 +726,19 @@
 
   // 校验模型是否有think思考内容
   const checkThinkContent = async(responseMessage: any) => {
-    if (responseMessage.content.startsWith("<think>")) {
-      const startIndex = responseMessage.content.indexOf('<think>');
+    let checkMessage = responseMessage.think_content + responseMessage.content;
+    if (checkMessage.startsWith("<think>")) {
+      const startIndex = checkMessage.indexOf('<think>');
       const nextSearchIndex = startIndex + '<think>'.length;
-      const endIndex = responseMessage.content.indexOf('</think>', nextSearchIndex);
+      const endIndex = checkMessage.indexOf('</think>', nextSearchIndex);
       let extracted;
       let remaining;
       if (endIndex === -1) {
-        extracted = responseMessage.content.slice(startIndex);
-        remaining = responseMessage.content.slice(0, startIndex);
+        extracted = checkMessage.slice(startIndex);
+        remaining = checkMessage.slice(0, startIndex);
       } else {
-        extracted = responseMessage.content.slice(startIndex, endIndex + '</think>'.length);
-        remaining = responseMessage.content.slice(0, startIndex) + responseMessage.content.slice(endIndex + '</think>'.length);
+        extracted = checkMessage.slice(startIndex, endIndex + '</think>'.length);
+        remaining = checkMessage.slice(0, startIndex) + checkMessage.slice(endIndex + '</think>'.length);
       }
       responseMessage.content = remaining;
       responseMessage.think_content = extracted;
