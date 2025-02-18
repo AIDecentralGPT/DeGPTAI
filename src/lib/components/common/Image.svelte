@@ -13,6 +13,7 @@
 	$: _src = src.startsWith('/') ? `${WEBUI_BASE_URL}${src}` : src;
 
 	async function imageProxy() {
+		_src = "/static/picture_loading.png"
 		let result = await getImageProxy(Base64.encode(_src));
 		if (result.data != "") {
 			_src = result.data
