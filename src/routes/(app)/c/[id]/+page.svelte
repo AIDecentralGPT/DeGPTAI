@@ -89,7 +89,7 @@
 	let title = '';
 	let prompt = '';
 	let files = [];
-	let search = false;
+	let search = true;
 	let search_type = "web";
 	let messages = [];
 	let history = {
