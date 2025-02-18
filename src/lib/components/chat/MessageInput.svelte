@@ -9,7 +9,7 @@
     showOpenWalletModal,
     showSidebar,
   } from "$lib/stores";
-  import { blobToFile, calculateSHA256, findWordIndices } from "$lib/utils";
+  import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
 
   import {
     uploadDocToVectorDB,
@@ -1189,9 +1189,11 @@
                         type="button"
                         on:click={async (event) => {
                           event.stopPropagation();
-                          if (isTouched) {
-                            isTouched = false;
-                            return;
+                          if (checkPlatform() != "ios") {
+                            if (isTouched) {
+                              isTouched = false;
+                              return;
+                            }
                           }
                           search_icon_show = false;
                           search = !search;
@@ -1253,9 +1255,11 @@
                                   type="button"
                                   on:click={async (event) => {
                                     event.stopPropagation();
-                                    if (isTouched) {
-                                      isTouched = false;
-                                      return;
+                                    if (checkPlatform() != "ios") {
+                                      if (isTouched) {
+                                        isTouched = false;
+                                        return;
+                                      }
                                     }
                                     search_type = "web";
                                     search_icon_show = false;
@@ -1282,9 +1286,11 @@
                                   type="button"
                                   on:click={async (event) => {
                                     event.stopPropagation();
-                                    if (isTouched) {
-                                      isTouched = false;
-                                      return;
+                                    if (checkPlatform() != "ios") {
+                                      if (isTouched) {
+                                        isTouched = false;
+                                        return;
+                                      }
                                     }
                                     search_type = "twitter";
                                     search_icon_show = false;
@@ -1311,9 +1317,11 @@
                                   type="button"
                                   on:click={async (event) => {
                                     event.stopPropagation();
-                                    if (isTouched) {
-                                      isTouched = false;
-                                      return;
+                                    if (checkPlatform() != "ios") {
+                                      if (isTouched) {
+                                        isTouched = false;
+                                        return;
+                                      }
                                     }
                                     search_type = "youtube";
                                     search_icon_show = false;
