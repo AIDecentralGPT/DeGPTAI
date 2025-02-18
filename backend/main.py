@@ -61,6 +61,9 @@ from config import (
 )
 from constants import ERROR_MESSAGES
 
+import requests
+import base64
+
 logging.basicConfig(stream=sys.stdout, level=GLOBAL_LOG_LEVEL)
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])
@@ -454,3 +457,24 @@ async def add_process_time_and_error_logging(request: Request, call_next):
         process_time = time.time() - start_time
         log.error(f"Path: {request.url.path}, Error: {str(e)}, Process Time: {process_time:.2f}s")
         raise  # 重新抛出异常，让 FastAPI 的错误处理器处理它
+
+@app.get("/image_proxy/{image_str}")
+async def healthcheck(image_str: str):
+    try:
+        # https://rs-channel.huanqiucdn.cn/imageDir/47fffb7c69e070d309ca94777330e209u5.jpg
+        encoded_bytes = image_str.encode('utf-8')
+        decoded_bytes = base64.b64decode(encoded_bytes)
+        image_url = decoded_bytes.decode('utf-8')
+        # 发送请求，使用代理
+        response = requests.get(image_url)
+        # 检查响应状态码
+        if response.status_code == 200:
+            # 获取图片内容
+            image_content = response.content
+            # 将图片内容转换为 Base64 编码
+            base64_encoded = base64.b64encode(image_content).decode('utf-8')
+            return base64_encoded
+        else:
+            return ""
+    except Exception as e:
+        return ""
