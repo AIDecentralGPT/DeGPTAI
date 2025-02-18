@@ -687,6 +687,7 @@
   "Download DeGPT to obtain rewards": "報酬を得るために DeGPT をダウンロードしてください。",
   "Switch Models": "モデルを切り替える",
   "Suitable for most tasks": "多くのタスクに適しています",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "ほとんどのタスクに適しています, 性能は GPT-4o に匹敵します",
   "Take photos to solve math problems": "数学問題を解決するために写真を撮る",
   "Support image recognition": "画像認識をサポートしています",
   "Optimize code writing": "コードの書き方を最適化します",

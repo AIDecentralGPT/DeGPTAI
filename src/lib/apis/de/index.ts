@@ -39,19 +39,19 @@ export const getDeModels = async (token: string = "") => {
         desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing"
       },
       {
+        name: "DeepSeek 3.0",
+        model: "DeepSeek-V3",
+        tip: "DeepSeek 3.0",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
         name: "Llama3.3",
         model: "Llama3.3-70B",
         tip: "Llama3.3",
         support: "text",
         desc: "Suitable for most tasks"
       },
-      // {
-      //   name: "DeepSeek 3.0",
-      //   model: "DeepSeek-V3",
-      //   tip: "DeepSeek 3.0",
-      //   support: "text",
-      //   desc: "Suitable for most tasks"
-      // },
       {
         name: "Qwen o1",
         model: "QVQ-72B-Preview",
