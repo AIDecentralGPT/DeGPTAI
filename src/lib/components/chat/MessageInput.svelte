@@ -1248,15 +1248,14 @@
                                 on:click={async (event) => {
                                   event.stopPropagation();
                                   if (isTouched) {
-                                    event.preventDefault();
-                                    event.stopPropagation();
+                                    isTouched = false;
                                     return;
                                   }
                                   search_type = "web";
                                   search_icon_show = false;
                                   search = true;
                                   isTouched = false;
-                                  await tick();  
+                                  await tick(); 
                                 }}
                               >
                                 <svg
@@ -1274,16 +1273,16 @@
                                 { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
                                 type="button"
                                 on:click={async (event) => {
+                                  event.stopPropagation();
                                   if (isTouched) {
-                                    event.preventDefault();
-                                    event.stopPropagation();
+                                    isTouched = false;
                                     return;
                                   }
                                   search_type = "twitter";
                                   search_icon_show = false;
                                   search = true;
                                   isTouched = false;
-                                  await tick();
+                                  await tick(); 
                                 }}
                               >
                                 <svg
@@ -1302,13 +1301,15 @@
                                 type="button"
                                 on:click={async (event) => {
                                   event.stopPropagation();
-                                  if (search_icon_show && !isTouched) {
-                                    search_type = "youtube";
-                                    search_icon_show = false;
-                                    search = true;
+                                  if (isTouched) {
                                     isTouched = false;
-                                    await tick();
+                                    return;
                                   }
+                                  search_type = "youtube";
+                                  search_icon_show = false;
+                                  search = true;
+                                  isTouched = false;
+                                  await tick();
                                 }}
                               >
                                 <svg

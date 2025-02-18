@@ -34,7 +34,12 @@ export default {
 						code: false,
 						'pre code': false,
 						'code::before': false,
-						'code::after': false
+						'code::after': false,
+						// 修改默认的 prose 样式中 hr 标签的 margin
+						hr: {
+							marginTop: '0.1em',
+							marginBottom: '0.1em',
+						}
 					}
 				}
 			}
