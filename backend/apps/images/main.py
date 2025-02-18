@@ -539,10 +539,31 @@ async def healthcheck(image_str: str):
         if response.status_code == 200:
             # 获取图片内容
             image_content = response.content
+            # 读取文件头信息判断图片类型
+            header = image_content[:8]
+            image_type = get_image_type(header)
             # 将图片内容转换为 Base64 编码
             base64_encoded = base64.b64encode(image_content).decode('utf-8')
-            return base64_encoded
+            #添加前缀
+            if image_type != 'unknown':
+                prefix = f'data:image/{image_type};base64,'
+            else:
+                prefix = 'data:image/unknown;base64,'
+            return {"data": f'{prefix}{base64_encoded}'}
         else:
-            return ""
+            return {"data": ""}
     except Exception as e:
-        return ""
+        return {"data": ""}
+    
+def get_image_type(header):
+    """根据文件头信息判断图片类型"""
+    header_hex = header.hex()
+    if header_hex.startswith('ffd8ff'):
+        return 'jpeg'
+    elif header_hex.startswith('89504e470d0a1a0a'):
+        return 'png'
+    elif header_hex.startswith('47494638'):
+        return 'gif'
+    elif header_hex.startswith('424d'):
+        return 'bmp'
+    return 'unknown'

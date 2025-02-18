@@ -477,13 +477,13 @@ export const imageGenerations = async (token: string = '', prompt: string) => {
 export const getImageProxy = async (image_base64: string) => {
 	try {
 		// 发起 GET 请求
-		const response = await fetch(`${IMAGES_API_BASE_URL}/${image_base64}`);
+		const response = await fetch(`${IMAGES_API_BASE_URL}/image_proxy/${image_base64}`);
 		if (!response.ok) {
 			throw new Error(`请求失败，状态码: ${response.status}`);
 		}
 		// 获取响应的文本内容
-		return await response.text();
+		return await response.json();
 	} catch (error) {
-		return "";
+		throw new Error(`请求失败，状态码: ${error}`);
 	}
 };
