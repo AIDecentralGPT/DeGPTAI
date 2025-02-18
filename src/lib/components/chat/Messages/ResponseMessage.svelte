@@ -454,7 +454,7 @@
 					<!-- 网站搜索 -->
 					{#if message?.search_content?.web}
 						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
-							<div class="flex justify-between items-center h-[45px] p-4">
+							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
 									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
 										<svg
@@ -538,7 +538,7 @@
 					<!-- youtube搜索 -->
 					{#if message?.search_content?.videos}
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
-							<div class="flex justify-between items-center p-4">
+							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
 									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
 										<svg
@@ -598,7 +598,7 @@
 					<!-- twitter搜索 -->
 					{#if message?.search_content?.content}
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
-							<div class="flex justify-between items-center p-4">
+							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
 									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
 										<svg
