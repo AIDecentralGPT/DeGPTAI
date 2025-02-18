@@ -1167,49 +1167,49 @@
                   {/if}
                   <!-- 网络搜索 -->
                   <div class="self-star mb-2 ml-1 mr-1">
-                    <Tooltip content={$i18n.t("Search the web")}>
-                      <button class="flex flex-row items-center text-gray-800 dark:text-white transition rounded-full pr-3 cursor-pointer 
-                        ease-in-out duration-700 {(!search_icon_show && search) ? 'bg-black' : 'bg-gray-50 dark:bg-gray-800'}"
-                        type="button"
-                        on:mouseenter={async (event) => {
-                          event.stopPropagation();
+                    <button class="flex flex-row items-center text-gray-800 dark:text-white transition rounded-full pr-3 cursor-pointer 
+                      ease-in-out duration-700 {(!search_icon_show && search) ? 'bg-black' : 'bg-gray-50 dark:bg-gray-800'}"
+                      type="button"
+                      on:mouseenter={async (event) => {
+                        event.stopPropagation();
+                        search_icon_show = true;
+                      }}
+                      on:mouseleave={async (event) => {
+                        event.stopPropagation();
+                        search_icon_show = false;
+                      }}
+                      on:touchstart={async (event) => {
+                        event.stopPropagation();
+                        if (!search_icon_show) {
+                          isTouched = true;
                           search_icon_show = true;
-                        }}
-                        on:mouseleave={async (event) => {
+                        } 
+                      }}>
+                      <button class="flex flex-row pl-2 pr-1 py-2 rounded-full {search? 'bg-black' : ''}"
+                        type="button"
+                        on:click={async (event) => {
                           event.stopPropagation();
+                          if (isTouched) {
+                            isTouched = false;
+                            return;
+                          }
                           search_icon_show = false;
-                        }}
-                        on:touchstart={async (event) => {
-                          event.stopPropagation();
-                          if (!search_icon_show) {
-                            isTouched = true;
-                            search_icon_show = true;
-                          } 
+                          search = !search;
                         }}>
-                        <button class="flex flex-row pl-2 pr-1 py-2 rounded-full {search? 'bg-black' : ''}"
-                          type="button"
-                          on:click={async (event) => {
-                            event.stopPropagation();
-                            if (isTouched) {
-                              isTouched = false;
-                              return;
-                            }
-                            search_icon_show = false;
-                            search = !search;
-                          }}>
-                          {#if search}
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="icon ml-1" 
-                              viewBox="0 0 1024 1024" 
-                              fill="#D0A870"
-                              version="1.1" 
-                              width="1em" 
-                              height="1em">
-                              <path d="M912 325.1c0 13.8-4.8 25.5-14.4 35.1L523.9 733.9l-70.3 70.3c-9.6 9.6-21.4 14.4-35.1 14.4-13.8 0-25.5-4.8-35.1-14.4l-70.3-70.3-186.7-186.8c-9.6-9.6-14.4-21.4-14.4-35.1 0-13.8 4.8-25.5 14.4-35.1l70.3-70.3c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4L418.6 559l338.5-339.1c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4l70.3 70.3c9.5 9.5 14.4 21.2 14.4 34.9z"/>
-                            </svg>
-                          {/if}
-                          {#if search_type == "web"}
+                        {#if search}
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="icon ml-1" 
+                            viewBox="0 0 1024 1024" 
+                            fill="#D0A870"
+                            version="1.1" 
+                            width="1em" 
+                            height="1em">
+                            <path d="M912 325.1c0 13.8-4.8 25.5-14.4 35.1L523.9 733.9l-70.3 70.3c-9.6 9.6-21.4 14.4-35.1 14.4-13.8 0-25.5-4.8-35.1-14.4l-70.3-70.3-186.7-186.8c-9.6-9.6-14.4-21.4-14.4-35.1 0-13.8 4.8-25.5 14.4-35.1l70.3-70.3c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4L418.6 559l338.5-339.1c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4l70.3 70.3c9.5 9.5 14.4 21.2 14.4 34.9z"/>
+                          </svg>
+                        {/if}
+                        {#if search_type == "web"}
+                          <Tooltip content={$i18n.t("Search the Web")}>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 1024 1024"
@@ -1217,8 +1217,10 @@
                               fill="#D0A870">
                               <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
                             </svg>
-                          {/if}
-                          {#if search_type == "twitter"}
+                          </Tooltip>
+                        {/if}
+                        {#if search_type == "twitter"}
+                          <Tooltip content={$i18n.t("Search the Twitter")}>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 1024 1024"
@@ -1226,8 +1228,10 @@
                               fill="#D0A870">
                               <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
                             </svg>
-                          {/if}
-                          {#if search_type == "youtube"}
+                          </Tooltip>
+                        {/if}
+                        {#if search_type == "youtube"}
+                          <Tooltip content={$i18n.t("Search the YouTube")}>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 1024 1024"
@@ -1236,97 +1240,103 @@
                               <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
                               <path d="M416.896 640l256-128.256-256-127.744z"/>
                             </svg>
-                          {/if}
+                          </Tooltip>
+                        {/if}
                         </button>
                         {#if search_icon_show}
                           <div class="flex flex-row py-1 ease-in-out duration-700 {(search_icon_show && search) ? 'px-1' : ''}">
                             {#if search_type != "web"}
-                              <button
-                                class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1
-                                { (search_icon_show && search && search_type == 'web') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                type="button"
-                                on:click={async (event) => {
-                                  event.stopPropagation();
-                                  if (isTouched) {
+                              <Tooltip content={$i18n.t("Search the Web")}>
+                                <button
+                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1
+                                  { (search_icon_show && search && search_type == 'web') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
+                                  type="button"
+                                  on:click={async (event) => {
+                                    event.stopPropagation();
+                                    if (isTouched) {
+                                      isTouched = false;
+                                      return;
+                                    }
+                                    search_type = "web";
+                                    search_icon_show = false;
+                                    search = true;
                                     isTouched = false;
-                                    return;
-                                  }
-                                  search_type = "web";
-                                  search_icon_show = false;
-                                  search = true;
-                                  isTouched = false;
-                                  await tick(); 
-                                }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 1024 1024"
-                                  class="w-[1rem] h-[1rem]" 
-                                  fill="#D0A870">
-                                  <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                                </svg>
-                              </button>
+                                    await tick(); 
+                                  }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 1024 1024"
+                                    class="w-[1rem] h-[1rem]" 
+                                    fill="#D0A870">
+                                    <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
+                                  </svg>
+                                </button>
+                              </Tooltip>
                             {/if}
                             {#if search_type != "twitter"}
-                              <button
-                                class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1 ml-1
-                                { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                type="button"
-                                on:click={async (event) => {
-                                  event.stopPropagation();
-                                  if (isTouched) {
+                              <Tooltip content={$i18n.t("Search the Twitter")}>
+                                <button
+                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1 ml-1
+                                  { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
+                                  type="button"
+                                  on:click={async (event) => {
+                                    event.stopPropagation();
+                                    if (isTouched) {
+                                      isTouched = false;
+                                      return;
+                                    }
+                                    search_type = "twitter";
+                                    search_icon_show = false;
+                                    search = true;
                                     isTouched = false;
-                                    return;
-                                  }
-                                  search_type = "twitter";
-                                  search_icon_show = false;
-                                  search = true;
-                                  isTouched = false;
-                                  await tick(); 
-                                }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 1024 1024"
-                                  class="w-[1rem] h-[1rem]" 
-                                  fill="#D0A870">
-                                  <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
-                                </svg>
-                              </button>
+                                    await tick(); 
+                                  }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 1024 1024"
+                                    class="w-[1rem] h-[1rem]" 
+                                    fill="#D0A870">
+                                    <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
+                                  </svg>
+                                </button>
+                              </Tooltip>
                             {/if}
                             {#if search_type != "youtube"}
-                              <button
-                                class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1 ml-1
-                                { (search_icon_show && search && search_type == 'youtube') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                type="button"
-                                on:click={async (event) => {
-                                  event.stopPropagation();
-                                  if (isTouched) {
+                              <Tooltip content={$i18n.t("Search the YouTube")}>
+                                <button
+                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1 ml-1
+                                  { (search_icon_show && search && search_type == 'youtube') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
+                                  type="button"
+                                  on:click={async (event) => {
+                                    event.stopPropagation();
+                                    if (isTouched) {
+                                      isTouched = false;
+                                      return;
+                                    }
+                                    search_type = "youtube";
+                                    search_icon_show = false;
+                                    search = true;
                                     isTouched = false;
-                                    return;
-                                  }
-                                  search_type = "youtube";
-                                  search_icon_show = false;
-                                  search = true;
-                                  isTouched = false;
-                                  await tick();
-                                }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 1024 1024"
-                                  class="w-[1rem] h-[1rem]" 
-                                  fill="#D0A870">
-                                  <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                                  <path d="M416.896 640l256-128.256-256-127.744z"/>
-                                </svg>
-                              </button>
+                                    await tick();
+                                  }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 1024 1024"
+                                    class="w-[1rem] h-[1rem]" 
+                                    fill="#D0A870">
+                                    <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
+                                    <path d="M416.896 640l256-128.256-256-127.744z"/>
+                                  </svg>
+                                </button>
+                              </Tooltip>
                             {/if}
                           </div>
                         {/if}
                         <span class="text-sm font-bold text-[#D0A870] select-none {(search_icon_show && !search) ? 'ml-1' : ''}">{$i18n.t("search")}</span>
-                      </button>  
-                    </Tooltip>
+                    </button>  
                   </div>  
                 </div>
                 

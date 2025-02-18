@@ -805,6 +805,8 @@
   "Help me solve problems": "ช่วยฉันแก้ปัญหา",
   "Last for {{ time }} seconds": "ดำเนินต่อไปเป็นเวลา {{ time }} วินาที",
   "Search the web": "ค้นหาในเว็บ",
+  "Search the Twitter": "ค้นหาบน Twitter",
+  "Search the YouTube": "ค้นหาบน YouTube",
   "search": "ค้นหา",
   "Web Search": "การค้นหาเว็บ",
   "YouTube Search": "การค้นหาใน YouTube",
