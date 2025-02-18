@@ -525,3 +525,24 @@ def generate_image(
             if "error" in data:
                 error = data["error"]["message"]
         raise HTTPException(status_code=400, detail=ERROR_MESSAGES.DEFAULT(error))
+    
+@app.get("/image_proxy/{image_str}")
+async def healthcheck(image_str: str):
+    try:
+        # https://rs-channel.huanqiucdn.cn/imageDir/47fffb7c69e070d309ca94777330e209u5.jpg
+        encoded_bytes = image_str.encode('utf-8')
+        decoded_bytes = base64.b64decode(encoded_bytes)
+        image_url = decoded_bytes.decode('utf-8')
+        # 发送请求，使用代理
+        response = requests.get(image_url)
+        # 检查响应状态码
+        if response.status_code == 200:
+            # 获取图片内容
+            image_content = response.content
+            # 将图片内容转换为 Base64 编码
+            base64_encoded = base64.b64encode(image_content).decode('utf-8')
+            return base64_encoded
+        else:
+            return ""
+    except Exception as e:
+        return ""
