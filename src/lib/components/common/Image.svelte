@@ -12,12 +12,13 @@
 
 	$: _src = src.startsWith('/') ? `${WEBUI_BASE_URL}${src}` : src;
 
-	async function imageProxy() {
+	function imageProxy() {
+		getImageProxy(Base64.encode(_src)).then(result => {
+			if (result.data != "") {
+				_src = result.data
+			}
+		});
 		_src = "/static/picture_loading.png"
-		let result = await getImageProxy(Base64.encode(_src));
-		if (result.data != "") {
-			_src = result.data
-		}
 	}
 
 	let showImagePreview = false;
@@ -30,5 +31,5 @@
 		showImagePreview = true;
 	}}
 >
-	<img src={_src} alt={alt} class={`max-h-64 rounded-lg ${className ? className : ''}`} draggable="false" on:error={async() => {await imageProxy();}}/>
+	<img src={_src} alt={alt} class={`max-h-64 rounded-lg ${className ? className : ''}`} draggable="false" on:error={imageProxy}/>
 </button>
