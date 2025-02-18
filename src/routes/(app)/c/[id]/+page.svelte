@@ -304,6 +304,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
       }
     });
 
+		scrollToBottom();
+		
 		// 校验模型已使用次数
 		let modelLimit:any = {}
     const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
