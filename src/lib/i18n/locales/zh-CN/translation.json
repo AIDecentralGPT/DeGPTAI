@@ -132,6 +132,7 @@
   "Copying to clipboard was successful!": "复制到剪贴板成功！",
   "Create": "创建",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "为以下查询创建一个简洁的、3 - 5 个单词的短语作为标题，严格遵守 3 - 5 个单词的限制，且避免使用 'title' 这个词：",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "为以下查询创建一个简洁的、3-10 个单词的短语作为搜索关键字，严格遵守 3-10 个单词的限制：",
   "Create a modelfile": "创建一个模型文件",
   "Create Account": "创建账户",
   "Create new key": "创建新密钥",
@@ -685,6 +686,7 @@
   "Download DeGPT to obtain rewards": "下载 DeGPT 以便获得奖励",
   "Switch Models": "切换模型",
   "Suitable for most tasks": "适用于大多数任务",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "适用于大多数任务，性能比肩GPT-4o",
   "Take photos to solve math problems": "使用高级推理，可拍照解数学题",
   "Support image recognition": "支持图片识别",
   "Optimize code writing": "优化写代码功能",
@@ -805,6 +807,16 @@
   "Search the web": "搜索网页",
   "search": "搜索",
   "Web Search": "网络搜索",
+  "YouTube Search": "YouTube 搜索",
+  "Twitter Search": "Twitter 搜索",
   "Web Searching ...": "正在进行网络搜索...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "深度思考，在数学、创意写作等任务性能上比肩o3"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "深度思考，在数学、创意写作等任务性能上比肩o3",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC 认证每 10 分钟只能进行一次。请稍后再试。",
+  "A single IP address can be used for a maximum of two KYC verifications": "单个 IP 地址最多可用于两次 KYC 认证。",
+  "Check kyc failed, Please try again.": "KYC 验证失败。请再次尝试。",
+  "One email can only be used for KYC verification once": "一个邮件地址只能用于 KYC 验证一次",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "获取以上提问中最后一次提问的内容是关于什么的，只输出内容",
+  "Summarize based on the above YouTube search results:": "根据以上 YouTube 搜索结果进行汇总:",
+  "Summarize based on the above Twitter search results": "根据以上 Twitter 搜索结果进行汇总:",
+  "Summarize based on the above web search results:": "根据以上网络搜索结果进行汇总:"
 }

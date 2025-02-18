@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Penyalinan ke clipboard berhasil!",
   "Create": "Buat",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Buat sebuah frasa singkat, 3 - 5 kata sebagai judul untuk pertanyaan berikut, sangat mengikuti batas 3 - 5 kata dan menghindari penggunaan kata 'judul':",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Buat frasa singkat 3-10 kata sebagai kata kunci pencarian untuk kueri berikut, patuhi ketat batasan 3-10 kata:",
   "Create a modelfile": "Buat sebuah file model",
   "Create Account": "Buat Akun",
   "Create new key": "Buat kunci baru",
@@ -686,6 +687,7 @@
   "Download DeGPT to obtain rewards": "Unduh DeGPT untuk mendapatkan hadiah.",
   "Switch Models": "Ganti model",
   "Suitable for most tasks": "Cocok untuk sebagian besar tugas",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "Cocok untuk sebagian besar tugas, Kinerja sebanding dengan GPT-4o",
   "Take photos to solve math problems": "Mengambil foto untuk menyelesaikan masalah matematika",
   "Support image recognition": "Mendukung pengenalan gambar",
   "Optimize code writing": "Mengoptimalkan penulisan kode",
@@ -806,6 +808,16 @@
   "Search the web": "Cari di web",
   "search": "cari",
   "Web Search": "Pencarian web",
+  "YouTube Search": "Pencarian YouTube",
+  "Twitter Search": "Pencarian Twitter",
   "Web Searching ...": "Sedang melakukan pencarian web ...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Pikirkan secara mendalam dan cocokkan kinerja o3 dalam tugas seperti matematika dan penulisan kreatif"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Pikirkan secara mendalam dan cocokkan kinerja o3 dalam tugas seperti matematika dan penulisan kreatif",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "Verifikasi KYC dibatasi hanya boleh dilakukan sekali setiap 10 menit. Silakan coba lagi nanti.",
+  "A single IP address can be used for a maximum of two KYC verifications": "Sebuah alamat IP tunggal dapat digunakan maksimal untuk dua kali verifikasi KYC.",
+  "Check kyc failed, Please try again.": "Verifikasi KYC gagal. Silakan coba lagi.",
+  "One email can only be used for KYC verification once": "Satu alamat email hanya dapat digunakan sekali untuk verifikasi KYC",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Tentukan tentang apa isi pertanyaan terakhir dalam pertanyaan di atas, dan hanya keluarkan isinya",
+  "Summarize based on the above YouTube search results:": "Rangkum berdasarkan hasil pencarian YouTube di atas:",
+  "Summarize based on the above Twitter search results:": "Rangkum berdasarkan hasil pencarian Twitter di atas:",
+  "Summarize based on the above web search results:": "Rangkum berdasarkan hasil pencarian web di atas:"
 }

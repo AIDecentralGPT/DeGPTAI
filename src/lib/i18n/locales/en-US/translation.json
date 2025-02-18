@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "",
   "Create": "",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "",
   "Create a modelfile": "",
   "Create Account": "",
   "Create new key": "",
@@ -686,6 +687,7 @@
   "Download DeGPT to obtain rewards": "",
   "Switch Models": "",
   "Suitable for most tasks": "",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "",
   "Take photos to solve math problems": "",
   "Support image recognition": "",
   "Optimize code writing": "",
@@ -806,7 +808,17 @@
   "Search the web": "",
   "search": "",
   "Web Search": "",
+  "YouTube Search": "",
+  "Twitter Search": "",
   "Web Searching ...": "",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": ""
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "",
+  "A single IP address can be used for a maximum of two KYC verifications": "",
+  "Check kyc failed, Please try again.": "",
+  "One email can only be used for KYC verification once": "",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "",
+  "Summarize based on the above YouTube search results:": "",
+  "Summarize based on the above Twitter search results:": "",
+  "Summarize based on the above web search results:": ""
 }
 

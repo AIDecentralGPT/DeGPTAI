@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Копирование в буфер обмена было успешным!",
   "Create": "Создать",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Создать краткую фразу из 3 - 5 слов в качестве заголовка для следующего запроса, строго соблюдая предел в 3 - 5 слов и избежать использования слова 'title':",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Создайте краткую фразу из 3-10 слов в качестве поискового ключа для следующего запроса, строго соблюдая лимит в 3-10 слов:",
   "Create a modelfile": "Создать файл модели",
   "Create Account": "Создать аккаунт",
   "Create new key": "Создать новый ключ",
@@ -685,6 +686,7 @@
   "Download DeGPT to obtain rewards": "Загрузите DeGPT для получения вознаграждений.",
   "Switch Models": "Переключить модели",
   "Suitable for most tasks": "Подходит для большинства задач",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "Подходит для большинства задач, Производительность сравнима с GPT-4o",
   "Take photos to solve math problems": "Сделать фотографии для решения математических задач",
   "Support image recognition": "Поддерживает распознавание изображений",
   "Optimize code writing": "Оптимизировать написание кода",
@@ -805,6 +807,16 @@
   "Search the web": "Поиск в интернете",
   "search": "поиск",
   "Web Search": "Поиск в интернете",
+  "YouTube Search": "поиск на YouTube",
+  "Twitter Search": "поиск на Twitter",
   "Web Searching ...": "Выполняется поиск в интернете ...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Думайте глубоко и достигайте такого же уровня выполнения, как o3, в таких задачах, как математика и креативная писательство"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Думайте глубоко и достигайте такого же уровня выполнения, как o3, в таких задачах, как математика и креативная писательство",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "Верификация KYC ограничена одной процедурой каждые 10 минут, Пожалуйста, попробуйте еще раз позже.",
+  "A single IP address can be used for a maximum of two KYC verifications": "Одна IP - адрес может быть использована максимум дважды для верификации KYC.",
+  "Check kyc failed, Please try again.": "Верификация KYC не удалась. Пожалуйста, попробуйте еще раз.",
+  "One email can only be used for KYC verification once": "Адрес электронной почты может быть использован только один раз для верификации KYC",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Определите, о чём идёт речь в содержании последнего вопроса из вышеперечисленных вопросов, и выведите только это содержание",
+  "Summarize based on the above YouTube search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска на YouTube:",
+  "Summarize based on the above Twitter search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в Twitter:",
+  "Summarize based on the above web search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в интернете:"
 }

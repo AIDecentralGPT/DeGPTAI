@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Sao chép vào clipboard thành công!",
   "Create": "Tạo",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Tạo một cụm từ ngắn gọn, từ 3 - 5 từ làm tiêu đề cho truy vấn sau, tuân thủ nghiêm ngặt giới hạn từ 3 - 5 từ và tránh sử dụng từ 'title':",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Tạo một cụm từ ngắn gọn 3-10 từ làm từ khóa cho truy vấn sau, tuân thủ chặt chẽ giới hạn 3-10 từ:",
   "Create a modelfile": "Tạo một tệp mô hình",
   "Create Account": "Tạo tài khoản",
   "Create new key": "Tạo khóa mới",
@@ -686,6 +687,7 @@
   "Download DeGPT to obtain rewards": "Tải xuống DeGPT để nhận phần thưởng.",
   "Switch Models": "Chuyển đổi mô hình",
   "Suitable for most tasks": "Thích hợp cho hầu hết các nhiệm vụ",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "Phù hợp cho hầu hết các nhiệm vụ. Hiệu năng tương đương với GPT-4o",
   "Take photos to solve math problems": "Chụp ảnh để giải quyết các bài toán",
   "Support image recognition": "Hỗ trợ nhận dạng hình ảnh",
   "Optimize code writing": "Tối ưu hóa việc viết mã",
@@ -795,6 +797,16 @@
   "Search the web": "Tìm kiếm trên web",
   "search": "tìm kiếm",
   "Web Search": "Tìm kiếm trên web",
+  "YouTube Search": "Tìm kiếm trên YouTube",
+  "Twitter Search": "Tìm kiếm trên Twitter",
   "Web Searching ...": "Đang tìm kiếm trên web ...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Hãy suy nghĩ sâu sắc và đạt hiệu suất tương đương với o3 trong các nhiệm vụ như toán học và viết sáng tạo"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Hãy suy nghĩ sâu sắc và đạt hiệu suất tương đương với o3 trong các nhiệm vụ như toán học và viết sáng tạo",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "Xác minh KYC chỉ được thực hiện một lần mỗi 10 phút, Vui lòng thử lại sau.",
+  "A single IP address can be used for a maximum of two KYC verifications": "Một địa chỉ IP duy nhất có thể được sử dụng tối đa hai lần cho việc xác minh KYC.",
+  "Check kyc failed, Please try again.": "Xác minh KYC đã thất bại. Vui lòng thử lại.",
+  "One email can only be used for KYC verification once": "Một địa chỉ email chỉ có thể được sử dụng một lần cho việc xác minh KYC",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Xác định nội dung của câu hỏi cuối cùng trong các câu hỏi trên là về điều gì, và chỉ xuất nội dung",
+  "Summarize based on the above YouTube search results:": "Tóm tắt dựa trên kết quả tìm kiếm YouTube ở trên:",
+  "Summarize based on the above Twitter search results:": "Tóm tắt dựa trên kết quả tìm kiếm Twitter ở trên:",
+  "Summarize based on the above web search results:": "Tóm tắt dựa trên kết quả tìm kiếm trên web ở trên:"
 }

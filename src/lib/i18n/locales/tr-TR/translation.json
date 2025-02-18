@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "Panoya kopyalama başarılı oldu!",
   "Create": "Oluştur",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Aşağıdaki sorgu için bir başlık olarak 3 - 5 kelimelik kısaltılmış bir ifade oluşturun, 3 - 5 kelime sınırını sıkıca takip edin ve 'başlık' kelimesini kullanmaktan kaçının:",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Aşağıdaki sorgu için 3-10 kelimelik kısa bir ifadeyi arama anahtar kelimesi olarak oluşturun, 3-10 kelime sınırını kesinlikle kabul edin:",
   "Create a modelfile": "Bir model dosyası oluştur",
   "Create Account": "Hesap Oluştur",
   "Create new key": "Yeni anahtar oluştur",
@@ -686,6 +687,7 @@
   "Download DeGPT to obtain rewards": "Ödüller almak için DeGPT'yi indirin.",
   "Switch Models": "Model Değiştir",
   "Suitable for most tasks": "Çoğu görev için uygundur",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "Çoğu görev için uygundur, Performansı GPT-4o ile karşılaştırılabilir",
   "Take photos to solve math problems": "Matematik problemleri çözmek için fotoğraf çekmek",
   "Support image recognition": "Görüntü tanıma desteği sağlar",
   "Optimize code writing": "Kod yazımını optimize et",
@@ -806,6 +808,16 @@
   "Search the web": "Web'de Ara",
   "search": "arama",
   "Web Search": "Web araması",
+  "YouTube Search": "YouTube araması",
+  "Twitter Search": "Twitter araması",
   "Web Searching ...": "Web'de aranıyor ...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Derin düşünceler yapın ve matematik ve yaratıcı yazma gibi görevlerde o3'ün performansına ulaşın"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Derin düşünceler yapın ve matematik ve yaratıcı yazma gibi görevlerde o3'ün performansına ulaşın",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC doğrulaması her 10 dakikada bir kez yapılabilir, Lütfen daha sonra tekrar deneyin.",
+  "A single IP address can be used for a maximum of two KYC verifications": "Tek bir IP adresi en fazla iki kez KYC doğrulaması için kullanılabilir.",
+  "Check kyc failed, Please try again.": "KYC doğrulaması başarısız oldu. Lütfen tekrar deneyin.",
+  "One email can only be used for KYC verification once": "Bir e-posta adresi sadece bir kez KYC doğrulaması için kullanılabilir",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Yukarıdaki sorulardan son sorunun içeriği hakkında ne olduğunu belirleyin ve yalnızca içeriği yazdırın",
+  "Summarize based on the above YouTube search results:": "Yukarıdaki YouTube arama sonuçlarına göre özetleyin:",
+  "Summarize based on the above Twitter search results:": "Yukarıdaki Twitter arama sonuçlarına göre özetleyin:",
+  "Summarize based on the above web search results:": "Yukarıdaki web arama sonuçlarına göre özetleyin:"
 }

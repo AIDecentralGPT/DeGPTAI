@@ -141,6 +141,7 @@
   "Copying to clipboard was successful!": "La copie dans le presse-papiers a réussi!",
   "Create": "Créer",
   "Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Créer une phrase concise de 3 - 5 mots comme en-tête pour la requête suivante, en respectant strictement la limite de 3 - 5 mots et en évitant d'utiliser le mot 'titre':",
+  "Create a concise 3-10 word phrase as a search keyword for the following query, strictly adhering to the 3-10 word limit:": "Créez une phrase concise de 3-10 mots comme mot - clé pour la requête suivante, en respectant strictement la limite de 3-10 mots:",
   "Create a modelfile": "Créer un fichier de modèle",
   "Create Account": "Créer un compte",
   "Create new key": "Créer une nouvelle clé",
@@ -685,6 +686,7 @@
   "Download DeGPT to obtain rewards": "Téléchargez DeGPT pour obtenir des récompenses.",
   "Switch Models": "Changer de modèles",
   "Suitable for most tasks": "Adapté à la plupart des tâches",
+  "Suitable for most tasks,Performance comparable to GPT-4o": "Adapté à la plupart des tâches, Performances comparables à celles de GPT-4o",
   "Take photos to solve math problems": "Prendre des photos pour résoudre des problèmes de mathématiques",
   "Support image recognition": "Prise en charge de la reconnaissance d'images",
   "Optimize code writing": "Optimiser l'écriture de code",
@@ -805,6 +807,16 @@
   "Search the web": "Rechercher sur le web",
   "search": "recherche",
   "Web Search": "Recherche sur le web",
+  "YouTube Search": "Recherche sur le YouTube",
+  "Twitter Search": "Recherche sur le Twitter",
   "Web Searching ...": "Recherche en cours sur le web ...",
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Réfléchissez profondément et égalisez les performances d'o3 dans des tâches telles que les mathématiques et l'écriture créative"
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Réfléchissez profondément et égalisez les performances d'o3 dans des tâches telles que les mathématiques et l'écriture créative",
+  "KYC verification is limited to once every 10 minutes, Please try again later.": "La vérification KYC est limitée à une fois toutes les 10 minutes. Veuillez réessayer plus tard.",
+  "A single IP address can be used for a maximum of two KYC verifications": "Une seule adresse IP peut être utilisée au maximum deux fois pour les vérifications KYC.",
+  "Check kyc failed, Please try again.": "La vérification KYC a échoué. Veuillez réessayer.",
+  "One email can only be used for KYC verification once": "Une adresse e-mail ne peut être utilisée qu'une seule fois pour la vérification KYC",
+  "Obtain what the content of the last question in the above questions is about, and only output the content": "Déterminez de quoi il s'agit dans le contenu de la dernière question parmi les questions ci - dessus et ne présentez que le contenu",
+  "Summarize based on the above YouTube search results:": "Résumez en fonction des résultats de recherche YouTube ci-dessus :",
+  "Summarize based on the above Twitter search results:": "Résumez en fonction des résultats de recherche Twitter ci-dessus:",
+  "Summarize based on the above web search results:": "Résumez en fonction des résultats de recherche web ci-dessus :"
 }
