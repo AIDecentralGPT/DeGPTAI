@@ -133,11 +133,25 @@
     });
   }
 
+  // 注册serviceWorker
+  function registSworker() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/lib/workers/sw.js', { type: 'module' })
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  }
+
   onMount(async () => {
     try {
       let currentAddress = window.location.href;
       await initData();
       await initUrlParam();
+      registSworker();
       loaded = true;
       if (currentAddress.indexOf("userVerifying") < 0) {
         intiLocationInfo();
