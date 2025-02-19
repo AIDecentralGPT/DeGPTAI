@@ -132,6 +132,31 @@
 		})();
 	}
 
+	// 校验是否后台运行
+  let isPageVisible = true;
+  let visibilityChangeEvent:any;
+  let visibilityStateProperty:any;
+
+  // 不同浏览器对 Page Visibility API 属性和事件名的支持可能不同，这里做兼容性处理
+  if (typeof document.hidden !== 'undefined') {
+    visibilityStateProperty = 'visibilityState';
+    visibilityChangeEvent = 'visibilitychange';
+  } else if (typeof document.msHidden !== 'undefined') {
+    visibilityStateProperty = 'msVisibilityState';
+    visibilityChangeEvent = 'msvisibilitychange';
+  } else if (typeof document.webkitHidden !== 'undefined') {
+    visibilityStateProperty = 'webkitVisibilityState';
+    visibilityChangeEvent = 'webkitvisibilitychange';
+  }
+  const handleVisibilityChange = () => {
+    isPageVisible = document[visibilityStateProperty] === 'visible';
+    if (isPageVisible) {
+      console.log('页面切换到前台，变为可见');
+    } else {
+      console.log('页面切换到后台或切换了选项卡，变为不可见');
+    }
+  };
+
 	//////////////////////////
 	// Web functions
 	//////////////////////////
@@ -639,7 +664,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						continue;
 					} else {
 						// responseMessage.content += value;
-						responseMessage.content = await addTextSlowly(responseMessage.content, value);
+						responseMessage.content = await addTextSlowly(responseMessage.content, value, isPageVisible);
 						messages = messages;
 					}
 
@@ -1387,6 +1412,8 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		if (!($settings.saveChatHistory ?? true)) {
 			await goto('/');
 		}
+		// 挂载组件时监听页面可见性变化事件
+    document.addEventListener(visibilityChangeEvent, handleVisibilityChange);
 	});
 </script>
 

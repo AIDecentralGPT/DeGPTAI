@@ -571,11 +571,13 @@ export const getTimeRange = (timestamp) => {
 
 
 
-export const addTextSlowly = async (target, text) => {
+export const addTextSlowly = async (target, text, isPageVisible) => {
 	for (const char of text) {
 		target += char;
-		// 这里可以设置一个适当的延迟来模拟逐字符显示
-		await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
+		// 这里可以设置一个适当的延迟来模拟逐字符显示(判断是否前台显示)
+		if (isPageVisible) {
+			await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
+		}
 		// 更新界面或进行其他操作
 	}
 	return target;
