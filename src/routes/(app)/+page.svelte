@@ -2,7 +2,7 @@
   import { toast } from "svelte-sonner";
   import { v4 as uuidv4 } from "uuid";
   import { page } from "$app/stores";
-  import { getContext, onMount, tick } from "svelte";
+  import { onMount, onDestroy, getContext, tick } from "svelte";
 
   import {
     WEBUI_NAME,
@@ -153,6 +153,11 @@
 
     // 挂载组件时监听页面可见性变化事件
     document.addEventListener(visibilityChangeEvent, handleVisibilityChange);
+  });
+
+  onDestroy(() => {
+    // 销毁组件时移除事件监听器，避免内存泄漏
+    document.removeEventListener(visibilityChangeEvent, handleVisibilityChange);
   });
 
   // 校验是否后台运行
@@ -711,7 +716,8 @@
             // responseMessage.content += value;
             responseMessage.content = await addTextSlowly(
               responseMessage.content,
-              value
+              value,
+              isPageVisible
             );
             messages = messages;
           }

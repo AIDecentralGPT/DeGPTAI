@@ -2,7 +2,7 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { toast } from 'svelte-sonner';
 
-	import { onMount, tick, getContext } from 'svelte';
+	import { onMount, onDestroy, tick, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import {
@@ -1415,6 +1415,11 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		// 挂载组件时监听页面可见性变化事件
     document.addEventListener(visibilityChangeEvent, handleVisibilityChange);
 	});
+
+	onDestroy(() => {
+    // 销毁组件时移除事件监听器，避免内存泄漏
+    document.removeEventListener(visibilityChangeEvent, handleVisibilityChange);
+  });
 </script>
 
 <svelte:head>
