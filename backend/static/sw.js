@@ -12,13 +12,31 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// self.addEventListener('fetch', (event) => {
+//   const url = new URL(event.request.url);
+//   if (url.pathname === '/api/v0/chat/completion/proxy') {
+//     event.respondWith(
+//       fetch(event.request).then(response => {
+//         // 保持流式连接
+//         return response;
+//       })
+//     );
+//   }
+// });
+
 self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  if (url.pathname === '/api/v0/chat/completion/proxy') {
+  if (isCriticalRequest(event.request)) {
     event.respondWith(
-      fetch(event.request).then(response => {
-        // 保持流式连接
-        return response;
+      new Promise((resolve) => {
+        // 通过定期心跳保持活跃
+        const heartbeat = setInterval(() => {
+          new BroadcastChannel('sw-heartbeat').postMessage('ping');
+        }, 5000);
+
+        fetch(event.request)
+          .then(resolve)
+          .catch(() => caches.match(event.request))
+          .finally(() => clearInterval(heartbeat));
       })
     );
   }
