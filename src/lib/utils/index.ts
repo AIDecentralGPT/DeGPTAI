@@ -570,27 +570,26 @@ export const getTimeRange = (timestamp) => {
 
 const timeoutIds: Set<Timer> = new Set();
 export const addTextSlowly = async (target, text, isPageVisible) => {
-	for (const char of text) {
-		target += char;
-		// 这里可以设置一个适当的延迟来模拟逐字符显示(判断是否前台显示)
-		// await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
-		if (isPageVisible) {
+	if (isPageVisible) {
+		for (const char of text) {
+			target += char;
+			// 这里可以设置一个适当的延迟来模拟逐字符显示(判断是否前台显示)
+			// await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
 			await new Promise<void>((resolve) => {
-        const timeoutId = setTimeout(() => {
-          resolve();
-          timeoutIds.delete(timeoutId); // 定时完成后移除ID
-        }, 12.5);
-        timeoutIds.add(timeoutId);
-      });
-		} else {
-			// 页面不可见时，清除所有定时器并终止添加
-      timeoutIds.forEach(clearTimeout);
-      timeoutIds.clear();
-      break; // 停止后续字符处理
+				const timeoutId = setTimeout(() => {
+					resolve();
+					timeoutIds.delete(timeoutId); // 定时完成后移除ID
+				}, 12.5);
+				timeoutIds.add(timeoutId);
+			});	
 		}
-		
-		// 更新界面或进行其他操作
+	} else {
+		// 页面不可见时，清除所有定时器并终止添加
+		timeoutIds.forEach(clearTimeout);
+		timeoutIds.clear();
+		target += text;
 	}
+	// 更新界面或进行其他操作
 	return target;
 }
 
