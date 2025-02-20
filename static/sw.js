@@ -25,7 +25,8 @@ self.addEventListener('install', (event) => {
 // });
 
 self.addEventListener('fetch', (event) => {
-  if (isCriticalRequest(event.request)) {
+  const url = new URL(event.request.url);
+  if (url.pathname === '/api/v0/chat/completion/proxy') {
     event.respondWith(
       new Promise((resolve) => {
         // 通过定期心跳保持活跃
