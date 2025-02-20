@@ -595,6 +595,7 @@ export const addTextSlowly = async (target, text) => {
 	} else {
 			console.log('页面切换到后台或切换了选项卡，变为不可见');
 	}
+	console.log("==============================", timeoutIds);
 	for (const char of text) {
 		target += char;
 		// 这里可以设置一个适当的延迟来模拟逐字符显示(判断是否前台显示)
