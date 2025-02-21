@@ -526,7 +526,7 @@
 						<div class="flex flex-wrap mt-3">
 							{#each message?.search_content?.images ?? [] as item}
 								{#if item?.url}
-									<div class="p-1 lg:w-1/8 w-1/6 aspect-square">
+									<div class="p-1 lg:w-[12%] w-1/6 aspect-square">
 										<Image src={item.url} alt="" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
 									</div>
 								{/if}
@@ -708,7 +708,11 @@
 									</div>
 								</div>
 							{:else if message.content === ''}
-								<Skeleton />
+								{#if message.search && (message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content)}
+									<Skeleton />
+								{:else}
+									<Skeleton />
+								{/if}
 							{:else}
 								{#each tokens as token, tokenIdx}
 									{#if token.type === 'thinking'}
