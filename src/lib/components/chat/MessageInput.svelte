@@ -465,6 +465,8 @@
       dropZone?.removeEventListener("dragleave", onDragLeave);
     };
   });
+
+  let searchButton = "";
 </script>
 
 {#if dragged}
@@ -1250,7 +1252,7 @@
                             {#if search_type != "web"}
                               <Tooltip content={$i18n.t("Search the Web")}>
                                 <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1
+                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1
                                   { (search_icon_show && search && search_type == 'web') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
                                   type="button"
                                   on:click={async (event) => {
@@ -1258,6 +1260,12 @@
                                     if (checkPlatform() != "ios") {
                                       if (isTouched) {
                                         isTouched = false;
+                                        return;
+                                      }
+                                    }
+                                    if (checkPlatform() != 'other') {
+                                      if (searchButton != 'search_web') {
+                                        searchButton = 'search_web';
                                         return;
                                       }
                                     }
@@ -1281,7 +1289,7 @@
                             {#if search_type != "twitter"}
                               <Tooltip content={$i18n.t("Search the Twitter")}>
                                 <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1 ml-1
+                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 ml-1
                                   { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
                                   type="button"
                                   on:click={async (event) => {
@@ -1289,6 +1297,12 @@
                                     if (checkPlatform() != "ios") {
                                       if (isTouched) {
                                         isTouched = false;
+                                        return;
+                                      }
+                                    }
+                                    if (checkPlatform() != 'other') {
+                                      if (searchButton != 'search_twitter') {
+                                        searchButton = 'search_twitter';
                                         return;
                                       }
                                     }
@@ -1312,7 +1326,7 @@
                             {#if search_type != "youtube"}
                               <Tooltip content={$i18n.t("Search the YouTube")}>
                                 <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1 ml-1
+                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none select-none p-1 ml-1
                                   { (search_icon_show && search && search_type == 'youtube') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
                                   type="button"
                                   on:click={async (event) => {
@@ -1320,6 +1334,12 @@
                                     if (checkPlatform() != "ios") {
                                       if (isTouched) {
                                         isTouched = false;
+                                        return;
+                                      }
+                                    }
+                                    if (checkPlatform() != 'other') {
+                                      if (searchButton != 'search_youtube') {
+                                        searchButton = 'search_youtube';
                                         return;
                                       }
                                     }
