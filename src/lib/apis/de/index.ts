@@ -51,21 +51,21 @@ export const getDeModels = async (token: string = "") => {
         tip: "Llama3.3",
         support: "text",
         desc: "Suitable for most tasks"
-      },
-      {
-        name: "Qwen o1",
-        model: "QVQ-72B-Preview",
-        tip: "Qwen o1",
-        support: "image",
-        desc: "Take photos to solve math problems"
-      },
-      {
-        name: "Pixtral Large 1.0",
-        model: "Pixtral-124B",
-        tip: "Pixtral Large 1.0",
-        support: "image",
-        desc: "Support image recognition"
       }
+      // {
+      //   name: "Qwen o1",
+      //   model: "QVQ-72B-Preview",
+      //   tip: "Qwen o1",
+      //   support: "image",
+      //   desc: "Take photos to solve math problems"
+      // },
+      // {
+      //   name: "Pixtral Large 1.0",
+      //   model: "Pixtral-124B",
+      //   tip: "Pixtral Large 1.0",
+      //   support: "image",
+      //   desc: "Support image recognition"
+      // }
       // {
       //   name: "sana",
       //   model: "sana",
