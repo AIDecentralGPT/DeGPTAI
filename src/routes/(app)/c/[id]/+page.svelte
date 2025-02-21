@@ -639,7 +639,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						continue;
 					} else {
 						// responseMessage.content += value;
-						responseMessage.content = await addTextSlowly(responseMessage.content, value, isPageVisible);
+						responseMessage.content = await addTextSlowly(
+							responseMessage.content, 
+							value,
+							model.id
+						);
 						messages = messages;
 					}
 

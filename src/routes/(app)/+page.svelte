@@ -684,7 +684,8 @@
             // responseMessage.content += value;
             responseMessage.content = await addTextSlowly(
               responseMessage.content,
-              value
+              value,
+              model.id
             );
             messages = messages;
           }

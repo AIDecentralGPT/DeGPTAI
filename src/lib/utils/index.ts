@@ -586,16 +586,15 @@ function isPageCurrentlyVisible(): boolean {
 	return (document[visibilityStateProperty]?? 'visible') === 'visible';
 }
 
-const timeoutIds: Set<Timer> = new Set();
-export const addTextSlowly = async (target, text) => {
+const timeoutIdMap = new Map();
+export const addTextSlowly = async (target, text, model) => {
 	// 检查页面当前可见状态
 	const isVisible = isPageCurrentlyVisible();
 	if (isVisible) {
-			console.log('页面切换到前台，变为可见');
+			console.log('页面切换到前台，变为可见' + model);
 	} else {
-			console.log('页面切换到后台或切换了选项卡，变为不可见');
+			console.log('页面切换到后台或切换了选项卡，变为不可见' + model);
 	}
-	console.log("==============================", timeoutIds);
 	for (const char of text) {
 		target += char;
 		// 这里可以设置一个适当的延迟来模拟逐字符显示(判断是否前台显示)
@@ -604,13 +603,15 @@ export const addTextSlowly = async (target, text) => {
 			await new Promise<void>((resolve) => {
 				const timeoutId = setTimeout(() => {
 					resolve();
-					timeoutIds.delete(timeoutId); // 定时完成后移除ID
+					timeoutIdMap.delete(model); // 定时完成后移除ID
 				}, 12.5);
-				timeoutIds.add(timeoutId);
+				timeoutIdMap.set(model, timeoutId);
 			});	
 		} else {
-			timeoutIds.forEach(clearTimeout);
-			timeoutIds.clear();
+			if (timeoutIdMap.has(model)) {
+				clearTimeout(timeoutIdMap.get(model));
+				timeoutIdMap.delete(model);
+			}
 		}
 	}
 	// 更新界面或进行其他操作
