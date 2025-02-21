@@ -422,7 +422,13 @@
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
 				{#if message.content == ''}
-					<Thinking/>
+					{#if message?.search}
+						{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content }
+							<Thinking/>
+						{/if}
+					{:else}
+						<Thinking/>
+					{/if}
 				{:else}
 					{#if message?.replytime && checkModelImage(message.model)}
 						<span class="text-xs">{ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) }</span>
@@ -708,8 +714,10 @@
 									</div>
 								</div>
 							{:else if message.content === ''}
-								{#if message.search && (message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content)}
-									<Skeleton />
+								{#if message.search}
+									{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content}	
+										<Skeleton />
+									{/if}
 								{:else}
 									<Skeleton />
 								{/if}
