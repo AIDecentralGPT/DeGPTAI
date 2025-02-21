@@ -462,6 +462,7 @@
   "Scan complete!": "扫描完成！",
   "Scan for documents from {{path}}": "从 {{path}} 扫描文档",
   "Search": "搜索",
+  "Searching...": "搜索中...",
   "Search a model": "搜索一个模型",
   "Search Documents": "搜索文档",
   "Search Prompts": "搜索提示",

@@ -425,6 +425,8 @@
 					{#if message?.search}
 						{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content }
 							<Thinking/>
+						{:else}
+							<span class="text-sm font-bold">{$i18n.t("Searching...")}</span>
 						{/if}
 					{:else}
 						<Thinking/>
