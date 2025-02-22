@@ -599,14 +599,14 @@ export const sendCode = async (token: string, email: string) => {
 
 
 // 验证码
-export const verifyCode = async (email: string, code: string) => {
+export const verifyCode = async (token: string, email: string, code: string) => {
   let error = null;
 
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/verify_code`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       email: email,

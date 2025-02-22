@@ -32,7 +32,7 @@ class ConversationModel(BaseModel):
 
 
 class ConversationRequest(BaseModel):
-    model: str
+    models: list
 
 
 # 定义ConversationTable类，用于操作Conversation表
@@ -75,6 +75,17 @@ class ConversationTable:
           conversation_dict = model_to_dict(conversation)  # 将数据库对象转换为字典
           conversation_model = ConversationModel(**conversation_dict)  # 将字典转换为Pydantic模型
           return conversation_model
+      except Exception as e:
+        print("========================", e)
+        return None
+      
+    #获取用户今天多个模型使用情况
+    def get_info_by_userid_models_date(self, user_id: str, models: list, chat_time: date) -> Optional[List[ConversationModel]]:
+      try:
+        conversations = Conversation.select().where(Conversation.user_id == user_id, Conversation.model.in_(models), SQL('date(chat_time)') == chat_time)
+        # 将数据库对象转换为字典
+        conversation_list = [ConversationModel(**model_to_dict(conversation)) for conversation in conversations]
+        return conversation_list  
       except Exception as e:
         print("========================", e)
         return None

@@ -14,7 +14,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	import { config, settings, models } from '$lib/stores';
+	import { config, settings, models, theme } from '$lib/stores';
 
 	import { synthesizeOpenAISpeech } from '$lib/apis/audio';
 	import { imageGenerations } from '$lib/apis/images';
@@ -29,12 +29,14 @@
 	import Name from './Name.svelte';
 	import ProfileImage from './ProfileImage.svelte';
 	import Thinking from './Thinking.svelte';
+	import Searching from './Searching.svelte';
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
 	import Image from '$lib/components/common/Image.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import RateComment from './RateComment.svelte';
 	import CitationsModal from '$lib/components/chat/Messages/CitationsModal.svelte';
+	import TwitterEmbed from "$lib/components/twitter/TwitterEmbed.svelte";
 
 	export let modelfiles = [];
 	export let message;
@@ -381,16 +383,22 @@
 		webFlag = !webFlag;
 	}
 
-	// 隐藏第三方搜索
-	const handleThirdHidden = (message) => {
-		if (message?.thirdflag) {
-			message.thirdflag = true;
-		} else {
-			message.thirdflag = !message.thirdflag;
-		}
-	}
-
 	let thinkHiden = false;
+
+	function highlightedText(content: string, keyword: string) {
+		let keywords = keyword.split("/");
+		keywords.forEach((item) => {
+			const regex = new RegExp(item, "gi");
+			content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+		})
+    return content;
+  }
+
+	// 监听主题变化
+	let currentTheme = $theme;
+	$: {
+		currentTheme = ($theme === "system" || $theme === "light") ? 'light' : 'dark';
+	}
 
 </script>
 
@@ -415,7 +423,15 @@
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
 				{#if message.content == ''}
-					<Thinking/>
+					{#if message?.search}
+						{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content }
+							<Thinking/>
+						{:else}
+							<Searching/>
+						{/if}
+					{:else}
+						<Thinking/>
+					{/if}
 				{:else}
 					{#if message?.replytime && checkModelImage(message.model)}
 						<span class="text-xs">{ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) }</span>
@@ -441,78 +457,197 @@
 					{/each}
 				</div>
 			{/if}
-			<!-- 网页搜索 -->
+			<!-- 网络搜索 -->
 			{#if message?.search}
-				<div class="flex flex-col w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
-					<div class="flex justify-between items-center h-[35px] lg:h-[45px] p-6">
-						{#if message?.web?.websearch}
-							<div class="text-sm font-bold">{ $i18n.t("Web Search") }</div>
-						{:else}
-							<div class="text-sm font-bold">{ $i18n.t("Web Searching ...") }</div>
-						{/if}
-						<button on:click={() => {
-							handleWebHidden();
-						}}>
-							<svg 
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 15 15"
-								width="15" height="15"  
-								fill="currentColor"  
-								class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
-								<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
-							</svg>
-						</button>
-					</div>
-					{#if message?.web?.websearch}
-						<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
-							<div class="flex flex-row px-4 mr-2">
-								{#each message?.web?.websearch ?? [] as item}
-									<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
-										<div class="flex flex-row">
-											<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
-												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-[1.2rem] h-[1.2rem] s-Fb8Dy0t5csK5">
-													<path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" class="s-Fb8Dy0t5csK5"></path>
-												</svg>
-											</div>
-											<div class="ml-2">
-												<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{item.title}</div>
-												<div class="flex flex-row items-center w-[300px] text-xs">
-													<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
-													<svg 
-														xmlns="http://www.w3.org/2000/svg" 
-														width="55" 
-														height="55" 
-														viewBox="0 0 24 24" 
-														fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-														class="lucide lucide-external-link h-3 w-3 ml-2">
-														<path d="M15 3h6v6"></path><path d="M10 14 21 3"/>
-														<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+				{#if message?.search_type == 'web'}
+					<!-- 网站搜索 -->
+					{#if message?.search_content?.web}
+						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
+							<div class="flex justify-between items-center h-[55px] p-4">
+								<div class="flex flex-row items-center text-sm font-bold">
+									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+										<svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 1024 1024"
+                      class="w-[1rem] h-[1rem]" 
+                      fill="#D0A870">
+                      <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
+                    </svg>
+									</div>
+									<div class="flex flex-col ml-1">
+										<span class="text-sm">{ $i18n.t("Web Search") }</span>
+										<span class="text-xs"> {message?.search_content?.web.length} Results</span>
+									</div>
+								</div>
+								<button on:click={() => {
+									handleWebHidden();
+								}}>
+									<svg 
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 15 15"
+										width="15" height="15"  
+										fill="currentColor"  
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
+										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+									</svg>
+								</button>
+							</div>	
+							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
+								<div class="flex flex-row px-4 mr-2">
+									{#each message?.search_content?.web ?? [] as item}
+										<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
+											<div class="flex flex-row">
+												<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-[1.2rem] h-[1.2rem] s-Fb8Dy0t5csK5">
+														<path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" class="s-Fb8Dy0t5csK5"></path>
 													</svg>
 												</div>
+												<div class="ml-2">
+													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.search_content?.keyword??"")}</div>
+													<div class="flex flex-row items-center w-[300px] text-xs">
+														<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
+														<svg 
+															xmlns="http://www.w3.org/2000/svg" 
+															width="55" 
+															height="55" 
+															viewBox="0 0 24 24" 
+															fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+															class="lucide lucide-external-link h-3 w-3 ml-2">
+															<path d="M15 3h6v6"></path><path d="M10 14 21 3"/>
+															<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+														</svg>
+													</div>
+												</div>
 											</div>
+											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.search_content?.keyword??"")}</div>
 										</div>
-										<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{item.content}</div>
+									{/each}
+								</div>
+							</div>
+							<!-- {:else}
+								<div class="bg-white rounded-2xl mx-4 mb-4 p-2">
+									<Skeleton />
+								</div>			 -->	
+						</div>
+					{/if}
+					<!-- 图片搜索 -->
+					{#if message?.search_content?.images}
+						<div class="flex flex-wrap mt-3">
+							{#each message?.search_content?.images ?? [] as item}
+								{#if item?.url}
+									<div class="p-1 lg:w-[12%] w-1/6 aspect-square">
+										<Image src={item.url} alt="" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
 									</div>
-								{/each}
+								{/if}
+							{/each}
+						</div>
+					{/if}
+				{/if}
+				{#if message?.search_type == 'youtube'}
+					<!-- youtube搜索 -->
+					{#if message?.search_content?.videos}
+						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
+							<div class="flex justify-between items-center h-[55px] p-4">
+								<div class="flex flex-row items-center text-sm font-bold">
+									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+										<svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 1024 1024"
+                      class="w-[1rem] h-[1rem]" 
+                      fill="#D0A870">
+                      	<path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
+                        <path d="M416.896 640l256-128.256-256-127.744z"/>
+                    </svg>
+									</div>
+									<div class="flex flex-col ml-1">
+										<span class="text-sm">{ $i18n.t("YouTube Search") }</span>
+										<span class="text-xs"> {message?.search_content?.videos.length} videos</span>
+									</div>
+								</div>
+								<button on:click={() => {
+									handleWebHidden();
+								}}>
+									<svg 
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 15 15"
+										width="15" height="15"  
+										fill="currentColor"  
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
+										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+									</svg>
+								</button>
+							</div>	
+							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
+								<div class="flex flex-row px-4 mr-2">
+									{#each message?.search_content?.videos ?? [] as item}
+										<div class="flex flex-col rounded-xl bg-white dark:bg-black mx-2 mb-4 pb-2">
+											<a class="flex flex-col w-[230px]" href="{item.video_url}" target="_blank">
+												<img class="rounded-t-xl drag-none" src={item.thumbnail_url} alt=""/>
+												<div class="px-3 py-2">
+													<span class="line-clamp-2 text-ellipsis">{item.title}</span>
+													<div class="flex flex-row items-center mt-1">
+														<div class="w-[20px]">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round h-4 w-4 text-red-500">
+																<circle cx="12" cy="8" r="5"></circle>
+																<path d="M20 21a8 8 0 0 0-16 0"></path>
+															</svg>
+														</div>
+														<span class="ml-1 line-clamp-1 text-ellipsis text-sm">{item.channel_title}</span>
+													</div>
+												</div>
+											</a>
+										</div>
+									{/each}
+								</div>
 							</div>
 						</div>
-					{:else}
-						<div class="bg-white rounded-2xl mx-4 mb-4 p-2">
-							<Skeleton />
-						</div>			
 					{/if}
-				</div>
-				<!-- 图片搜索 -->
-				{#if message?.web?.thirdsearch}
-					<div class="flex flex-wrap mt-3">
-						{#each message?.web?.thirdsearch ?? [] as item}
-							{#if item.media_urls[0]}
-								<div class="flex flex-col p-1 lg:w-1/5 w-1/3 aspect-square">
-									<Image src={item.media_urls[0]} alt="Uploaded Image" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+				{/if}
+				{#if message?.search_type == 'twitter'}
+					<!-- twitter搜索 -->
+					{#if message?.search_content?.content}
+						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
+							<div class="flex justify-between items-center h-[55px] p-4">
+								<div class="flex flex-row items-center text-sm font-bold">
+									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 1024 1024"
+											class="w-[1.5rem] h-[1.5rem]" 
+											fill="#D0A870">
+											<path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
+										</svg>
+									</div>
+									<div class="flex flex-col ml-1">
+										<span class="text-sm">{ $i18n.t("Twitter Search") }</span>
+										<span class="text-xs"> {message?.search_content?.content.length} tweets</span>
+									</div>
 								</div>
-							{/if}
-						{/each}
-					</div>
+								<button on:click={() => {
+									handleWebHidden();
+								}}>
+									<svg 
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 15 15"
+										width="15" height="15"  
+										fill="currentColor"  
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
+										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+									</svg>
+								</button>
+							</div>	
+							<div class="w-full transition ease-in-out delay-150 overflow-x-auto overflow-y-hidden {webShow ? 'h-0' : 'h-auto'}">
+								<div class="flex flex-row px-4 mr-2">
+									{#each message?.search_content?.content ?? [] as item}
+										<!-- 带自定义选项 -->
+										 	<div class="mr-3 h-[300px]">
+												<TwitterEmbed data="{item}"/>
+										 	</div>
+									{/each}
+								</div>
+							</div>
+						</div>
+					{/if}
 				{/if}
 			{/if}
 			
@@ -582,7 +717,13 @@
 									</div>
 								</div>
 							{:else if message.content === ''}
-								<Skeleton />
+								{#if message.search}
+									{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content}	
+										<Skeleton />
+									{/if}
+								{:else}
+									<Skeleton />
+								{/if}
 							{:else}
 								{#each tokens as token, tokenIdx}
 									{#if token.type === 'thinking'}
@@ -1125,4 +1266,11 @@
 		-ms-overflow-style: none; /* IE and Edge */
 		scrollbar-width: none; /* Firefox */
 	}
+
+	.drag-none {
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    user-drag: none;
+  }
 </style>

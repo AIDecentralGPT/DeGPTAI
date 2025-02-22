@@ -43,6 +43,16 @@ class ModelLimitTable:
             print("========================", e)
             return None
         
+    def get_info_by_models(self, models: list) -> Optional[List[ModelLimitModel]]:
+        try:
+            modellimits = ModelLimit.select().where(ModelLimit.model.in_(models))
+            # 将数据库对象转换为字典
+            modellimit_list = [ModelLimitModel(**model_to_dict(modellimit)) for modellimit in modellimits]
+            return modellimit_list  
+        except Exception as e:
+            print("========================", e)
+            return None
+        
     def get_all(self) -> Optional[List[ModelLimitModel]]:
         try:
             modellimits = ModelLimit.select()

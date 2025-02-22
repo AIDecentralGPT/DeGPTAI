@@ -21,7 +21,7 @@
 	import { copyToClipboard, splitStream, convertMessagesToHistory, addTextSlowly } from '$lib/utils';
 
 	import { generateChatCompletion, cancelOllamaRequest } from '$lib/apis/ollama';
-	import { generateDeOpenAIChatCompletion, generateDeTitle } from '$lib/apis/de';
+	import { generateDeOpenAIChatCompletion, generateDeTitle, generateSearchKeyword } from '$lib/apis/de';
 	import {
 		addTagById,
 		createNewChat,
@@ -47,7 +47,11 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
+<<<<<<< HEAD
 	import { tavilySearch } from "$lib/apis/websearch"
+=======
+	import { thirdSearch } from "$lib/apis/thirdsearch"
+>>>>>>> wallet-ether
 
 	const i18n = getContext('i18n');
 
@@ -89,8 +93,8 @@
 	let title = '';
 	let prompt = '';
 	let files = [];
-	let search = false;
-
+	let search = true;
+	let search_type = "web";
 	let messages = [];
 	let history = {
 		messages: {},
@@ -221,6 +225,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	if (search) {
     selectedModels = [selectedModels[0]];
   }
+<<<<<<< HEAD
 
 	// 校验模型已使用次数
 	let modelLimit = {}
@@ -231,6 +236,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
   //     modelLimit[item] = message;
   //   }  
   // }
+=======
+>>>>>>> wallet-ether
 			
 	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
 	await tick()
@@ -287,13 +294,17 @@ const submitPrompt = async (userPrompt, _user = null) => {
           parentId: userMessageId,
           id: responseMessageId,
 					search: search,
-					order: ['web', 'image', 'text'],
-					type: "text",
+					search_type: search_type,
+					search_content: {},
+					keyword: userPrompt,
           childrenIds: [],
           role: "assistant",
           content: "",
 					think_content: "",
+<<<<<<< HEAD
 					web: {},
+=======
+>>>>>>> wallet-ether
           model: model.id,
           userContext: null,
           timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -313,6 +324,23 @@ const submitPrompt = async (userPrompt, _user = null) => {
         responseMap[model?.id] = responseMessage;
       }
     });
+
+		scrollToBottom();
+		
+		// 校验模型已使用次数
+		let modelLimit:any = {}
+    const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!dItem.passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+        }) 
+      }
+    }
 
 		// 等待 history/message 更新完成
 		await tick();
@@ -374,13 +402,17 @@ const submitPrompt = async (userPrompt, _user = null) => {
 								parentId: parentId,
 								id: responseMessageId,
 								search: search,
-								order: ['web', 'image', 'text'],
-								type: "text",
+								search_type: search_type,
+								search_content: {},
+								keyword: prompt,
 								childrenIds: [],
 								role: "assistant",
 								content: "",
 								think_content: "",
+<<<<<<< HEAD
 								web: {},
+=======
+>>>>>>> wallet-ether
 								model: model.id,
 								userContext: null,
 								timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -435,7 +467,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 							await handleLimitError(modelLimit[model.id], responseMessage)
 						} else {
 							// 搜索网页
+<<<<<<< HEAD
 							handleSearchWeb(responseMessage);
+=======
+							handleSearchWeb(responseMessage, responseMessageId);
+>>>>>>> wallet-ether
 							// 文本搜索
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 						}
@@ -496,55 +532,81 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		console.log("$settings.system", $settings.system, );
 		
 		try {
-			console.log("model", model);
+			let send_message = [
+        $settings.system || (responseMessage?.userContext ?? null)
+          ? {
+              role: "system",
+              content: `${$settings?.system ?? ""}${
+              responseMessage?.userContext ?? null
+                ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
+            } : undefined,
+            ...modelmessage,
+        ].filter((message) => message);
 			
+			// 判断是否网络搜索重新赋值
+			send_message.forEach((item, index) => {
+        // 判断不同类型提问不同内容
+        if (item?.role != 'user' && item?.search) {
+          let preMessage = send_message[index-1].content;
+          if (item?.search_type == "youtube") {
+						if (item?.search_content?.videos) {
+							let analyContent = item?.search_content?.videos.map((vItem: any) => vItem?.description).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:") + preMessage;
+							send_message[index-1].content = analyContent;
+						}
+          } else if (item?.search_type == "twitter") {
+						if (item?.search_content?.content) {
+							let analyContent = item?.search_content?.content.map((tItem: any) => tItem?.full_text).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results:") + preMessage;
+							send_message[index-1].content = analyContent;
+						}
+          } else {
+						if (item?.search_content?.web) {
+							let analyContent = item?.search_content?.web.map((wItem: any) => wItem?.content).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:") + preMessage;
+							send_message[index-1].content = analyContent;
+						}
+          }
+        }
+      });
+			// 过滤掉error和 content为空数据
+			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
+
+      send_message = send_message.map((message, idx, arr) => ({
+        role: message.role,
+        ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+        message.role === "user"
+          ? {
+              content: [
+                {
+                  type: "text",
+                  text:
+                    arr.length - 1 !== idx
+                      ? message.content
+                      : message?.raContent ?? message.content,
+                },
+                ...message.files
+                  .filter((file) => file.type === "image")
+                    .map((file) => ({
+                      type: "image_url",
+                      image_url: {
+                        url: file.url,
+                      },
+                    })),
+              ],
+            }
+          : {
+            content:
+              arr.length - 1 !== idx
+                ? message.content
+                : message?.raContent ?? message.content,
+            }),
+      }));
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
 					model: model.id,
-					messages: [
-						$settings.system || (responseMessage?.userContext ?? null)
-							? {
-									role: 'system',
-									content: `${$settings?.system ?? ''}${
-										responseMessage?.userContext ?? null
-											? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join('\n')}` : ''}`
-							  }
-							: undefined,
-						...modelmessage
-					]
-						.filter((message) => message)
-						.filter((message) => message.content != "")
-						.map((message, idx, arr) => ({
-							role: message.role,
-							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
-							message.role === 'user'
-								? {
-										content: [
-											{
-												type: 'text',
-												text:
-													arr.length - 1 !== idx
-														? message.content
-														: message?.raContent ?? message.content
-											},
-											...message.files
-												.filter((file) => file.type === 'image')
-												.map((file) => ({
-													type: 'image_url',
-													image_url: {
-														url: file.url
-													}
-												}))
-										]
-								  }
-								: {
-										content:
-											arr.length - 1 !== idx
-												? message.content
-												: message?.raContent ?? message.content
-								  })
-						})),
+					messages: send_message,
 				},
 				$deApiBaseUrl?.url
 			);
@@ -560,7 +622,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 				responseMessage.replytime = Math.floor(Date.now() / 1000);
+<<<<<<< HEAD
 				if (model.id == "DeepSeek-R1") {
+=======
+				// 判断模型添加think头
+        if (model.id == "DeepSeek-R1") {
+>>>>>>> wallet-ether
           responseMessage.think_content = "<think>";
         }
 				for await (const update of textStream) {
@@ -605,7 +672,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						continue;
 					} else {
 						// responseMessage.content += value;
-						responseMessage.content = await addTextSlowly(responseMessage.content, value);
+						responseMessage.content = await addTextSlowly(
+							responseMessage.content, 
+							value,
+							model.id
+						);
 						messages = messages;
 					}
 
@@ -625,8 +696,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						document.getElementById(`speak-button-${responseMessage.id}`)?.click();
 					}
 
-
-
 					if (autoScroll) {
 						scrollToBottom();
 					}
@@ -637,6 +706,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		} catch (error) {
 			await handleOpenAIError(error, null, model, responseMessage);
 		}
+
+		await checkThinkContent(responseMessage);
 		messages = messages;
 
 		stopResponseFlag = false;
@@ -937,9 +1008,24 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		}
 	};
 
-
-
-
+	const generateSearchChatKeyword = async (userPrompt: string) => {
+    if ($settings?.title?.auto ?? true) {
+      // 获取关键词
+      let send_messages = messages.filter(item => item.role == 'user')
+        .map(item => ({role: item.role, content: item.content}));
+      send_messages.push({
+        role: "user",
+        content: $i18n.t("Obtain what the content of the final question is about, and only output the content it is about")
+      })
+      const title = await generateSearchKeyword(
+        send_messages,
+        $deApiBaseUrl?.url
+      );
+      return title;
+    } else {
+      return `${userPrompt}`;
+    }
+  };
 
 	// 5. 给openai发请求
 	const sendPromptOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
@@ -1121,7 +1207,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 	// 校验模型是否有think思考内容
   const checkThinkContent = async(responseMessage: any) => {
+<<<<<<< HEAD
     let checkMessage = responseMessage.think_content + responseMessage.content;
+=======
+		let checkMessage = responseMessage.think_content + responseMessage.content;
+>>>>>>> wallet-ether
     if (checkMessage.startsWith("<think>")) {
       const startIndex = checkMessage.indexOf('<think>');
       const nextSearchIndex = startIndex + '<think>'.length;
@@ -1134,6 +1224,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
       } else {
         extracted = checkMessage.slice(startIndex, endIndex + '</think>'.length);
         remaining = checkMessage.slice(0, startIndex) + checkMessage.slice(endIndex + '</think>'.length);
+<<<<<<< HEAD
       }
       responseMessage.content = remaining;
       responseMessage.think_content = extracted;
@@ -1151,6 +1242,24 @@ const submitPrompt = async (userPrompt, _user = null) => {
         }
       }
 		}
+=======
+      }
+      responseMessage.content = remaining;
+      responseMessage.think_content = extracted;
+    }
+  }
+
+	// 获取搜索网页
+  const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
+    if (search) {
+			const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
+      let result = await thirdSearch(localStorage.token, ai_keyword, responseMessage.search_type);
+      if (result?.ok) {
+        responseMessage.search_content = result.data;
+				history.messages[responseMessageId] = responseMessage;
+      }
+    }
+>>>>>>> wallet-ether
     await tick();
     scrollToBottom();
   }
@@ -1410,6 +1519,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 	<MessageInput
 		bind:files
 		bind:search
+		bind:search_type
 		bind:prompt
 		bind:autoScroll
 		bind:selectedModel={atSelectedModel}

@@ -525,3 +525,45 @@ def generate_image(
             if "error" in data:
                 error = data["error"]["message"]
         raise HTTPException(status_code=400, detail=ERROR_MESSAGES.DEFAULT(error))
+    
+@app.get("/image_proxy/{image_str}")
+async def healthcheck(image_str: str):
+    try:
+        # https://rs-channel.huanqiucdn.cn/imageDir/47fffb7c69e070d309ca94777330e209u5.jpg
+        encoded_bytes = image_str.encode('utf-8')
+        decoded_bytes = base64.b64decode(encoded_bytes)
+        image_url = decoded_bytes.decode('utf-8')
+        # 发送请求，使用代理
+        response = requests.get(image_url)
+        # 检查响应状态码
+        if response.status_code == 200:
+            # 获取图片内容
+            image_content = response.content
+            # 读取文件头信息判断图片类型
+            header = image_content[:8]
+            image_type = get_image_type(header)
+            # 将图片内容转换为 Base64 编码
+            base64_encoded = base64.b64encode(image_content).decode('utf-8')
+            #添加前缀
+            if image_type != 'unknown':
+                prefix = f'data:image/{image_type};base64,'
+            else:
+                prefix = 'data:image/unknown;base64,'
+            return {"data": f'{prefix}{base64_encoded}'}
+        else:
+            return {"data": ""}
+    except Exception as e:
+        return {"data": ""}
+    
+def get_image_type(header):
+    """根据文件头信息判断图片类型"""
+    header_hex = header.hex()
+    if header_hex.startswith('ffd8ff'):
+        return 'jpeg'
+    elif header_hex.startswith('89504e470d0a1a0a'):
+        return 'png'
+    elif header_hex.startswith('47494638'):
+        return 'gif'
+    elif header_hex.startswith('424d'):
+        return 'bmp'
+    return 'unknown'

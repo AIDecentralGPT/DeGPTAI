@@ -568,16 +568,53 @@ export const getTimeRange = (timestamp) => {
 	}
 };
 
+// 封装获取可见性状态属性名的函数，提高代码复用性
+function getVisibilityStateProperty(): string {
+	if (typeof document.hidden!== 'undefined') {
+			return 'visibilityState';
+	} else if (typeof document.msHidden!== 'undefined') {
+			return 'msVisibilityState';
+	} else if (typeof document.webkitHidden!== 'undefined') {
+			return 'webkitVisibilityState';
+	}
+	return 'visibilityState'; // 默认返回标准属性名
+}
 
+// 封装判断页面是否可见的函数，使代码逻辑更清晰
+function isPageCurrentlyVisible(): boolean {
+	const visibilityStateProperty = getVisibilityStateProperty();
+	return (document[visibilityStateProperty]?? 'visible') === 'visible';
+}
 
-
-export const addTextSlowly = async (target, text) => {
+const timeoutIdMap = new Map();
+export const addTextSlowly = async (target, text, model) => {
+	// 检查页面当前可见状态
+	const isVisible = isPageCurrentlyVisible();
+	if (isVisible) {
+			console.log('页面切换到前台，变为可见' + model);
+	} else {
+			console.log('页面切换到后台或切换了选项卡，变为不可见' + model);
+	}
 	for (const char of text) {
 		target += char;
-		// 这里可以设置一个适当的延迟来模拟逐字符显示
-		await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
-		// 更新界面或进行其他操作
+		// 这里可以设置一个适当的延迟来模拟逐字符显示(判断是否前台显示)
+		// await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
+		if (isVisible) {
+			await new Promise<void>((resolve) => {
+				const timeoutId = setTimeout(() => {
+					resolve();
+					timeoutIdMap.delete(model); // 定时完成后移除ID
+				}, 12.5);
+				timeoutIdMap.set(model, timeoutId);
+			});	
+		} else {
+			if (timeoutIdMap.has(model)) {
+				clearTimeout(timeoutIdMap.get(model));
+				timeoutIdMap.delete(model);
+			}
+		}
 	}
+	// 更新界面或进行其他操作
 	return target;
 }
 

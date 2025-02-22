@@ -10,11 +10,12 @@
     verifyCode,
     servetime,
   } from "$lib/apis/auths";
-  import { user } from "$lib/stores";
+  import { user, theme } from "$lib/stores";
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
   import { addErrorLog } from "$lib/apis/errorlog";
+    import { bindCaptcha } from "$lib/apis/kycrestrict";
 
   const i18n = getContext("i18n");
 
@@ -84,12 +85,15 @@
     return emailRegex.test(email);
   }
 
-  function sendVerificationCode() {
+  async function sendVerificationCode() {
     if (countdown === 0) {
       if (validateEmail(email)) {
-        startCountdown();
         sendCode(localStorage.token, email).then((res) => {
-          console.log("verification-code:", res);
+          if (res.pass) {
+            startCountdown();
+          } else {
+            toast.error($i18n.t(res.message));
+          }
         });
       } else {
         toast.error($i18n.t("Please enter a valid email address."));
@@ -122,7 +126,7 @@
         return;
       }
       nextLoading = true;
-      await verifyCode(email, code)
+      await verifyCode(localStorage.token, email, code)
         .then(() => {
           email = email;
           current = current + 1;
@@ -251,14 +255,14 @@
   onMount(() => {
     try {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
       // 检查是否为移动端设备
       isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(
         userAgent
       );
-
       // 时间校准
       serveTime();
+      // 动态引入图片认证
+      importCaptchaJs();
     } catch (error) {
       addErrorLog("kyc认证初始化", error.toString());
     }
@@ -276,6 +280,7 @@
   $: if (show) {
     try {
       initSocket();
+      initParam();
     } catch (error) {
       addErrorLog("socket初始化", error.toString());
     }
@@ -297,9 +302,45 @@
       socket.close();
     }
   });
+
+  // 图片认证相关
+  const CAPTCHA_APP_ID = '192432659'
+  const SLIDER_CAPTCHA_JS = 'https://captcha.api.hi.cn/captcha.js';
+
+  // 动态引入验证码的js
+  function importCaptchaJs() {  
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = SLIDER_CAPTCHA_JS;
+    let head = document.head || document.getElementsByTagName('head')[0];
+    head.appendChild(script)
+  }
+
+  function openCaptcha() {
+    let enableDarkFlag = '';
+    if ($theme === "system" || $theme === "light") {
+      enableDarkFlag = '';
+    } else {
+      enableDarkFlag = 'force';
+    }
+    let lang = $i18n.language;
+    let captcha = new FushuActionCaptcha(CAPTCHA_APP_ID, captchaCallBack, {enableDarkMode: enableDarkFlag, userLanguage: lang == 'zh-CN' ? 'zh-CN' : 'en-US'});
+    captcha.show();
+  }
+
+  async function captchaCallBack(captchaRes: any) {
+    if(captchaRes.ret === 0){
+      let result = await bindCaptcha(localStorage.token, JSON.stringify(captchaRes));
+      if (result) {
+        await sendVerificationCode();
+      } 
+    }
+  }
+
+  const mousedownValid = false; 
 </script>
 
-<Modal bind:show size="lg">
+<Modal bind:show mousedownValid={ mousedownValid } size="lg">
   <div class="text-gray-700 dark:text-gray-100 px-5 pt-4 pb-4 relative">
     <div class="flex justify-between dark:text-gray-300">
       <div class="text-lg font-medium self-center">
@@ -371,7 +412,7 @@
                     ? 'opacity-50 cursor-not-allowed'
                     : ''}"
                   type="button"
-                  on:click={sendVerificationCode}
+                  on:click={async () => { await openCaptcha(); }}
                   disabled={countdown > 0}
                 >
                   {#if countdown > 0}

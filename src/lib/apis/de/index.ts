@@ -51,6 +51,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Llama3.3",
         support: "text",
         desc: "Suitable for most tasks"
+<<<<<<< HEAD
       }
       // {
       //   name: "Qwen o1",
@@ -60,6 +61,17 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Take photos to solve math problems"
       // },
       // {
+=======
+      },
+      {
+        name: "Qwen o1",
+        model: "Qwen2.5-VL-72B-Instruct",
+        tip: "Qwen o1",
+        support: "image",
+        desc: "Take photos to solve math problems"
+      }
+      // {
+>>>>>>> wallet-ether
       //   name: "Pixtral Large 1.0",
       //   model: "Pixtral-124B",
       //   tip: "Pixtral Large 1.0",
@@ -215,7 +227,8 @@ const getDeOpenAIChatCompletion = async (
       ...body,
       project: "DecentralGPT",
       stream: true,
-    })
+    }),
+    keepalive: true
   }).finally(() => {
     if (overallTimeout) {
       clearTimeout(overallTimeout);
@@ -264,6 +277,61 @@ export const generateDeTitle = async (
               content: template,
             },
           ],
+          stream: false,
+          project: "DecentralGPT",
+          // Restricting the max tokens to 50 to avoid long titles
+          max_tokens: 50,
+        })
+      });
+      res = await result.json();
+      break;
+    } catch (err) {
+      console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
+      if (domain.name == urls[urls.length - 1].name) {
+        error = err;
+      }
+    }
+  }
+
+  if (error) {
+    throw error;
+  }
+
+  return (
+    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
+  );
+};
+
+
+// 获取最后提问的词语
+export const generateSearchKeyword = async (
+  messages: Object,
+  url: string
+) => {
+  let error = null;
+  let res: any;
+
+  let urls = await getDeBaseUrls();
+  let index = urls.findIndex(item => item.url === url);
+  if (index !== -1) {
+    // 移除该元素
+    let koreaItem = urls.splice(index, 1)[0];
+    // 将该元素添加到数组的开头
+    urls.unshift(koreaItem);
+  }
+  let model = 'Llama3.3-70B';
+  for (const domain of urls) {
+    try {
+      const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: model,
+          // node_id: nodeList?.[0],
+          messages: messages,
           stream: false,
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles

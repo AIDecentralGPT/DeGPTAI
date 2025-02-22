@@ -40,6 +40,7 @@ from web3 import Web3
 import json
 import logging
 from typing import List, Dict
+from utils.utils import get_verified_user
 
 from fastapi import Request, WebSocket, WebSocketDisconnect
 from fastapi import Depends, HTTPException, status
@@ -55,6 +56,9 @@ from apps.web.models.email_codes import (
     TimeRequest,
     VerifyCodeRequest
 )
+
+from apps.web.models.kyc_restrict import KycRestrictInstance
+from apps.web.api.captcha import CaptchaApiInstance
 
 from constants import USER_CONSTANTS
 import logging
@@ -642,6 +646,12 @@ async def delete_api_key(user=Depends(get_current_user)):
 @router.post("/send_code")
 async def send_code(email_request: EmailRequest, user=Depends(get_current_user)):
     email = email_request.email
+
+    # 校验邮箱是否已经认证过
+    # emailRet = KycRestrictInstance.check_email(email)
+    # if emailRet:
+    #     return {"pass": False, "message": "One email can only be used for KYC verification once"}
+
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
     if result:
@@ -676,9 +686,9 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
         </body>
         </html>
         """
-        email_code_operations.send_email(
-            email, "DeGPT Code", email_body)  # 发送邮件
-        return {"message": "验证码已发送"}
+        # 发送邮件
+        email_code_operations.send_email(email, "DeGPT Code", email_body) 
+        return {"pass": True, "message": "验证码已发送"}
     else:
         raise HTTPException(status_code=500, detail="无法创建验证码记录")
 
@@ -694,7 +704,7 @@ async def serve_time():
 
 
 @router.post("/verify_code")
-async def verify_code(verify_code_request: VerifyCodeRequest):
+async def verify_code(verify_code_request: VerifyCodeRequest, user=Depends(get_verified_user)):
     email = verify_code_request.email
     code = verify_code_request.code
 
@@ -708,8 +718,8 @@ async def verify_code(verify_code_request: VerifyCodeRequest):
         raise HTTPException(
             status_code=400, detail="The verification code has expired")
 
-    print("record.code", record.code, "code", code)
     if record.code == code:
+        KycRestrictInstance.update_email(user.id, email)
         return {"message": "The verification code has been verified successfully"}
     else:
         raise HTTPException(
@@ -727,8 +737,10 @@ async def create_face():
 
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
-
     if user.id.startswith("0x"):
+        kycrestrict = KycRestrictInstance.get_by_userid(user.id)
+        if kycrestrict is None or kycrestrict.email is None or kycrestrict.captcha_code is None:
+            raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         response = face_compare.face_liveness({
             "deviceType": form_data.metaInfo.deviceType,
@@ -944,30 +956,38 @@ async def faceliveness_check_for_ws(id: str):
             
             # 更新kyc认证
             if response.body.result.passed:
+                # 校验用户是否完成所有kyc认证流程
+                kycrestrict = KycRestrictInstance.get_by_userid(user.id)
+                kycrestricts = KycRestrictInstance.get_by_ip(kycrestrict.ip_address)
+                if  kycrestricts is not None and len(kycrestricts) >= 2:
+                    return {
+                            "passed": False,
+                            "message": "A single IP address can be used for a maximum of two KYC verifications",
+                        }
+                if kycrestrict is None:
+                    return {
+                            "passed": False,
+                            "message": "The identity validate fail",
+                        }
+                # email_check = KycRestrictInstance.check_email(kycrestrict.email)
+                # if email_check:
+                #     return {
+                #             "passed": False,
+                #             "message": "The identity validate fail",
+                #         }
+                captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code, kycrestrict.ip_address)
+                if captcha_check == False:
+                    return {
+                            "passed": False,
+                            "message": "The identity validate fail",
+                        }
+                
+                # 更新用户KYC状态
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
+                # 更新KYC流程状态
+                KycRestrictInstance.update_kyc(user.id, True)
                 # return user_update_result
                 print("user_update_result", user_update_result)
-
-                # # 更新用户注册奖励
-                # ## 获取用户注册奖励信息
-                # rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user.id)
-                # print("rewards_history", rewards_history)
-                # if rewards_history is not None and rewards_history.status == False:
-                #     ## 领取注册奖励
-                #     result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-                #     ## 领取失败进行二次领取
-                #     if result is None:
-                #         result = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-
-                # # 判断是否有注册奖励
-                # if rewards_history is not None and rewards_history.invitee is not None and rewards_history.invitee != '':
-                #     ## 获取奖励记录校验是那种奖励
-                #     rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-                #     if len(rewards) == 2:
-                #         inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
-                #         ### 领取邀请奖励
-                #         if inviteReward is not None:
-                #             RewardApiInstance.inviteRewardThread(inviteReward, rewards_history)
                             
             # 'Message': 'success',
             # 'RequestId': 'F7EE6EED-6800-3FD7-B01D-F7F781A08F8D',

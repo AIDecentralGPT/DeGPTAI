@@ -101,7 +101,7 @@
 						// 更新系统语言
 						await initLanguage();
 						// 更新用户聊天记录
-						await updateChats();
+						// await updateChats();
 						// 初始化完成
 						$initPageFlag = true;
 					});
@@ -182,9 +182,11 @@
 	// 更新用户聊天记录
 	async function updateChats() {
     if (localStorage.token){
-      const chatList = await getChatList(localStorage.token);
-      chats.set(chatList);
-      tags.set([]);
+			chats.set([]);
+			tags.set([]);
+      getChatList(localStorage.token).then(chatList => {
+				chats.set(chatList);
+			}); 
     } 
   }
 

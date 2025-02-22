@@ -20,8 +20,8 @@
   import "../app.css";
 
   // 打开调试模式
-  // import VConsole from 'vconsole';
-  // const vConsole = new VConsole();
+  import VConsole from 'vconsole';
+  const vConsole = new VConsole();
 
 
   import "tippy.js/dist/tippy.css";
@@ -35,6 +35,20 @@
   let loaded = false;
   const BREAKPOINT = 768;
 
+  // 挂载serviceWorker
+  async function registServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      // 注册 Service Worker，指定 type 为 'module' 以支持 ES6 模块语法
+      navigator.serviceWorker.register('../static/sw.js', { type: 'module' })
+        .then((registration) => {
+          console.log('Service Worker registered success with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  }
+  
   async function initData() {
     let backendConfig = null;
     try {
@@ -134,6 +148,7 @@
   }
 
   onMount(async () => {
+    await registServiceWorker();
     try {
       let currentAddress = window.location.href;
       await initData();

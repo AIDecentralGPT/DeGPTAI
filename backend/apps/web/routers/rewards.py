@@ -98,6 +98,8 @@ async def clock_in(user=Depends(get_verified_user)):
         if user.verified:
             # 领取奖励
             RewardApiInstance.dailyReward(rewards.id, user.id)
+            # 判断是否发放邀请奖励
+            checkInviteReward(user.id)
         return {"ok": True, "message": "You have received 100 DGC points !"}
     else:
         raise HTTPException(status_code=500, detail="Failed to received reward")
@@ -135,13 +137,37 @@ async def clock_in_check(request: RewardsRequest, user=Depends(get_verified_user
         # 领取奖励
         result = RewardApiInstance.dailyReward(rewards_history.id, user.id)
         if result is not None:
+            # 判断是否发放邀请奖励
+            checkInviteReward(user.id)
             return {"ok": True, "data": result}
         else:
             raise HTTPException(status_code=500, detail="Clockin rewards can only be obtained once within a 24-hour period，you can try later.")
     finally:
         # 释放锁，以便该用户其他线程能获取锁并执行方法
         user_lock.release()
-    
+
+# 校验是否发放邀请奖励
+def checkInviteReward(user_id: str): 
+    # 判断用户是否有邀请人
+    user_find = Users.get_user_by_id(user_id)
+    if user_find.inviter_id is not None and user_find.inviter_id != '':
+        #判断用户是否连续三天签到
+        reward_list = RewardsTableInstance.get_triduum_history(user_id)
+        if len(reward_list) > 2:
+            # 更新用户注册奖励
+            ## 获取用户注册奖励信息
+            rewards_history = RewardsTableInstance.get_create_rewards_by_userid(user_id)
+            print("rewards_history", rewards_history)
+            # 判断是否有注册奖励
+            if rewards_history is not None and rewards_history.invitee is not None and rewards_history.invitee != '':
+                ## 获取奖励记录校验是那种奖励
+                rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
+                if len(rewards) == 2:
+                    inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
+                    ### 领取邀请奖励
+                    if inviteReward is not None and inviteReward.status == False:
+                        RewardApiInstance.inviteRewardThread(inviteReward, rewards_history)
+
 # 用户邀请领取奖励
 @router.post("/invite_check")
 async def invite_check(request: RewardsRequest, user=Depends(get_verified_user)):
