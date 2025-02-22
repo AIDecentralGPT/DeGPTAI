@@ -465,7 +465,7 @@
 						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
-									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+									<div class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
 										<svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 1024 1024"
@@ -549,11 +549,11 @@
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
-									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+									<div class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
 										<svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 1024 1024"
-                      class="w-[1rem] h-[1rem]" 
+                      class="w-[1.2rem] h-[1.2rem]" 
                       fill="#D0A870">
                       	<path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
                         <path d="M416.896 640l256-128.256-256-127.744z"/>
@@ -609,7 +609,7 @@
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
-									<div class="flex items-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+									<div class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 1024 1024"
