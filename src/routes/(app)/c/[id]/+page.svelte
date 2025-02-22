@@ -308,18 +308,18 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		
 		// 校验模型已使用次数
 		let modelLimit:any = {}
-    const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
-    if (passed) {
-      for (const item of selectedModels) {
-        data.forEach((dItem:any) => {
-          if(dItem.model == item) {
-            if (!dItem.passed) {
-              modelLimit[dItem.model] = dItem.message;
-            }
-          }
-        }) 
-      }
-    }
+    // const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
+    // if (passed) {
+    //   for (const item of selectedModels) {
+    //     data.forEach((dItem:any) => {
+    //       if(dItem.model == item) {
+    //         if (!dItem.passed) {
+    //           modelLimit[dItem.model] = dItem.message;
+    //         }
+    //       }
+    //     }) 
+    //   }
+    // }
 
 		// 等待 history/message 更新完成
 		await tick();
