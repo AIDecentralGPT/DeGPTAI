@@ -51,17 +51,6 @@ export const getDeModels = async (token: string = "") => {
         tip: "Llama3.3",
         support: "text",
         desc: "Suitable for most tasks"
-<<<<<<< HEAD
-      }
-      // {
-      //   name: "Qwen o1",
-      //   model: "QVQ-72B-Preview",
-      //   tip: "Qwen o1",
-      //   support: "image",
-      //   desc: "Take photos to solve math problems"
-      // },
-      // {
-=======
       },
       {
         name: "Qwen o1",
@@ -71,7 +60,6 @@ export const getDeModels = async (token: string = "") => {
         desc: "Take photos to solve math problems"
       }
       // {
->>>>>>> wallet-ether
       //   name: "Pixtral Large 1.0",
       //   model: "Pixtral-124B",
       //   tip: "Pixtral Large 1.0",

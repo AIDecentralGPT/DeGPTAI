@@ -1170,13 +1170,6 @@
                     }}
                   />
                   <!-- 网络搜索 -->
-<<<<<<< HEAD
-                  <!-- <div class="self-star mb-2 ml-1 mr-1">
-                    <Tooltip content={$i18n.t("Search the web")}>
-                      <button
-                        class="flex flex-row items-center hover:bg-[#333333cc] text-gray-800 dark:text-white dark:hover:bg-[#ffffffcc] transition rounded-full px-3 py-1.5
-                         { search ? 'bg-[#333333] dark:bg-[#ffffff]' : 'bg-gray-50 dark:bg-gray-800' }"
-=======
                   <div class="self-star mb-2 ml-1 mr-1">
                     <button class="flex flex-row items-center text-gray-800 dark:text-white transition rounded-full pr-3 cursor-pointer 
                       ease-in-out duration-700 {(!search_icon_show && search) ? 'bg-black' : 'bg-gray-50 dark:bg-gray-800'}"
@@ -1197,7 +1190,6 @@
                         } 
                       }}>
                       <button class="flex flex-row pl-2 pr-1 py-2 rounded-full {search? 'bg-black' : ''}"
->>>>>>> wallet-ether
                         type="button"
                         on:click={async (event) => {
                           event.stopPropagation();
@@ -1209,22 +1201,6 @@
                           }
                           search_icon_show = false;
                           search = !search;
-<<<<<<< HEAD
-                          await tick();
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 1024 1024"
-                          class="w-[1rem] h-[1rem]" 
-                          fill="#D0A870">
-                          <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                        </svg>
-                        <span class="ml-1 text-sm font-bold text-[#D0A870]">{$i18n.t("search")}</span>
-                      </button>
-                    </Tooltip>
-                  </div>   -->
-=======
                         }}>
                         {#if search}
                           <svg 
@@ -1376,8 +1352,7 @@
                         {/if}
                         <span class="text-sm font-bold text-[#D0A870] select-none {(search_icon_show && !search) ? 'ml-1' : ''}">{$i18n.t("search")}</span>
                     </button>  
-                  </div>  
->>>>>>> wallet-ether
+                  </div>
                 </div>
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">

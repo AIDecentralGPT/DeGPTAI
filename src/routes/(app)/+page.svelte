@@ -58,11 +58,7 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
-<<<<<<< HEAD
-  import { tavilySearch } from "$lib/apis/websearch"
-=======
   import { thirdSearch } from "$lib/apis/thirdsearch";
->>>>>>> wallet-ether
 
   let inviter: any = "";
   let channelName: any = "";
@@ -248,21 +244,6 @@
       selectedModels = [selectedModels[0]];
     }
 
-<<<<<<< HEAD
-    
-
-    // 校验模型已使用次数
-    let modelLimit = {}
-    // 屏蔽模型次数限制
-    // for (const item of selectedModels) {
-    //   const {passed, message} = await conversationRefresh(localStorage.token, item);
-    //   if (!passed) {
-    //     modelLimit[item] = message;
-    //   }  
-    // }
-
-=======
->>>>>>> wallet-ether
     // const selectedModelsValid = selectedModels
     if (selectedModels.length < 1) {
       toast.error($i18n.t("Model not selected"));
@@ -323,10 +304,6 @@
             role: "assistant",
             content: "",
             think_content: "",
-<<<<<<< HEAD
-            web: {},
-=======
->>>>>>> wallet-ether
             model: model.id,
             userContext: null,
             timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -428,10 +405,6 @@
               role: "assistant",
               content: "",
               think_content: "",
-<<<<<<< HEAD
-              web: {},
-=======
->>>>>>> wallet-ether
               model: model.id,
               userContext: null,
               timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -485,11 +458,7 @@
             await handleLimitError(modelLimit[model.id], responseMessage);
           } else {
             // 搜索网页
-<<<<<<< HEAD
-						await handleSearchWeb(responseMessage);
-=======
 						await handleSearchWeb(responseMessage, responseMessageId);
->>>>>>> wallet-ether
 						// 文本搜索
             await sendPromptDeOpenAI(model, responseMessageId, _chatId);
           }
@@ -653,10 +622,6 @@
           $settings.splitLargeChunks
         );
         responseMessage.replytime = Math.floor(Date.now() / 1000);
-<<<<<<< HEAD
-=======
-        // 判断模型添加think头
->>>>>>> wallet-ether
         if (model.id == "DeepSeek-R1") {
           responseMessage.think_content = "<think>";
         }
@@ -752,10 +717,6 @@
     } catch (error) {
       await handleOpenAIError(error, null, model, responseMessage);
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> wallet-ether
     await checkThinkContent(responseMessage);
     messages = messages;
 
@@ -793,24 +754,6 @@
       } else {
         extracted = checkMessage.slice(startIndex, endIndex + '</think>'.length);
         remaining = checkMessage.slice(0, startIndex) + checkMessage.slice(endIndex + '</think>'.length);
-<<<<<<< HEAD
-      }
-      responseMessage.content = remaining;
-      responseMessage.think_content = extracted;
-    }
-  }
-
-  // 获取搜索网页
-  const handleSearchWeb= async(responseMessage: any) => {
-    if (search) {
-      let lastMessage = messages.filter(item => item?.role == 'user')[0];
-      let webResult = await tavilySearch(localStorage.token, lastMessage.content);
-      if (webResult?.ok) {
-        responseMessage.web = {
-          websearch: webResult.data
-        }
-      }
-=======
       }
       responseMessage.content = remaining;
       responseMessage.think_content = extracted;
@@ -826,7 +769,6 @@
         responseMessage.search_content = result.data;
         history.messages[responseMessageId] = responseMessage;
       }
->>>>>>> wallet-ether
     }
     await tick();
     scrollToBottom();
