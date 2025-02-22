@@ -47,11 +47,7 @@
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
-<<<<<<< HEAD
-	import { tavilySearch } from "$lib/apis/websearch"
-=======
 	import { thirdSearch } from "$lib/apis/thirdsearch"
->>>>>>> wallet-ether
 
 	const i18n = getContext('i18n');
 
@@ -225,19 +221,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	if (search) {
     selectedModels = [selectedModels[0]];
   }
-<<<<<<< HEAD
-
-	// 校验模型已使用次数
-	let modelLimit = {}
-	// 屏蔽模型次数限制
-  // for (const item of selectedModels) {
-  //   const {passed, message} = await conversationRefresh(localStorage.token, item);
-  //   if (!passed) {
-  //     modelLimit[item] = message;
-  //   }  
-  // }
-=======
->>>>>>> wallet-ether
 			
 	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
 	await tick()
@@ -301,10 +284,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
           role: "assistant",
           content: "",
 					think_content: "",
-<<<<<<< HEAD
-					web: {},
-=======
->>>>>>> wallet-ether
           model: model.id,
           userContext: null,
           timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -409,10 +388,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 								role: "assistant",
 								content: "",
 								think_content: "",
-<<<<<<< HEAD
-								web: {},
-=======
->>>>>>> wallet-ether
 								model: model.id,
 								userContext: null,
 								timestamp: Math.floor(Date.now() / 1000), // Unix epoch
@@ -467,11 +442,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 							await handleLimitError(modelLimit[model.id], responseMessage)
 						} else {
 							// 搜索网页
-<<<<<<< HEAD
-							handleSearchWeb(responseMessage);
-=======
 							handleSearchWeb(responseMessage, responseMessageId);
->>>>>>> wallet-ether
 							// 文本搜索
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
 						}
@@ -622,12 +593,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 				responseMessage.replytime = Math.floor(Date.now() / 1000);
-<<<<<<< HEAD
-				if (model.id == "DeepSeek-R1") {
-=======
 				// 判断模型添加think头
         if (model.id == "DeepSeek-R1") {
->>>>>>> wallet-ether
           responseMessage.think_content = "<think>";
         }
 				for await (const update of textStream) {
@@ -1186,8 +1153,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		} catch (error) {
 			await handleOpenAIError(error, null, model, responseMessage);
 		}
-
-		await checkThinkContent(responseMessage);
 		messages = messages;
 
 		stopResponseFlag = false;
@@ -1207,11 +1172,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 	// 校验模型是否有think思考内容
   const checkThinkContent = async(responseMessage: any) => {
-<<<<<<< HEAD
-    let checkMessage = responseMessage.think_content + responseMessage.content;
-=======
 		let checkMessage = responseMessage.think_content + responseMessage.content;
->>>>>>> wallet-ether
     if (checkMessage.startsWith("<think>")) {
       const startIndex = checkMessage.indexOf('<think>');
       const nextSearchIndex = startIndex + '<think>'.length;
@@ -1224,25 +1185,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
       } else {
         extracted = checkMessage.slice(startIndex, endIndex + '</think>'.length);
         remaining = checkMessage.slice(0, startIndex) + checkMessage.slice(endIndex + '</think>'.length);
-<<<<<<< HEAD
-      }
-      responseMessage.content = remaining;
-      responseMessage.think_content = extracted;
-    }
-  }
-
-	// 获取搜索网页
-  const handleSearchWeb= async(responseMessage: any) => {
-    if (search) {
-      let lastMessage = messages.filter(item => item?.role == 'user')[0];
-      let webResult = await tavilySearch(localStorage.token, lastMessage.content);
-      if (webResult?.ok) {
-        responseMessage.web = {
-          websearch: webResult.data
-        }
-      }
-		}
-=======
       }
       responseMessage.content = remaining;
       responseMessage.think_content = extracted;
@@ -1259,7 +1201,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				history.messages[responseMessageId] = responseMessage;
       }
     }
->>>>>>> wallet-ether
     await tick();
     scrollToBottom();
   }

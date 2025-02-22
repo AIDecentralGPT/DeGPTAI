@@ -622,6 +622,7 @@
           $settings.splitLargeChunks
         );
         responseMessage.replytime = Math.floor(Date.now() / 1000);
+        // 判断模型添加think头
         if (model.id == "DeepSeek-R1") {
           responseMessage.think_content = "<think>";
         }
@@ -717,6 +718,7 @@
     } catch (error) {
       await handleOpenAIError(error, null, model, responseMessage);
     }
+
     await checkThinkContent(responseMessage);
     messages = messages;
 

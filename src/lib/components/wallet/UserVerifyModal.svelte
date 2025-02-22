@@ -412,7 +412,7 @@
                     ? 'opacity-50 cursor-not-allowed'
                     : ''}"
                   type="button"
-                  on:click={async () => { await openCaptcha(); }}
+                  on:click={async () => { await sendVerificationCode(); }}
                   disabled={countdown > 0}
                 >
                   {#if countdown > 0}
