@@ -216,7 +216,6 @@ const getDeOpenAIChatCompletion = async (
       project: "DecentralGPT",
       stream: true,
     }),
-    keepalive: true
   }).finally(() => {
     if (overallTimeout) {
       clearTimeout(overallTimeout);
