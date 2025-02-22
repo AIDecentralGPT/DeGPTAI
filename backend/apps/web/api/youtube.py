@@ -22,21 +22,23 @@ class YoutubeClient:
         response = requests.get(url, params=params)
         response.raise_for_status()  # 检查HTTP错误
         data = response.json()
+        print("=====================", data)
         # 打印搜索结果
         videos = []
         for item in data.get("items", []):
-            video_id = item["id"]["videoId"]
-            snippet = item["snippet"] 
-            video_info = {
-                "video_id": video_id,
-                "title": snippet["title"],
-                "description": snippet["description"],
-                "published_at": snippet["publishedAt"],
-                "channel_title": snippet["channelTitle"],
-                "thumbnail_url": snippet["thumbnails"]["high"]["url"],
-                "video_url": f"https://www.youtube.com/watch?v={video_id}"
-            }
-            videos.append(video_info)
+            if "id" in item and "videoId" in item["id"]:
+                video_id = item["id"]["videoId"]
+                snippet = item["snippet"] 
+                video_info = {
+                    "video_id": video_id,
+                    "title": snippet["title"],
+                    "description": snippet["description"],
+                    "published_at": snippet["publishedAt"],
+                    "channel_title": snippet["channelTitle"],
+                    "thumbnail_url": snippet["thumbnails"]["high"]["url"],
+                    "video_url": f"https://www.youtube.com/watch?v={video_id}"
+                }
+                videos.append(video_info)
         return {"videos": videos}
     except Exception as e:
         print(f"发生错误: {e}")
