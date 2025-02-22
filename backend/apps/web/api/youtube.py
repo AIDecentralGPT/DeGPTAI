@@ -22,7 +22,6 @@ class YoutubeClient:
         response = requests.get(url, params=params)
         response.raise_for_status()  # 检查HTTP错误
         data = response.json()
-        print("=====================", data)
         # 打印搜索结果
         videos = []
         for item in data.get("items", []):
