@@ -1257,15 +1257,10 @@
                                   type="button"
                                   on:click={async (event) => {
                                     event.stopPropagation();
-                                    if (checkPlatform() != "ios") {
-                                      if (isTouched) {
-                                        isTouched = false;
-                                        return;
-                                      }
-                                    }
                                     if (checkPlatform() != 'other') {
                                       if (searchButton != 'search_web') {
                                         searchButton = 'search_web';
+                                        isTouched= false;
                                         return;
                                       }
                                     }
@@ -1294,14 +1289,9 @@
                                   type="button"
                                   on:click={async (event) => {
                                     event.stopPropagation();
-                                    if (checkPlatform() != "ios") {
-                                      if (isTouched) {
-                                        isTouched = false;
-                                        return;
-                                      }
-                                    }
                                     if (checkPlatform() != 'other') {
                                       if (searchButton != 'search_twitter') {
+                                        isTouched= false;
                                         searchButton = 'search_twitter';
                                         return;
                                       }
@@ -1331,14 +1321,9 @@
                                   type="button"
                                   on:click={async (event) => {
                                     event.stopPropagation();
-                                    if (checkPlatform() != "ios") {
-                                      if (isTouched) {
-                                        isTouched = false;
-                                        return;
-                                      }
-                                    }
                                     if (checkPlatform() != 'other') {
                                       if (searchButton != 'search_youtube') {
+                                        isTouched= false;
                                         searchButton = 'search_youtube';
                                         return;
                                       }
