@@ -60,6 +60,8 @@
 
   import { thirdSearch } from "$lib/apis/thirdsearch";
 
+  import { addErrorLog } from "$lib/apis/errorlog";
+
   let inviter: any = "";
   let channelName: any = "";
 
@@ -157,6 +159,8 @@
   // Web functions
   //////////////////////////
 
+  let monitorLog = [];
+
   const initNewChat = async () => {
     if (currentRequestId !== null) {
       await cancelOllamaRequest(localStorage.token, currentRequestId);
@@ -219,6 +223,8 @@
 
   const submitPrompt = async (userPrompt, _user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
+    monitorLog = [];
+    monitorLog.push({fun: "start", time: new Date()});
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -327,6 +333,7 @@
 
       scrollToBottom();
 
+      monitorLog.push({fun: "checkLimit-start", time: new Date()});
       // 校验模型已使用次数
       let modelLimit:any = {}
       const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
@@ -341,6 +348,7 @@
           }) 
         }
       }
+      monitorLog.push({fun: "checkLimit-end", time: new Date()});
 
       // Wait until history/message have been updated
       await tick();
@@ -349,6 +357,7 @@
       prompt = "";
       files = [];
 
+      monitorLog.push({fun: "newchat-start", time: new Date()});
       // Create new chat if only one message in messages
       if (messages.length == 2) {
         if ($settings.saveChatHistory ?? true) {
@@ -372,6 +381,7 @@
         }
         await tick();
       }
+      monitorLog.push({fun: "newchat-end", time: new Date()});
       // Send prompt
       await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
 
@@ -380,12 +390,13 @@
 
   const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
+    monitorLog.push({fun: "chat-start", time: new Date()});
     await Promise.all(
       // 此判断毫无意义-判断结果就是selectedModels
       (modelId ? [modelId] : atSelectedModel !== "" ? [atSelectedModel.id] : selectedModels).map(async (modelId, index) => {
         console.log("modelId", modelId);
         const model = $models.filter((m) => m.id === modelId).at(0);
-
+        monitorLog.push({fun: model?.id + "-start", time: new Date()});
         if (model) {
           let responseMessageId = uuidv4();
           let responseMessage = {}
@@ -457,10 +468,14 @@
           if (modelLimit[model.id]) {
             await handleLimitError(modelLimit[model.id], responseMessage);
           } else {
+            monitorLog.push({fun: model?.id + "search-start", time: new Date()});
             // 搜索网页
 						await handleSearchWeb(responseMessage, responseMessageId);
+            monitorLog.push({fun: model?.id + "search-end", time: new Date()});
 						// 文本搜索
+            monitorLog.push({fun: model?.id + "de-start", time: new Date()});
             await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+            monitorLog.push({fun: model?.id + "de-end", time: new Date()});
           }
           // if (model?.external) {
           // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
@@ -594,13 +609,16 @@
                 : message?.raContent ?? message.content,
           }),
       }));
+
+      monitorLog.push({fun: model?.id + "de-send-start", time: new Date()});
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
           model: model.id,
           messages: send_message
         },
-        $deApiBaseUrl?.url
+        $deApiBaseUrl?.url,
+        monitorLog
       );
 
       // console.log("res controller", res, controller);
@@ -723,6 +741,8 @@
     messages = messages;
 
     stopResponseFlag = false;
+
+    monitorLog.push({fun: model?.id + "de-send-end", time: new Date()});
     
     // 更新聊天记录
     if (_chatId === $chatId) {  
@@ -733,6 +753,10 @@
         });
       }
     }
+    
+    monitorLog.push({fun: model?.id + "update-chat", time: new Date()});
+    addErrorLog(_chatId + "会话", JSON.stringify(monitorLog));
+
 
     await tick();
 
