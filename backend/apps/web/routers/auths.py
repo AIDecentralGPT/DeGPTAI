@@ -968,7 +968,7 @@ async def faceliveness_check_for_ws(id: str):
                     return {
                             "passed": False,
                             "message": "A single IP address can be used for a maximum of two KYC verifications",
-                        }          
+                        }
                 email_check = KycRestrictInstance.check_email(kycrestrict.email)
                 if email_check:
                     return {
