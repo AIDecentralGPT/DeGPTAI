@@ -90,12 +90,15 @@
       if (validateEmail(email)) {
         sendCode(localStorage.token, email).then((res) => {
           if (res.pass) {
+            checkCaptcha = false;
             startCountdown();
           } else {
+            checkCaptcha = false;
             toast.error($i18n.t(res.message));
           }
         });
       } else {
+        checkCaptcha = false;
         toast.error($i18n.t("Please enter a valid email address."));
       }
     }
@@ -304,6 +307,7 @@
   });
 
   // 图片认证相关
+  let checkCaptcha = false;
   const CAPTCHA_APP_ID = '199818891'
   const SLIDER_CAPTCHA_JS = 'https://captcha.api.hi.cn/captcha.js';
 
@@ -329,11 +333,16 @@
   }
 
   async function captchaCallBack(captchaRes: any) {
+    checkCaptcha = true;
     if(captchaRes.ret === 0){
       let result = await bindCaptcha(localStorage.token, JSON.stringify(captchaRes));
       if (result) {
         await sendVerificationCode();
-      } 
+      } else {
+        checkCaptcha = false;
+      }
+    } else {
+      checkCaptcha = false;
     }
   }
 
@@ -415,11 +424,15 @@
                   on:click={async () => { await openCaptcha(); }}
                   disabled={countdown > 0}
                 >
-                  {#if countdown > 0}
-                    {countdown}s
-                  {/if}
-                  {#if countdown === 0}
-                    {$i18n.t("Send")}
+                  {#if checkCaptcha}
+                    {$i18n.t("Check")}...
+                  {:else}
+                    {#if countdown > 0}
+                      {countdown}s
+                    {/if}
+                    {#if countdown === 0}
+                      {$i18n.t("Send")}
+                    {/if}
                   {/if}
                 </button>
               </div>
@@ -553,7 +566,7 @@
                       <span>{$i18n.t(message)}<span /></span>
                     </div>
                   {:else}
-                    <p class="text-center text-gray-100">
+                    <p class="text-center text-gray-800 dark:text-gray-100">
                       {$i18n.t("QR code is valid for 5 minutes")}
                     </p>
                     <div class="flex flex-row items-center timesty">

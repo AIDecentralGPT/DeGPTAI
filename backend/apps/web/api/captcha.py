@@ -16,7 +16,7 @@ class CaptchaApi:
             'Authorization': 'APPCODE ' + AppCode
         }
         bodys['CaptchaAppId'] = captcha_json.get('appid')
-        bodys['AppSecretKey'] = 'YdjRIVJpEYBPtf5ipiJ3jRm8O'
+        bodys['AppSecretKey'] = AppSecret
         bodys['RandStr'] = captcha_json.get('randstr')
         bodys['Ticket'] = captcha_json.get('ticket')
         bodys['UserIp'] = client_ip
