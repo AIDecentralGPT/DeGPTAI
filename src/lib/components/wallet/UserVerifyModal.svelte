@@ -323,6 +323,7 @@
     } else {
       enableDarkFlag = 'force';
     }
+    console.log("===============================", enableDarkFlag)
     let lang = $i18n.language;
     let captcha = new FushuActionCaptcha(CAPTCHA_APP_ID, captchaCallBack, {enableDarkMode: enableDarkFlag, userLanguage: lang == 'zh-CN' ? 'zh-CN' : 'en-US'});
     captcha.show();
