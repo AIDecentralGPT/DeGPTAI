@@ -958,23 +958,23 @@ async def faceliveness_check_for_ws(id: str):
             if response.body.result.passed:
                 # 校验用户是否完成所有kyc认证流程
                 kycrestrict = KycRestrictInstance.get_by_userid(user.id)
+                if kycrestrict is None:
+                    return {
+                            "passed": False,
+                            "message": "The identity validate fail",
+                        }
                 kycrestricts = KycRestrictInstance.get_by_ip(kycrestrict.ip_address)
                 if  kycrestricts is not None and len(kycrestricts) >= 2:
                     return {
                             "passed": False,
                             "message": "A single IP address can be used for a maximum of two KYC verifications",
                         }
-                if kycrestrict is None:
+                email_check = KycRestrictInstance.check_email(kycrestrict.email)
+                if email_check:
                     return {
                             "passed": False,
                             "message": "The identity validate fail",
                         }
-                # email_check = KycRestrictInstance.check_email(kycrestrict.email)
-                # if email_check:
-                #     return {
-                #             "passed": False,
-                #             "message": "The identity validate fail",
-                #         }
                 captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code, kycrestrict.ip_address)
                 if captcha_check == False:
                     return {
