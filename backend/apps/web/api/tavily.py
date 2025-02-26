@@ -4,7 +4,7 @@ import re
 import requests
 import jieba
 
-api_key = "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"
+api_key = "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"
 tavily_client = TavilyClient(api_key=api_key)
 
 class TavilySearchForm(BaseModel):
