@@ -35,4 +35,15 @@ export default defineConfig({
 			],
 		}
 	},
+	build: {
+    // 开启代码压缩
+    minify: 'terser',
+    terserOptions: {
+      // 自定义 terser 配置
+      compress: {
+        drop_console: true, // 移除 console 语句
+        drop_debugger: true // 移除 debugger 语句
+      }
+    }
+  }
 });

@@ -89,7 +89,7 @@
 	let title = '';
 	let prompt = '';
 	let files = [];
-	let search = false;
+	let search = true;
 	let search_type = "web";
 	let messages = [];
 	let history = {
@@ -193,11 +193,13 @@
 	//////////////////////////
 	// Ollama functions
 	//////////////////////////
-
+let monitorLog = [];
 // 2. 点击提交按钮，触发检查
 const submitPrompt = async (userPrompt, _user = null) => {
 	console.log('submitPrompt', $chatId);
 	console.log("点击了", firstResAlready);
+	monitorLog = [];
+	monitorLog.push({fun: "start", time: new Date()});
 
 	selectedModels = selectedModels.map((modelId) =>
     $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -306,20 +308,22 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		scrollToBottom();
 		
+		monitorLog.push({fun: "checkLimit-start", time: new Date()});
 		// 校验模型已使用次数
 		let modelLimit:any = {}
-    // const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
-    // if (passed) {
-    //   for (const item of selectedModels) {
-    //     data.forEach((dItem:any) => {
-    //       if(dItem.model == item) {
-    //         if (!dItem.passed) {
-    //           modelLimit[dItem.model] = dItem.message;
-    //         }
-    //       }
-    //     }) 
-    //   }
-    // }
+    const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!dItem.passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+        }) 
+      }
+    }
+		monitorLog.push({fun: "checkLimit-end", time: new Date()});
 
 		// 等待 history/message 更新完成
 		await tick();
@@ -327,7 +331,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		// 重置聊天输入文本区
 		prompt = '';
 		files = [];
-
+		monitorLog.push({fun: "newchat-start", time: new Date()});
 		// 如果 messages 中只有一条消息，则创建新的聊天
 		if (messages.length == 2) {
 			if ($settings.saveChatHistory ?? true) {
@@ -351,7 +355,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			}
 			await tick();
 		}
-
+		monitorLog.push({fun: "newchat-end", time: new Date()});
 		// 发送提示
 		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
 
@@ -361,13 +365,14 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	// 3\2. 继续聊天会话
 	const sendPrompt = async (prompt, parentId, responseMap, modelLimit, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
+		monitorLog.push({fun: "chat-start", time: new Date()});
 		// 对每个模型都做请求
 		await Promise.all(
 			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
 				async (modelId) => {
 					console.log('modelId', modelId);
 					const model = $models.filter((m) => m.id === modelId).at(0);
-
+					monitorLog.push({fun: model?.id + "-start", time: new Date()});
 					if (model) {
 						// 创建响应消息
 						let responseMessageId = uuidv4();
@@ -441,10 +446,14 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						if (modelLimit[model.id]) {
 							await handleLimitError(modelLimit[model.id], responseMessage)
 						} else {
+							monitorLog.push({fun: model?.id + "search-start", time: new Date()});
 							// 搜索网页
 							handleSearchWeb(responseMessage, responseMessageId);
+							monitorLog.push({fun: model?.id + "search-end", time: new Date()});
 							// 文本搜索
+							monitorLog.push({fun: model?.id + "de-start", time: new Date()});
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+							monitorLog.push({fun: model?.id + "de-end", time: new Date()});
 						}
 
 					} else {
@@ -573,13 +582,16 @@ const submitPrompt = async (userPrompt, _user = null) => {
                 : message?.raContent ?? message.content,
             }),
       }));
+
+			monitorLog.push({fun: model?.id + "de-send-start", time: new Date()});
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
 					model: model.id,
 					messages: send_message,
 				},
-				$deApiBaseUrl?.url
+				$deApiBaseUrl?.url,
+				monitorLog
 			);
 
 
@@ -679,6 +691,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 		stopResponseFlag = false;
 
+		monitorLog.push({fun: model?.id + "de-send-end", time: new Date()});
+
 		// 更新聊天记录
 		if (_chatId === $chatId) {  
       if ($settings.saveChatHistory ?? true) {
@@ -688,6 +702,9 @@ const submitPrompt = async (userPrompt, _user = null) => {
         });
       }
     }
+
+		monitorLog.push({fun: model?.id + "update-chat", time: new Date()});
+    addErrorLog(_chatId + "会话", JSON.stringify(monitorLog));
 
 		await tick();
 

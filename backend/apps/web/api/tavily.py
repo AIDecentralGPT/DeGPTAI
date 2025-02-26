@@ -35,6 +35,7 @@ class tavilyClient:
       words = jieba.cut(keyword, cut_all=True)
       return {"keyword": "/".join(words), "web": web_result, "images": image_result}
     except Exception as e:
+      print("==========================", e)
       return None
   
 TavilyClientApi = tavilyClient()
