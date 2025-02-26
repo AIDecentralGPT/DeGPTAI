@@ -739,8 +739,7 @@ async def create_face():
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
     if user.id.startswith("0x"):
         kycrestrict = KycRestrictInstance.get_by_userid(user.id)
-        # if kycrestrict is None or kycrestrict.email is None or kycrestrict.captcha_code is None:
-        if kycrestrict is None or kycrestrict.email is None:
+        if kycrestrict is None or kycrestrict.email is None or kycrestrict.captcha_code is None:
             raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
         # print("face compare success", form_data.sourceFacePictureBase64,  form_data.targetFacePictureBase64)
         response = face_compare.face_liveness({
@@ -964,25 +963,25 @@ async def faceliveness_check_for_ws(id: str):
                             "passed": False,
                             "message": "The identity validate fail",
                         }
-                # kycrestricts = KycRestrictInstance.get_by_ip(kycrestrict.ip_address)
-                # if  kycrestricts is not None and len(kycrestricts) >= 2:
-                #     return {
-                #             "passed": False,
-                #             "message": "A single IP address can be used for a maximum of two KYC verifications",
-                #         }
+                kycrestricts = KycRestrictInstance.get_by_ip(kycrestrict.ip_address)
+                if  kycrestricts is not None and len(kycrestricts) >= 2:
+                    return {
+                            "passed": False,
+                            "message": "A single IP address can be used for a maximum of two KYC verifications",
+                        }
                 
-                # email_check = KycRestrictInstance.check_email(kycrestrict.email)
-                # if email_check:
-                #     return {
-                #             "passed": False,
-                #             "message": "The identity validate fail",
-                #         }
-                # captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code, kycrestrict.ip_address)
-                # if captcha_check == False:
-                #     return {
-                #             "passed": False,
-                #             "message": "The identity validate fail",
-                #         }
+                email_check = KycRestrictInstance.check_email(kycrestrict.email)
+                if email_check:
+                    return {
+                            "passed": False,
+                            "message": "The identity validate fail",
+                        }
+                captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code, kycrestrict.ip_address)
+                if captcha_check == False:
+                    return {
+                            "passed": False,
+                            "message": "The identity validate fail",
+                        }
                 
                 # 更新用户KYC状态
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
