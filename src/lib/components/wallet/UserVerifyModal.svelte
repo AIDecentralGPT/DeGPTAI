@@ -317,9 +317,9 @@
   }
 
   function openCaptcha() {
-    let enableDarkFlag = '';
+    let enableDarkFlag:any;
     if ($theme === "system" || $theme === "light") {
-      enableDarkFlag = '';
+      enableDarkFlag = false;
     } else {
       enableDarkFlag = 'force';
     }
