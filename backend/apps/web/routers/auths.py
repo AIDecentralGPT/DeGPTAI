@@ -982,7 +982,6 @@ async def faceliveness_check_for_ws(id: str):
                             "passed": False,
                             "message": "The identity validate fail",
                         }
-                
                 # 更新用户KYC状态
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
                 # 更新KYC流程状态
