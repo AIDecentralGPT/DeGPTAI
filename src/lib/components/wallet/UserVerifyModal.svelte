@@ -304,7 +304,7 @@
   });
 
   // 图片认证相关
-  const CAPTCHA_APP_ID = '192432659'
+  const CAPTCHA_APP_ID = '199818891'
   const SLIDER_CAPTCHA_JS = 'https://captcha.api.hi.cn/captcha.js';
 
   // 动态引入验证码的js

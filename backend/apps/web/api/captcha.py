@@ -1,8 +1,8 @@
 import urllib, urllib3
 import json
 
-AppSecret = "7Xek044qjxFKj9zScHGmYE0mOnGp1dyu"
-AppCode = '586e1acb170043c9800d29eead7f6acc'
+AppSecret = "7XYlMEy03afyhG3KSHszXcRXT"
+AppCode = 'abcee1e52dd64111ab3517b3b27285ad'
 Url = 'https://fscaptcha.market.alicloudapi.com/'
 
 class CaptchaApi:
