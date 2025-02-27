@@ -900,10 +900,11 @@
     </div>
   </div>
 
-  <div id="wallet-view" class="min-w-[246px] max-w-[306px] absolute bottom-1 left-1 dark:bg-gray-950 bg-gray-50 pb-[40px] rounded dark:border-gray-800 border-gray-200 transition ease-in-out delay-1500 {showWalletView ? 'scale-100' : 'hidden scale-0'}"
+  <div id="wallet-view" class="min-w-[246px] max-w-[306px] fixed bottom-1 left-1 dark:bg-gray-950 bg-gray-50 pb-[40px] rounded dark:border-gray-800 border-gray-200 transition ease-in-out delay-1500 {showWalletView ? 'scale-100' : 'hidden scale-0'}"
     style="border-width: 1px;"
     on:mouseover={showWalletFun}
-    on:mouseleave={closeWalletFun}>
+    on:mouseleave={closeWalletFun}
+  >
     <!-- 社媒 -->
     <SocialMedia />
     <!-- 钱包 -->
