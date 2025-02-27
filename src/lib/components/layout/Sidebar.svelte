@@ -175,6 +175,7 @@
     if (touchstart.clientX < 40 && swipeDistance >= screenWidth / 8) {
       if (touchend.screenX < touchstart.screenX) {
         showSidebar.set(false);
+        showWalletView.set(false);
       }
       if (touchend.screenX > touchstart.screenX) {
         showSidebar.set(true);
