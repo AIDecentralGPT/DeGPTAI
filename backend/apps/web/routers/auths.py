@@ -973,7 +973,7 @@ async def faceliveness_check_for_ws(id: str):
                 if email_check:
                     return {
                             "passed": False,
-                            "message": "The identity validate fail",
+                            "message": "One email can only be used for KYC verification once",
                         }
                 captcha_check = CaptchaApiInstance.checkCaptcha(kycrestrict.captcha_code, kycrestrict.ip_address)
                 if captcha_check == False:
