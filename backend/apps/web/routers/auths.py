@@ -648,9 +648,9 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
     email = email_request.email
 
     # 校验邮箱是否已经认证过
-    # emailRet = KycRestrictInstance.check_email(email)
-    # if emailRet:
-    #     return {"pass": False, "message": "One email can only be used for KYC verification once"}
+    emailRet = KycRestrictInstance.check_email(email)
+    if emailRet:
+        return {"pass": False, "message": "One email can only be used for KYC verification once"}
 
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
