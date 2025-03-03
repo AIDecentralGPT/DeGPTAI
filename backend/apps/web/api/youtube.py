@@ -1,10 +1,11 @@
 import requests
 from pydantic import BaseModel
+import os
 
 class YoutubeSearchForm(BaseModel):
   keyword: str
 
-API_KEY = "AIzaSyBZdpM96UwO9x15p2Gi07PmCxwThMl7xVM"
+API_KEY = os.environ.get("Youtube_Key")
 
 class YoutubeClient:
   def search(self, keyword: str):

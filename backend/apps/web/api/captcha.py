@@ -1,9 +1,10 @@
 import urllib, urllib3
 import json
+import os
 
-AppSecret = "7XYlMEy03afyhG3KSHszXcRXT"
-AppCode = 'abcee1e52dd64111ab3517b3b27285ad'
-Url = 'https://fscaptcha.market.alicloudapi.com/'
+AppSecret = os.environ.get("CaptchaAppSecret")
+AppCode = os.environ.get("CaptchaAppCode")
+Url = os.environ.get("CaptchaUrl")
 
 class CaptchaApi:
     # 获取滑动验证信息

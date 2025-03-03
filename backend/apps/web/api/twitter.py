@@ -1,15 +1,16 @@
 import tweepy
 from pydantic import BaseModel
 import requests
+import os
 
 
-consumer_key = 'q9r7Zv527UosaDGPcYDJZ8wih'
-consumer_secret = 'dbIBdjsKpqffGMNZ8bHqLg9N8uTnBz0py4aCy9397C2vJknFgz'
-bearer_token = 'AAAAAAAAAAAAAAAAAAAAADX0vAEAAAAA%2FGkhIQJvPdj0YR%2FsQT8dJak0OgI%3Dh0TUAu5TFYUFKO5pRnSfhg1k8KXBO4KTGKmszkqwGrK6hUwbl5'
-access_token = '1726080863979610112-xWTMVvhOHAPJa0C81lwVNYWzQEUL6F'
-access_token_secret = 'glwphg8uY4Mlr7etrYxu8PB6PbVFzH0tTp7tmx8Jd8Ly8'
+consumer_key = os.environ.get("dev_consumer_key")
+consumer_secret = os.environ.get("dev_consumer_secret")
+bearer_token = os.environ.get("dev_bearer_token")
+access_token = os.environ.get("dev_access_token")
+access_token_secret = os.environ.get("dev_access_token_secret")
 
-social_key = "2183|XgR9gbE5uE5nuc9tWyJaYUseHczADvNNcdzUbp0Cb0ce6d96"
+social_key = api_key = os.environ.get("social_key")
 
 
 class TwitterSearchForm(BaseModel):

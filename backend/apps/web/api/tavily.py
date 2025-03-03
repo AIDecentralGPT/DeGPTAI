@@ -3,8 +3,9 @@ from pydantic import BaseModel
 import re
 import requests
 import jieba
+import os
 
-api_key = "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"
+api_key = os.environ.get("Tavily_Key")
 tavily_client = TavilyClient(api_key=api_key)
 
 class TavilySearchForm(BaseModel):
