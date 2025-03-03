@@ -2,10 +2,10 @@ import redis
 import json
 import os
 
-REDIS_HOST = os.environ("REDIS_HOST")
-REDIS_PORT = os.environ("REDIS_PORT")
-REDIS_DB = os.environ("REDIS_DB")
-REDIS_PWD = os.environ("REDIS_PWD")
+REDIS_HOST = os.environ.get("REDIS_HOST")
+REDIS_PORT = os.environ.get("REDIS_PORT")
+REDIS_DB = os.environ.get("REDIS_DB")
+REDIS_PWD = os.environ.get("REDIS_PWD")
 
 class RedisClient:
     def __init__(self, host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, password=REDIS_PWD):
