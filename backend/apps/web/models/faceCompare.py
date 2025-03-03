@@ -4,19 +4,26 @@ from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_tea_util import models as util_models
 from apps.web.models.auths import ( MetaInfo )
 import time
+import os
 
-from config import ( SRC_LOG_LEVELS, FACE_URL )
+from config import ( SRC_LOG_LEVELS )
 import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
+
+access_key_id = os.getenv("face_access_key_id")
+access_key_secret = os.getenv("face_access_key_secret")
+endpoint = os.getenv("face_endpoint")
+merchant_biz_id = os.getenv("face_merchant_biz_id")
+FACE_URL = os.getenv("FACE_URL")
 
 class FaceCompare:
     # 配置请求认证信息
     def __init__(self):
         self.config = open_api_models.Config(
-            access_key_id='LTAI5tNANMHQzUwyjrcJCv92',
-            access_key_secret='JjmtIgPze7r86dn89d8p3i2FMCfhHH',
-            endpoint="cloudauth-intl.cn-hongkong.aliyuncs.com"
+            access_key_id=access_key_id,
+            access_key_secret=access_key_secret,
+            endpoint=endpoint
         )
         
         
@@ -35,7 +42,7 @@ class FaceCompare:
         # 构建初始化请求
         timestamp = time.time()
         request = cloudauth_models.InitializeRequest(
-            merchant_biz_id="c2371516-d114-4872-8de0-b9d2a42f9f7c", #常态，唯一业务标识
+            merchant_biz_id=merchant_biz_id, #常态，唯一业务标识
             merchant_user_id=metaInfo['user_id'], #动态，用户id
             # meta_info="{\"apdid****mVer\":\"1.0.0\"}", # 动态，传入
             meta_info=str(metaInfo), # 动态，传入
@@ -61,7 +68,7 @@ class FaceCompare:
         
         # 假设从初始化响应中获取交易ID
         transaction_id = init_response.body.result.transaction_id
-        merchant_biz_id="c2371516-d114-4872-8de0-b9d2a42f9f7c" #常态，唯一业务标识
+        merchant_biz_id=merchant_biz_id #常态，唯一业务标识
         
         return {
             # "initialize_response": init_response,
@@ -100,7 +107,7 @@ class FaceCompare:
     def compare_faces(self, source_face_base64: str, target_face_base64: str):
         
         request = cloudauth_models.FaceCompareRequest(
-            merchant_biz_id = "c2371516-d114-4872-8de0-b9d2a42f9f7c",
+            merchant_biz_id = merchant_biz_id,
             source_face_picture = source_face_base64,
             target_face_picture = target_face_base64
         )

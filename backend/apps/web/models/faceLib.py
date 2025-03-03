@@ -8,13 +8,20 @@ from viapi.fileutils import FileUtils
 
 from apps.web.models.users import Users
 
+import os
+
 from config import (
-    SRC_LOG_LEVELS,
-    FACE_DB
+    SRC_LOG_LEVELS
 )
 import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
+
+FACE_DB = os.getenv("FACE_DB")
+access_key_id = os.getenv("oss_access_key_id")
+access_key_secret = os.getenv("oss_access_key_secret")
+endpoint = os.getenv("oss_endpoint")
+region_id = os.getenv("oss_region_id")
 
 class FaceLib:
     def __init__(self):
@@ -23,12 +30,12 @@ class FaceLib:
             # 创建AccessKey ID和AccessKey Secret，请参考https://help.aliyun.com/document_detail/175144.html。
             # 如果您用的是RAM用户的AccessKey，还需要为RAM用户授予权限AliyunVIAPIFullAccess，请参考https://help.aliyun.com/document_detail/145025.html。
             # 从环境变量读取配置的AccessKey ID和AccessKey Secret。运行代码示例前必须先配置环境变量。
-            access_key_id='LTAI5tKRwDnNYRAjF9SkeFv6',
-            access_key_secret='6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde',
+            access_key_id=access_key_id,
+            access_key_secret=access_key_secret,
             # 访问的域名
-            endpoint='facebody.cn-shanghai.aliyuncs.com',
+            endpoint=endpoint,
             # 访问的域名对应的region
-            region_id='cn-shanghai'
+            region_id=region_id
         )
 
         self.runtime_option = RuntimeOptions()
