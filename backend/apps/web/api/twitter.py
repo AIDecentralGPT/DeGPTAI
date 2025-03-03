@@ -4,13 +4,13 @@ import requests
 import os
 
 
-consumer_key = os.environ.get("dev_consumer_key")
-consumer_secret = os.environ.get("dev_consumer_secret")
-bearer_token = os.environ.get("dev_bearer_token")
-access_token = os.environ.get("dev_access_token")
-access_token_secret = os.environ.get("dev_access_token_secret")
+consumer_key = os.getenv("dev_consumer_key")
+consumer_secret = os.getenv("dev_consumer_secret")
+bearer_token = os.getenv("dev_bearer_token")
+access_token = os.getenv("dev_access_token")
+access_token_secret = os.getenv("dev_access_token_secret")
 
-social_key = api_key = os.environ.get("social_key")
+social_key = os.getenv("social_key")
 
 
 class TwitterSearchForm(BaseModel):

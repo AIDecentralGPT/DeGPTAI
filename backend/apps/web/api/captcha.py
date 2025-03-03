@@ -2,9 +2,9 @@ import urllib, urllib3
 import json
 import os
 
-AppSecret = os.environ.get("CaptchaAppSecret")
-AppCode = os.environ.get("CaptchaAppCode")
-Url = os.environ.get("CaptchaUrl")
+AppSecret = os.getenv("CaptchaAppSecret")
+AppCode = os.getenv("CaptchaAppCode")
+Url = os.getenv("CaptchaUrl")
 
 class CaptchaApi:
     # 获取滑动验证信息

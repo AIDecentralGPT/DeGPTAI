@@ -5,7 +5,7 @@ import os
 class YoutubeSearchForm(BaseModel):
   keyword: str
 
-API_KEY = os.environ.get("Youtube_Key")
+API_KEY = os.getenv("Youtube_Key")
 
 class YoutubeClient:
   def search(self, keyword: str):

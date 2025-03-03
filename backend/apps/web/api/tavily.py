@@ -5,7 +5,7 @@ import requests
 import jieba
 import os
 
-api_key = os.environ.get("Tavily_Key")
+api_key = os.getenv("Tavily_Key")
 tavily_client = TavilyClient(api_key=api_key)
 
 class TavilySearchForm(BaseModel):
