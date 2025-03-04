@@ -1,0 +1,41 @@
+# Deploy them independently 
+
+# SERVER_HOST：Your server's IP address or domain name。
+# SERVER_USER：SSH login username。
+# SERVER_PASSWORD：SSH login password. (Recommend using SSH key pair authentication instead of password)
+# DOCKER_PASSWORD
+# DOCKER_USERNAME
+
+name: Deploy to Server # Define the name of the workflow
+
+on: # Define the events that trigger the workflow
+  push: # When the code is pushed
+    branches: # Specify the branch that triggers the workflow
+      - out # Only push notifications from the main branch will trigger this workflow
+      - fingerprintAuth-out # The version sent to their server (fingerprint automatic login)
+      - wallet-connection-out # Version sent to their server (wallet connection)
+
+jobs: # Define the tasks to be performed
+  # timeout-minutes: 30
+  build: # The identifier for the job, here is the construction job
+    runs-on: ubuntu-latest # Specify the running environment as the latest version of Ubuntu virtual environment
+    steps: # Define the steps for execution
+      - name: Checkout code # step name
+        uses: actions/checkout@v2 # Use the official actions provided by GitHub Action/ checkout@v2 Action, used to check out warehouse code
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        # run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+
+
+      - name: Build and Push Docker image # step name
+        uses: docker/build-push-action@v5 # Using Docker/ build-push-action@v2 Action, used to build and push Docker images
+        with: # Parameters passed to the action
+          # username: ${{ secrets.DOCKER_USERNAME }}
+          # password: ${{ secrets.DOCKER_PASSWORD }}
+
+          push: true # Push images to Docker Hub
+          tags: dianbobo202311/open-webui:out-latest # Set the label for the image
+
+
+

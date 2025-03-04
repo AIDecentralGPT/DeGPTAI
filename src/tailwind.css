@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html,
+	pre {
+		font-family: -apple-system, 'Arimo', ui-sans-serif, system-ui, 'Segoe UI', Roboto, Ubuntu,
+			Cantarell, 'Noto Sans', sans-serif, 'Helvetica Neue', Arial, 'Apple Color Emoji',
+			'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	}
+
+	pre {
+		white-space: pre-wrap;
+	}
+}
+
+
+.border-primary {
+	border-color: rgba(184, 142, 86, 1);
+}
+
+/* Button Color */
+.primaryButton {
+  background-color: rgba(184, 142, 86, 1);
+
+}
+
+.primaryButton:hover {
+	background-color: rgb(205 150 75)
+}
+
+.primaryText {
+  color: rgba(184, 142, 86, 1);
+
+}

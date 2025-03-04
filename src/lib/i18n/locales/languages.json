@@ -1,0 +1,54 @@
+[
+  {
+    "code": "en-US",
+    "title": "English"
+  },
+  {
+    "code": "zh-CN",
+    "title": "中文"
+  },
+  {
+    "code": "ja-JP",
+    "title": "日本語"
+  },
+  {
+    "code": "ko-KR",
+    "title": "한국어"
+  },
+  {
+    "code": "vi-VN",
+    "title": "Việt nam"
+  },
+  {
+    "code": "th-TH",
+    "title": "ไทย"
+  },
+  {
+    "code": "tr-TR",
+    "title": "Türkçesi"
+  },
+  {
+    "code": "ru-RU",
+    "title": "Русский"
+  },
+  {
+    "code": "de-DE",
+    "title": "Deutsch"
+  },
+  {
+    "code": "fr-FR",
+    "title": "Français"
+  },
+  {
+    "code": "es-ES",
+    "title": "Español"
+  },
+  {
+    "code": "pt-PT",
+    "title": "Português"
+  },
+  {
+    "code": "id-ID",
+    "title": "Indonesia"
+  }
+]
