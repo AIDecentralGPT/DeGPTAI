@@ -641,8 +641,6 @@ async def delete_api_key(user=Depends(get_current_user)):
     return success
 
 # 发送邮箱验证码
-
-
 @router.post("/send_code")
 async def send_code(email_request: EmailRequest, user=Depends(get_current_user)):
     email = email_request.email
