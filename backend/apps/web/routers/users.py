@@ -86,8 +86,6 @@ async def get_users_invited(
 ############################
 # User Permissions
 ############################
-
-
 @router.get("/permissions/user")
 async def get_user_permissions(request: Request, user=Depends(get_admin_user)):
     return request.app.state.config.USER_PERMISSIONS
@@ -104,8 +102,6 @@ async def update_user_permissions(
 ############################
 # UpdateUserRole
 ############################
-
-
 @router.post("/update/role", response_model=Optional[UserModel])
 async def update_user_role(form_data: UserRoleUpdateForm, user=Depends(get_admin_user)):
 
@@ -121,8 +117,6 @@ async def update_user_role(form_data: UserRoleUpdateForm, user=Depends(get_admin
 ############################
 # GetUserById
 ############################
-
-
 class UserResponse(BaseModel):
     name: str
     profile_image_url: str
@@ -156,8 +150,6 @@ async def get_user_by_id(user_id: str, user=Depends(get_verified_user)):
 ############################
 # UpdateUserById
 ############################
-
-
 @router.post("/{user_id}/update", response_model=Optional[UserModel])
 async def update_user_by_id(
     user_id: str, form_data: UserUpdateForm, session_user=Depends(get_admin_user)
@@ -205,8 +197,6 @@ async def update_user_by_id(
 ############################
 # DeleteUserById
 ############################
-
-
 @router.delete("/{user_id}", response_model=bool)
 async def delete_user_by_id(user_id: str, user=Depends(get_admin_user)):
     if user.id != user_id:

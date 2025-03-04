@@ -21,8 +21,6 @@ router = APIRouter()
 ############################
 # GetModelfiles
 ############################
-
-
 @router.get("/", response_model=List[ModelfileResponse])
 async def get_modelfiles(
     skip: int = 0, limit: int = 50, user=Depends(get_current_user)
@@ -33,8 +31,6 @@ async def get_modelfiles(
 ############################
 # CreateNewModelfile
 ############################
-
-
 @router.post("/create", response_model=Optional[ModelfileResponse])
 async def create_new_modelfile(form_data: ModelfileForm, user=Depends(get_admin_user)):
     modelfile = Modelfiles.insert_new_modelfile(user.id, form_data)
@@ -56,8 +52,6 @@ async def create_new_modelfile(form_data: ModelfileForm, user=Depends(get_admin_
 ############################
 # GetModelfileByTagName
 ############################
-
-
 @router.post("/", response_model=Optional[ModelfileResponse])
 async def get_modelfile_by_tag_name(
     form_data: ModelfileTagNameForm, user=Depends(get_current_user)
@@ -81,8 +75,6 @@ async def get_modelfile_by_tag_name(
 ############################
 # UpdateModelfileByTagName
 ############################
-
-
 @router.post("/update", response_model=Optional[ModelfileResponse])
 async def update_modelfile_by_tag_name(
     form_data: ModelfileUpdateForm, user=Depends(get_admin_user)
@@ -114,8 +106,6 @@ async def update_modelfile_by_tag_name(
 ############################
 # DeleteModelfileByTagName
 ############################
-
-
 @router.delete("/delete", response_model=bool)
 async def delete_modelfile_by_tag_name(
     form_data: ModelfileTagNameForm, user=Depends(get_admin_user)

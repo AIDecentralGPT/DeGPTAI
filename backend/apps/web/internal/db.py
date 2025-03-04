@@ -19,7 +19,6 @@ else:
     pass
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-print("================DATABASE_URL===============", DATABASE_URL)
 DB = connect(DATABASE_URL)
 log.info(f"Connected to a {DB.__class__.__name__} database.")
 
