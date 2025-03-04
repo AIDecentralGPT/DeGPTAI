@@ -12,7 +12,7 @@ from email.mime.text import MIMEText
 import uuid
 import os
 
-EMAIL_SERVER = os.getenv("EMAIL_SERVER")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PWD = os.getenv("EMAIL_PWD")
@@ -131,7 +131,7 @@ class EmailCodeOperations:
 
     def connect(self):
         try:   
-            self.server = smtplib.SMTP(EMAIL_SERVER, EMAIL_PORT, timeout=3000)
+            self.server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=3000)
             self.server.starttls()  # 启动TLS加密
             self.server.login(EMAIL_USER, EMAIL_PWD)
             print("SMTP连接成功")
