@@ -1,6 +1,7 @@
 import tweepy
 from pydantic import BaseModel
 import requests
+import os
 
 
 consumer_key = 'q9r7Zv527UosaDGPcYDJZ8wih'
@@ -9,7 +10,7 @@ bearer_token = 'AAAAAAAAAAAAAAAAAAAAADX0vAEAAAAA%2FGkhIQJvPdj0YR%2FsQT8dJak0OgI%
 access_token = '1726080863979610112-xWTMVvhOHAPJa0C81lwVNYWzQEUL6F'
 access_token_secret = 'glwphg8uY4Mlr7etrYxu8PB6PbVFzH0tTp7tmx8Jd8Ly8'
 
-social_key = "2183|XgR9gbE5uE5nuc9tWyJaYUseHczADvNNcdzUbp0Cb0ce6d96"
+social_key = os.getenv("social_key")
 
 
 class TwitterSearchForm(BaseModel):
