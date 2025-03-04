@@ -10,7 +10,7 @@ bearer_token = os.getenv("dev_bearer_token")
 access_token = os.getenv("dev_access_token")
 access_token_secret = os.getenv("dev_access_token_secret")
 
-social_key = os.getenv("social_key")
+SOCIAL_KEY = os.getenv("SOCIAL_KEY")
 
 
 class TwitterSearchForm(BaseModel):
@@ -66,7 +66,7 @@ class TwitterLib:
     def search_social(self, keword: str):
         url = f'https://api.socialdata.tools/twitter/search?query={keword}&type=Latest'
         headers = {
-            'Authorization': f'Bearer {social_key}',
+            'Authorization': f'Bearer {SOCIAL_KEY}',
             'Accept': 'application/json'
         }
         response = requests.get(url, headers=headers)
@@ -79,7 +79,6 @@ class TwitterLib:
                 return {"content": unique_data}
             else:
                 return None
-            return data
         else:
             return None
 

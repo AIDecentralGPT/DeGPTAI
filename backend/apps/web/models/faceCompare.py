@@ -11,19 +11,19 @@ import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
 
-access_key_id = os.getenv("face_access_key_id")
-access_key_secret = os.getenv("face_access_key_secret")
-endpoint = os.getenv("face_endpoint")
-merchant_biz_id = os.getenv("face_merchant_biz_id")
+ACCESS_KEY_ID = os.getenv("FACE_ACCESS_KEY_ID")
+ACCESS_KEY_SECRET = os.getenv("FACE_ACCESS_KEY_SECRET")
+ENDPOINT = os.getenv("FACE_ENDPOINT")
+METCHANT_BIZ_ID = os.getenv("FACE_METCHANT_BIZ_ID")
 FACE_URL = os.getenv("FACE_URL")
 
 class FaceCompare:
     # 配置请求认证信息
     def __init__(self):
         self.config = open_api_models.Config(
-            access_key_id=access_key_id,
-            access_key_secret=access_key_secret,
-            endpoint=endpoint
+            access_key_id=ACCESS_KEY_ID,
+            access_key_secret=ACCESS_KEY_SECRET,
+            endpoint=ENDPOINT
         )
         
         
@@ -42,7 +42,7 @@ class FaceCompare:
         # 构建初始化请求
         timestamp = time.time()
         request = cloudauth_models.InitializeRequest(
-            merchant_biz_id=merchant_biz_id, #常态，唯一业务标识
+            merchant_biz_id=METCHANT_BIZ_ID, #常态，唯一业务标识
             merchant_user_id=metaInfo['user_id'], #动态，用户id
             # meta_info="{\"apdid****mVer\":\"1.0.0\"}", # 动态，传入
             meta_info=str(metaInfo), # 动态，传入
@@ -68,15 +68,14 @@ class FaceCompare:
         
         # 假设从初始化响应中获取交易ID
         transaction_id = init_response.body.result.transaction_id
-        merchant_biz_id=merchant_biz_id #常态，唯一业务标识
-        
+        transaction_url = init_response.body.result.transaction_url
+
         return {
             # "initialize_response": init_response,
-            "merchant_biz_id":merchant_biz_id,
+            "merchant_biz_id":METCHANT_BIZ_ID,
             "transaction_id": transaction_id,
-            "transaction_url":init_response.body.result.transaction_url
-            # "check_response": check_response
-            
+            "transaction_url": transaction_url
+            # "check_response": check_response 
         }
 
     # 校验人脸检测结果
@@ -107,7 +106,7 @@ class FaceCompare:
     def compare_faces(self, source_face_base64: str, target_face_base64: str):
         
         request = cloudauth_models.FaceCompareRequest(
-            merchant_biz_id = merchant_biz_id,
+            merchant_biz_id = METCHANT_BIZ_ID,
             source_face_picture = source_face_base64,
             target_face_picture = target_face_base64
         )
