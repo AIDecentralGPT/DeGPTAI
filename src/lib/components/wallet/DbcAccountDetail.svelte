@@ -99,7 +99,7 @@
 <div class="flex flex-col gap-2 px-3">
   <!-- <div class="py-2 px-3"> -->
   <!-- 地址展示 -->
-  <div class="opacity-80 text-sm font-medium leading-6">
+  <div class="opacity-80 text-sm font-medium leading-6 text-left">
     {$i18n.t("Wallet Address")}
   </div>
   <div class="pt-0.5">

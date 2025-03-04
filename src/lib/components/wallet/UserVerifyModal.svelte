@@ -422,7 +422,7 @@
                     : ''}"
                   type="button"
                   on:click={async () => { await openCaptcha(); }}
-                  disabled={countdown > 0}
+                  disabled={countdown > 0 || checkCaptcha}
                 >
                   {#if checkCaptcha}
                     {$i18n.t("Check")}...
@@ -465,7 +465,7 @@
             <div class="rounded-lg flex flex-col items-center h-[288px]">
               <div class="flex flex-col items-center">
                 {#if qrcodeUrl}
-                  <p class="text-center text-gray-100">
+                  <p class="text-center text-gray-800 dark:text-gray-100">
                     {$i18n.t(
                       "Please use your mobile phone to scan the QR code below for identity verification"
                     )}

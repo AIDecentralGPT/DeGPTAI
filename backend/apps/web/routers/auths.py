@@ -641,8 +641,6 @@ async def delete_api_key(user=Depends(get_current_user)):
     return success
 
 # 发送邮箱验证码
-
-
 @router.post("/send_code")
 async def send_code(email_request: EmailRequest, user=Depends(get_current_user)):
     email = email_request.email
@@ -733,8 +731,6 @@ async def create_face():
     return face_lib.create_face_db()
 
 # 获取人脸识别连接
-
-
 @router.post("/face_liveness", response_model=FaceLivenessResponse)
 async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current_user)):
     if user.id.startswith("0x"):
@@ -748,6 +744,8 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
             "bioMetaInfo": form_data.metaInfo.bioMetaInfo,
             "user_id": user.id
         })
+
+        print("==========face_liveness============", response)
 
         merchant_biz_id = response["merchant_biz_id"]
         transaction_id = response["transaction_id"]
@@ -769,8 +767,6 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 # 人脸绑定
-
-
 @router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)
 async def faceliveness_bind(user: UserRequest):
     passedInfo = await faceliveness_check_for_ws(user.user_id)
@@ -843,8 +839,6 @@ async def faceliveness_check(user=Depends(get_current_user)):
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
 
 # 查询人脸图片
-
-
 @router.get("/faceliveness_image/{tranid}")
 async def faceliveness_image(tranid: str):
     # 获取查询参数

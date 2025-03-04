@@ -1,7 +1,7 @@
 from peewee import *
 from peewee_migrate import Router
 from playhouse.db_url import connect
-from config import SRC_LOG_LEVELS, DATA_DIR, DATABASE_URL
+from config import SRC_LOG_LEVELS, DATA_DIR
 import os
 import logging
 import functools
@@ -18,7 +18,7 @@ if os.path.exists(f"{DATA_DIR}/ollama.db"):
 else:
     pass
 
-
+DATABASE_URL = os.getenv("DATABASE_URL")
 DB = connect(DATABASE_URL)
 log.info(f"Connected to a {DB.__class__.__name__} database.")
 

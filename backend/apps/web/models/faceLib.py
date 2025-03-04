@@ -8,13 +8,20 @@ from viapi.fileutils import FileUtils
 
 from apps.web.models.users import Users
 
+import os
+
 from config import (
-    SRC_LOG_LEVELS,
-    FACE_DB
+    SRC_LOG_LEVELS
 )
 import logging
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["faceCompare"])
+
+FACE_DB = os.getenv("FACE_DB")
+ACCESS_KEY_ID = os.getenv("OSS_ACCESS_KEY_ID")
+ACCESS_KEY_SECRET = os.getenv("OSS_ACCESS_KEY_SECRET")
+ENDPOINT = os.getenv("OSS_ENDPOINT")
+REGION_ID = os.getenv("OSS_REGION_ID")
 
 class FaceLib:
     def __init__(self):
@@ -23,19 +30,19 @@ class FaceLib:
             # 创建AccessKey ID和AccessKey Secret，请参考https://help.aliyun.com/document_detail/175144.html。
             # 如果您用的是RAM用户的AccessKey，还需要为RAM用户授予权限AliyunVIAPIFullAccess，请参考https://help.aliyun.com/document_detail/145025.html。
             # 从环境变量读取配置的AccessKey ID和AccessKey Secret。运行代码示例前必须先配置环境变量。
-            access_key_id='LTAI5tKRwDnNYRAjF9SkeFv6',
-            access_key_secret='6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde',
+            access_key_id=ACCESS_KEY_ID,
+            access_key_secret=ACCESS_KEY_SECRET,
             # 访问的域名
-            endpoint='facebody.cn-shanghai.aliyuncs.com',
+            endpoint=ENDPOINT,
             # 访问的域名对应的region
-            region_id='cn-shanghai'
+            region_id=REGION_ID
         )
 
         self.runtime_option = RuntimeOptions()
         self.create_face_db_request = CreateFaceDbRequest( name=self.faceDb )
 
         # 阿里oss上传文件
-        self.file_utils = FileUtils('LTAI5tKRwDnNYRAjF9SkeFv6', '6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde')
+        self.file_utils = FileUtils(ACCESS_KEY_ID, ACCESS_KEY_SECRET)
         
     # 创建人脸数据库
     def create_face_db(self):

@@ -10,8 +10,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import uuid
+import os
 
-
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PWD = os.getenv("EMAIL_PWD")
 
 
 class EmailRequest(BaseModel):
@@ -127,10 +131,9 @@ class EmailCodeOperations:
 
     def connect(self):
         try:   
-            self.server = smtplib.SMTP('smtpdm.aliyun.com', 80, timeout=3000)
+            self.server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=3000)
             self.server.starttls()  # 启动TLS加密
-            #self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')
-            self.server.login('service@dgc.degpt.ai', 'decentralGPT2049')
+            self.server.login(EMAIL_USER, EMAIL_PWD)
             print("SMTP连接成功")
             
         except Exception as e:
@@ -148,7 +151,7 @@ class EmailCodeOperations:
             
         print("邮件服务对象", self.server)
         msg = MIMEMultipart()
-        from_email = 'service@dgc.degpt.ai'
+        from_email = EMAIL_USER
         msg['From'] = from_email
         msg['To'] = to_email
         msg['Subject'] = subject
@@ -171,47 +174,14 @@ class EmailCodeOperations:
                     print(f"邮件重新发送失败: {e}")
 
 
-
-
     @staticmethod
     def connect_smtp():
         # 这里是smtp网站的连接，可以通过谷歌邮箱查看
-        # server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
-
-        # server = smtplib.SMTP('smtp.163.com', 465, timeout=3000)
-        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=3000)
+        server = smtplib.SMTP(EMAIL_SERVER, EMAIL_PORT, timeout=3000)
         # 连接tls
         server.starttls()
-        # server.login('service@decentralgpt.org', 'degpt@2049DE')
-        server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')
-        # server.login('471037624@qq.com', 'hgseyhgutfetcabj')
+        server.login(EMAIL_USER, EMAIL_PWD)
         return server
-
-    # def connect(self):
-    #     # 这里是smtp网站的连接，可以通过谷歌邮箱查看
-    #     server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
-
-    #     # server = smtplib.SMTP('smtp.163.com', 465, timeout=3000)
-    #     # server = smtplib.SMTP('smtp.gmail.com', 587, timeout=3000)
-    #     # 连接tls
-    #     server.starttls()
-    #     # server.login('service@decentralgpt.org', 'degpt@2049DE')
-    #     # server.login('471037624@qq.com', 'hgseyhgutfetcabj')
-
-    # def connect(self):
-    #     """建立与SMTP服务器的连接"""
-    #     if self.server:
-    #         self.server.quit()  # 如果已经有连接，先关闭
-    #     try:
-    #         self.server = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)  # 更改为Gmail的SMTP服务器和端口
-    #         self.server.starttls()  # 启动TLS加密
-    #         self.server.login('ddegptservice@gmail.com', 'nvkmbmcsheldxtlt')  # 登录Gmail账号
-
-    #         # self.server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
-    #         # self.server.starttls()
-    #     except Exception as e:
-    #         print(f"连接SMTP服务器失败: {e}")
-    #         self.server = None
 
     def ensure_connection(self):
         """确保SMTP连接可用，如果不可用则尝试重连"""
