@@ -210,11 +210,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
     let imageModels = $models.filter(item => item.support == "image");
     let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
     if (checkSelectedModels.length == 0) {
-      toast.error($i18n.t("Not supported"));
-      return;
+			selectedModels = imageModels.map(item => item.model);
+    //   toast.error($i18n.t("Not supported"));
+    //   return;
     } else {
 			selectedModels = checkSelectedModels;
-		}
+	}
   }
 
   console.log("selectedModels", selectedModels);

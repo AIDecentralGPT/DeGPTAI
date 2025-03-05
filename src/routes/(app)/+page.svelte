@@ -236,8 +236,9 @@
       let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
         .map(item => item.model);
       if (checkSelectedModels.length == 0) {
-        toast.error($i18n.t("Not supported"));
-        return;
+        selectedModels = imageModels.map(item => item.model);
+        // toast.error($i18n.t("Not supported"));
+        // return;
       } else {
         selectedModels = checkSelectedModels;
       }
