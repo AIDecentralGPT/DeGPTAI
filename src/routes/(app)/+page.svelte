@@ -3,6 +3,7 @@
   import { v4 as uuidv4 } from "uuid";
   import { page } from "$app/stores";
   import { onMount, getContext, tick } from "svelte";
+  import { goto } from '$app/navigation';
 
   import {
     WEBUI_NAME,
@@ -20,8 +21,9 @@
     showSidebar,
     showUserVerifyModal,
     user,
+    switchModel,
     deApiBaseUrl } from "$lib/stores";
-  import { copyToClipboard, splitStream, addTextSlowly } from "$lib/utils";
+  import { copyToClipboard, addTextSlowly } from "$lib/utils";
 
   import {
     addTagById,
@@ -35,10 +37,8 @@
   } from "$lib/apis/chats";
   import {
     cancelOllamaRequest,
-    generateChatCompletion,
   } from "$lib/apis/ollama";
   import {
-    generateOpenAIChatCompletion,
     generateTitle,
   } from "$lib/apis/openai";
   import {
@@ -153,13 +153,21 @@
 
     await initNewChat();
 
+    // 触发直接发送消息
+    if ($switchModel.status) {
+      prompt = $switchModel.content;
+      search = $switchModel.search;
+      search_type = $switchModel.searchType;
+      switchModel.set({content: "", search: false, searchType: 'web', status: false});
+      await submitPrompt(prompt, $user);
+    }
   });
 
   //////////////////////////
   // Web functions
   //////////////////////////
 
-  let monitorLog = [];
+  let monitorLog:any = [];
 
   const initNewChat = async () => {
     if (currentRequestId !== null) {
@@ -231,9 +239,8 @@
     );
     
     // 校验模型是否支持文件类型
-    let checkOldMessage = messages.filter(item => item.role == 'user').filter(item => item.content.length > 1);
-    if (files.length > 0 || checkOldMessage.length > 0) {
-      let imageModels = $models.filter(item => item.support == "image");
+    let imageModels = $models.filter(item => item.support == "image");
+    if (files.length > 0) {
       let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
         .map(item => item.model);
       if (checkSelectedModels.length == 0) {
@@ -242,6 +249,19 @@
         // return;
       } else {
         selectedModels = checkSelectedModels;
+      }
+    } else {
+      let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
+      let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
+      if (checkMessages.length > 0 && checkSelectModels.length == 0) {
+        switchModel.set({
+          content: prompt,
+          search: search,
+          searchType: search_type,
+          status: true
+        })
+        await goto("/");
+        return;
       }
     }
 

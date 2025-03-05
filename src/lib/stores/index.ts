@@ -101,6 +101,14 @@ export let inviterId = writable("")
 // 来源频道
 export let channel = writable("")
 
+// 切换模型相关
+export const switchModel = writable({
+	content: '',
+	search: false,
+	searchType: 'web',
+	status: false
+});
+
 
 
 

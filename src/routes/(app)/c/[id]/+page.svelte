@@ -8,14 +8,13 @@
 	import {
 		models,
 		modelfiles,
-		user,
 		settings,
 		chats,
 		chatId,
-		config,
 		WEBUI_NAME,
 		tags as _tags,
 		showSidebar,
+		switchModel,
 		deApiBaseUrl
 	} from '$lib/stores';
 	import { copyToClipboard, splitStream, convertMessagesToHistory, addTextSlowly } from '$lib/utils';
@@ -41,13 +40,13 @@
 
 	import {
 		LITELLM_API_BASE_URL,
-		OPENAI_API_BASE_URL,
-		OLLAMA_API_BASE_URL,
-		WEBUI_BASE_URL
+		OPENAI_API_BASE_URL
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
 	import { thirdSearch } from "$lib/apis/thirdsearch"
+
+	import { addErrorLog } from "$lib/apis/errorlog";
 
 	const i18n = getContext('i18n');
 
@@ -76,7 +75,6 @@
 	$: selectedModelfiles = selectedModels.reduce((a, tagName, i, arr) => {
 		const modelfile =
 			$modelfiles.filter((modelfile) => modelfile.tagName === tagName)?.at(0) ?? undefined;
-
 		return {
 			...a,
 			...(modelfile && { [tagName]: modelfile })
@@ -193,7 +191,7 @@
 	//////////////////////////
 	// Ollama functions
 	//////////////////////////
-let monitorLog = [];
+let monitorLog:any = [];
 // 2. 点击提交按钮，触发检查
 const submitPrompt = async (userPrompt, _user = null) => {
 	console.log('submitPrompt', $chatId);
@@ -206,16 +204,28 @@ const submitPrompt = async (userPrompt, _user = null) => {
   );
     
   // 校验模型是否支持文件类型
-  let checkOldMessage = messages.filter(item => item.role == 'user').filter(item => item.content.length > 1);
-  if (files.length > 0 || checkOldMessage.length > 0) {
-    let imageModels = $models.filter(item => item.support == "image");
+	let imageModels = $models.filter(item => item.support == "image");
+  if (files.length > 0) {
     let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
     if (checkSelectedModels.length == 0) {
 			selectedModels = imageModels.map(item => item.model);
     } else {
 			selectedModels = checkSelectedModels;
+		}
+  } else {
+		let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
+		let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
+		if (checkMessages.length > 0 && checkSelectModels.length == 0) {
+			switchModel.set({
+				content: prompt,
+				search: search,
+				searchType: search_type,
+				status: true
+			})
+			await goto("/");
+			return;
+		}
 	}
-  }
 
   console.log("selectedModels", selectedModels);
 
