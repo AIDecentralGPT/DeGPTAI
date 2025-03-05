@@ -253,15 +253,19 @@
     } else {
       let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
       let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
-      if (checkMessages.length > 0 && checkSelectModels.length == 0) {
-        switchModel.set({
-          content: prompt,
-          search: search,
-          searchType: search_type,
-          status: true
-        })
-        await goto("/");
-        return;
+      if (checkMessages.length > 0) {
+        if (checkSelectModels.length == 0) {
+          switchModel.set({
+            content: prompt,
+            search: search,
+            searchType: search_type,
+            status: true
+          })
+          await goto("/");
+          return;
+        } else {
+          selectedModels = checkSelectModels.map(item => item.model);
+        } 
       }
     }
 
