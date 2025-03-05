@@ -206,13 +206,14 @@ const submitPrompt = async (userPrompt, _user = null) => {
   );
     
   // 校验模型是否支持文件类型
-  if (files.length > 0) {
+	console.log("==========messages==========", messages);
+	let checkOldMessage = messages.filter(item => item.role == 'user').filter(item => item.content.length > 1);
+	console.log("==========checkOldMessage==========", checkOldMessage);
+  if (files.length > 0 || checkOldMessage.length > 0) {
     let imageModels = $models.filter(item => item.support == "image");
     let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
     if (checkSelectedModels.length == 0) {
 			selectedModels = imageModels.map(item => item.model);
-    //   toast.error($i18n.t("Not supported"));
-    //   return;
     } else {
 			selectedModels = checkSelectedModels;
 	}
