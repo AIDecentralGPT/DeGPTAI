@@ -231,7 +231,8 @@
     );
     
     // 校验模型是否支持文件类型
-    if (files.length > 0) {
+    let checkOldMessage = messages.filter(item => item.role == 'user').filter(item => item.content.length > 1);
+    if (files.length > 0 || checkOldMessage.length > 0) {
       let imageModels = $models.filter(item => item.support == "image");
       let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
         .map(item => item.model);
