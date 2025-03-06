@@ -3,7 +3,7 @@
   import { v4 as uuidv4 } from "uuid";
   import { page } from "$app/stores";
   import { onMount, getContext, tick } from "svelte";
-  import { goto } from '$app/navigation';
+  import { invalidate } from '$app/navigation';
 
   import {
     WEBUI_NAME,
@@ -255,13 +255,22 @@
       let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
       if (checkMessages.length > 0) {
         if (checkSelectModels.length == 0) {
+          console.log("=========================");
           switchModel.set({
             content: prompt,
             search: search,
             searchType: search_type,
             status: true
           })
-          await goto("/");
+          await initNewChat();
+          // 触发直接发送消息
+          if ($switchModel.status) {
+            prompt = $switchModel.content;
+            search = $switchModel.search;
+            search_type = $switchModel.searchType;
+            switchModel.set({content: "", search: false, searchType: 'web', status: false});
+            await submitPrompt(prompt, $user);
+          };
           return;
         } else {
           selectedModels = checkSelectModels.map(item => item.model);
