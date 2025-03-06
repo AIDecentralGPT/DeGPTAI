@@ -97,6 +97,7 @@
 	let firstResAlready = false // 已经有了第一个响应
 
 	$: if (history.currentId !== null) {
+		console.log("================================");
 		let _messages = [];
 
 		let currentMessage = history.messages[history.currentId];

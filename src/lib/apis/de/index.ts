@@ -11,11 +11,12 @@ export const getDeBaseUrls = async () => {
     {
       name: "Singapore",
       url: "https://singapore-chat.degpt.ai/api",
-    },
-    {
-      name: "Korea",
-      url: "https://korea-chat.degpt.ai/api",
     }
+    // ,
+    // {
+    //   name: "Korea",
+    //   url: "https://korea-chat.degpt.ai/api",
+    // }
   ];
   return baseUrls;
 };

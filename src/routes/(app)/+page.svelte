@@ -255,7 +255,6 @@
       let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
       if (checkMessages.length > 0) {
         if (checkSelectModels.length == 0) {
-          console.log("=========================");
           switchModel.set({
             content: prompt,
             search: search,

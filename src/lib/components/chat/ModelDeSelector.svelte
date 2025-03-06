@@ -76,13 +76,13 @@
           <CheckRegion checkFlag = { selDeUrl === 'Singapore'}/>
           <span class="ml-2">{$i18n.t("Singapore")}</span>
         </button>
-        <button class="flex flex-row items-center w-full region-text-color my-2 select-none data-[highlighted]:bg-muted"
+        <!-- <button class="flex flex-row items-center w-full region-text-color my-2 select-none data-[highlighted]:bg-muted"
           on:click = { async() => {
             await assignDeUrl("Korea");
           }}>
           <CheckRegion checkFlag = { selDeUrl === 'Korea'}/>
           <span class="ml-2">{$i18n.t("Korea")}</span>
-        </button>
+        </button> -->
         <!-- <button class="flex flex-row items-center w-full region-text-color my-2 select-none data-[highlighted]:bg-muted"
           on:click = { async () => {
             await assignDeUrl("Others");
