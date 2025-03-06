@@ -3,7 +3,6 @@
   import { v4 as uuidv4 } from "uuid";
   import { page } from "$app/stores";
   import { onMount, getContext, tick } from "svelte";
-  import { invalidate } from '$app/navigation';
 
   import {
     WEBUI_NAME,

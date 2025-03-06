@@ -135,14 +135,14 @@
             });
           }
         });
-        // regionDict.Korea.forEach((item) => {
-        //   if (item === data?.country) {
-        //     deApiBaseUrl.set({
-        //       name: "Korea",
-        //       url: "https://korea-chat.degpt.ai/api",
-        //     });
-        //   }
-        // });
+        regionDict.Korea.forEach((item) => {
+          if (item === data?.country) {
+            deApiBaseUrl.set({
+              name: "Korea",
+              url: "https://korea-chat.degpt.ai/api",
+            });
+          }
+        });
       }
     });
   }
