@@ -15,7 +15,7 @@
       description: [
         "Wallet users who have completed KYC invite others to create wallets and complete KYC.",
         "The number of people invited each day should not exceed 20.",
-        "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline is March 14th."
+        "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th."
       ]
     },
     {
