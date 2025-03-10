@@ -218,13 +218,13 @@ class UsersTable:
                     if invite_user.verified:
                         # 注册奖励绑定邀请人
                         RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
-                        if len(invite_list) < 24:
+                        if len(invite_list) < 20:
                             print("邀请人得奖励", user.inviter_id)
-                            RewardsTableInstance.create_reward(user.inviter_id, 3000, "invite", True, invitee)
+                            RewardsTableInstance.create_reward(user.inviter_id, 6000, "invite", True, invitee)
                     else:
                         # 注册奖励绑定邀请人
                         RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
-                        if len(invite_list) < 24:
+                        if len(invite_list) < 20:
                             print("邀请人得奖励0", user.inviter_id)
                             RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
             else:
