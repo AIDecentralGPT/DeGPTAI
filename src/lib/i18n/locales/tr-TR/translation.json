@@ -156,6 +156,7 @@
   "Custom": "Özel",
   "Customize Ollama models for a specific purpose": "Belirli bir amaca göre Ollama modellerini özelleştir",
   "Dashboard": "Kontrol Paneli",
+  "Reward upkeep": "Ödül Bakımı",
   "Database": "Veritabanı",
   "December": "Aralık",
   "Default": "Varsayılan",
@@ -824,5 +825,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Yukarıdaki sorulardan son sorunun içeriği hakkında ne olduğunu belirleyin ve yalnızca içeriği yazdırın",
   "Summarize based on the above YouTube search results:": "Yukarıdaki YouTube arama sonuçlarına göre özetleyin:",
   "Summarize based on the above Twitter search results:": "Yukarıdaki Twitter arama sonuçlarına göre özetleyin:",
-  "Summarize based on the above web search results:": "Yukarıdaki web arama sonuçlarına göre özetleyin:"
+  "Summarize based on the above web search results:": "Yukarıdaki web arama sonuçlarına göre özetleyin:",
+  "All Reward Range": "Tüm Ödül Aralığı",
+  "Status": "Durum",
+  "starttime": "Başlangıç Saati",
+  "endtime": "Bitiş Saati",
+  "Enter Name": "Adınızı girin"
 }

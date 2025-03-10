@@ -156,6 +156,7 @@
   "Custom": "커스텀",
   "Customize Ollama models for a specific purpose": "특정 목적을 위해 Ollama 모델 커스터마이징",
   "Dashboard": "대시보드",
+  "Reward upkeep": "보상 유지",
   "Database": "데이터베이스",
   "December": "12월",
   "Default": "기본",
@@ -824,5 +825,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "위 질문에서 마지막으로 한 질문의 내용이 무엇에 대한 것인지 파악하고 내용만 출력하세요",
   "Summarize based on the above YouTube search results:": "위의 YouTube 검색 결과를 바탕으로 요약하세요:",
   "Summarize based on the above Twitter search results:": "위의 Twitter 검색 결과를 바탕으로 요약하세요:",
-  "Summarize based on the above web search results:": "위의 웹 검색 결과를 바탕으로 요약하세요:"
+  "Summarize based on the above web search results:": "위의 웹 검색 결과를 바탕으로 요약하세요:",
+  "All Reward Range": "전체 보상 구간",
+  "Status": "상태",
+  "starttime": "시작 시간",
+  "endtime": "종료 시간",
+  "Enter Name": "이름을 입력하세요"
 }

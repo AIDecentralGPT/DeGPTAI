@@ -157,6 +157,7 @@
   "Custom": "Khusus",
   "Customize Ollama models for a specific purpose": "Sesuaikan model Ollama untuk tujuan tertentu",
   "Dashboard": "Dasbor",
+  "Reward upkeep": "Pemeliharaan hadiah",
   "Database": "Basis Data",
   "December": "Desember",
   "Default": "Default",
@@ -824,5 +825,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Tentukan tentang apa isi pertanyaan terakhir dalam pertanyaan di atas, dan hanya keluarkan isinya",
   "Summarize based on the above YouTube search results:": "Rangkum berdasarkan hasil pencarian YouTube di atas:",
   "Summarize based on the above Twitter search results:": "Rangkum berdasarkan hasil pencarian Twitter di atas:",
-  "Summarize based on the above web search results:": "Rangkum berdasarkan hasil pencarian web di atas:"
+  "Summarize based on the above web search results:": "Rangkum berdasarkan hasil pencarian web di atas:",
+  "All Reward Range": "Jangkauan Hadiah Semua",
+  "Status": "Status",
+  "starttime": "Waktu mulai",
+  "endtime": "Waktu berakhir",
+  "Enter Name": "Masukkan nama Anda"
 }

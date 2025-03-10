@@ -157,6 +157,7 @@
   "Custom": "カスタム",
   "Customize Ollama models for a specific purpose": "特定の目的で Ollama モデルをカスタマイズする",
   "Dashboard": "ダッシュボード",
+  "Reward upkeep": "報酬のメンテナンス",
   "Database": "データベース",
   "December": "12 月",
   "Default": "デフォルト",
@@ -824,5 +825,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "上記の質問の中で最後の質問の内容が何に関するものかを把握し、内容のみを出力してください",
   "Summarize based on the above YouTube search results:": "上記の YouTube 検索結果に基づいて要約してください：",
   "Summarize based on the above Twitter search results:": "上記の Twitter 検索結果に基づいて要約してください。",
-  "Summarize based on the above web search results:": "上記のウェブ検索結果に基づいて要約してください："
+  "Summarize based on the above web search results:": "上記のウェブ検索結果に基づいて要約してください：",
+  "All Reward Range": "全報酬範囲",
+  "Status": "ステータス",
+  "starttime": "開始時間",
+  "endtime": "終了時間",
+  "Enter Name": "名前を入力してください"
 }

@@ -35,7 +35,7 @@
   "Admin Panel": "管理面板",
   "Admin Settings": "管理设置",
   "Advanced Parameters": "高级参数",
-  "all": "全部；所有",
+  "all": "全部",
   "All Documents": "所有文档",
   "All fields are required!": "所有字段都是必填的！",
   "All Users": "所有用户",
@@ -149,6 +149,7 @@
   "Customize Ollama models for a specific purpose": "为特定目的定制 Ollama 模型",
   "Dark": "深色",
   "Dashboard": "数据分析",
+  "Reward upkeep": "奖励维护",
   "Database": "数据库",
   "December": "十二月",
   "Default": "默认",
@@ -823,5 +824,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "获取以上提问中最后一次提问的内容是关于什么的，只输出内容",
   "Summarize based on the above YouTube search results:": "根据以上 YouTube 搜索结果进行汇总:",
   "Summarize based on the above Twitter search results": "根据以上 Twitter 搜索结果进行汇总:",
-  "Summarize based on the above web search results:": "根据以上网络搜索结果进行汇总:"
+  "Summarize based on the above web search results:": "根据以上网络搜索结果进行汇总:",
+  "All Reward Range": "所有奖励区间",
+  "Status": "状态",
+  "starttime": "开始时间",
+  "endtime": "结束时间",
+  "Enter Name": "输入名称"
 }

@@ -156,6 +156,7 @@
   "Custom": "กำหนดเอง",
   "Customize Ollama models for a specific purpose": "กำหนด Ollama โมเดลเพื่อเป็นไปตามวัตถุประสงค์เฉพาะ",
   "Dashboard": "แดชบอร์ด",
+  "Reward upkeep": "การรักษาเครื่องชั่ง",
   "Database": "ฐานข้อมูล",
   "December": "ธันวาคม",
   "Default": "ค่าเริ่มต้น",
@@ -823,5 +824,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "ระบุว่าข้อความของคำถามครั้งสุดท้ายในคำถามข้างต้นเกี่ยวกับอะไร และแสดงเฉพาะข้อความเท่านั้น",
   "Summarize based on the above YouTube search results:": "สรุปตามผลการค้นหา YouTube ด้านบน:",
   "Summarize based on the above Twitter search results:": "สรุปตามผลการค้นหา Twitter ด้านบน:",
-  "Summarize based on the above web search results:": "สรุปตามผลการค้นหาเว็บไซต์ด้านบน:"
+  "Summarize based on the above web search results:": "สรุปตามผลการค้นหาเว็บไซต์ด้านบน:",
+  "All Reward Range": "ช่วงรางวัลทั้งหมด",
+  "Status": "สถานะ",
+  "starttime": "เวลาเริ่มต้น",
+  "endtime": "เวลาสิ้นสุด",
+  "Enter Name": "กรุณาป้อนชื่อของคุณ"
 }

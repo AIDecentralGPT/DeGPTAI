@@ -14,6 +14,7 @@ from apps.web.routers import (
     device,
     ip_log,
     rewards,
+    reward_date,
     conversation,
     third,
     kycrestrict,
@@ -76,6 +77,7 @@ app.include_router(utils.router, prefix="/utils", tags=["utils"])
 app.include_router(device.router, prefix="/devices", tags=["devices"])
 app.include_router(ip_log.router, prefix="/ip_logs", tags=["ip_logs"])
 app.include_router(rewards.router, prefix="/rewards", tags=["rewards"])
+app.include_router(reward_date.router, prefix="/rewarddate", tags=["reward_date"])
 app.include_router(conversation.router, prefix="/conversation", tags=["conversation"])
 app.include_router(third.router, prefix="/third", tags=["third"])
 app.include_router(kycrestrict.router, prefix="/kyc", tags=["kyc"])

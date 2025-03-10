@@ -156,6 +156,7 @@
   "Custom": "Tùy chỉnh",
   "Customize Ollama models for a specific purpose": "Tùy chỉnh các mô hình Ollama cho một mục đích cụ thể",
   "Dashboard": "Bảng điều khiển",
+  "Reward upkeep": "Phục vụ thưởng",
   "Database": "Cơ sở dữ liệu",
   "December": "Tháng 12",
   "Default": "Mặc định",
@@ -813,5 +814,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Xác định nội dung của câu hỏi cuối cùng trong các câu hỏi trên là về điều gì, và chỉ xuất nội dung",
   "Summarize based on the above YouTube search results:": "Tóm tắt dựa trên kết quả tìm kiếm YouTube ở trên:",
   "Summarize based on the above Twitter search results:": "Tóm tắt dựa trên kết quả tìm kiếm Twitter ở trên:",
-  "Summarize based on the above web search results:": "Tóm tắt dựa trên kết quả tìm kiếm trên web ở trên:"
+  "Summarize based on the above web search results:": "Tóm tắt dựa trên kết quả tìm kiếm trên web ở trên:",
+  "All Reward Range": "Khoảng thưởng tất cả",
+  "Status": "Trạng thái",
+  "starttime": "Thời gian bắt đầu",
+  "endtime": "Thời gian kết thúc",
+  "Enter Name": "Nhập tên của bạn"
 }

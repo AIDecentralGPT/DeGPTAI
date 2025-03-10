@@ -156,6 +156,7 @@
   "Custom": "Пользовательский",
   "Customize Ollama models for a specific purpose": "Настроить модели Ollama для конкретной цели",
   "Dashboard": "Панель управления",
+  "Reward upkeep": "Поддержание вознаграждений",
   "Database": "База данных",
   "December": "Декабрь",
   "Default": "По умолчанию",
@@ -823,5 +824,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Определите, о чём идёт речь в содержании последнего вопроса из вышеперечисленных вопросов, и выведите только это содержание",
   "Summarize based on the above YouTube search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска на YouTube:",
   "Summarize based on the above Twitter search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в Twitter:",
-  "Summarize based on the above web search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в интернете:"
+  "Summarize based on the above web search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в интернете:",
+  "All Reward Range": "Общий диапазон вознаграждений",
+  "Status": "Состояние",
+  "starttime": "Время начала",
+  "endtime": "Время окончания",
+  "Enter Name": "Введите ваше имя"
 }

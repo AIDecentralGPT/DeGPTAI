@@ -156,6 +156,7 @@
   "Custom": "",
   "Customize Ollama models for a specific purpose": "",
   "Dashboard": "",
+  "Reward upkeep": "",
   "Database": "",
   "December": "",
   "Default": "",
@@ -824,6 +825,11 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "",
   "Summarize based on the above YouTube search results:": "",
   "Summarize based on the above Twitter search results:": "",
-  "Summarize based on the above web search results:": ""
+  "Summarize based on the above web search results:": "",
+  "All Reward Range": "",
+  "Status": "",
+  "starttime": "",
+  "endtime": "",
+  "Enter Name": ""
 }
 

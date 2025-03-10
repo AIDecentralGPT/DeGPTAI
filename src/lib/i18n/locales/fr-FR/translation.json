@@ -156,6 +156,7 @@
   "Custom": "Personnalisé",
   "Customize Ollama models for a specific purpose": "Personnaliser les modèles Ollama pour un but spécifique",
   "Dashboard": "Tableau de bord",
+  "Reward upkeep": "Entretien des récompenses",
   "Database": "Base de données",
   "December": "Décembre",
   "Default": "Par défaut",
@@ -823,5 +824,10 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Déterminez de quoi il s'agit dans le contenu de la dernière question parmi les questions ci - dessus et ne présentez que le contenu",
   "Summarize based on the above YouTube search results:": "Résumez en fonction des résultats de recherche YouTube ci-dessus :",
   "Summarize based on the above Twitter search results:": "Résumez en fonction des résultats de recherche Twitter ci-dessus:",
-  "Summarize based on the above web search results:": "Résumez en fonction des résultats de recherche web ci-dessus :"
+  "Summarize based on the above web search results:": "Résumez en fonction des résultats de recherche web ci-dessus :",
+  "All Reward Range": "Intervalle total des récompenses",
+  "Status": "État",
+  "starttime": "Heure de début",
+  "endtime": "Heure de fin",
+  "Enter Name": "Entrez votre nom"
 }
