@@ -208,7 +208,7 @@
                 <tr
                   class="bg-white border-b text-gray-900 dark:text-white text-xs"
                 >
-                  <td class="px-3 py-2 min-w-[7rem] w-28">
+                  <td class="px-3 py-2 min-w-[7rem] w-max">
                     <div class="flex flex-row w-max">
                       <div class=" font-medium self-center">{item.name}</div>
                     </div>
@@ -217,14 +217,14 @@
                     class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max"
                   >
                     <div class="flex flex-row w-max">
-                      <div class=" font-medium self-center">{item.start_time}</div>
+                      <div class=" font-medium self-center">{dayjs(item.start_time).format('YYYY-MM-DD')}</div>
                     </div>
                   </td>
                   <td
                     class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max"
                   >
                     <div class="flex flex-row w-max">
-                      <div class=" font-medium self-center">{item.end_time}</div>
+                      <div class=" font-medium self-center">{dayjs(item.end_time).format('YYYY-MM-DD')}</div>
                     </div>
                   </td>
                   <td class=" px-3 py-2">

@@ -50,6 +50,8 @@ class Rewards(Model):
     invitee = CharField(null=True)
     status = CharField(null=False)
     show = CharField(null=True)
+    auto = CharField(null=False)
+    expird = CharField(null=False)
     amount_type = CharField()
 
     class Meta:
@@ -79,6 +81,7 @@ class RewardsModel(BaseModel):
     status: bool
     show: bool
     amount_type: str
+    auto: bool = False
     expird: bool = False
 
 # 定义 Rewards 操作类
