@@ -978,6 +978,8 @@ async def faceliveness_check_for_ws(id: str):
                 user_update_result = Users.update_user_verified(user.id, True, face_id)
                 # 更新KYC流程状态
                 KycRestrictInstance.update_kyc(user.id, True)
+                # 领取注册奖励
+                rewardSent(user.id)
                 # return user_update_result
                 print("user_update_result", user_update_result)
                             
@@ -1013,6 +1015,11 @@ async def faceliveness_check_for_ws(id: str):
             "message": "The identity validate fail"
         }
 
+async def rewardSent(user_id: str):
+    registReward = RewardsTableInstance.get_create_rewards_by_userid(user_id)
+    if registReward is not None:
+        if registReward.status == False:
+            RewardApi.registReward(registReward.id, user_id)
 
 class ConnectionManager:
     def __init__(self):
