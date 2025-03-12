@@ -501,9 +501,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	};
 
 	// 对话DeGpt
-	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {
-		console.log("=====================sendPromptDeOpenAI==================", model);
-			
+	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = messages
 			.filter((message) => message?.files ?? null)
@@ -627,8 +625,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 				responseMessage.replytime = Math.floor(Date.now() / 1000);
-				// 判断模型添加think头
-        if (model.id == "DeepSeek-R1") {
+				// 判断模型添加think头 DeepSeek-R1 和 QwQ-32B
+        if (model.id == "DeepSeek-R1" || (fileFlag ? model.id : (model.textmodel??model.id) == "QwQ-32B")) {
           responseMessage.think_content = "<think>";
         }
 				for await (const update of textStream) {
