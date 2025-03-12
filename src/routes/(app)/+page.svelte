@@ -680,7 +680,7 @@
         );
         responseMessage.replytime = Math.floor(Date.now() / 1000);
         // 判断模型添加think头
-        if (model.id == "DeepSeek-R1" || (fileFlag ? model.id : (model.textmodel??model.id) == "QwQ-32B")) {
+        if (model.id == "DeepSeek-R1" || (fileFlag ? model.id : (model.textmodel??model.id)) == "QwQ-32B") {
           responseMessage.think_content = "<think>";
         }
         for await (const update of textStream) {
