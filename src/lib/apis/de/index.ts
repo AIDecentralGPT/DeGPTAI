@@ -37,7 +37,7 @@ export const getDeModels = async (token: string = "") => {
         textmodel: "QwQ-32B",
         tip: "Qwen o1",
         support: "image",
-        desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing"
+        desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing, Take photos to solve math problems"
       },
       {
         name: "DeepSeek V3",

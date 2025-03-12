@@ -690,7 +690,7 @@
   "Switch Models": "モデルを切り替える",
   "Suitable for most tasks": "多くのタスクに適しています",
   "Suitable for most tasks,Performance comparable to GPT-4o": "ほとんどのタスクに適しています, 性能は GPT-4o に匹敵します",
-  "Take photos to solve math problems": "数学問題を解決するために写真を撮る",
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing, Take photos to solve math problems": "深く考え、数学や創作的な文章執筆などのタスクにおいて o3 のパフォーマンスに匹敵する成果を出す, 数学問題を解決するために写真を撮る",
   "Support image recognition": "画像認識をサポートしています",
   "Optimize code writing": "コードの書き方を最適化します",
   "Please select at least one model.": "少なくとも 1 つのモデルを選択してください。",
