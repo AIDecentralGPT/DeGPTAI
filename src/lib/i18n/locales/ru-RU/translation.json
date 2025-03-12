@@ -830,5 +830,5 @@
   "starttime": "Время начала",
   "endtime": "Время окончания",
   "Enter Name": "Введите ваше имя",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "Определите, о чем идет речь в последнем вопросе, и выведите только 관련ные поисковые термины, не более 50 символов."
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Определите, о чем идет речь в последнем вопросе, и выведите только 관련ные поисковые термины, не более 30 символов."
 }

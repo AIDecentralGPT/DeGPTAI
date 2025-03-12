@@ -831,5 +831,5 @@
   "starttime": "Başlangıç Saati",
   "endtime": "Bitiş Saati",
   "Enter Name": "Adınızı girin",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "Son sorunun hangi konu hakkında olduğunu belirleyin ve yalnızca ilgili arama terimlerini çıkarın, en fazla 50 karakter."
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Son sorunun hangi konu hakkında olduğunu belirleyin ve yalnızca ilgili arama terimlerini çıkarın, en fazla 30 karakter."
 }

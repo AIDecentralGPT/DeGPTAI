@@ -830,5 +830,5 @@
   "starttime": "Heure de début",
   "endtime": "Heure de fin",
   "Enter Name": "Entrez votre nom",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "Déterminez de quoi il s'agit dans la dernière question et affichez uniquement les termes de recherche associés, avec un maximum de 50 caractères."
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Déterminez de quoi il s'agit dans la dernière question et affichez uniquement les termes de recherche associés, avec un maximum de 30 caractères."
 }

@@ -831,6 +831,6 @@
   "starttime": "",
   "endtime": "",
   "Enter Name": "",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": ""
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": ""
 }
 

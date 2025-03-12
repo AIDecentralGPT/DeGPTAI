@@ -831,5 +831,5 @@
   "starttime": "Waktu mulai",
   "endtime": "Waktu berakhir",
   "Enter Name": "Masukkan nama Anda",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "Tentukan apa yang dibahas dalam pertanyaan terakhir dan hanya tampilkan kata kunci pencarian yang terkait, maksimal 50 karakter."
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Tentukan apa yang dibahas dalam pertanyaan terakhir dan hanya tampilkan kata kunci pencarian yang terkait, maksimal 30 karakter."
 }
