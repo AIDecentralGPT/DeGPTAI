@@ -55,6 +55,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Qwen o1",
         model: "Qwen2.5-VL-72B-Instruct",
+        textmodel: "QwQ-32B",
         tip: "Qwen o1",
         support: "image",
         desc: "Take photos to solve math problems"

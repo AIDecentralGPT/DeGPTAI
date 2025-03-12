@@ -87,6 +87,7 @@
 	let title = '';
 	let prompt = '';
 	let files = [];
+	let fileFlag = false;
 	let search = true;
 	let search_type = "web";
 	let messages = [];
@@ -213,11 +214,13 @@ const submitPrompt = async (userPrompt, _user = null) => {
     } else {
 			selectedModels = checkSelectedModels;
 		}
+		fileFlag = true;
   } else {
 		let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
 		let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
 		if (checkMessages.length > 0) {
       if (checkSelectModels.length == 0) {
+				fileFlag = false;
         switchModel.set({
           content: prompt,
           search: search,
@@ -227,9 +230,12 @@ const submitPrompt = async (userPrompt, _user = null) => {
         await goto("/");
         return;
       } else {
+				fileFlag = true;
         selectedModels = checkSelectModels.map(item => item.model);
       } 
-    }
+    } else {
+			fileFlag = false;
+		}
 	}
 
   console.log("selectedModels", selectedModels);
@@ -496,6 +502,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 
 	// 对话DeGpt
 	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {
+		console.log("=====================sendPromptDeOpenAI==================", model);
 			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = messages
@@ -602,7 +609,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
-					model: model.id,
+					model: fileFlag ? model.id : (model.textmodel??model.id),
 					messages: send_message,
 				},
 				$deApiBaseUrl?.url,
