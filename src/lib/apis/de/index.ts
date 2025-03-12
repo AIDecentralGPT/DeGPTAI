@@ -32,10 +32,11 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Suitable for most tasks"
       // },
       {
-        name: "DeepSeek R1",
-        model: "DeepSeek-R1",
-        tip: "DeepSeek R1",
-        support: "text",
+        name: "Qwen o1",
+        model: "Qwen2.5-VL-72B-Instruct",
+        textmodel: "QwQ-32B",
+        tip: "Qwen o1",
+        support: "image",
         desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing"
       },
       {
@@ -46,19 +47,18 @@ export const getDeModels = async (token: string = "") => {
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       },
       {
+        name: "DeepSeek R1",
+        model: "DeepSeek-R1",
+        tip: "DeepSeek R1",
+        support: "text",
+        desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing"
+      },
+      {
         name: "Llama3.3",
         model: "Llama3.3-70B",
         tip: "Llama3.3",
         support: "text",
         desc: "Suitable for most tasks"
-      },
-      {
-        name: "Qwen o1",
-        model: "Qwen2.5-VL-72B-Instruct",
-        textmodel: "QwQ-32B",
-        tip: "Qwen o1",
-        support: "image",
-        desc: "Take photos to solve math problems"
       }
       // {
       //   name: "Pixtral Large 1.0",

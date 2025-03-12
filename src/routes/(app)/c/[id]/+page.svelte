@@ -88,7 +88,7 @@
 	let prompt = '';
 	let files = [];
 	let fileFlag = false;
-	let search = true;
+	let search = false;
 	let search_type = "web";
 	let messages = [];
 	let history = {
