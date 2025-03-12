@@ -70,7 +70,7 @@
   </DropdownMenu.Trigger>
 
   <DropdownMenu.Content
-    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[300px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[310px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
     transition={flyAndScale}
     side={$mobile ? "bottom" : "bottom-start"}
     sideOffset={4}
@@ -86,7 +86,7 @@
               changeModel(item.value);
             }}
           >
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 mr-1">
               <div class="flex flex-col line-clamp-1">
                 <span class="text-xs text-gray-900 dark:text-gray-100">{item?.info?.tip}</span>
                 <span class="text-xs text-gray-600 dark:text-gray-500">{$i18n.t(item?.info?.desc)}</span>
