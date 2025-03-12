@@ -689,7 +689,7 @@
   "Switch Models": "สลับแบบจำลอง",
   "Suitable for most tasks": "เหมาะสำหรับงานส่วนใหญ่",
   "Suitable for most tasks,Performance comparable to GPT-4o": "เหมาะสำหรับงานส่วนใหญ่ ความสามารถเปรียบเทียบได้กับ GPT-4o",
-  "Take photos to solve math problems": "ถ่ายรูปเพื่อแก้ปัญหาคณิตศาสตร์",
+  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing, Take photos to solve math problems": "คิดอย่างลึกซึ้งและให้ประสิทธิภาพเท่ากับ o3 ในการทำงานเช่น คณิตศาสตร์ และการเขียนสร้างสรรค์ ถ่ายรูปเพื่อแก้ปัญหาคณิตศาสตร์",
   "Support image recognition": "รองรับการจำแนกภาพ",
   "Optimize code writing": "ปรับปรุงการเขียนโค้ด",
   "Please select at least one model.": "กรุณาเลือกแบบจำลองอย่างน้อยหนึ่งแบบ",
