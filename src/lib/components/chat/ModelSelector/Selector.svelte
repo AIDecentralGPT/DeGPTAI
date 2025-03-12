@@ -70,7 +70,7 @@
   </DropdownMenu.Trigger>
 
   <DropdownMenu.Content
-    class=" z-[90] {$mobile ? `w-full`: `${className}`} max-w-[310px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+    class=" z-[90] {$mobile ? `w-full`: `${className}`} w-[310px] justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
     transition={flyAndScale}
     side={$mobile ? "bottom" : "bottom-start"}
     sideOffset={4}
