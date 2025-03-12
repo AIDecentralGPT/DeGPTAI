@@ -157,6 +157,7 @@
   "Custom": "Personalizado",
   "Customize Ollama models for a specific purpose": "Personalizar modelos Ollama para un propósito específico",
   "Dashboard": "Panel de control",
+  "Reward upkeep": "Mantenimiento de las recompensas",
   "Database": "Base de datos",
   "December": "Diciembre",
   "Default": "Predeterminado",
@@ -287,7 +288,7 @@
   "Invalid Tag": "Etiqueta no válida",
   "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "Invita a un amigo a crear una billetera para ganar 6000 DGC, tu amigo también ganará 1000 DGC",
   "Invite friends now": "Invita a tus amigos ahora",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Invita a tus amigos a crear una billetera para ganar 1000 DGC, tus amigos también ganarán 1000 DGC",
+  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Invita a tus amigos a crear una billetera para ganar 6000 DGC, tus amigos también ganarán 1000 DGC",
   "Invite Friends to Earn DGC Rewards": "Invita a tus amigos para ganar recompensas en DGC",
   "invite new user": "Invitar un nuevo usuario",
   "January": "Enero",
@@ -743,7 +744,7 @@
   "II. Referral Reward": "II. Recompensa por Recomendación",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "Los usuarios del wallet que han completado el KYC invitan a otros a crear wallets y a completar el KYC.",
   "The number of people invited each day should not exceed 20.": "El número de personas invitadas cada día no debe superar los 20.",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.": "Por cada persona invitada, y si la persona invitada se inicia sesión durante tres veces consecutivas, el invitador recibirá una recompensa de <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.": "Por cada persona invitada, y si la persona invitada se inicia sesión durante tres veces consecutivas, el invitador recibirá una recompensa de <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, La fecha límite de la actividad es el 14 de marzo.",
   "III. Clock in Reward": "III. Recompensa por Registro de Asistencia",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "La recompensa por registro de asistencia es válida durante <span style='color: rgba(184, 142, 86, 1);'>60<span> días después de completar la autenticación.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Iniciar sesión y registrar la asistencia durante <span style='color: rgba(184, 142, 86, 1);'>1</span> día puede generar recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; máximo de <span style='color: rgba(184, 142, 86, 1);'>30</span> recompensas por registro de asistencia",
@@ -824,5 +825,11 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Determina de qué se trata el contenido de la última pregunta en las preguntas anteriores y solo muestra el contenido",
   "Summarize based on the above YouTube search results:": "Resumir basado en los resultados de búsqueda de YouTube anteriores:",
   "Summarize based on the above Twitter search results:": "Resumir basado en los resultados de búsqueda de Twitter anteriores:",
-  "Summarize based on the above web search results:": "Resumir basado en los resultados de búsqueda web anteriores:"
+  "Summarize based on the above web search results:": "Resumir basado en los resultados de búsqueda web anteriores:",
+  "All Reward Range": "Rango total de recompensas",
+  "Status": "Estado",
+  "starttime": "Hora de inicio",
+  "endtime": "Hora de finalización",
+  "Enter Name": "Ingrese su nombre",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Determina de qué trata la última pregunta y solo muestra los términos de búsqueda relacionados, con un máximo de 30 caracteres."
 }

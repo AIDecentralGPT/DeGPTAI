@@ -79,6 +79,10 @@
     }
   }
 
+  $: if (search) {
+    files = []
+  }
+
   let mediaRecorder: any;
   let audioChunks: any[] = [];
   let isRecording = false;
@@ -1141,7 +1145,7 @@
               <div class="flex justify-between">
                 <div class="flex flex-row">
                   <!-- 图片上传 -->
-                  {#if fileUploadEnabled}
+                  {#if fileUploadEnabled && !search}
                     <div class="self-star mb-2 ml-1 mr-1">
                       <Tooltip content={$i18n.t("Attach files")}>
                         <button

@@ -34,11 +34,12 @@ class RewardApi:
             if response_json['code'] == 0:
                 # 更新记录
                 dgc_hash = response_json['result']['Data']['DGCTxHash']
-                result = RewardsTableInstance.update_reward(reward_id, dgc_hash, True)
+                result = RewardsTableInstance.update_reward(reward_id, dgc_hash, True, True)
                 dbc_hash = response_json['result']['Data']['DBCTxHash']
                 RewardsTableInstance.create_dbc_reward(reward.user_id, 0.1, 'new_wallet', dbc_hash, "")
                 return result
             else:
+                RewardsTableInstance.update_reward(reward_id, None, False, True)
                 return None
         except Exception as e:
             print("===========registReward===========:", e)
@@ -66,8 +67,9 @@ class RewardApi:
             response_json = json.loads(response.text)
             if (response_json['code'] == 0):       
                 ## 更新记录
-                return RewardsTableInstance.update_reward(invite.id, response_json['result']['Data']['inviterTxHash'], True)
+                return RewardsTableInstance.update_reward(invite.id, response_json['result']['Data']['inviterTxHash'], True, True)
             else:
+                RewardsTableInstance.update_reward(invite.id, None, False, True)
                 return None
         except Exception as e:
             print("===========inviteReward===========", e)
@@ -108,9 +110,10 @@ class RewardApi:
             if response_json['code'] == 0:       
                 # 更新记录
                 tran_hash = response_json['result']['message'].split(':')[1].strip()
-                result = RewardsTableInstance.update_reward(reward_id, tran_hash, True)
+                result = RewardsTableInstance.update_reward(reward_id, tran_hash, True, True)
                 return result
             else:
+                RewardsTableInstance.update_reward(reward_id, None, False, True)
                 return None
         except Exception as e:
             print("dailyReward:", e)

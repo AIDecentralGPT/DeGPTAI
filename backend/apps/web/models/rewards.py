@@ -50,6 +50,8 @@ class Rewards(Model):
     invitee = CharField(null=True)
     status = CharField(null=False)
     show = CharField(null=True)
+    auto = CharField(null=False)
+    expird = CharField(null=False)
     amount_type = CharField()
 
     class Meta:
@@ -79,6 +81,7 @@ class RewardsModel(BaseModel):
     status: bool
     show: bool
     amount_type: str
+    auto: bool = False
     expird: bool = False
 
 # 定义 Rewards 操作类
@@ -115,10 +118,10 @@ class RewardsTable:
             return None
 
     # 更新奖励状态
-    def update_reward(self, id: str, transfer_hash: str, status: bool) -> Optional[RewardsModel]:
+    def update_reward(self, id: str, transfer_hash: str, status: bool, auto: bool) -> Optional[RewardsModel]:
         try:
             query = Rewards.update(
-                transfer_hash=transfer_hash, status=status).where(Rewards.id == id)
+                transfer_hash=transfer_hash, status=status, auto=auto).where(Rewards.id == id)
             query.execute()  # 执行更新操作
 
             rewards = Rewards.get(Rewards.id == id)  # 查询更新后的用户
@@ -402,7 +405,7 @@ class RewardsTable:
             ten_minutes_ago = datetime.now() - timedelta(minutes=30)
             ten_minutes_ago_str = ten_minutes_ago.strftime('%Y-%m-%d %H:%M:%S')
             sql = f"select r.* from rewards r left join \"user\" u on r.user_id = u.id \
-                where r.reward_type = 'new_wallet' and r.status = 'f' \
+                where r.reward_type = 'new_wallet' and r.status = 'f' and auto = 't' \
                 and u.verified = 't' and u.face_time < '{ten_minutes_ago_str}' \
                 limit 100"
             rewards = Rewards.raw(sql)
@@ -422,7 +425,7 @@ class RewardsTable:
             sql = f"select r.* from rewards r left join rewards r2 on r.invitee = r2.invitee \
                 and r2.reward_type = 'new_wallet' left join \"user\" u on r2.user_id = u.id \
                 and u.verified = 't' and u.face_time < '{ten_minutes_ago_str}' \
-                where r.reward_type = 'invite' and r.status = 'f' and r.show = 't' \
+                where r.reward_type = 'invite' and r.status = 'f' and r.show = 't' and r.auto= 't' \
                 limit 100"
             rewards = Rewards.raw(sql)
             # 将数据库对象转换为字典并转换为Pydantic模型

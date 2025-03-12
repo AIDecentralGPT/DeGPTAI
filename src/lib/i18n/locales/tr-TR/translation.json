@@ -156,6 +156,7 @@
   "Custom": "Özel",
   "Customize Ollama models for a specific purpose": "Belirli bir amaca göre Ollama modellerini özelleştir",
   "Dashboard": "Kontrol Paneli",
+  "Reward upkeep": "Ödül Bakımı",
   "Database": "Veritabanı",
   "December": "Aralık",
   "Default": "Varsayılan",
@@ -287,7 +288,7 @@
   "Invalid Tag": "Geçersiz Etiket",
   "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "Bir arkadaşınızı cüzdan oluşturmak için davet edin ve 6000 DGC ödülü kazanın, arkadaşınız da 1000 DGC kazanacak",
   "Invite friends now": "Şimdi arkadaşları davet edin",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Arkadaşlarınızı cüzdan oluşturmak için davet edin ve 1000 DGC ödülü kazanın, arkadaşlarınız da 1000 DGC kazanacak",
+  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Arkadaşlarınızı cüzdan oluşturmak için davet edin ve 6000 DGC ödülü kazanın, arkadaşlarınız da 1000 DGC kazanacak",
   "Invite Friends to Earn DGC Rewards": "Arkadaşları davet edin ve DGC ödüllerini kazanın",
   "invite new user": "Yeni kullanıcıyı davet et",
   "January": "Ocak",
@@ -743,7 +744,7 @@
   "II. Referral Reward": "II. Tavsiye Ödülü",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "KYC'yi tamamlayan cüzdan kullanıcıları, diğerlerini cüzdan oluşturmak ve KYC'yi tamamlamak için davet ederler.",
   "The number of people invited each day should not exceed 20.": "Her gün davet edilen kişi sayısı 20'yi geçmemelidir.",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.": "Her bir davet edilen kişi için, ve eğer davet edilen kişi üç kez ardışık olarak giriş yaparsa, davet eden <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC'lik bir ödül alacaktır.",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.": "Her bir davet edilen kişi için, ve eğer davet edilen kişi üç kez ardışık olarak giriş yaparsa, davet eden <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC'lik bir ödül alacaktır，Etkinliğin son tarihi 14 Mart'dır.",
   "III. Clock in Reward": "III. Giriş Kaydı Ödülü",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Doğrulama tamamlandıktan sonra <span style='color: rgba(184, 142, 86, 1);'>60</span> gün boyunca giriş kaydı ödülü geçerli olacak.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Bir gün boyunca giriş yapıp giriş kaydı yaptırabilirsiniz ve <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC ödülü kazanabilirsiniz; maksimum <span style='color: rgba(184, 142, 86, 1);'>30</span> giriş kaydı ödülü.",
@@ -824,5 +825,11 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Yukarıdaki sorulardan son sorunun içeriği hakkında ne olduğunu belirleyin ve yalnızca içeriği yazdırın",
   "Summarize based on the above YouTube search results:": "Yukarıdaki YouTube arama sonuçlarına göre özetleyin:",
   "Summarize based on the above Twitter search results:": "Yukarıdaki Twitter arama sonuçlarına göre özetleyin:",
-  "Summarize based on the above web search results:": "Yukarıdaki web arama sonuçlarına göre özetleyin:"
+  "Summarize based on the above web search results:": "Yukarıdaki web arama sonuçlarına göre özetleyin:",
+  "All Reward Range": "Tüm Ödül Aralığı",
+  "Status": "Durum",
+  "starttime": "Başlangıç Saati",
+  "endtime": "Bitiş Saati",
+  "Enter Name": "Adınızı girin",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Son sorunun hangi konu hakkında olduğunu belirleyin ve yalnızca ilgili arama terimlerini çıkarın, en fazla 30 karakter."
 }

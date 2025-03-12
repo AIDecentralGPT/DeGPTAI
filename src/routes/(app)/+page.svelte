@@ -105,6 +105,7 @@
   let title = "";
   let prompt = "";
   let files = [];
+  let fileFlag = false;
   let search = false;
   let search_type = "web";
   let messages = [];
@@ -249,11 +250,13 @@
       } else {
         selectedModels = checkSelectedModels;
       }
+      fileFlag = true;
     } else {
       let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
       let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
       if (checkMessages.length > 0) {
         if (checkSelectModels.length == 0) {
+          fileFlag = false;
           switchModel.set({
             content: prompt,
             search: search,
@@ -271,8 +274,11 @@
           };
           return;
         } else {
+          fileFlag = true;
           selectedModels = checkSelectModels.map(item => item.model);
         } 
+      } else{
+        fileFlag = false;
       }
     }
 
@@ -647,7 +653,7 @@
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
-          model: model.id,
+          model: fileFlag ? model.id : (model.textmodel??model.id),
           messages: send_message
         },
         $deApiBaseUrl?.url,
@@ -674,7 +680,7 @@
         );
         responseMessage.replytime = Math.floor(Date.now() / 1000);
         // 判断模型添加think头
-        if (model.id == "DeepSeek-R1") {
+        if (model.id == "DeepSeek-R1" || (fileFlag ? model.id : (model.textmodel??model.id)) == "QwQ-32B") {
           responseMessage.think_content = "<think>";
         }
         for await (const update of textStream) {
@@ -973,13 +979,24 @@
     if ($settings?.title?.auto ?? true) {
       // 获取关键词
       let send_messages = messages.filter(item => item.role == 'user')
-        .map(item => ({role: item.role, content: item.content}));
+        .map(item => {
+					let custmessage = {role: item.role, content: item.content};
+					if (item.files) {
+						custmessage.content = [{"type": "text","text": item.content}];
+						item.files.forEach((fitem:any) => {
+              let url = fitem.url;
+							custmessage.content.push({"type": "image_url", "image_url": {url}})
+						})
+					}
+					return custmessage;
+				});
       send_messages.push({
         role: "user",
-        content: $i18n.t("Obtain what the content of the final question is about, and only output the content it is about")
-      })
+        content: $i18n.t("Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.")
+      });
       const title = await generateSearchKeyword(
         send_messages,
+        userPrompt,
         $deApiBaseUrl?.url
       );
       return title;

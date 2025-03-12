@@ -182,7 +182,7 @@ class KycRestrictTable:
             # 将数据库对象转换为Pydantic模型并返回
             return KycRestrictModel(**model_to_dict(kycrestrict))
         except Exception as e:
-            log.error(f"update_reward: {e}")
+            log.error(f"update_kyc: {e}")
             return None
         
     # 移除kyc认证结果
@@ -197,7 +197,7 @@ class KycRestrictTable:
                 print(f"未找到 KycRestrict 为 {user_id} 的记录")
                 return False
         except Exception as e:
-            log.error(f"update_reward: {e}")
+            log.error(f"remove_kyc: {e}")
             return False
         
 # 初始化 KycRestrict 表

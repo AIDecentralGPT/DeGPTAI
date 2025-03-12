@@ -156,6 +156,7 @@
   "Custom": "Benutzerdefiniert",
   "Customize Ollama models for a specific purpose": "Ollama-Modelle für einen bestimmten Zweck anpassen",
   "Dashboard": "Dashboard",
+  "Reward upkeep": "Belohnungsunterhaltung",
   "Database": "Datenbank",
   "December": "Dezember",
   "Default": "Standard",
@@ -287,7 +288,7 @@
   "Invalid Tag": "Ungültiger Tag",
   "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "Laden Sie einen Freund ein, um eine Wallet zu erstellen und 6000 DGC zu verdienen, Ihr Freund wird auch 1000 DGC verdienen",
   "Invite friends now": "Laden Sie jetzt Freunde ein",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Laden Sie Freunde ein, um eine Wallet zu erstellen und 1000 DGC zu verdienen, Ihre Freunde werden auch 1000 DGC verdienen",
+  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Laden Sie Freunde ein, um eine Wallet zu erstellen und 6000 DGC zu verdienen, Ihre Freunde werden auch 1000 DGC verdienen",
   "Invite Friends to Earn DGC Rewards": "Freunde einladen, um DGC-Belohnungen zu erhalten",
   "invite new user": "Neuen Benutzer einladen",
   "January": "Januar",
@@ -744,7 +745,7 @@
   "II. Referral Reward": "II. Empfehlungsbelohnung",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "Wallet-Benutzer, die die KYC abgeschlossen haben, laden andere ein, Wallets zu erstellen und die KYC abzuschließen.",
   "The number of people invited each day should not exceed 20.": "Die Anzahl der jeden Tag eingeladenen Personen darf nicht über 20 hinausgehen.",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.": "Für jede eingeladene Person und wenn die eingeladene Person sich drei Mal hintereinander anmeldet, erhält der Einladende eine Belohnung von <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.": "Für jede eingeladene Person und wenn die eingeladene Person sich drei Mal hintereinander anmeldet, erhält der Einladende eine Belohnung von <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC，Der Endtermin der Aktivität ist der 14. März.",
   "III. Clock in Reward": "III. Anmeldebelohnung",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Die Anmeldebelohnung ist für <span style='color: rgba(184, 142, 86, 1);'>60</span> Tage nach der Vervollständigung der Authentifizierung gültig.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Durch das Einloggen und Anmelden an einem Tag kann man <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC-Belohnungen verdienen; maximal <span style='color: rgba(184, 142, 86, 1);'>30</span> Anmeldebelohnungen.",
@@ -825,5 +826,11 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Ermitteln, worum es inhaltlich bei der letzten Frage in den obigen Fragen geht und geben Sie nur den Inhalt aus",
   "Summarize based on the above YouTube search results:": "Zusammenfassen Sie anhand der obigen YouTube-Suchergebnisse:",
   "Summarize based on the above Twitter search results:": "Zusammenfassen Sie anhand der obigen Twitter-Suchergebnisse:",
-  "Summarize based on the above web search results:": "Zusammenfassen Sie anhand der obigen Websuchergebnisse:"
+  "Summarize based on the above web search results:": "Zusammenfassen Sie anhand der obigen Websuchergebnisse:",
+  "All Reward Range": "Gesamtbereich der Belohnungen",
+  "Status": "Status",
+  "starttime": "Startzeit",
+  "endtime": "Endzeit",
+  "Enter Name": "Geben Sie Ihren Namen ein",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Ermitteln Sie, worum es bei der letzten Frage geht, und geben Sie nur die dazugehörigen Suchbegriffe aus, maximal 30 Zeichen."
 }
