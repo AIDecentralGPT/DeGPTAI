@@ -819,5 +819,6 @@
   "Status": "Trạng thái",
   "starttime": "Thời gian bắt đầu",
   "endtime": "Thời gian kết thúc",
-  "Enter Name": "Nhập tên của bạn"
+  "Enter Name": "Nhập tên của bạn",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "Xác định nội dung của câu hỏi cuối cùng là về điều gì và chỉ xuất các từ khóa tìm kiếm liên quan, tối đa 50 ký tự."
 }

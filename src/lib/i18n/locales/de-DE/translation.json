@@ -831,5 +831,6 @@
   "Status": "Status",
   "starttime": "Startzeit",
   "endtime": "Endzeit",
-  "Enter Name": "Geben Sie Ihren Namen ein"
+  "Enter Name": "Geben Sie Ihren Namen ein",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "Ermitteln Sie, worum es bei der letzten Frage geht, und geben Sie nur die dazugehörigen Suchbegriffe aus, maximal 50 Zeichen."
 }

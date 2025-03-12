@@ -829,5 +829,6 @@
   "Status": "สถานะ",
   "starttime": "เวลาเริ่มต้น",
   "endtime": "เวลาสิ้นสุด",
-  "Enter Name": "กรุณาป้อนชื่อของคุณ"
+  "Enter Name": "กรุณาป้อนชื่อของคุณ",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "ตัดสินใจว่าข้อสงสัยครั้งสุดท้ายเกี่ยวข้องกับสิ่งใดและแสดงเพียงคำค้นที่เกี่ยวข้องเท่านั้น โดยมีจำนวนอักษรสูงสุด 50 ตัวอักษร"
 }

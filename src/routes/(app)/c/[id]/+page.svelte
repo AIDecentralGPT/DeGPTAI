@@ -1016,13 +1016,24 @@ const submitPrompt = async (userPrompt, _user = null) => {
     if ($settings?.title?.auto ?? true) {
       // 获取关键词
       let send_messages = messages.filter(item => item.role == 'user')
-        .map(item => ({role: item.role, content: item.content}));
+        .map(item => {
+					let custmessage = {role: item.role, content: item.content};
+					if (item.files) {
+						custmessage.content = [{"type": "text","text": item.content}];
+						item.files.forEach((fitem:any) => {
+							let url = fitem.url;
+							custmessage.content.push({"type": "image_url", "image_url": {url}})
+						})
+					}
+					return custmessage;
+				});
       send_messages.push({
         role: "user",
-        content: $i18n.t("Obtain what the content of the final question is about, and only output the content it is about")
-      })
+        content: $i18n.t("Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.")
+      });
       const title = await generateSearchKeyword(
         send_messages,
+				userPrompt,
         $deApiBaseUrl?.url
       );
       return title;

@@ -830,5 +830,6 @@
   "Status": "ステータス",
   "starttime": "開始時間",
   "endtime": "終了時間",
-  "Enter Name": "名前を入力してください"
+  "Enter Name": "名前を入力してください",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "最後の質問が何に関するものかを判断し、関連する検索語のみを出力し、最大 50 文字としてください。"
 }

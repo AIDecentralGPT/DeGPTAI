@@ -829,5 +829,6 @@
   "Status": "状态",
   "starttime": "开始时间",
   "endtime": "结束时间",
-  "Enter Name": "输入名称"
+  "Enter Name": "输入名称",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "确定最后一个问题的内容是关于什么的，并且只输出与之相关的内容"
 }

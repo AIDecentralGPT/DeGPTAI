@@ -298,6 +298,7 @@ export const generateDeTitle = async (
 // 获取最后提问的词语
 export const generateSearchKeyword = async (
   messages: Object,
+  content: string,
   url: string
 ) => {
   let error = null;
@@ -343,8 +344,7 @@ export const generateSearchKeyword = async (
   if (error) {
     throw error;
   }
-
   return (
-    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
+    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? content
   );
 };

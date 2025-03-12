@@ -830,5 +830,6 @@
   "Status": "Status",
   "starttime": "Hora de início",
   "endtime": "Hora de término",
-  "Enter Name": "Digite seu nome"
+  "Enter Name": "Digite seu nome",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "Determine sobre o que se trata a última pergunta e exiba apenas os termos de pesquisa relacionados, com um máximo de 50 caracteres."
 }

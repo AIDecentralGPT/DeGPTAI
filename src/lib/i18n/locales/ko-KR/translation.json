@@ -830,5 +830,6 @@
   "Status": "상태",
   "starttime": "시작 시간",
   "endtime": "종료 시간",
-  "Enter Name": "이름을 입력하세요"
+  "Enter Name": "이름을 입력하세요",
+  "Determine what the last question is about and output only the related search terms, with a maximum of 50 characters.": "마지막 질문의 내용이 무엇인지 판단하고 관련 검색어만 출력하며 최대 50자를 넘기지 않도록 합니다."
 }
