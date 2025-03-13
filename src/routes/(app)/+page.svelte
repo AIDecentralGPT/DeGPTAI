@@ -228,9 +228,11 @@
   //////////////////////////
   // Ollama functions
   //////////////////////////
+  let webData: any = {};
 
   const submitPrompt = async (userPrompt, _user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
+    webData = [];
     monitorLog = [];
     monitorLog.push({fun: "start", time: new Date()});
 
@@ -343,7 +345,7 @@
             id: responseMessageId,
             search: search,
             search_type: search_type,
-            search_content: {},
+            search_content: webData,
             keyword: userPrompt,
             childrenIds: [],
             role: "assistant",
@@ -369,6 +371,11 @@
           responseMap[model?.id] = responseMessage;
         }
       });
+
+      // 获取网络搜索内容
+      if (search) {
+        await handleSearchWeb(userPrompt);
+      }
 
       scrollToBottom();
 
@@ -449,7 +456,7 @@
               id: responseMessageId,
               search: search,
               search_type: search_type,
-              search_content: {},
+              search_content: webData,
               keyword: prompt,
               childrenIds: [],
               role: "assistant",
@@ -506,11 +513,11 @@
           // 校验是否超过次数
           if (modelLimit[model.id]) {
             await handleLimitError(modelLimit[model.id], responseMessage);
-          } else {
-            monitorLog.push({fun: model?.id + "search-start", time: new Date()});
+          } else {  
             // 搜索网页
-						await handleSearchWeb(responseMessage, responseMessageId);
-            monitorLog.push({fun: model?.id + "search-end", time: new Date()});
+            // monitorLog.push({fun: model?.id + "search-start", time: new Date()});
+						// await handleSearchWeb(responseMessage, responseMessageId);
+            // monitorLog.push({fun: model?.id + "search-end", time: new Date()});
 						// 文本搜索
             monitorLog.push({fun: model?.id + "de-start", time: new Date()});
             await sendPromptDeOpenAI(model, responseMessageId, _chatId);
@@ -826,13 +833,26 @@
   }
 
   // 获取搜索网页
-  const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
+  // const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
+  //   if (search) {
+  //     const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
+  //     let result = await thirdSearch(localStorage.token, ai_keyword, responseMessage.search_type);
+  //     if (result?.ok) {
+  //       responseMessage.search_content = result.data;
+  //       history.messages[responseMessageId] = responseMessage;
+  //     }
+  //   }
+  //   await tick();
+  //   scrollToBottom();
+  // }
+
+  // 获取搜索网页
+  const handleSearchWeb= async(userPrompt: string) => {
     if (search) {
-      const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
-      let result = await thirdSearch(localStorage.token, ai_keyword, responseMessage.search_type);
+      const ai_keyword = await generateSearchChatKeyword(userPrompt);
+      let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
       if (result?.ok) {
-        responseMessage.search_content = result.data;
-        history.messages[responseMessageId] = responseMessage;
+        webData = result.data;
       }
     }
     await tick();
