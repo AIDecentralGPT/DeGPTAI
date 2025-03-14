@@ -35,6 +35,9 @@ class tavilyClient:
       image_result = []
       for result in response.get('images', []):
           image_result.append(result)
+      
+      pattern = r'[^\w\s]'
+      keyword = re.sub(pattern, '', keyword)
       words = jieba.cut(keyword, cut_all=False)
       return {"keyword": "/".join(words), "web": web_result, "images": image_result}
     except Exception as e:
