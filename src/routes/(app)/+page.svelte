@@ -861,7 +861,9 @@
   const handleSearchWeb= async(userPrompt: string) => {
     if (search) {
       const ai_keyword = await generateSearchChatKeyword(userPrompt);
+      console.log("=============start_time============", new Date())
       let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
+      console.log("=============end_time============", new Date())
       if (result?.ok) {
         webData = result.data;
       }
