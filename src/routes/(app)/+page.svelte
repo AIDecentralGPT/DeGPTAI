@@ -867,7 +867,6 @@
       }
     }
     await tick();
-    scrollToBottom();
   }
 
   const handleOpenAIError = async (
