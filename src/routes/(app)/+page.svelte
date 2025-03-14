@@ -374,7 +374,18 @@
 
       // 获取网络搜索内容
       if (search) {
+        await tick();
         await handleSearchWeb(userPrompt);
+        selectedModels.map(async (modelId) => {
+          const model = $models.filter((m) => m.id === modelId).at(0);
+          // 如果已创建信息赋值web数据
+          if (responseMap[model?.id]) {
+            let responseMessageId = responseMap[model?.id].id;
+            let responseMessage = responseMap[model?.id];
+            responseMessage.search_content = webData;
+            history.messages[responseMessageId] = responseMessage;
+          }
+        });
       }
 
       scrollToBottom();
