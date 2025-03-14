@@ -194,11 +194,13 @@
 	// Ollama functions
 	//////////////////////////
 let monitorLog:any = [];
+let webData: any = {};
 // 2. 点击提交按钮，触发检查
 const submitPrompt = async (userPrompt, _user = null) => {
 	console.log('submitPrompt', $chatId);
 	console.log("点击了", firstResAlready);
 	monitorLog = [];
+	webData = {};
 	monitorLog.push({fun: "start", time: new Date()});
 
 	selectedModels = selectedModels.map((modelId) =>
@@ -301,7 +303,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
           id: responseMessageId,
 					search: search,
 					search_type: search_type,
-					search_content: {},
+					search_content: webData,
 					keyword: userPrompt,
           childrenIds: [],
           role: "assistant",
@@ -326,6 +328,22 @@ const submitPrompt = async (userPrompt, _user = null) => {
         responseMap[model?.id] = responseMessage;
       }
     });
+
+		// 获取网络搜索内容
+		if (search) {
+      await tick();
+      await handleSearchWeb(userPrompt);
+      selectedModels.map(async (modelId) => {
+        const model = $models.filter((m) => m.id === modelId).at(0);
+        // 如果已创建信息赋值web数据
+        if (responseMap[model?.id]) {
+          let responseMessageId = responseMap[model?.id].id;
+          let responseMessage = responseMap[model?.id];
+          responseMessage.search_content = webData;
+          history.messages[responseMessageId] = responseMessage;
+        }
+      });
+    }
 
 		scrollToBottom();
 		
@@ -408,7 +426,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 								id: responseMessageId,
 								search: search,
 								search_type: search_type,
-								search_content: {},
+								search_content: webData,
 								keyword: prompt,
 								childrenIds: [],
 								role: "assistant",
@@ -467,10 +485,10 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						if (modelLimit[model.id]) {
 							await handleLimitError(modelLimit[model.id], responseMessage)
 						} else {
-							monitorLog.push({fun: model?.id + "search-start", time: new Date()});
-							// 搜索网页
-							handleSearchWeb(responseMessage, responseMessageId);
-							monitorLog.push({fun: model?.id + "search-end", time: new Date()});
+							// monitorLog.push({fun: model?.id + "search-start", time: new Date()});
+							// // 搜索网页
+							// handleSearchWeb(responseMessage, responseMessageId);
+							// monitorLog.push({fun: model?.id + "search-end", time: new Date()});
 							// 文本搜索
 							monitorLog.push({fun: model?.id + "de-start", time: new Date()});
 							await sendPromptDeOpenAI(model, responseMessageId, _chatId);
@@ -1239,18 +1257,16 @@ const submitPrompt = async (userPrompt, _user = null) => {
     }
   }
 
-	// 获取搜索网页
-  const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
+  // 获取搜索网页
+  const handleSearchWeb= async(userPrompt: string) => {
     if (search) {
-			const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
-      let result = await thirdSearch(localStorage.token, ai_keyword, responseMessage.search_type);
+      const ai_keyword = await generateSearchChatKeyword(userPrompt);
+      let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
       if (result?.ok) {
-        responseMessage.search_content = result.data;
-				history.messages[responseMessageId] = responseMessage;
+        webData = result.data;
       }
     }
     await tick();
-    scrollToBottom();
   }
 
 	const handleOpenAIError = async (error, res: Response | null, model, responseMessage) => {
