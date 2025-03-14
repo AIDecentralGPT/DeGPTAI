@@ -17,7 +17,7 @@ class tavilyClient:
     try:
       response = tavily_client.search(
         query=keyword,
-        include_answer="basic",
+        include_answer="advanced",
         include_images=True,
         include_image_descriptions=True,
         max_results=8
