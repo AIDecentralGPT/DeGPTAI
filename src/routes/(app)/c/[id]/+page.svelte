@@ -1310,7 +1310,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 	const handleLimitError = async (content: string, responseMessage: any) => {
     responseMessage.content = $i18n.t(content);
     responseMessage.replytime = Math.floor(Date.now() / 1000);
-    responseMessage.error = true;
+    responseMessage.warning = true;
     responseMessage.done = true;
     messages = messages;
     scrollToBottom();
