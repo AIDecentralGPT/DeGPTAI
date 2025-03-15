@@ -831,5 +831,8 @@
   "starttime": "Waktu mulai",
   "endtime": "Waktu berakhir",
   "Enter Name": "Masukkan nama Anda",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Tentukan apa yang dibahas dalam pertanyaan terakhir dan hanya tampilkan kata kunci pencarian yang terkait, maksimal 30 karakter."
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Tentukan apa yang dibahas dalam pertanyaan terakhir dan hanya tampilkan kata kunci pencarian yang terkait, maksimal 30 karakter.",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Jumlah percobaan telah melebihi batas. Tolongupgrade ke VIP.",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "Jumlah percobaan telah melebihi batas. Tolong selesaikan KYC.",
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Jumlah percobaan telah melebihi batas. Tolong buat dompet digital Wallet."
 }

@@ -831,6 +831,9 @@
   "starttime": "",
   "endtime": "",
   "Enter Name": "",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": ""
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "",
+  "The number of attempts has exceeded the limit. Please create Wallet.": ""
 }
 

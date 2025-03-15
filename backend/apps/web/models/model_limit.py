@@ -8,7 +8,8 @@ from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict
 class ModelLimit(Model):
     model = CharField(primary_key=True, unique=True)  # 模型名称
     normal = IntegerField()  # 访客用户次数
-    wallet = IntegerField() # 钱包用户
+    wallet = IntegerField() # 钱包用户次数
+    kyc = IntegerField() # KYC用户次数
     vip = IntegerField()  # VIP用户次数
     created_at = BigIntegerField()  # 定义默认值为当前时间的日期时间字段created_at
 
@@ -21,6 +22,7 @@ class ModelLimitModel(BaseModel):
     model: str  # 模型名称
     normal: int  # 访客用户次数
     wallet: int # 钱包用户次数
+    kyc: int # KYC用户次数
     vip: int  # VIP用户次数
     created_at: int  # 定义created_at字段，类型为日期时间
 

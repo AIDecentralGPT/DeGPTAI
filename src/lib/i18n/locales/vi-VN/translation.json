@@ -820,5 +820,8 @@
   "starttime": "Thời gian bắt đầu",
   "endtime": "Thời gian kết thúc",
   "Enter Name": "Nhập tên của bạn",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Xác định nội dung của câu hỏi cuối cùng là về điều gì và chỉ xuất các từ khóa tìm kiếm liên quan, tối đa 30 ký tự."
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Xác định nội dung của câu hỏi cuối cùng là về điều gì và chỉ xuất các từ khóa tìm kiếm liên quan, tối đa 30 ký tự.",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Số lần thử đã vượt quá giới hạn. Vui lòng nâng cấp lên VIP.",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "Số lần thử đã vượt quá giới hạn. Vui lòng hoàn thành KYC.",
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Số lần thử đã vượt quá giới hạn. Vui lòng tạo ví tiền điện tử Wallet."
 }

@@ -831,5 +831,8 @@
   "starttime": "開始時間",
   "endtime": "終了時間",
   "Enter Name": "名前を入力してください",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "最後の質問が何に関するものかを判断し、関連する検索語のみを出力し、最大 30 文字としてください。"
+  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "最後の質問が何に関するものかを判断し、関連する検索語のみを出力し、最大 30 文字としてください。",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "試行回数が制限を超えました。VIP にアップグレードしてください。",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "試行回数が制限を超えました。KYC の完了をお願いします。",
+  "The number of attempts has exceeded the limit. Please create Wallet.": "試行回数が制限を超えました。ウォレットを作成してください。"
 }
