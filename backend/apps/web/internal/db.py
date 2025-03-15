@@ -19,7 +19,7 @@ else:
     pass
 
 # from dotenv import load_dotenv
-# load_dotenv() 
+# load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 DB = connect(DATABASE_URL)
