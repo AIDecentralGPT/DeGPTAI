@@ -387,6 +387,9 @@
 
 	function highlightedText(content: string, keyword: string) {
 		let keywords = keyword.split("/");
+		if (content.length > 150) {
+			content = content.substring(0, 150);
+		}
 		keywords.forEach((item) => {
 			const regex = new RegExp(item, "gi");
 			content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
@@ -459,7 +462,7 @@
 			{/if}
 			<!-- 网络搜索 -->
 			{#if message?.search}
-				{#if message?.search_type == 'web'}
+				{#if message?.search_type == 'web' || message?.search_type == 'bing'}
 					<!-- 网站搜索 -->
 					{#if message?.search_content?.web}
 						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">

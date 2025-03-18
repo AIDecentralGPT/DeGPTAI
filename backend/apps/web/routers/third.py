@@ -19,6 +19,9 @@ async def tavilySearch(form: TavilySearchForm):
     elif form.type == 'youtube':
         data = YoutubeClientApi.search(form.keyword)
         return { "ok": True, "data": data}
+    elif form.type == 'bing':
+        data = BingApiInstance.bcsearch(form.keyword)
+        return { "ok": True, "data": data}
     else:
         data = TavilyClientApi.search(form.keyword)
         return { "ok": True, "data": data}
@@ -57,8 +60,8 @@ async def youtubeSearch(form: YoutubeSearchForm):
         return { "ok": True, "data": videos }
     
 @router.post("/bing/search", response_model=dict)
-async def youtubeSearch(form: YoutubeSearchForm):
-    data = BingApiInstance.search(form.keyword)
+async def bingSearch(form: YoutubeSearchForm):
+    data = BingApiInstance.bcsearch(form.keyword)
     if data is None:
         raise HTTPException(status_code=500, detail="未获取到信息")
     else:
