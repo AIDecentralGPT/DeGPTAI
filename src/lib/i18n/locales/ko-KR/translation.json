@@ -831,7 +831,7 @@
   "starttime": "시작 시간",
   "endtime": "종료 시간",
   "Enter Name": "이름을 입력하세요",
-  "Determine what the content of the last question is about, and only output the content related to it": "마지막 질문의 내용이 무엇인지 확인하고 해당 내용과 관련된 내용만 출력하십시오",
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "마지막 질문의 내용이 무엇인지 확인하고, 반복적이고 유도적이며关键价值가 없는 단어들을 필터링하며 사용자 질문 내용만 출력하며, 최대 10단어까지만 출력합니다.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "시도 횟수가 제한을 초과했습니다. VIP로 업그레이드하십시오.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "시도 횟수가 제한을 초과했습니다. KYC를 완료하십시오.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "시도 횟수가 제한을 초과했습니다. 지갑을 생성하십시오."

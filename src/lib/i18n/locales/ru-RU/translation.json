@@ -830,7 +830,7 @@
   "starttime": "Время начала",
   "endtime": "Время окончания",
   "Enter Name": "Введите ваше имя",
-  "Determine what the content of the last question is about, and only output the content related to it": "Определите, о чем идет речь в содержании последнего вопроса, и выведите только то, что связано с ним",
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Определите, о чем идет речь в последнем вопросе, отфильтруйте повторяющиеся, подсказывающие и несущие незначительную ценность слова и выведите только содержание вопроса пользователя, не превышая десять слов.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Количество попыток превысило лимит. Пожалуйста, 업грейдите до VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Количество попыток превысило лимит. Пожалуйста, выполните процедуру идентификации KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Количество попыток превысило лимит. Пожалуйста, создайте кошелек."

@@ -831,7 +831,7 @@
   "starttime": "Hora de início",
   "endtime": "Hora de término",
   "Enter Name": "Digite seu nome",
-  "Determine what the content of the last question is about, and only output the content related to it": "Determine sobre o que se trata o conteúdo da última pergunta e apenas exiba o conteúdo relacionado a ela",
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Determine sobre o que se trata a última pergunta, filtre as palavras repetitivas, direcionadoras e sem valor crucial e apenas exiba o conteúdo da pergunta do usuário, com um máximo de 10 palavras.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "O número de tentativas excedeu o limite. Por favor, atualize para o VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "O número de tentativas excedeu o limite. Por favor, conclua o KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "O número de tentativas excedeu o limite. Por favor, crie uma carteira."

@@ -830,7 +830,7 @@
   "starttime": "开始时间",
   "endtime": "结束时间",
   "Enter Name": "输入名称",
-  "Determine what the content of the last question is about, and only output the content related to it": "确定最后一个问题的内容是关于什么的，并且只输出与之相关的内容",
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "确定最后一个问题的内容是关于什么的，过滤掉重复性、引导性且无关键价值的词汇，并且只输出用户提问内容，最多10个字",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "请求次数已超过限制。请升级为 VIP。",
   "The number of attempts has exceeded the limit. Please complete KYC.": "请求次数已超过限制。请完成实名认证KYC。",
   "The number of attempts has exceeded the limit. Please create Wallet.": "请求次数已超过限制。请创建钱包。"
