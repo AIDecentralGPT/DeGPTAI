@@ -1047,7 +1047,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 				});
       send_messages.push({
         role: "user",
-        content: $i18n.t("Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.")
+        content: $i18n.t("Determine what the content of the last question is about, and only output the content related to it")
       });
       const title = await generateSearchKeyword(
         send_messages,

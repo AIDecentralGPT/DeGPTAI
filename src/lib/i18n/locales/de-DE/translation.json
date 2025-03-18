@@ -832,7 +832,7 @@
   "starttime": "Startzeit",
   "endtime": "Endzeit",
   "Enter Name": "Geben Sie Ihren Namen ein",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Ermitteln Sie, worum es bei der letzten Frage geht, und geben Sie nur die dazugehörigen Suchbegriffe aus, maximal 30 Zeichen.",
+  "Determine what the content of the last question is about, and only output the content related to it": "Ermitteln Sie, worum es sich bei dem Inhalt der letzten Frage handelt, und geben Sie nur den dazugehörigen Inhalt aus",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Die Anzahl der Versuche hat die Grenze überschritten. Bitte aktualisieren Sie auf VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Die Anzahl der Versuche hat die Grenze überschritten. Bitte führen Sie die KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Die Anzahl der Versuche hat die Grenze überschritten. Bitte erstellen Sie ein Wallet."

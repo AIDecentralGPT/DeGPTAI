@@ -830,7 +830,7 @@
   "starttime": "เวลาเริ่มต้น",
   "endtime": "เวลาสิ้นสุด",
   "Enter Name": "กรุณาป้อนชื่อของคุณ",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "ตัดสินใจว่าข้อสงสัยครั้งสุดท้ายเกี่ยวข้องกับสิ่งใดและแสดงเพียงคำค้นที่เกี่ยวข้องเท่านั้น โดยมีจำนวนอักษรสูงสุด 30 ตัวอักษร",
+  "Determine what the content of the last question is about, and only output the content related to it": "ระบุว่าข้อความของคำถามล่าสุดเกี่ยวกับเรื่องอะไร และแสดงข้อความที่เกี่ยวข้องกับมันเท่านั้น",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดอัปเกรดเป็น VIP",
   "The number of attempts has exceeded the limit. Please complete KYC.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดให้ข้อมูลการยืนยันตัวตน KYC เสร็จสิ้น",
   "The number of attempts has exceeded the limit. Please create Wallet.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดสร้างกระเป๋าเงิน Digitaล Wallet"

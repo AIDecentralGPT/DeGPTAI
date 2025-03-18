@@ -403,6 +403,12 @@
 		currentTheme = ($theme === "system" || $theme === "light") ? 'light' : 'dark';
 	}
 
+	let visibleIndices:any = [];
+	function handleImageLoadFailed({ detail }) {
+        const { index } = detail;
+        visibleIndices[index] = false;
+    }
+
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
@@ -536,10 +542,10 @@
 					<!-- 图片搜索 -->
 					{#if message?.search_content?.images}
 						<div class="flex flex-wrap mt-3">
-							{#each message?.search_content?.images ?? [] as item}
-								{#if item?.url}
+							{#each message?.search_content?.images ?? [] as item, index}
+								{#if item?.url && (visibleIndices[index]??true)}
 									<div class="p-1 lg:w-[12%] w-1/6 aspect-square">
-										<Image src={item.url} alt="" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+										<Image src={item.url} imgIndex={index} alt="" on:imageLoadFailed={handleImageLoadFailed} className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
 									</div>
 								{/if}
 							{/each}
