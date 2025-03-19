@@ -427,19 +427,19 @@
 		<div class="w-full overflow-hidden pl-1">
 			<!-- {console.log("modelfiles", modelfiles, message)} -->
 			<Name>	
-				{#if message.content == ''}
-					{#if message.model in modelfiles}
-						{modelfiles[message.model]?.title}
-					{:else}
-						{message.model ? ` ${formatModelName(message.model)}` : ''}
-					{/if}
-					{#if message?.search && (!message?.search_content?.web && !message?.search_content?.videos && !message?.search_content?.content)}
+				{#if message.model in modelfiles}
+					{modelfiles[message.model]?.title}
+				{:else}
+					{message.model ? ` ${formatModelName(message.model)}` : ''}
+				{/if}
+				{#if message.content == ''}	
+					{#if message?.search}
 						{#if message?.search_content?.web|| message?.search_content?.videos || message?.search_content?.content}
 							<Replying/>
 						{:else}
-							{#if message?.search_content?.content}
+							{#if message?.search_type == "twitter"}
 								<Searching typeName="Twitter"/>
-							{:else if message?.search_content?.videos}
+							{:else if message?.search_type == "youtube"}
 								<Searching typeName="YouTube"/>
 							{:else}
 								<Searching typeName="Bing"/>
