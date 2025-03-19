@@ -425,26 +425,22 @@
 
 		<div class="w-full overflow-hidden pl-1">
 			<!-- {console.log("modelfiles", modelfiles, message)} -->
-			<Name>
-				{#if message.model in modelfiles}
-					{modelfiles[message.model]?.title}
-				{:else}
-					{message.model ? ` ${formatModelName(message.model)}` : ''}
-				{/if}
+			<Name>	
 				{#if message.content == ''}
-					{#if message?.search}
-						{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content }
-							<Thinking/>
+					{#if message?.search && (!message?.search_content?.web && !message?.search_content?.videos && !message?.search_content?.content)}
+						{#if message?.search_content?.content}
+							<Searching typeName="Twitter"/>
+						{:else if message?.search_content?.videos}
+							<Searching typeName="YouTube"/>
 						{:else}
-							{#if message?.search_content?.content}
-								<Searching typeName="Twitter"/>
-							{:else if message?.search_content?.videos}
-								<Searching typeName="YouTube"/>
-							{:else}
-								<Searching typeName="Bing"/>
-							{/if}
+							<Searching typeName="Bing"/>
 						{/if}
 					{:else}
+						{#if message.model in modelfiles}
+							{modelfiles[message.model]?.title}
+						{:else}
+							{message.model ? ` ${formatModelName(message.model)}` : ''}
+						{/if}
 						<Thinking/>
 					{/if}
 				{:else}
