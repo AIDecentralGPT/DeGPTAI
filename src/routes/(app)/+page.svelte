@@ -107,7 +107,7 @@
   let files = [];
   let fileFlag = false;
   let search = false;
-  let search_type = "web";
+  let search_type = "bing";
   let messages = [];
   let history = {
     messages: {},

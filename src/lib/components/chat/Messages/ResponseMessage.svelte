@@ -436,7 +436,13 @@
 						{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content }
 							<Thinking/>
 						{:else}
-							<Searching/>
+							{#if message?.search_content?.content}
+								<Searching typeName="Twitter"/>
+							{:else if message?.search_content?.videos}
+								<Searching typeName="YouTube"/>
+							{:else}
+								<Searching typeName="Bing"/>
+							{/if}
 						{/if}
 					{:else}
 						<Thinking/>
