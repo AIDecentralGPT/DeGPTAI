@@ -429,11 +429,11 @@
 				{#if message.content == ''}
 					{#if message?.search && (!message?.search_content?.web && !message?.search_content?.videos && !message?.search_content?.content)}
 						{#if message?.search_content?.content}
-							<Searching typeName="Twitter"/>
+						 	Twitter <Searching/>
 						{:else if message?.search_content?.videos}
-							<Searching typeName="YouTube"/>
+						  YouTube <Searching/>
 						{:else}
-							<Searching typeName="Bing"/>
+							Bing <Searching/>
 						{/if}
 					{:else}
 						{#if message.model in modelfiles}
