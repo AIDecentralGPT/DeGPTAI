@@ -30,6 +30,7 @@
 	import ProfileImage from './ProfileImage.svelte';
 	import Thinking from './Thinking.svelte';
 	import Searching from './Searching.svelte';
+	import Replying from './Replying.svelte';
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
 	import Image from '$lib/components/common/Image.svelte';
@@ -427,20 +428,24 @@
 			<!-- {console.log("modelfiles", modelfiles, message)} -->
 			<Name>	
 				{#if message.content == ''}
+					{#if message.model in modelfiles}
+						{modelfiles[message.model]?.title}
+					{:else}
+						{message.model ? ` ${formatModelName(message.model)}` : ''}
+					{/if}
 					{#if message?.search && (!message?.search_content?.web && !message?.search_content?.videos && !message?.search_content?.content)}
-						{#if message?.search_content?.content}
-						 	Twitter <Searching/>
-						{:else if message?.search_content?.videos}
-						  YouTube <Searching/>
+						{#if message?.search_content?.web|| message?.search_content?.videos || message?.search_content?.content}
+							<Replying/>
 						{:else}
-							Bing <Searching/>
+							{#if message?.search_content?.content}
+								<Searching typeName="Twitter"/>
+							{:else if message?.search_content?.videos}
+								<Searching typeName="YouTube"/>
+							{:else}
+								<Searching typeName="Bing"/>
+							{/if}
 						{/if}
 					{:else}
-						{#if message.model in modelfiles}
-							{modelfiles[message.model]?.title}
-						{:else}
-							{message.model ? ` ${formatModelName(message.model)}` : ''}
-						{/if}
 						<Thinking/>
 					{/if}
 				{:else}
