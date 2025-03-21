@@ -369,6 +369,8 @@
     }
   };
 
+  let currUserMessageIndex = -1;
+
   onMount(() => {
     // window.setTimeout(() => chatTextAreaElement?.focus(), 0);
 
@@ -719,6 +721,7 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
+              currUserMessageIndex = -1;
               submitPrompt(prompt, user);
             }}
           >
@@ -986,17 +989,37 @@
                   if (prompt === "" && e.key == "ArrowUp") {
                     e.preventDefault();
 
-                    const userMessageElement = [
+                    const userMessageElements = [
                       ...document.getElementsByClassName("user-message"),
-                    ]?.at(-1);
+                    ];
 
+                    if (userMessageElements.length > 0) {
+                      if (currUserMessageIndex == -1) {
+                        currUserMessageIndex = userMessageElements.length -1;
+                      } else {
+                        if (currUserMessageIndex > 0) {
+                          currUserMessageIndex = currUserMessageIndex - 1;
+                        } 
+                      }
+                    }
+                    
+
+                    // 关闭已开启的Edit
+                    const closeEditButtons = [
+                      ...document.getElementsByClassName(
+                        "close-edit-message-button"
+                      ),
+                    ]
+                    closeEditButtons.forEach(element => {
+                      element?.click()
+                    })
+
+                    // 开启新的edit
                     const editButton = [
                       ...document.getElementsByClassName(
                         "edit-user-message-button"
                       ),
-                    ]?.at(-1);
-
-                    console.log(userMessageElement);
+                    ]?.at(currUserMessageIndex);
 
                     editButton.scrollIntoView({ block: "center" });
                     editButton?.click();
