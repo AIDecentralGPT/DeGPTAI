@@ -998,8 +998,9 @@
 
                     console.log(userMessageElement);
 
-                    userMessageElement.scrollIntoView({ block: "center" });
+                    editButton.scrollIntoView({ block: "center" });
                     editButton?.click();
+                    document.getElementById("chat-textarea")?.focus();
                   }
 
                   if (

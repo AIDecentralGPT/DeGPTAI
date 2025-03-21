@@ -37,7 +37,7 @@
 		messageEditTextAreaElement.style.height = '';
 		messageEditTextAreaElement.style.height = `${messageEditTextAreaElement.scrollHeight}px`;
 
-		messageEditTextAreaElement?.focus();
+		// messageEditTextAreaElement?.focus();
 	};
 
 	const editMessageConfirmHandler = async () => {
