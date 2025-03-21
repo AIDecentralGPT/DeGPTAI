@@ -1000,6 +1000,7 @@
 
                     editButton.scrollIntoView({ block: "center" });
                     editButton?.click();
+                    document.getElementById("chat-textarea")?.focus();
                   }
 
                   if (
