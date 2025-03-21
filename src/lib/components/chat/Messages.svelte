@@ -83,11 +83,17 @@
 
 		// 校验模型已使用次数
     let modelLimit = {}
-    for (const item of selectedModels) {
-      const {passed, message} = await conversationRefresh(localStorage.token, item);
-      if (!passed) {
-        modelLimit[item] = message;
-      }  
+		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!dItem.passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+      	}) 
+    	}
     }
 
 		// Create Simulate ResopnseMessage
