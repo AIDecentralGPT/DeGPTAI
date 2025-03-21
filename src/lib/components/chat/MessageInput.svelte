@@ -80,7 +80,8 @@
   }
 
   $: if (search) {
-    files = []
+    files = [];
+    currUserMessageIndex = -1;
   }
 
   let mediaRecorder: any;
@@ -988,22 +989,20 @@
 
                   if (prompt === "" && e.key == "ArrowUp") {
                     e.preventDefault();
-
                     const userMessageElements = [
                       ...document.getElementsByClassName("user-message"),
                     ];
-
                     if (userMessageElements.length > 0) {
                       if (currUserMessageIndex == -1) {
                         currUserMessageIndex = userMessageElements.length -1;
                       } else {
                         if (currUserMessageIndex > 0) {
                           currUserMessageIndex = currUserMessageIndex - 1;
-                        } 
+                        } else {
+                          currUserMessageIndex = userMessageElements.length -1;
+                        }
                       }
                     }
-                    
-
                     // 关闭已开启的Edit
                     const closeEditButtons = [
                       ...document.getElementsByClassName(
@@ -1013,7 +1012,7 @@
                     closeEditButtons.forEach(element => {
                       element?.click()
                     })
-
+                    await tick();
                     // 开启新的edit
                     const editButton = [
                       ...document.getElementsByClassName(
