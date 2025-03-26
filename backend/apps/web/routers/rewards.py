@@ -4,8 +4,9 @@ from apps.web.models.device import Device
 from apps.web.models.ip_log import IpLog
 from apps.web.models.rewards import RewardsTableInstance, RewardsRequest, RewardsPageRequest, Rewards
 from apps.web.api.rewardapi import RewardApiInstance
+from apps.web.models.reward_data import RewardDateTableInstance
 from utils.utils import get_verified_user
-from datetime import date
+from datetime import date, datetime
 import threading
 import concurrent.futures
 
@@ -82,6 +83,12 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
 # 用户签到
 @router.post("/clock_in")
 async def clock_in(user=Depends(get_verified_user)):
+
+    rewarddate = RewardDateTableInstance.get_current_open()
+    if rewarddate is not None:
+        current_date = datetime.now().date()
+        if current_date < rewarddate.start_time.date() or current_date > rewarddate.end_time.date():
+            raise HTTPException(status_code=400, detail="Failed to received reward !")
     # 获取今天的日期
     today = date.today()
     # 发送奖励
