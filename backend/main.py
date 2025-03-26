@@ -396,10 +396,6 @@ async def get_opensearch_xml():
     """
     return Response(content=xml_content, media_type="application/xml")
 
-@app.get("/BingSiteAuth.xml")
-def get_bingsiteauth_xml():
-    return FileResponse("BingSiteAuth.xml", media_type="application/xml")
-
 
 @app.get("/health")
 async def healthcheck():
