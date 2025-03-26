@@ -144,7 +144,7 @@ const checkUserAgent = () => {
 	// 检测常见的移动设备标识
 	isMobile = /android|iphone|ipad|iPod|blackberry|opera mini|iemobile|wpdesktop/i.test(userAgent);
 	if(isMobile) {
-		themeChangeHandler("dark")
+		// themeChangeHandler("dark")
 	}
 };
 

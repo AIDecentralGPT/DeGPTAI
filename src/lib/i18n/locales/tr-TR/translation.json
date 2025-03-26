@@ -802,6 +802,7 @@
   "Generating by": "Tarafından oluşturuluyor",
   "Thinking...": "Düşünüyor...",
   "thinking...": "düşünüyor...",
+  "Replying...": "Cevap veriyor...",
   "have thought deeply": "Derinlemesine düşünmüştüm",
   "What does this picture mean?": "Bu resim ne anlama geliyor?",
   "Explain this picture": "Bu resmi açıkla",
@@ -831,5 +832,8 @@
   "starttime": "Başlangıç Saati",
   "endtime": "Bitiş Saati",
   "Enter Name": "Adınızı girin",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Son sorunun hangi konu hakkında olduğunu belirleyin ve yalnızca ilgili arama terimlerini çıkarın, en fazla 30 karakter."
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Son sorunun hangi konuda olduğunu belirleyin, tekrarlayan, yönlendiren ve önemli olmayan kelimeleri filtreleyin ve yalnızca kullanıcının soru içeriğini, en fazla 10 kelime olarak yazdırın.",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Deneme sayısı sınırı aştı. Lütfen VIP'e yükseltin.",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "Deneme sayısı sınırı aştı. Lütfen KYC'yı tamamlayın.",
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Deneme sayısı sınırı aştı. Lütfen bir cüzdan oluşturun."
 }

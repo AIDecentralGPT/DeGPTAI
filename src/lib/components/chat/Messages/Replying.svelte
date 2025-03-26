@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	const i18n = getContext('i18n');
-  export let typeName:string = "Bing";
 </script>
 
 <span class="text-animation text-sm font-bold">
-	{typeName} { $i18n.t("Searching...") }
+	{ $i18n.t("Replying...") }
 </span>
 <style>
 	.text-animation {

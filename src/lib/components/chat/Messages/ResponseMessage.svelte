@@ -30,6 +30,7 @@
 	import ProfileImage from './ProfileImage.svelte';
 	import Thinking from './Thinking.svelte';
 	import Searching from './Searching.svelte';
+	import Replying from './Replying.svelte';
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
 	import Image from '$lib/components/common/Image.svelte';
@@ -387,6 +388,9 @@
 
 	function highlightedText(content: string, keyword: string) {
 		let keywords = keyword.split("/");
+		if (content.length > 150) {
+			content = content.substring(0, 150);
+		}
 		keywords.forEach((item) => {
 			const regex = new RegExp(item, "gi");
 			content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
@@ -399,6 +403,12 @@
 	$: {
 		currentTheme = ($theme === "system" || $theme === "light") ? 'light' : 'dark';
 	}
+
+	let visibleIndices:any = [];
+	function handleImageLoadFailed({ detail }) {
+        const { index } = detail;
+        visibleIndices[index] = false;
+    }
 
 </script>
 
@@ -416,18 +426,24 @@
 
 		<div class="w-full overflow-hidden pl-1">
 			<!-- {console.log("modelfiles", modelfiles, message)} -->
-			<Name>
+			<Name>	
 				{#if message.model in modelfiles}
 					{modelfiles[message.model]?.title}
 				{:else}
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
-				{#if message.content == ''}
+				{#if message.content == ''}	
 					{#if message?.search}
-						{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content }
-							<Thinking/>
+						{#if message?.search_content?.web|| message?.search_content?.videos || message?.search_content?.content}
+							<Replying/>
 						{:else}
-							<Searching/>
+							{#if message?.search_type == "twitter"}
+								<Searching typeName="Twitter"/>
+							{:else if message?.search_type == "youtube"}
+								<Searching typeName="YouTube"/>
+							{:else}
+								<Searching typeName="Bing"/>
+							{/if}
 						{/if}
 					{:else}
 						<Thinking/>
@@ -459,7 +475,7 @@
 			{/if}
 			<!-- 网络搜索 -->
 			{#if message?.search}
-				{#if message?.search_type == 'web'}
+				{#if message?.search_type == 'web' || message?.search_type == 'bing'}
 					<!-- 网站搜索 -->
 					{#if message?.search_content?.web}
 						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
@@ -533,10 +549,10 @@
 					<!-- 图片搜索 -->
 					{#if message?.search_content?.images}
 						<div class="flex flex-wrap mt-3">
-							{#each message?.search_content?.images ?? [] as item}
-								{#if item?.url}
+							{#each message?.search_content?.images ?? [] as item, index}
+								{#if item?.url && (visibleIndices[index]??true)}
 									<div class="p-1 lg:w-[12%] w-1/6 aspect-square">
-										<Image src={item.url} alt="" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+										<Image src={item.url} imgIndex={index} alt="" on:imageLoadFailed={handleImageLoadFailed} className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
 									</div>
 								{/if}
 							{/each}
@@ -712,6 +728,28 @@
 										/>
 									</svg>
 
+									<div class=" self-center">
+										{message.content}
+									</div>
+								</div>
+							{:else if message?.warning === true}
+								<div
+									class="flex mt-2 mb-4 space-x-2 border px-4 py-3 border-amber-600 bg-amber-600/30 font-medium rounded-lg"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5 self-center"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+										/>
+									</svg>
 									<div class=" self-center">
 										{message.content}
 									</div>

@@ -1,12 +1,14 @@
 from tavily import TavilyClient
 from pydantic import BaseModel
 import re
-import requests
 import jieba
 import os
 
 api_key = os.getenv("Tavily_Key")
 tavily_client = TavilyClient(api_key=api_key)
+
+# 从环境变量中获取 Tavily API 密钥
+os.environ["TAVILY_API_KEY"] = api_key
 
 class TavilySearchForm(BaseModel):
   keyword: str
@@ -33,10 +35,13 @@ class tavilyClient:
       image_result = []
       for result in response.get('images', []):
           image_result.append(result)
-      words = jieba.cut(keyword, cut_all=True)
+      
+      pattern = r'[^\w\s]'
+      keyword = re.sub(pattern, '', keyword)
+      words = jieba.cut(keyword, cut_all=False)
       return {"keyword": "/".join(words), "web": web_result, "images": image_result}
     except Exception as e:
       print("==========================", e)
       return None
-  
+
 TavilyClientApi = tavilyClient()

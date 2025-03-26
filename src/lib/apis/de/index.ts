@@ -312,7 +312,7 @@ export const generateSearchKeyword = async (
     // 将该元素添加到数组的开头
     urls.unshift(koreaItem);
   }
-  let model = 'Qwen2.5-VL-72B-Instruct';
+  let model = 'Llama3.3-70B';
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {

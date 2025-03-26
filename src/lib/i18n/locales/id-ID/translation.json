@@ -802,6 +802,7 @@
   "Generating by": "Sedang dihasilkan oleh",
   "Thinking...": "Sedang berpikir...",
   "thinking...": "sedang berpikir...",
+  "Replying...": "Menjawab...",
   "have thought deeply": "telah berpikir mendalam",
   "What does this picture mean?": "Apa arti gambar ini?",
   "Explain this picture": "Jelaskan gambar ini",
@@ -831,5 +832,8 @@
   "starttime": "Waktu mulai",
   "endtime": "Waktu berakhir",
   "Enter Name": "Masukkan nama Anda",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Tentukan apa yang dibahas dalam pertanyaan terakhir dan hanya tampilkan kata kunci pencarian yang terkait, maksimal 30 karakter."
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Tentukan topik dari pertanyaan terakhir, saring kata-kata yang berulang, yang mengarahkan, dan yang tidak berharga krusial, dan hanya keluarkan isi dari pertanyaan pengguna, dengan maksimal 10 kata.",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Jumlah percobaan telah melebihi batas. Tolongupgrade ke VIP.",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "Jumlah percobaan telah melebihi batas. Tolong selesaikan KYC.",
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Jumlah percobaan telah melebihi batas. Tolong buat dompet digital Wallet."
 }

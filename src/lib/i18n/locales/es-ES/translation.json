@@ -802,6 +802,7 @@
   "Generating by": "Generándose por",
   "Thinking...": "Pensando...",
   "thinking...": "pensando...",
+  "Replying...": "Contestando...",
   "have thought deeply": "he pensado profundamente",
   "What does this picture mean?": "¿Qué significa esta imagen?",
   "Explain this picture": "Explica esta imagen",
@@ -831,5 +832,8 @@
   "starttime": "Hora de inicio",
   "endtime": "Hora de finalización",
   "Enter Name": "Ingrese su nombre",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Determina de qué trata la última pregunta y solo muestra los términos de búsqueda relacionados, con un máximo de 30 caracteres."
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Determina de qué trata la última pregunta, filtra las palabras repetitivas, directivas y sin valor crucial, y solo muestra el contenido de la pregunta del usuario, con un máximo de 10 palabras.",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "El número de intentos ha superado el límite. Por favor, actualice a VIP.",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "El número de intentos ha superado el límite. Por favor, complete el proceso de KYC.",
+  "The number of attempts has exceeded the limit. Please create Wallet.": "El número de intentos ha superado el límite. Por favor, cree una billetera."
 }

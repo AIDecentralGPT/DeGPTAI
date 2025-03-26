@@ -793,6 +793,7 @@
   "Generating by": "Đang được tạo ra bởi",
   "Thinking...": "Đang suy nghĩ...",
   "thinking...": "Đang suy nghĩ...",
+  "Replying...": "Đang trả lời...",
   "have thought deeply": "đã suy nghĩ sâu sắc",
   "What does this picture mean?": "Bức tranh này có nghĩa là gì?",
   "Explain this picture": "Giải thích bức tranh này",
@@ -820,5 +821,8 @@
   "starttime": "Thời gian bắt đầu",
   "endtime": "Thời gian kết thúc",
   "Enter Name": "Nhập tên của bạn",
-  "Determine what the last question is about and output only the related search terms, with a maximum of 30 characters.": "Xác định nội dung của câu hỏi cuối cùng là về điều gì và chỉ xuất các từ khóa tìm kiếm liên quan, tối đa 30 ký tự."
+  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Xác định nội dung của câu hỏi cuối cùng là về điều gì, lọc bỏ các từ lặp đi lặp lại, đẩy mạnh và không có giá trị quan trọng, và chỉ xuất nội dung của câu hỏi người dùng, tối đa 10 từ.",
+  "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Số lần thử đã vượt quá giới hạn. Vui lòng nâng cấp lên VIP.",
+  "The number of attempts has exceeded the limit. Please complete KYC.": "Số lần thử đã vượt quá giới hạn. Vui lòng hoàn thành KYC.",
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Số lần thử đã vượt quá giới hạn. Vui lòng tạo ví tiền điện tử Wallet."
 }

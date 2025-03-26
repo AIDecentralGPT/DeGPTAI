@@ -96,7 +96,7 @@
 			</div>
 		</div>
 		<div class="flex items-center h-100lvh">
-			<img {src} {alt} class=" mx-auto max-w-[90lvw] max-h-[80lvh] object-scale-down" />
+			<img {src} {alt} class=" mx-auto max-w-[90lvw] max-h-[80lvh] object-scale-down"/>
 		</div>
 	</div>
 {/if}

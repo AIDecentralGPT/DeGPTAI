@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from'svelte';
 	import { WEBUI_BASE_URL } from '$lib/constants';
 	import ImagePreview from './ImagePreview.svelte';
 	import { Base64 } from 'js-base64';
@@ -7,6 +8,9 @@
 	export let src = '';
 	export let alt = '';
 	export let className = "";
+	export let imgIndex = 0;
+
+	const dispatch = createEventDispatcher();
 
 	let _src = '';
 
@@ -21,15 +25,19 @@
 		_src = "/static/picture_loading.png"
 	}
 
+	function handleImageError() {
+    dispatch('imageLoadFailed', { index: imgIndex });
+  }
+
 	let showImagePreview = false;
 </script>
 
 <ImagePreview bind:show={showImagePreview} src={_src} {alt} />
-<button
+<button 
 	on:click={() => {
 		console.log('image preview');
 		showImagePreview = true;
 	}}
 >
-	<img src={_src} alt={alt} class={`max-h-64 rounded-lg ${className ? className : ''}`} draggable="false" on:error={imageProxy}/>
+	<img src={_src} alt={alt} class={`max-h-64 rounded-lg ${className ? className : ''}`} draggable="false" on:error={handleImageError}/>
 </button>

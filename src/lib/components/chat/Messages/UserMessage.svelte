@@ -204,7 +204,7 @@
 					<div class=" mt-2 mb-1 flex justify-end space-x-1.5 text-sm font-medium">
 						<button
 							id="close-edit-message-button"
-							class=" px-4 py-2 bg-gray-900 hover:bg-gray-850 text-gray-100 transition rounded-3xl"
+							class=" px-4 py-2 bg-gray-900 hover:bg-gray-850 text-gray-100 transition rounded-3xl close-edit-message-button"
 							on:click={() => {
 								cancelEditMessage();
 							}}

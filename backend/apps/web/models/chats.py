@@ -104,8 +104,6 @@ class ChatTable:
                 "updated_at": int(time.time()),
             }
         )
-        print("112",chat)
-
         # 调用Chat的create方法创建新的聊天记录，并返回结果
         try:
             result = Chat.create(**chat.model_dump()) # **是用来解构的
