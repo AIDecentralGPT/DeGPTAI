@@ -34,7 +34,7 @@ export const defaultBackendConfig = async () => {
     "auth": true,
     "default_locale": "en-US",
     "images": false,
-    "default_models": "Qwen2.5-VL-72B-Instruct,DeepSeek-V3",
+    "default_models": "Qwen2.5-VL-72B-Instruct,DeepSeek-V3-0324",
     "default_prompt_suggestions": [
         {
             "title": [

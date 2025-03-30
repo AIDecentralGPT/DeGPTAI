@@ -41,7 +41,7 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "DeepSeek V3",
-        model: "DeepSeek-V3",
+        model: "DeepSeek-V3-0324",
         tip: "DeepSeek V3",
         support: "text",
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
