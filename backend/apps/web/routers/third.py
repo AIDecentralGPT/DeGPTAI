@@ -5,14 +5,16 @@ from apps.web.api.tavily import TavilyClientApi, TavilySearchForm
 from apps.web.api.youtube import YoutubeClientApi, YoutubeSearchForm
 from apps.web.api.twitter import TwitterApi, TwitterSearchForm
 from apps.web.api.bing import BingApiInstance
-from concurrent.futures import ThreadPoolExecutor
+from apps.web.api.webapi import WebApiInstance, WebInfoForm
+
+from utils.utils import (get_current_user)
 
 
 router = APIRouter()
 
 
 @router.post("/search", response_model=dict)
-async def tavilySearch(form: TavilySearchForm):
+async def tavilySearch(form: TavilySearchForm, user=Depends(get_current_user)):
     if form.type == 'twitter':
         data = TwitterApi.search_social(form.keyword)
         return { "ok": True, "data": data}
@@ -25,44 +27,9 @@ async def tavilySearch(form: TavilySearchForm):
     else:
         data = TavilyClientApi.search(form.keyword)
         return { "ok": True, "data": data}
-
-
-@router.post("/tavily/search", response_model=dict)
-async def tavilySearch(form: TavilySearchForm):
-    data = TavilyClientApi.search(form.keyword)
-    if data is None:
-        raise HTTPException(status_code=500, detail="未获取到信息")
-    else:
-        return { "ok": True, "data": data }
     
-@router.post("/twitter/search", response_model=dict)
-async def twitterSearch(form: TwitterSearchForm):
-    data = TwitterApi.search(form.keyword)
-    if data is None:
-        raise HTTPException(status_code=500, detail="未获取到信息")
-    else:
-        return { "ok": True, "data": data }
-    
-@router.post("/social/search", response_model=dict)
-async def twitterSearch(form: TwitterSearchForm):
-    data = TwitterApi.search_social(form.keyword)
-    if data is None:
-        raise HTTPException(status_code=500, detail="未获取到信息")
-    else:
-        return { "ok": True, "data": data }
-
-@router.post("/youtube/search", response_model=dict)
-async def youtubeSearch(form: YoutubeSearchForm):
-    videos = YoutubeClientApi.search(form.keyword)
-    if videos is None:
-        raise HTTPException(status_code=500, detail="未获取到信息")
-    else:
-        return { "ok": True, "data": videos }
-    
-@router.post("/bing/search", response_model=dict)
-async def bingSearch(form: YoutubeSearchForm):
-    data = BingApiInstance.bcsearch(form.keyword)
-    if data is None:
-        raise HTTPException(status_code=500, detail="未获取到信息")
-    else:
-        return { "ok": True, "data": data }
+# 校验网页数据获取
+@router.post("/check_web", response_model=dict)
+async def check_web(webinfo: WebInfoForm, user=Depends(get_current_user)):
+    data = await WebApiInstance.getWebGraph(webinfo.url)
+    return { "ok": True, "data": data}

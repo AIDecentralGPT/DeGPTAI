@@ -129,7 +129,6 @@ export const generateDeOpenAIChatCompletion = async (
   token: string = "",
   body: object,
   url: string,
-  monitorLog: any
 ): Promise<[Response | null, AbortController]> => {
 
   let controller: any;
@@ -150,9 +149,7 @@ export const generateDeOpenAIChatCompletion = async (
   for (const urlObj of urlObjs) {
     controller = new AbortController();
     try {
-      monitorLog.push({fun: body?.model + "de-send-start" + urlObj.url, time: new Date()});
       res = await getDeOpenAIChatCompletion(urlObj, body, controller, true);
-      monitorLog.push({fun: body?.model + "de-send-end" + urlObj.url, time: new Date()});
       if (res.status == 200) {
         break;
       } else {
@@ -170,9 +167,7 @@ export const generateDeOpenAIChatCompletion = async (
             repeatUrl = checkUrl[0];
           }
           controller = new AbortController();
-          monitorLog.push({fun: body?.model + "de-last-send-start" + urlObj.url, time: new Date()});
           res = await getDeOpenAIChatCompletion(repeatUrl, body, controller, false);
-          monitorLog.push({fun: body?.model + "de-last-send-end" + urlObj.url, time: new Date()});
           if (res.status == 200) {
             break;
           } else {
