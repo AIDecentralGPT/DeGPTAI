@@ -835,6 +835,7 @@
   "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "",
   "The number of attempts has exceeded the limit. Please complete KYC.": "",
-  "The number of attempts has exceeded the limit. Please create Wallet.": ""
+  "The number of attempts has exceeded the limit. Please create Wallet.": "",
+  "Summarize web content": ""
 }
 

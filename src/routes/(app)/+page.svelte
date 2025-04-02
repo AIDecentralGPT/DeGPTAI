@@ -114,6 +114,8 @@
     currentId: null,
   };
 
+  let webInfo = {};
+
   // 触发当前组件初始化
   $: $pageUpdateNumber, initNewChat();
   let firstResAlready = false; // 已经有了第一个响应
@@ -318,6 +320,7 @@
         user: _user ?? undefined,
         content: userPrompt,
         files: files.length > 0 ? files : undefined,
+        webInfo: webInfo,
         models: selectedModels.filter(
           (m, mIdx) => selectedModels.indexOf(m) === mIdx
         ),
@@ -413,6 +416,7 @@
       // Reset chat input textarea
       prompt = "";
       files = [];
+      webInfo = {};
 
       monitorLog.push({fun: "newchat-start", time: new Date()});
       // Create new chat if only one message in messages
@@ -1173,6 +1177,7 @@
 
 <MessageInput
   bind:files
+  bind:webInfo
   bind:search
   bind:search_type
   bind:prompt

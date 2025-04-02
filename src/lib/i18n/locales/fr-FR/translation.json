@@ -834,5 +834,6 @@
   "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Déterminez de quoi s'agit la dernière question, filtrez les mots répétitifs, indirecteurs et sans valeur clé, et n'affichez que le contenu de la question de l'utilisateur, avec au maximum 10 mots.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Le nombre d'essais a dépassé la limite. Veuillez passer à l'abonnement VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Le nombre d'essais a dépassé la limite. Veuillez terminer le KYC.",
-  "The number of attempts has exceeded the limit. Please create Wallet.": "Le nombre d'essais a dépassé la limite. Veuillez créer un portefeuille."
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Le nombre d'essais a dépassé la limite. Veuillez créer un portefeuille.",
+  "Summarize web content": "Résumer le contenu web"
 }

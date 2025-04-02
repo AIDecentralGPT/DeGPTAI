@@ -97,6 +97,8 @@
 	};
 	let firstResAlready = false // 已经有了第一个响应
 
+	let webInfo = {}
+
 	$: if (history.currentId !== null) {
 		console.log("================================");
 		let _messages = [];
@@ -278,6 +280,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 			user: _user ?? undefined,
 			content: userPrompt,
 			files: files.length > 0 ? files : undefined,
+			webInfo: webInfo,
 			timestamp: Math.floor(Date.now() / 1000), // Unix epoch
 			models: selectedModels
 		};
@@ -370,6 +373,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		// 重置聊天输入文本区
 		prompt = '';
 		files = [];
+		webInfo = {};
 		monitorLog.push({fun: "newchat-start", time: new Date()});
 		// 如果 messages 中只有一条消息，则创建新的聊天
 		if (messages.length == 2) {
@@ -1523,6 +1527,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 
 	<MessageInput
 		bind:files
+		bind:webInfo
 		bind:search
 		bind:search_type
 		bind:prompt
