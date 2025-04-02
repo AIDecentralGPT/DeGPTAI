@@ -75,5 +75,5 @@ google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
 redis==5.2.1
 jieba==0.42.1
-scrapegraphai==1.16.0
+scrapegraphai==1.8.0
 playwright==1.51.0
