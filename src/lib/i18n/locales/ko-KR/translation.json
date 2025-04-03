@@ -836,5 +836,6 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "시도 횟수가 제한을 초과했습니다. VIP로 업그레이드하십시오.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "시도 횟수가 제한을 초과했습니다. KYC를 완료하십시오.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "시도 횟수가 제한을 초과했습니다. 지갑을 생성하십시오.",
-  "Summarize web content": "웹 페이지 내용을 요약하다"
+  "Summarize web content": "웹 페이지 내용을 요약하다",
+  "The reward program has ended !": "보상 프로그램이 종료되었습니다 !"
 }

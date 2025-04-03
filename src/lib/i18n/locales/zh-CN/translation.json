@@ -835,5 +835,6 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "请求次数已超过限制。请升级为 VIP。",
   "The number of attempts has exceeded the limit. Please complete KYC.": "请求次数已超过限制。请完成实名认证KYC。",
   "The number of attempts has exceeded the limit. Please create Wallet.": "请求次数已超过限制。请创建钱包。",
-  "Summarize web content": "总结网页内容"
+  "Summarize web content": "总结网页内容",
+  "The reward program has ended !": "奖励活动已经结束 !"
 }

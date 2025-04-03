@@ -88,7 +88,9 @@ async def clock_in(user=Depends(get_verified_user)):
     if rewarddate is not None:
         current_date = datetime.now().date()
         if current_date < rewarddate.start_time.date() or current_date > rewarddate.end_time.date():
-            raise HTTPException(status_code=400, detail="Failed to received reward !")
+            raise HTTPException(status_code=400, detail="The reward program has ended !")
+    else:
+       raise HTTPException(status_code=400, detail="The reward program has ended !") 
     # 获取今天的日期
     today = date.today()
     # 发送奖励
@@ -231,9 +233,7 @@ async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified
     # 查询奖励记录
     rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id, request.pageNum, request.pageSize)
     for rewards in rewards_history:
-        if rewards.reward_type != 'clock_in':
-            rewards.expird = True
-        elif rewards.reward_type == 'clock_in' and rewards.reward_date.date() != date.today():
+        if rewards.reward_type == 'clock_in' and rewards.reward_date.date() != date.today():
             rewards.expird = True
     total = RewardsTableInstance.get_rewards_count_by_user_id(user.id);
 

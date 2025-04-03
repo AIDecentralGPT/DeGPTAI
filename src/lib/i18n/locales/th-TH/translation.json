@@ -835,5 +835,6 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดอัปเกรดเป็น VIP",
   "The number of attempts has exceeded the limit. Please complete KYC.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดให้ข้อมูลการยืนยันตัวตน KYC เสร็จสิ้น",
   "The number of attempts has exceeded the limit. Please create Wallet.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดสร้างกระเป๋าเงิน Digitaล Wallet",
-  "Summarize web content": "สรุปเนื้อหาในเว็บไซต์"
+  "Summarize web content": "สรุปเนื้อหาในเว็บไซต์",
+  "The reward program has ended !": "โปรแกรมของขวัญแล้วเสร็จสิ้น !"
 }

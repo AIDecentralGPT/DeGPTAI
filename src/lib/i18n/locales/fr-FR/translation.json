@@ -835,5 +835,6 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Le nombre d'essais a dépassé la limite. Veuillez passer à l'abonnement VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Le nombre d'essais a dépassé la limite. Veuillez terminer le KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Le nombre d'essais a dépassé la limite. Veuillez créer un portefeuille.",
-  "Summarize web content": "Résumer le contenu web"
+  "Summarize web content": "Résumer le contenu web",
+  "The reward program has ended !": "Le programme de récompenses est terminé !"
 }

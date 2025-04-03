@@ -836,5 +836,6 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Deneme sayısı sınırı aştı. Lütfen VIP'e yükseltin.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Deneme sayısı sınırı aştı. Lütfen KYC'yı tamamlayın.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Deneme sayısı sınırı aştı. Lütfen bir cüzdan oluşturun.",
-  "Summarize web content": "Web sayfası içeriğini özetle"
+  "Summarize web content": "Web sayfası içeriğini özetle",
+  "The reward program has ended !": "Ödül programı sonlandı !"
 }

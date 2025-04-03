@@ -836,5 +836,6 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "試行回数が制限を超えました。VIP にアップグレードしてください。",
   "The number of attempts has exceeded the limit. Please complete KYC.": "試行回数が制限を超えました。KYC の完了をお願いします。",
   "The number of attempts has exceeded the limit. Please create Wallet.": "試行回数が制限を超えました。ウォレットを作成してください。",
-  "Summarize web content": "ウェブページの内容をまとめ"
+  "Summarize web content": "ウェブページの内容をまとめ",
+  "The reward program has ended !": "報酬プログラムは終了しました !"
 }

@@ -835,5 +835,6 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Количество попыток превысило лимит. Пожалуйста, 업грейдите до VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Количество попыток превысило лимит. Пожалуйста, выполните процедуру идентификации KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Количество попыток превысило лимит. Пожалуйста, создайте кошелек.",
-  "Summarize web content": "Сократить содержание веб-страницы"
+  "Summarize web content": "Сократить содержание веб-страницы",
+  "The reward program has ended !": "Программа вознаграждений завершена !"
 }
