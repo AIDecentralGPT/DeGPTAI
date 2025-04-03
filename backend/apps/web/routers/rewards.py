@@ -84,11 +84,11 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
 @router.post("/clock_in")
 async def clock_in(user=Depends(get_verified_user)):
 
-    rewarddate = RewardDateTableInstance.get_current_open()
-    if rewarddate is not None:
-        current_date = datetime.now().date()
-        if current_date < rewarddate.start_time.date() or current_date > rewarddate.end_time.date():
-            raise HTTPException(status_code=400, detail="Failed to received reward !")
+    # rewarddate = RewardDateTableInstance.get_current_open()
+    # if rewarddate is not None:
+    #     current_date = datetime.now().date()
+    #     if current_date < rewarddate.start_time.date() or current_date > rewarddate.end_time.date():
+    #         raise HTTPException(status_code=400, detail="Failed to received reward !")
     # 获取今天的日期
     today = date.today()
     # 发送奖励
@@ -97,9 +97,9 @@ async def clock_in(user=Depends(get_verified_user)):
     existing_rewards = RewardsTableInstance.get_rewards_by_user_id_and_date_and_reward_type(user.id, today, reward_type)
     print("existing_rewards:", existing_rewards)
     if existing_rewards:
-        raise HTTPException(status_code=400, detail="You have received 100 DGC points !")
+        raise HTTPException(status_code=400, detail="You have received 50 DGC points !")
     
-    rewards = RewardsTableInstance.create_reward(user.id, 100, reward_type)
+    rewards = RewardsTableInstance.create_reward(user.id, 50, reward_type)
     if rewards is not None:
         # 校验用户是否已经kyc
         if user.verified:
@@ -107,7 +107,7 @@ async def clock_in(user=Depends(get_verified_user)):
             RewardApiInstance.dailyReward(rewards.id, user.id)
             # 判断是否发放邀请奖励
             checkInviteReward(user.id)
-        return {"ok": True, "message": "You have received 100 DGC points !"}
+        return {"ok": True, "message": "You have received 50 DGC points !"}
     else:
         raise HTTPException(status_code=500, detail="Failed to received reward")
 
