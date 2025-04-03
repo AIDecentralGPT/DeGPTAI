@@ -387,7 +387,11 @@
       // 如果是网址分析
       let webContent = null;
       if ((webInfo?.url??"").length > 0) {
-        webContent = await getWebContent(localStorage.token, webInfo?.url);
+        let webResult = await getWebContent(localStorage.token, webInfo?.url);
+        if (webResult?.ok) {
+          webContent = webResult?.data;
+        }
+        await tick();
       }
 
       scrollToBottom();
@@ -444,7 +448,7 @@
     }
   };
 
-  const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, modelId = null, webContent = null) => {
+  const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, webContent = null, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
       // 此判断毫无意义-判断结果就是selectedModels
@@ -624,7 +628,8 @@
 						}
           }
         } else if (item?.role != 'user' && webContent) {
-          let analyContent = webContent;
+          let analyContent = "网页标题：" + webContent?.title;
+          analyContent = "；网页内容：" + webContent?.content;
 					analyContent = analyContent + "\n" + send_message[index-1].content;
 					send_message[index-1].content = analyContent;
         }

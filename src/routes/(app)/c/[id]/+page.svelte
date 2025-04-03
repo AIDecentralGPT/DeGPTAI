@@ -348,7 +348,11 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		// 如果是网址分析
 		let webContent = null;
     if ((webInfo?.url??"").length > 0) {
-      webContent = await getWebContent(localStorage.token, webInfo?.url);
+      let webResult = await getWebContent(localStorage.token, webInfo?.url);
+			if (webResult?.ok) {
+        webContent = webResult?.data;
+      }
+			await tick();
     }
 
 		scrollToBottom();
@@ -405,7 +409,7 @@ const submitPrompt = async (userPrompt, _user = null) => {
 };
 
 	// 3\2. 继续聊天会话
-	const sendPrompt = async (prompt, parentId, responseMap, modelLimit, modelId = null, webContent = null) => {
+	const sendPrompt = async (prompt, parentId, responseMap, modelLimit, webContent = null, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		// 对每个模型都做请求
 		await Promise.all(
@@ -579,7 +583,8 @@ const submitPrompt = async (userPrompt, _user = null) => {
 						}
           }
         } else if (item?.role != 'user' && webContent) {
-          let analyContent = webContent;
+          let analyContent = "网页标题：" + webContent?.title;
+          analyContent = "；网页内容：" + webContent?.content;
 					analyContent = analyContent + "\n" + send_message[index-1].content;
 					send_message[index-1].content = analyContent;
         }
