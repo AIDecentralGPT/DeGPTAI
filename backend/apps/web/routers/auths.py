@@ -1,4 +1,3 @@
-from apps.web.api.rewardapi import RewardApi
 from datetime import datetime
 from config import WEBUI_AUTH, WEBUI_AUTH_TRUSTED_EMAIL_HEADER
 from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
@@ -1019,7 +1018,7 @@ async def rewardSent(user_id: str):
     registReward = RewardsTableInstance.get_create_rewards_by_userid(user_id)
     if registReward is not None:
         if registReward.status == False:
-            RewardApi.registReward(registReward.id, user_id)
+            RewardApiInstance.registReward(registReward.id, user_id)
 
 class ConnectionManager:
     def __init__(self):
