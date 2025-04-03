@@ -978,7 +978,7 @@ async def faceliveness_check_for_ws(id: str):
                 # 更新KYC流程状态
                 KycRestrictInstance.update_kyc(user.id, True)
                 # 领取注册奖励
-                rewardSent(user.id)
+                await rewardSent(user.id)
                 # return user_update_result
                 print("user_update_result", user_update_result)
                             
