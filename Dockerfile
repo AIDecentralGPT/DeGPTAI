@@ -153,6 +153,50 @@ COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 RUN uv pip install --system -r requirements.txt --no-cache-dir
 
 # 安装 playwright 环境
+RUN apt-get update && \
+    apt-get install -y \
+    wget \
+    curl \
+    # --- 核心浏览器依赖 ---
+    libnss3 \
+    libnspr4 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libxkbcommon0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libasound2 \
+    # --- GTK 和图形支持 ---
+    libgtk-3-0 \
+    libgdk-pixbuf2.0-0 \
+    # --- 多媒体支持（GStreamer） ---
+    gstreamer1.0-libav \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    # --- 其他关键库 ---
+    libatomic1 \
+    libxslt1.1 \
+    libharfbuzz-icu0 \
+    libenchant-2-2 \
+    libsecret-1-0 \
+    libhyphen0 \
+    libmanette-0.2-0 \
+    libgles2-mesa \
+    # --- 中文字体支持 ---
+    fonts-noto \
+    fonts-noto-cjk \
+    fonts-wqy-microhei \
+    fonts-wqy-zenhei \
+    # 清理缓存以减小镜像体积
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 Run playwright install
 
 # 下载 Hugging Face 模型
