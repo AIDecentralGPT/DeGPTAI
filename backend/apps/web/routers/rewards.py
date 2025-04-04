@@ -46,33 +46,22 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
     try:
         # 获取签到记录
         rewards_history= RewardsTableInstance.get_rewards_by_id(request.id)
-        rewards_history.expird = True
+        if rewards_history is None:
+            raise HTTPException(status_code=400, detail="You Rewards History not found")
+        
+        # 是否已领取校验
+        if rewards_history.status:
+            return {"ok": True, "data": rewards_history}
+        
+        # 校验用户是否已经完成kyc认证
+        user_find = Users.get_user_by_id(user.id)
+        if not user_find.verified:
+            raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
+        
+        # 领取注册奖励
+        rewards_history = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
+
         return {"ok": True, "data": rewards_history}
-        # if rewards_history is None:
-        #     raise HTTPException(status_code=400, detail="You Rewards History not found")
-        
-        # # 是否已领取校验
-        # if rewards_history.status:
-        #     return {"ok": True, "data": rewards_history}
-        
-        # # 校验用户是否已经完成kyc认证
-        # user_find = Users.get_user_by_id(user.id)
-        # if not user_find.verified:
-        #     raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
-        
-        # # 领取注册奖励
-        # rewards_history = RewardApiInstance.registReward(rewards_history.id, rewards_history.user_id)
-
-        # # 判断是否有邀请奖励
-        # if rewards_history.invitee is not None and rewards_history.invitee != '':
-        #     rewards = RewardsTableInstance.get_rewards_by_invitee(rewards_history.invitee)
-        #     if len(rewards) == 2:    
-        #         # 领取邀请奖励
-        #         inviteReward = next((item for item in rewards if item.reward_type == 'invite' and item.show == True), None)
-        #         if inviteReward is not None:
-        #             RewardApiInstance.inviteReward(inviteReward, rewards_history)
-
-        # return {"ok": True, "data": rewards_history}
     except Exception as e:
         print(f"Exception: {e}")
         raise HTTPException(status_code=500, detail="Failed to received reward")
@@ -84,11 +73,13 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
 @router.post("/clock_in")
 async def clock_in(user=Depends(get_verified_user)):
 
-    # rewarddate = RewardDateTableInstance.get_current_open()
-    # if rewarddate is not None:
-    #     current_date = datetime.now().date()
-    #     if current_date < rewarddate.start_time.date() or current_date > rewarddate.end_time.date():
-    #         raise HTTPException(status_code=400, detail="Failed to received reward !")
+    rewarddate = RewardDateTableInstance.get_current_open()
+    if rewarddate is not None:
+        current_date = datetime.now().date()
+        if current_date < rewarddate.start_time.date() or current_date > rewarddate.end_time.date():
+            raise HTTPException(status_code=400, detail="The reward program has ended !")
+    else:
+       raise HTTPException(status_code=400, detail="The reward program has ended !") 
     # 获取今天的日期
     today = date.today()
     # 发送奖励
@@ -97,9 +88,9 @@ async def clock_in(user=Depends(get_verified_user)):
     existing_rewards = RewardsTableInstance.get_rewards_by_user_id_and_date_and_reward_type(user.id, today, reward_type)
     print("existing_rewards:", existing_rewards)
     if existing_rewards:
-        raise HTTPException(status_code=400, detail="You have received 50 DGC points !")
+        raise HTTPException(status_code=400, detail="You have received 100 DGC points !")
     
-    rewards = RewardsTableInstance.create_reward(user.id, 50, reward_type)
+    rewards = RewardsTableInstance.create_reward(user.id, 100, reward_type)
     if rewards is not None:
         # 校验用户是否已经kyc
         if user.verified:
@@ -107,7 +98,7 @@ async def clock_in(user=Depends(get_verified_user)):
             RewardApiInstance.dailyReward(rewards.id, user.id)
             # 判断是否发放邀请奖励
             checkInviteReward(user.id)
-        return {"ok": True, "message": "You have received 50 DGC points !"}
+        return {"ok": True, "message": "You have received 100 DGC points !"}
     else:
         raise HTTPException(status_code=500, detail="Failed to received reward")
 
@@ -200,7 +191,7 @@ async def invite_check(request: RewardsRequest, user=Depends(get_verified_user))
                        rewards_history = RewardApiInstance.inviteReward(rewards_history, inviteeReward)
                        return {"ok": True, "data": rewards_history}
                     else:
-                       raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.")  
+                       raise HTTPException(status_code=400, detail="Your friend needs to complete the check-in three times.")  
             else:
                 raise HTTPException(status_code=400, detail="You Rewards History not found")
     else: 
@@ -231,9 +222,7 @@ async def get_reward_count(request: RewardsPageRequest,user=Depends(get_verified
     # 查询奖励记录
     rewards_history = RewardsTableInstance.get_rewards_by_user_id(user.id, request.pageNum, request.pageSize)
     for rewards in rewards_history:
-        if rewards.reward_type != 'clock_in':
-            rewards.expird = True
-        elif rewards.reward_type == 'clock_in' and rewards.reward_date.date() != date.today():
+        if rewards.reward_type == 'clock_in' and rewards.reward_date.date() != date.today():
             rewards.expird = True
     total = RewardsTableInstance.get_rewards_count_by_user_id(user.id);
 

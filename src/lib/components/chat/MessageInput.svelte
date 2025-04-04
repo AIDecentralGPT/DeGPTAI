@@ -56,6 +56,7 @@
 
   // 文件选择
   export let files: any[] = [];
+  export let webInfo: any = {url: ""};
 
   // 搜索网页开启标志
   export let search = false;
@@ -367,6 +368,25 @@
       files = files.filter((f) => f.name !== url);
       toast.error(e);
     }
+  };
+
+  const isValidUrl = (text: string) => {
+    try {
+      new URL(text);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const getFaviconUrl = (url: string) => {
+    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}`;
+  };
+
+  const getTitle = (html: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    return doc.title;
   };
 
   onMount(() => {
@@ -932,6 +952,55 @@
               </div>
             {/if}
 
+            {#if (webInfo?.url??"").length > 0}
+              <div class="mx-2 mt-2 mb-1 px-2 flex items-center max-w-[200px] h-[45px] gap-2 bg-gray-50 rounded-md">
+                <div class=" relative group w-full flex flex-row">
+                  <div class="w-[20px] mr-1">
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 1024 1024" 
+                      version="1.1" 
+                      fill="currentColor"
+                      class="w-5 h-5">
+                      <path d="M512 34.133333a477.866667 477.866667 0 1 0 477.866667 477.866667A477.866667 477.866667 0 0 0 512 34.133333z m0 887.466667c-56.32 0-117.76-106.496-142.336-264.192A1219.584 1219.584 0 0 1 512 648.533333a1155.413333 1155.413333 0 0 1 142.336 9.216C629.76 815.104 568.32 921.6 512 921.6z m0-341.333333a1282.389333 1282.389333 0 0 0-150.528 9.216c-2.048-24.917333-3.072-50.858667-3.072-77.482667s0-52.565333 3.072-77.482667A1282.389333 1282.389333 0 0 0 512 443.733333a1214.122667 1214.122667 0 0 0 150.528-9.557333q3.072 37.888 3.072 77.824t-3.072 77.824A1214.122667 1214.122667 0 0 0 512 580.266667zM102.4 512a406.869333 406.869333 0 0 1 21.504-129.706667 1194.666667 1194.666667 0 0 0 170.666667 41.984c-2.389333 28.330667-3.754667 57.685333-3.754667 87.722667s0 59.392 3.754667 87.722667a1194.666667 1194.666667 0 0 0-170.666667 41.984A406.869333 406.869333 0 0 1 102.4 512zM512 102.4c56.32 0 117.76 106.496 142.336 263.850667A1155.413333 1155.413333 0 0 1 512 375.466667a1219.584 1219.584 0 0 1-142.336-8.874667C394.24 208.896 455.68 102.4 512 102.4z m218.112 321.877333a1194.666667 1194.666667 0 0 0 170.666667-41.984 402.090667 402.090667 0 0 1 0 259.413334 1194.666667 1194.666667 0 0 0-170.666667-41.984c2.389333-28.330667 3.754667-57.685333 3.754667-87.722667s-1.365333-59.392-3.754667-87.722667z m143.018667-105.130666a1173.504 1173.504 0 0 1-150.528 36.864 609.621333 609.621333 0 0 0-77.482667-231.082667 411.648 411.648 0 0 1 228.010667 194.218667zM378.88 124.928a609.621333 609.621333 0 0 0-77.482667 231.082667 1173.504 1173.504 0 0 1-150.528-36.864 411.648 411.648 0 0 1 228.010667-194.218667z m-228.010667 580.266667a1204.906667 1204.906667 0 0 1 150.528-37.205334 611.669333 611.669333 0 0 0 77.482667 231.424 411.648 411.648 0 0 1-228.010667-194.56z m494.250667 193.877333a609.621333 609.621333 0 0 0 77.482667-231.082667 1173.504 1173.504 0 0 1 150.528 36.864 411.648 411.648 0 0 1-228.010667 194.218667z"/>
+                    </svg>
+                  </div>
+                  <span class="inline-block whitespace-nowrap overflow-hidden text-ellipsis text-sm">{webInfo?.url}</span>
+                  <div class=" absolute -top-4 -right-4">
+                    <button
+                      class=" bg-gray-400 text-white border border-white rounded-full group-hover:visible invisible transition"
+                      type="button"
+                      on:click={() => {
+                        webInfo.url = "";
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        class="w-4 h-4"
+                      >
+                        <path
+                          d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("Summarize web content");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("Summarize web content") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+              </div>
+            {/if}
+
             <div class="flex flex-col">
               <textarea
                 id="chat-textarea"
@@ -1117,7 +1186,7 @@
                   e.target.style.height =
                     Math.min(e.target.scrollHeight, 200) + "px";
                 }}
-                on:paste={(e) => {
+                on:paste={async (e) => {
                   const clipboardData = e.clipboardData || window.clipboardData;
 
                   if (clipboardData && clipboardData.items) {
@@ -1139,6 +1208,11 @@
                         reader.readAsDataURL(blob);
                       }
                     }
+                  }
+                  const text = clipboardData.getData('text/plain');
+                  if (isValidUrl(text)) {
+                    webInfo = {url: text};
+                    e.preventDefault();
                   }
                 }}
               />

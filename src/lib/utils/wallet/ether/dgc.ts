@@ -95,7 +95,7 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
     return txResponse;
   } catch (error) {
     console.log("==============transferDgc=============", error) ;
-    toast.error("The DGC balance is not enough to pay. You can invite a friend to obtain 6000 DGC");
+    toast.error("The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC");
     return;
   }
 }

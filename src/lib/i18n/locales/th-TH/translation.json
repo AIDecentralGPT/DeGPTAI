@@ -286,9 +286,9 @@
   "Input commands": "คำสั่งอินพุต",
   "Interface": "อินเทอร์เฟซ",
   "Invalid Tag": "แท็กที่ไม่ถูกต้อง",
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "เชิญเพื่อนเพื่อสร้างกระเป๋าเงินเพื่อรับรางวัล DGC 6000, เพื่อนของคุณจะได้รับ DGC 1000 ด้วย",
+  "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "เชิญเพื่อนเพื่อสร้างกระเป๋าเงินเพื่อรับรางวัล DGC 3000, เพื่อนของคุณจะได้รับ DGC 1000 ด้วย",
   "Invite friends now": "เชิญเพื่อนในตอนนี้",
-  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "เชิญเพื่อนเพื่อสร้างกระเป๋าเงินเพื่อรับรางวัล DGC 6000, เพื่อนของคุณจะได้รับ DGC 1000 ด้วย",
+  "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "เชิญเพื่อนเพื่อสร้างกระเป๋าเงินเพื่อรับรางวัล DGC 3000, เพื่อนของคุณจะได้รับ DGC 1000 ด้วย",
   "Invite Friends to Earn DGC Rewards": "เชิญเพื่อนเพื่อรับรางวัล DGC",
   "invite new user": "เชิญผู้ใช้ใหม่",
   "January": "มกราคม",
@@ -694,7 +694,7 @@
   "Optimize code writing": "ปรับปรุงการเขียนโค้ด",
   "Please select at least one model.": "กรุณาเลือกแบบจำลองอย่างน้อยหนึ่งแบบ",
   "You can select up to four models at most.": "คุณสามารถเลือกได้สูงสุดสี่แบบจำลอง",
-  "Your friend not complete the KYC verification.": "เพื่อนของคุณยังไม่เสร็จสิ้นการตรวจสอบ KYC.",
+  "Your friend needs to complete the check-in three times.": "เพื่อนของคุณต้องทำการเช็คอินสามครั้ง",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore ได้ถูกดาวน์โหลดโดยอัตโนมัติ. หากจำเป็น คุณสามารถดาวน์โหลด JSON แบบมืออาชีพหรือคัดลอกคีย์ส่วนตัวได้.",
   "Total": "ทั้งหมด",
   "Channel Distribution": "การกระจายช่อง",
@@ -743,7 +743,7 @@
   "II. Referral Reward": "II. ค่าตอบแทนสำหรับการแนะนำ",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "ผู้ใช้กระเป๋าเงินดิจิทัลที่สำเร็จขั้นตอนการระบุตัวตน KYC แล้ว จะเชิญผู้อื่นสร้างกระเป๋าเงินดิจิทัลและสำเร็จขั้นตอนการระบุตัวตน KYC ด้วย",
   "The number of people invited each day should not exceed 20.": "จำนวนผู้ที่ถูกเชิญในแต่ละวันไม่ควรเกิน 20 คน",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.": "สำหรับทุกผู้ที่ถูกเชิญ และหากผู้ที่ถูกเชิญเข้าสู่ระบบอย่างต่อเนื่องสามครั้ง ผู้ที่เชิญจะได้รับรางวัลในจำนวน <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC วันสิ้นสุดของกิจกรรมคือ 14 มีนาคม",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is 2025-04-11 00:00:00.": "สำหรับทุกผู้ที่ถูกเชิญ และหากผู้ที่ถูกเชิญเข้าสู่ระบบอย่างต่อเนื่องสามครั้ง ผู้ที่เชิญจะได้รับรางวัลในจำนวน <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC วันสิ้นสุดของกิจกรรมคือ 2025-04-11 00:00:00",
   "III. Clock in Reward": "III. ค่าตอบแทนสำหรับการเช็คอิน",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "ค่าตอบแทนสำหรับการเช็คอินมีผลใช้งานได้ในระยะเวลา <span style='color: rgba(184, 142, 86, 1);'>60</span> วันหลังจากเสร็จสิ้นการยืนยัน",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "การเข้าสู่ระบบและเช็คอินในระยะเวลา <span style='color: rgba(184, 142, 86, 1);'>1</span> วันสามารถทำเงินได้ค่าตอบแทน <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; สูงสุดคือ <span style='color: rgba(184, 142, 86, 1);'>30</span> ค่าตอบแทนสำหรับการเช็คอิน",
@@ -834,5 +834,7 @@
   "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "ระบุว่าคำถามล่าสุดเกี่ยวกับเรื่องอะไร, กรองคำที่ซ้ำซ้อน, ชี้ทาง และไม่มีค่าคร่าวสำคัญออกไป และแสดงเฉพาะเนื้อหาของคำถามจากผู้ใช้ โดยมีจำนวนคำสูงสุด 10 คำเท่านั้น.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดอัปเกรดเป็น VIP",
   "The number of attempts has exceeded the limit. Please complete KYC.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดให้ข้อมูลการยืนยันตัวตน KYC เสร็จสิ้น",
-  "The number of attempts has exceeded the limit. Please create Wallet.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดสร้างกระเป๋าเงิน Digitaล Wallet"
+  "The number of attempts has exceeded the limit. Please create Wallet.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดสร้างกระเป๋าเงิน Digitaล Wallet",
+  "Summarize web content": "สรุปเนื้อหาในเว็บไซต์",
+  "The reward program has ended !": "โปรแกรมของขวัญแล้วเสร็จสิ้น !"
 }

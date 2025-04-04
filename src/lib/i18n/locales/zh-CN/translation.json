@@ -288,9 +288,9 @@
   "Input commands": "输入命令",
   "Interface": "界面；接口",
   "Invalid Tag": "无效标签",
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "邀请一位朋友创建钱包以赚取 6000 个 DGC 奖励，你的朋友也将获得 1000 个 DGC",
+  "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "邀请一位朋友创建钱包以赚取 3000 个 DGC 奖励，你的朋友也将获得 1000 个 DGC",
   "Invite friends now": "现在邀请朋友",
-  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "邀请朋友创建钱包以赚取 6000 个 DGC 奖励，你的朋友们也将获得 1000 个 DGC 奖励。",
+  "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "邀请朋友创建钱包以赚取 3000 个 DGC 奖励，你的朋友们也将获得 1000 个 DGC 奖励。",
   "Invite Friends to Earn DGC Rewards": "邀请朋友赚取 DGC 奖励",
   "invite new user": "邀请新用户",
   "January": "一月",
@@ -694,7 +694,7 @@
   "Optimize code writing": "优化写代码功能",
   "Please select at least one model.": "请至少选择一个模型。",
   "You can select up to four models at most.": "你最多可以选择四个模型。",
-  "Your friend not complete the KYC verification.": "你的朋友没有完成 KYC 验证。",
+  "Your friend needs to complete the check-in three times.": "你的朋友需要完成三次签到。",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "密钥库已自动下载。如有必要，你可以手动下载 JSON 或复制私钥。",
   "Total": "总数",
   "Channel Distribution": "渠道分布",
@@ -743,7 +743,7 @@
   "II. Referral Reward(The activity lasts until January 2nd, 2025)": "II. 推荐奖励",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "完成KYC的钱包用户，邀请他人创建钱包且完成KYC",
   "The number of people invited each day should not exceed 20.": "每天邀请人数不超过20人。",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.":"每邀请一个人，且被邀请者连续3 次签到，邀请者将获得 <span style='color: rgba(184, 142, 86, 1);'>3,000</span>  DGC 的奖励, 活动截止日到3月14日。",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is 2025-04-11 00:00:00.":"每邀请一个人，且被邀请者连续3 次签到，邀请者将获得 <span style='color: rgba(184, 142, 86, 1);'>3,000</span>  DGC 的奖励, 活动截止日到2025-04-11 00:00:00。",
   "III. Clock in Reward": "III. 签到奖励",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "签到奖励在完成认证后的<span style='color: rgba(184, 142, 86, 1);'>60</span>天内有效。",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "每日登录并签到可赚取<span style='color: rgba(184, 142, 86, 1);'>100</span>个 DGC 奖励；最多可获得<span style='color: rgba(184, 142, 86, 1);'>30</span>次签到奖励。",
@@ -834,5 +834,7 @@
   "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "确定最后一个问题的内容是关于什么的，过滤掉重复性、引导性且无关键价值的词汇，并且只输出用户提问内容，最多10个字",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "请求次数已超过限制。请升级为 VIP。",
   "The number of attempts has exceeded the limit. Please complete KYC.": "请求次数已超过限制。请完成实名认证KYC。",
-  "The number of attempts has exceeded the limit. Please create Wallet.": "请求次数已超过限制。请创建钱包。"
+  "The number of attempts has exceeded the limit. Please create Wallet.": "请求次数已超过限制。请创建钱包。",
+  "Summarize web content": "总结网页内容",
+  "The reward program has ended !": "奖励活动已经结束 !"
 }

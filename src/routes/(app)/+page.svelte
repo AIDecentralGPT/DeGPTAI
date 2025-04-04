@@ -57,9 +57,7 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
-  import { thirdSearch } from "$lib/apis/thirdsearch";
-
-  import { addErrorLog } from "$lib/apis/errorlog";
+  import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
 
   let inviter: any = "";
   let channelName: any = "";
@@ -114,6 +112,8 @@
     currentId: null,
   };
 
+  let webInfo = {url:""};
+
   // 触发当前组件初始化
   $: $pageUpdateNumber, initNewChat();
   let firstResAlready = false; // 已经有了第一个响应
@@ -166,9 +166,6 @@
   //////////////////////////
   // Web functions
   //////////////////////////
-
-  let monitorLog:any = [];
-
   const initNewChat = async () => {
     if (currentRequestId !== null) {
       await cancelOllamaRequest(localStorage.token, currentRequestId);
@@ -228,13 +225,11 @@
   //////////////////////////
   // Ollama functions
   //////////////////////////
-  let webData: any = {};
+  let thirdData: any = {};
 
   const submitPrompt = async (userPrompt, _user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
-    webData = [];
-    monitorLog = [];
-    monitorLog.push({fun: "start", time: new Date()});
+    thirdData = [];
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -318,6 +313,7 @@
         user: _user ?? undefined,
         content: userPrompt,
         files: files.length > 0 ? files : undefined,
+        webInfo: webInfo,
         models: selectedModels.filter(
           (m, mIdx) => selectedModels.indexOf(m) === mIdx
         ),
@@ -345,7 +341,7 @@
             id: responseMessageId,
             search: search,
             search_type: search_type,
-            search_content: webData,
+            search_content: thirdData,
             keyword: userPrompt,
             childrenIds: [],
             role: "assistant",
@@ -382,15 +378,24 @@
           if (responseMap[model?.id]) {
             let responseMessageId = responseMap[model?.id].id;
             let responseMessage = responseMap[model?.id];
-            responseMessage.search_content = webData;
+            responseMessage.search_content = thirdData;
             history.messages[responseMessageId] = responseMessage;
           }
         });
       }
 
+      // 如果是网址分析
+      let webContent = null;
+      if ((webInfo?.url??"").length > 0) {
+        let webResult = await getWebContent(localStorage.token, webInfo?.url);
+        if (webResult?.ok) {
+          webContent = webResult?.data;
+        }
+        await tick();
+      }
+
       scrollToBottom();
 
-      monitorLog.push({fun: "checkLimit-start", time: new Date()});
       // 校验模型已使用次数
       let modelLimit:any = {}
       const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
@@ -405,7 +410,6 @@
           }) 
         }
       }
-      monitorLog.push({fun: "checkLimit-end", time: new Date()});
 
       // Wait until history/message have been updated
       await tick();
@@ -413,8 +417,8 @@
       // Reset chat input textarea
       prompt = "";
       files = [];
+      webInfo = {url:""};
 
-      monitorLog.push({fun: "newchat-start", time: new Date()});
       // Create new chat if only one message in messages
       if (messages.length == 2) {
         if ($settings.saveChatHistory ?? true) {
@@ -438,22 +442,19 @@
         }
         await tick();
       }
-      monitorLog.push({fun: "newchat-end", time: new Date()});
       // Send prompt
-      await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
+      await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit, webContent);
 
     }
   };
 
-  const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, modelId = null) => {
+  const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, webContent = null, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
-    monitorLog.push({fun: "chat-start", time: new Date()});
     await Promise.all(
       // 此判断毫无意义-判断结果就是selectedModels
       (modelId ? [modelId] : atSelectedModel !== "" ? [atSelectedModel.id] : selectedModels).map(async (modelId, index) => {
         console.log("modelId", modelId);
         const model = $models.filter((m) => m.id === modelId).at(0);
-        monitorLog.push({fun: model?.id + "-start", time: new Date()});
         if (model) {
           let responseMessageId = uuidv4();
           let responseMessage = {}
@@ -467,7 +468,7 @@
               id: responseMessageId,
               search: search,
               search_type: search_type,
-              search_content: webData,
+              search_content: thirdData,
               keyword: prompt,
               childrenIds: [],
               role: "assistant",
@@ -525,14 +526,8 @@
           if (modelLimit[model.id]) {
             await handleLimitError(modelLimit[model.id], responseMessage);
           } else {  
-            // 搜索网页
-            // monitorLog.push({fun: model?.id + "search-start", time: new Date()});
-						// await handleSearchWeb(responseMessage, responseMessageId);
-            // monitorLog.push({fun: model?.id + "search-end", time: new Date()});
 						// 文本搜索
-            monitorLog.push({fun: model?.id + "de-start", time: new Date()});
-            await sendPromptDeOpenAI(model, responseMessageId, _chatId);
-            monitorLog.push({fun: model?.id + "de-end", time: new Date()});
+            await sendPromptDeOpenAI(model, responseMessageId, _chatId, webContent);
           }
           // if (model?.external) {
           // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
@@ -564,7 +559,8 @@
   const sendPromptDeOpenAI = async (
     model,
     responseMessageId,
-    _chatId
+    _chatId,
+    webContent
   ) => {
     const responseMessage = history.messages[responseMessageId];
 
@@ -607,7 +603,7 @@
             } : undefined,
             ...modelmessage,
         ].filter((message) => message);
-      // 判断是否网络搜索重新赋值
+      // 判断是否需要重新赋值
 			send_message.forEach((item, index) => {
         // 判断不同类型提问不同内容
         if (item?.role != 'user' && item?.search) {
@@ -631,6 +627,11 @@
 							send_message[index-1].content = analyContent;
 						}
           }
+        } else if (item?.role != 'user' && webContent) {
+          let analyContent = "网页标题：" + webContent?.title;
+          analyContent = "；网页内容：" + webContent?.content;
+					analyContent = analyContent + "\n" + send_message[index-1].content;
+					send_message[index-1].content = analyContent;
         }
       });
 			// 过滤掉error和 content为空数据
@@ -666,8 +667,6 @@
                 : message?.raContent ?? message.content,
           }),
       }));
-
-      monitorLog.push({fun: model?.id + "de-send-start", time: new Date()});
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
@@ -675,7 +674,6 @@
           messages: send_message
         },
         $deApiBaseUrl?.url,
-        monitorLog
       );
 
       // console.log("res controller", res, controller);
@@ -798,8 +796,6 @@
     messages = messages;
 
     stopResponseFlag = false;
-
-    monitorLog.push({fun: model?.id + "de-send-end", time: new Date()});
     
     // 更新聊天记录
     if (_chatId === $chatId) {  
@@ -810,10 +806,6 @@
         });
       }
     }
-    
-    monitorLog.push({fun: model?.id + "update-chat", time: new Date()});
-    addErrorLog(_chatId + "会话", JSON.stringify(monitorLog));
-
 
     await tick();
 
@@ -844,28 +836,12 @@
   }
 
   // 获取搜索网页
-  // const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
-  //   if (search) {
-  //     const ai_keyword = await generateSearchChatKeyword(responseMessage.keyword);
-  //     let result = await thirdSearch(localStorage.token, ai_keyword, responseMessage.search_type);
-  //     if (result?.ok) {
-  //       responseMessage.search_content = result.data;
-  //       history.messages[responseMessageId] = responseMessage;
-  //     }
-  //   }
-  //   await tick();
-  //   scrollToBottom();
-  // }
-
-  // 获取搜索网页
   const handleSearchWeb= async(userPrompt: string) => {
     if (search) {
       const ai_keyword = await generateSearchChatKeyword(userPrompt);
-      console.log("=============start_time============", new Date())
       let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
-      console.log("=============end_time============", new Date())
       if (result?.ok) {
-        webData = result.data;
+        thirdData = result.data;
       }
     }
     await tick();
@@ -1173,6 +1149,7 @@
 
 <MessageInput
   bind:files
+  bind:webInfo
   bind:search
   bind:search_type
   bind:prompt

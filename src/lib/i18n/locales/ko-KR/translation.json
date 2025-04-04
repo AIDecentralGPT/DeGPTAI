@@ -286,9 +286,9 @@
   "Input commands": "입력 명령",
   "Interface": "인터페이스",
   "Invalid Tag": "유효하지 않은 태그",
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "친구를 초대하여 지갑을 생성하고 6000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
+  "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "친구를 초대하여 지갑을 생성하고 3000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
   "Invite friends now": "지금 친구를 초대하세요",
-  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "친구를 초대하여 지갑을 생성하고 6000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
+  "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "친구를 초대하여 지갑을 생성하고 3000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
   "Invite Friends to Earn DGC Rewards": "친구를 초대하여 DGC 보상을 받으세요",
   "invite new user": "새로운 사용자 초대",
   "January": "1월",
@@ -695,7 +695,7 @@
   "Optimize code writing": "코드 작성 최적화합니다",
   "Please select at least one model.": "적어도 하나의 모델을 선택하세요.",
   "You can select up to four models at most.": "최대 4개의 모델을 선택할 수 있습니다.",
-  "Your friend not complete the KYC verification.": "귀하의 친구는 KYC 인증을 완료하지 않았습니다.",
+  "Your friend needs to complete the check-in three times.": "네 친구는 세 번의 출석 체크인을 완료해야 합니다.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "키스토어가 자동으로 다운로드되었습니다. 필요한 경우 JSON을 수동으로 다운로드하거나 개인키를 복사할 수 있습니다.",
   "Total": "총계",
   "Channel Distribution": "채널 분포",
@@ -744,7 +744,7 @@
   "II. Referral Reward": "II. 추천 보상",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "KYC를 완료한 지갑 사용자들은 다른 사람들에게 지갑을 만들고 KYC를 완료하도록 초대합니다.",
   "The number of people invited each day should not exceed 20.": "하루에 초대할 수 있는 인원 수는 20명을 초과해서는 안 됩니다.",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.": "초대한 모든 사람에 대해 초대된 사람이 연속으로 세 번 로그인하면, 초대자는 <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC의 보상을 받을 것입니다，행사의 마감일은 3월 14일입니다.",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is 2025-04-11 00:00:00.": "초대한 모든 사람에 대해 초대된 사람이 연속으로 세 번 로그인하면, 초대자는 <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC의 보상을 받을 것입니다，행사의 마감일은 2025-04-11 00:00:00 입니다.",
   "III. Clock in Reward": "III. 출근 기록 보상",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "인증이 완료된 후 <span style='color: rgba(184, 142, 86, 1);'>60</span>일 동안 출근 기록 보상이 유효합니다.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "<span style='color: rgba(184, 142, 86, 1);'>1</span>일 동안 로그인하고 출근 기록을 남기는 경우 <span style='color: rgba(184, 142, 86, 1);'>100</span>개의 DGC 보상을 받을 수 있습니다. 출근 기록 보상은 최대 <span style='color: rgba(184, 142, 86, 1);'>30</span>회까지 가능합니다.",
@@ -835,5 +835,7 @@
   "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "마지막 질문의 내용이 무엇인지 확인하고, 반복적이고 유도적이며关键价值가 없는 단어들을 필터링하며 사용자 질문 내용만 출력하며, 최대 10단어까지만 출력합니다.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "시도 횟수가 제한을 초과했습니다. VIP로 업그레이드하십시오.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "시도 횟수가 제한을 초과했습니다. KYC를 완료하십시오.",
-  "The number of attempts has exceeded the limit. Please create Wallet.": "시도 횟수가 제한을 초과했습니다. 지갑을 생성하십시오."
+  "The number of attempts has exceeded the limit. Please create Wallet.": "시도 횟수가 제한을 초과했습니다. 지갑을 생성하십시오.",
+  "Summarize web content": "웹 페이지 내용을 요약하다",
+  "The reward program has ended !": "보상 프로그램이 종료되었습니다 !"
 }

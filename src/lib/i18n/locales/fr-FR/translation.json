@@ -285,9 +285,9 @@
   "Input commands": "Commandes d'entrée",
   "Interface": "Interface",
   "Invalid Tag": "Tag invalide",
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "Invitez un ami à créer un portefeuille pour gagner 6000 DGC, votre ami gagnera également 1000 DGC",
+  "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "Invitez un ami à créer un portefeuille pour gagner 3000 DGC, votre ami gagnera également 1000 DGC",
   "Invite friends now": "Invitez des amis maintenant",
-  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Invitez des amis à créer un portefeuille pour gagner 6000 DGC, vos amis gagneront également 1000 DGC",
+  "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Invitez des amis à créer un portefeuille pour gagner 3000 DGC, vos amis gagneront également 1000 DGC",
   "Invite Friends to Earn DGC Rewards": "Invitez des amis pour gagner des récompenses en DGC",
   "invite new user": "Inviter un nouvel utilisateur",
   "January": "Janvier",
@@ -694,7 +694,7 @@
   "Optimize code writing": "Optimiser l'écriture de code",
   "Please select at least one model.": "Veuillez sélectionner au moins un modèle.",
   "You can select up to four models at most.": "Vous pouvez sélectionner jusqu'à quatre modèles au maximum.",
-  "Your friend not complete the KYC verification.": "Votre ami n'a pas terminé la vérification KYC.",
+  "Your friend needs to complete the check-in three times.": "Ton ami doit effectuer l'enregistrement trois fois.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "Le KeyStore a été téléchargé automatiquement. Si nécessaire, vous pouvez télécharger le JSON manuellement ou copier la clé privée.",
   "Total": "Total",
   "Channel Distribution": "Distribution de canaux",
@@ -743,7 +743,7 @@
   "II. Referral Reward": "II. Récompense pour la recommandation",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "Les utilisateurs du portefeuille qui ont effectué la procédure de KYC invitent d'autres personnes à créer des portefeuilles et à effectuer la procédure de KYC.",
   "The number of people invited each day should not exceed 20.": "Le nombre de personnes invitées chaque jour ne doit pas dépasser 20.",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.": "Pour chaque personne invitée, et si la personne invitée se connecte pendant trois fois consécutives, l'invitateur recevra une récompense de <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC，La date limite de l'activité est le 14 mars.",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is 2025-04-11 00:00:00.": "Pour chaque personne invitée, et si la personne invitée se connecte pendant trois fois consécutives, l'invitateur recevra une récompense de <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC，La date limite de l'activité est le 2025-04-11 00:00:00.",
   "III. Clock in Reward": "III. Récompense pour le pointage",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "La récompense pour le pointage est valide pendant <span style='color: rgba(184, 142, 86, 1);'>60</span> jours après la fin de l'authentification.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Se connecter et effectuer le pointage pendant <span style='color: rgba(184, 142, 86, 1);'>1</span> jour permet d'obtenir des récompenses de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC ; maximum de <span style='color: rgba(184, 142, 86, 1);'>30</span> récompenses pour le pointage.",
@@ -834,5 +834,7 @@
   "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Déterminez de quoi s'agit la dernière question, filtrez les mots répétitifs, indirecteurs et sans valeur clé, et n'affichez que le contenu de la question de l'utilisateur, avec au maximum 10 mots.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Le nombre d'essais a dépassé la limite. Veuillez passer à l'abonnement VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Le nombre d'essais a dépassé la limite. Veuillez terminer le KYC.",
-  "The number of attempts has exceeded the limit. Please create Wallet.": "Le nombre d'essais a dépassé la limite. Veuillez créer un portefeuille."
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Le nombre d'essais a dépassé la limite. Veuillez créer un portefeuille.",
+  "Summarize web content": "Résumer le contenu web",
+  "The reward program has ended !": "Le programme de récompenses est terminé !"
 }

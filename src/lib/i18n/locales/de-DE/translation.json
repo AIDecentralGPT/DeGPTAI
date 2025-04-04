@@ -286,9 +286,9 @@
   "Input commands": "Eingabe-Befehle",
   "Interface": "Schnittstelle",
   "Invalid Tag": "Ungültiger Tag",
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "Laden Sie einen Freund ein, um eine Wallet zu erstellen und 6000 DGC zu verdienen, Ihr Freund wird auch 1000 DGC verdienen",
+  "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "Laden Sie einen Freund ein, um eine Wallet zu erstellen und 3000 DGC zu verdienen, Ihr Freund wird auch 1000 DGC verdienen",
   "Invite friends now": "Laden Sie jetzt Freunde ein",
-  "Invite friends to create a wallet to earn 6000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Laden Sie Freunde ein, um eine Wallet zu erstellen und 6000 DGC zu verdienen, Ihre Freunde werden auch 1000 DGC verdienen",
+  "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Laden Sie Freunde ein, um eine Wallet zu erstellen und 3000 DGC zu verdienen, Ihre Freunde werden auch 1000 DGC verdienen",
   "Invite Friends to Earn DGC Rewards": "Freunde einladen, um DGC-Belohnungen zu erhalten",
   "invite new user": "Neuen Benutzer einladen",
   "January": "Januar",
@@ -696,7 +696,7 @@
   "Optimize code writing": "Die Code-Schreibweise optimieren",
   "Please select at least one model.": "Bitte wählen Sie mindestens ein Modell aus.",
   "You can select up to four models at most.": "Sie können maximal vier Modelle auswählen.",
-  "Your friend not complete the KYC verification.": "Dein Freund hat die KYC-Verifizierung nicht abgeschlossen.",
+  "Your friend needs to complete the check-in three times.": "Dein Freund muss die Anmeldung dreimal erledigen.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "Das KeyStore wurde automatisch heruntergeladen. Falls erforderlich, können Sie JSON manuell herunterladen oder den privaten Schlüssel kopieren.",
   "Total": "Gesamt",
   "Channel Distribution": "Kanalverteilung",
@@ -745,7 +745,7 @@
   "II. Referral Reward": "II. Empfehlungsbelohnung",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "Wallet-Benutzer, die die KYC abgeschlossen haben, laden andere ein, Wallets zu erstellen und die KYC abzuschließen.",
   "The number of people invited each day should not exceed 20.": "Die Anzahl der jeden Tag eingeladenen Personen darf nicht über 20 hinausgehen.",
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is March 14th.": "Für jede eingeladene Person und wenn die eingeladene Person sich drei Mal hintereinander anmeldet, erhält der Einladende eine Belohnung von <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC，Der Endtermin der Aktivität ist der 14. März.",
+  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is 2025-04-11 00:00:00.": "Für jede eingeladene Person und wenn die eingeladene Person sich drei Mal hintereinander anmeldet, erhält der Einladende eine Belohnung von <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC，Der Endtermin der Aktivität ist der 2025-04-11 00:00:00.",
   "III. Clock in Reward": "III. Anmeldebelohnung",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Die Anmeldebelohnung ist für <span style='color: rgba(184, 142, 86, 1);'>60</span> Tage nach der Vervollständigung der Authentifizierung gültig.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Durch das Einloggen und Anmelden an einem Tag kann man <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC-Belohnungen verdienen; maximal <span style='color: rgba(184, 142, 86, 1);'>30</span> Anmeldebelohnungen.",
@@ -836,5 +836,7 @@
   "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Bestimmen Sie, worum es in der letzten Frage geht, filtern Sie wiederholte, leitende und unwichtige Wörter heraus und geben Sie nur den Inhalt der Benutzerfrage aus, mit einem maximalen Wortlängen von 10 Wörtern.",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Die Anzahl der Versuche hat die Grenze überschritten. Bitte aktualisieren Sie auf VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Die Anzahl der Versuche hat die Grenze überschritten. Bitte führen Sie die KYC.",
-  "The number of attempts has exceeded the limit. Please create Wallet.": "Die Anzahl der Versuche hat die Grenze überschritten. Bitte erstellen Sie ein Wallet."
+  "The number of attempts has exceeded the limit. Please create Wallet.": "Die Anzahl der Versuche hat die Grenze überschritten. Bitte erstellen Sie ein Wallet.",
+  "Summarize web content": "Zusammenfasse Website-Inhalt",
+  "The reward program has ended !": "Das Belohnungsprogramm ist beendet !"
 }
