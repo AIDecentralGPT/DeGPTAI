@@ -184,7 +184,7 @@
           <span> {$i18n.t("Rewards History")} </span>
         </button>
       {/if}
-      <!-- <button
+      <button
         class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1"
         on:click={() => {
           $showRewardDetailModal = true;
@@ -202,7 +202,7 @@
           /></svg
         >
         <span> {$i18n.t("Rewards Details")} </span>
-      </button> -->
+      </button>
     </div>
   </div>
 
