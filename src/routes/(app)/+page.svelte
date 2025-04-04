@@ -159,7 +159,7 @@
       search = $switchModel.search;
       search_type = $switchModel.searchType;
       switchModel.set({content: "", search: false, searchType: 'web', status: false});
-      await submitPrompt(prompt, $user);
+      await submitPrompt(prompt, null, $user);
     }
   });
 
@@ -227,7 +227,7 @@
   //////////////////////////
   let thirdData: any = {};
 
-  const submitPrompt = async (userPrompt, _user = null) => {
+  const submitPrompt = async (userPrompt, userWebInfo,_user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
     thirdData = [];
 
@@ -368,6 +368,13 @@
         }
       });
 
+      // Reset chat input textarea
+      prompt = "";
+      files = [];
+      webInfo = {url:""};
+
+      scrollToBottom();
+
       // 获取网络搜索内容
       if (search) {
         await tick();
@@ -382,19 +389,18 @@
             history.messages[responseMessageId] = responseMessage;
           }
         });
+        scrollToBottom();
       }
 
       // 如果是网址分析
       let webContent = null;
-      if ((webInfo?.url??"").length > 0) {
-        let webResult = await getWebContent(localStorage.token, webInfo?.url);
+      if ((userWebInfo?.url??"").length > 0) {
+        let webResult = await getWebContent(localStorage.token, userWebInfo?.url);
         if (webResult?.ok) {
           webContent = webResult?.data;
         }
         await tick();
       }
-
-      scrollToBottom();
 
       // 校验模型已使用次数
       let modelLimit:any = {}
@@ -413,11 +419,6 @@
 
       // Wait until history/message have been updated
       await tick();
-
-      // Reset chat input textarea
-      prompt = "";
-      files = [];
-      webInfo = {url:""};
 
       // Create new chat if only one message in messages
       if (messages.length == 2) {

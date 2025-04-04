@@ -124,7 +124,7 @@
         chatTextAreaElement?.focus();
 
         if (prompt !== "" && $settings?.speechAutoSend === true) {
-          submitPrompt(prompt, user);
+          submitPrompt(prompt, webInfo, user);
         }
       }
 
@@ -245,7 +245,7 @@
             console.log("recognition ended");
             isRecording = false;
             if (prompt !== "" && $settings?.speechAutoSend === true) {
-              submitPrompt(prompt, user);
+              submitPrompt(prompt, webInfo, user);
             }
           };
 
@@ -739,7 +739,7 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              submitPrompt(prompt, user);
+              submitPrompt(prompt, webInfo, user);
             }}
           >
             {#if files.length > 0}
@@ -1027,7 +1027,7 @@
                       e.preventDefault();
                     }
                     if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
-                      submitPrompt(prompt, user);
+                      submitPrompt(prompt, webInfo, user);
                     }
                   }
                 }}

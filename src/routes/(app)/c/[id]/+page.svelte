@@ -197,9 +197,10 @@
 	//////////////////////////
 let thirdData: any = {};
 // 2. 点击提交按钮，触发检查
-const submitPrompt = async (userPrompt, _user = null) => {
+const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	console.log('submitPrompt', $chatId);
 	console.log("点击了", firstResAlready);
+	console.log("传递了userWebInfo", userWebInfo);
 	thirdData = {};
 
 	selectedModels = selectedModels.map((modelId) =>
@@ -329,6 +330,13 @@ const submitPrompt = async (userPrompt, _user = null) => {
       }
     });
 
+		// 重置聊天输入文本区
+		prompt = '';
+		files = [];
+		webInfo = {url:""};
+
+		scrollToBottom();
+
 		// 获取网络搜索内容
 		if (search) {
       await tick();
@@ -343,19 +351,18 @@ const submitPrompt = async (userPrompt, _user = null) => {
           history.messages[responseMessageId] = responseMessage;
         }
       });
+			scrollToBottom();
     }
 
 		// 如果是网址分析
 		let webContent = null;
-    if ((webInfo?.url??"").length > 0) {
-      let webResult = await getWebContent(localStorage.token, webInfo?.url);
+    if ((userWebInfo?.url??"").length > 0) {
+      let webResult = await getWebContent(localStorage.token, userWebInfo?.url);
 			if (webResult?.ok) {
         webContent = webResult?.data;
       }
 			await tick();
     }
-
-		scrollToBottom();
 		
 		// 校验模型已使用次数
 		let modelLimit:any = {}
@@ -375,10 +382,6 @@ const submitPrompt = async (userPrompt, _user = null) => {
 		// 等待 history/message 更新完成
 		await tick();
 
-		// 重置聊天输入文本区
-		prompt = '';
-		files = [];
-		webInfo = {url:""};
 		// 如果 messages 中只有一条消息，则创建新的聊天
 		if (messages.length == 2) {
 			if ($settings.saveChatHistory ?? true) {
