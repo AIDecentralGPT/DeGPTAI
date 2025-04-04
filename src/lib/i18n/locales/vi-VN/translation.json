@@ -695,7 +695,7 @@
   "Optimize code writing": "Tối ưu hóa việc viết mã",
   "Please select at least one model.": "Vui lòng chọn ít nhất một mô hình.",
   "You can select up to four models at most.": "Bạn có thể chọn tối đa bốn mô hình.",
-  "Your friend not complete the KYC verification.": "Bạn của bạn chưa hoàn thành xác thực KYC.",
+  "Your friend needs to complete the check-in three times.": "Bạn của bạn cần hoàn thành việc đăng ký tham dự ba lần.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore đã được tải xuống tự động. Nếu cần thiết, bạn có thể tải JSON bằng tay hoặc sao chép khóa riêng.",
   "Total": "Tổng",
   "Channel Distribution": "Phân bổ kênh",

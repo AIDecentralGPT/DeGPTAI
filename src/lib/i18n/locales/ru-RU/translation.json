@@ -694,7 +694,7 @@
   "Optimize code writing": "Оптимизировать написание кода",
   "Please select at least one model.": "Пожалуйста, выберите хотя бы один модель.",
   "You can select up to four models at most.": "Вы можете выбрать до четырех моделей максимум.",
-  "Your friend not complete the KYC verification.": "Ваш друг не завершил проверку KYC.",
+  "Your friend needs to complete the check-in three times.": "Твой друг должен выполнить регистрацию трижды.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore был автоматически загружен. Если необходимо, вы можете скачать JSON вручную или скопировать приватный ключ.",
   "Total": "Общее",
   "Channel Distribution": "Распределение каналов",

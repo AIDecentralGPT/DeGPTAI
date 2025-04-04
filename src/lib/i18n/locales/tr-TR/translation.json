@@ -695,7 +695,7 @@
   "Optimize code writing": "Kod yazımını optimize et",
   "Please select at least one model.": "Lütfen en az bir model seçin.",
   "You can select up to four models at most.": "En fazla dört model seçebilirsiniz.",
-  "Your friend not complete the KYC verification.": "Arkadaşınız KYC doğrulamasını tamamlamadı.",
+  "Your friend needs to complete the check-in three times.": "Arkadaşın üç kez kayıt yapması gerekiyor.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore otomatik olarak indirildi. Gerekirse, JSON'u elle indirip veya özel anahtarı kopyalayabilirsiniz.",
   "Total": "Toplam",
   "Channel Distribution": "Kanal Dağılımı",

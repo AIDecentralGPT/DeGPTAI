@@ -695,7 +695,7 @@
   "Optimize code writing": "コードの書き方を最適化します",
   "Please select at least one model.": "少なくとも 1 つのモデルを選択してください。",
   "You can select up to four models at most.": "最大で 4 つのモデルを選択できます。",
-  "Your friend not complete the KYC verification.": "あなたの友人は KYC 検証を完了していません。",
+  "Your friend needs to complete the check-in three times.": "あなたの友達は 3 回の出席登録を完了する必要があります。",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "キーストアは自動的にダウンロードされました。必要に応じて、JSON を手動でダウンロードするか、秘密鍵をコピーできます。",
   "Total": "そうけい",
   "Channel Distribution": "チャンネル分布",

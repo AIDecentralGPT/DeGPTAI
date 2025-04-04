@@ -191,7 +191,7 @@ async def invite_check(request: RewardsRequest, user=Depends(get_verified_user))
                        rewards_history = RewardApiInstance.inviteReward(rewards_history, inviteeReward)
                        return {"ok": True, "data": rewards_history}
                     else:
-                       raise HTTPException(status_code=400, detail="Your friend not complete the KYC verification.")  
+                       raise HTTPException(status_code=400, detail="Your friend needs to complete the check-in three times.")  
             else:
                 raise HTTPException(status_code=400, detail="You Rewards History not found")
     else: 

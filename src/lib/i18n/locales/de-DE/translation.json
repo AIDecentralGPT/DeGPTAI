@@ -696,7 +696,7 @@
   "Optimize code writing": "Die Code-Schreibweise optimieren",
   "Please select at least one model.": "Bitte wählen Sie mindestens ein Modell aus.",
   "You can select up to four models at most.": "Sie können maximal vier Modelle auswählen.",
-  "Your friend not complete the KYC verification.": "Dein Freund hat die KYC-Verifizierung nicht abgeschlossen.",
+  "Your friend needs to complete the check-in three times.": "Dein Freund muss die Anmeldung dreimal erledigen.",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "Das KeyStore wurde automatisch heruntergeladen. Falls erforderlich, können Sie JSON manuell herunterladen oder den privaten Schlüssel kopieren.",
   "Total": "Gesamt",
   "Channel Distribution": "Kanalverteilung",

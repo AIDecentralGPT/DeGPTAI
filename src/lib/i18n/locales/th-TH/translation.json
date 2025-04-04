@@ -694,7 +694,7 @@
   "Optimize code writing": "ปรับปรุงการเขียนโค้ด",
   "Please select at least one model.": "กรุณาเลือกแบบจำลองอย่างน้อยหนึ่งแบบ",
   "You can select up to four models at most.": "คุณสามารถเลือกได้สูงสุดสี่แบบจำลอง",
-  "Your friend not complete the KYC verification.": "เพื่อนของคุณยังไม่เสร็จสิ้นการตรวจสอบ KYC.",
+  "Your friend needs to complete the check-in three times.": "เพื่อนของคุณต้องทำการเช็คอินสามครั้ง",
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore ได้ถูกดาวน์โหลดโดยอัตโนมัติ. หากจำเป็น คุณสามารถดาวน์โหลด JSON แบบมืออาชีพหรือคัดลอกคีย์ส่วนตัวได้.",
   "Total": "ทั้งหมด",
   "Channel Distribution": "การกระจายช่อง",
