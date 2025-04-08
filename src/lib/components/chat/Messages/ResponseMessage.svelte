@@ -392,8 +392,12 @@
 			content = content.substring(0, 150);
 		}
 		keywords.forEach((item) => {
-			const regex = new RegExp(item, "gi");
-			content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+			// 匹配空格或标点符号的正则表达式
+			const regexText = /^[\s.,!?;:'"()[\]{}<>]+$/;
+			if (!regexText.test(item)) {
+				const regex = new RegExp(item, "gi");
+				content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+			}
 		})
     return content;
   }

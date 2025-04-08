@@ -836,5 +836,8 @@
   "The number of attempts has exceeded the limit. Please complete KYC.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดให้ข้อมูลการยืนยันตัวตน KYC เสร็จสิ้น",
   "The number of attempts has exceeded the limit. Please create Wallet.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดสร้างกระเป๋าเงิน Digitaล Wallet",
   "Summarize web content": "สรุปเนื้อหาในเว็บไซต์",
-  "The reward program has ended !": "โปรแกรมของขวัญแล้วเสร็จสิ้น !"
+  "The reward program has ended !": "โปรแกรมของขวัญแล้วเสร็จสิ้น !",
+  "Webpage Subscription and Data Insights": "การสมัครสมาชิกหน้าเว็บและข้อมูลเชิงวิเคราะห์ข้อมูล",
+  "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "ดึงข้อมูลเนื้อหาที่สมัครสมาชิกของหน้าเว็บโดยอัตโนมัติผ่านโมเดลขนาดใหญ่และทําการวิเคราะห์ข้อมูลเพื่อให้การติดตามข้อมูลในทันเวลาและความเข้าใจทางธุรกิจที่ลึกซึ้ง",
+  "Please enter the content according to the template: [Website URL][Analyze the website content]": "กรุณาใส่เนื้อหาในรูปแบบต่อไปนี้: [URL ของเว็บไซต์][วิเคราะห์เนื้อหาเว็บไซต์]"
 }

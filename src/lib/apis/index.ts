@@ -52,11 +52,18 @@ export const defaultBackendConfig = async () => {
         },
         {
             "title": [
-                "Tell me a fun fact",
-                "about the Roman Empire"
+                "Webpage Subscription and Data Insights",
+                "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights."
             ],
-            "content": "Tell me a random fun fact about the Roman Empire"
+            "content": "Please enter the content according to the template: [Website URL][Analyze the website content]"
         },
+				{
+					"title": [
+							"Tell me a fun fact",
+							"about the Roman Empire"
+					],
+					"content": "Tell me a random fun fact about the Roman Empire"
+				},
         {
             "title": [
                 "Show me a code snippet",

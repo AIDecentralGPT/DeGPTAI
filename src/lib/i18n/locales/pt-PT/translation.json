@@ -837,5 +837,8 @@
   "The number of attempts has exceeded the limit. Please complete KYC.": "O número de tentativas excedeu o limite. Por favor, conclua o KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "O número de tentativas excedeu o limite. Por favor, crie uma carteira.",
   "Summarize web content": "Resumir o conteúdo web",
-  "The reward program has ended !": "O programa de recompensas terminou !"
+  "The reward program has ended !": "O programa de recompensas terminou !",
+  "Webpage Subscription and Data Insights": "Assinatura de Página da Web e Insights de Dados",
+  "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "Rastreie automaticamente o conteúdo assinado das páginas da web por meio de grandes modelos e realize análises de dados para alcançar o acompanhamento de informações em tempo real e insights empresariais profundos.",
+  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Por favor, insira o conteúdo de acordo com o modelo: [URL do site][Analisar o conteúdo do site]"
 }

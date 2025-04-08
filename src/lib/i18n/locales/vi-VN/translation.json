@@ -826,5 +826,8 @@
   "The number of attempts has exceeded the limit. Please complete KYC.": "Số lần thử đã vượt quá giới hạn. Vui lòng hoàn thành KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Số lần thử đã vượt quá giới hạn. Vui lòng tạo ví tiền điện tử Wallet.",
   "Summarize web content": "Tóm tắt nội dung web",
-  "The reward program has ended !": "Chương trình thưởng đã kết thúc !"
+  "The reward program has ended !": "Chương trình thưởng đã kết thúc !",
+  "Webpage Subscription and Data Insights": "Đăng ký trang web và những cái nhìn về dữ liệu",
+  "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "Tự động thu thập nội dung của các trang web đã đăng ký thông qua các mô hình lớn và thực hiện phân tích dữ liệu để đạt được việc theo dõi thông tin trực tiếp và những cái nhìn về kinh doanh sâu sắc.",
+  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Vui lòng nhập nội dung theo mẫu: [Địa chỉ URL của trang web][Phân tích nội dung của trang web]"
 }

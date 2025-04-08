@@ -837,5 +837,8 @@
   "The number of attempts has exceeded the limit. Please complete KYC.": "試行回数が制限を超えました。KYC の完了をお願いします。",
   "The number of attempts has exceeded the limit. Please create Wallet.": "試行回数が制限を超えました。ウォレットを作成してください。",
   "Summarize web content": "ウェブページの内容をまとめ",
-  "The reward program has ended !": "報酬プログラムは終了しました !"
+  "The reward program has ended !": "報酬プログラムは終了しました !",
+  "Webpage Subscription and Data Insights": "ウェブページのサブスクリプションとデータインサイト",
+  "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "大規模モデルを通じて自動的にサブスクリプションしたウェブページのコンテンツをクロールし、データ分析を行い、リアルタイムの情報追跡と深いビジネスインサイトを実現する。",
+  "Please enter the content according to the template: [Website URL][Analyze the website content]": "次のテンプレートに従って内容を入力してください：[ウェブサイトの URL][ウェブサイトのコンテンツを分析する]"
 }

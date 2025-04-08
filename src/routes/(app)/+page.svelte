@@ -222,6 +222,33 @@
     }
   };
 
+  // 校验是否为网站洞察模板
+  const checkWebInput = (userPrompt: string, userWebInfo: any) => {
+    const regex = /\[(.*?)\]/g;
+    const matches = [];
+    let match;
+    while ((match = regex.exec(userPrompt))!== null) {
+      matches.push(match[1]);
+    }
+    if (matches.length == 2) {
+      const websiteUrl = matches[0];
+      const promptTxt = matches[1];
+      if (isValidUrl(websiteUrl)) {
+        userPrompt = promptTxt;
+        userWebInfo.url = websiteUrl
+      }
+    }
+    return userPrompt;
+  }
+  const isValidUrl = (text: string) => {
+    try {
+      new URL(text);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   //////////////////////////
   // Ollama functions
   //////////////////////////
@@ -230,6 +257,7 @@
   const submitPrompt = async (userPrompt, userWebInfo,_user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
     thirdData = [];
+    userPrompt = checkWebInput(userPrompt, userWebInfo);
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -313,7 +341,7 @@
         user: _user ?? undefined,
         content: userPrompt,
         files: files.length > 0 ? files : undefined,
-        webInfo: webInfo,
+        webInfo: userWebInfo,
         models: selectedModels.filter(
           (m, mIdx) => selectedModels.indexOf(m) === mIdx
         ),
@@ -394,6 +422,7 @@
 
       // 如果是网址分析
       let webContent = null;
+
       if ((userWebInfo?.url??"").length > 0) {
         let webResult = await getWebContent(localStorage.token, userWebInfo?.url);
         if (webResult?.ok) {
