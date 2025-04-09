@@ -841,5 +841,7 @@
   "The reward program has ended !": "Das Belohnungsprogramm ist beendet !",
   "Webpage Subscription and Data Insights": "Webseiten-Abonnement und Datenerkenntnisse",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "Automatisch den abonnierten Inhalt von Webseiten mithilfe von großen Modellen crawlen und eine Datenanalyse durchführen, um eine Echtzeit-Informationsverfolgung und tiefgreifende Unternehmenserkenntnisse zu erzielen.",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Bitte geben Sie den Inhalt gemäß dem folgenden Muster ein: [Website-URL][Analysieren Sie den Website-Inhalt]"
+  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Bitte geben Sie den Inhalt gemäß dem folgenden Muster ein: [Website-URL][Analysieren Sie den Website-Inhalt]",
+  "Tell me what the web page is about": "Sag, was die Webseite behandelt",
+  "Write an original article referring to the web page": "Schreiben Sie einen Originaltext basierend auf der Webseite"
 }

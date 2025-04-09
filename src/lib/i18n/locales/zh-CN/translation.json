@@ -839,5 +839,7 @@
   "The reward program has ended !": "奖励活动已经结束 !",
   "Webpage Subscription and Data Insights": "网页订阅和数据洞察",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "通过大模型自动化抓取网页订阅内容并进行数据分析，实现实时信息追踪与深度业务洞察",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "请按照模板输入内容：[网址][分析网站内容]"
+  "Please enter the content according to the template: [Website URL][Analyze the website content]": "请按照模板输入内容：[网址][分析网站内容]",
+  "Tell me what the web page is about": "说说网页讲了什么",
+  "Write an original article referring to the web page": "参考网页写一篇原创内容"
 }

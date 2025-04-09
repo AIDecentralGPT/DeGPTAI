@@ -840,5 +840,7 @@
   "The reward program has ended !": "Ödül programı sonlandı !",
   "Webpage Subscription and Data Insights": "Web Sayfası Aboneliği ve Veri Gözleri",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "Büyük modeller aracılığıyla abone olduğunuz web sayfalarındaki içeriği otomatik olarak tarayın ve veri analizi yaparak gerçek zamanlı bilgi izleme ve derin bir şekilde iş dünyası insights'larını sağlayın.",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Lütfen şablona göre içeriği girin: [Web sitesi URL'si][Web sitesi içeriğini analiz edin]"
+  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Lütfen şablona göre içeriği girin: [Web sitesi URL'si][Web sitesi içeriğini analiz edin]",
+  "Tell me what the web page is about": "Web sayfasının ne hakkında olduğunu söyle",
+  "Write an original article referring to the web page": "Web sayfasını referans alarak orijinal bir içerik yazın"
 }
