@@ -46,13 +46,13 @@ export const getDeModels = async (token: string = "") => {
       //   support: "text",
       //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       // },
-      {
-        name: "DeepSeek R1",
-        model: "DeepSeek-R1",
-        tip: "DeepSeek R1",
-        support: "text",
-        desc: "Deep thinking,mathematical and writing abilities ≈ o3"
-      },
+      // {
+      //   name: "DeepSeek R1",
+      //   model: "DeepSeek-R1",
+      //   tip: "DeepSeek R1",
+      //   support: "text",
+      //   desc: "Deep thinking,mathematical and writing abilities ≈ o3"
+      // },
       {
         name: "Llama3.3",
         model: "Llama3.3-70B",
