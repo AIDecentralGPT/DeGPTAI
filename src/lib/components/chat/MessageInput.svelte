@@ -74,6 +74,12 @@
 
   let speechRecognition: any;
 
+  let selectUrlUserPrompt = [
+		$i18n.t("Summarize web content"),
+		$i18n.t("Tell me what the web page is about"),
+		$i18n.t("Write an original article referring to the web page")
+	];
+
   $: if (prompt) {
     if (chatTextAreaElement) {
       chatTextAreaElement.style.height = "";
@@ -613,6 +619,7 @@
           <UrlModels
             bind:this={urlPromptElement}
             bind:prompt
+            bind:selectUrlUserPrompt={selectUrlUserPrompt}
             on:select={(e) => {
               let selectedUserPrompt = e.detail;
               submitPrompt(selectedUserPrompt, {url: prompt}, user);

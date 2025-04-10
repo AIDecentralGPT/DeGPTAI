@@ -1,19 +1,15 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { tick, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 
 	const i18n = getContext('i18n');
 
 	const dispatch = createEventDispatcher();
 
 	export let prompt = '';
+	export let selectUrlUserPrompt: any[] = [];
 
 	let selectedIdx = 0;
-	let selectUrlUserPrompt = [
-		$i18n.t("Summarize web content"),
-		$i18n.t("Tell me what the web page is about"),
-		$i18n.t("Write an original article referring to the web page")
-	];
 
 	$: if (prompt) {
 		selectedIdx = 0;
