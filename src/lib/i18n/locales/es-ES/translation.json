@@ -840,7 +840,7 @@
   "The reward program has ended !": "El programa de recompensas ha terminado !",
   "Webpage Subscription and Data Insights": "Suscripción a páginas web y conocimientos de datos",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "Crawl automáticamente el contenido suscrito de las páginas web a través de grandes modelos y realiza un análisis de datos para lograr el seguimiento en tiempo real de la información y conocimientos empresariales profundos",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Por favor, ingrese el contenido según el modelo: [URL del sitio web][Analizar el contenido del sitio web]",
+  "Please paste the website domain name: URL": "Por favor, pegue el nombre de dominio del sitio web: dirección web",
   "Tell me what the web page is about": "Di qué trata la página web",
   "Write an original article referring to the web page": "Escribe un contenido original basándote en la página web"
 }

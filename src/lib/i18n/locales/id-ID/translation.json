@@ -840,7 +840,7 @@
   "The reward program has ended !": "Program penghargaan telah berakhir !",
   "Webpage Subscription and Data Insights": "Berlangganan Halaman Web dan Wawasan Data",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "Otomatis mengumpulkan konten halaman web yang telah diabonikan melalui model besar dan melakukan analisis data untuk mencapai pelacakan informasi secara real-time dan wawasan bisnis yang mendalam.",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Silakan masukkan konten sesuai dengan templat: [URL situs web][Analisis konten situs web]",
+  "Please paste the website domain name: URL": "Tolong tempel nama domain situs web: alamat web",
   "Tell me what the web page is about": "Ceritakan apa yang terdapat pada halaman web",
   "Write an original article referring to the web page": "Tulis konten asli dengan merujuk ke halaman web"
 }

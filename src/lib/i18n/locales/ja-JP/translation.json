@@ -840,7 +840,7 @@
   "The reward program has ended !": "報酬プログラムは終了しました !",
   "Webpage Subscription and Data Insights": "ウェブページのサブスクリプションとデータインサイト",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "大規模モデルを通じて自動的にサブスクリプションしたウェブページのコンテンツをクロールし、データ分析を行い、リアルタイムの情報追跡と深いビジネスインサイトを実現する。",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "次のテンプレートに従って内容を入力してください：[ウェブサイトの URL][ウェブサイトのコンテンツを分析する]",
+  "Please paste the website domain name: URL": "ウェブサイトのドメイン名：URL を貼り付けてください",
   "Tell me what the web page is about": "ウェブページが何を話しているか語ってください",
   "Write an original article referring to the web page": "ウェブページを参考にオリジナルコンテンツを書く"
 }

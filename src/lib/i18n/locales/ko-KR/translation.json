@@ -840,7 +840,7 @@
   "The reward program has ended !": "보상 프로그램이 종료되었습니다 !",
   "Webpage Subscription and Data Insights": "웹페이지 구독 및 데이터 인사이트",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "대규모 모델을 통해 웹페이지의 가입된 콘텐츠를 자동으로 크롤링하고 데이터 분석을 수행하여 실시간 정보 추적 및 심층 비즈니스 인사이트를 달성합니다.",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "다음 템플릿에 따라 내용을 입력하세요: [웹사이트 URL][웹사이트 콘텐츠 분석]",
+  "Please paste the website domain name: URL": "웹사이트 도메인 이름: 웹 주소를 붙여넣으세요",
   "Tell me what the web page is about": "웹 페이지가 무슨 내용인지 말해 봐",
   "Write an original article referring to the web page": "웹 페이지를 참고하여 원고 컨텐츠를 작성합니다"
 }

@@ -839,7 +839,7 @@
   "The reward program has ended !": "Программа вознаграждений завершена !",
   "Webpage Subscription and Data Insights": "Подписка на веб - страницы и аналитика данных",
   "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "Автоматически собирать подписку на контент веб - страниц с помощью крупных моделей и проводить анализ данных для достижения реального времени отслеживания информации и глубоких бизнес - аналитических выводов.",
-  "Please enter the content according to the template: [Website URL][Analyze the website content]": "Пожалуйста, введите контент в соответствии с шаблоном: [URL веб - сайта][Анализируйте контент веб - сайта]",
+  "Please paste the website domain name: URL": "Пожалуйста, вставьте имя домена веб-сайта: адрес веб-сайта",
   "Tell me what the web page is about": "Расскажи, о чём идёт речь на веб - странице",
   "Write an original article referring to the web page": "Напишите оригинальный текст, используя веб - страницу в качестве источника"
 }

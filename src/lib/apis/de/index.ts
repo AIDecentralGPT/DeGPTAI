@@ -39,20 +39,20 @@ export const getDeModels = async (token: string = "") => {
         support: "image",
         desc: "Deep thinking,mathematical and writing abilities ≈ o3, taking photos to solve math problems"
       },
-      {
-        name: "DeepSeek V3",
-        model: "DeepSeek-V3-0324",
-        tip: "DeepSeek V3",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "DeepSeek R1",
-        model: "DeepSeek-R1",
-        tip: "DeepSeek R1",
-        support: "text",
-        desc: "Deep thinking,mathematical and writing abilities ≈ o3"
-      },
+      // {
+      //   name: "DeepSeek V3",
+      //   model: "DeepSeek-V3-0324",
+      //   tip: "DeepSeek V3",
+      //   support: "text",
+      //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      // },
+      // {
+      //   name: "DeepSeek R1",
+      //   model: "DeepSeek-R1",
+      //   tip: "DeepSeek R1",
+      //   support: "text",
+      //   desc: "Deep thinking,mathematical and writing abilities ≈ o3"
+      // },
       {
         name: "Llama3.3",
         model: "Llama3.3-70B",

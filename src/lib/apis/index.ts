@@ -55,7 +55,7 @@ export const defaultBackendConfig = async () => {
                 "Webpage Subscription and Data Insights",
                 "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights."
             ],
-            "content": "Please enter the content according to the template: [Website URL][Analyze the website content]"
+            "content": "Please paste the website domain name: URL"
         },
 				{
 					"title": [
