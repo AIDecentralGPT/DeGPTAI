@@ -36,6 +36,13 @@ export const defaultBackendConfig = async () => {
     "images": false,
     "default_models": "Qwen2.5-VL-72B-Instruct,DeepSeek-V3-0324",
     "default_prompt_suggestions": [
+				{
+					"title": [
+							"Webpage Subscription and Data Insights",
+							"Automatically crawl the subscribed content on web pages through a large model and conduct data analysis."
+					],
+					"content": "Please paste the website domain name"
+				},
         {
             "title": [
                 "Help me study",
@@ -49,13 +56,6 @@ export const defaultBackendConfig = async () => {
                 "for what to do with my kids' art"
             ],
             "content": "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter."
-        },
-        {
-            "title": [
-                "Webpage Subscription and Data Insights",
-                "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights."
-            ],
-            "content": "Please paste the website domain name: URL"
         },
 				{
 					"title": [

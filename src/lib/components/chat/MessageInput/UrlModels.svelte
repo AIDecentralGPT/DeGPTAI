@@ -64,7 +64,7 @@
 								: ''}"
 							type="button"
 							on:click={() => {
-								confirmSelect(item);
+								confirmSelect($i18n.t(item));
 							}}
 							on:mousemove={() => {
 								selectedIdx = itemIdx;
@@ -72,7 +72,7 @@
 							on:focus={() => {}}
 						>
 							<div class=" font-medium text-black line-clamp-1">
-								{item}
+								{$i18n.t(item)}
 							</div>
 						</button>
 					{/each}

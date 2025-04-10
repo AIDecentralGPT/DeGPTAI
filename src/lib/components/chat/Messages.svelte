@@ -32,6 +32,7 @@
 	export let autoScroll;
 	export let history = {};
 	export let messages = [];
+	export let chatInputPlaceholder = "";
 
 	export let selectedModels;
 	export let selectedModelfiles = [];
@@ -268,9 +269,9 @@
 			models={selectedModels}
 			modelfiles={selectedModelfiles}
 			{suggestionPrompts}
-			submitPrompt={async (p) => {
+			submitPrompt={async (p, idx) => {
+				prompt = "";
 				let text = p;
-
 				if (p.includes('{{CLIPBOARD}}')) {
 					const clipboardText = await navigator.clipboard.readText().catch((err) => {
 						toast.error($i18n.t('Failed to read clipboard contents'));
@@ -280,13 +281,21 @@
 					text = p.replaceAll('{{CLIPBOARD}}', clipboardText);
 				}
 
-				prompt = text;
-
+				if (idx == 0) {
+					chatInputPlaceholder = text;
+				} else {
+					prompt = text;
+				}
+				
 				await tick();
 
 				const chatInputElement = document.getElementById('chat-textarea');
 				if (chatInputElement) {
-					prompt = p;
+					if (idx == 0) {
+						chatInputPlaceholder = text;
+					} else {
+						prompt = text;
+					}
 
 					chatInputElement.style.height = '';
 					chatInputElement.style.height = Math.min(chatInputElement.scrollHeight, 200) + 'px';
@@ -299,7 +308,7 @@
 						chatInputElement.setSelectionRange(word?.startIndex, word.endIndex + 1);
 					}
 				}
-
+				
 				await tick();
 			}}
 		/>

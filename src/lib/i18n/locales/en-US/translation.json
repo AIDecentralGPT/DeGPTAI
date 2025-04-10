@@ -836,11 +836,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "",
   "The number of attempts has exceeded the limit. Please complete KYC.": "",
   "The number of attempts has exceeded the limit. Please create Wallet.": "",
-  "Summarize web content": "",
   "The reward program has ended !": "",
   "Webpage Subscription and Data Insights": "",
-  "Automatically crawl the subscribed content of webpages through large models and conduct data analysis to achieve real-time information tracking and in-depth business insights.": "",
-  "Please paste the website domain name: URL": "",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "",
+  "Please paste the website domain name": "",
+  "Analyze the content of the web page": "",
+  "Summarize the web page": "",
+  "Extract the key data from the web page": "",
   "Tell me what the web page is about": "",
   "Write an original article referring to the web page": ""
 }

@@ -114,6 +114,8 @@
 
   let webInfo = {url:""};
 
+  let chatInputPlaceholder = "";
+
   // 触发当前组件初始化
   $: $pageUpdateNumber, initNewChat();
   let firstResAlready = false; // 已经有了第一个响应
@@ -1137,6 +1139,7 @@
           bind:messages
           bind:autoScroll
           bind:prompt
+          bind:chatInputPlaceholder
           bottomPadding={files.length > 0}
           suggestionPrompts={selectedModelfile?.suggestionPrompts ??
             $config?.default_prompt_suggestions}
@@ -1156,6 +1159,7 @@
   bind:search_type
   bind:prompt
   bind:autoScroll
+  bind:chatInputPlaceholder
   bind:selectedModel={atSelectedModel}
   {messages}
   {submitPrompt}

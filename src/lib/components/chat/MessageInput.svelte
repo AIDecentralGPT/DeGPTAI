@@ -54,7 +54,6 @@
   let dragged = false;
 
   let user: any = null;
-  let chatInputPlaceholder = "";
 
   // 文件选择
   export let files: any[] = [];
@@ -70,17 +69,28 @@
   // export let speechRecognitionEnabled = true;
 
   export let prompt = "";
+  export let chatInputPlaceholder = "";
   export let messages: any[] = [];
 
   let speechRecognition: any;
 
   let selectUrlUserPrompt = [
-		$i18n.t("Summarize web content"),
-		$i18n.t("Tell me what the web page is about"),
-		$i18n.t("Write an original article referring to the web page")
+		"Analyze the content of the web page",
+    "Summarize the web page",
+    "Extract the key data from the web page",
+		"Tell me what the web page is about",
+		"Write an original article referring to the web page"
 	];
 
   $: if (prompt) {
+    if (chatTextAreaElement) {
+      chatTextAreaElement.style.height = "";
+      chatTextAreaElement.style.height =
+        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+    }
+  }
+
+  $: if(chatInputPlaceholder) {
     if (chatTextAreaElement) {
       chatTextAreaElement.style.height = "";
       chatTextAreaElement.style.height =
@@ -951,7 +961,7 @@
               </div>
             {/if}
 
-            {#if (webInfo?.url??"").length > 0}
+            <!-- {#if (webInfo?.url??"").length > 0}
               <div class="mx-2 mt-2 mb-1 px-2 flex items-center max-w-[200px] h-[45px] gap-2 bg-gray-50 rounded-md">
                 <div class=" relative group w-full flex flex-row">
                   <div class="w-[20px] mr-1">
@@ -1016,7 +1026,7 @@
                   </svg>
                 </button>
               </div>
-            {/if}
+            {/if} -->
 
             <div class="flex flex-col">
               <textarea
