@@ -29,6 +29,7 @@
   import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
   import Documents from "./MessageInput/Documents.svelte";
   import Models from "./MessageInput/Models.svelte";
+  import UrlModels from "./MessageInput/UrlModels.svelte";
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
@@ -47,6 +48,7 @@
   let promptsElement: any;
   let documentsElement: any;
   let modelsElement: any;
+  let urlPromptElement: any;
 
   let inputFiles: any;
   let dragged = false;
@@ -626,6 +628,15 @@
               </div>
             </div>
           {/if}
+
+          <UrlModels
+            bind:this={urlPromptElement}
+            bind:prompt
+            on:select={(e) => {
+              let selectedUserPrompt = e.detail;
+              submitPrompt(selectedUserPrompt, {url: prompt}, user);
+            }}
+          />
         </div>
       </div>
     </div>
@@ -1187,6 +1198,31 @@
                       Math.min(e.target.scrollHeight, 200) + "px";
                   }
 
+                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
+                     && e.key === "ArrowUp") {
+                    e.preventDefault();
+
+                    (urlPromptElement).selectUp();
+                    const commandOptionButton = [
+                      ...document.getElementsByClassName(
+                        "selected-command-option-button"
+                      ),
+                    ]?.at(-1);
+                    commandOptionButton.scrollIntoView({ block: "center" });
+                  }
+                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
+                     && e.key === "ArrowDown") {
+                    e.preventDefault();
+
+                    (urlPromptElement).selectDown();
+                    const commandOptionButton = [
+                      ...document.getElementsByClassName(
+                        "selected-command-option-button"
+                      ),
+                    ]?.at(-1);
+                    commandOptionButton.scrollIntoView({ block: "center" });
+                  }
+
                   if (e.key === "Escape") {
                     console.log("Escape");
                     selectedModel = "";
@@ -1227,11 +1263,11 @@
                       }
                     }
                   }
-                  const text = clipboardData.getData('text/plain');
-                  if (isValidUrl(text)) {
-                    webInfo = {url: text};
-                    e.preventDefault();
-                  }
+                  // const text = clipboardData.getData('text/plain');
+                  // if (isValidUrl(text)) {
+                  //   webInfo = {url: text};
+                  //   e.preventDefault();
+                  // }
                 }}
               />
               <div class="flex justify-between">
