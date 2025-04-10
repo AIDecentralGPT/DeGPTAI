@@ -372,25 +372,6 @@
     }
   };
 
-  const isValidUrl = (text: string) => {
-    try {
-      new URL(text);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
-
-  const getFaviconUrl = (url: string) => {
-    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}`;
-  };
-
-  const getTitle = (html: string) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    return doc.title;
-  };
-
   onMount(() => {
     // window.setTimeout(() => chatTextAreaElement?.focus(), 0);
 
