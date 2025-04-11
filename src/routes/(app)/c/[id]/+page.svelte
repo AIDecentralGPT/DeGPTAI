@@ -276,6 +276,8 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 			user: _user ?? undefined,
 			content: userPrompt,
 			files: files.length > 0 ? files : undefined,
+			search: search,
+      search_type: search_type,
 			webInfo: userWebInfo,
 			timestamp: Math.floor(Date.now() / 1000), // Unix epoch
 			models: selectedModels

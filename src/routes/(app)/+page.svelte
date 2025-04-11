@@ -314,6 +314,8 @@
         user: _user ?? undefined,
         content: userPrompt,
         files: files.length > 0 ? files : undefined,
+        search: search,
+        search_type: search_type,
         webInfo: userWebInfo,
         models: selectedModels.filter(
           (m, mIdx) => selectedModels.indexOf(m) === mIdx

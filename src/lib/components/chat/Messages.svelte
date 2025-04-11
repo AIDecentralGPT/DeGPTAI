@@ -15,6 +15,7 @@
 	import { copyToClipboard, findWordIndices } from '$lib/utils';
 	import CompareMessages from './Messages/CompareMessages.svelte';
 	import { stringify } from 'postcss';
+	import { getWebContent } from "$lib/apis/thirdsearch";
 
 	const i18n = getContext('i18n');
 
@@ -67,6 +68,9 @@
 			role: 'user',
 			content: userPrompt,
 			...(history.messages[messageId].files && { files: history.messages[messageId].files }),
+			...(history.messages[messageId].search && { search: history.messages[messageId].search }),
+			...(history.messages[messageId].search_type && { search_type: history.messages[messageId].search_type }),
+			...(history.messages[messageId].webInfo && { webInfo: history.messages[messageId].webInfo }),
 			models: selectedModels.filter((m, mIdx) => selectedModels.indexOf(m) === mIdx)
 		};
 
@@ -100,8 +104,18 @@
 		// Create Simulate ResopnseMessage
 		let responseMap: any = {};
 
+		// 如果是网址分析
+		let webContent = null;
+
+		if ((userMessage?.webInfo?.url??"").length > 0) {
+			let webResult = await getWebContent(localStorage.token, userMessage?.webInfo?.url);
+			if (webResult?.ok) {
+				webContent = webResult?.data;
+			}
+		}
+
 		await tick();
-		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
+		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit, webContent);
 	};
 
 	const updateChatMessages = async () => {
