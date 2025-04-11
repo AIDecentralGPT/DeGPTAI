@@ -36,7 +36,7 @@ export const getDeModels = async (token: string = "") => {
         model: "Qwen2.5-VL-72B-Instruct",
         textmodel: "QwQ-32B",
         tip: "Qwen o1",
-        support: "image",
+        support: "text",
         desc: "Deep thinking,mathematical and writing abilities ≈ o3, taking photos to solve math problems"
       },
       // {
@@ -57,7 +57,7 @@ export const getDeModels = async (token: string = "") => {
         name: "Llama4",
         model: "Llama-4-Scout-Instruct",
         tip: "Llama4",
-        support: "text",
+        support: "image",
         desc: "Suitable for most tasks"
       }
       // {

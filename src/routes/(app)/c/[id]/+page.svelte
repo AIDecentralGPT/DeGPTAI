@@ -199,8 +199,6 @@ let thirdData: any = {};
 // 2. 点击提交按钮，触发检查
 const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	console.log('submitPrompt', $chatId);
-	console.log("点击了", firstResAlready);
-	console.log("传递了userWebInfo", userWebInfo);
 	thirdData = {};
 
 	selectedModels = selectedModels.map((modelId) =>

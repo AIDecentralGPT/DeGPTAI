@@ -231,6 +231,7 @@
 
   const submitPrompt = async (userPrompt, userWebInfo,_user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
+    chatInputPlaceholder = "";
     thirdData = [];
 
     selectedModels = selectedModels.map((modelId) =>
@@ -244,8 +245,6 @@
         .map(item => item.model);
       if (checkSelectedModels.length == 0) {
         selectedModels = imageModels.map(item => item.model);
-        // toast.error($i18n.t("Not supported"));
-        // return;
       } else {
         selectedModels = checkSelectedModels;
       }
