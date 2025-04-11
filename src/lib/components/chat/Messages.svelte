@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
-	import { chats, config, modelfiles, settings, user as _user, mobile } from '$lib/stores';
+	import { chats, config, modelfiles, models, settings, user as _user, mobile, deApiBaseUrl } from '$lib/stores';
 	import { tick, getContext } from 'svelte';
 
 	import { toast } from 'svelte-sonner';
@@ -15,7 +15,8 @@
 	import { copyToClipboard, findWordIndices } from '$lib/utils';
 	import CompareMessages from './Messages/CompareMessages.svelte';
 	import { stringify } from 'postcss';
-	import { getWebContent } from "$lib/apis/thirdsearch";
+	import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
+	import { generateSearchKeyword } from "$lib/apis/de";
 
 	const i18n = getContext('i18n');
 
@@ -44,6 +45,8 @@
 			scrollToBottom();
 		})();
 	}
+
+	let thirdData = {};
 
 	const scrollToBottom = () => {
 		const element = document.getElementById('messages-container');
@@ -86,6 +89,45 @@
 		history.messages[userMessageId] = userMessage;
 		history.currentId = userMessageId;
 
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+		userMessage?.models.forEach(async (modelId:string) => {
+      const model = $models.filter((m) => m.id === modelId).at(0);
+      if (model) {
+        // Create response message
+        let responseMessageId = uuidv4();
+        let responseMessage = {
+          parentId: userMessageId,
+          id: responseMessageId,
+          search: userMessage?.search,
+          search_type: userMessage?.search_type,
+          search_content: userMessage?.thirdData,
+          keyword: userPrompt,
+          childrenIds: [],
+          role: "assistant",
+          content: "",
+          think_content: "",
+          model: modelId,
+          userContext: null,
+          timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+        };
+
+        // Add message to history and Set currentId to messageId
+        history.messages[responseMessageId] = responseMessage;
+        history.currentId = responseMessageId;
+
+        // Append messageId to childrenIds of parent message
+        if (userMessageId !== null) {
+          history.messages[userMessageId].childrenIds = [
+            ...history.messages[userMessageId].childrenIds,
+          	responseMessageId,
+          ];
+        }
+
+        responseMap[modelId] = responseMessage;
+      }
+    });
+
 		// 校验模型已使用次数
     let modelLimit = {}
 		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
@@ -101,12 +143,23 @@
     	}
     }
 
-		// Create Simulate ResopnseMessage
-		let responseMap: any = {};
+		// 获取网络搜索内容
+		if (userMessage?.search) {
+      await handleSearchWeb(userPrompt, userMessage?.search_type);
+      userMessage?.models.forEach(async (modelId: string) => {
+        // 如果已创建信息赋值web数据
+        if (responseMap[modelId]) {
+          let responseMessageId = responseMap[modelId].id;
+          let responseMessage = responseMap[modelId];
+          responseMessage.search_content = thirdData;
+          history.messages[responseMessageId] = responseMessage;
+        }
+      });
+      scrollToBottom();
+    }
 
 		// 如果是网址分析
 		let webContent = null;
-
 		if ((userMessage?.webInfo?.url??"").length > 0) {
 			let webResult = await getWebContent(localStorage.token, userMessage?.webInfo?.url);
 			if (webResult?.ok) {
@@ -275,6 +328,46 @@
 			history: history
 		});
 	};
+
+	// 获取搜索网页
+  const handleSearchWeb= async(userPrompt: string, search_type: string) => {
+    const ai_keyword = await generateSearchChatKeyword(userPrompt);
+    let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
+    if (result?.ok) {
+      thirdData = result.data;
+    }
+    await tick();
+  }
+
+	const generateSearchChatKeyword = async (userPrompt: string) => {
+    if ($settings?.title?.auto ?? true) {
+      // 获取关键词
+      let send_messages = messages.filter(item => item.role == 'user')
+        .map(item => {
+					let custmessage = {role: item.role, content: item.content};
+					if (item.files) {
+						custmessage.content = [{"type": "text","text": item.content}];
+						item.files.forEach((fitem:any) => {
+              let url = fitem.url;
+							custmessage.content.push({"type": "image_url", "image_url": {url}})
+						})
+					}
+					return custmessage;
+				});
+      send_messages.push({
+        role: "user",
+        content: $i18n.t("Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.")
+      });
+      const title = await generateSearchKeyword(
+        send_messages,
+        userPrompt,
+        $deApiBaseUrl?.url
+      );
+      return title;
+    } else {
+      return `${userPrompt}`;
+    }
+  };
 </script>
 
 <div class="h-full flex mb-16">
