@@ -688,9 +688,9 @@
   "When an access node is located in a specific region, it will by default preferentially connect to GPU computing nodes within the same region, reducing latency and enhancing performance.": "Wenn ein Zugriffsknoten in einer bestimmten Region platziert ist, verbindet er sich standardmäßig vorzugsweise mit GPU-Computeknoten innerhalb derselben Region, wodurch die Latenz reduziert und die Leistung gesteigert wird.",
   "Download DeGPT to obtain rewards": "DeGPT herunterladen, um Belohnungen zu erhalten.",
   "Switch Models": "Modellwechsel",
-  "Suitable for most tasks": "Für die meisten Aufgaben geeignet",
+  "Suitable for most tasks, taking photos to solve math problems.": "Für die meisten Aufgaben geeignet, Mathematikprobleme durch Fotografieren lösen.",
   "Suitable for most tasks,Performance comparable to GPT-4o": "Für die meisten Aufgaben geeignet, Leistung vergleichbar mit GPT-4o",
-  "Deep thinking,mathematical and writing abilities ≈ o3, taking photos to solve math problems": "Tiefes Denken, mathematische und schreibende Fähigkeiten ≈ o3, Mathematikprobleme durch Fotografieren lösen",
+  "Deep thinking,mathematical and writing abilities ≈ o3.": "Tiefes Denken, mathematische und schreibende Fähigkeiten ≈ o3.",
   "Support image recognition": "Unterstützung der Bilderkennung",
   
   "Optimize code writing": "Die Code-Schreibweise optimieren",

@@ -37,7 +37,7 @@ export const getDeModels = async (token: string = "") => {
         textmodel: "QwQ-32B",
         tip: "Qwen o1",
         support: "text",
-        desc: "Deep thinking,mathematical and writing abilities ≈ o3, taking photos to solve math problems"
+        desc: "Deep thinking,mathematical and writing abilities ≈ o3."
       },
       // {
       //   name: "DeepSeek V3",
@@ -58,7 +58,7 @@ export const getDeModels = async (token: string = "") => {
         model: "Llama-4-Scout-Instruct",
         tip: "Llama4",
         support: "image",
-        desc: "Suitable for most tasks"
+        desc: "Suitable for most tasks, taking photos to solve math problems."
       }
       // {
       //   name: "Pixtral Large 1.0",
