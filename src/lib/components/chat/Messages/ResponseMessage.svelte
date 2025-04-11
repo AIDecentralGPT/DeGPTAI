@@ -74,9 +74,9 @@
 
 	let selectedCitation = null;
 
-	$: tokens = deepseekAnalysis((message?.think_content??'') + message?.content);
+	$: tokens = thinkAnalysis((message?.think_content??'') + message?.content);
 
-	function deepseekAnalysis(content: any) {
+	function thinkAnalysis(content: any) {
 		if (content.startsWith("<think>")) {
 			let firstIndex = content.indexOf('</think>');
 			if (firstIndex == -1) {
@@ -392,8 +392,12 @@
 			content = content.substring(0, 150);
 		}
 		keywords.forEach((item) => {
-			const regex = new RegExp(item, "gi");
-			content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+			// 匹配空格或标点符号的正则表达式
+			const regexText = /^[\s.,!?;:'"()[\]{}<>]+$/;
+			if (!regexText.test(item)) {
+				const regex = new RegExp(item, "gi");
+				content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+			}
 		})
     return content;
   }
@@ -432,7 +436,7 @@
 				{:else}
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
-				{#if message.content == ''}	
+				{#if message.content == '' && !message?.done}
 					{#if message?.search}
 						{#if message?.search_content?.web|| message?.search_content?.videos || message?.search_content?.content}
 							<Replying/>
@@ -754,7 +758,7 @@
 										{message.content}
 									</div>
 								</div>
-							{:else if message.content === ''}
+							{:else if message.content === '' && !message?.done}
 								{#if message.search}
 									{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content}	
 										<Skeleton />

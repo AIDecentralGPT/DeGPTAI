@@ -825,6 +825,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Số lần thử đã vượt quá giới hạn. Vui lòng nâng cấp lên VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Số lần thử đã vượt quá giới hạn. Vui lòng hoàn thành KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Số lần thử đã vượt quá giới hạn. Vui lòng tạo ví tiền điện tử Wallet.",
-  "Summarize web content": "Tóm tắt nội dung web",
-  "The reward program has ended !": "Chương trình thưởng đã kết thúc !"
+  "The reward program has ended !": "Chương trình thưởng đã kết thúc !",
+  "Webpage Subscription and Data Insights": "Đăng ký trang web và những cái nhìn về dữ liệu",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "Tự động trích xuất nội dung đăng ký theo dõi trên trang web thông qua mô hình lớn và thực hiện phân tích dữ liệu.",
+  "Please paste the website domain name": "Vui lòng dán tên miền của trang web",
+  "Analyze the content of the web page": "Phân tích nội dung của trang web",
+  "Summarize the web page": "Tóm tắt trang web",
+  "Extract the key data from the web page": "Trích xuất dữ liệu quan trọng từ trang web",
+  "Tell me what the web page is about": "Nói về nội dung của trang web đi",
+  "Write an original article referring to the web page": "Viết một nội dung gốc dựa trên trang web"
 }

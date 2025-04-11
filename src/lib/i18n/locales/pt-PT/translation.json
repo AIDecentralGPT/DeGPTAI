@@ -836,6 +836,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "O número de tentativas excedeu o limite. Por favor, atualize para o VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "O número de tentativas excedeu o limite. Por favor, conclua o KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "O número de tentativas excedeu o limite. Por favor, crie uma carteira.",
-  "Summarize web content": "Resumir o conteúdo web",
-  "The reward program has ended !": "O programa de recompensas terminou !"
+  "The reward program has ended !": "O programa de recompensas terminou !",
+  "Webpage Subscription and Data Insights": "Assinatura de Página da Web e Insights de Dados",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "Extrair automaticamente o conteúdo assinado das páginas da web através de um grande modelo e realizar uma análise de dados.",
+  "Please paste the website domain name": "Por favor, cole o nome de domínio do site web",
+  "Analyze the content of the web page": "Analisar o conteúdo da página da web",
+  "Summarize the web page": "Resumir a página da web",
+  "Extract the key data from the web page": "Extrair os dados-chave da página da web",
+  "Tell me what the web page is about": "Fale o que a página da web fala",
+  "Write an original article referring to the web page": "Escreva um conteúdo original com base na página da web"
 }

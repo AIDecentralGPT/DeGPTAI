@@ -835,6 +835,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "请求次数已超过限制。请升级为 VIP。",
   "The number of attempts has exceeded the limit. Please complete KYC.": "请求次数已超过限制。请完成实名认证KYC。",
   "The number of attempts has exceeded the limit. Please create Wallet.": "请求次数已超过限制。请创建钱包。",
-  "Summarize web content": "总结网页内容",
-  "The reward program has ended !": "奖励活动已经结束 !"
+  "The reward program has ended !": "奖励活动已经结束 !",
+  "Webpage Subscription and Data Insights": "网页订阅和数据洞察",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "通过大模型自动化抓取网页订阅内容并进行数据分析。",
+  "Please paste the website domain name": "请粘贴网站域名",
+  "Analyze the content of the web page": "分析网页内容",
+  "Summarize the web page": "总结网页摘要",
+  "Extract the key data from the web page": "提取网页的关键数据",
+  "Tell me what the web page is about": "说说网页讲了什么",
+  "Write an original article referring to the web page": "参考网页写一篇原创内容"
 }

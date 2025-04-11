@@ -836,6 +836,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Deneme sayısı sınırı aştı. Lütfen VIP'e yükseltin.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Deneme sayısı sınırı aştı. Lütfen KYC'yı tamamlayın.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Deneme sayısı sınırı aştı. Lütfen bir cüzdan oluşturun.",
-  "Summarize web content": "Web sayfası içeriğini özetle",
-  "The reward program has ended !": "Ödül programı sonlandı !"
+  "The reward program has ended !": "Ödül programı sonlandı !",
+  "Webpage Subscription and Data Insights": "Web Sayfası Aboneliği ve Veri Gözleri",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "Büyük bir model aracılığıyla web sayfalarındaki abonelik içeriğini otomatik olarak çekin ve veri analizi yapın.",
+  "Please paste the website domain name": "Lütfen web sitesi alan adı",
+  "Analyze the content of the web page": "Web sayfasının içeriğini analiz et",
+  "Summarize the web page": "Web sayfasını özetle",
+  "Extract the key data from the web page": "Web sayfasından ana verileri çıkar",
+  "Tell me what the web page is about": "Web sayfasının ne hakkında olduğunu söyle",
+  "Write an original article referring to the web page": "Web sayfasını referans alarak orijinal bir içerik yazın"
 }

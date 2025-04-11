@@ -29,6 +29,7 @@
   import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
   import Documents from "./MessageInput/Documents.svelte";
   import Models from "./MessageInput/Models.svelte";
+  import UrlModels from "./MessageInput/UrlModels.svelte";
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
@@ -47,12 +48,12 @@
   let promptsElement: any;
   let documentsElement: any;
   let modelsElement: any;
+  let urlPromptElement: any;
 
   let inputFiles: any;
   let dragged = false;
 
   let user: any = null;
-  let chatInputPlaceholder = "";
 
   // 文件选择
   export let files: any[] = [];
@@ -68,11 +69,28 @@
   // export let speechRecognitionEnabled = true;
 
   export let prompt = "";
+  export let chatInputPlaceholder = "";
   export let messages: any[] = [];
 
   let speechRecognition: any;
 
+  let selectUrlUserPrompt = [
+		"Analyze the content of the web page",
+    "Summarize the web page",
+    "Extract the key data from the web page",
+		"Tell me what the web page is about",
+		"Write an original article referring to the web page"
+	];
+
   $: if (prompt) {
+    if (chatTextAreaElement) {
+      chatTextAreaElement.style.height = "";
+      chatTextAreaElement.style.height =
+        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+    }
+  }
+
+  $: if(chatInputPlaceholder) {
     if (chatTextAreaElement) {
       chatTextAreaElement.style.height = "";
       chatTextAreaElement.style.height =
@@ -124,7 +142,7 @@
         chatTextAreaElement?.focus();
 
         if (prompt !== "" && $settings?.speechAutoSend === true) {
-          submitPrompt(prompt, user);
+          submitPrompt(prompt, webInfo, user);
         }
       }
 
@@ -245,7 +263,7 @@
             console.log("recognition ended");
             isRecording = false;
             if (prompt !== "" && $settings?.speechAutoSend === true) {
-              submitPrompt(prompt, user);
+              submitPrompt(prompt, webInfo, user);
             }
           };
 
@@ -368,25 +386,6 @@
       files = files.filter((f) => f.name !== url);
       toast.error(e);
     }
-  };
-
-  const isValidUrl = (text: string) => {
-    try {
-      new URL(text);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
-
-  const getFaviconUrl = (url: string) => {
-    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}`;
-  };
-
-  const getTitle = (html: string) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    return doc.title;
   };
 
   onMount(() => {
@@ -626,6 +625,16 @@
               </div>
             </div>
           {/if}
+
+          <UrlModels
+            bind:this={urlPromptElement}
+            bind:prompt
+            bind:selectUrlUserPrompt={selectUrlUserPrompt}
+            on:select={(e) => {
+              let selectedUserPrompt = e.detail;
+              submitPrompt(selectedUserPrompt, {url: prompt}, user);
+            }}
+          />
         </div>
       </div>
     </div>
@@ -739,7 +748,7 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              submitPrompt(prompt, user);
+              submitPrompt(prompt, webInfo, user);
             }}
           >
             {#if files.length > 0}
@@ -952,7 +961,7 @@
               </div>
             {/if}
 
-            {#if (webInfo?.url??"").length > 0}
+            <!-- {#if (webInfo?.url??"").length > 0}
               <div class="mx-2 mt-2 mb-1 px-2 flex items-center max-w-[200px] h-[45px] gap-2 bg-gray-50 rounded-md">
                 <div class=" relative group w-full flex flex-row">
                   <div class="w-[20px] mr-1">
@@ -998,8 +1007,26 @@
                     <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
                   </svg>
                 </button>
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("Tell me what the web page is about");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("Tell me what the web page is about") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  on:click={() => {
+                    prompt = $i18n.t("Write an original article referring to the web page");
+                  }}>
+                  <span class="mr-1">{ $i18n.t("Write an original article referring to the web page") }</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                  </svg>
+                </button>
               </div>
-            {/if}
+            {/if} -->
 
             <div class="flex flex-col">
               <textarea
@@ -1027,7 +1054,7 @@
                       e.preventDefault();
                     }
                     if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
-                      submitPrompt(prompt, user);
+                      submitPrompt(prompt, webInfo, user);
                     }
                   }
                 }}
@@ -1169,6 +1196,31 @@
                       Math.min(e.target.scrollHeight, 200) + "px";
                   }
 
+                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
+                     && e.key === "ArrowUp") {
+                    e.preventDefault();
+
+                    (urlPromptElement).selectUp();
+                    const commandOptionButton = [
+                      ...document.getElementsByClassName(
+                        "selected-command-option-button"
+                      ),
+                    ]?.at(-1);
+                    commandOptionButton.scrollIntoView({ block: "center" });
+                  }
+                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
+                     && e.key === "ArrowDown") {
+                    e.preventDefault();
+
+                    (urlPromptElement).selectDown();
+                    const commandOptionButton = [
+                      ...document.getElementsByClassName(
+                        "selected-command-option-button"
+                      ),
+                    ]?.at(-1);
+                    commandOptionButton.scrollIntoView({ block: "center" });
+                  }
+
                   if (e.key === "Escape") {
                     console.log("Escape");
                     selectedModel = "";
@@ -1209,11 +1261,11 @@
                       }
                     }
                   }
-                  const text = clipboardData.getData('text/plain');
-                  if (isValidUrl(text)) {
-                    webInfo = {url: text};
-                    e.preventDefault();
-                  }
+                  // const text = clipboardData.getData('text/plain');
+                  // if (isValidUrl(text)) {
+                  //   webInfo = {url: text};
+                  //   e.preventDefault();
+                  // }
                 }}
               />
               <div class="flex justify-between">

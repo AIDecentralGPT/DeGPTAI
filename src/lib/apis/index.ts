@@ -36,6 +36,13 @@ export const defaultBackendConfig = async () => {
     "images": false,
     "default_models": "Qwen2.5-VL-72B-Instruct,Llama-4-Scout-Instruct",
     "default_prompt_suggestions": [
+				{
+					"title": [
+							"Webpage Subscription and Data Insights",
+							"Automatically crawl the subscribed content on web pages through a large model and conduct data analysis."
+					],
+					"content": "Please paste the website domain name"
+				},
         {
             "title": [
                 "Help me study",
@@ -50,13 +57,13 @@ export const defaultBackendConfig = async () => {
             ],
             "content": "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter."
         },
-        {
-            "title": [
-                "Tell me a fun fact",
-                "about the Roman Empire"
-            ],
-            "content": "Tell me a random fun fact about the Roman Empire"
-        },
+				{
+					"title": [
+							"Tell me a fun fact",
+							"about the Roman Empire"
+					],
+					"content": "Tell me a random fun fact about the Roman Empire"
+				},
         {
             "title": [
                 "Show me a code snippet",

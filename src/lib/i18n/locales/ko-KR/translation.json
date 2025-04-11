@@ -836,6 +836,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "시도 횟수가 제한을 초과했습니다. VIP로 업그레이드하십시오.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "시도 횟수가 제한을 초과했습니다. KYC를 완료하십시오.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "시도 횟수가 제한을 초과했습니다. 지갑을 생성하십시오.",
-  "Summarize web content": "웹 페이지 내용을 요약하다",
-  "The reward program has ended !": "보상 프로그램이 종료되었습니다 !"
+  "The reward program has ended !": "보상 프로그램이 종료되었습니다 !",
+  "Webpage Subscription and Data Insights": "웹페이지 구독 및 데이터 인사이트",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "대규모 모델을 통해 웹 페이지 구독 콘텐츠를 자동으로 스크래핑하고 데이터 분석을 수행합니다.",
+  "Please paste the website domain name": "웹사이트 도메인 이름",
+  "Analyze the content of the web page": "웹 페이지의 내용을 분석합니다",
+  "Summarize the web page": "웹 페이지를 요약합니다",
+  "Extract the key data from the web page": "웹 페이지에서 핵심 데이터를 추출합니다",
+  "Tell me what the web page is about": "웹 페이지가 무슨 내용인지 말해 봐",
+  "Write an original article referring to the web page": "웹 페이지를 참고하여 원고 컨텐츠를 작성합니다"
 }

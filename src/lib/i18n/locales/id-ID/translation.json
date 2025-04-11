@@ -836,6 +836,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Jumlah percobaan telah melebihi batas. Tolongupgrade ke VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Jumlah percobaan telah melebihi batas. Tolong selesaikan KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Jumlah percobaan telah melebihi batas. Tolong buat dompet digital Wallet.",
-  "Summarize web content": "Ringkaskan isi halaman web",
-  "The reward program has ended !": "Program penghargaan telah berakhir !"
+  "The reward program has ended !": "Program penghargaan telah berakhir !",
+  "Webpage Subscription and Data Insights": "Berlangganan Halaman Web dan Wawasan Data",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "Mengambil secara otomatis konten langganan halaman web melalui model besar dan melakukan analisis data.",
+  "Please paste the website domain name": "Tolong tempel nama domain situs web",
+  "Analyze the content of the web page": "Analisis isi halaman web",
+  "Summarize the web page": "Ringkaskan halaman web",
+  "Extract the key data from the web page": "Ekstrak data kunci dari halaman web",
+  "Tell me what the web page is about": "Ceritakan apa yang terdapat pada halaman web",
+  "Write an original article referring to the web page": "Tulis konten asli dengan merujuk ke halaman web"
 }

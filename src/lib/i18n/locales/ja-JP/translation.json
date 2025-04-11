@@ -836,6 +836,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "試行回数が制限を超えました。VIP にアップグレードしてください。",
   "The number of attempts has exceeded the limit. Please complete KYC.": "試行回数が制限を超えました。KYC の完了をお願いします。",
   "The number of attempts has exceeded the limit. Please create Wallet.": "試行回数が制限を超えました。ウォレットを作成してください。",
-  "Summarize web content": "ウェブページの内容をまとめ",
-  "The reward program has ended !": "報酬プログラムは終了しました !"
+  "The reward program has ended !": "報酬プログラムは終了しました !",
+  "Webpage Subscription and Data Insights": "ウェブページのサブスクリプションとデータインサイト",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "大規模モデルを通じてウェブページの購読コンテンツを自動的にスクレイピングし、データ分析を行います。",
+  "Please paste the website domain name": "ウェブサイトのドメイン名",
+  "Analyze the content of the web page": "ウェブページのコンテンツを分析する",
+  "Summarize the web page": "ウェブページを要約する",
+  "Extract the key data from the web page": "ウェブページから重要なデータを抽出する",
+  "Tell me what the web page is about": "ウェブページが何を話しているか語ってください",
+  "Write an original article referring to the web page": "ウェブページを参考にオリジナルコンテンツを書く"
 }

@@ -114,6 +114,8 @@
 
   let webInfo = {url:""};
 
+  let chatInputPlaceholder = "";
+
   // 触发当前组件初始化
   $: $pageUpdateNumber, initNewChat();
   let firstResAlready = false; // 已经有了第一个响应
@@ -159,7 +161,7 @@
       search = $switchModel.search;
       search_type = $switchModel.searchType;
       switchModel.set({content: "", search: false, searchType: 'web', status: false});
-      await submitPrompt(prompt, $user);
+      await submitPrompt(prompt, null, $user);
     }
   });
 
@@ -227,8 +229,9 @@
   //////////////////////////
   let thirdData: any = {};
 
-  const submitPrompt = async (userPrompt, _user = null) => {
+  const submitPrompt = async (userPrompt, userWebInfo,_user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
+    chatInputPlaceholder = "";
     thirdData = [];
 
     selectedModels = selectedModels.map((modelId) =>
@@ -242,8 +245,6 @@
         .map(item => item.model);
       if (checkSelectedModels.length == 0) {
         selectedModels = imageModels.map(item => item.model);
-        // toast.error($i18n.t("Not supported"));
-        // return;
       } else {
         selectedModels = checkSelectedModels;
       }
@@ -313,7 +314,7 @@
         user: _user ?? undefined,
         content: userPrompt,
         files: files.length > 0 ? files : undefined,
-        webInfo: webInfo,
+        webInfo: userWebInfo,
         models: selectedModels.filter(
           (m, mIdx) => selectedModels.indexOf(m) === mIdx
         ),
@@ -368,6 +369,13 @@
         }
       });
 
+      // Reset chat input textarea
+      prompt = "";
+      files = [];
+      webInfo = {url:""};
+
+      scrollToBottom();
+
       // 获取网络搜索内容
       if (search) {
         await tick();
@@ -382,19 +390,19 @@
             history.messages[responseMessageId] = responseMessage;
           }
         });
+        scrollToBottom();
       }
 
       // 如果是网址分析
       let webContent = null;
-      if ((webInfo?.url??"").length > 0) {
-        let webResult = await getWebContent(localStorage.token, webInfo?.url);
+
+      if ((userWebInfo?.url??"").length > 0) {
+        let webResult = await getWebContent(localStorage.token, userWebInfo?.url);
         if (webResult?.ok) {
           webContent = webResult?.data;
         }
         await tick();
       }
-
-      scrollToBottom();
 
       // 校验模型已使用次数
       let modelLimit:any = {}
@@ -413,11 +421,6 @@
 
       // Wait until history/message have been updated
       await tick();
-
-      // Reset chat input textarea
-      prompt = "";
-      files = [];
-      webInfo = {url:""};
 
       // Create new chat if only one message in messages
       if (messages.length == 2) {
@@ -1135,6 +1138,7 @@
           bind:messages
           bind:autoScroll
           bind:prompt
+          bind:chatInputPlaceholder
           bottomPadding={files.length > 0}
           suggestionPrompts={selectedModelfile?.suggestionPrompts ??
             $config?.default_prompt_suggestions}
@@ -1154,6 +1158,7 @@
   bind:search_type
   bind:prompt
   bind:autoScroll
+  bind:chatInputPlaceholder
   bind:selectedModel={atSelectedModel}
   {messages}
   {submitPrompt}

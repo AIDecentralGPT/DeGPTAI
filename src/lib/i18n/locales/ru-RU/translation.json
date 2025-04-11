@@ -835,6 +835,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Количество попыток превысило лимит. Пожалуйста, 업грейдите до VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Количество попыток превысило лимит. Пожалуйста, выполните процедуру идентификации KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Количество попыток превысило лимит. Пожалуйста, создайте кошелек.",
-  "Summarize web content": "Сократить содержание веб-страницы",
-  "The reward program has ended !": "Программа вознаграждений завершена !"
+  "The reward program has ended !": "Программа вознаграждений завершена !",
+  "Webpage Subscription and Data Insights": "Подписка на веб - страницы и аналитика данных",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "Автоматически собирать подписки на веб - страницах с использованием крупной модели и проводить анализ данных.",
+  "Please paste the website domain name": "Пожалуйста, вставьте имя домена веб-сайта",
+  "Analyze the content of the web page": "Анализировать контент веб-страницы",
+  "Summarize the web page": "Сводить в резюме веб-страницу",
+  "Extract the key data from the web page": "Извлекать ключевые данные с веб-страницы",
+  "Tell me what the web page is about": "Расскажи, о чём идёт речь на веб - странице",
+  "Write an original article referring to the web page": "Напишите оригинальный текст, используя веб - страницу в качестве источника"
 }

@@ -38,7 +38,7 @@ class tavilyClient:
       
       pattern = r'[^\w\s]'
       keyword = re.sub(pattern, '', keyword)
-      words = jieba.cut(keyword, cut_all=False)
+      words = jieba.lcut(keyword)
       return {"keyword": "/".join(words), "web": web_result, "images": image_result}
     except Exception as e:
       print("==========================", e)

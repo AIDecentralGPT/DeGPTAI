@@ -835,6 +835,13 @@
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดอัปเกรดเป็น VIP",
   "The number of attempts has exceeded the limit. Please complete KYC.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดให้ข้อมูลการยืนยันตัวตน KYC เสร็จสิ้น",
   "The number of attempts has exceeded the limit. Please create Wallet.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดสร้างกระเป๋าเงิน Digitaล Wallet",
-  "Summarize web content": "สรุปเนื้อหาในเว็บไซต์",
-  "The reward program has ended !": "โปรแกรมของขวัญแล้วเสร็จสิ้น !"
+  "The reward program has ended !": "โปรแกรมของขวัญแล้วเสร็จสิ้น !",
+  "Webpage Subscription and Data Insights": "การสมัครสมาชิกหน้าเว็บและข้อมูลเชิงวิเคราะห์ข้อมูล",
+  "Automatically crawl the subscribed content on web pages through a large model and conduct data analysis.": "ดึงเนื้อหาการสมัครสมาชิกบนเว็บเพจอัตโนมัติผ่านโมเดลขนาดใหญ่และทำการวิเคราะห์ข้อมูล",
+  "Please paste the website domain name": "กรุณาเพิ่มชื่อโดเมนของเว็บไซต์",
+  "Analyze the content of the web page": "วิเคราะห์เนื้อหาในหน้าเว็บ",
+  "Summarize the web page": "สรุปเนื้อหาในหน้าเว็บ",
+  "Extract the key data from the web page": "สกัดข้อมูลสำคัญจากหน้าเว็บ",
+  "Tell me what the web page is about": "บอกว่าเนื้อหาในหน้าเว็บคืออะไร",
+  "Write an original article referring to the web page": "เขียนเนื้อหาใหม่โดยอ้างอิงหน้าเว็บ"
 }
