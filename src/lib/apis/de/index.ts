@@ -54,9 +54,9 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Deep thinking,mathematical and writing abilities ≈ o3"
       // },
       {
-        name: "Llama3.3",
-        model: "Llama3.3-70B",
-        tip: "Llama3.3",
+        name: "Llama4",
+        model: "Llama-4-Scout-Instruct",
+        tip: "Llama4",
         support: "text",
         desc: "Suitable for most tasks"
       }
