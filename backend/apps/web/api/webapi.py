@@ -10,17 +10,15 @@ class WebApi:
     async def getWebGraph(self, website: str):
         webInfo = {"title":"", "content": ""}
         if not(website.startswith('https://') or website.startswith('http://')):
-            website = f"https://{website}"
+            websitetran = f"https://{website}"
             response = requests.get(website, timeout=5)
-            if response.status_code == 200:
-                website = f"https://{website}"
-            else:
-              website = f"http://{website}"
+            if response.status_code != 200:
+                websitetran = f"http://{website}"
         try: 
             async with async_playwright() as p:
                 browser = await p.chromium.launch()
                 page = await browser.new_page()
-                await page.goto(website)
+                await page.goto(websitetran)
                 title = await page.title()
                 webInfo["title"] = title
                 # 提取页面的纯文本内容
