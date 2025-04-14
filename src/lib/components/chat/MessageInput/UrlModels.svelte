@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { getContext } from 'svelte';
+	import {find} from 'linkifyjs';
 
 	const i18n = getContext('i18n');
 
@@ -24,22 +25,26 @@
 	};
 
 	const confirmSelect = async (userPrompt:string) => {
-		dispatch('select', userPrompt);
+		dispatch('select', {prompt: userPrompt, url: analysisUrl});
 	};
 
-	const isValidUrl = (text: string) => {
-    try {
-      new URL(text);
-      return true;
-    } catch (error) {
-      return false;
-    }
+
+	// URL 验证正则表达式
+	let analysisUrl = "";
+  const validateURL = (input: string) => {
+		const linkedContent = find(input);
+    if (linkedContent[0]?.isLink) {
+			analysisUrl = linkedContent[0]?.value;
+			return true;
+		} else {
+			return false;
+		}
   };
 
 	
 </script>
 
-{#if (prompt.startsWith("http://") || prompt.startsWith("https://")) && isValidUrl(prompt)}
+{#if validateURL(prompt)}
 	<div class="md:px-2 mb-3 text-left w-full absolute bottom-0 left-0 right-0">
 		<div class="flex w-full px-2">
 			<div class=" bg-gray-100 dark:bg-gray-700 w-10 rounded-l-xl text-center">
