@@ -1,5 +1,6 @@
 from playwright.async_api import async_playwright
 from pydantic import BaseModel
+import requests
 
 
 class WebInfoForm(BaseModel):
@@ -7,8 +8,15 @@ class WebInfoForm(BaseModel):
 
 class WebApi:
     async def getWebGraph(self, website: str):
-        try:
-            webInfo = {"title":"", "content": ""}
+        webInfo = {"title":"", "content": ""}
+        if not(website.startswith('https://') or website.startswith('http://')):
+            website = f"https://{website}"
+            response = requests.get(website, timeout=5)
+            if response.status_code == 200:
+                website = f"https://{website}"
+            else:
+              website = f"http://{website}"
+        try: 
             async with async_playwright() as p:
                 browser = await p.chromium.launch()
                 page = await browser.new_page()
@@ -22,6 +30,6 @@ class WebApi:
             return webInfo
         except Exception as e:
             print("=================", e)
-            return None
+            return webInfo
   
 WebApiInstance = WebApi()
