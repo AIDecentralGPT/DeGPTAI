@@ -14,6 +14,9 @@ class WebApi:
             response = requests.get(website, timeout=5)
             if response.status_code != 200:
                 websitetran = f"http://{website}"
+        else:
+            websitetran = website
+        
         try: 
             async with async_playwright() as p:
                 browser = await p.chromium.launch()
