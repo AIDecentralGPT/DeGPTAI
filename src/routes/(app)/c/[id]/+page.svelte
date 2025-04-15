@@ -1482,6 +1482,8 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 					await cancelOllamaRequest(localStorage.token, currentRequestId);
 					currentRequestId = null;
 				}
+				prompt = "";
+				search = false;
 				goto('/');
 			}}
 		/>
