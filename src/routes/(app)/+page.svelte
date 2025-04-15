@@ -179,6 +179,8 @@
     autoScroll = true;
 
     title = "";
+    prompt = "";
+		search = false;
     messages = [];
     history = {
       messages: {},

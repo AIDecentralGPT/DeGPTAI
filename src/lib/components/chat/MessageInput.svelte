@@ -631,8 +631,9 @@
             bind:prompt
             bind:selectUrlUserPrompt={selectUrlUserPrompt}
             on:select={(e) => {
-              let selectedUserPrompt = e.detail;
-              submitPrompt(selectedUserPrompt, {url: prompt}, user);
+              let selectedUserPrompt = e.detail.prompt;
+              let analysisUrl = e.detail.url;
+              submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
             }}
           />
         </div>
