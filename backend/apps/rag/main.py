@@ -759,9 +759,12 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
     elif file_content_type == "application/epub+zip":
         loader = UnstructuredEPubLoader(file_path)
     elif (
+        # file_content_type
+        # == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        # or file_ext in ["doc", "docx"]
         file_content_type
         == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        or file_ext in ["doc", "docx"]
+        or file_ext in ["docx"]
     ):
         loader = Docx2txtLoader(file_path)
     elif file_content_type in [
@@ -812,6 +815,17 @@ def store_doc(
 
         loader, known_type = get_loader(filename, file.content_type, file_path)
         data = loader.load()
+
+        print("==================data================", data)
+
+        return {
+            "status": True,
+            "collection_name": collection_name,
+            "filename": filename,
+            "known_type": known_type,
+            "text": data,
+            "image": ""
+        }
 
         try:
             result = store_data_in_vector_db(data, collection_name)

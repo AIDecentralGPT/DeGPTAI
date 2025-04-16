@@ -571,16 +571,14 @@
   ) => {
     const responseMessage = history.messages[responseMessageId];
 
-    // const docs = messages
-    //   .filter((message) => message?.files ?? null)
-    //   .map((message) =>
-    //     message.files.filter(
-    //       (item) => item.type === "doc" || item.type === "collection"
-    //     )
-    //   )
-    //   .flat(1);
-
-    // console.log(docs);
+    const docs = [messages[messages.length - 2]]
+      .filter((message) => message?.files ?? null)
+      .map((message) =>
+        message.files.filter(
+          (item) => item.type === "doc" || item.type === "collection"
+        )
+      )
+      .flat(1);
 
     // 获取上一个对应模型回复的消息
     const modelmessage = messages;
@@ -639,6 +637,9 @@
           analyContent = "；网页内容：" + webContent?.content;
 					analyContent = analyContent + "\n" + send_message[index-1].content;
 					send_message[index-1].content = analyContent;
+        } else if (item?.role != 'user' && docs.length > 0) {
+          let analyContent = "文档内容：" + docs[0].text[0]?.page_content;
+          send_message[index-1].content = analyContent + "\n" + send_message[index-1].content;
         }
       });
 			// 过滤掉error和 content为空数据
