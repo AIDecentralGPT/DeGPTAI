@@ -111,7 +111,7 @@
 									class="h-16 w-72 flex items-center space-x-3 px-2.5 dark:bg-gray-850 rounded-xl border border-gray-200 dark:border-none text-left"
 									type="button"
 								>
-									<div class="p-2.5 bg-red-400 text-white rounded-lg">
+									<div class="text-white rounded-lg">
 										<FileSvg bind:filename={file.name}/>
 									</div>
 

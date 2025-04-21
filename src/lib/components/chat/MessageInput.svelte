@@ -684,7 +684,7 @@
             bind:this={filesInputElement}
             bind:files={inputFiles}
             type="file"
-            accept=".gif,.webp,.jpeg,.png,.jpg,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.txt,.md"
+            accept=".gif,.webp,.jpeg,.png,.jpg,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.txt,.md,.odt,.rtf,.ods,.csv,.xml"
             hidden
             on:change={() => {
               if (inputFiles && inputFiles.length > 0) {
@@ -770,7 +770,7 @@
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
-                        <div class="p-2.5 bg-red-400 text-white rounded-lg">
+                        <div class="text-white rounded-lg {file.upload_status?'':'p-2.5 bg-red-400'}">
                           {#if file.upload_status}
                             <FileSvg bind:filename={file.name}/>
                           {:else}
