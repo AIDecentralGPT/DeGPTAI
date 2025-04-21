@@ -768,10 +768,7 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
             file_path, extract_images=app.state.config.PDF_EXTRACT_IMAGES
         )
     elif file_ext == "csv":
-        loader = CSVLoader(file_path, csv_args={
-            "restval": "N/A",  # 当行中字段不足时填充的默认值
-            "dictreader_kwargs": {"skipinitialspace": True}
-        })
+        loader = CSVLoader(file_path, encoding="utf-8", csv_args={"restval": "N/A"})
     elif file_ext == "rst":
         loader = UnstructuredRSTLoader(file_path, mode="elements")
     elif file_ext == "xml":
@@ -804,7 +801,7 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
         loader = TextLoader(file_path, autodetect_encoding=True)
     else:
         loader = TextLoader(file_path, autodetect_encoding=True)
-        known_type = False
+        # known_type = False
 
     return loader, known_type
 

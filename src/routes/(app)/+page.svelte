@@ -640,15 +640,22 @@
           if (docs[0].image.length > 0) {
             let content = [];
             if (docs[0].text[0]?.page_content.length > 0) {
-              content.push({type: "text", text: "文档内容：" + docs[0].text[0]?.page_content + "\n" + send_message[index-1].content});
+              let analyContent = "";
+              docs[0].text.forEach(item => {
+                analyContent = analyContent + item?.page_content + "\n";
+              });
+              content.push({type: "text", text: "文档内容：" + analyContent + send_message[index-1].content});
             } else {
               content.push({type: "text", text: send_message[index-1].content});
             }
             content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
             send_message[index-1].content = content;
           } else {
-            let analyContent = "文档内容：" + docs[0].text[0]?.page_content;
-            send_message[index-1].content = analyContent + "\n" + send_message[index-1].content;
+            let analyContent = "";
+            docs[0].text.forEach(item => {
+                analyContent = analyContent + item?.page_content + "\n";
+            });
+            send_message[index-1].content = "文档内容：" + analyContent + send_message[index-1].content;
           }
         }
       });
