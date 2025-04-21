@@ -768,7 +768,7 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
             file_path, extract_images=app.state.config.PDF_EXTRACT_IMAGES
         )
     elif file_ext == "csv":
-        loader = CSVLoader(file_pathcsv_args={
+        loader = CSVLoader(file_path, csv_args={
             "restval": "N/A",  # 当行中字段不足时填充的默认值
             "dictreader_kwargs": {"skipinitialspace": True}
         })
