@@ -8,7 +8,7 @@
   const DOC_EXTS = new Set(["doc", "docx"]);
   const PPT_EXTS = new Set(["ppt", "pptx"]);
   const PDF_EXTS = new Set(["pdf"]);
-  const EXCEL_EXTS = new Set(["xls", "xlsx"]);
+  const EXCEL_EXTS = new Set(["xls", "xlsx", "csv"]);
   const MD_EXTS = new Set(["md"]);
   const TXT_EXTS = new Set(["txt"]);
   const XML_EXTS = new Set(["xml"]);
