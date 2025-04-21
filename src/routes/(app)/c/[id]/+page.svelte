@@ -207,7 +207,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
     
   // 校验模型是否支持文件类型
 	let imageModels = $models.filter(item => item.support == "image");
-  if (files.length > 0) {
+  if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
     let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
     if (checkSelectedModels.length == 0) {
 			selectedModels = imageModels.map(item => item.model);
@@ -591,8 +591,19 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 					analyContent = analyContent + "\n" + send_message[index-1].content;
 					send_message[index-1].content = analyContent;
         } else if (item?.role != 'user' && docs.length > 0) {
-          let analyContent = "文档内容：" + docs[0].text[0]?.page_content;
-          send_message[index-1].content = analyContent + "\n" + send_message[index-1].content;
+          if (docs[0].image.length > 0) {
+            let content = [];
+            if (docs[0].text[0]?.page_content.length > 0) {
+              content.push({type: "text", text: "文档内容：" + docs[0].text[0]?.page_content + "\n" + send_message[index-1].content});
+            } else {
+              content.push({type: "text", text: send_message[index-1].content});
+            }
+            content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
+            send_message[index-1].content = content;
+          } else {
+            let analyContent = "文档内容：" + docs[0].text[0]?.page_content;
+            send_message[index-1].content = analyContent + "\n" + send_message[index-1].content;
+          }
         }
       });
 			// 过滤掉error和 content为空数据
