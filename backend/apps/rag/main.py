@@ -768,7 +768,11 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
             file_path, extract_images=app.state.config.PDF_EXTRACT_IMAGES
         )
     elif file_ext == "csv":
-        loader = CSVLoader(file_path, encoding="utf-8", csv_args={"restval": "N/A"})
+        loader = CSVLoader(file_path, encoding="utf-8", 
+                    csv_args={
+                        "delimiter": ",",
+                        "restval": ""
+                    })
     elif file_ext == "rst":
         loader = UnstructuredRSTLoader(file_path, mode="elements")
     elif file_ext == "xml":
