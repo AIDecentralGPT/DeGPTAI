@@ -849,10 +849,11 @@ def get_images(filename: str, file_path: str):
                         base64_images.append(data_uri)
                     
             # 合并base64图片
-            if len(base64_images) > 1:
-                marge_base64 = merge_base64_images(base64_images, 'vertical')
-            elif len(base64_images) == 1:
-                marge_base64 = base64_images[0]
+            if len(base64_images) != 0:
+                if len(base64_images) > 1:
+                    marge_base64 = merge_base64_images(base64_images, 'vertical')
+                else:
+                    marge_base64 = base64_images[0]
 
     elif (file_ext in ["pdf"]):
         doc = fitz.open(file_path)
