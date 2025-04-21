@@ -843,5 +843,10 @@
   "Summarize the web page": "สรุปเนื้อหาในหน้าเว็บ",
   "Extract the key data from the web page": "สกัดข้อมูลสำคัญจากหน้าเว็บ",
   "Tell me what the web page is about": "บอกว่าเนื้อหาในหน้าเว็บคืออะไร",
-  "Write an original article referring to the web page": "เขียนเนื้อหาใหม่โดยอ้างอิงหน้าเว็บ"
+  "Write an original article referring to the web page": "เขียนเนื้อหาใหม่โดยอ้างอิงหน้าเว็บ",
+  "Summarize the content of this document": "สรุปเนื้อหาในドอคิวเมนต์นี้",
+  "Generate a brief summary": "สร้างสรุปสั้นๆ",
+  "Extract document key info": "ดึงข้อมูลสำคัญจากドอคิวเมนต์",
+  "Polish the content of the document": "ปรับปรุงเนื้อหาในドอคิวเมนต์",
+  "Generate an analysis report": "สร้างรายงานวิเคราะห์"
 }

@@ -833,5 +833,10 @@
   "Summarize the web page": "Tóm tắt trang web",
   "Extract the key data from the web page": "Trích xuất dữ liệu quan trọng từ trang web",
   "Tell me what the web page is about": "Nói về nội dung của trang web đi",
-  "Write an original article referring to the web page": "Viết một nội dung gốc dựa trên trang web"
+  "Write an original article referring to the web page": "Viết một nội dung gốc dựa trên trang web",
+  "Summarize the content of this document": "Tóm tắt nội dung của tài liệu này",
+  "Generate a brief summary": "Tạo một bản tóm tắt ngắn gọn",
+  "Extract document key info": "Trích xuất thông tin quan trọng của tài liệu",
+  "Polish the content of the document": "Nâng cao nội dung của tài liệu",
+  "Generate an analysis report": "Tạo một bản báo cáo phân tích"
 }

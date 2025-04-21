@@ -843,5 +843,10 @@
   "Summarize the web page": "总结网页摘要",
   "Extract the key data from the web page": "提取网页的关键数据",
   "Tell me what the web page is about": "说说网页讲了什么",
-  "Write an original article referring to the web page": "参考网页写一篇原创内容"
+  "Write an original article referring to the web page": "参考网页写一篇原创内容",
+  "Summarize the content of this document": "总结这篇文档内容",
+  "Generate a brief summary": "生成一个简短概要",
+  "Extract document key info": "提取文档关键信息",
+  "Polish the content of the document": "对文档内容进行润色",
+  "Generate an analysis report": "生成分析报告"
 }

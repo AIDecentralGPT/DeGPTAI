@@ -844,5 +844,10 @@
   "Summarize the web page": "ウェブページを要約する",
   "Extract the key data from the web page": "ウェブページから重要なデータを抽出する",
   "Tell me what the web page is about": "ウェブページが何を話しているか語ってください",
-  "Write an original article referring to the web page": "ウェブページを参考にオリジナルコンテンツを書く"
+  "Write an original article referring to the web page": "ウェブページを参考にオリジナルコンテンツを書く",
+  "Summarize the content of this document": "この文書の内容を要約してください",
+  "Generate a brief summary": "簡単な要約を作成してください",
+  "Extract document key info": "文書の重要な情報を抽出してください",
+  "Polish the content of the document": "文書の内容を磨きます",
+  "Generate an analysis report": "分析レポートを作成してください"
 }
