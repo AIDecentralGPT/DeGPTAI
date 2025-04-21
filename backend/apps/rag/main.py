@@ -845,12 +845,13 @@ def get_images(filename: str, file_path: str):
                     data_uri = f'data:{mime_type};base64,{base64_str}'
 
                     if verify_base64_image(data_uri):
+                        print("============data_uri=============", data_uri)
                         base64_images.append(data_uri)
                     
             # 合并base64图片
             if len(base64_images) > 1:
                 marge_base64 = merge_base64_images(base64_images, 'vertical')
-            else:
+            elif len(base64_images) == 1:
                 marge_base64 = base64_images[0]
 
     elif (file_ext in ["pdf"]):
