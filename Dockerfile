@@ -223,6 +223,9 @@ HEALTHCHECK CMD curl --silent --fail http://localhost:8080/health | jq -e '.stat
 
 USER $UID:$GID
 
+# 指定pypandoc使用系统pandoc
+ENV PYPANDOC_PANDOC=/usr/bin/pandoc
+
 # 时区设置
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

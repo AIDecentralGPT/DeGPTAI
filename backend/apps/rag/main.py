@@ -115,8 +115,8 @@ nltk.download('punkt_tab')
 nltk.download('averaged_perceptron_tagger_eng')
 #print("====================", nltk.data.path)
 
-import pypandoc
-pypandoc.download_pandoc()
+# import pypandoc
+# pypandoc.download_pandoc()
 
 
 log = logging.getLogger(__name__)
