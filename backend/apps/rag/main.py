@@ -53,6 +53,7 @@ import uuid
 import json
 import fitz
 from apps.rag.csvutil import SafeCSVLoader
+import concurrent.futures
 
 import sentence_transformers
 
@@ -791,7 +792,7 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
     elif file_ext == "md":
         loader = UnstructuredMarkdownLoader(file_path)
     elif file_ext == "rtf":
-        loader = UnstructuredRTFLoader(file_path=file_path, mode="elements", encoding="utf-8")
+        loader = UnstructuredRTFLoader(file_path=file_path, mode="elements", encoding="GB2312")
     elif file_content_type == "application/epub+zip":
         loader = UnstructuredEPubLoader(file_path)
     elif (
@@ -863,47 +864,53 @@ def get_images(filename: str, file_path: str):
                         print("============data_uri=============", data_uri)
                         base64_images.append(data_uri)
                     
-            # 合并base64图片
-            if len(base64_images) != 0:
-                if len(base64_images) > 1:
-                    marge_base64 = merge_base64_images(base64_images, 'vertical')
-                else:
-                    marge_base64 = base64_images[0]
+        # 合并base64图片
+        if len(base64_images) != 0:
+            if len(base64_images) > 1:
+                marge_base64 = merge_base64_images(base64_images, 'vertical')
+            else:
+                marge_base64 = base64_images[0]
 
     elif (file_ext in ["pdf"]):
         doc = fitz.open(file_path)
         base64_images = []
-        for page_num in range(len(doc)):
-            page = doc.load_page(page_num)
-            image_list = page.get_images(full=True)
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = [executor.submit(extract_images_from_page, doc, page_num) for page_num in range(len(doc))]
+            for future in concurrent.futures.as_completed(futures):
+                base64_images.extend(future.result())
+
+        # for page_num in range(len(doc)):
+        #     print("===========================", page_num)
+        #     page = doc.load_page(page_num)
+        #     image_list = page.get_images(full=True)
         
-            # 提取当前页所有图片
-            for img_index, img_info in enumerate(image_list):
-                xref = img_info[0]
-                base_image = doc.extract_image(xref)
-                image_data = base_image["image"]
+        #     # 提取当前页所有图片
+        #     for img_index, img_info in enumerate(image_list):
+        #         xref = img_info[0]
+        #         base_image = doc.extract_image(xref)
+        #         image_data = base_image["image"]
             
-                # 生成唯一文件名
-                filename = f"page{page_num+1}_img{img_index+1}.{base_image['ext']}"
-                file_ext = os.path.splitext(filename)[1].lower().strip('.')
+        #         # 生成唯一文件名
+        #         filename = f"page{page_num+1}_img{img_index+1}.{base_image['ext']}"
+        #         file_ext = os.path.splitext(filename)[1].lower().strip('.')
             
-                # 获取对应的MIME类型，默认使用'application/octet-stream'
-                mime_type = image_mime_types.get(file_ext, 'application/octet-stream')   
-                # 转换为Base64字符串
-                base64_str = base64.b64encode(image_data).decode('utf-8')
+        #         # 获取对应的MIME类型，默认使用'application/octet-stream'
+        #         mime_type = image_mime_types.get(file_ext, 'application/octet-stream')   
+        #         # 转换为Base64字符串
+        #         base64_str = base64.b64encode(image_data).decode('utf-8')
 
-                # 组合成完整的数据URI
-                data_uri = f'data:{mime_type};base64,{base64_str}'
+        #         # 组合成完整的数据URI
+        #         data_uri = f'data:{mime_type};base64,{base64_str}'
 
-                if verify_base64_image(data_uri):
-                    base64_images.append(data_uri)
+        #         if verify_base64_image(data_uri):
+        #             base64_images.append(data_uri)
 
-            # 合并base64图片
-            if len(base64_images) != 0:
-                if len(base64_images) > 1:
-                    marge_base64 = merge_base64_images(base64_images, 'vertical')
-                else:
-                    marge_base64 = base64_images[0]            
+        # 合并base64图片
+        if len(base64_images) != 0:
+            if len(base64_images) > 1:
+                marge_base64 = merge_base64_images(base64_images, 'vertical')
+            else:
+                marge_base64 = base64_images[0]            
         doc.close()
 
     elif (file_ext in ["ppt", "pptx"]):
@@ -921,6 +928,35 @@ def get_images(filename: str, file_path: str):
             images_base64.append(result)
 
     return images_base64
+
+def extract_images_from_page(doc, page_num):
+    print("===============读取图片页数===========", page_num)
+    image_mime_types = {
+        'png': 'image/png',
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'gif': 'image/gif',
+        'bmp': 'image/bmp',
+        'webp': 'image/webp',
+        'tiff': 'image/tiff',
+    }
+    base64_images = []
+    try:
+        page = doc.load_page(page_num)
+        image_list = page.get_images(full=True)
+        for img_index, img_info in enumerate(image_list):
+            xref = img_info[0]
+            base_image = doc.extract_image(xref)
+            image_data = base_image["image"]
+            file_ext = base_image['ext'].lower()
+            mime_type = image_mime_types.get(file_ext, 'application/octet-stream')
+            base64_str = base64.b64encode(image_data).decode('utf-8')
+            data_uri = f'data:{mime_type};base64,{base64_str}'
+            if verify_base64_image(data_uri):
+                base64_images.append(data_uri)
+    except Exception as e:
+        print(f"Error extracting images from page {page_num}: {e}")
+    return base64_images
 
 def merge_base64_images(base64_list, direction='horizontal', spacing=10, bg_color=(255, 255, 255)):
     try:
@@ -1060,6 +1096,7 @@ def store_doc(
             data = loader.load()
         # 加载文件图片
         images = get_images(filename, file_path)
+        print("加载图片内容", images)
 
         # delete file
         os.remove(file_path)
