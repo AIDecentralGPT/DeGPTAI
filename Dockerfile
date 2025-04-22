@@ -197,13 +197,15 @@ RUN apt-get update && \
     # 清理缓存以减小镜像体积
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 Run playwright install
+
+# 然后下载 pandoc
+RUN python -c "import pypandoc; pypandoc.download_pandoc()"
 
 # 下载 Hugging Face 模型
 RUN python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
     python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"
-
-
 
 # copy embedding weight from build
 # RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
@@ -222,9 +224,6 @@ EXPOSE 8080
 HEALTHCHECK CMD curl --silent --fail http://localhost:8080/health | jq -e '.status == true' || exit 1
 
 USER $UID:$GID
-
-# 指定pypandoc使用系统pandoc
-ENV PYPANDOC_PANDOC=/usr/bin/pandoc
 
 # 时区设置
 ENV TZ=Asia/Shanghai
