@@ -874,36 +874,36 @@ def get_images(filename: str, file_path: str):
     elif (file_ext in ["pdf"]):
         doc = fitz.open(file_path)
         base64_images = []
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = [executor.submit(extract_images_from_page, doc, page_num) for page_num in range(len(doc))]
-            for future in concurrent.futures.as_completed(futures):
-                base64_images.extend(future.result())
+        # with concurrent.futures.ThreadPoolExecutor() as executor:
+        #     futures = [executor.submit(extract_images_from_page, doc, page_num) for page_num in range(len(doc))]
+        #     for future in concurrent.futures.as_completed(futures):
+        #         base64_images.extend(future.result())
 
-        # for page_num in range(len(doc)):
-        #     print("===========================", page_num)
-        #     page = doc.load_page(page_num)
-        #     image_list = page.get_images(full=True)
+        for page_num in range(len(doc)):
+            print("===========================", page_num)
+            page = doc.load_page(page_num)
+            image_list = page.get_images(full=True)
         
-        #     # 提取当前页所有图片
-        #     for img_index, img_info in enumerate(image_list):
-        #         xref = img_info[0]
-        #         base_image = doc.extract_image(xref)
-        #         image_data = base_image["image"]
+            # 提取当前页所有图片
+            for img_index, img_info in enumerate(image_list):
+                xref = img_info[0]
+                base_image = doc.extract_image(xref)
+                image_data = base_image["image"]
             
-        #         # 生成唯一文件名
-        #         filename = f"page{page_num+1}_img{img_index+1}.{base_image['ext']}"
-        #         file_ext = os.path.splitext(filename)[1].lower().strip('.')
+                # 生成唯一文件名
+                filename = f"page{page_num+1}_img{img_index+1}.{base_image['ext']}"
+                file_ext = os.path.splitext(filename)[1].lower().strip('.')
             
-        #         # 获取对应的MIME类型，默认使用'application/octet-stream'
-        #         mime_type = image_mime_types.get(file_ext, 'application/octet-stream')   
-        #         # 转换为Base64字符串
-        #         base64_str = base64.b64encode(image_data).decode('utf-8')
+                # 获取对应的MIME类型，默认使用'application/octet-stream'
+                mime_type = image_mime_types.get(file_ext, 'application/octet-stream')   
+                # 转换为Base64字符串
+                base64_str = base64.b64encode(image_data).decode('utf-8')
 
-        #         # 组合成完整的数据URI
-        #         data_uri = f'data:{mime_type};base64,{base64_str}'
+                # 组合成完整的数据URI
+                data_uri = f'data:{mime_type};base64,{base64_str}'
 
-        #         if verify_base64_image(data_uri):
-        #             base64_images.append(data_uri)
+                if verify_base64_image(data_uri):
+                    base64_images.append(data_uri)
 
         # 合并base64图片
         if len(base64_images) != 0:
@@ -930,7 +930,6 @@ def get_images(filename: str, file_path: str):
     return images_base64
 
 def extract_images_from_page(doc, page_num):
-    print("===============读取图片页数===========", page_num)
     image_mime_types = {
         'png': 'image/png',
         'jpg': 'image/jpeg',
