@@ -154,6 +154,7 @@ RUN uv pip install --system -r requirements.txt --no-cache-dir
 
 # 安装 playwright 环境
 RUN apt-get update && \
+    apt-get install -y binutils && \
     apt-get install -y \
     wget \
     curl \
