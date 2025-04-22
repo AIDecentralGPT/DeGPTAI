@@ -29,6 +29,7 @@ from langchain_community.document_loaders import (
     UnstructuredRSTLoader,
     UnstructuredExcelLoader,
     UnstructuredPowerPointLoader,
+    UnstructuredRTFLoader,
     YoutubeLoader,
 )
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -113,6 +114,9 @@ import nltk
 nltk.download('punkt_tab')
 nltk.download('averaged_perceptron_tagger_eng')
 #print("====================", nltk.data.path)
+
+import pypandoc
+pypandoc.download_pandoc()
 
 
 log = logging.getLogger(__name__)
@@ -786,6 +790,8 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
         loader = BSHTMLLoader(file_path, open_encoding="unicode_escape")
     elif file_ext == "md":
         loader = UnstructuredMarkdownLoader(file_path)
+    elif file_ext == "rtf":
+        loader = UnstructuredRTFLoader(file_path=file_path, mode="elements", encoding="utf-8")
     elif file_content_type == "application/epub+zip":
         loader = UnstructuredEPubLoader(file_path)
     elif (
@@ -810,7 +816,7 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
         loader = TextLoader(file_path, autodetect_encoding=True)
     else:
         loader = TextLoader(file_path, autodetect_encoding=True)
-        # known_type = False
+        known_type = False
 
     return loader, known_type
 

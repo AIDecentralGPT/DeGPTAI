@@ -2,3 +2,4 @@ node_modules
 .svelte-kit
 build
 .env
+backend/pandoc-3.6.4-windows-x86_64.msi

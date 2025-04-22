@@ -24,6 +24,7 @@ export const REQUIRED_OLLAMA_VERSION = "0.1.16";
 
 export const SUPPORTED_FILE_TYPE = [
   "application/epub+zip",
+  "application/msword",
   "application/pdf",
   "text/plain",
   "text/csv",
@@ -36,7 +37,7 @@ export const SUPPORTED_FILE_TYPE = [
   "application/x-javascript",
   "text/markdown",
   "audio/mpeg",
-  "audio/wav",
+  "audio/wav"
 ];
 
 export const SUPPORTED_FILE_EXTENSIONS = [
@@ -95,6 +96,8 @@ export const SUPPORTED_FILE_EXTENSIONS = [
   "xlsx",
   "pptx",
   "ppt",
+  "rtf",
+  "xml"
 ];
 
 // Source: https://kit.svelte.dev/docs/modules#$env-static-public
