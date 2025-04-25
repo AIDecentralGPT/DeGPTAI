@@ -495,6 +495,10 @@
       dropZone?.removeEventListener("dragleave", onDragLeave);
     };
   });
+
+  const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
+    ".log,.ini,.json,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
+    ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml";
 </script>
 
 {#if dragged}
@@ -686,7 +690,7 @@
             bind:this={filesInputElement}
             bind:files={inputFiles}
             type="file"
-            accept=".gif,.webp,.jpeg,.png,.jpg,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.txt,.md,.odt,.rtf,.ods,.csv,.xml"
+            accept={know_ext}
             hidden
             on:change={() => {
               if (inputFiles && inputFiles.length > 0) {
