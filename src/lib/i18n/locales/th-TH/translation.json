@@ -848,5 +848,8 @@
   "Generate a brief summary": "สร้างสรุปสั้นๆ",
   "Extract document key info": "ดึงข้อมูลสำคัญจากドอคิวเมนต์",
   "Polish the content of the document": "ปรับปรุงเนื้อหาในドอคิวเมนต์",
-  "Generate an analysis report": "สร้างรายงานวิเคราะห์"
+  "Generate an analysis report": "สร้างรายงานวิเคราะห์",
+  "Introduce the code in the file": "แนะนำรหัสในไฟล์",
+  "What's the main purpose of the file's code": "วัตถุประสงค์หลักของรหัสในไฟล์คืออะไร",
+  "Optimize the code in the file": " tối ưuรหัสในไฟล์"
 }

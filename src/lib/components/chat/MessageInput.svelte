@@ -294,6 +294,7 @@
       type: "doc",
       name: file.name,
       collection_name: "",
+      anaylis_type: "file",
       upload_status: false,
       text: "",
       image: [],
@@ -323,6 +324,7 @@
       if (res) {
         doc.upload_status = true;
         doc.collection_name = res.collection_name;
+        doc.anaylis_type = res.anaylis_type
         doc.text = res.text;
         doc.image = res.image;
         files = files;
@@ -952,54 +954,86 @@
                   </button>
                 </div>
               {/if}
-              {#if files[0]?.type === "doc"}
-                <div class="flex flex-wrap gap-2 mt-1">
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                    on:click={() => {
-                      prompt = $i18n.t("Summarize the content of this document");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Summarize the content of this document") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                    on:click={() => {
-                      prompt = $i18n.t("Generate a brief summary");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Generate a brief summary") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                    on:click={() => {
-                      prompt = $i18n.t("Extract document key info");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Extract document key info") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                    on:click={() => {
-                      prompt = $i18n.t("Polish the content of the document");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Polish the content of the document") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                    on:click={() => {
-                      prompt = $i18n.t("Generate an analysis report");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Generate an analysis report") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                </div>
+              {#if files[0]?.type === "doc" && files[0]?.upload_status}
+                {#if files[0]?.anaylis_type == "progrem"}
+                  <div class="flex flex-wrap gap-2 mt-1">
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Introduce the code in the file");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Introduce the code in the file") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("What's the main purpose of the file's code");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("What's the main purpose of the file's code") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Optimize the code in the file");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Optimize the code in the file") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
+                {:else}
+                  <div class="flex flex-wrap gap-2 mt-1">
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Summarize the content of this document");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Summarize the content of this document") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Generate a brief summary");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Generate a brief summary") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Extract document key info");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Extract document key info") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Polish the content of the document");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Polish the content of the document") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Generate an analysis report");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Generate an analysis report") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
+                {/if}
               {/if}
             {/if}
 

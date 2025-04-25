@@ -849,5 +849,8 @@
   "Generate a brief summary": "Buat ringkasan singkat",
   "Extract document key info": "Ekstrak informasi utama dokumen",
   "Polish the content of the document": "Bersihkan dan perbaiki isi dokumen",
-  "Generate an analysis report": "Buat laporan analisis"
+  "Generate an analysis report": "Buat laporan analisis",
+  "Introduce the code in the file": "Perkenalkan kode dalam file",
+  "What's the main purpose of the file's code": "Apa tujuan utama kode file",
+  "Optimize the code in the file": "Optimalkan kode dalam file"
 }

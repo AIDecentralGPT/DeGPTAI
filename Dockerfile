@@ -199,10 +199,8 @@ RUN apt-get update && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# 下载playwright网页浏览器
 Run playwright install
-
-# 然后下载 pandoc
-RUN python -c "import pypandoc; pypandoc.download_pandoc()"
 
 # 下载 Hugging Face 模型
 RUN python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \

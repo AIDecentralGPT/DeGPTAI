@@ -53,7 +53,7 @@ import uuid
 import json
 import fitz
 from apps.rag.csvutil import SafeCSVLoader
-import concurrent.futures
+from apps.rag.oss import OSSUtil
 
 import sentence_transformers
 
@@ -111,9 +111,9 @@ from config import (
 
 from constants import ERROR_MESSAGES
 
-import nltk
-nltk.download('punkt_tab')
-nltk.download('averaged_perceptron_tagger_eng')
+# import nltk
+# nltk.download('punkt_tab')
+# nltk.download('averaged_perceptron_tagger_eng')
 #print("====================", nltk.data.path)
 
 # import pypandoc
@@ -872,12 +872,8 @@ def get_images(filename: str, file_path: str):
                 marge_base64 = base64_images[0]
 
     elif (file_ext in ["pdf"]):
-        doc = fitz.open(file_path)
-        base64_images = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-            futures = [executor.submit(extract_images_from_page, doc, page_num) for page_num in range(len(doc))]
-            for future in concurrent.futures.as_completed(futures):
-                base64_images.extend(future.result())
+        # doc = fitz.open(file_path)
+        # base64_images = []
 
         # for page_num in range(len(doc)):
         #     print("===========================", page_num)
@@ -906,12 +902,18 @@ def get_images(filename: str, file_path: str):
         #             base64_images.append(data_uri)
 
         # 合并base64图片
-        if len(base64_images) != 0:
-            if len(base64_images) > 1:
-                marge_base64 = merge_base64_images(base64_images, 'vertical')
-            else:
-                marge_base64 = base64_images[0]            
-        doc.close()
+        # if len(base64_images) != 0:
+        #     if len(base64_images) > 1:
+        #         marge_base64 = merge_base64_images(base64_images, 'vertical')
+        #     else:
+        #         marge_base64 = base64_images[0]  
+                  
+        # doc.close()
+
+        # 直接上传阿里云
+        result = OSSUtil.upload_file_to_oss(file_path, "pdf")
+        if reset is not None:
+            images_base64.append(result)
 
     elif (file_ext in ["ppt", "pptx"]):
         base64_images = PPTIMAGEUTIL.extract_images(file_path)

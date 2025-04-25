@@ -850,5 +850,8 @@
   "Generate a brief summary": "Erstellen Sie eine kurze Zusammenfassung",
   "Extract document key info": "Extrahieren Sie die Schlüsselinformationen des Dokuments",
   "Polish the content of the document": "Bereinigen Sie den Inhalt des Dokuments",
-  "Generate an analysis report": "Erstellen Sie einen Analysebericht"
+  "Generate an analysis report": "Erstellen Sie einen Analysebericht",
+  "Introduce the code in the file": "Führen Sie den Code in der Datei ein",
+  "What's the main purpose of the file's code": "Was ist der Hauptzweck des Codes in der Datei?",
+  "Optimize the code in the file": "Optimieren Sie den Code in der Datei"
 }

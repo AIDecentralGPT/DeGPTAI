@@ -849,5 +849,8 @@
   "Generate a brief summary": "Kısa bir özet oluşturun",
   "Extract document key info": "Belgenin ana bilgilerini çıkarın",
   "Polish the content of the document": "Belgenin içeriğini geliştirin",
-  "Generate an analysis report": "Bir analiz raporu oluşturun"
+  "Generate an analysis report": "Bir analiz raporu oluşturun",
+  "Introduce the code in the file": "Dosyadaki kodu tanıtın",
+  "What's the main purpose of the file's code": "Dosyanın kodunun ana amacı nedir",
+  "Optimize the code in the file": "Dosyadaki kodu optimize edin"
 }

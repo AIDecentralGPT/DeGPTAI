@@ -849,6 +849,9 @@
   "Generate a brief summary": "",
   "Extract document key info": "",
   "Polish the content of the document": "",
-  "Generate an analysis report": ""
+  "Generate an analysis report": "",
+  "Introduce the code in the file": "",
+  "What's the main purpose of the file's code": "",
+  "Optimize the code in the file": ""
 }
 

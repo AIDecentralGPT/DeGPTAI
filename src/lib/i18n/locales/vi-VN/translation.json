@@ -838,5 +838,8 @@
   "Generate a brief summary": "Tạo một bản tóm tắt ngắn gọn",
   "Extract document key info": "Trích xuất thông tin quan trọng của tài liệu",
   "Polish the content of the document": "Nâng cao nội dung của tài liệu",
-  "Generate an analysis report": "Tạo một bản báo cáo phân tích"
+  "Generate an analysis report": "Tạo một bản báo cáo phân tích",
+  "Introduce the code in the file": "Giới thiệu mã trong tệp",
+  "What's the main purpose of the file's code": "Mục đích chính của mã trong tệp là gì",
+  "Optimize the code in the file": "Tối ưu mã trong tệp"
 }

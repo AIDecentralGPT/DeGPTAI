@@ -848,5 +848,8 @@
   "Generate a brief summary": "Составьте краткий резюме",
   "Extract document key info": "Извлеките ключевые сведения из документа",
   "Polish the content of the document": "Улучшите содержание документа",
-  "Generate an analysis report": "Составьте анализный отчёт"
+  "Generate an analysis report": "Составьте анализный отчёт",
+  "Introduce the code in the file": "Представьте код в файле",
+  "What's the main purpose of the file's code": "Какова основная цель кода в файле",
+  "Optimize the code in the file": " Оптимизируйте код в файле"
 }
