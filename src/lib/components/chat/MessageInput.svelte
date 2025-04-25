@@ -497,7 +497,7 @@
   });
 
   const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
-    ".log,.ini,.json,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
+    ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
     ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml";
 </script>
 

@@ -54,6 +54,7 @@ export const SUPPORTED_FILE_EXTENSIONS = [
   "log",
   "ini",
   "json",
+  "md",
   "html",
   "htm",
   "css",
