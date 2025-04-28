@@ -844,5 +844,13 @@
   "Summarize the web page": "Web sayfasını özetle",
   "Extract the key data from the web page": "Web sayfasından ana verileri çıkar",
   "Tell me what the web page is about": "Web sayfasının ne hakkında olduğunu söyle",
-  "Write an original article referring to the web page": "Web sayfasını referans alarak orijinal bir içerik yazın"
+  "Write an original article referring to the web page": "Web sayfasını referans alarak orijinal bir içerik yazın",
+  "Summarize the content of this document": "Bu belgenin içeriğini özetleyin",
+  "Generate a brief summary": "Kısa bir özet oluşturun",
+  "Extract document key info": "Belgenin ana bilgilerini çıkarın",
+  "Polish the content of the document": "Belgenin içeriğini geliştirin",
+  "Generate an analysis report": "Bir analiz raporu oluşturun",
+  "Introduce the code in the file": "Dosyadaki kodu tanıtın",
+  "What's the main purpose of the file's code": "Dosyanın kodunun ana amacı nedir",
+  "Optimize the code in the file": "Dosyadaki kodu optimize edin"
 }

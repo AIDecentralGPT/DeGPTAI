@@ -844,6 +844,14 @@
   "Summarize the web page": "",
   "Extract the key data from the web page": "",
   "Tell me what the web page is about": "",
-  "Write an original article referring to the web page": ""
+  "Write an original article referring to the web page": "",
+  "Summarize the content of this document": "",
+  "Generate a brief summary": "",
+  "Extract document key info": "",
+  "Polish the content of the document": "",
+  "Generate an analysis report": "",
+  "Introduce the code in the file": "",
+  "What's the main purpose of the file's code": "",
+  "Optimize the code in the file": ""
 }
 

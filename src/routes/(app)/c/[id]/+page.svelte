@@ -207,7 +207,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
     
   // 校验模型是否支持文件类型
 	let imageModels = $models.filter(item => item.support == "image");
-  if (files.length > 0) {
+  if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
     let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
     if (checkSelectedModels.length == 0) {
 			selectedModels = imageModels.map(item => item.model);
@@ -523,12 +523,12 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	// 对话DeGpt
 	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId, webContent) => {			
 		const responseMessage = history.messages[responseMessageId];
-		// const docs = messages
-		// 	.filter((message) => message?.files ?? null)
-		// 	.map((message) =>
-		// 		message.files.filter((item) => item.type === 'doc' || item.type === 'collection')
-		// 	)
-		// 	.flat(1);
+		const docs = [messages[messages.length - 2]]
+			.filter((message) => message?.files ?? null)
+			.map((message) =>
+				message.files.filter((item) => item.type === 'doc' || item.type === 'collection')
+			)
+			.flat(1);
 
 		// 获取上一个对应模型回复的消息
     const modelmessage = messages;
@@ -590,6 +590,27 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
           analyContent = "；网页内容：" + webContent?.content;
 					analyContent = analyContent + "\n" + send_message[index-1].content;
 					send_message[index-1].content = analyContent;
+        } else if (item?.role != 'user' && docs.length > 0) {
+          if (docs[0].image.length > 0) {
+            let content = [];
+            if (docs[0].text[0]?.page_content.length > 0) {
+							let analyContent = "";
+              docs[0].text.forEach(item => {
+                analyContent = analyContent + item?.page_content + "\n";
+              });
+              content.push({type: "text", text: "文档内容：" + analyContent + send_message[index-1].content});
+            } else {
+              content.push({type: "text", text: send_message[index-1].content});
+            }
+            content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
+            send_message[index-1].content = content;
+          } else {
+            let analyContent = "";
+            docs[0].text.forEach(item => {
+              analyContent = analyContent + item?.page_content + "\n";
+            });
+            send_message[index-1].content = "文档内容：" + analyContent + send_message[index-1].content;
+          }
         }
       });
 			// 过滤掉error和 content为空数据
@@ -1031,7 +1052,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	const generateSearchChatKeyword = async (userPrompt: string) => {
     if ($settings?.title?.auto ?? true) {
       // 获取关键词
-      let send_messages = messages.filter(item => item.role == 'user')
+      let send_messages = messages.filter(item => item.content != '')
         .map(item => {
 					let custmessage = {role: item.role, content: item.content};
 					if (item.files) {

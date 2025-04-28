@@ -171,7 +171,7 @@ export const uploadDocToVectorDB = async (token: string, collection_name: string
 
 	let error = null;
 
-	const res = await fetch(`${RAG_API_BASE_URL}/doc`, {
+	const res = await fetch(`https://www.degptfile.info/api/v1/file/analysis`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

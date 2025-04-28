@@ -844,5 +844,13 @@
   "Summarize the web page": "Resumir a página da web",
   "Extract the key data from the web page": "Extrair os dados-chave da página da web",
   "Tell me what the web page is about": "Fale o que a página da web fala",
-  "Write an original article referring to the web page": "Escreva um conteúdo original com base na página da web"
+  "Write an original article referring to the web page": "Escreva um conteúdo original com base na página da web",
+  "Summarize the content of this document": "Resuma o conteúdo deste documento",
+  "Generate a brief summary": "Gere um resumo breve",
+  "Extract document key info": "Extraia as informações-chave deste documento",
+  "Polish the content of the document": "Aprimore o conteúdo deste documento",
+  "Generate an analysis report": "Gere um relatório de análise",
+  "Introduce the code in the file": "Apresente o código no arquivo",
+  "What's the main purpose of the file's code": "Qual é o principal objetivo do código do arquivo",
+  "Optimize the code in the file": "Otimize o código no arquivo"
 }

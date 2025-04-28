@@ -154,6 +154,7 @@ RUN uv pip install --system -r requirements.txt --no-cache-dir
 
 # 安装 playwright 环境
 RUN apt-get update && \
+    apt-get install -y binutils && \
     apt-get install -y \
     wget \
     curl \
@@ -197,13 +198,13 @@ RUN apt-get update && \
     # 清理缓存以减小镜像体积
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# 下载playwright网页浏览器
 Run playwright install
 
 # 下载 Hugging Face 模型
 RUN python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
     python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"
-
-
 
 # copy embedding weight from build
 # RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2

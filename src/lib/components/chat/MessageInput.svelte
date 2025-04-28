@@ -33,6 +33,7 @@
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
+  import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
 
   const i18n = getContext("i18n");
 
@@ -293,13 +294,16 @@
       type: "doc",
       name: file.name,
       collection_name: "",
+      anaylis_type: "file",
       upload_status: false,
+      text: "",
+      image: [],
       error: "",
     };
 
     try {
-      files = [...files, doc];
-
+      // files = [...files, doc];
+      files = [doc];
       if (["audio/mpeg", "audio/wav"].includes(file["type"])) {
         const res = await transcribeAudio(localStorage.token, file).catch(
           (error) => {
@@ -320,6 +324,9 @@
       if (res) {
         doc.upload_status = true;
         doc.collection_name = res.collection_name;
+        doc.anaylis_type = res.anaylis_type
+        doc.text = res.text;
+        doc.image = res.image;
         files = files;
       }
     } catch (e) {
@@ -488,6 +495,10 @@
       dropZone?.removeEventListener("dragleave", onDragLeave);
     };
   });
+
+  const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
+    ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
+    ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml";
 </script>
 
 {#if dragged}
@@ -679,9 +690,8 @@
             bind:this={filesInputElement}
             bind:files={inputFiles}
             type="file"
-            accept="image/*"
+            accept={know_ext}
             hidden
-            multiple
             on:change={() => {
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
@@ -709,7 +719,7 @@
                           }
                         };  
                         files = [
-                          ...files,
+                          // ...files,
                           {
                             type: "image",
                             url: compressedDataUrl,
@@ -766,23 +776,9 @@
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
-                        <div class="p-2.5 bg-red-400 text-white rounded-lg">
+                        <div class="text-white rounded-lg {file.upload_status?'':'p-2.5 bg-red-400'}">
                           {#if file.upload_status}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              class="w-6 h-6"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z"
-                                clip-rule="evenodd"
-                              />
-                              <path
-                                d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z"
-                              />
-                            </svg>
+                            <FileSvg bind:filename={file.name}/>
                           {:else}
                             <svg
                               class=" w-6 h-6 translate-y-[0.5px]"
@@ -913,53 +909,136 @@
                   </div>
                 {/each}
               </div>
-              <div class="flex flex-wrap gap-2 mt-1">
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("What does this picture mean?");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("What does this picture mean?") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("Explain this picture");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("Explain this picture") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("What is the main idea of this picture?");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("What is the main idea of this picture?") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("What does the symbol in the picture represent?");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("What does the symbol in the picture represent?") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("Help me solve problems");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("Help me solve problems") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-              </div>
+              {#if files[0]?.type === "image"}
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("What does this picture mean?");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("What does this picture mean?") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("Explain this picture");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("Explain this picture") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("What is the main idea of this picture?");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("What is the main idea of this picture?") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("What does the symbol in the picture represent?");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("What does the symbol in the picture represent?") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("Help me solve problems");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("Help me solve problems") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+              {/if}
+              {#if files[0]?.type === "doc" && files[0]?.upload_status}
+                {#if files[0]?.anaylis_type == "progrem"}
+                  <div class="flex flex-wrap gap-2 mt-1">
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Introduce the code in the file");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Introduce the code in the file") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("What's the main purpose of the file's code");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("What's the main purpose of the file's code") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Optimize the code in the file");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Optimize the code in the file") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
+                {:else}
+                  <div class="flex flex-wrap gap-2 mt-1">
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Summarize the content of this document");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Summarize the content of this document") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Generate a brief summary");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Generate a brief summary") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Extract document key info");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Extract document key info") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Polish the content of the document");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Polish the content of the document") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Generate an analysis report");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Generate an analysis report") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
+                {/if}
+              {/if}
             {/if}
 
             <!-- {#if (webInfo?.url??"").length > 0}
@@ -1250,7 +1329,7 @@
 
                         reader.onload = function (e) {
                           files = [
-                            ...files,
+                            // ...files,
                             {
                               type: "image",
                               url: `${e.target.result}`,

@@ -843,5 +843,13 @@
   "Summarize the web page": "Сводить в резюме веб-страницу",
   "Extract the key data from the web page": "Извлекать ключевые данные с веб-страницы",
   "Tell me what the web page is about": "Расскажи, о чём идёт речь на веб - странице",
-  "Write an original article referring to the web page": "Напишите оригинальный текст, используя веб - страницу в качестве источника"
+  "Write an original article referring to the web page": "Напишите оригинальный текст, используя веб - страницу в качестве источника",
+  "Summarize the content of this document": "Суммируйте содержание этого документа",
+  "Generate a brief summary": "Составьте краткий резюме",
+  "Extract document key info": "Извлеките ключевые сведения из документа",
+  "Polish the content of the document": "Улучшите содержание документа",
+  "Generate an analysis report": "Составьте анализный отчёт",
+  "Introduce the code in the file": "Представьте код в файле",
+  "What's the main purpose of the file's code": "Какова основная цель кода в файле",
+  "Optimize the code in the file": " Оптимизируйте код в файле"
 }

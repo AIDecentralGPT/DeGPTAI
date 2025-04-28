@@ -844,5 +844,13 @@
   "Summarize the web page": "Ringkaskan halaman web",
   "Extract the key data from the web page": "Ekstrak data kunci dari halaman web",
   "Tell me what the web page is about": "Ceritakan apa yang terdapat pada halaman web",
-  "Write an original article referring to the web page": "Tulis konten asli dengan merujuk ke halaman web"
+  "Write an original article referring to the web page": "Tulis konten asli dengan merujuk ke halaman web",
+  "Summarize the content of this document": "Ringkaskan isi dokumen ini",
+  "Generate a brief summary": "Buat ringkasan singkat",
+  "Extract document key info": "Ekstrak informasi utama dokumen",
+  "Polish the content of the document": "Bersihkan dan perbaiki isi dokumen",
+  "Generate an analysis report": "Buat laporan analisis",
+  "Introduce the code in the file": "Perkenalkan kode dalam file",
+  "What's the main purpose of the file's code": "Apa tujuan utama kode file",
+  "Optimize the code in the file": "Optimalkan kode dalam file"
 }

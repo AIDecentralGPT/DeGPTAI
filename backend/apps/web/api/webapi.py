@@ -8,7 +8,7 @@ class WebInfoForm(BaseModel):
 
 class WebApi:
     async def getWebGraph(self, website: str):
-        webInfo = {"title":"", "content": ""}
+        webInfo = {"title":"未获取到网页搜索到的标题", "content": "未获取到网页搜索到的内容"}
         if not(website.startswith('https://') or website.startswith('http://')):
             websitetran = f"https://{website}"
             response = requests.get(websitetran, timeout=5)
