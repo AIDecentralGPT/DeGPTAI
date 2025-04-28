@@ -1052,7 +1052,8 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	const generateSearchChatKeyword = async (userPrompt: string) => {
     if ($settings?.title?.auto ?? true) {
       // 获取关键词
-      let send_messages = messages.map(item => {
+      let send_messages = messages.filter(item => item.content != '')
+        .map(item => {
 					let custmessage = {role: item.role, content: item.content};
 					if (item.files) {
 						custmessage.content = [{"type": "text","text": item.content}];
