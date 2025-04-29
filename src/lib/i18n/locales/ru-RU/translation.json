@@ -831,7 +831,7 @@
   "starttime": "Время начала",
   "endtime": "Время окончания",
   "Enter Name": "Введите ваше имя",
-  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Определите, о чем идет речь в последнем вопросе, отфильтруйте повторяющиеся, подсказывающие и несущие незначительную ценность слова и выведите только содержание вопроса пользователя, не превышая десять слов.",
+  "Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters": "Отсортируйте вышеперечисленные вопросы пользователей в хронологическом порядке, отфильтруйте повторяющиеся, подсказывающие и бесценные ключевые слова, получите содержание последнего вопроса пользователя и выведите только содержание вопроса пользователя, не превышая 10 символов",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Количество попыток превысило лимит. Пожалуйста, 업грейдите до VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Количество попыток превысило лимит. Пожалуйста, выполните процедуру идентификации KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Количество попыток превысило лимит. Пожалуйста, создайте кошелек.",

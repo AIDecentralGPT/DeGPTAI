@@ -831,7 +831,7 @@
   "starttime": "เวลาเริ่มต้น",
   "endtime": "เวลาสิ้นสุด",
   "Enter Name": "กรุณาป้อนชื่อของคุณ",
-  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "ระบุว่าคำถามล่าสุดเกี่ยวกับเรื่องอะไร, กรองคำที่ซ้ำซ้อน, ชี้ทาง และไม่มีค่าคร่าวสำคัญออกไป และแสดงเฉพาะเนื้อหาของคำถามจากผู้ใช้ โดยมีจำนวนคำสูงสุด 10 คำเท่านั้น.",
+  "Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters": "จัดเรียงคำถามของผู้ใช้ข้างต้นตามลำดับตามลำดับเวลา คัดลอกคำคีย์ที่ซ้ำกัน คำชี้แจง และไม่มีค่า ค้นหาเนื้อหาของคำถามล่าสุดของผู้ใช้ และแสดงเพียงเนื้อหาของคำถามของผู้ใช้เท่านั้น ด้วยจำนวนอักษรไม่เกิน 10 ตัวอักษร",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดอัปเกรดเป็น VIP",
   "The number of attempts has exceeded the limit. Please complete KYC.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดให้ข้อมูลการยืนยันตัวตน KYC เสร็จสิ้น",
   "The number of attempts has exceeded the limit. Please create Wallet.": "จำนวนครั้งพยายาม已經เกินขีดจำกัด โปรดสร้างกระเป๋าเงิน Digitaล Wallet",

@@ -821,7 +821,7 @@
   "starttime": "Thời gian bắt đầu",
   "endtime": "Thời gian kết thúc",
   "Enter Name": "Nhập tên của bạn",
-  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Xác định nội dung của câu hỏi cuối cùng là về điều gì, lọc bỏ các từ lặp đi lặp lại, đẩy mạnh và không có giá trị quan trọng, và chỉ xuất nội dung của câu hỏi người dùng, tối đa 10 từ.",
+  "Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters": "Sắp xếp các câu hỏi của người dùng trên theo thứ tự theo thời gian, lọc bỏ các từ khóa lặp lại, có tính hướng dẫn và không có giá trị, lấy nội dung câu hỏi cuối cùng của người dùng và chỉ xuất nội dung câu hỏi của người dùng, tối đa 10 ký tự",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Số lần thử đã vượt quá giới hạn. Vui lòng nâng cấp lên VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Số lần thử đã vượt quá giới hạn. Vui lòng hoàn thành KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Số lần thử đã vượt quá giới hạn. Vui lòng tạo ví tiền điện tử Wallet.",
