@@ -852,5 +852,6 @@
   "Generate an analysis report": "분석 보고서를 작성하세요",
   "Introduce the code in the file": "파일의 코드를 소개하세요",
   "What's the main purpose of the file's code": "파일 코드의 주요 목적은 무엇입니까",
-  "Optimize the code in the file": "파일의 코드를 최적화하세요"
+  "Optimize the code in the file": "파일의 코드를 최적화하세요",
+  "In web page parsing...": "웹 페이지 구문 분석 시..."
 }

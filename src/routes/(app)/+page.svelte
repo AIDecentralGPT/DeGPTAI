@@ -347,6 +347,8 @@
             search: search,
             search_type: search_type,
             search_content: thirdData,
+            webanalysis: userWebInfo ? true : false,
+            webanalysis_content: null,
             keyword: userPrompt,
             childrenIds: [],
             role: "assistant",
@@ -404,6 +406,17 @@
         let webResult = await getWebContent(localStorage.token, userWebInfo?.url);
         if (webResult?.ok) {
           webContent = webResult?.data;
+        }
+        await tick();
+        for (const key in responseMap) {
+          if (responseMap.hasOwnProperty(key)) {
+            let responseMessage = responseMap[key]
+            responseMessage.webanalysis_content = webContent;
+            // Add message to history and Set currentId to messageId
+            history.messages[responseMessage.id] = responseMessage;
+            history.currentId = responseMessage.id;
+            responseMap[key] = responseMessage;
+          }
         }
         await tick();
       }
@@ -475,6 +488,8 @@
               search: search,
               search_type: search_type,
               search_content: thirdData,
+              webanalysis: webContent ? true : false,
+              webanalysis_content: webContent,
               keyword: prompt,
               childrenIds: [],
               role: "assistant",

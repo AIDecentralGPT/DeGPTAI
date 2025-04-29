@@ -851,5 +851,6 @@
   "Generate an analysis report": "Составьте анализный отчёт",
   "Introduce the code in the file": "Представьте код в файле",
   "What's the main purpose of the file's code": "Какова основная цель кода в файле",
-  "Optimize the code in the file": " Оптимизируйте код в файле"
+  "Optimize the code in the file": " Оптимизируйте код в файле",
+  "In web page parsing...": "При парсинге веб-страниц..."
 }

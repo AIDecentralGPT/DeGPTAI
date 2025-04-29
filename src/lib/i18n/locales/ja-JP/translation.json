@@ -852,5 +852,6 @@
   "Generate an analysis report": "分析レポートを作成してください",
   "Introduce the code in the file": "ファイル内のコードを説明してください",
   "What's the main purpose of the file's code": "ファイルのコードの主な目的は何ですか",
-  "Optimize the code in the file": "ファイル内のコードを最適化してください"
+  "Optimize the code in the file": "ファイル内のコードを最適化してください",
+  "In web page parsing...": "ウェブページの解析において..."
 }

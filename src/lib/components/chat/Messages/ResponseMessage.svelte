@@ -30,6 +30,7 @@
 	import ProfileImage from './ProfileImage.svelte';
 	import Thinking from './Thinking.svelte';
 	import Searching from './Searching.svelte';
+	import WebAnalysis from './WebAnalysis.svelte';
 	import Replying from './Replying.svelte';
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
@@ -449,6 +450,8 @@
 								<Searching typeName="Bing"/>
 							{/if}
 						{/if}
+					{:else if message?.webanalysis && !message?.webanalysis_content}
+						<WebAnalysis/>
 					{:else}
 						<Thinking/>
 					{/if}

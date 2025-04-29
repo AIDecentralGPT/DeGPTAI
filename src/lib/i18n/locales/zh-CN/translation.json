@@ -851,5 +851,6 @@
   "Generate an analysis report": "生成分析报告",
   "Introduce the code in the file": "介绍文件中的代码",
   "What's the main purpose of the file's code": "文件中的代码的主要用途是什么",
-  "Optimize the code in the file": "优化文件中的代码"
+  "Optimize the code in the file": "优化文件中的代码",
+  "In web page parsing...": "网页分析中..."
 }
