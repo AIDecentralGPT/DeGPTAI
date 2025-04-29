@@ -305,7 +305,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 					search: search,
 					search_type: search_type,
 					search_content: thirdData,
-					webanalysis: userWebInfo ? true : false,
+					webanalysis: (userWebInfo?.url) ? true : false,
 					webanalysis_content: null,
 					keyword: userPrompt,
           childrenIds: [],
