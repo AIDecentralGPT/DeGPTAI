@@ -831,7 +831,7 @@
   "starttime": "Heure de début",
   "endtime": "Heure de fin",
   "Enter Name": "Entrez votre nom",
-  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Déterminez de quoi s'agit la dernière question, filtrez les mots répétitifs, indirecteurs et sans valeur clé, et n'affichez que le contenu de la question de l'utilisateur, avec au maximum 10 mots.",
+  "Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters": "Triez les questions des utilisateurs ci-dessus dans l'ordre chronologique, filtrez les mots clés répétitifs, indicatifs et sans valeur, obtenez le contenu de la dernière question de l'utilisateur et affichez uniquement le contenu de la question de l'utilisateur, avec un maximum de 10 caractères",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Le nombre d'essais a dépassé la limite. Veuillez passer à l'abonnement VIP.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Le nombre d'essais a dépassé la limite. Veuillez terminer le KYC.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Le nombre d'essais a dépassé la limite. Veuillez créer un portefeuille.",

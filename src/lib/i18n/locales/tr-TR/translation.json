@@ -832,7 +832,7 @@
   "starttime": "Başlangıç Saati",
   "endtime": "Bitiş Saati",
   "Enter Name": "Adınızı girin",
-  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "Son sorunun hangi konuda olduğunu belirleyin, tekrarlayan, yönlendiren ve önemli olmayan kelimeleri filtreleyin ve yalnızca kullanıcının soru içeriğini, en fazla 10 kelime olarak yazdırın.",
+  "Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters": "Yukarıdaki kullanıcı sorularını kronolojik sıra ile sıralayın, tekrarlayan, rehberci ve değerli olmayan anahtar kelimeleri filtreleyin, son kullanıcı soru içeriğini alın ve yalnızca kullanıcı soru içeriğini çıkarın, en fazla 10 karakter",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "Deneme sayısı sınırı aştı. Lütfen VIP'e yükseltin.",
   "The number of attempts has exceeded the limit. Please complete KYC.": "Deneme sayısı sınırı aştı. Lütfen KYC'yı tamamlayın.",
   "The number of attempts has exceeded the limit. Please create Wallet.": "Deneme sayısı sınırı aştı. Lütfen bir cüzdan oluşturun.",

@@ -832,7 +832,7 @@
   "starttime": "開始時間",
   "endtime": "終了時間",
   "Enter Name": "名前を入力してください",
-  "Determine what the last question is about, filter out repetitive, leading, and non - essential words, and only output the content of the user's question, with a maximum of 10 words.": "最後の質問の内容が何に関するものかを確定し、反復的で、誘導的で、重要な価値のない単語をフィルターにかけ、ユーザーの質問内容のみを出力し、最大 10 単語までにしてください。",
+  "Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters": "上記のユーザーの質問を時系列順に並べ、繰り返しのある、誘導的で無価値なキーワードを除外し、最後のユーザーの質問内容を取得し、ユーザーの質問内容のみを出力します。文字数は最大 10 文字までです",
   "The number of attempts has exceeded the limit. Please upgrade to VIP.": "試行回数が制限を超えました。VIP にアップグレードしてください。",
   "The number of attempts has exceeded the limit. Please complete KYC.": "試行回数が制限を超えました。KYC の完了をお願いします。",
   "The number of attempts has exceeded the limit. Please create Wallet.": "試行回数が制限を超えました。ウォレットを作成してください。",
