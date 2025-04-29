@@ -852,5 +852,6 @@
   "Generate an analysis report": "Bir analiz raporu oluşturun",
   "Introduce the code in the file": "Dosyadaki kodu tanıtın",
   "What's the main purpose of the file's code": "Dosyanın kodunun ana amacı nedir",
-  "Optimize the code in the file": "Dosyadaki kodu optimize edin"
+  "Optimize the code in the file": "Dosyadaki kodu optimize edin",
+  "In web page parsing...": "Web sayfası ayrıştırması sırasında..."
 }

@@ -853,5 +853,6 @@
   "Generate an analysis report": "Erstellen Sie einen Analysebericht",
   "Introduce the code in the file": "Führen Sie den Code in der Datei ein",
   "What's the main purpose of the file's code": "Was ist der Hauptzweck des Codes in der Datei?",
-  "Optimize the code in the file": "Optimieren Sie den Code in der Datei"
+  "Optimize the code in the file": "Optimieren Sie den Code in der Datei",
+  "In web page parsing...": "Beim Parsen von Webseiten..."
 }

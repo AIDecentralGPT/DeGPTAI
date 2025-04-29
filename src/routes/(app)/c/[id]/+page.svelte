@@ -305,6 +305,8 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 					search: search,
 					search_type: search_type,
 					search_content: thirdData,
+					webanalysis: userWebInfo ? true : false,
+					webanalysis_content: null,
 					keyword: userPrompt,
           childrenIds: [],
           role: "assistant",
@@ -362,6 +364,17 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
         webContent = webResult?.data;
       }
 			await tick();
+			for (const key in responseMap) {
+        if (responseMap.hasOwnProperty(key)) {
+          let responseMessage = responseMap[key]
+					responseMessage.webanalysis_content = webContent;
+					// Add message to history and Set currentId to messageId
+					history.messages[responseMessage.id] = responseMessage;
+        	history.currentId = responseMessage.id;
+        	responseMap[key] = responseMessage;
+        }
+      }
+      await tick();
     }
 		
 		// 校验模型已使用次数
@@ -435,6 +448,8 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 								search: search,
 								search_type: search_type,
 								search_content: thirdData,
+								webanalysis: webContent ? true : false,
+								webanalysis_content: webContent,
 								keyword: prompt,
 								childrenIds: [],
 								role: "assistant",
