@@ -34,7 +34,7 @@ export const defaultBackendConfig = async () => {
     "auth": true,
     "default_locale": "en-US",
     "images": false,
-    "default_models": "Qwen2.5-VL-72B-Instruct,Llama-4-Scout-Instruct",
+    "default_models": "Qwen2.5-VL-72B-Instruct,Qwen3-235B-A22B-FP8",
     "default_prompt_suggestions": [
 				{
 					"title": [

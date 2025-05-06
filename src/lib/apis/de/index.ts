@@ -32,13 +32,19 @@ export const getDeModels = async (token: string = "") => {
       //   desc: "Suitable for most tasks"
       // },
       {
-        name: "Qwen o1",
+        name: "Qwen O3",
         model: "Qwen2.5-VL-72B-Instruct",
-        textmodel: "QwQ-32B",
-        tip: "Qwen o1",
-        support: "text",
+        tip: "Qwen O3",
+        support: "image",
         desc: "Deep thinking,mathematical and writing abilities ≈ o3."
       },
+      {
+        name: "Qwen3",
+        model: "Qwen3-235B-A22B-FP8",
+        tip: "Qwen3",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      }
       // {
       //   name: "DeepSeek V3",
       //   model: "DeepSeek-V3-0324",
