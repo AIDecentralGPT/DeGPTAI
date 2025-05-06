@@ -33,7 +33,7 @@ export const getDeModels = async (token: string = "") => {
       // },
       {
         name: "Qwen O3",
-        model: "Qwen2.5-VL-72B-Instruct",
+        model: "Qwen3-235B-A22B-FP8",
         tip: "Qwen O3",
         support: "text",
         desc: "Deep thinking,mathematical and writing abilities ≈ o3."
