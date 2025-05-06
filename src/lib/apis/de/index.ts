@@ -252,7 +252,7 @@ export const generateDeTitle = async (
   }
 
   template = promptTemplate(template, prompt);
-  model = 'Llama-4-Scout-Instruct';
+  model = 'Qwen3-235B-A22B-FP8';
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
@@ -313,7 +313,7 @@ export const generateSearchKeyword = async (
     // 将该元素添加到数组的开头
     urls.unshift(koreaItem);
   }
-  let model = 'Llama-4-Scout-Instruct';
+  let model = 'Qwen3-235B-A22B-FP8';
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
