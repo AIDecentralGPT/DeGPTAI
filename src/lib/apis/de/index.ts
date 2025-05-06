@@ -35,7 +35,7 @@ export const getDeModels = async (token: string = "") => {
         name: "Qwen O3",
         model: "Qwen2.5-VL-72B-Instruct",
         tip: "Qwen O3",
-        support: "image",
+        support: "text",
         desc: "Deep thinking,mathematical and writing abilities ≈ o3."
       },
       {
@@ -59,13 +59,13 @@ export const getDeModels = async (token: string = "") => {
       //   support: "text",
       //   desc: "Deep thinking,mathematical and writing abilities ≈ o3"
       // },
-      {
-        name: "Llama4",
-        model: "Llama-4-Scout-Instruct",
-        tip: "Llama4",
-        support: "image",
-        desc: "Suitable for most tasks, taking photos to solve math problems."
-      }
+      // {
+      //   name: "Llama4",
+      //   model: "Llama-4-Scout-Instruct",
+      //   tip: "Llama4",
+      //   support: "image",
+      //   desc: "Suitable for most tasks, taking photos to solve math problems."
+      // }
       // {
       //   name: "Pixtral Large 1.0",
       //   model: "Pixtral-124B",
