@@ -224,7 +224,6 @@ const getDeOpenAIChatCompletion = async (
       ...body,
       project: "DecentralGPT",
       stream: true,
-      thinking: true
     }),
   }).finally(() => {
     if (overallTimeout) {
