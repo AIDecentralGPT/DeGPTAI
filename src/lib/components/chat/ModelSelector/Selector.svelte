@@ -34,20 +34,22 @@
 
   function changeModel(val:string) {
     const selModel = selectedList.find((item) => item === val) ?? "";
-    if (selModel) {
-      if(selectedList.length > 1) {
-        let index = selectedList.indexOf(selModel);
-        selectedList.splice(index, 1);
-      } else {
-        toast.warning($i18n.t("Please select at least one model."));
-      }   
-    } else {
-      if (selectedList.length > 3) {
-        toast.warning($i18n.t("You can select up to four models at most."));
-      } else {
-        selectedList.push(val);
-      }
-    }
+    // if (selModel) {
+    //   if(selectedList.length > 1) {
+    //     let index = selectedList.indexOf(selModel);
+    //     selectedList.splice(index, 1);
+    //   } else {
+    //     toast.warning($i18n.t("Please select at least one model."));
+    //   }
+    // } else {
+    //   if (selectedList.length > 3) {
+    //     toast.warning($i18n.t("You can select up to four models at most."));
+    //   } else {
+    //     selectedList.push(val);
+    //   }
+    // }
+    selectedList = [];
+    selectedList.push(val);
     dispatch('childEvent', selectedList);
   }
 
