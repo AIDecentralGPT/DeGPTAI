@@ -33,7 +33,8 @@ export const getDeModels = async (token: string = "") => {
       // },
       {
         name: "Qwen O3",
-        model: "Qwen3-235B-A22B-FP8",
+        model: "Qwen3-235B-A22B-FP8-think",
+        textmodel: "Qwen3-235B-A22B-FP8",
         tip: "Qwen O3",
         support: "text",
         desc: "Deep thinking,mathematical and writing abilities ≈ o3."
@@ -221,6 +222,7 @@ const getDeOpenAIChatCompletion = async (
       ...body,
       project: "DecentralGPT",
       stream: true,
+      thinking: true
     }),
   }).finally(() => {
     if (overallTimeout) {
