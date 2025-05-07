@@ -707,6 +707,12 @@
                 : message?.raContent ?? message.content,
           }),
       }));
+
+      // 发送内容添加 nothink 内容
+      if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
+        send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
+      }
+
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
@@ -736,11 +742,27 @@
         );
         responseMessage.replytime = Math.floor(Date.now() / 1000);
         // 判断模型添加think头
-        if (model.id == "DeepSeek-R1" || (fileFlag ? model.id : (model.textmodel??model.id)) == "QwQ-32B") {
+        let first_think = false;
+        if (model.think) {
           responseMessage.think_content = "<think>";
         }
         for await (const update of textStream) {
-          const { value, done, citations, error } = update;
+          const { value, done, citations, error, think } = update;
+
+          // 校验是否思考过程
+          if (model.think && think) {
+            first_think = true;
+          }
+          if (model.think && first_think && !think) {
+            first_think = false;
+            responseMessage.content = await addTextSlowly(
+              responseMessage.content,
+              "</think>",
+              model.id
+            );
+            messages = messages;
+          }
+
           if (error) {
             await handleOpenAIError(error, null, model, responseMessage);
             break;
