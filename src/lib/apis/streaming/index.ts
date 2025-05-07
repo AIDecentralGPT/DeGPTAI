@@ -8,6 +8,7 @@ type TextStreamUpdate = {
 	citations?: any;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	error?: any;
+	think?: boolean;
 };
 
 // createOpenAITextStream takes a responseBody with a SSE response,
@@ -33,7 +34,7 @@ async function* openAIStreamToIterator(
 	while (true) {
 		const { value, done } = await reader.read();
 		if (done) {
-			yield { done: true, value: '' };
+			yield { done: true, value: ''};
 			break;
 		}
 		if (!value) {
@@ -58,7 +59,11 @@ async function* openAIStreamToIterator(
 				continue;
 			}
 
-			yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
+			if (parsedData.choices?.[0]?.delta?.reasoning_content) {
+				yield { done: false, value: parsedData.choices?.[0]?.delta?.reasoning_content ?? '', think: true };
+			} else {
+				yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
+			}
 		} catch (e) {
 			console.error('Error extracting delta from SSE event:', e);
 		}

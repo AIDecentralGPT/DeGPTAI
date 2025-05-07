@@ -35,6 +35,7 @@ export const getDeModels = async (token: string = "") => {
         name: "Qwen O3",
         model: "Qwen3-235B-A22B-FP8-think",
         textmodel: "Qwen3-235B-A22B-FP8",
+        think: true,
         tip: "Qwen O3",
         support: "text",
         desc: "Deep thinking,mathematical and writing abilities ≈ o3."
@@ -42,6 +43,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Qwen3",
         model: "Qwen3-235B-A22B-FP8",
+        think: false,
         tip: "Qwen3",
         support: "text",
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
