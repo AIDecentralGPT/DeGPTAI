@@ -58,6 +58,7 @@
   } from "$lib/constants";
 
   import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
+  import { analysisImageInfo } from "$lib/apis/rag";
 
   let inviter: any = "";
   let channelName: any = "";
@@ -241,48 +242,48 @@
     );
     
     // 校验模型是否支持文件类型
-    let imageModels = $models.filter(item => item.support == "image");
-    if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
-      let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
-        .map(item => item.model);
-      if (checkSelectedModels.length == 0) {
-        selectedModels = imageModels.map(item => item.model);
-      } else {
-        selectedModels = checkSelectedModels;
-      }
-      fileFlag = true;
-    } else {
-      let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
-      let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
-      if (checkMessages.length > 0) {
-        if (checkSelectModels.length == 0) {
-          fileFlag = false;
-          switchModel.set({
-            content: prompt,
-            search: search,
-            searchType: search_type,
-            status: true
-          })
-          await initNewChat();
-          // 触发直接发送消息
-          if ($switchModel.status) {
-            prompt = $switchModel.content;
-            search = $switchModel.search;
-            search_type = $switchModel.searchType;
-            switchModel.set({content: "", search: false, searchType: 'web', status: false});
-            await submitPrompt(prompt, $user);
-          };
-          return;
-        } else {
-          fileFlag = true;
-          selectedModels = checkSelectModels.map(item => item.model);
-        } 
-      } else{
-        fileFlag = false;
-      }
-    }
+    // let imageModels = $models.filter(item => item.support == "image");
+    // if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
+    //   let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
+    //     .map(item => item.model);
+    //   if (checkSelectedModels.length == 0) {
+    //     selectedModels = imageModels.map(item => item.model);
+    //   } else {
+    //     selectedModels = checkSelectedModels;
+    //   }
+    //   fileFlag = true;
+    // } else {
+    //   let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
+    //   let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
+    //   if (checkMessages.length > 0) {
+    //     if (checkSelectModels.length == 0) {
+    //       fileFlag = false;
+    //       switchModel.set({
+    //         content: prompt,
+    //         search: search,
+    //         searchType: search_type,
+    //         status: true
+    //       })
+    //       await initNewChat();
+    //       // 触发直接发送消息
+    //       if ($switchModel.status) {
+    //         prompt = $switchModel.content;
+    //         search = $switchModel.search;
+    //         search_type = $switchModel.searchType;
+    //         switchModel.set({content: "", search: false, searchType: 'web', status: false});
+    //         await submitPrompt(prompt, $user);
+    //       };
+    //       return;
+    //     } else {
+    //       fileFlag = true;
+    //       selectedModels = checkSelectModels.map(item => item.model);
+    //     } 
+    //   } else{
+    //     fileFlag = false;
+    //   }
+    // }
 
-    console.log("selectedModels", selectedModels);
+    // console.log("selectedModels", selectedModels);
 
     // 如果开启网络搜索只选择一个模型回复
     if (search) {
@@ -314,6 +315,7 @@
         childrenIds: [],
         role: "user",
         user: _user ?? undefined,
+        imageinfo: "",
         content: userPrompt,
         files: files.length > 0 ? files : undefined,
         search: search,
@@ -381,6 +383,9 @@
       webInfo = {url:""};
 
       scrollToBottom();
+
+      // 校验图片获取图片信息
+      await analysisimageinfo(userMessageId);
 
       // 获取网络搜索内容
       if (search) {
@@ -677,28 +682,45 @@
 			// 过滤掉error和 content为空数据
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
 
+      // send_message = send_message.map((message, idx, arr) => ({
+      //   role: message.role,
+      //   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+      //   message.role === "user"
+      //     ? {
+      //         content: [
+      //           {
+      //             type: "text",
+      //             text:
+      //               arr.length - 1 !== idx
+      //                 ? message.content
+      //                 : message?.raContent ?? message.content,
+      //           },
+      //           ...message.files
+      //             .filter((file) => file.type === "image")
+      //               .map((file) => ({
+      //                 type: "image_url",
+      //                 image_url: {
+      //                   url: file.url,
+      //                 },
+      //               })),
+      //         ],
+      //       }
+      //     : {
+      //       content:
+      //         arr.length - 1 !== idx
+      //           ? message.content
+      //           : message?.raContent ?? message.content,
+      //     }),
+      // }));
+
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
         message.role === "user"
           ? {
-              content: [
-                {
-                  type: "text",
-                  text:
-                    arr.length - 1 !== idx
-                      ? message.content
-                      : message?.raContent ?? message.content,
-                },
-                ...message.files
-                  .filter((file) => file.type === "image")
-                    .map((file) => ({
-                      type: "image_url",
-                      image_url: {
-                        url: file.url,
-                      },
-                    })),
-              ],
+              content: arr.length - 1 !== idx
+                ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
+                : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
             }
           : {
             content:
@@ -904,6 +926,19 @@
       let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
       if (result?.ok) {
         thirdData = result.data;
+      }
+    }
+    await tick();
+  }
+
+  // 获取图片描述
+  const analysisimageinfo = async(messageId: string) => {
+    let userMessage = history.messages[messageId];
+    if (userMessage.files) {
+      if (userMessage.files.length > 0 && (userMessage.files[0].type == "image" || (userMessage.files[0]?.image??[]).length > 0)) {
+        let result = await analysisImageInfo(localStorage.token, userMessage.files[0].url);
+        userMessage.imageinfo = result;
+        history.messages[messageId] = userMessage;
       }
     }
     await tick();

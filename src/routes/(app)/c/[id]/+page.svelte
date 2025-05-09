@@ -45,8 +45,7 @@
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
 	import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch"
-
-	import { addErrorLog } from "$lib/apis/errorlog";
+	import { analysisImageInfo } from "$lib/apis/rag";
 
 	const i18n = getContext('i18n');
 
@@ -100,7 +99,6 @@
 	let webInfo = {url: ""}
 
 	$: if (history.currentId !== null) {
-		console.log("================================");
 		let _messages = [];
 
 		let currentMessage = history.messages[history.currentId];
@@ -206,39 +204,38 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
   );
     
   // 校验模型是否支持文件类型
-	let imageModels = $models.filter(item => item.support == "image");
-  if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
-    let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
-    if (checkSelectedModels.length == 0) {
-			selectedModels = imageModels.map(item => item.model);
-    } else {
-			selectedModels = checkSelectedModels;
-		}
-		fileFlag = true;
-  } else {
-		let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
-		let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
-		if (checkMessages.length > 0) {
-      if (checkSelectModels.length == 0) {
-				fileFlag = false;
-        switchModel.set({
-          content: prompt,
-          search: search,
-          searchType: search_type,
-          status: true
-        })
-        await goto("/");
-        return;
-      } else {
-				fileFlag = true;
-        selectedModels = checkSelectModels.map(item => item.model);
-      } 
-    } else {
-			fileFlag = false;
-		}
-	}
+	// let imageModels = $models.filter(item => item.support == "image");
+  // if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
+  //   let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
+  //   if (checkSelectedModels.length == 0) {
+	// 		selectedModels = imageModels.map(item => item.model);
+  //   } else {
+	// 		selectedModels = checkSelectedModels;
+	// 	}
+	// 	fileFlag = true;
+  // } else {
+	// 	let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
+	// 	let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
+	// 	if (checkMessages.length > 0) {
+  //     if (checkSelectModels.length == 0) {
+	// 			fileFlag = false;
+  //       switchModel.set({
+  //         content: prompt,
+  //         search: search,
+  //         searchType: search_type,
+  //         status: true
+  //       })
+  //       await goto("/");
+  //       return;
+  //     } else {
+	// 			fileFlag = true;
+  //       selectedModels = checkSelectModels.map(item => item.model);
+  //     } 
+  //   } else {
+	// 		fileFlag = false;
+	// 	}
+	// }
 
-  console.log("selectedModels", selectedModels);
 
 	// 如果开启网络搜索只选择一个模型回复
 	if (search) {
@@ -338,6 +335,9 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 		webInfo = {url:""};
 
 		scrollToBottom();
+
+		// 校验图片获取图片信息
+		await analysisimageinfo(userMessageId);
 
 		// 获取网络搜索内容
 		if (search) {
@@ -631,35 +631,52 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 			// 过滤掉error和 content为空数据
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
 
-      send_message = send_message.map((message, idx, arr) => ({
+      // send_message = send_message.map((message, idx, arr) => ({
+      //   role: message.role,
+      //   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+      //   message.role === "user"
+      //     ? {
+      //         content: [
+      //           {
+      //             type: "text",
+      //             text:
+      //               arr.length - 1 !== idx
+      //                 ? message.content
+      //                 : message?.raContent ?? message.content,
+      //           },
+      //           ...message.files
+      //             .filter((file) => file.type === "image")
+      //               .map((file) => ({
+      //                 type: "image_url",
+      //                 image_url: {
+      //                   url: file.url,
+      //                 },
+      //               })),
+      //         ],
+      //       }
+      //     : {
+      //       content:
+      //         arr.length - 1 !== idx
+      //           ? message.content
+      //           : message?.raContent ?? message.content,
+      //       }),
+      // }));
+
+			send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
         message.role === "user"
           ? {
-              content: [
-                {
-                  type: "text",
-                  text:
-                    arr.length - 1 !== idx
-                      ? message.content
-                      : message?.raContent ?? message.content,
-                },
-                ...message.files
-                  .filter((file) => file.type === "image")
-                    .map((file) => ({
-                      type: "image_url",
-                      image_url: {
-                        url: file.url,
-                      },
-                    })),
-              ],
+              content: arr.length - 1 !== idx
+                ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
+                : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
             }
           : {
             content:
               arr.length - 1 !== idx
                 ? message.content
                 : message?.raContent ?? message.content,
-            }),
+          }),
       }));
 
 			// 发送内容添加 nothink 内容
@@ -1318,6 +1335,19 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
       let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
       if (result?.ok) {
         thirdData = result.data;
+      }
+    }
+    await tick();
+  }
+
+	// 获取图片描述
+  const analysisimageinfo = async(messageId: string) => {
+    let userMessage = history.messages[messageId];
+    if (userMessage.files) {
+      if (userMessage.files.length > 0 && (userMessage.files[0].type == "image" || (userMessage.files[0]?.image??[]).length > 0)) {
+        let result = await analysisImageInfo(localStorage.token, userMessage.files[0].url);
+        userMessage.imageinfo = result;
+        history.messages[messageId] = userMessage;
       }
     }
     await tick();
