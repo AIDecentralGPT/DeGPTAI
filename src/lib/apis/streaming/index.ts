@@ -59,7 +59,7 @@ async function* openAIStreamToIterator(
 				continue;
 			}
 
-			if (parsedData.choices?.[0]?.delta?.reasoning_content) {
+			if (parsedData.choices?.[0]?.delta?.reasoning_content != null) {
 				yield { done: false, value: parsedData.choices?.[0]?.delta?.reasoning_content ?? '', think: true };
 			} else {
 				yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
