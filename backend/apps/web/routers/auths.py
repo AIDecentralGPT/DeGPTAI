@@ -744,7 +744,6 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
             "user_id": user.id
         })
 
-        print("=======================")
         merchant_biz_id = response["merchant_biz_id"]
         transaction_id = response["transaction_id"]
         transaction_url = response["transaction_url"]
