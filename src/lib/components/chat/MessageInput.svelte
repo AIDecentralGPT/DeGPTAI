@@ -1685,10 +1685,11 @@
 
                   <!-- 深度搜索 -->
                   <div class="self-star mb-2 ml-1 mr-1">
-                    <button class="flex flex-row items-center bg-white text-gray-800 dark:text-white dark:bg-gray-800 transition rounded-full cursor-pointer px-3 py-1.5
-                      {deepsearch ? 'bg-[#D0A870]' : 'bg-white dark:bg-gray-800'}"
+                    <button class="flex flex-row items-center transition rounded-full cursor-pointer px-3 py-1.5
+                      {deepsearch ? 'bg-[#D0A870] text-white' : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'}"
                       type="button"
                       on:click={async (event) => {
+                        console.log("===============");
                         event.stopPropagation();
                         deepsearch = !deepsearch;
                       }}>
