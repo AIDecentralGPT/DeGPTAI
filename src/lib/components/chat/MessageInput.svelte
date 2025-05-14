@@ -1688,7 +1688,8 @@
                     <button class="flex flex-row items-center bg-white text-gray-800 dark:text-white dark:bg-gray-800 transition rounded-full cursor-pointer px-3 py-1.5
                       {deepsearch ? 'bg-[#D0A870]' : 'bg-white dark:bg-gray-800'}"
                       type="button"
-                      on:click={() => {
+                      on:click={async (event) => {
+                        event.stopPropagation();
                         deepsearch = !deepsearch;
                       }}>
                       <svg 
