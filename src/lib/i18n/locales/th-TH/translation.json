@@ -852,5 +852,6 @@
   "Introduce the code in the file": "แนะนำรหัสในไฟล์",
   "What's the main purpose of the file's code": "วัตถุประสงค์หลักของรหัสในไฟล์คืออะไร",
   "Optimize the code in the file": " tối ưuรหัสในไฟล์",
-  "In web page parsing...": "ในการวิเคราะห์หน้าเว็บ..."
+  "In web page parsing...": "ในการวิเคราะห์หน้าเว็บ...",
+  "Deep Research": "การวิจัยที่ลึกซึ้ง"
 }

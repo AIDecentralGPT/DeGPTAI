@@ -58,7 +58,9 @@
 	let currentRequestId = null;
 
 	// let chatId = $page.params.id;
-	let showModelSelector = true;
+	let showModelSelector = false;
+	let deepsearch = false;
+
 	let selectedModels = [''];
 	let atSelectedModel = '';
 
@@ -198,6 +200,13 @@ let thirdData: any = {};
 const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	console.log('submitPrompt', $chatId);
 	thirdData = {};
+
+	// 判断使用的模型
+	if (deepsearch) {
+    selectedModels = ["Qwen3-235B-A22B-FP8-think"];
+  } else {
+    selectedModels = ["Qwen3-235B-A22B-FP8"];
+  }
 
 	selectedModels = selectedModels.map((modelId) =>
     $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -1612,6 +1621,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		bind:webInfo
 		bind:search
 		bind:search_type
+		bind:deepsearch
 		bind:prompt
 		bind:autoScroll
 		bind:selectedModel={atSelectedModel}
