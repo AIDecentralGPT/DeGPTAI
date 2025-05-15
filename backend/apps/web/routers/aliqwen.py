@@ -85,46 +85,52 @@ async def completion_proxy2(param: AliQwenModelReq, user=Depends(get_current_use
         "Content-Type": "application/json"
     }
     data = {
-        "model":param.model,
-        "messages":param.messages,
-        "stream":False,
+        "model": param.model,
+        "messages": param.messages,
+        "stream": param.stream,
         "enable_thinking": param.enable_thinking
     }
     if param.stream:
         def event_generator():
             # 确保使用异步客户端
-            response = requests.post(apiurl, headers=headers, json=jsonable_encoder(data))
+            response = requests.post(apiurl, headers=headers, json=jsonable_encoder(data), stream=True)
             
-            for chunk in response:
-                # 符合 SSE 格式要求
-                json_dict = json.loads(chunk.model_dump_json())
-                if param.enable_thinking and json_dict["choices"][0]["delta"]["reasoning_content"] is not None:
-                    chat_result = {
-                        "id": json_dict["id"],
-                        "object": json_dict["object"],
-                        "created": json_dict["created"],
-                        "model": json_dict["model"],
-                        "choices": [{
-                            "index": json_dict["choices"][0]["index"],
-                            "delta": {"reasoning_content": json_dict["choices"][0]["delta"]["reasoning_content"]},
-                            "logprobs": json_dict["choices"][0]["logprobs"],
-                            "finish_reason": json_dict["choices"][0]["finish_reason"]
-                        }]
-                    }
-                else:
-                    chat_result = {
-                        "id": json_dict["id"],
-                        "object": json_dict["object"],
-                        "created": json_dict["created"],
-                        "model": json_dict["model"],
-                        "choices": [{
-                            "index": json_dict["choices"][0]["index"],
-                            "delta": {"content": json_dict["choices"][0]["delta"]["content"]},
-                            "logprobs": json_dict["choices"][0]["logprobs"],
-                            "finish_reason": json_dict["choices"][0]["finish_reason"]
-                        }]
-                    }
-                yield f"data: {json.dumps(chat_result)}\n\n"
+            for line in response.iter_lines():
+                if line:
+                    # 解码字节数据并移除 data: 前缀
+                    decoded_line = line.decode('utf-8').lstrip('data: ')
+                    try: 
+                        json_dict = json.loads(decoded_line)
+                        # 符合 SSE 格式要求
+                        if param.enable_thinking and json_dict["choices"][0]["delta"]["reasoning_content"] is not None:
+                            chat_result = {
+                                "id": json_dict["id"],
+                                "object": json_dict["object"],
+                                "created": json_dict["created"],
+                                "model": json_dict["model"],
+                                "choices": [{
+                                    "index": json_dict["choices"][0]["index"],
+                                    "delta": {"reasoning_content": json_dict["choices"][0]["delta"]["reasoning_content"]},
+                                    "logprobs": json_dict["choices"][0]["logprobs"],
+                                    "finish_reason": json_dict["choices"][0]["finish_reason"]
+                                }]
+                            }
+                        else:
+                            chat_result = {
+                                "id": json_dict["id"],
+                                "object": json_dict["object"],
+                                "created": json_dict["created"],
+                                "model": json_dict["model"],
+                                "choices": [{
+                                    "index": json_dict["choices"][0]["index"],
+                                    "delta": {"content": json_dict["choices"][0]["delta"]["content"]},
+                                    "logprobs": json_dict["choices"][0]["logprobs"],
+                                    "finish_reason": json_dict["choices"][0]["finish_reason"]
+                                }]
+                            }
+                        yield f"data: {json.dumps(chat_result)}\n\n"
+                    except:
+                        print(f"解析失败的行: {decoded_line}")
 
             yield f"data: [DONE]\n\n" 
 
