@@ -1130,6 +1130,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
         content: $i18n.t("Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters")
       });
       const title = await generateSearchKeyword(
+				localStorage.token,
         send_messages,
 				userPrompt,
         $deApiBaseUrl?.url

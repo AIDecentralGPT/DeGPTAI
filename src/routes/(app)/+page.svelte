@@ -747,7 +747,8 @@
         localStorage.token,
         {
           model: fileFlag ? model.id : (model.textmodel??model.id),
-          messages: send_message
+          messages: send_message,
+          enable_thinking: model.think
         },
         $deApiBaseUrl?.url,
       );

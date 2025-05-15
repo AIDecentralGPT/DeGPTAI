@@ -1,4 +1,5 @@
 import { promptTemplate } from "$lib/utils";
+import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 // 获取De的所有请求节点
 export const getDeBaseUrls = async () => {
@@ -6,15 +7,15 @@ export const getDeBaseUrls = async () => {
   const baseUrls = [
     {
       name: "America",
-      url: "https://usa-chat.degpt.ai/api",
+      url: WEBUI_API_BASE_URL,
     },
     {
       name: "Singapore",
-      url: "https://singapore-chat.degpt.ai/api",
+      url: WEBUI_API_BASE_URL,
     },
     {
       name: "Korea",
-      url: "https://korea-chat.degpt.ai/api",
+      url: WEBUI_API_BASE_URL,
     }
   ];
   return baseUrls;
@@ -34,7 +35,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Qwen O3",
         model: "Qwen3-235B-A22B-FP8-think",
-        textmodel: "Qwen3-235B-A22B-FP8",
+        textmodel: "qwen3-235b-a22b",
         think: true,
         tip: "Qwen O3",
         support: "text",
@@ -43,6 +44,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Qwen3",
         model: "Qwen3-235B-A22B-FP8",
+        textmodel: "qwen3-235b-a22b",
         think: false,
         tip: "Qwen3",
         support: "text",
@@ -158,7 +160,7 @@ export const generateDeOpenAIChatCompletion = async (
   for (const urlObj of urlObjs) {
     controller = new AbortController();
     try {
-      res = await getDeOpenAIChatCompletion(urlObj, body, controller, true);
+      res = await getDeOpenAIChatCompletion(urlObj, body, controller, true, token);
       if (res.status == 200) {
         break;
       } else {
@@ -203,7 +205,8 @@ const getDeOpenAIChatCompletion = async (
   urlObj: any,
   body: Object,
   controller: any,
-  timeFlag: boolean
+  timeFlag: boolean,
+  token:  string = ""
 ) => {
   let res: any;
   let overallTimeout = null
@@ -213,11 +216,11 @@ const getDeOpenAIChatCompletion = async (
       throw new Error('timeout');
     }, 10000);
   }
-  res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
+  res = await fetch(`${urlObj.url}/chat/completion/proxy`, {
     signal: controller.signal,
     method: "POST",
     headers: {
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -255,14 +258,15 @@ export const generateDeTitle = async (
   }
 
   template = promptTemplate(template, prompt);
-  model = 'Qwen3-235B-A22B-FP8';
+  model = 'qwen3-235b-a22b';
   for (const domain of urls) {
     try {
-      const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
+      const result = await fetch(`${domain.url}/chat/completion/proxy`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           model: model,
@@ -277,6 +281,7 @@ export const generateDeTitle = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
+          enable_thinking: false
         })
       });
       res = await result.json();
@@ -301,6 +306,7 @@ export const generateDeTitle = async (
 
 // 获取最后提问的词语
 export const generateSearchKeyword = async (
+  token: string = "",
   messages: Object,
   content: string,
   url: string
@@ -316,14 +322,15 @@ export const generateSearchKeyword = async (
     // 将该元素添加到数组的开头
     urls.unshift(koreaItem);
   }
-  let model = 'Qwen3-235B-A22B-FP8';
+  let model = 'qwen3-235b-a22b';
   for (const domain of urls) {
     try {
-      const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
+      const result = await fetch(`${domain.url}/chat/completion/proxy`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           model: model,
@@ -333,6 +340,7 @@ export const generateSearchKeyword = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
+          enable_thinking: false
         })
       });
       res = await result.json();
