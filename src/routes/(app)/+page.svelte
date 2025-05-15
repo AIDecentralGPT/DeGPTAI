@@ -739,9 +739,9 @@
       }));
 
       // 发送内容添加 nothink 内容
-      if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
-        send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
-      }
+      // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
+      //   send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
+      // }
 
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
@@ -1109,6 +1109,7 @@
         content: $i18n.t("Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters")
       });
       const title = await generateSearchKeyword(
+        localStorage.token,
         send_messages,
         userPrompt,
         $deApiBaseUrl?.url

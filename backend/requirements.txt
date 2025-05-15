@@ -80,3 +80,4 @@ pymupdf==1.25.5
 nltk==3.9.1
 python-docx==1.1.2
 openai==1.78.1
+dashscope==1.23.3

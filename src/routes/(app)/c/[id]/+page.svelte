@@ -689,9 +689,9 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
       }));
 
 			// 发送内容添加 nothink 内容
-      if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
-        send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
-      }
+      // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
+      //   send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
+      // }
 
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
