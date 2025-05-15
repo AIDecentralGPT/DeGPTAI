@@ -1,4 +1,5 @@
 import os
+import openai
 from openai import OpenAI
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
@@ -9,8 +10,10 @@ from fastapi import Depends
 from utils.utils import (get_current_user)
 
 
-from apps.web.models.aliqwen import AliQwenModelReq
+from apps.web.models.aliqwen import AliQwenModelReq, AliQwenModelRe2
 
+openai.proxy = None
+openai.timeout = 30
 apikey = os.getenv("DASHSCOPE_API_KEY")
 client = OpenAI(
     api_key=apikey,
@@ -76,7 +79,7 @@ async def completion_proxy(param: AliQwenModelReq, user=Depends(get_current_user
         return completion
     
 @router.post("/completion/proxy2")
-async def completion_proxy(param: AliQwenModelReq, user=Depends(get_current_user)):
+async def completion_proxy(param: AliQwenModelRe2, user=Depends(get_current_user)):
     if param.stream:
         def event_generator():
             # 确保使用异步客户端
@@ -124,11 +127,10 @@ async def completion_proxy(param: AliQwenModelReq, user=Depends(get_current_user
         return StreamingResponse(event_generator(), media_type="text/event-stream")
     else:
         # 确保使用异步客户端
-        completion = dashscope.Generation.call(
+        response = dashscope.Generation.call(
             api_key=apikey,
             model=param.model,
             messages=param.messages,
-            stream=False,
-            extra_body={"enable_thinking": param.enable_thinking}
+            enable_thinking=param.enable_thinking
         )
-        return completion
+        return response
