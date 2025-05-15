@@ -12,10 +12,3 @@ class AliQwenModelReq(BaseModel):
     stream : bool
     enable_thinking: bool
 
-class AliQwenModelRe2(BaseModel):
-    model: str
-    messages: object
-    project: str
-    stream : bool
-    enable_thinking: bool
-

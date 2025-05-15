@@ -216,7 +216,7 @@ const getDeOpenAIChatCompletion = async (
       throw new Error('timeout');
     }, 10000);
   }
-  res = await fetch(`${urlObj.url}/chat/completion/proxy`, {
+  res = await fetch(`${urlObj.url}/chat/completion/proxy2`, {
     signal: controller.signal,
     method: "POST",
     headers: {
@@ -261,7 +261,7 @@ export const generateDeTitle = async (
   model = 'qwen3-235b-a22b';
   for (const domain of urls) {
     try {
-      const result = await fetch(`${domain.url}/chat/completion/proxy`, {
+      const result = await fetch(`${domain.url}/chat/completion/proxy2`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -325,7 +325,7 @@ export const generateSearchKeyword = async (
   let model = 'qwen3-235b-a22b';
   for (const domain of urls) {
     try {
-      const result = await fetch(`${domain.url}/chat/completion/proxy`, {
+      const result = await fetch(`${domain.url}/chat/completion/proxy2`, {
         method: "POST",
         headers: {
           Accept: "application/json",
