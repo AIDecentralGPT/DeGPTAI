@@ -822,8 +822,6 @@ AUDIO_OPENAI_API_VOICE = PersistentConfig(
 ####################################
 # LiteLLM
 ####################################
-
-
 ENABLE_LITELLM = os.environ.get("ENABLE_LITELLM", "True").lower() == "true"
 
 LITELLM_PROXY_PORT = int(os.getenv("LITELLM_PROXY_PORT", "14365"))

@@ -71,7 +71,8 @@
   let messagesContainerElement: HTMLDivElement;
   let currentRequestId: any = null;
 
-  let showModelSelector = true;
+  let showModelSelector = false;
+  let deepsearch = false;
 
   let selectedModels = [""];
   let atSelectedModel = "";
@@ -236,6 +237,13 @@
     console.log("submitPrompt", $chatId, userPrompt);
     chatInputPlaceholder = "";
     thirdData = [];
+
+    // 判断使用的模型
+    if (deepsearch) {
+      selectedModels = ["Qwen3-235B-A22B-FP8-think"];
+    } else {
+      selectedModels = ["Qwen3-235B-A22B-FP8"];
+    }
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -731,15 +739,16 @@
       }));
 
       // 发送内容添加 nothink 内容
-      if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
-        send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
-      }
+      // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
+      //   send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
+      // }
 
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
           model: fileFlag ? model.id : (model.textmodel??model.id),
-          messages: send_message
+          messages: send_message,
+          enable_thinking: model.think
         },
         $deApiBaseUrl?.url,
       );
@@ -1100,6 +1109,7 @@
         content: $i18n.t("Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters")
       });
       const title = await generateSearchKeyword(
+        localStorage.token,
         send_messages,
         userPrompt,
         $deApiBaseUrl?.url
@@ -1250,6 +1260,7 @@
   bind:webInfo
   bind:search
   bind:search_type
+  bind:deepsearch
   bind:prompt
   bind:autoScroll
   bind:chatInputPlaceholder

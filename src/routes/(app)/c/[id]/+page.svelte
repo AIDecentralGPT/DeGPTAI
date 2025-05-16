@@ -58,7 +58,9 @@
 	let currentRequestId = null;
 
 	// let chatId = $page.params.id;
-	let showModelSelector = true;
+	let showModelSelector = false;
+	let deepsearch = false;
+
 	let selectedModels = [''];
 	let atSelectedModel = '';
 
@@ -198,6 +200,13 @@ let thirdData: any = {};
 const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	console.log('submitPrompt', $chatId);
 	thirdData = {};
+
+	// 判断使用的模型
+	if (deepsearch) {
+    selectedModels = ["Qwen3-235B-A22B-FP8-think"];
+  } else {
+    selectedModels = ["Qwen3-235B-A22B-FP8"];
+  }
 
 	selectedModels = selectedModels.map((modelId) =>
     $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -680,9 +689,9 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
       }));
 
 			// 发送内容添加 nothink 内容
-      if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
-        send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
-      }
+      // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
+      //   send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
+      // }
 
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
@@ -1121,6 +1130,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
         content: $i18n.t("Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters")
       });
       const title = await generateSearchKeyword(
+				localStorage.token,
         send_messages,
 				userPrompt,
         $deApiBaseUrl?.url
@@ -1612,6 +1622,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		bind:webInfo
 		bind:search
 		bind:search_type
+		bind:deepsearch
 		bind:prompt
 		bind:autoScroll
 		bind:selectedModel={atSelectedModel}
