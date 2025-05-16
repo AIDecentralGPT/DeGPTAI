@@ -1684,7 +1684,7 @@
                   </div>
 
                   <!-- 深度搜索 -->
-                  <div class="self-star mb-2 ml-1 mr-1">
+                  <!-- <div class="self-star mb-2 ml-1 mr-1">
                     <button class="flex flex-row items-center transition rounded-full cursor-pointer px-3 py-1.5
                       {deepsearch ? 'bg-[#D0A870] text-white' : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'}"
                       type="button"
@@ -1703,7 +1703,7 @@
                       </svg>
                       <span class="text-sm ml-1">{$i18n.t("Deep Research")}</span>
                     </button>
-                  </div>  
+                  </div>   -->
                 </div>
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">
