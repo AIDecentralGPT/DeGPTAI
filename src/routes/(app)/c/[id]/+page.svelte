@@ -58,7 +58,7 @@
 	let currentRequestId = null;
 
 	// let chatId = $page.params.id;
-	let showModelSelector = false;
+	let showModelSelector = true;
 	let deepsearch = false;
 
 	let selectedModels = [''];
@@ -200,13 +200,6 @@ let thirdData: any = {};
 const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 	console.log('submitPrompt', $chatId);
 	thirdData = {};
-
-	// 判断使用的模型
-	if (deepsearch) {
-    selectedModels = ["Qwen3-235B-A22B-FP8-think"];
-  } else {
-    selectedModels = ["Qwen3-235B-A22B-FP8"];
-  }
 
 	selectedModels = selectedModels.map((modelId) =>
     $models.map((m) => m.id).includes(modelId) ? modelId : ""
@@ -698,6 +691,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 				{
 					model: fileFlag ? model.id : (model.textmodel??model.id),
 					messages: send_message,
+					enable_thinking: model.think
 				},
 				$deApiBaseUrl?.url			
 			);
