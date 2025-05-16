@@ -71,7 +71,7 @@
   let messagesContainerElement: HTMLDivElement;
   let currentRequestId: any = null;
 
-  let showModelSelector = false;
+  let showModelSelector = true;
   let deepsearch = false;
 
   let selectedModels = [""];
@@ -237,13 +237,6 @@
     console.log("submitPrompt", $chatId, userPrompt);
     chatInputPlaceholder = "";
     thirdData = [];
-
-    // 判断使用的模型
-    if (deepsearch) {
-      selectedModels = ["Qwen3-235B-A22B-FP8-think"];
-    } else {
-      selectedModels = ["Qwen3-235B-A22B-FP8"];
-    }
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
