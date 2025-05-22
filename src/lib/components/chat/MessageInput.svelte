@@ -499,7 +499,7 @@
 
   const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
     ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
-    ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml";
+    ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml,.zip,.rar";
 </script>
 
 {#if dragged}
@@ -1689,7 +1689,6 @@
                       {deepsearch ? 'bg-[#D0A870] text-white' : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'}"
                       type="button"
                       on:click={async (event) => {
-                        console.log("===============");
                         event.stopPropagation();
                         deepsearch = !deepsearch;
                       }}>
@@ -1703,7 +1702,7 @@
                       </svg>
                       <span class="text-sm ml-1">{$i18n.t("Deep Research")}</span>
                     </button>
-                  </div>   -->
+                  </div> -->
                 </div>
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">
