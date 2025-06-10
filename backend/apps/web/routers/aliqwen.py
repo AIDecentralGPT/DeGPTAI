@@ -5,6 +5,8 @@ from fastapi.responses import StreamingResponse
 from fastapi.encoders import jsonable_encoder
 import json
 import requests
+import uuid
+from datetime import datetime
 
 from fastapi import Depends
 from utils.utils import (get_current_user)
@@ -32,36 +34,56 @@ async def completion_proxy(param: AliQwenModelReq, user=Depends(get_current_user
                 stream=True,  # 强制开启流模式
                 extra_body={"enable_thinking": param.enable_thinking}
             )
-            
-            for chunk in completion:
-                # 符合 SSE 格式要求
-                json_dict = json.loads(chunk.model_dump_json())
-                if param.enable_thinking and json_dict["choices"][0]["delta"]["reasoning_content"] is not None:
-                    chat_result = {
-                        "id": json_dict["id"],
-                        "object": json_dict["object"],
-                        "created": json_dict["created"],
-                        "model": json_dict["model"],
-                        "choices": [{
-                            "index": json_dict["choices"][0]["index"],
-                            "delta": {"reasoning_content": json_dict["choices"][0]["delta"]["reasoning_content"]},
-                            "logprobs": json_dict["choices"][0]["logprobs"],
-                            "finish_reason": json_dict["choices"][0]["finish_reason"]
-                        }]
-                    }
-                else:
-                    chat_result = {
-                        "id": json_dict["id"],
-                        "object": json_dict["object"],
-                        "created": json_dict["created"],
-                        "model": json_dict["model"],
-                        "choices": [{
-                            "index": json_dict["choices"][0]["index"],
-                            "delta": {"content": json_dict["choices"][0]["delta"]["content"]},
-                            "logprobs": json_dict["choices"][0]["logprobs"],
-                            "finish_reason": json_dict["choices"][0]["finish_reason"]
-                        }]
-                    }
+            if completion is not None:
+                for chunk in completion:
+                    try:
+                        # 符合 SSE 格式要求
+                        if chunk:
+                            json_dict = json.loads(chunk.model_dump_json())
+                            # 重组返回数据格式
+                            if json_dict["choices"] is not None:
+                                if param.enable_thinking and json_dict["choices"][0]["delta"]["reasoning_content"] is not None:
+                                    chat_result = {
+                                        "id": json_dict["id"],
+                                        "object": json_dict["object"],
+                                        "created": json_dict["created"],
+                                        "model": json_dict["model"],
+                                        "choices": [{
+                                            "index": json_dict["choices"][0]["index"],
+                                            "delta": {"reasoning_content": json_dict["choices"][0]["delta"]["reasoning_content"]},
+                                            "logprobs": json_dict["choices"][0]["logprobs"],
+                                            "finish_reason": json_dict["choices"][0]["finish_reason"]
+                                        }]
+                                    }
+                                else:
+                                    chat_result = {
+                                        "id": json_dict["id"],
+                                        "object": json_dict["object"],
+                                        "created": json_dict["created"],
+                                        "model": json_dict["model"],
+                                        "choices": [{
+                                            "index": json_dict["choices"][0]["index"],
+                                            "delta": {"content": json_dict["choices"][0]["delta"]["content"]},
+                                            "logprobs": json_dict["choices"][0]["logprobs"],
+                                            "finish_reason": json_dict["choices"][0]["finish_reason"]
+                                        }]
+                                    }
+                                yield f"data: {json.dumps(chat_result)}\n\n"
+                    except:
+                        print("=====解析失败====", chunk)
+            else:
+                chat_result = {
+                    "id": str(uuid.uuid4()),
+                    "object": param.model,
+                    "created": datetime.now().timestamp(),
+                    "model": param.model,
+                    "choices": [{
+                        "index": 0,
+                        "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
+                        "logprobs": None,
+                        "finish_reason": None
+                    }]
+                }
                 yield f"data: {json.dumps(chat_result)}\n\n"
 
             yield f"data: [DONE]\n\n" 
