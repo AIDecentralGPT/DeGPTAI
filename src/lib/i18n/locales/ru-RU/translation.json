@@ -72,7 +72,7 @@
   "Archive": "Архив",
   "Archived Chats": "Архивные чаты",
   "are allowed - Activate this command by typing": "разрешены - активировать эту команду, введя",
-  "Are you sure to become a distinguished Plus member?": "Вы уверены, что хотите стать выдающимся членом Plus?",
+  "Are you sure to become a distinguished member?": "Вы уверены, что хотите стать выдающимся членом?",
   "Are you sure?": "Вы уверены?",
   "Attach file": "Прикрепить файл",
   "Attention to detail": "Внимание к деталям",
@@ -598,8 +598,8 @@
   "Upgrade Plan": "План обновления",
   "Upgrade": "Обновить",
   "Upgrade ": "Обновить ",
-  "Upgrade to Plus": "Обновить до плюс",
-  "Upgrade to Plus failed!": "Обновление до плюс не удалось!",
+  "Upgrade to Vip": "Повысить статус до VIP",
+  "Upgrade to Vip failed!": "Повышение статуса до VIP не удалось!",
   "Upgrading": "Обновление в процессе",
   "Failed to obtain authorization information.": "Не удалось получить информацию об авторизации.",
   "Authorization failed!": "Авторизация не удалась!",
@@ -853,5 +853,10 @@
   "What's the main purpose of the file's code": "Какова основная цель кода в файле",
   "Optimize the code in the file": " Оптимизируйте код в файле",
   "In web page parsing...": "При парсинге веб-страниц...",
-  "Deep Research": "Глубокое исследование"
+  "Deep Research": "Глубокое исследование",
+  "Basic Vip": "Базовый ВИП",
+  "Standard Vip": "Стандартный ВИП",
+  "Pro Vip": "Профессиональный ВИП",
+  "Month": "Месяц",
+  "Year": "Год"
 }

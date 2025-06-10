@@ -72,7 +72,7 @@
   "Archive": "Arsip",
   "Archived Chats": "Obrolan yang Dearsipkan",
   "are allowed - Activate this command by typing": "diizinkan - Aktifkan perintah ini dengan mengetik",
-  "Are you sure to become a distinguished Plus member?": "Apakah Anda yakin untuk menjadi anggota Plus yang terkemuka?",
+  "Are you sure to become a distinguished member?": "Apakah Anda yakin untuk menjadi anggota yang terkemuka?",
   "Are you sure?": "Apakah Anda yakin?",
   "Attach file": "Lampirkan file",
   "Attention to detail": "Perhatian terhadap detail",
@@ -599,8 +599,8 @@
   "Upgrade Plan": "Rencana Perbaruan",
   "Upgrade": "Perbarui",
   "Upgrade ": "Perbarui ",
-  "Upgrade to Plus": "Perbarui ke Plus",
-  "Upgrade to Plus failed!": "Perbaruan ke Plus Gagal!",
+  "Upgrade to Vip": "Perbarui ke Vip",
+  "Upgrade to Vip failed!": "Perbaruan ke Vip Gagal!",
   "Upgrading": "Sedang Perbarui",
   "Failed to obtain authorization information.": "Gagal mendapatkan informasi otorisasi.",
   "Authorization failed!": "Otorisasi gagal!",
@@ -854,5 +854,10 @@
   "What's the main purpose of the file's code": "Apa tujuan utama kode file",
   "Optimize the code in the file": "Optimalkan kode dalam file",
   "In web page parsing...": "Saat menguraikan halaman web...",
-  "Deep Research": "Penelitian mendalam"
+  "Deep Research": "Penelitian mendalam",
+  "Basic Vip": "Vip Dasar",
+  "Standard Vip": "Vip Standar",
+  "Pro Vip": "Vip Profesional",
+  "Month": "Bulan",
+  "Year": "Tahun"
 }

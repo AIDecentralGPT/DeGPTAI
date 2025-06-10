@@ -43,6 +43,7 @@ from eth_account import Account
 class VIPStatus(Model):
     id = CharField(primary_key=True, default=str(uuid.uuid4))
     user_id = CharField()
+    vip=IntegerField()
     start_date = DateField()
     end_date = DateField()
 
@@ -54,12 +55,14 @@ class VIPStatus(Model):
 class VIPStatusModel(BaseModel):
     id: str
     user_id: str
+    vip: int
     start_date: date
     end_date: date
 
 class VIPStatusModelResp(BaseModel):
     id: str
     user_id: str
+    vip: int
     start_date: date
     end_date: date
     is_pro: Optional[bool] = None
@@ -78,11 +81,12 @@ class VIPStatusTable:
         self.db = db
         db.create_tables([VIPStatus])
 
-    def insert_vip_status(self, user_id: str, start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
+    def insert_vip_status(self, user_id: str, vip: int,start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
         # order_id = str(uuid.uuid4())
         vip_status = VIPStatusModel(
             id=order_id,
             user_id=user_id,
+            vip=vip,
             start_date=start_date,
             end_date=end_date
         )

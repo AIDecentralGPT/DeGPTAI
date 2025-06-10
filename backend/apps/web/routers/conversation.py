@@ -10,8 +10,9 @@ from apps.web.models.conversation import ConversationInstance, ConversationReque
 from utils.utils import (get_current_user)
 from datetime import date
 
+from apps.web.models.models import ModelsInstance
 from apps.web.models.model_limit import ModelLimitInstance
-from apps.web.models.vip import VIPStatuses
+from apps.web.models.vipstatus import VIPStatuses
 
 
 
@@ -24,22 +25,29 @@ router = APIRouter()
 @router.post("/refresh")
 async def conversationRefresh(conversation_req: ConversationRequest, user=Depends(get_current_user)):
     try:
-        # 获取模型的聊天次数
-        modellimits = ModelLimitInstance.get_info_by_models(conversation_req.models)
+        # 获取用户当前VIP信息
+        vipStatus = VIPStatuses.get_vip_status_by_user_id(user.id)
+
+        # 获取当前请求模型信息
+        models = ModelsInstance.get_info_by_models(conversation_req.models)
 
         # 获取今天的聊天次数
         date_time = date.today()
-        conversations = ConversationInstance.get_info_by_userid_models_date(user.id, conversation_req.models, date_time)
+        type_list = [model["type"] for model in models]
+        conversations = ConversationInstance.get_info_by_userid_mtypes_date(user.id, type_list, date_time)
 
         # 判断用户类型
         userrole = "user"
+        vip = 1
         if user.id.startswith("0x"):
             userrole = "wallet"
             if user.verified:
                 userrole = "kyc"
-            vipflag = VIPStatuses.is_vip_active(user.id)
-            if vipflag:
-                userrole = "vip"
+            if vipStatus is not None:
+                userrole = "all"
+                vip = vipStatus.vip
+        # 获取该角色请求模型的总次数
+        modellimits = ModelLimitInstance.get_info_by_user_vip(userrole, vip)
                         
         result = []
         for model in conversation_req.models:

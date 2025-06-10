@@ -6,11 +6,11 @@ from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict
 
 # 定义ModelLimit模型
 class ModelLimit(Model):
-    model = CharField(primary_key=True, unique=True)  # 模型名称
-    normal = IntegerField()  # 访客用户次数
-    wallet = IntegerField() # 钱包用户次数
-    kyc = IntegerField() # KYC用户次数
-    vip = IntegerField()  # VIP用户次数
+    id = IntegerField(primary_key=True, unique=True)  # 主键
+    user_tier = CharField()  # 用户类型
+    model_type = IntegerField() # 模型类型
+    vip = IntegerField() # VIP类型
+    limits = IntegerField()  # 访问次数
     created_at = BigIntegerField()  # 定义默认值为当前时间的日期时间字段created_at
 
     class Meta:
@@ -19,11 +19,11 @@ class ModelLimit(Model):
 
 # 定义Pydantic模型EmailCodeModel
 class ModelLimitModel(BaseModel):
-    model: str  # 模型名称
-    normal: int  # 访客用户次数
-    wallet: int # 钱包用户次数
-    kyc: int # KYC用户次数
-    vip: int  # VIP用户次数
+    id: int  # 主键
+    user_tier: str  # 用户类型
+    model_type: int # 模型类型
+    vip: int # VIP类型
+    limits: int  # 访问次数
     created_at: int  # 定义created_at字段，类型为日期时间
 
 # 定义ModelLimitTable类
@@ -32,25 +32,12 @@ class ModelLimitTable:
         self.db = db  # 初始化数据库实例
         self.db.create_tables([ModelLimit])  # 创建EmailCodeTable表
 
-    def get_info_by_model(self, model: str) -> Optional[ModelLimitModel]:
+    def get_info_by_user_vip(self, user_tier: str, vip: int) -> Optional[ModelLimitModel]:
         try:
-            modellimit = ModelLimit.get_or_none(ModelLimit.model == model)
-            if modellimit is None:
-                return None
-            else:
-                modellimit_dict = model_to_dict(modellimit)  # 将数据库对象转换为字典
-                modellimit_model = ModelLimitModel(**modellimit_dict)  # 将字典转换为Pydantic模型
-                return modellimit_model
-        except Exception as e:
-            print("========================", e)
-            return None
-        
-    def get_info_by_models(self, models: list) -> Optional[List[ModelLimitModel]]:
-        try:
-            modellimits = ModelLimit.select().where(ModelLimit.model.in_(models))
+            modellimits = ModelLimit.select().where(ModelLimit.user_tier == user_tier, ModelLimit.vip == vip)
             # 将数据库对象转换为字典
             modellimit_list = [ModelLimitModel(**model_to_dict(modellimit)) for modellimit in modellimits]
-            return modellimit_list  
+            return modellimit_list
         except Exception as e:
             print("========================", e)
             return None

@@ -722,9 +722,12 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
           if (model.think && first_think && !think) {
             first_think = false;
             responseMessage.content = await addTextSlowly(
+              (text: string) => {
+                responseMessage.content = text
+              },
               responseMessage.content,
               "</think>",
-              model.id
+              model.id,
             );
             messages = messages;
           }
@@ -769,10 +772,13 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 					} else {
 						// responseMessage.content += value;
 						responseMessage.content = await addTextSlowly(
-							responseMessage.content, 
-							value,
-							model.id
-						);
+              (text: string) => {
+                responseMessage.content = text
+              },
+              responseMessage.content,
+              value,
+              model.id,
+            );
 						messages = messages;
 					}
 
@@ -819,7 +825,6 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
     }
 
 		await tick();
-
 		if (autoScroll) {
 			scrollToBottom();
 		}
@@ -1585,7 +1590,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 				on:scroll={(e) => {
 					autoScroll =
 						messagesContainerElement.scrollHeight - messagesContainerElement.scrollTop <=
-						messagesContainerElement.clientHeight + 5;
+						messagesContainerElement.clientHeight + 45;
 				}}
 			>
 				<div class=" h-full w-full flex flex-col py-4">

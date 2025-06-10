@@ -13,7 +13,7 @@ from apps.web.internal.db import DB, aspect_database_operations  # 导入数据�
 from apps.web.models.chats import Chats  # 导入Chats模型
 from apps.web.models.rewards import RewardsTableInstance
 from fastapi import APIRouter, Depends, HTTPException, Request
-from apps.web.models.vip import VIPStatus
+from apps.web.models.vipstatus import VIPStatus
 from apps.redis.redis_client import RedisClientInstance
 import json
 from apps.web.models.reward_data import RewardDateTableInstance

@@ -72,7 +72,7 @@
   "Archive": "Arşiv",
   "Archived Chats": "Arşivlenmiş Sohbetler",
   "are allowed - Activate this command by typing": "izin verilir - Bu komutu yazarak etkinleştir",
-  "Are you sure to become a distinguished Plus member?": "Ayırt edici bir Plus üyesi olmak istediğinizden emin misiniz?",
+  "Are you sure to become a distinguished member?": "Ayırt edici bir üyesi olmak istediğinizden emin misiniz?",
   "Are you sure?": "Emin misiniz?",
   "Attach file": "Dosya Ekle",
   "Attention to detail": "Detaylara Dikkat",
@@ -599,8 +599,8 @@
   "Upgrade Plan": "Yükseltme Planı",
   "Upgrade": "Yükselt",
   "Upgrade ": "Yükselt ",
-  "Upgrade to Plus": "Plus'a Yükselt",
-  "Upgrade to Plus failed!": "Plus'a Yükseltme Başarısız!",
+  "Upgrade to Vip": "Vip'a Yükselt",
+  "Upgrade to Vip failed!": "Vip'a Yükseltme Başarısız!",
   "Upgrading": "Yükseltiliyor",
   "Failed to obtain authorization information.": "Yetkilendirme bilgilerini alamadık.",
   "Authorization failed!": "Yetkilendirme başarısız oldu!",
@@ -854,5 +854,10 @@
   "What's the main purpose of the file's code": "Dosyanın kodunun ana amacı nedir",
   "Optimize the code in the file": "Dosyadaki kodu optimize edin",
   "In web page parsing...": "Web sayfası ayrıştırması sırasında...",
-  "Deep Research": "Derin Araştırma"
+  "Deep Research": "Derin Araştırma",
+  "Basic Vip": "Temel VIP",
+  "Standard Vip": "Standart VIP",
+  "Pro Vip": "Pro VIP",
+  "Month": "Ay",
+  "Year": "Yıl"
 }

@@ -72,7 +72,7 @@
   "Archive": "Tài liệu lưu trữ",
   "Archived Chats": "Các cuộc trò chuyện đã lưu trữ",
   "are allowed - Activate this command by typing": "được cho phép - Kích hoạt lệnh này bằng cách gõ",
-  "Are you sure to become a distinguished Plus member?": "Bạn có chắc muốn trở thành thành viên Plus đặc biệt?",
+  "Are you sure to become a distinguished member?": "Bạn có chắc muốn trở thành thành viên đặc biệt?",
   "Are you sure?": "Bạn có chắc?",
   "Attach file": "Đính kèm tệp",
   "Attention to detail": "Để ý đến chi tiết",
@@ -599,8 +599,8 @@
   "Upgrade Plan": "Nâng cấp kế hoạch",
   "Upgrade": "Nâng cấp",
   "Upgrade ": "Nâng cấp ",
-  "Upgrade to Plus": "Nâng cấp lên Plus",
-  "Upgrade to Plus failed!": "Nâng cấp lên Plus thất bại!",
+  "Upgrade to Vip": "Nâng cấp lên Vip",
+  "Upgrade to Vip failed!": "Nâng cấp lên Vip thất bại!",
   "Upgrading": "Đang nâng cấp",
   "Failed to obtain authorization information.": "Không thể lấy thông tin ủy quyền.",
   "Authorization failed!": "Thất bại trong ủy quyền!",
@@ -843,5 +843,10 @@
   "What's the main purpose of the file's code": "Mục đích chính của mã trong tệp là gì",
   "Optimize the code in the file": "Tối ưu mã trong tệp",
   "In web page parsing...": "Trong quá trình phân tích trang web...",
-  "Deep Research": "Nghiên cứu sâu sắc"
+  "Deep Research": "Nghiên cứu sâu sắc",
+  "Basic Vip": "VIP Cơ Bản",
+  "Standard Vip": "VIP Tiêu Ch chuẩn",
+  "Pro Vip": "VIP Chuyên Nghiệp",
+  "Month": "Tháng",
+  "Year": "Năm"
 }

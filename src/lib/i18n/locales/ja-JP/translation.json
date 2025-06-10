@@ -72,7 +72,7 @@
   "Archive": "アーカイブ",
   "Archived Chats": "アーカイブされたチャット",
   "are allowed - Activate this command by typing": "許可されています - このコマンドを入力することで有効化します",
-  "Are you sure to become a distinguished Plus member?": "優先会員になることを確認しますか？",
+  "Are you sure to become a distinguished member?": "優れたメンバーになれると確信していますか？",
   "Are you sure?": "本当に大丈夫ですか？",
   "Attach file": "ファイルを添付する",
   "Attention to detail": "細部への注意",
@@ -601,8 +601,8 @@
   "Upgrade Plan": "アップグレードプラン",
   "Upgrade": "アップグレード",
   "Upgrade ": "アップグレード ",
-  "Upgrade to Plus": "Plus にアップグレード",
-  "Upgrade to Plus failed!": "Plus にアップグレードに失敗しました！",
+  "Upgrade to Vip": "Vip にアップグレード",
+  "Upgrade to Vip failed!": "Vip にアップグレードに失敗しました！",
   "Upgrading": "アップグレード中",
   "Failed to obtain authorization information.": "認証情報の取得に失敗しました。",
   "Authorization failed!": "認証に失敗しました！",
@@ -854,5 +854,10 @@
   "What's the main purpose of the file's code": "ファイルのコードの主な目的は何ですか",
   "Optimize the code in the file": "ファイル内のコードを最適化してください",
   "In web page parsing...": "ウェブページの解析において...",
-  "Deep Research": "Pしょうさいなちょうさ"
+  "Deep Research": "Pしょうさいなちょうさ",
+  "Basic Vip": "ベーシック VIP",
+  "Standard Vip": "スタンダード VIP",
+  "Pro Vip": "プロ VIP",
+  "Month": "月",
+  "Year": "年"
 }

@@ -49,6 +49,114 @@ export const getDeModels = async (token: string = "") => {
         tip: "Qwen3",
         support: "text",
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "GPT 4.1",
+        model: "GPT 4.1",
+        textmodel: "gpt-4.1",
+        think: false,
+        tip: "GPT 4.1",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "O4 mini",
+        model: "O4 mini",
+        textmodel: "o4-mini",
+        think: false,
+        tip: "O4 mini",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "O3",
+        model: "O3",
+        textmodel: "03",
+        think: false,
+        tip: "O3",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Gemini 2.0",
+        model: "gemini-2.0-flash",
+        textmodel: "gemini-2.0-flash",
+        think: false,
+        tip: "Gemini 2.0",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Claude 4",
+        model: "claude-opus-4-20250514",
+        textmodel: "claude-opus-4-20250514",
+        think: false,
+        tip: "Claude 4",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "DeepSeek Chat",
+        model: "deepseek-chat",
+        textmodel: "deepseek-chat",
+        think: false,
+        tip: "DeepSeek Chat",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "DeepSeek Reasoner",
+        model: "deepseek-reasoner",
+        textmodel: "deepseek-reasoner",
+        think: true,
+        tip: "DeepSeek Reasoner",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Doubao Thinking",
+        model: "doubao-1.5-thinking-pro-250415",
+        textmodel: "doubao-1.5-thinking-pro-250415",
+        think: true,
+        tip: "Doubao Thinking",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Doubao Vision",
+        model: "doubao-1.5-vision-pro-250328",
+        textmodel: "doubao-1.5-vision-pro-250328",
+        think: false,
+        tip: "Doubao Pro",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Doubao 32K",
+        model: "doubao-1-5-pro-32k-250115",
+        textmodel: "doubao-1-5-pro-32k-250115",
+        think: false,
+        tip: "Doubao 32K",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Grok3",
+        model: "grok-3",
+        textmodel: "grok-3",
+        think: false,
+        tip: "Grok3",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Grok3 Mini",
+        model: "grok-3-mini",
+        textmodel: "grok-3-mini",
+        think: false,
+        tip: "Grok3 Mini",
+        support: "text",
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       }
       // {
       //   name: "DeepSeek V3",

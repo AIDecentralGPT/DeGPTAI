@@ -72,7 +72,7 @@
   "Archive": "",
   "Archived Chats": "",
   "are allowed - Activate this command by typing": "",
-  "Are you sure to become a distinguished Plus member?": "",
+  "Are you sure to become a distinguished member?": "",
   "Are you sure?": "",
   "Attach file": "",
   "Attention to detail": "",
@@ -599,8 +599,8 @@
   "Upgrade Plan": "",
   "Upgrade": "",
   "Upgrade ": "",
-  "Upgrade to Plus": "",
-  "Upgrade to Plus failed!": "",
+  "Upgrade to Vip": "",
+  "Upgrade to Vip failed!": "",
   "Upgrading": "",
   "Failed to obtain authorization information.": "",
   "Authorization failed!": "",
@@ -854,6 +854,11 @@
   "What's the main purpose of the file's code": "",
   "Optimize the code in the file": "",
   "In web page parsing...": "",
-  "Deep Research": ""
+  "Deep Research": "",
+  "Basic Vip": "",
+  "Standard Vip": "",
+  "Pro Vip": "",
+  "Month": "",
+  "Year": ""
 }
 

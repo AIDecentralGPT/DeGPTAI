@@ -780,9 +780,12 @@
           if (model.think && first_think && !think) {
             first_think = false;
             responseMessage.content = await addTextSlowly(
+              (text: string) => {
+                responseMessage.content = text;
+              },
               responseMessage.content,
               "</think>",
-              model.id
+              model.id,
             );
             messages = messages;
           }
@@ -842,6 +845,9 @@
           } else {
             // responseMessage.content += value;
             responseMessage.content = await addTextSlowly(
+              (text: string) => {
+                responseMessage.content = text;
+              },
               responseMessage.content,
               value,
               model.id
@@ -894,7 +900,6 @@
     }
 
     await tick();
-
     if (autoScroll) {
       scrollToBottom();
     }
@@ -1221,7 +1226,7 @@
         autoScroll =
           messagesContainerElement.scrollHeight -
             messagesContainerElement.scrollTop <=
-          messagesContainerElement.clientHeight + 5;
+          messagesContainerElement.clientHeight + 45;
       }}
     >
       <div class=" h-full w-full flex flex-col pt-2 pb-4">

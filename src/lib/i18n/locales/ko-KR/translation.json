@@ -72,7 +72,7 @@
   "Archive": "아카이브",
   "Archived Chats": "아카이브된 채팅",
   "are allowed - Activate this command by typing": "허용됨 - 이 명령을 입력하여 활성화",
-  "Are you sure to become a distinguished Plus member?": "특별한 플러스 회원이 되시겠습니까?",
+  "Are you sure to become a distinguished member?": "뛰어난 회원이 될 확신이 있나요?",
   "Are you sure?": "확인하시겠습니까?",
   "Attach file": "파일 첨부",
   "Attention to detail": "세부사항에 주의",
@@ -599,8 +599,8 @@
   "Upgrade Plan": "업그레이드 계획",
   "Upgrade": "업그레이드",
   "Upgrade ": "업그레이드 ",
-  "Upgrade to Plus": "플러스로 업그레이드",
-  "Upgrade to Plus failed!": "플러스로 업그레이드 실패!",
+  "Upgrade to Vip": "VIP로 업그레이드",
+  "Upgrade to Vip failed!": "VIP로 업그레이드에 실패했습니다!",
   "Upgrading": "업그레이드 중",
   "Failed to obtain authorization information.": "인증 정보를 가져오는데 실패했습니다.",
   "Authorization failed!": "인증에 실패했습니다!",
@@ -854,5 +854,10 @@
   "What's the main purpose of the file's code": "파일 코드의 주요 목적은 무엇입니까",
   "Optimize the code in the file": "파일의 코드를 최적화하세요",
   "In web page parsing...": "웹 페이지 구문 분석 시...",
-  "Deep Research": "깊은 연구"
+  "Deep Research": "깊은 연구",
+  "Basic Vip": "기본 VIP",
+  "Standard Vip": "표준 VIP",
+  "Pro Vip": "프로 VIP",
+  "Month": "월",
+  "Year": "년"
 }

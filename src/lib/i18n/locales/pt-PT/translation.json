@@ -72,7 +72,7 @@
   "Archive": "Arquivo",
   "Archived Chats": "Chats arquivados",
   "are allowed - Activate this command by typing": "são permitidos - Ative esse comando digitando",
-  "Are you sure to become a distinguished Plus member?": "Você tem certeza de se tornar um membro Plus distinto?",
+  "Are you sure to become a distinguished member?": "Você tem certeza de se tornar um membro distinto?",
   "Are you sure?": "Você tem certeza?",
   "Attach file": "Anexar arquivo",
   "Attention to detail": "Atenção aos detalhes",
@@ -599,8 +599,8 @@
   "Upgrade Plan": "Plano de atualização",
   "Upgrade": "Atualizar",
   "Upgrade ": "Atualizar ",
-  "Upgrade to Plus": "Atualizar para Plus",
-  "Upgrade to Plus failed!": "A atualização para Plus falhou!",
+  "Upgrade to Vip": "Atualizar para Vip",
+  "Upgrade to Vip failed!": "A atualização para Vip falhou!",
   "Upgrading": "Atualizando",
   "Failed to obtain authorization information.": "Falha ao obter informações de autorização.",
   "Authorization failed!": "A autorização falhou!",
@@ -854,5 +854,10 @@
   "What's the main purpose of the file's code": "Qual é o principal objetivo do código do arquivo",
   "Optimize the code in the file": "Otimize o código no arquivo",
   "In web page parsing...": "Na análise de páginas da web...",
-  "Deep Research": "Pesquisa profunda"
+  "Deep Research": "Pesquisa profunda",
+  "Basic Vip": "Vip Básico",
+  "Standard Vip": "Vip Padrão",
+  "Pro Vip": "Vip Profissional",
+  "Month": "Mês",
+  "Year": "Ano"
 }

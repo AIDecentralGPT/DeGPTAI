@@ -23,6 +23,7 @@
   const i18n = getContext("i18n");
 
   export let show = false;
+  export let id = 2;
   let loading = false;
   let showTip = false;
   let step = 0;
@@ -139,6 +140,44 @@
     loading = false;
     showTip = false;
   }
+
+  let selVip = 0;
+  const viplist = [{
+    id: 2,
+    name: "Basic Vip",
+    time: "Month",
+    money: 3
+  },
+  {
+    id: 2,
+    name: "Basic Vip",
+    time: "Year",
+    money: 33
+  },
+  {
+    id: 3,
+    name: "Standard Vip",
+    time: "Month",
+    money: 8
+  },
+  {
+    id: 3,
+    name: "Standard Vip",
+    time: "Year",
+    money: 88
+  },
+  {
+    id: 4,
+    name: "Pro Vip",
+    time: "Month",
+    money: 15
+  },
+  {
+    id: 4,
+    name: "Pro Vip",
+    time: "Year",
+    money: 165
+  }];
 </script>
 
 <Modal bind:show>
@@ -173,45 +212,77 @@
     </div>
 
     <!-- 主体 -->
-    <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-      <div class="w-full">
-        <p class="text-md mb-4 w-full">
-          {$i18n.t("Are you sure to become a distinguished Plus member?")}
-        </p>
-        {#if showTip}
-          <p class="text-sm mb-4 w-full text-gray-400 dark:text-gray-600">
-            *{$i18n.t(
-              "Please open the mobile app and approve the transaction request."
-            )}
+    <div class="flex flex-col">
+      <div class="overflow-x-scroll py-4 mx-8">
+        <div class="flex flex-row space-x-4">
+          {#each viplist as vip, index}
+            {#if  vip.id == id}
+              <button class="flex flex-col align-items-start size-[150px] min-w-[150px] border border-gray-500 rounded-lg"
+                on:click={async() => {
+                  selVip = index;
+                }}>
+                <div class="size-[20px] border-2 border-gray-500 rounded-full m-1.5">
+                  {#if selVip==index}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 1024 1024" 
+                      version="1.1"
+                      fill="currentColor"
+                      class="size-[16px]">
+                      <path d="M63.222927 512c0 0 231.767598 189.584869 254.790964 350.823134 0 0 303.906591-497.491565 641.581264-542.003338 0 0-102.837156-74.943876-69.070098-193.395662 0 0-187.255825 18.684548-540.279067 566.637388L184.79375 413.212066 63.222927 512z"/>
+                    </svg>
+                  {/if}
+                </div>
+                <div class="flex flex-col justify-center items-center w-full">
+                  <div class="font-bold">{$i18n.t(vip.name)}</div>
+                  <div>{$i18n.t(vip.time)}</div>
+                  <div class="text-3xl font-bold">${vip.money}</div>
+                </div>
+              </button>
+            {/if}  
+          {/each}
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
+        <div class="w-full">
+          <p class="text-md mb-4 w-full">
+            {$i18n.t("Are you sure to become a distinguished member?")}
           </p>
-        {/if}
-        <!-- 提交按钮 -->
-        <div class="flex justify-end my-4">
-          <button
-            disabled={loading}
-            class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-            style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
-            type="submit"
-            on:click={async () => {
-              loading = true;
-              step = 0;
-              progress = 0;
-              await tick();
-              try {
-                await handleUpgrade();
-                loading = false;
-              } catch (error) {
-                loading = false;
-              }
-              // toast.success("Upgrade Successfully!");
-            }}
-          >
-            {#if loading}
-              <span>{progress}% {$i18n.t("Upgrading")}</span>
-            {:else}
-              <span>{$i18n.t("Yes")}</span>
-            {/if}
-          </button>
+          {#if showTip}
+            <p class="text-sm mb-4 w-full text-gray-400 dark:text-gray-600">
+              *{$i18n.t(
+                "Please open the mobile app and approve the transaction request."
+              )}
+            </p>
+          {/if}
+          <!-- 提交按钮 -->
+          <div class="flex justify-end my-4">
+            <button
+              disabled={loading}
+              class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+              style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+              type="submit"
+              on:click={async () => {
+                loading = true;
+                step = 0;
+                progress = 0;
+                await tick();
+                try {
+                  await handleUpgrade();
+                  loading = false;
+                } catch (error) {
+                  loading = false;
+                }
+                // toast.success("Upgrade Successfully!");
+              }}
+            >
+              {#if loading}
+                <span>{progress}% {$i18n.t("Upgrading")}</span>
+              {:else}
+                <span>{$i18n.t("Yes")}</span>
+              {/if}
+            </button>
+          </div>
         </div>
       </div>
     </div>

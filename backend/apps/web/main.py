@@ -19,8 +19,8 @@ from apps.web.routers import (
     third,
     kycrestrict,
     error_log,
-    aliqwen,
-    mcphttp
+    mcphttp,
+    completion
 )
 from config import (
     WEBUI_VERSION,
@@ -85,7 +85,7 @@ app.include_router(third.router, prefix="/third", tags=["third"])
 app.include_router(kycrestrict.router, prefix="/kyc", tags=["kyc"])
 app.include_router(error_log.router, prefix="/errorlog", tags=["error_log"])
 
-app.include_router(aliqwen.router, prefix="/chat", tags=["aliqwen"])
+app.include_router(completion.router, prefix="/chat", tags=["aliqwen"])
 app.include_router(mcphttp.router, prefix="/mcp", tags=["aliqwen"])
 
 @app.get("/")

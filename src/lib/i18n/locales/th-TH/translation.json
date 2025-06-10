@@ -72,7 +72,7 @@
   "Archive": "แอเรย์ฟ์",
   "Archived Chats": "แชทที่ถูกเก็บไว้ในแอเรย์ฟ์",
   "are allowed - Activate this command by typing": "อนุญาต - เปิดใช้งานคำสั่งนี้โดยการพิมพ์",
-  "Are you sure to become a distinguished Plus member?": "คุณแน่ใจหรือไม่ที่จะเป็นสมาชิก Plus ที่โดดเด่น?",
+  "Are you sure to become a distinguished member?": "คุณแน่ใจหรือไม่ที่จะเป็นสมาชิกที่โดดเด่น?",
   "Are you sure?": "คุณแน่ใจหรือไม่?",
   "Attach file": "แนบไฟล์",
   "Attention to detail": "ใส่ใจในรายละเอียด",
@@ -853,5 +853,10 @@
   "What's the main purpose of the file's code": "วัตถุประสงค์หลักของรหัสในไฟล์คืออะไร",
   "Optimize the code in the file": " tối ưuรหัสในไฟล์",
   "In web page parsing...": "ในการวิเคราะห์หน้าเว็บ...",
-  "Deep Research": "การวิจัยที่ลึกซึ้ง"
+  "Deep Research": "การวิจัยที่ลึกซึ้ง",
+  "Basic Vip": "วิพเบสิค",
+  "Standard Vip": "วิพมาตรฐาน",
+  "Pro Vip": "วิพโปรเฟชั่นাল",
+  "Month": "เดือน",
+  "Year": "ปี"
 }

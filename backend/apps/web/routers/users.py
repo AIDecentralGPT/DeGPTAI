@@ -11,7 +11,7 @@ from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm,
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
 from apps.web.models.rewards import RewardsTableInstance
-from apps.web.models.vip import VIPStatuses, VIPStatusModelResp, VipTotalModel
+from apps.web.models.vipstatus import VIPStatuses, VIPStatusModelResp, VipTotalModel
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
 from constants import ERROR_MESSAGES
