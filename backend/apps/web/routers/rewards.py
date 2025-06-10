@@ -72,6 +72,19 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
 # 用户签到
 @router.post("/clock_in")
 async def clock_in(user=Depends(get_verified_user)):
+    print("================", user)
+    if not user.verified:
+        raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
+    # 获取今天的日期
+    today = date.today()
+    # 判断是否kyc认证超过180天
+    if user.face_time is not None:
+        face_date = user.face_time.date()
+        days_diff = (today - face_date).days
+        if days_diff > 180:
+            raise HTTPException(status_code=500, detail="The check-in reward has expired!")
+    else:
+        raise HTTPException(status_code=500, detail="The check-in reward has expired!")
 
     rewarddate = RewardDateTableInstance.get_current_open()
     if rewarddate is not None:
@@ -80,24 +93,20 @@ async def clock_in(user=Depends(get_verified_user)):
             raise HTTPException(status_code=400, detail="The reward program has ended !")
     else:
        raise HTTPException(status_code=400, detail="The reward program has ended !") 
-    # 获取今天的日期
-    today = date.today()
     # 发送奖励
     reward_type = "clock_in"  # 例如每日签到奖励
     # 检查用户是否已经在今天获得过奖励
     existing_rewards = RewardsTableInstance.get_rewards_by_user_id_and_date_and_reward_type(user.id, today, reward_type)
-    print("existing_rewards:", existing_rewards)
     if existing_rewards:
         raise HTTPException(status_code=400, detail="You have received 100 DGC points !")
     
     rewards = RewardsTableInstance.create_reward(user.id, 100, reward_type)
     if rewards is not None:
-        # 校验用户是否已经kyc
-        if user.verified:
-            # 领取奖励
-            RewardApiInstance.dailyReward(rewards.id, user.id)
-            # 判断是否发放邀请奖励
-            checkInviteReward(user.id)
+        # 领取奖励
+        RewardApiInstance.dailyReward(rewards.id, user.id)
+        # 判断是否发放邀请奖励
+        checkInviteReward(user.id)
+            
         return {"ok": True, "message": "You have received 100 DGC points !"}
     else:
         raise HTTPException(status_code=500, detail="Failed to received reward")
