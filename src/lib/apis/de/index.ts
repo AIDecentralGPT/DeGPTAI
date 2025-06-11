@@ -199,8 +199,8 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "GPT o4-mini high",
-        model: "o4-mini",
-        textmodel: "o4-mini",
+        model: "gpt-4o-mini-high",
+        textmodel: "gpt-4o-mini-high",
         think: false,
         tip: "GPT o4-mini high",
         support: "text",
@@ -209,8 +209,8 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "GPT 4.5",
-        model: "o4-mini",
-        textmodel: "o4-mini",
+        model: "gpt-4.5",
+        textmodel: "gpt-4.5",
         think: false,
         tip: "GPT 4.5",
         support: "text",
@@ -219,8 +219,8 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "GPT o4 Pro",
-        model: "o4-mini",
-        textmodel: "o4-mini",
+        model: "gpt-o4-mini-pro",
+        textmodel: "gpt-o4-mini-pro",
         think: false,
         tip: "GPT o4 Pro",
         support: "text",
