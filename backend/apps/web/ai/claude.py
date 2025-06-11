@@ -12,7 +12,7 @@ client = OpenAI(
 
 class ClaudeApi:
     def check_model(self, model: str):
-        models = ["claude-opus-4-20250514"]
+        models = ["claude-3-7-sonnet-20250219","claude-sonnet-4-20250514","claude-opus-4-20250514"]
         return model in models
    
     def completion(self, param: AiModelReq):

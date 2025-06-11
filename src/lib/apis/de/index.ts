@@ -26,12 +26,27 @@ export const getDeModels = async (token: string = "") => {
 
   const format_res = {
     models: [
-      // {
-      //   name: "Llama 3.1",
-      //   model: "Llama-3.1-405B",
-      //   tip: "Llama 3.1",
-      //   desc: "Suitable for most tasks"
-      // },
+      // 基础模型
+      {
+        name: "DeepSeek V3",
+        model: "deepseek-chat",
+        textmodel: "deepseek-chat",
+        think: false,
+        tip: "DeepSeek V3",
+        support: "text",
+        type: 1,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "DouBao-1.5-pro",
+        model: "doubao-1.5-vision-pro-250328",
+        textmodel: "doubao-1.5-vision-pro-250328",
+        think: false,
+        tip: "DouBao-1.5-pro",
+        support: "text",
+        type: 1,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
       {
         name: "Qwen O3",
         model: "Qwen3-235B-A22B-FP8-think",
@@ -50,94 +65,15 @@ export const getDeModels = async (token: string = "") => {
         support: "text",
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       },
+      // 高级模型
       {
-        name: "GPT 4.1",
-        model: "GPT 4.1",
-        textmodel: "gpt-4.1",
+        name: "GPT-4o",
+        model: "gpt-4o",
+        textmodel: "gpt-4o",
         think: false,
-        tip: "GPT 4.1",
+        tip: "GPT-4o",
         support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "O4 mini",
-        model: "O4 mini",
-        textmodel: "o4-mini",
-        think: false,
-        tip: "O4 mini",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "O3",
-        model: "O3",
-        textmodel: "03",
-        think: false,
-        tip: "O3",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Gemini 2.0",
-        model: "gemini-2.0-flash",
-        textmodel: "gemini-2.0-flash",
-        think: false,
-        tip: "Gemini 2.0",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Claude 4",
-        model: "claude-opus-4-20250514",
-        textmodel: "claude-opus-4-20250514",
-        think: false,
-        tip: "Claude 4",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "DeepSeek Chat",
-        model: "deepseek-chat",
-        textmodel: "deepseek-chat",
-        think: false,
-        tip: "DeepSeek Chat",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "DeepSeek Reasoner",
-        model: "deepseek-reasoner",
-        textmodel: "deepseek-reasoner",
-        think: true,
-        tip: "DeepSeek Reasoner",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Doubao Thinking",
-        model: "doubao-1.5-thinking-pro-250415",
-        textmodel: "doubao-1.5-thinking-pro-250415",
-        think: true,
-        tip: "Doubao Thinking",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Doubao Vision",
-        model: "doubao-1.5-vision-pro-250328",
-        textmodel: "doubao-1.5-vision-pro-250328",
-        think: false,
-        tip: "Doubao Pro",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Doubao 32K",
-        model: "doubao-1-5-pro-32k-250115",
-        textmodel: "doubao-1-5-pro-32k-250115",
-        think: false,
-        tip: "Doubao 32K",
-        support: "text",
+        type: 2,
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       },
       {
@@ -147,93 +83,150 @@ export const getDeModels = async (token: string = "") => {
         think: false,
         tip: "Grok3",
         support: "text",
+        type: 2,
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       },
       {
-        name: "Grok3 Mini",
-        model: "grok-3-mini",
-        textmodel: "grok-3-mini",
+        name: "Gemini 2.5 Flash",
+        model: "gemini-2.5-flash-preview-05-20",
+        textmodel: "gemini-2.5-flash-preview-05-20",
         think: false,
-        tip: "Grok3 Mini",
+        tip: "Gemini 2.5 Flash",
         support: "text",
+        type: 2,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "GPT-4.1",
+        model: "gpt-4.1",
+        textmodel: "gpt-4.1",
+        think: false,
+        tip: "GPT-4.1",
+        support: "text",
+        type: 2,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Gemini 2.5 Pro",
+        model: "gemini-2.5-pro-preview-06-05",
+        textmodel: "gemini-2.5-pro-preview-06-05",
+        think: false,
+        tip: "Gemini 2.5 Pro",
+        support: "text",
+        type: 2,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Claude 3.7 Sonnet",
+        model: "claude-3-7-sonnet-20250219",
+        textmodel: "claude-3-7-sonnet-20250219",
+        think: false,
+        tip: "Claude 3.7 Sonnet",
+        support: "text",
+        type: 2,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "DeepSeek R1",
+        model: "deepseek-reasoner",
+        textmodel: "deepseek-reasoner",
+        think: true,
+        tip: "DeepSeek R1",
+        support: "text",
+        type: 2,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "GPT o3",
+        model: "o3",
+        textmodel: "o3",
+        think: false,
+        tip: "GPT o3",
+        support: "text",
+        type: 2,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      // 顶级模型
+      {
+        name: "Claude 4 Sonnet",
+        model: "claude-sonnet-4-20250514",
+        textmodel: "claude-sonnet-4-20250514",
+        think: false,
+        tip: "Claude 4 Sonnet",
+        support: "text",
+        type: 3,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Claude 4 Opus",
+        model: "claude-opus-4-20250514",
+        textmodel: "claude-opus-4-20250514",
+        think: false,
+        tip: "Claude 4 Opus",
+        support: "text",
+        type: 3,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Claude 4 Opus Thinking",
+        model: "claude-opus-4-20250514",
+        textmodel: "claude-opus-4-20250514",
+        think: true,
+        tip: "Claude 4 Opus Thinking",
+        support: "text",
+        type: 3,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "Claude 4 Sonnet Thinking",
+        model: "claude-sonnet-4-20250514",
+        textmodel: "claude-sonnet-4-20250514",
+        think: true,
+        tip: "Claude 4 Sonnet Thinking",
+        support: "text",
+        type: 3,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "GPT o4-mini",
+        model: "gpt-4o-mini",
+        textmodel: "gpt-4o-mini",
+        think: false,
+        tip: "GPT o4-mini",
+        support: "text",
+        type: 3,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "GPT o4-mini high",
+        model: "o4-mini",
+        textmodel: "o4-mini",
+        think: false,
+        tip: "GPT o4-mini high",
+        support: "text",
+        type: 3,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "GPT 4.5",
+        model: "o4-mini",
+        textmodel: "o4-mini",
+        think: false,
+        tip: "GPT 4.5",
+        support: "text",
+        type: 3,
+        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      },
+      {
+        name: "GPT o4 Pro",
+        model: "o4-mini",
+        textmodel: "o4-mini",
+        think: false,
+        tip: "GPT o4 Pro",
+        support: "text",
+        type: 3,
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       }
-      // {
-      //   name: "DeepSeek V3",
-      //   model: "DeepSeek-V3-0324",
-      //   tip: "DeepSeek V3",
-      //   support: "text",
-      //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      // },
-      // {
-      //   name: "DeepSeek R1",
-      //   model: "DeepSeek-R1",
-      //   tip: "DeepSeek R1",
-      //   support: "text",
-      //   desc: "Deep thinking,mathematical and writing abilities ≈ o3"
-      // },
-      // {
-      //   name: "Llama4",
-      //   model: "Llama-4-Scout-Instruct",
-      //   tip: "Llama4",
-      //   support: "image",
-      //   desc: "Suitable for most tasks, taking photos to solve math problems."
-      // }
-      // {
-      //   name: "Pixtral Large 1.0",
-      //   model: "Pixtral-124B",
-      //   tip: "Pixtral Large 1.0",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // }
-      // {
-      //   name: "sana",
-      //   model: "sana",
-      //   tip: "sana",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // }
-      // {
-      //   name: "Qwen 2.5",
-      //   model: "Qwen2.5-72B",
-      //   tip: "Qwen 2.5",
-      //   support: "text",
-      //   desc: "Suitable for most tasks"
-      // },
-      // {
-      //   name: "Nemotron 3.1",
-      //   model: "Llama-3.1-Nemotron-70B",
-      //   tip: "Nemotron 3.1",
-      //   support: "text",
-      //   desc: "Suitable for most tasks"
-      // },
-      // {
-      //   name: "Nvidia 3.1",
-      //   model: "NVLM-D-72B",
-      //   tip: "Nvidia 3.1",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // },
-      // {
-      //   name: "Deepseek coder2.0",
-      //   model: "DeepSeek-Coder-V2",
-      //   tip: "Deepseek coder2.0",
-      //   support: "text",
-      //   desc: "Optimize code writing"
-      // },
-      // {
-      //   name: "Codestral 0.1", 
-      //   model: "Codestral-22B-v0.1",
-      //   tip: "Codestral 0.1",
-      //   desc: "Optimize code writing"
-      // },
-      // {
-      //   name: "Qwen 2.5 Code",
-      //   model: "Qwen2.5-Coder-32B",
-      //   tip: "Qwen 2.5 Code",
-      //   support: "text",
-      //   desc: "Optimize code writing"
-      // }
     ],
   };
   return (format_res?.models ?? []).map((model) => ({

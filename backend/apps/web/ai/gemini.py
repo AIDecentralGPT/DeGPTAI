@@ -11,7 +11,7 @@ client = OpenAI(
 
 class GeminiApi:
    def check_model(self, model: str):
-        models = ["gemini-2.0-flash"]
+        models = ["gemini-2.5-flash-preview-05-20", "gemini-2.5-pro-preview-06-05"]
         return model in models
    
    def completion(self, param: AiModelReq):
@@ -21,6 +21,7 @@ class GeminiApi:
                 messages=param.messages,
                 stream=param.stream,  #流模式
             )
+            print("==================", completion)
         except APIError as e:
             print("==========GeminiApi Error===========", e)
             completion = None

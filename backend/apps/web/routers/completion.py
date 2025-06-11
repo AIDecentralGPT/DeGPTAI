@@ -25,6 +25,7 @@ router = APIRouter()
 async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
     if param.stream:
         def event_generator():
+            completion = None
             if OpenAiApiInstance.check_model(param.model):
                 completion = OpenAiApiInstance.completion(param)
             if AliQwenApiInstance.check_model(param.model):

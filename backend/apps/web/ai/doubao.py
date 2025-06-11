@@ -9,7 +9,7 @@ apikey = os.getenv("DOUBAO_API_KEY")
 
 class DoubaoApi:
     def check_model(self, model: str):
-        models = ["doubao-1.5-thinking-pro-250415", "doubao-1.5-vision-pro-250328", "doubao-1-5-pro-32k-250115"]
+        models = ["doubao-1.5-vision-pro-250328"]
         return model in models
    
     def completion(self, param: AiModelReq):
