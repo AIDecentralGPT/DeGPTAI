@@ -8,7 +8,7 @@ client = OpenAI(api_key=apikey)
 
 class OpenAiApi:
     def check_model(self, model: str):
-        models = ["gpt-4.1","o4-mini","o3"]
+        models = ["gpt-4o","gpt-4.1","o3","gpt-4o-mini","gpt-4.5"]
         return model in models
    
     def completion(self, param: AiModelReq):
