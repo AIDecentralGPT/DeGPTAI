@@ -169,7 +169,7 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "Claude 4 Opus Thinking",
-        model: "claude-opus-4-20250514",
+        model: "claude-opus-4-20250514-think",
         textmodel: "claude-opus-4-20250514",
         think: true,
         tip: "Claude 4 Opus Thinking",
@@ -179,7 +179,7 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "Claude 4 Sonnet Thinking",
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-4-20250514-think",
         textmodel: "claude-sonnet-4-20250514",
         think: true,
         tip: "Claude 4 Sonnet Thinking",
