@@ -72,7 +72,6 @@ async def creat_wallet_check(request: RewardsRequest, user=Depends(get_verified_
 # 用户签到
 @router.post("/clock_in")
 async def clock_in(user=Depends(get_verified_user)):
-    print("================", user)
     if not user.verified:
         raise HTTPException(status_code=500, detail="Please complete the KYC verification !")
     # 获取今天的日期
