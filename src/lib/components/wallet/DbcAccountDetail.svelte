@@ -278,10 +278,10 @@
       </div>
         
       <div class="flex justify-between">
-        <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">1DGC=0.0005u</div>
+        <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">1DGC=0.00006u</div>
         <div class="opacity-50 leading-normal text-xs">
           Total ${floorToFixed(
-            Number($currentWalletData?.dgcBalance) * 0.0005,
+            Number($currentWalletData?.dgcBalance) * 0.00006,
             4
           )}u
         </div>

@@ -28,8 +28,6 @@ class RewardApi:
             response = requests.post(url, json.dumps(data))
             # 校验请求是否成功
             response.raise_for_status()
-            # 打印响应内容
-            print("===========registReward===========", response.text)
             response_json = json.loads(response.text);
             if response_json['code'] == 0:
                 # 更新记录
@@ -41,6 +39,9 @@ class RewardApi:
             else:
                 RewardsTableInstance.update_reward(reward_id, None, False, True)
                 return None
+        except requests.exceptions.HTTPError as e:
+            print("===========registReward===========", e)
+            return None
         except Exception as e:
             print("===========registReward===========:", e)
             return None
@@ -60,10 +61,8 @@ class RewardApi:
             print("===========inviteReward-data===========", data)
             ## 发送POST请求
             response = requests.post(url, json.dumps(data))
-            ## 校验请求是否成功
+            # 校验请求是否成功
             response.raise_for_status()
-            ## 打印响应内容
-            print("===========inviteReward===========", response.text)
             response_json = json.loads(response.text)
             if (response_json['code'] == 0):       
                 ## 更新记录
@@ -71,6 +70,9 @@ class RewardApi:
             else:
                 RewardsTableInstance.update_reward(invite.id, None, False, True)
                 return None
+        except requests.exceptions.HTTPError as e:
+            print("===========inviteReward===========", e)
+            return None
         except Exception as e:
             print("===========inviteReward===========", e)
             return None
@@ -104,8 +106,6 @@ class RewardApi:
             response = requests.post(url, json.dumps(data))
             # 校验请求是否成功
             response.raise_for_status()
-            # 打印响应内容
-            print("===========dailyReward===========", response.text)
             response_json = json.loads(response.text)
             if response_json['code'] == 0:       
                 # 更新记录
@@ -115,8 +115,11 @@ class RewardApi:
             else:
                 RewardsTableInstance.update_reward(reward_id, None, False, True)
                 return None
+        except requests.exceptions.HTTPError as e:
+            print("===========dailyReward===========", e)
+            return None
         except Exception as e:
-            print("dailyReward:", e)
+            print("===========dailyReward===========", e)
             return None
 
     #关注推特

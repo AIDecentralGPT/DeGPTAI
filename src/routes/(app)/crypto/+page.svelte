@@ -14,7 +14,7 @@
     {
       title: "III. Clock in Reward",
       description: [
-        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.",
+        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.",
         "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.",
       ]
     }
