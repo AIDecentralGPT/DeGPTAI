@@ -17,11 +17,22 @@ class ClaudeApi:
    
     def completion(self, param: AiModelReq):
         try:
-            completion = client.chat.completions.create(
-                model=param.model,
-                messages=param.messages,
-                stream=param.stream,  #流模式
-            )
+            if param.enable_thinking:
+                completion = client.chat.completions.create(
+                    model=param.model,
+                    messages=param.messages,
+                    thinking={
+                        "type": "enabled",
+                        "budget_tokens": 10000
+                    },
+                    stream=param.stream,  #流模式
+                )
+            else:
+                completion = client.chat.completions.create(
+                    model=param.model,
+                    messages=param.messages,
+                    stream=param.stream,  #流模式
+                )
         except APIError as e:
             print("==========ClaudeApi Error===========", e)
             completion = None
