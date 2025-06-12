@@ -855,9 +855,20 @@
   "Optimize the code in the file": "优化文件中的代码",
   "In web page parsing...": "网页分析中...",
   "Deep Research": "深度搜索",
-  "Basic Vip": "基础VIP",
+  "Basic Vip": "VIP会员",
   "Standard Vip": "标准VIP",
   "Pro Vip": "高级VIP",
   "Month": "月",
-  "Year": "年"
+  "Year": "年",
+  "Instant Savings": "立省",
+  "Current Status": "当前状态",
+  "Accessible Foundation Model": "可访问基础模型",
+  "Accessible Advanced Model": "可访问高级模型",
+  "Accessible Top-Level Model": "可访问顶级模型",
+  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "未创建钱包的用户，基础模型：{{ num }}次/天",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "已经创建钱包的用户，基础模型：{{ num }}次/天",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "已完成KYC的用户,基础模型：{{ num }}次/天",
+  "Basic Model: {{ num }} Times/Month": "基础模型：{{ num }}次/月",
+  "Premium Model: {{ num }} Times/Month": "高级模型：{{ num }}次/月",
+  "Top-tier Model: {{ num }} Times/Month": "顶级模型：{{ num }}次/月"
 }

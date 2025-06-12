@@ -860,5 +860,16 @@
   "Standard Vip": "Vip Estándar",
   "Pro Vip": "Vip Profesional",
   "Month": "Mes",
-  "Year": "Año"
+  "Year": "Año",
+  "Instant Savings": "Ahorros Inmediatos",
+  "Current Status": "Estado Actual",
+  "Accessible Foundation Model": "Modelo de Fundación Accesible",
+  "Accessible Advanced Model": "Modelo Avanzado Accesible",
+  "Accessible Top-Level Model": "Modelo de Nivel Superior Accesible",
+  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Para los usuarios que no han creado una billetera, el modelo de fundación: {{ num }} veces al día",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Para los usuarios que han creado una billetera, el modelo de fundación: {{ num }} veces al día",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Para los usuarios que han completado el KYC, el modelo de fundación: {{ num }} veces al día",
+  "Basic Model: {{ num }} Times/Month": "Modelo Básico: {{ num }} Veces/Mes",
+  "Premium Model: {{ num }} Times/Month": "Modelo Premium: {{ num }} Veces/Mes",
+  "Top-tier Model: {{ num }} Times/Month": "Modelo Top-tier: {{ num }} Veces/Mes"
 }

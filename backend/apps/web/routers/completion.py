@@ -25,80 +25,132 @@ router = APIRouter()
 async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
     if param.stream:
         def event_generator():
-            completion = None
-            if OpenAiApiInstance.check_model(param.model):
-                completion = OpenAiApiInstance.completion(param)
-            if AliQwenApiInstance.check_model(param.model):
-                completion = AliQwenApiInstance.completion(param)
-            if GeminiApiInstance.check_model(param.model):
-                completion = GeminiApiInstance.completion(param)
             if ClaudeApiInstance.check_model(param.model):
                 completion = ClaudeApiInstance.completion(param)
-            if DeepseekApiInstance.check_model(param.model):
-                completion = DeepseekApiInstance.completion(param)
-            if DoubaoApiInstance.check_model(param.model):
-                completion = DoubaoApiInstance.completion(param)
-            if GrokApiInstance.check_model(param.model):
-                completion = GrokApiInstance.completion(param)
-
-            if completion is not None:
-                for chunk in completion:
-                    try:
-                        # 符合 SSE 格式要求
-                        if chunk:
-                            if DoubaoApiInstance.check_model(param.model):
-                                decoded_line = chunk.decode('utf-8').lstrip('data: ')
-                                json_dict = json.loads(decoded_line)
-                            else:
+                if completion is not None:
+                    for chunk in completion:
+                        try:
+                            if chunk:
                                 json_dict = json.loads(chunk.model_dump_json())
-                                
-                            # 重组返回数据格式
-                            if json_dict["choices"] is not None:
-                                choice = json_dict["choices"][0]
-                                if param.enable_thinking and choice.get("delta").get("reasoning_content") is not None:
-                                    chat_result = {
-                                        "id": json_dict["id"],
-                                        "object": json_dict["object"],
-                                        "created": json_dict["created"],
-                                        "model": json_dict["model"],
-                                        "choices": [{
-                                            "index": choice.get("index"),
-                                            "delta": {"reasoning_content": choice.get("delta").get("reasoning_content")},
-                                            "logprobs": choice.get("logprobs"),
-                                            "finish_reason": choice.get("finish_reason")
-                                        }]
-                                    }
-                                else:
-                                    chat_result = {
-                                        "id": json_dict["id"],
-                                        "object": json_dict["object"],
-                                        "created": json_dict["created"],
-                                        "model": json_dict["model"],
-                                        "choices": [{
-                                            "index": choice.get("index"),
-                                            "delta": {"content": choice.get("delta").get("content")},
-                                            "logprobs": choice.get("logprobs"),
-                                            "finish_reason": choice.get("finish_reason")
-                                        }]
-                                    }
-                                yield f"data: {json.dumps(chat_result)}\n\n"
-                    except:
-                        print("=====解析失败====", chunk)
+                                if json_dict.get("delta"):
+                                    data = json_dict.get("delta")
+                                    if data.get("thinking"):
+                                        chat_result = {
+                                            "id": str(uuid.uuid4()),
+                                            "object": param.model,
+                                            "created": datetime.now().timestamp(),
+                                            "model": param.model,
+                                            "choices": [{
+                                                "index": 0,
+                                                "delta": {"reasoning_content": data.get("thinking")},
+                                                "logprobs": None,
+                                                "finish_reason": None
+                                            }]
+                                        }
+                                        yield f"data: {json.dumps(chat_result)}\n\n"
+                                    if data.get("text"):
+                                        chat_result = {
+                                            "id": str(uuid.uuid4()),
+                                            "object": param.model,
+                                            "created": datetime.now().timestamp(),
+                                            "model": param.model,
+                                            "choices": [{
+                                                "index": 0,
+                                                "delta": {"content": data.get("text")},
+                                                "logprobs": None,
+                                                "finish_reason": None
+                                            }]
+                                        }
+                                        yield f"data: {json.dumps(chat_result)}\n\n"
+                        except:
+                            print("=====解析失败====", chunk)
+                else:
+                    chat_result = {
+                        "id": str(uuid.uuid4()),
+                        "object": param.model,
+                        "created": datetime.now().timestamp(),
+                        "model": param.model,
+                        "choices": [{
+                            "index": 0,
+                            "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
+                            "logprobs": None,
+                            "finish_reason": None
+                        }]
+                    }
+                    yield f"data: {json.dumps(chat_result)}\n\n" 
             else:
-                chat_result = {
-                    "id": str(uuid.uuid4()),
-                    "object": param.model,
-                    "created": datetime.now().timestamp(),
-                    "model": param.model,
-                    "choices": [{
-                        "index": 0,
-                        "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
-                        "logprobs": None,
-                        "finish_reason": None
-                    }]
-                }
-                yield f"data: {json.dumps(chat_result)}\n\n"
-                
+                completion = None
+                if OpenAiApiInstance.check_model(param.model):
+                    completion = OpenAiApiInstance.completion(param)
+                if AliQwenApiInstance.check_model(param.model):
+                    completion = AliQwenApiInstance.completion(param)
+                if GeminiApiInstance.check_model(param.model):
+                    completion = GeminiApiInstance.completion(param)
+                if DeepseekApiInstance.check_model(param.model):
+                    completion = DeepseekApiInstance.completion(param)
+                if DoubaoApiInstance.check_model(param.model):
+                    completion = DoubaoApiInstance.completion(param)
+                if GrokApiInstance.check_model(param.model):
+                    completion = GrokApiInstance.completion(param)
+
+                if completion is not None:
+                    for chunk in completion:
+                        try:
+                            # 符合 SSE 格式要求
+                            if chunk:
+                                if DoubaoApiInstance.check_model(param.model):
+                                    decoded_line = chunk.decode('utf-8').lstrip('data: ')
+                                    json_dict = json.loads(decoded_line)
+                                else:
+                                    json_dict = json.loads(chunk.model_dump_json())
+                                    
+                                # 重组返回数据格式
+                                if json_dict["choices"] is not None:
+                                    choice = json_dict["choices"][0]
+                                    if param.enable_thinking and choice.get("delta").get("reasoning_content") is not None:
+                                        chat_result = {
+                                            "id": json_dict["id"],
+                                            "object": json_dict["object"],
+                                            "created": json_dict["created"],
+                                            "model": json_dict["model"],
+                                            "choices": [{
+                                                "index": choice.get("index"),
+                                                "delta": {"reasoning_content": choice.get("delta").get("reasoning_content")},
+                                                "logprobs": choice.get("logprobs"),
+                                                "finish_reason": choice.get("finish_reason")
+                                            }]
+                                        }
+                                    else:
+                                        chat_result = {
+                                            "id": json_dict["id"],
+                                            "object": json_dict["object"],
+                                            "created": json_dict["created"],
+                                            "model": json_dict["model"],
+                                            "choices": [{
+                                                "index": choice.get("index"),
+                                                "delta": {"content": choice.get("delta").get("content")},
+                                                "logprobs": choice.get("logprobs"),
+                                                "finish_reason": choice.get("finish_reason")
+                                            }]
+                                        }
+                                    yield f"data: {json.dumps(chat_result)}\n\n"
+                        except:
+                            print("=====解析失败====", chunk)
+                else:
+                    chat_result = {
+                        "id": str(uuid.uuid4()),
+                        "object": param.model,
+                        "created": datetime.now().timestamp(),
+                        "model": param.model,
+                        "choices": [{
+                            "index": 0,
+                            "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
+                            "logprobs": None,
+                            "finish_reason": None
+                        }]
+                    }
+                    yield f"data: {json.dumps(chat_result)}\n\n"
+                    
             yield f"data: [DONE]\n\n"
 
         return StreamingResponse(event_generator(), media_type="text/event-stream")

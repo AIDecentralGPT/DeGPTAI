@@ -849,5 +849,16 @@
   "Standard Vip": "VIP Tiêu Ch chuẩn",
   "Pro Vip": "VIP Chuyên Nghiệp",
   "Month": "Tháng",
-  "Year": "Năm"
+  "Year": "Năm",
+  "Instant Savings": "Tiết Kiệm Ngay Lập Tức",
+  "Current Status": "Trạng Thái Hiện Tại",
+  "Accessible Foundation Model": "Mô hình Cơ sở Có Thể Truy Cập",
+  "Accessible Advanced Model": "Mô hình Cao Cấp Có Thể Truy Cập",
+  "Accessible Top-Level Model": "Mô hình Cấp Top Có Thể Truy Cập",
+  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Đối với người dùng chưa tạo ví, mô hình cơ sở: {{ num }} lần/ngày",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Đối với người dùng đã tạo ví, mô hình cơ sở: {{ num }} lần/ngày",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Đối với người dùng đã hoàn thành KYC, mô hình cơ sở: {{ num }} lần/ngày",
+  "Basic Model: {{ num }} Times/Month": "Mô Hình Cơ Bản: {{ num }} Lần/Tháng",
+  "Premium Model: {{ num }} Times/Month": "Mô Hình Premium: {{ num }} Lần/Tháng",
+  "Top-tier Model: {{ num }} Times/Month": "Mô Hình Top-tier: {{ num }} Lần/Tháng"
 }

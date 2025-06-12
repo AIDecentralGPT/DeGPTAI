@@ -138,8 +138,8 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "GPT o3",
-        model: "o3",
-        textmodel: "o3",
+        model: "o3-mini",
+        textmodel: "o3-mini",
         think: false,
         tip: "GPT o3",
         support: "text",
@@ -189,44 +189,44 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "GPT o4-mini",
-        model: "gpt-4o-mini",
-        textmodel: "gpt-4o-mini",
+        model: "o4-mini",
+        textmodel: "o4-mini",
         think: false,
         tip: "GPT o4-mini",
         support: "text",
         type: 3,
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       },
-      {
-        name: "GPT o4-mini high",
-        model: "gpt-4o-mini-high",
-        textmodel: "gpt-4o-mini-high",
-        think: false,
-        tip: "GPT o4-mini high",
-        support: "text",
-        type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
+      // {
+      //   name: "GPT o4-mini high",
+      //   model: "gpt-o4-mini-high",
+      //   textmodel: "gpt-o4-mini-high",
+      //   think: false,
+      //   tip: "GPT o4-mini high",
+      //   support: "text",
+      //   type: 3,
+      //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      // },
       {
         name: "GPT 4.5",
-        model: "gpt-4.5",
-        textmodel: "gpt-4.5",
+        model: "gpt-4.5-preview",
+        textmodel: "gpt-4.5-preview",
         think: false,
         tip: "GPT 4.5",
         support: "text",
         type: 3,
         desc: "Suitable for most tasks,Performance comparable to GPT-4o"
       },
-      {
-        name: "GPT o4 Pro",
-        model: "gpt-o4-mini-pro",
-        textmodel: "gpt-o4-mini-pro",
-        think: false,
-        tip: "GPT o4 Pro",
-        support: "text",
-        type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      }
+      // {
+      //   name: "GPT o4 Pro",
+      //   model: "gpt-o1-pro",
+      //   textmodel: "gpt-o1-pro",
+      //   think: false,
+      //   tip: "GPT o4 Pro",
+      //   support: "text",
+      //   type: 3,
+      //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+      // }
     ],
   };
   return (format_res?.models ?? []).map((model) => ({

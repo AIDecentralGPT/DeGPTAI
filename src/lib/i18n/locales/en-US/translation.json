@@ -860,6 +860,17 @@
   "Standard Vip": "",
   "Pro Vip": "",
   "Month": "",
-  "Year": ""
+  "Year": "",
+  "Instant Savings": "",
+  "Current Status": "",
+  "Accessible Foundation Model": "",
+  "Accessible Advanced Model": "",
+  "Accessible Top-Level Model": "",
+  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "",
+  "Basic Model: {{ num }} Times/Month": "",
+  "Premium Model: {{ num }} Times/Month": "",
+  "Top-tier Model: {{ num }} Times/Month": ""
 }
 

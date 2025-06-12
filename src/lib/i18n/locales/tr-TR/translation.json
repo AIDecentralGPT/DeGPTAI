@@ -860,5 +860,16 @@
   "Standard Vip": "Standart VIP",
   "Pro Vip": "Pro VIP",
   "Month": "Ay",
-  "Year": "Yıl"
+  "Year": "Yıl",
+  "Instant Savings": "Anlık Tasarruflar",
+  "Current Status": "Geçerli Durum",
+  "Accessible Foundation Model": "Erişilebilir Temel Model",
+  "Accessible Advanced Model": "Erişilebilir Gelişmiş Model",
+  "Accessible Top-Level Model": "Erişilebilir En Üst Seviye Model",
+  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Cüzdan oluşturmayan kullanıcılar için temel model: {{ num }} kez/gün",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Cüzdan oluşturan kullanıcılar için temel model: {{ num }} kez/gün",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "KYC'yi tamamlayan kullanıcılar için temel model: {{ num }} kez/gün",
+  "Basic Model: {{ num }} Times/Month": "Temel Model: {{ num }} Kere/Ay",
+  "Premium Model: {{ num }} Times/Month": "Premium Model: {{ num }} Kere/Ay",
+  "Top-tier Model: {{ num }} Times/Month": "Top-Tier Model: {{ num }} Kere/Ay"
 }

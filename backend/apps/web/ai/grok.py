@@ -19,8 +19,7 @@ class GrokApi:
             completion = client.chat.completions.create(
                 model=param.model,
                 messages=param.messages,
-                stream=param.stream,  # 流模式
-                extra_body={"enable_thinking": param.enable_thinking}
+                stream=param.stream
             )
         except APIError as e:
             print("==========GrokApi Error===========", e)

@@ -859,5 +859,16 @@
   "Standard Vip": "วิพมาตรฐาน",
   "Pro Vip": "วิพโปรเฟชั่นাল",
   "Month": "เดือน",
-  "Year": "ปี"
+  "Year": "ปี",
+  "Instant Savings": "การประหยัดทันที",
+  "Current Status": "สถานะปัจจุบัน",
+  "Accessible Foundation Model": "รุ่นแบบพื้นฐานที่เข้าถึงได้",
+  "Accessible Advanced Model": "รุ่นแบบที่มีอัตราการขั้นสูงและเข้าถึงได้",
+  "Accessible Top-Level Model": "รุ่นแบบระดับสูงสุดที่เข้าถึงได้",
+  "For users who have not created a wallet, the foundation model: {{num}} times/day": "สำหรับผู้ใช้ที่ยังไม่ได้สร้างกระเป๋า电子錢包 รุ่นแบบพื้นฐาน: {{ num }} ครั้ง/วัน",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "สำหรับผู้ใช้ที่ได้สร้างกระเป๋า electronic 錢包 รุ่นแบบพื้นฐาน: {{ num }} ครั้ง/วัน",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "สำหรับผู้ใช้ที่已經ทำ完 KYC, รุ่นแบบพื้นฐาน: {{ num }} ครั้ง/วัน",
+  "Basic Model: {{ num }} Times/Month": "แบบเบื้องต้น: {{ num }} ครั้ง/เดือน",
+  "Premium Model: {{ num }} Times/Month": "แบบพิเศษ: {{ num }} ครั้ง/เดือน",
+  "Top-tier Model: {{ num }} Times/Month": "แบบท็อปทियर: {{ num }} ครั้ง/เดือน"
 }

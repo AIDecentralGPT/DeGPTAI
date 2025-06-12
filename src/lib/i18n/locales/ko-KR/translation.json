@@ -860,5 +860,16 @@
   "Standard Vip": "표준 VIP",
   "Pro Vip": "프로 VIP",
   "Month": "월",
-  "Year": "년"
+  "Year": "년",
+  "Instant Savings": "즉시 절약",
+  "Current Status": "현재 상태",
+  "Accessible Foundation Model": "액세스 가능한 기저 모델",
+  "Accessible Advanced Model": "액세스 가능한 고급 모델",
+  "Accessible Top-Level Model": "액세스 가능한 최상위 모델",
+  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "지갑을 생성하지 않은 사용자는 기저 모델: {{ num }} 회/일",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "지갑을 생성한 사용자는 기저 모델: {{ num }} 회/일",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "KYC를 완료한 사용자는 기저 모델: {{ num }} 회/일",
+  "Basic Model: {{ num }} Times/Month": "기본 모델: {{ num }} 회/월",
+  "Premium Model: {{ num }} Times/Month": "프리미엄 모델: {{ num }} 회/월",
+  "Top-tier Model: {{ num }} Times/Month": "최상위 계층 모델: {{ num }} 회/월"
 }

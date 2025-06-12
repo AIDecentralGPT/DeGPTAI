@@ -8,7 +8,7 @@ client = OpenAI(api_key=apikey)
 
 class OpenAiApi:
     def check_model(self, model: str):
-        models = ["gpt-4o","gpt-4.1","o3","gpt-4o-mini","gpt-4.5"]
+        models = ["gpt-4o","gpt-4.1","o3-mini","o4-mini","gpt-o4-mini-high","gpt-4.5-preview","gpt-o1-pro"]
         return model in models
    
     def completion(self, param: AiModelReq):
@@ -16,7 +16,7 @@ class OpenAiApi:
             completion = client.chat.completions.create(
                 model=param.model,
                 messages=param.messages,
-                stream=param.stream,  #流模式
+                stream=param.stream
             )
         except APIError as e:
             print("==========OpenAiApi Error===========", e)

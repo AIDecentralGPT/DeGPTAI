@@ -860,5 +860,16 @@
   "Standard Vip": "Vip Standar",
   "Pro Vip": "Vip Profesional",
   "Month": "Bulan",
-  "Year": "Tahun"
+  "Year": "Tahun",
+  "Instant Savings": "Penhematan Langsung",
+  "Current Status": "Status Saat Ini",
+  "Accessible Foundation Model": "Model Dasar Aksesibel",
+  "Accessible Advanced Model": "Model Tingkat Atas Aksesibel",
+  "Accessible Top-Level Model": "Model Tingkat Atas Aksesibel",
+  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Bagi pengguna yang belum membuat dompet, model dasar: {{ num }} kali per hari",
+  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Bagi pengguna yang telah membuat dompet, model dasar: {{ num }} kali per hari",
+  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Bagi pengguna yang telah menyelesaikan KYC, model dasar: {{ num }} kali per hari",
+  "Basic Model: {{ num }} Times/Month": "Model Dasar: {{ num }} Kali/Bulan",
+  "Premium Model: {{ num }} Times/Month": "Model Premium: {{ num }} Kali/Bulan",
+  "Top-tier Model: {{ num }} Times/Month": "Model Top-tier: {{ num }} Kali/Bulan"
 }

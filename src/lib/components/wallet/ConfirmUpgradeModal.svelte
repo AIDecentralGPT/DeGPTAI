@@ -23,7 +23,9 @@
   const i18n = getContext("i18n");
 
   export let show = false;
-  export let id = 2;
+  export let viptype = "basic";
+  export let viptime = "month";
+  export let money = "3";
   let loading = false;
   let showTip = false;
   let step = 0;
@@ -140,44 +142,6 @@
     loading = false;
     showTip = false;
   }
-
-  let selVip = 0;
-  const viplist = [{
-    id: 2,
-    name: "Basic Vip",
-    time: "Month",
-    money: 3
-  },
-  {
-    id: 2,
-    name: "Basic Vip",
-    time: "Year",
-    money: 33
-  },
-  {
-    id: 3,
-    name: "Standard Vip",
-    time: "Month",
-    money: 8
-  },
-  {
-    id: 3,
-    name: "Standard Vip",
-    time: "Year",
-    money: 88
-  },
-  {
-    id: 4,
-    name: "Pro Vip",
-    time: "Month",
-    money: 15
-  },
-  {
-    id: 4,
-    name: "Pro Vip",
-    time: "Year",
-    money: 165
-  }];
 </script>
 
 <Modal bind:show>
@@ -215,32 +179,7 @@
     <div class="flex flex-col">
       <div class="overflow-x-scroll py-4 mx-8">
         <div class="flex flex-row space-x-4">
-          {#each viplist as vip, index}
-            {#if  vip.id == id}
-              <button class="flex flex-col align-items-start size-[150px] min-w-[150px] border border-gray-500 rounded-lg"
-                on:click={async() => {
-                  selVip = index;
-                }}>
-                <div class="size-[20px] border-2 border-gray-500 rounded-full m-1.5">
-                  {#if selVip==index}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 1024 1024" 
-                      version="1.1"
-                      fill="currentColor"
-                      class="size-[16px]">
-                      <path d="M63.222927 512c0 0 231.767598 189.584869 254.790964 350.823134 0 0 303.906591-497.491565 641.581264-542.003338 0 0-102.837156-74.943876-69.070098-193.395662 0 0-187.255825 18.684548-540.279067 566.637388L184.79375 413.212066 63.222927 512z"/>
-                    </svg>
-                  {/if}
-                </div>
-                <div class="flex flex-col justify-center items-center w-full">
-                  <div class="font-bold">{$i18n.t(vip.name)}</div>
-                  <div>{$i18n.t(vip.time)}</div>
-                  <div class="text-3xl font-bold">${vip.money}</div>
-                </div>
-              </button>
-            {/if}  
-          {/each}
+          {viptype}-{viptime}-{money}
         </div>
       </div>
       <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">

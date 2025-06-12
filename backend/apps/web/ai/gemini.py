@@ -21,7 +21,6 @@ class GeminiApi:
                 messages=param.messages,
                 stream=param.stream,  #流模式
             )
-            print("==================", completion)
         except APIError as e:
             print("==========GeminiApi Error===========", e)
             completion = None
