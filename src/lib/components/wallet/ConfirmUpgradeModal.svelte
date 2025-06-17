@@ -26,7 +26,7 @@
       try {
         let response = await transferDgc(
           address,
-          money,
+          money/0.00006,
           $currentWalletData?.walletInfo?.privateKey
         );
         await uploadVip(response?.hash)
