@@ -860,5 +860,7 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "Đối với người dùng đã hoàn thành KYC, mô hình cơ sở: {{ num }} lần/ngày",
   "Basic Model: {{ num }} Times/Month": "Mô Hình Cơ Bản: {{ num }} Lần/Tháng",
   "Premium Model: {{ num }} Times/Month": "Mô Hình Premium: {{ num }} Lần/Tháng",
-  "Top-tier Model: {{ num }} Times/Month": "Mô Hình Top-tier: {{ num }} Lần/Tháng"
+  "Top-tier Model: {{ num }} Times/Month": "Mô Hình Top-tier: {{ num }} Lần/Tháng",
+  "VIP Upgrade Successful!": "Việc nâng cấp VIP đã thành công!",
+  "Failed to upgrade to VIP!": "Việc nâng cấp VIP thất bại!"
 }

@@ -870,5 +870,7 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "สำหรับผู้ใช้ที่已經ทำ完 KYC, รุ่นแบบพื้นฐาน: {{ num }} ครั้ง/วัน",
   "Basic Model: {{ num }} Times/Month": "แบบเบื้องต้น: {{ num }} ครั้ง/เดือน",
   "Premium Model: {{ num }} Times/Month": "แบบพิเศษ: {{ num }} ครั้ง/เดือน",
-  "Top-tier Model: {{ num }} Times/Month": "แบบท็อปทियर: {{ num }} ครั้ง/เดือน"
+  "Top-tier Model: {{ num }} Times/Month": "แบบท็อปทियर: {{ num }} ครั้ง/เดือน",
+  "VIP Upgrade Successful!": "การอัปเกรดเป็น VIP สำเร็จ!",
+  "Failed to upgrade to VIP!": "การอัปเกรดเป็น VIP ผิดพลาด!"
 }

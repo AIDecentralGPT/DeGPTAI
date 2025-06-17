@@ -5,6 +5,7 @@
   import {
     user,
     showConfirmUpgradeModal,
+    vipupgrade
   } from "$lib/stores";
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
   import { isPro } from "$lib/apis/users/index.js";
@@ -17,20 +18,43 @@
       if (result) {
         user.set({
           ...$user,
-          isPro: result.is_pro,
-          proEndDate: result.end_date
+          vipInfo: result,
         });
+        assiganVip(result);
       } else{
         user.set({
           ...$user,
-          isPro: false,
-          proEndDate: ""
+          vipInfo: []
         });
       }
       checkProLoading = false;
     }).catch(() => {
       checkProLoading = false;
     });    
+  }
+
+  let basicInfo = null;
+  let standardInfo = null;
+  let proInfo = null;
+  function assiganVip(vipInfo) {
+    basicInfo = null;
+    standardInfo = null;
+    proInfo = null;
+    vipInfo.forEach(item => {
+      if (item.vip == "basic") {
+        basicInfo = item;
+      } else if (item.vip == "standard") {
+        standardInfo = item;
+      } else if (item.vip == "pro") {
+        proInfo = item;
+      }
+    });
+  }
+
+  $: if (vipupgrade || !vipupgrade) {
+    if ($user?.vipInfo) {
+      assiganVip($user?.vipInfo);
+    }
   }
 
   // 显示初始化Socket
@@ -196,13 +220,13 @@
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
             </div>
           </div>
-          {#if $user.isPro}
+          {#if basicInfo}
             <div
               class="flex flex-col mt-6 px-1 py-1.5 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
             >
-              <div class="text-white text-center text-base leading-5">VIP</div>       
+              <div class="text-white text-center text-base leading-5">{$i18n.t("Basic Vip")}</div>       
               <div class="flex-1 flex flex-row justify-center items-center leading-4">
-                {$i18n.t("Valid until")} {$user.proEndDate}
+                {$i18n.t("Valid until")} { basicInfo.end_date}
                 {#if checkProLoading}
                   <svg class="animate-spin ml-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -465,13 +489,13 @@
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
             </div>
           </div>
-          {#if $user.isPro}
+          {#if standardInfo}
             <div
               class="flex flex-col mt-6 px-1 py-1.5 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
             >
-              <div class="text-white text-center text-base leading-5">VIP</div>       
+              <div class="text-white text-center text-base leading-5">{$i18n.t("Standard Vip")}</div>       
               <div class="flex-1 flex flex-row justify-center items-center leading-4">
-                {$i18n.t("Valid until")} {$user.proEndDate}
+                {$i18n.t("Valid until")} {standardInfo.end_date}
                 {#if checkProLoading}
                   <svg class="animate-spin ml-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -734,13 +758,13 @@
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
             </div>
           </div>
-          {#if $user.isPro}
+          {#if proInfo}
             <div
               class="flex flex-col mt-6 px-1 py-1.5 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
             >
-              <div class="text-white text-center text-base leading-5">VIP</div>       
+              <div class="text-white text-center text-base leading-5">{$i18n.t("Pro Vip")}</div>       
               <div class="flex-1 flex flex-row justify-center items-center leading-4">
-                {$i18n.t("Valid until")} {$user.proEndDate}
+                {$i18n.t("Valid until")} {proInfo.end_date}
                 {#if checkProLoading}
                   <svg class="animate-spin ml-2"
                     xmlns="http://www.w3.org/2000/svg"

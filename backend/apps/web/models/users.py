@@ -27,6 +27,8 @@ from apps.web.models.reward_data import RewardDateTableInstance
 class UserRoleUpdateProForm(BaseModel):
     tx: str  # 定义id字段，类型为字符串
     amount: int  # 定义role字段，类型为字符串
+    vip: str # vip 类型
+    viptime: str # vip 时间
 
 # 定义Pydantic模型UserRequest
 class UserRequest(BaseModel):

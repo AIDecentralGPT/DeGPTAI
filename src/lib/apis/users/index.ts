@@ -245,6 +245,8 @@ export const openProServices = async (
 	token: string,
 	tx: string,
 	amount: number,
+	vip: string,
+	viptime: string
 ) => {
 	let error = null;
 
@@ -257,7 +259,9 @@ export const openProServices = async (
 		},
 		body: JSON.stringify({
 			tx,
-			amount
+			amount,
+			vip,
+			viptime
 		})
 	})
 		.then(async (res) => {

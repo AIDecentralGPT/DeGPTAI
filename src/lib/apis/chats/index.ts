@@ -669,7 +669,7 @@ export const deleteAllChats = async (token: string) => {
 	return res;
 };
 
-export const conversationRefresh = async (token: string, models: string[]) => {
+export const conversationRefresh = async (token: string, model: string) => {
 	let error = null;
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/conversation/refresh`, {
@@ -680,7 +680,7 @@ export const conversationRefresh = async (token: string, models: string[]) => {
 			...(token && { authorization: `Bearer ${token}` })
 		},
 		body: JSON.stringify({
-			models: models
+			model: model
 		})
 	})
 		.then(async (res) => {

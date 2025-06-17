@@ -871,5 +871,7 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "Bagi pengguna yang telah menyelesaikan KYC, model dasar: {{ num }} kali per hari",
   "Basic Model: {{ num }} Times/Month": "Model Dasar: {{ num }} Kali/Bulan",
   "Premium Model: {{ num }} Times/Month": "Model Premium: {{ num }} Kali/Bulan",
-  "Top-tier Model: {{ num }} Times/Month": "Model Top-tier: {{ num }} Kali/Bulan"
+  "Top-tier Model: {{ num }} Times/Month": "Model Top-tier: {{ num }} Kali/Bulan",
+  "VIP Upgrade Successful!": "Pembaruan VIP berhasil!",
+  "Failed to upgrade to VIP!": "Pembaruan ke VIP gagal!"
 }

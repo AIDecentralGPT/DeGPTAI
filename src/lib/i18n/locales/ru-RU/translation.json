@@ -870,5 +870,7 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "Для пользователей, которые завершили KYC, фундаментальная модель: {{ num }} раз/день",
   "Basic Model: {{ num }} Times/Month": "Базовая Модель: {{ num }} Раз/Месяц",
   "Premium Model: {{ num }} Times/Month": "Премиум Модель: {{ num }} Раз/Месяц",
-  "Top-tier Model: {{ num }} Times/Month": "Топ-Тиер Модель: {{ num }} Раз/Месяц"
+  "Top-tier Model: {{ num }} Times/Month": "Топ-Тиер Модель: {{ num }} Раз/Месяц",
+  "VIP Upgrade Successful!": "Обновление VIP успешно выполнено!",
+  "Failed to upgrade to VIP!": "Процесс обновления до VIP завершился с ошибкой!"
 }

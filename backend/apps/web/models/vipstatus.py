@@ -43,7 +43,8 @@ from eth_account import Account
 class VIPStatus(Model):
     id = CharField(primary_key=True, default=str(uuid.uuid4))
     user_id = CharField()
-    vip=IntegerField()
+    vip=CharField()
+    level=IntegerField()
     start_date = DateField()
     end_date = DateField()
 
@@ -55,18 +56,18 @@ class VIPStatus(Model):
 class VIPStatusModel(BaseModel):
     id: str
     user_id: str
-    vip: int
+    vip: str
+    level: int
     start_date: date
     end_date: date
 
 class VIPStatusModelResp(BaseModel):
     id: str
     user_id: str
-    vip: int
+    vip: str
+    level: int
     start_date: date
     end_date: date
-    is_pro: Optional[bool] = None
-
 
 # 定义Pydantic模型VipTotalModel
 class VipTotalModel(BaseModel):
@@ -81,12 +82,13 @@ class VIPStatusTable:
         self.db = db
         db.create_tables([VIPStatus])
 
-    def insert_vip_status(self, user_id: str, vip: int,start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
+    def insert_vip_status(self, user_id: str, vip: str, level: int, start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
         # order_id = str(uuid.uuid4())
         vip_status = VIPStatusModel(
             id=order_id,
             user_id=user_id,
             vip=vip,
+            level=level,
             start_date=start_date,
             end_date=end_date
         )
@@ -100,34 +102,31 @@ class VIPStatusTable:
             log.error(f"insert_vip_status: {e}")
             return None
 
-    def get_vip_status_by_user_id(self, user_id: str) -> Optional[VIPStatusModelResp]:
+    def get_vip_status_by_user_id(self, user_id: str) -> Optional[List[VIPStatusModelResp]]:
         try:
-            vip_status = VIPStatus.select().where(VIPStatus.user_id == user_id).order_by(-VIPStatus.end_date).limit(1).get()
-            if (vip_status):
-                return VIPStatusModelResp(**model_to_dict(vip_status))
-            else:
-                return None
+            vip_statuss = VIPStatus.select().where((VIPStatus.user_id == user_id) & 
+                (fn.DATE(VIPStatus.start_date) <= date.today()) & (fn.DATE(VIPStatus.end_date) >= date.today())).order_by(VIPStatus.level.desc())
+            return [VIPStatusModelResp(**model_to_dict(vip_status)) for vip_status in vip_statuss]
+        except Exception as e:
+            log.error(f"get_vip_status_by_user_id: {e}")
+            return None
+        
+    def get_vip_status_by_userid_vip(self, user_id: str, vip: str) -> Optional[VIPStatusModelResp]:
+        try:
+            vip_status = VIPStatus.select().where((VIPStatus.user_id == user_id) & (VIPStatus.vip == vip) &
+                (fn.DATE(VIPStatus.start_date) <= date.today()) & (fn.DATE(VIPStatus.end_date) >= date.today())).first()
+            return vip_status
         except Exception as e:
             log.error(f"get_vip_status_by_user_id: {e}")
             return None
 
-    def update_vip_end_date(self, user_id: str, new_end_date: date) -> bool:
+    def update_vip_end_date(self, id: str, new_end_date: date) -> bool:
         try:
-            query = VIPStatus.update(end_date=new_end_date).where(VIPStatus.user_id == user_id)
+            query = VIPStatus.update(end_date=new_end_date).where(VIPStatus.id == id)
             res = query.execute()
             return res > 0
         except Exception as e:
             log.error(f"update_vip_end_date: {e}")
-            return False
-
-    def is_vip_active(self, user_id: str) -> bool:
-        try:
-            vip_status = self.get_vip_status_by_user_id(user_id)
-            if vip_status:
-                return vip_status.start_date <= date.today() <= vip_status.end_date
-            return False
-        except Exception as e:
-            log.error(f"is_vip_active: {e}")
             return False
     
     def get_vip_total(self) -> Optional[VipTotalModel]:

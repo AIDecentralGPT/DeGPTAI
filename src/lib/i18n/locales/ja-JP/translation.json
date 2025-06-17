@@ -871,5 +871,7 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "KYC を完了したユーザーの場合、ファウンデーションモデル：{{ num }} 回 / 日",
   "Basic Model: {{num}} Times/Month": "基本モデル: {{ num }} 回 / 月",
   "Premium Model: {{ num }} Times/Month": "プレミアムモデル: {{ num }} 回 / 月",
-  "Top-tier Model: {{ num }} Times/Month": "トップティアモデル: {{ num }} 回 / 月"
+  "Top-tier Model: {{ num }} Times/Month": "トップティアモデル: {{ num }} 回 / 月",
+  "VIP Upgrade Successful!": "VIP のアップグレードに成功しました！",
+  "Failed to upgrade to VIP!": "VIP にアップグレードできませんでした!"
 }

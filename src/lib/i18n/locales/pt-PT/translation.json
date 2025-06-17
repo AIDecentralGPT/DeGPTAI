@@ -871,5 +871,7 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "Para os usuários que completaram o KYC, o modelo de fundação: {{ num }} vezes por dia",
   "Basic Model: {{ num }} Times/Month": "Modelo Básico: {{ num }} Vezes/Mês",
   "Premium Model: {{ num }} Times/Month": "Modelo Premium: {{ num }} Vezes/Mês",
-  "Top-tier Model: {{ num }} Times/Month": "Modelo Top-tier: {{ num }} Vezes/Mês"
+  "Top-tier Model: {{ num }} Times/Month": "Modelo Top-tier: {{ num }} Vezes/Mês",
+  "VIP Upgrade Successful!": "A atualização para VIP foi bem-sucedida!",
+  "Failed to upgrade to VIP!": "O upgrade para VIP falhou!"
 }

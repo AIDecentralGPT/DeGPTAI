@@ -870,5 +870,7 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "已完成KYC的用户,基础模型：{{ num }}次/天",
   "Basic Model: {{ num }} Times/Month": "基础模型：{{ num }}次/月",
   "Premium Model: {{ num }} Times/Month": "高级模型：{{ num }}次/月",
-  "Top-tier Model: {{ num }} Times/Month": "顶级模型：{{ num }}次/月"
+  "Top-tier Model: {{ num }} Times/Month": "顶级模型：{{ num }}次/月",
+  "VIP Upgrade Successful!": "升级VIP成功!",
+  "Failed to upgrade to VIP!": "升级VIP失败!"
 }

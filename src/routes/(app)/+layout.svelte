@@ -74,11 +74,10 @@
         if (localUser?.address_type == "dbc") {
           getUserInfo(localStorage.token).then(async (res) => {
 						if (res?.id === localUser?.id) {
-							const proInfo = await isPro(localStorage.token);
+							const vipInfo = await isPro(localStorage.token);
 							await user.set({
 								...localUser,
-								isPro: proInfo ? proInfo.is_pro : false,
-								proEndDate: proInfo ? proInfo.end_date : null,
+								vipInfo: vipInfo ?? [],
 								models: res?.models,
 								verified: res?.verified,
 								language: res?.language

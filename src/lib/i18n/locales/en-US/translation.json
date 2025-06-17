@@ -871,6 +871,8 @@
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "",
   "Basic Model: {{ num }} Times/Month": "",
   "Premium Model: {{ num }} Times/Month": "",
-  "Top-tier Model: {{ num }} Times/Month": ""
+  "Top-tier Model: {{ num }} Times/Month": "",
+  "VIP Upgrade Successful!": "",
+  "Failed to upgrade to VIP!": ""
 }
 
