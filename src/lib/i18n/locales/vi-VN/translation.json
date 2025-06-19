@@ -862,5 +862,12 @@
   "Premium Model: {{ num }} Times/Month": "Mô Hình Premium: {{ num }} Lần/Tháng",
   "Top-tier Model: {{ num }} Times/Month": "Mô Hình Top-tier: {{ num }} Lần/Tháng",
   "VIP Upgrade Successful!": "Việc nâng cấp VIP đã thành công!",
-  "Failed to upgrade to VIP!": "Việc nâng cấp VIP thất bại!"
+  "Failed to upgrade to VIP!": "Việc nâng cấp VIP thất bại!",
+  "KYC Certification Instructions": "Hướng Dẫn Xác Thực Nhận Dạng Mặt",
+  "Please follow the steps below:": "Vui lòng làm theo các bước sau:",
+  "Click \"Copy Link\".": "Nhấp vào \"Sao Chép Liên Kết\".",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Mở trình duyệt. Chrome, Firefox, Microsoft Edge và Safari trên iOS 14.3 trở lên đều được hỗ trợ.",
+  "Paste the copied link and enable identity certificate recognition.": "Dán liên kết đã sao chép và bật tính năng nhận dạng chứng chỉ danh tính.",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "Sau khi xác thực, trở lại ứng dụng và nhấp vào \"Hoàn Thành Xác Thực\".",
+  "Complete Authentication": "Hoàn Thành Xác Thực"
 }

@@ -872,5 +872,12 @@
   "Premium Model: {{ num }} Times/Month": "高级模型：{{ num }}次/月",
   "Top-tier Model: {{ num }} Times/Month": "顶级模型：{{ num }}次/月",
   "VIP Upgrade Successful!": "升级VIP成功!",
-  "Failed to upgrade to VIP!": "升级VIP失败!"
+  "Failed to upgrade to VIP!": "升级VIP失败!",
+  "KYC Certification Instructions": "人脸识别验证说明",
+  "Please follow the steps below:": "请按照以下步骤操作:",
+  "Click \"Copy Link\".": "单击“复制链接”。",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "打开浏览器。Chrome、Firefox、iOS 14.3 及以上版本的 Microsoft Edge 和 Safari 均受支持。",
+  "Paste the copied link and enable identity certificate recognition.": "粘贴复制的链接，并启用身份证书识别。",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "认证完成返回APP点击“完成认证“",
+  "Complete Authentication": "完成认证"
 }

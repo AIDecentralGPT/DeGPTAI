@@ -873,5 +873,12 @@
   "Premium Model: {{ num }} Times/Month": "Model Premium: {{ num }} Kali/Bulan",
   "Top-tier Model: {{ num }} Times/Month": "Model Top-tier: {{ num }} Kali/Bulan",
   "VIP Upgrade Successful!": "Pembaruan VIP berhasil!",
-  "Failed to upgrade to VIP!": "Pembaruan ke VIP gagal!"
+  "Failed to upgrade to VIP!": "Pembaruan ke VIP gagal!",
+  "KYC Certification Instructions": "Petunjuk Verifikasi Pengenalan Wajah",
+  "Please follow the steps below:": "Silakan ikuti langkah-langkah berikut:",
+  "Click \"Copy Link\".": "Klik \"Salin Tautan\".",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Buka browser Anda. Chrome, Firefox, Microsoft Edge, dan Safari pada iOS 14.3 atau versi lebih tinggi semuanya didukung.",
+  "Paste the copied link and enable identity certificate recognition.": "Tempel tautan yang disalin dan aktifkan pengenalan sertifikat identitas.",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "Setelah otentikasi, kembali ke Aplikasi dan klik \"Selesaikan Otentikasi\".",
+  "Complete Authentication": "Selesaikan Otentikasi"
 }

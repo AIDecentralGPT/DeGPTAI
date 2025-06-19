@@ -873,6 +873,13 @@
   "Premium Model: {{ num }} Times/Month": "",
   "Top-tier Model: {{ num }} Times/Month": "",
   "VIP Upgrade Successful!": "",
-  "Failed to upgrade to VIP!": ""
+  "Failed to upgrade to VIP!": "",
+  "KYC Certification Instructions": "",
+  "Please follow the steps below:": "",
+  "Click \"Copy Link\".": "",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "",
+  "Paste the copied link and enable identity certificate recognition.": "",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "",
+  "Complete Authentication": ""
 }
 

@@ -873,5 +873,12 @@
   "Premium Model: {{ num }} Times/Month": "Premium Model: {{ num }} Kere/Ay",
   "Top-tier Model: {{ num }} Times/Month": "Top-Tier Model: {{ num }} Kere/Ay",
   "VIP Upgrade Successful!": "VIP yükseltimi başarıyla tamamlandı!",
-  "Failed to upgrade to VIP!": "VIP'e yükseltme başarısız oldu!"
+  "Failed to upgrade to VIP!": "VIP'e yükseltme başarısız oldu!",
+  "KYC Certification Instructions": "Yüz Tanıma Doğrulama Talimatları",
+  "Please follow the steps below:": "Lütfen aşağıdaki adımları izleyin:",
+  "Click \"Copy Link\".": "\"Bağlantıyı Kopyala\"'ya tıklayın.",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Tarayıcınızı açın. Chrome, Firefox, iOS 14.3 veya üzeri sürümlerdeki Microsoft Edge ve Safari tümü desteklenir.",
+  "Paste the copied link and enable identity certificate recognition.": "Kopyalanan bağlantıyı yapıştırın ve kimlik sertifika tanıma özelliğini etkinleştirin.",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "Doğrulama tamamlandıktan sonra UYGULAMAYA dönün ve \"Doğrulamayı Tamamla\"'ya tıklayın.",
+  "Complete Authentication": "Doğrulamayı Tamamla"
 }

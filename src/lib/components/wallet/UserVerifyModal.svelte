@@ -2,7 +2,7 @@
   import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
   import { WEBUI_API_BASE_URL } from "$lib/constants";
-  import { copyToClipboard } from "$lib/utils";
+  import { copyToClipboard, checkUniapp } from "$lib/utils";
   import {
     faceliveness,
     facelivenessRes,
@@ -169,7 +169,11 @@
       faceLivenessInitialData = res;
       if (res.transaction_url) {
         if (isMobile) {
-          await goto(res.transaction_url);
+          if (checkUniapp()) {
+            goto("/kyc?faceurl=" + res.transaction_url)
+          } else {
+            await goto(res.transaction_url);
+          }
         } else {
           faceTime = new Date(res.face_time);
           getQrCode(res.transaction_url);

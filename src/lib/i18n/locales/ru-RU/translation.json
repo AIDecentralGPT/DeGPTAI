@@ -872,5 +872,12 @@
   "Premium Model: {{ num }} Times/Month": "Премиум Модель: {{ num }} Раз/Месяц",
   "Top-tier Model: {{ num }} Times/Month": "Топ-Тиер Модель: {{ num }} Раз/Месяц",
   "VIP Upgrade Successful!": "Обновление VIP успешно выполнено!",
-  "Failed to upgrade to VIP!": "Процесс обновления до VIP завершился с ошибкой!"
+  "Failed to upgrade to VIP!": "Процесс обновления до VIP завершился с ошибкой!",
+  "KYC Certification Instructions": "Инструкции по верификации по распознаванию лиц",
+  "Please follow the steps below:": "Пожалуйста, следуйте следующим шагам:",
+  "Click \"Copy Link\".": "Нажмите \"Копировать ссылку\".",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Откройте браузер. Поддерживаются Chrome, Firefox, Microsoft Edge и Safari на iOS 14.3 и более поздних версиях.",
+  "Paste the copied link and enable identity certificate recognition.": "Вставьте скопированную ссылку и включите распознавание удостоверяющего сертификата.",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "После аутентификации вернитесь в приложение и нажмите \"Завершить аутентификацию\".",
+  "Complete Authentication": "Завершить аутентификацию"
 }

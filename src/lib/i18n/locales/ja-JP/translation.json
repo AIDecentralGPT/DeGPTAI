@@ -873,5 +873,12 @@
   "Premium Model: {{ num }} Times/Month": "プレミアムモデル: {{ num }} 回 / 月",
   "Top-tier Model: {{ num }} Times/Month": "トップティアモデル: {{ num }} 回 / 月",
   "VIP Upgrade Successful!": "VIP のアップグレードに成功しました！",
-  "Failed to upgrade to VIP!": "VIP にアップグレードできませんでした!"
+  "Failed to upgrade to VIP!": "VIP にアップグレードできませんでした!",
+  "KYC Certification Instructions": "顔認証検証ガイド",
+  "Please follow the steps below:": "以下の手順に従ってください：",
+  "Click \"Copy Link\".": "「リンクをコピー」をクリックしてください。",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "ブラウザを開いてください。Chrome、Firefox、iOS 14.3 以降の Microsoft Edge および Safari がすべてサポートされています。",
+  "Paste the copied link and enable identity certificate recognition.": "コピーしたリンクを貼り付け、身分証明書認識を有効にしてください。",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "認証が完了したら APP に戻り、「認証を完了」をクリックしてください。",
+  "Complete Authentication": "認証を完了"
 }

@@ -872,5 +872,12 @@
   "Premium Model: {{ num }} Times/Month": "Modèle Premium : {{ num }} Fois/Mois",
   "Top-tier Model: {{ num }} Times/Month": "Modèle Top-tier : {{ num }} Fois/Mois",
   "VIP Upgrade Successful!": "La mise à niveau VIP a réussi !",
-  "Failed to upgrade to VIP!": "La mise à niveau en VIP a échoué!"
+  "Failed to upgrade to VIP!": "La mise à niveau en VIP a échoué!",
+  "KYC Certification Instructions": "Instructions de Vérification par Reconnaissance Faciale",
+  "Please follow the steps below:": "Veuillez suivre les étapes ci-dessous :",
+  "Click \"Copy Link\".": "Cliquez sur \"Copier le lien\".",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Ouvrez votre navigateur. Chrome, Firefox, Microsoft Edge et Safari sur iOS 14.3 ou versions ultérieures sont tous pris en charge.",
+  "Paste the copied link and enable identity certificate recognition.": "Collez le lien copié et activez la reconnaissance de certificat d'identité.",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "Après l'authentification, retournez dans l'APP et cliquez sur \"Compléter l'Authentification\".",
+  "Complete Authentication": "Compléter l'Authentification"
 }

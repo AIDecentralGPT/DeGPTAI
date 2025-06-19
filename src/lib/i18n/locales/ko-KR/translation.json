@@ -873,5 +873,12 @@
   "Premium Model: {{ num }} Times/Month": "프리미엄 모델: {{ num }} 회/월",
   "Top-tier Model: {{ num }} Times/Month": "최상위 계층 모델: {{ num }} 회/월",
   "VIP Upgrade Successful!": "VIP 업그레이드에 성공했습니다!",
-  "Failed to upgrade to VIP!": "VIP 업그레이드에 실패했습니다!"
+  "Failed to upgrade to VIP!": "VIP 업그레이드에 실패했습니다!",
+  "KYC Certification Instructions": "얼굴 인식 검증 설명",
+  "Please follow the steps below:": "다음 단계를 따르십시오:",
+  "Click \"Copy Link\".": "\"링크 복사\"를 클릭하세요.",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "브라우저를 엽니다. Chrome, Firefox, iOS 14.3 이상의 Microsoft Edge 및 Safari가 모두 지원됩니다.",
+  "Paste the copied link and enable identity certificate recognition.": "복사한 링크를 붙여넣고 신분 증명서 인식을 활성화하세요.",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "인증이 완료되면 앱으로 돌아가 \"인증 완료\"를 클릭하세요.",
+  "Complete Authentication": "인증 완료"
 }

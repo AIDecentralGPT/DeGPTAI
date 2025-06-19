@@ -872,5 +872,12 @@
   "Premium Model: {{ num }} Times/Month": "แบบพิเศษ: {{ num }} ครั้ง/เดือน",
   "Top-tier Model: {{ num }} Times/Month": "แบบท็อปทियर: {{ num }} ครั้ง/เดือน",
   "VIP Upgrade Successful!": "การอัปเกรดเป็น VIP สำเร็จ!",
-  "Failed to upgrade to VIP!": "การอัปเกรดเป็น VIP ผิดพลาด!"
+  "Failed to upgrade to VIP!": "การอัปเกรดเป็น VIP ผิดพลาด!",
+  "KYC Certification Instructions": "คำแนะนำการยืนยันการแรกว얼",
+  "Please follow the steps below:": "โปรดทำตามขั้นตอนต่อไปนี้:",
+  "Click \"Copy Link\".": "คลิก \"คัดลอกลิงค์\"",
+  "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "เปิดเบราว์เซอร์ Chrome, Firefox, Microsoft Edge และ Safari บน iOS 14.3 หรือเวอร์ชั่นใหม่กว่า ทั้งหมดПоддерживается",
+  "Paste the copied link and enable identity certificate recognition.": "วางลิงค์ที่คัดลอกและเปิดใช้การ認識ใบรับรองตัวตน",
+  "After authentication, return to the APP and click \"Complete Authentication\".": "หลังจากการยืนยันตัวตน คืนมาที่แอปพลิเคชันและคลิก \"Завершитьการยืนยันตัวตน\"",
+  "Complete Authentication": "Завершитьการยืนยันตัวตน"
 }
