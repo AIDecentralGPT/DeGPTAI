@@ -172,19 +172,19 @@
                 {$i18n.t("Accessible Foundation Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/deepseek.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/deepseek.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DeepSeek V3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/doubao.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/doubao.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DouBao-1.5-pro</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B Thinking</span>
                   </div>
                 </div>
@@ -343,19 +343,19 @@
                 {$i18n.t("Accessible Foundation Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/deepseek.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/deepseek.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DeepSeek V3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/doubao.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/doubao.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DouBao-1.5-pro</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B Thinking</span>
                   </div>
               </div>
@@ -377,27 +377,27 @@
                 {$i18n.t("Accessible Advanced Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/grok.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/grok.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Grok 3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gemini.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gemini.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Gemini 2.5 Flash</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT-4.1</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gemini.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gemini.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Gemini 2.5 Pro</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 3.7 Sonnet</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/deepseek.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/deepseek.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DeepSeek R1</span>
                   </div>
               </div>
@@ -419,35 +419,35 @@
                 {$i18n.t("Accessible Top-Level Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Sonnet</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Opus</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Opus Thinking</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Sonnet Thinking</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-6" src="./static/icon/gpt3.png" alt="icon"/>
+                    <img class="size-6" src="/static/icon/gpt3.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini high</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT 4.5</span>
                   </div>
               </div>
@@ -632,19 +632,19 @@
                 {$i18n.t("Accessible Foundation Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/deepseek.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/deepseek.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DeepSeek V3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/doubao.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/doubao.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DouBao-1.5-pro</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B Thinking</span>
                   </div>
               </div>
@@ -666,27 +666,27 @@
                 {$i18n.t("Accessible Advanced Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/grok.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/grok.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Grok 3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gemini.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gemini.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Gemini 2.5 Flash</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT-4.1</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gemini.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gemini.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Gemini 2.5 Pro</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 3.7 Sonnet</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/deepseek.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/deepseek.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DeepSeek R1</span>
                   </div>
               </div>
@@ -708,35 +708,35 @@
                 {$i18n.t("Accessible Top-Level Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Sonnet</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Opus</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Opus Thinking</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Sonnet Thinking</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-6" src="./static/icon/gpt3.png" alt="icon"/>
+                    <img class="size-6" src="/static/icon/gpt3.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini high</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT 4.5</span>
                   </div>
               </div>
@@ -921,19 +921,19 @@
                 {$i18n.t("Accessible Foundation Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/deepseek.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/deepseek.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DeepSeek V3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/doubao.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/doubao.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DouBao-1.5-pro</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/qwen.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/qwen.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Qwen3 235B Thinking</span>
                   </div>
               </div>
@@ -955,27 +955,27 @@
                 {$i18n.t("Accessible Advanced Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/grok.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/grok.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Grok 3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gemini.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gemini.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Gemini 2.5 Flash</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT-4.1</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gemini.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gemini.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Gemini 2.5 Pro</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 3.7 Sonnet</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/deepseek.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/deepseek.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">DeepSeek R1</span>
                   </div>
               </div>
@@ -997,35 +997,35 @@
                 {$i18n.t("Accessible Top-Level Model")}
                 <div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Sonnet</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Opus</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Opus Thinking</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/claude.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4 Sonnet Thinking</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-6" src="./static/icon/gpt3.png" alt="icon"/>
+                    <img class="size-6" src="/static/icon/gpt3.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o3</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini high</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="size-5" src="./static/icon/gpt_round.png" alt="icon"/>
+                    <img class="size-5" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT 4.5</span>
                   </div>
               </div>
