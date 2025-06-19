@@ -871,6 +871,7 @@
   "Basic Model: {{ num }} Times/Month": "Modèle de Base : {{ num }} Fois/Month",
   "Premium Model: {{ num }} Times/Month": "Modèle Premium : {{ num }} Fois/Mois",
   "Top-tier Model: {{ num }} Times/Month": "Modèle Top-tier : {{ num }} Fois/Mois",
+  "Please create or log in to your wallet first.": "Veuillez d'abord créer ou vous connecter à votre wallet.",
   "All models share memory with each other.": "Tous les modèles partagent la mémoire entre eux.",
   "VIP Upgrade Successful!": "La mise à niveau VIP a réussi !",
   "Failed to upgrade to VIP!": "La mise à niveau en VIP a échoué!",

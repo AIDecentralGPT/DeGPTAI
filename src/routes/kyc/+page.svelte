@@ -2,6 +2,7 @@
   import { onMount, getContext } from 'svelte';
   import { copyToClipboard } from "$lib/utils";
   import { faceUrl } from "$lib/stores"
+  import { toast } from "svelte-sonner";
   const i18n = getContext('i18n');
 
   onMount(() => {

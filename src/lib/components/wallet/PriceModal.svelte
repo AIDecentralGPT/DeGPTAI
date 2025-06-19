@@ -9,7 +9,8 @@
   } from "$lib/stores";
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
   import { isPro } from "$lib/apis/users/index.js";
-    import Switch from "../common/Switch.svelte";
+  import Switch from "../common/Switch.svelte";
+  import { toast } from "svelte-sonner";
   const i18n = getContext("i18n");
 
   let checkProLoading = true;
@@ -263,10 +264,14 @@
               </div>
               <button
                 on:click={() => {
-                  viptype = "basic";
-                  viptime = basicstat ? "year" : "month";
-                  money = basicstat ? 33 : 3;
-                  $showConfirmUpgradeModal = true;
+                  if ($user?.id?.startsWith("0x")) {
+                    viptype = "basic";
+                    viptime = basicstat ? "year" : "month";
+                    money = basicstat ? 33 : 3;
+                    $showConfirmUpgradeModal = true;
+                  } else {
+                    toast.warning($i18n.t("Please create or log in to your wallet first."))
+                  }
                 }}
                 aria-describedby="tier-plus"
                 class="px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full flex flex-row justify-center items-center"
@@ -548,10 +553,14 @@
               </div>
               <button
                 on:click={() => {
-                  viptype = "standard";
-                  viptime = standardstat ? "year" : "month";
-                  money = standardstat ? 88 : 8;
-                  $showConfirmUpgradeModal = true;
+                  if ($user?.id?.startsWith("0x")) {
+                    viptype = "standard";
+                    viptime = standardstat ? "year" : "month";
+                    money = standardstat ? 88 : 8;
+                    $showConfirmUpgradeModal = true;
+                  } else {
+                    toast.warning($i18n.t("Please create or log in to your wallet first."))
+                  }
                 }}
                 aria-describedby="tier-plus"
                 class="px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full flex flex-row justify-center items-center"
@@ -833,10 +842,14 @@
               </div>
               <button
                 on:click={() => {
-                  viptype = "pro";
-                  viptime = prostat ? "year" : "month";
-                  money = prostat ? 165 : 15;
-                  $showConfirmUpgradeModal = true;
+                  if ($user?.id?.startsWith("0x")) {
+                    viptype = "pro";
+                    viptime = prostat ? "year" : "month";
+                    money = prostat ? 165 : 15;
+                    $showConfirmUpgradeModal = true;
+                  } else {
+                    toast.warning($i18n.t("Please create or log in to your wallet first."))
+                  }
                 }}
                 aria-describedby="tier-plus"
                 class="px-4 py-2 primaryButton text-gray-100 text-sm transition rounded-lg w-full flex flex-row justify-center items-center"

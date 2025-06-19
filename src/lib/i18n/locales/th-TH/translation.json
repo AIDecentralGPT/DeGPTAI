@@ -871,6 +871,7 @@
   "Basic Model: {{ num }} Times/Month": "แบบเบื้องต้น: {{ num }} ครั้ง/เดือน",
   "Premium Model: {{ num }} Times/Month": "แบบพิเศษ: {{ num }} ครั้ง/เดือน",
   "Top-tier Model: {{ num }} Times/Month": "แบบท็อปทियर: {{ num }} ครั้ง/เดือน",
+  "Please create or log in to your wallet first.": "กรุณา buat หรือ login เข้าสู่ 지 digital wallet ของคุณก่อน",
   "All models share memory with each other.": "ทุก môเดลแชร์ความจำระหว่างกัน",
   "VIP Upgrade Successful!": "การอัปเกรดเป็น VIP สำเร็จ!",
   "Failed to upgrade to VIP!": "การอัปเกรดเป็น VIP ผิดพลาด!",

@@ -869,6 +869,7 @@
   "For users who have not created a wallet, the foundation model: {{ num }} times/day": "",
   "For users who have created a wallet, the foundation model: {{ num }} times/day": "",
   "For users who have completed KYC, the foundation model: {{ num }} times/day": "",
+  "Please create or log in to your wallet first.": "",
   "Basic Model: {{ num }} Times/Month": "",
   "Premium Model: {{ num }} Times/Month": "",
   "Top-tier Model: {{ num }} Times/Month": "",

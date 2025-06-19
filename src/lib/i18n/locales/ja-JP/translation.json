@@ -872,6 +872,7 @@
   "Basic Model: {{num}} Times/Month": "基本モデル: {{ num }} 回 / 月",
   "Premium Model: {{ num }} Times/Month": "プレミアムモデル: {{ num }} 回 / 月",
   "Top-tier Model: {{ num }} Times/Month": "トップティアモデル: {{ num }} 回 / 月",
+  "Please create or log in to your wallet first.": "まずはウォレットを作成またはログインしてください。",
   "All models share memory with each other.": "すべてのモデルが互いにメモリを共有しています。",
   "VIP Upgrade Successful!": "VIP のアップグレードに成功しました！",
   "Failed to upgrade to VIP!": "VIP にアップグレードできませんでした!",
