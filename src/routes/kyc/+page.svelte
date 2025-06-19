@@ -33,7 +33,7 @@
 
 <div class="w-full flex flex-col">
   <div class="flex flex-col items-center w-full mt-8">
-    <img class="w-[200px]" src="./static/icon/faceError.png" alt="icon"/>
+    <img class="w-[160px]" src="./static/icon/faceError.png" alt="icon"/>
     <span class="font-bold mt-2">{$i18n.t("KYC Certification Instructions")}</span>
   </div>
   <div class="flex flex-col mt-6 m-2 bg-gray-100 p-4 rounded-md">
