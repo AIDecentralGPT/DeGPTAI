@@ -317,7 +317,7 @@
         <div class="opacity-50 leading-normal text-xs">
           Total ${floorToFixed(
             Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
-            4
+            5
           )}u
         </div>
       </div> 
