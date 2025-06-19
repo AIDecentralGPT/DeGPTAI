@@ -222,7 +222,7 @@
           bind:files={inputFiles}
           type="file"
           hidden
-          accept=".json"
+          accept="application/json"
           on:change={async () => {
             if (inputFiles && inputFiles.length > 0) {
               const file = inputFiles[0]; // 假设只上传一个文件
