@@ -218,6 +218,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$3</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
+              <span class="text-sm">(={3/0.00006}DGC)</span>
             </div>
           </div>
           {#if basicInfo}
@@ -487,6 +488,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$8</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
+              <span class="text-sm">(={Math.round(8/0.00006)}DGC)</span>
             </div>
           </div>
           {#if standardInfo}
@@ -756,6 +758,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$15</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
+              <span class="text-sm">(={15/0.00006}DGC)</span>
             </div>
           </div>
           {#if proInfo}
