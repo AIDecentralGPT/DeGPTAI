@@ -10,7 +10,7 @@
     verifyCode,
     servetime,
   } from "$lib/apis/auths";
-  import { user, theme } from "$lib/stores";
+  import { user, theme, faceUrl } from "$lib/stores";
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
@@ -170,7 +170,10 @@
       if (res.transaction_url) {
         if (isMobile) {
           if (checkUniapp()) {
-            goto("/kyc?faceurl=" + res.transaction_url)
+            faceUrl.set({
+              url: res.transaction_url
+            })
+            goto("/kyc")
           } else {
             await goto(res.transaction_url);
           }

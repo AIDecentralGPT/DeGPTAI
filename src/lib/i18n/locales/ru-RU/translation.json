@@ -871,6 +871,7 @@
   "Basic Model: {{ num }} Times/Month": "Базовая Модель: {{ num }} Раз/Месяц",
   "Premium Model: {{ num }} Times/Month": "Премиум Модель: {{ num }} Раз/Месяц",
   "Top-tier Model: {{ num }} Times/Month": "Топ-Тиер Модель: {{ num }} Раз/Месяц",
+  "All models share memory with each other.": "Все модели общаются памятью друг с другом.",
   "VIP Upgrade Successful!": "Обновление VIP успешно выполнено!",
   "Failed to upgrade to VIP!": "Процесс обновления до VIP завершился с ошибкой!",
   "KYC Certification Instructions": "Инструкции по верификации по распознаванию лиц",

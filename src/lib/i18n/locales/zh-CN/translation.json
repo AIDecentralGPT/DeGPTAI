@@ -871,6 +871,7 @@
   "Basic Model: {{ num }} Times/Month": "基础模型：{{ num }}次/月",
   "Premium Model: {{ num }} Times/Month": "高级模型：{{ num }}次/月",
   "Top-tier Model: {{ num }} Times/Month": "顶级模型：{{ num }}次/月",
+  "All models share memory with each other.": "所有模型之间共享记忆。",
   "VIP Upgrade Successful!": "升级VIP成功!",
   "Failed to upgrade to VIP!": "升级VIP失败!",
   "KYC Certification Instructions": "人脸识别验证说明",

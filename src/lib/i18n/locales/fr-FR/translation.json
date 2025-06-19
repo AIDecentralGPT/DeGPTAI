@@ -871,6 +871,7 @@
   "Basic Model: {{ num }} Times/Month": "Modèle de Base : {{ num }} Fois/Month",
   "Premium Model: {{ num }} Times/Month": "Modèle Premium : {{ num }} Fois/Mois",
   "Top-tier Model: {{ num }} Times/Month": "Modèle Top-tier : {{ num }} Fois/Mois",
+  "All models share memory with each other.": "Tous les modèles partagent la mémoire entre eux.",
   "VIP Upgrade Successful!": "La mise à niveau VIP a réussi !",
   "Failed to upgrade to VIP!": "La mise à niveau en VIP a échoué!",
   "KYC Certification Instructions": "Instructions de Vérification par Reconnaissance Faciale",

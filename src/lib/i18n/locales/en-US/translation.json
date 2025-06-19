@@ -872,6 +872,7 @@
   "Basic Model: {{ num }} Times/Month": "",
   "Premium Model: {{ num }} Times/Month": "",
   "Top-tier Model: {{ num }} Times/Month": "",
+  "All models share memory with each other.": "",
   "VIP Upgrade Successful!": "",
   "Failed to upgrade to VIP!": "",
   "KYC Certification Instructions": "",

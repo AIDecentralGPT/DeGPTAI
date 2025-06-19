@@ -861,6 +861,7 @@
   "Basic Model: {{ num }} Times/Month": "Mô Hình Cơ Bản: {{ num }} Lần/Tháng",
   "Premium Model: {{ num }} Times/Month": "Mô Hình Premium: {{ num }} Lần/Tháng",
   "Top-tier Model: {{ num }} Times/Month": "Mô Hình Top-tier: {{ num }} Lần/Tháng",
+  "All models share memory with each other.": "Tất cả các mô hình chia sẻ bộ nhớ với nhau.",
   "VIP Upgrade Successful!": "Việc nâng cấp VIP đã thành công!",
   "Failed to upgrade to VIP!": "Việc nâng cấp VIP thất bại!",
   "KYC Certification Instructions": "Hướng Dẫn Xác Thực Nhận Dạng Mặt",

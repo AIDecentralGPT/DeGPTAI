@@ -1,14 +1,11 @@
 <script lang="ts">
   import { onMount, getContext } from 'svelte';
   import { copyToClipboard } from "$lib/utils";
+  import { faceUrl } from "$lib/stores"
   const i18n = getContext('i18n');
-  
-  let faceUrl:string = "";
 
   onMount(() => {
-    // 获取URL中的参数
-    const params = new URLSearchParams(window.location.search);
-    faceUrl = params.get("faceurl");
+  
   });
 
   // 返回首页
@@ -42,8 +39,11 @@
       <span class="text-sm ml-2">{$i18n.t("After authentication, return to the APP and click \"Complete Authentication\".")}</span>
     </div>
     <button class="primaryButton ml-2 text-sm text-white px-4 py-2 rounded-lg mt-6"
-      on:click={() => {
-        copyToClipboard(faceUrl, false);
+      on:click={async () => {
+        const res = await copyToClipboard($faceUrl.url, false);
+        if (res) {
+          toast.success($i18n.t("Copying to clipboard was successful!"));
+        }
       }}>
         {$i18n.t("Copy Link")}
       </button>

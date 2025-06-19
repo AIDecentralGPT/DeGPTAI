@@ -872,6 +872,7 @@
   "Basic Model: {{ num }} Times/Month": "Temel Model: {{ num }} Kere/Ay",
   "Premium Model: {{ num }} Times/Month": "Premium Model: {{ num }} Kere/Ay",
   "Top-tier Model: {{ num }} Times/Month": "Top-Tier Model: {{ num }} Kere/Ay",
+  "All models share memory with each other.": "Tüm modeller birbirleri arasında bellekleri paylaşır.",
   "VIP Upgrade Successful!": "VIP yükseltimi başarıyla tamamlandı!",
   "Failed to upgrade to VIP!": "VIP'e yükseltme başarısız oldu!",
   "KYC Certification Instructions": "Yüz Tanıma Doğrulama Talimatları",

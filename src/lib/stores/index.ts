@@ -73,6 +73,9 @@ export const initPageFlag = writable(false);
 // 下载相关
 export const showDownLoad = writable(false);
 
+// 人脸认证url
+export const faceUrl = writable({url: ""});
+
 // 默认模型请求地址
 export const deApiBaseUrl = writable({
 	name: 'America', 
