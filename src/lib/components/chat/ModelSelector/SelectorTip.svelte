@@ -89,7 +89,7 @@
         <div class="flex flex-col px-2 py-1 w-full mt-2">
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>
-              <button class="flex justify-between items-center w-full">
+              <div class="flex justify-between items-center cursor-pointer w-full">
                 <span>高级模型</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -99,12 +99,12 @@
                   class="size-4">
                   <path d="M534.826667 935.466667a47.36 47.36 0 0 1-66.986667-66.773334L835.413333 501.333333 467.84 133.973333a47.36 47.36 0 1 1 66.986667-66.773333l400.64 400.64a47.36 47.36 0 0 1 0 66.986667z"/>
                 </svg>
-              </button>
+              </div>
             </DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent
               class=" z-[90] {$mobile ? `w-full max-w-[83%]`: `${className} max-w-[350px]`}  justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
               transition={flyAndScale}
-              side={$mobile ? "bottom" : "bottom-start"}
+              side={$mobile ? "bottom" : "right"}
               sideOffset={4}
             >
               <slot>
@@ -142,7 +142,7 @@
         <div class="flex flex-col px-2 py-1 w-full mt-2">
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>
-              <button class="flex justify-between items-center w-full">
+              <div class="flex justify-between items-center cursor-pointer w-full">
                 <span>顶级模型</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -152,16 +152,16 @@
                   class="size-4">
                   <path d="M534.826667 935.466667a47.36 47.36 0 0 1-66.986667-66.773334L835.413333 501.333333 467.84 133.973333a47.36 47.36 0 1 1 66.986667-66.773333l400.64 400.64a47.36 47.36 0 0 1 0 66.986667z"/>
                 </svg>
-              </button>
+              </div>
             </DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent
-              class=" z-[90] {$mobile ? `w-full max-w-[83%]`: `${className} max-w-[320px]`}  justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+              class=" z-[90] {$mobile ? 'max-h-[500px]' : ""} {$mobile ? `w-full max-w-[83%]`: `${className} max-w-[320px]`}  justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
               transition={flyAndScale}
-              side={$mobile ? "bottom" : "bottom-start"}
+              side={$mobile ? "bottom" : "right"}
               sideOffset={4}
             >
               <slot>
-                <div class="px-1 my-2 max-h-88 overflow-y-auto scrollbar-hidden">
+                <div class="px-1 my-2 max-h-88 overflow-y-auto scrollbar-hidden {$mobile ? 'max-h-[400px]' : 'max-h-[calc(100vh-200px)]'}">
                   <div class="text-lg px-2 py-1">{$i18n.t("顶级模型")}</div>
                   {#each items as item (item.value)}
                     {#if item?.info?.type == 3}
