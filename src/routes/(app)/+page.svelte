@@ -386,7 +386,7 @@
       scrollToBottom();
 
       // 校验图片获取图片信息
-      await analysisimageinfo(userMessageId);
+      // await analysisimageinfo(userMessageId);
 
       // 获取网络搜索内容
       if (search) {
@@ -683,45 +683,29 @@
 			// 过滤掉error和 content为空数据
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
 
-      // send_message = send_message.map((message, idx, arr) => ({
-      //   role: message.role,
-      //   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
-      //   message.role === "user"
-      //     ? {
-      //         content: [
-      //           {
-      //             type: "text",
-      //             text:
-      //               arr.length - 1 !== idx
-      //                 ? message.content
-      //                 : message?.raContent ?? message.content,
-      //           },
-      //           ...message.files
-      //             .filter((file) => file.type === "image")
-      //               .map((file) => ({
-      //                 type: "image_url",
-      //                 image_url: {
-      //                   url: file.url,
-      //                 },
-      //               })),
-      //         ],
-      //       }
-      //     : {
-      //       content:
-      //         arr.length - 1 !== idx
-      //           ? message.content
-      //           : message?.raContent ?? message.content,
-      //     }),
-      // }));
-
+      // 处理图片消息
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
         message.role === "user"
           ? {
-              content: arr.length - 1 !== idx
-                ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
-                : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
+              content: [
+                {
+                  type: "text",
+                  text:
+                    arr.length - 1 !== idx
+                      ? message.content
+                      : message?.raContent ?? message.content,
+                },
+                ...message.files
+                  .filter((file) => file.type === "image")
+                    .map((file) => ({
+                      type: "image_url",
+                      image_url: {
+                        url: file.url,
+                      },
+                    })),
+              ],
             }
           : {
             content:
@@ -730,6 +714,23 @@
                 : message?.raContent ?? message.content,
           }),
       }));
+
+      // send_message = send_message.map((message, idx, arr) => ({
+      //   role: message.role,
+      //   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+      //   message.role === "user"
+      //     ? {
+      //         content: arr.length - 1 !== idx
+      //           ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
+      //           : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
+      //       }
+      //     : {
+      //       content:
+      //         arr.length - 1 !== idx
+      //           ? message.content
+      //           : message?.raContent ?? message.content,
+      //     }),
+      // }));
 
       // 发送内容添加 nothink 内容
       // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {

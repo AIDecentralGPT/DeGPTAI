@@ -13,7 +13,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	import { config, settings, models, theme } from '$lib/stores';
+	import { config, settings, models, theme, showPriceModal } from '$lib/stores';
 
 	import { synthesizeOpenAISpeech } from '$lib/apis/audio';
 	import { imageGenerations } from '$lib/apis/images';
@@ -758,6 +758,10 @@
 									</svg>
 									<div class=" self-center">
 										{message.content}
+										<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+											on:click={() => { $showPriceModal = true; }}>
+											{$i18n.t("Click To Upgrade")}
+										</button>
 									</div>
 								</div>
 							{:else if message.content === '' && !message?.done}

@@ -13,11 +13,14 @@
     showRewardDetailModal,
     showDownLoad,
     mobile,
+    settings,
+    models,
   } from "$lib/stores";
 
   import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
 
   import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
+    import { modelContract } from "$lib/utils/wallet/ether/modelabi";
 
   const i18n = getContext("i18n");
 
@@ -71,9 +74,25 @@
   $: if ($user?.id?.startsWith("0x")) {
     getCount();
   }
+
+  let modObj:any = null;
+  $: {
+    let selmodels = $settings?.models;
+    if (selmodels.length > 0) {
+      modObj = $models.filter(item => selmodels.includes(item?.model));
+    }
+  }
 </script>
 
 <div>
+  <!-- 模型介绍 -->
+  {#if modObj}
+    <div class="flex flex-col items-center w-full {$mobile ? 'mb-10':'mb-16'}">
+      <img class="size-8" src="{modObj[0].modelicon}" alt=""/>
+      <span class="text-lg font-bold mt-1">{ modObj[0]?.name }</span>
+      <span class="w-full max-w-[600px] text-sm text-center mt-2">{ modObj[0]?.modelinfo }</span>
+    </div>
+  {/if}
   <div class="flex gap-3 my-2 mt-20
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
     <div class="flex flex-col {$mobile ? '' : 'pb-6'}">
@@ -82,6 +101,7 @@
         {$i18n.t("Unlimited DGC Reward Task")}
       </span> -->
     </div>
+    <!-- 模型介绍 -->
     <div class="flex flex-col self-start">
       {#if !checkUniapp() }
         <div class="flex justify-center items-center">

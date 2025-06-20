@@ -35,96 +35,82 @@ export const getDeModels = async (token: string = "") => {
         tip: "DeepSeek V3",
         support: "text",
         type: 1,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "Suitable for reasoning and writing",
+        modelicon: "/static/icon/deepseek.png",
+        modelinfo: "DeepSeek V3 integrates both general and coding capabilities, demonstrating exceptional performance in both Chinese and English languages. This versatile model is well-suited for a wide range of applications."
       },
       {
-        name: "DouBao-1.5-pro",
-        model: "doubao-1.5-vision-pro-250328",
-        textmodel: "doubao-1.5-vision-pro-250328",
+        name: "doubao-seed-1.6 (Tiktok)",
+        model: "doubao-seed-1-6-250615",
+        textmodel: "doubao-seed-1-6-250615",
         think: false,
-        tip: "DouBao-1.5-pro",
-        support: "text",
+        tip: "doubao-seed-1.6 (Tiktok)",
+        support: "image",
         type: 1,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "Multimodal, suitable for daily tasks",
+        modelicon: "/static/icon/doubao.png",
+        modelinfo: "Doubao-Seed-1.6 a brand-new multimodal deep-thinking model, supports three thinking modes: auto, thinking, and non-thinking. In non-thinking mode, the model's performance is significantly improved compared to Doubao-1.5-Pro-250115. It supports a 256k context window and a maximum output length of 16k tokens."
       },
       {
-        name: "Qwen O3",
-        model: "Qwen3-235B-A22B-FP8-think",
-        textmodel: "qwen3-235b-a22b",
-        think: true,
-        tip: "Qwen O3",
-        support: "text",
-        desc: "Deep thinking,mathematical and writing abilities ≈ o3."
-      },
-      {
-        name: "Qwen3",
+        name: "Qwen3 235B (阿里云)",
         model: "Qwen3-235B-A22B-FP8",
         textmodel: "qwen3-235b-a22b",
         think: false,
-        tip: "Qwen3",
+        tip: "Qwen3 235B (阿里云)",
         support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        type: 1,
+        desc: "Strong language skills",
+        modelicon: "/static/icon/qwen.png",
+        modelinfo: "Alibaba Cloud's flagship ultra-large-scale model, representing the highest technical level of the Qwen series, featuring exceptional multi-task processing capabilities and deep reasoning abilities. It is suitable for the most complex AI application scenarios and cutting-edge research, providing comprehensive solutions for users pursuing ultimate AI performance."
+      },
+      {
+        name: "Qwen3 235B Thinking (阿里云)",
+        model: "Qwen3-235B-A22B-FP8-think",
+        textmodel: "qwen3-235b-a22b",
+        think: true,
+        tip: "Qwen3 235B Thinking (阿里云)",
+        support: "text",
+        type: 1,
+        desc: "Enhanced reasoning, suitable for complex tasks",
+        modelicon: "/static/icon/qwen.png",
+        modelinfo: "Alibaba Cloud's flagship ultra-large-scale model, representing the highest technical level of the Qwen series, featuring exceptional multi-task processing capabilities and deep reasoning abilities. It is suitable for the most complex AI application scenarios and cutting-edge research, providing comprehensive solutions for users pursuing ultimate AI performance."
+      },
+      {
+        name: "GPT-4o mini (OpenAI)",
+        model: "gpt-4o-mini",
+        textmodel: "gpt-4o-mini",
+        think: false,
+        tip: "GPT-4o mini (OpenAI)",
+        support: "image",
+        type: 1,
+        desc: "Lightweight general-purpose model with fast response speed",
+        modelicon: "/static/icon/gpt3.png",
+        modelinfo: "OpenAI's most cost-effective small model, outperforming GPT-3.5 Turbo and other small models. Supports multiple languages and features a 128K token context window."
       },
       // 高级模型
       {
-        name: "GPT-4o",
+        name: "GPT-40 (OpenAI)",
         model: "gpt-4o",
         textmodel: "gpt-4o",
         think: false,
-        tip: "GPT-4o",
+        tip: "GPT-40 (OpenAI)",
         support: "text",
         type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "多模态，适用于大多数任务",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
       },
       {
-        name: "Grok3",
-        model: "grok-3",
-        textmodel: "grok-3",
+        name: "GPT-4.1 mini(Google)",
+        model: "gpt-4.1-mini",
+        textmodel: "gpt-4.1-mini",
         think: false,
-        tip: "Grok3",
+        tip: "GPT-4.1 mini(Google)",
         support: "text",
         type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Gemini 2.5 Flash",
-        model: "gemini-2.5-flash-preview-05-20",
-        textmodel: "gemini-2.5-flash-preview-05-20",
-        think: false,
-        tip: "Gemini 2.5 Flash",
-        support: "text",
-        type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "GPT-4.1",
-        model: "gpt-4.1",
-        textmodel: "gpt-4.1",
-        think: false,
-        tip: "GPT-4.1",
-        support: "text",
-        type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Gemini 2.5 Pro",
-        model: "gemini-2.5-pro-preview-06-05",
-        textmodel: "gemini-2.5-pro-preview-06-05",
-        think: false,
-        tip: "Gemini 2.5 Pro",
-        support: "text",
-        type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Claude 3.7 Sonnet",
-        model: "claude-3-7-sonnet-20250219",
-        textmodel: "claude-3-7-sonnet-20250219",
-        think: false,
-        tip: "Claude 3.7 Sonnet",
-        support: "text",
-        type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "适合处理日常任务",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
       },
       {
         name: "DeepSeek R1",
@@ -134,99 +120,167 @@ export const getDeModels = async (token: string = "") => {
         tip: "DeepSeek R1",
         support: "text",
         type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "强写作与编码",
+        modelicon: "/static/icon/deepseek.png",
+        modelinfo: ""
       },
       {
-        name: "GPT o3",
-        model: "o3-mini",
-        textmodel: "o3-mini",
+        name: "Gemini 2.5 Flash(Google)",
+        model: "gemini-2.5-flash-preview-05-20",
+        textmodel: "gemini-2.5-flash-preview-05-20",
         think: false,
-        tip: "GPT o3",
+        tip: "Gemini 2.5 Flash(Google)",
         support: "text",
         type: 2,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "多模态，快速响应",
+        modelicon: "/static/icon/gemini.png",
+        modelinfo: ""
+      },
+      {
+        name: "Grok 3 (Elon Musk)",
+        model: "grok-3",
+        textmodel: "grok-3",
+        think: false,
+        tip: "Grok 3 (Elon Musk)",
+        support: "image",
+        type: 2,
+        desc: "擅长问答，表达风格活泼",
+        modelicon: "/static/icon/grok.png",
+        modelinfo: ""
+      },
+      {
+        name: "Claude 3.7 Sonnet (Anthropic)",
+        model: "claude-3-7-sonnet-20250219",
+        textmodel: "claude-3-7-sonnet-20250219",
+        think: false,
+        tip: "Claude 3.7 Sonnet (Anthropic)",
+        support: "text",
+        type: 2,
+        desc: "写作能力强，稳定性高",
+        modelicon: "/static/icon/claude.png",
+        modelinfo: ""
+      },
+      {
+        name: "doubao-seed-1.6 Thinking (Tiktok)",
+        model: "doubao-seed-1-6-thinking-250615",
+        textmodel: "doubao-seed-1-6-thinking-250615",
+        think: true,
+        tip: "doubao-seed-1.6 Thinking (Tiktok)",
+        support: "image",
+        type: 1,
+        desc: "多模态，推理增强",
+        modelicon: "/static/icon/doubao.png",
+        modelinfo: ""
       },
       // 顶级模型
       {
-        name: "Claude 4 Sonnet",
-        model: "claude-sonnet-4-20250514",
-        textmodel: "claude-sonnet-4-20250514",
+        name: "GPT 03 (OpenAI)",
+        model: "o3-mini",
+        textmodel: "o3-mini",
         think: false,
-        tip: "Claude 4 Sonnet",
+        tip: "GPT 03 (OpenAI)",
         support: "text",
         type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "使用高级推理",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
       },
       {
-        name: "Claude 4 Opus",
-        model: "claude-opus-4-20250514",
-        textmodel: "claude-opus-4-20250514",
+        name: "GPT-4.1 (OpenAI)",
+        model: "gpt-4.1",
+        textmodel: "gpt-4.1",
         think: false,
-        tip: "Claude 4 Opus",
+        tip: "GPT-4.1 (OpenAI)",
         support: "text",
         type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "擅长快速编码和分析",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
       },
       {
-        name: "Claude 4 Opus Thinking",
-        model: "claude-opus-4-20250514-think",
-        textmodel: "claude-opus-4-20250514",
-        think: true,
-        tip: "Claude 4 Opus Thinking",
-        support: "text",
-        type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Claude 4 Sonnet Thinking",
-        model: "claude-sonnet-4-20250514-think",
-        textmodel: "claude-sonnet-4-20250514",
-        think: true,
-        tip: "Claude 4 Sonnet Thinking",
-        support: "text",
-        type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "GPT o4-mini",
-        model: "o4-mini",
-        textmodel: "o4-mini",
-        think: false,
-        tip: "GPT o4-mini",
-        support: "text",
-        type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      // {
-      //   name: "GPT o4-mini high",
-      //   model: "gpt-o4-mini-high",
-      //   textmodel: "gpt-o4-mini-high",
-      //   think: false,
-      //   tip: "GPT o4-mini high",
-      //   support: "text",
-      //   type: 3,
-      //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      // },
-      {
-        name: "GPT 4.5",
+        name: "GPT 4.5 (OpenAI)",
         model: "gpt-4.5-preview",
         textmodel: "gpt-4.5-preview",
         think: false,
-        tip: "GPT 4.5",
+        tip: "GPT 4.5 (OpenAI)",
         support: "text",
         type: 3,
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        desc: "擅长写作和构思想法",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
       },
-      // {
-      //   name: "GPT o4 Pro",
-      //   model: "gpt-o1-pro",
-      //   textmodel: "gpt-o1-pro",
-      //   think: false,
-      //   tip: "GPT o4 Pro",
-      //   support: "text",
-      //   type: 3,
-      //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      // }
+      {
+        name: "Claude 4 Sonnet (Anthropic)",
+        model: "claude-sonnet-4-20250514",
+        textmodel: "claude-sonnet-4-20250514",
+        think: false,
+        tip: "Claude 4 Sonnet (Anthropic)",
+        support: "text",
+        type: 3,
+        desc: "通用能力强，写作稳定",
+        modelicon: "/static/icon/claude.png",
+        modelinfo: ""
+      },
+      {
+        name: "Claude 40pus (Anthropic)",
+        model: "claude-opus-4-20250514",
+        textmodel: "claude-opus-4-20250514",
+        think: false,
+        tip: "Claude 40pus (Anthropic)",
+        support: "text",
+        type: 3,
+        desc: "编码最强，适合复杂任务",
+        modelicon: "/static/icon/claude.png",
+        modelinfo: ""
+      },
+      {
+        name: "Claude 4 0pus Thinking (Anthropic)",
+        model: "claude-opus-4-20250514-think",
+        textmodel: "claude-opus-4-20250514",
+        think: true,
+        tip: "Claude 4 0pus Thinking (Anthropic)",
+        support: "text",
+        type: 3,
+        desc: "深度推理增强",
+        modelicon: "/static/icon/claude.png",
+        modelinfo: ""
+      },
+      {
+        name: "Claude 4 Sonnet Thinking (Anthropic)",
+        model: "claude-sonnet-4-20250514-think",
+        textmodel: "claude-sonnet-4-20250514",
+        think: true,
+        tip: "Claude 4 Sonnet Thinking (Anthropic)",
+        support: "text",
+        type: 3,
+        desc: "情境理解与结构推理增强",
+        modelicon: "/static/icon/claude.png",
+        modelinfo: ""
+      },
+      {
+        name: "Grok 3 Thinking (Elon Musk)",
+        model: "grok-3-mini",
+        textmodel: "grok-3-mini",
+        think: true,
+        tip: "Grok 3 Thinking (Elon Musk)",
+        support: "image",
+        type: 3,
+        desc: "强化逻辑推理与知识表达",
+        modelicon: "/static/icon/grok.png",
+        modelinfo: ""
+      },
+      {
+        name: "Gemini 2.5 Pro",
+        model: "gemini-2.5-pro-preview-06-05",
+        textmodel: "gemini-2.5-pro-preview-06-05",
+        think: false,
+        tip: "Gemini 2.5 Pro",
+        support: "text",
+        type: 3,
+        desc: "多模态能力强，图文代码都行",
+        modelicon: "/static/icon/gemini.png",
+        modelinfo: ""
+      }
     ],
   };
   return (format_res?.models ?? []).map((model) => ({

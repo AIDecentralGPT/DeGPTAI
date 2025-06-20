@@ -87,6 +87,7 @@
 
   async function sendVerificationCode() {
     if (countdown === 0) {
+      email = email.trim();
       if (validateEmail(email)) {
         sendCode(localStorage.token, email).then((res) => {
           if (res.pass) {

@@ -3,7 +3,7 @@ from typing import List
 
 class AiMessageModel(BaseModel):
     role: str
-    content: str
+    content: object
 
 class AiModelReq(BaseModel):
     model: str
