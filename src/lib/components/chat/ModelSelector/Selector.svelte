@@ -103,7 +103,7 @@
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>
               <div class="flex justify-between items-center cursor-pointer w-full">
-                <span>高级模型</span>
+                <span>{$i18n.t("Advanced Model")}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 1024 1024" 
@@ -122,7 +122,7 @@
             >
               <slot>
                 <div class="px-1 my-2 max-h-88  overflow-y-auto max-h-[calc(100vh-200px)]">
-                  <div class="text-lg px-2 py-1">{$i18n.t("高级模型")}</div>
+                  <div class="text-lg px-2 py-1">{$i18n.t("Advanced Model")}</div>
                   {#each items as item (item.value)}
                     {#if item?.info?.type == 2}
                       <button
@@ -156,7 +156,7 @@
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>
               <div class="flex justify-between items-center cursor-pointer w-full">
-                <span>顶级模型</span>
+                <span>{$i18n.t("Top-Level Model")}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 1024 1024" 
@@ -175,7 +175,7 @@
             >
               <slot>
                 <div class="px-1 my-2 max-h-88  overflow-y-auto {$mobile ? 'max-h-[400px]' : 'max-h-[calc(100vh-200px)]'}">
-                  <div class="text-lg px-2 py-1">{$i18n.t("顶级模型")}</div>
+                  <div class="text-lg px-2 py-1">{$i18n.t("Top-Level Model")}</div>
                   {#each items as item (item.value)}
                     {#if item?.info?.type == 3}
                       <button
