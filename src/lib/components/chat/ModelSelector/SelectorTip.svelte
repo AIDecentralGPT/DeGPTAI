@@ -155,7 +155,7 @@
               </div>
             </DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent
-              class=" z-[90] {$mobile ? 'max-h-[500px]' : ""} {$mobile ? `w-full max-w-[83%]`: `${className} max-w-[320px]`}  justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
+              class=" z-[90] {$mobile ? 'max-h-[500px]' : ""} {$mobile ? `w-full max-w-[83%]`: `${className} max-w-[350px]`}  justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none "
               transition={flyAndScale}
               side={$mobile ? "bottom" : "right"}
               sideOffset={4}

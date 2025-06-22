@@ -37,7 +37,7 @@ export const getDeModels = async (token: string = "") => {
         type: 1,
         desc: "Suitable for reasoning and writing",
         modelicon: "/static/icon/deepseek.png",
-        modelinfo: "DeepSeek V3 integrates both general and coding capabilities, demonstrating exceptional performance in both Chinese and English languages. This versatile model is well-suited for a wide range of applications."
+        modelinfo: ""
       },
       {
         name: "doubao-seed-1.6 (Tiktok)",
@@ -49,7 +49,7 @@ export const getDeModels = async (token: string = "") => {
         type: 1,
         desc: "Multimodal, suitable for daily tasks",
         modelicon: "/static/icon/doubao.png",
-        modelinfo: "Doubao-Seed-1.6 a brand-new multimodal deep-thinking model, supports three thinking modes: auto, thinking, and non-thinking. In non-thinking mode, the model's performance is significantly improved compared to Doubao-1.5-Pro-250115. It supports a 256k context window and a maximum output length of 16k tokens."
+        modelinfo: ""
       },
       {
         name: "Qwen3 235B (阿里云)",
@@ -61,7 +61,7 @@ export const getDeModels = async (token: string = "") => {
         type: 1,
         desc: "Strong language skills",
         modelicon: "/static/icon/qwen.png",
-        modelinfo: "Alibaba Cloud's flagship ultra-large-scale model, representing the highest technical level of the Qwen series, featuring exceptional multi-task processing capabilities and deep reasoning abilities. It is suitable for the most complex AI application scenarios and cutting-edge research, providing comprehensive solutions for users pursuing ultimate AI performance."
+        modelinfo: ""
       },
       {
         name: "Qwen3 235B Thinking (阿里云)",
@@ -73,7 +73,7 @@ export const getDeModels = async (token: string = "") => {
         type: 1,
         desc: "Enhanced reasoning, suitable for complex tasks",
         modelicon: "/static/icon/qwen.png",
-        modelinfo: "Alibaba Cloud's flagship ultra-large-scale model, representing the highest technical level of the Qwen series, featuring exceptional multi-task processing capabilities and deep reasoning abilities. It is suitable for the most complex AI application scenarios and cutting-edge research, providing comprehensive solutions for users pursuing ultimate AI performance."
+        modelinfo: ""
       },
       {
         name: "GPT-4o mini (OpenAI)",
@@ -85,18 +85,18 @@ export const getDeModels = async (token: string = "") => {
         type: 1,
         desc: "Lightweight general-purpose model with fast response speed",
         modelicon: "/static/icon/gpt3.png",
-        modelinfo: "OpenAI's most cost-effective small model, outperforming GPT-3.5 Turbo and other small models. Supports multiple languages and features a 128K token context window."
+        modelinfo: ""
       },
       // 高级模型
       {
-        name: "GPT-40 (OpenAI)",
+        name: "GPT-4o (OpenAI)",
         model: "gpt-4o",
         textmodel: "gpt-4o",
         think: false,
-        tip: "GPT-40 (OpenAI)",
+        tip: "GPT-4o (OpenAI)",
         support: "text",
         type: 2,
-        desc: "多模态，适用于大多数任务",
+        desc: "Multimodal, suitable for most tasks",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -108,7 +108,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "GPT-4.1 mini(Google)",
         support: "text",
         type: 2,
-        desc: "适合处理日常任务",
+        desc: "Well-suited for handling daily tasks",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -120,7 +120,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "DeepSeek R1",
         support: "text",
         type: 2,
-        desc: "强写作与编码",
+        desc: "Strong writing and coding skills",
         modelicon: "/static/icon/deepseek.png",
         modelinfo: ""
       },
@@ -132,7 +132,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Gemini 2.5 Flash(Google)",
         support: "text",
         type: 2,
-        desc: "多模态，快速响应",
+        desc: "Multimodal with fast response",
         modelicon: "/static/icon/gemini.png",
         modelinfo: ""
       },
@@ -144,7 +144,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Grok 3 (Elon Musk)",
         support: "image",
         type: 2,
-        desc: "擅长问答，表达风格活泼",
+        desc: "Expert in Q&A, lively expression style",
         modelicon: "/static/icon/grok.png",
         modelinfo: ""
       },
@@ -156,7 +156,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Claude 3.7 Sonnet (Anthropic)",
         support: "text",
         type: 2,
-        desc: "写作能力强，稳定性高",
+        desc: "Strong writing ability, high stability",
         modelicon: "/static/icon/claude.png",
         modelinfo: ""
       },
@@ -168,20 +168,20 @@ export const getDeModels = async (token: string = "") => {
         tip: "doubao-seed-1.6 Thinking (Tiktok)",
         support: "image",
         type: 1,
-        desc: "多模态，推理增强",
+        desc: "Multimodal with enhanced reasoning",
         modelicon: "/static/icon/doubao.png",
         modelinfo: ""
       },
       // 顶级模型
       {
-        name: "GPT 03 (OpenAI)",
+        name: "GPT o3 (OpenAI)",
         model: "o3-mini",
         textmodel: "o3-mini",
         think: false,
-        tip: "GPT 03 (OpenAI)",
+        tip: "GPT o3 (OpenAI)",
         support: "text",
         type: 3,
-        desc: "使用高级推理",
+        desc: "Using advanced reasoning",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -193,7 +193,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "GPT-4.1 (OpenAI)",
         support: "text",
         type: 3,
-        desc: "擅长快速编码和分析",
+        desc: "Good at fast coding and analysis",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -205,7 +205,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "GPT 4.5 (OpenAI)",
         support: "text",
         type: 3,
-        desc: "擅长写作和构思想法",
+        desc: "Skilled in writing and generating ideas",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -217,7 +217,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Claude 4 Sonnet (Anthropic)",
         support: "text",
         type: 3,
-        desc: "通用能力强，写作稳定",
+        desc: "Strong general capabilities, stable writing",
         modelicon: "/static/icon/claude.png",
         modelinfo: ""
       },
@@ -229,7 +229,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Claude 40pus (Anthropic)",
         support: "text",
         type: 3,
-        desc: "编码最强，适合复杂任务",
+        desc: "Strongest in coding, suitable for complex tasks",
         modelicon: "/static/icon/claude.png",
         modelinfo: ""
       },
@@ -241,7 +241,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Claude 4 0pus Thinking (Anthropic)",
         support: "text",
         type: 3,
-        desc: "深度推理增强",
+        desc: "Deep reasoning enhancement",
         modelicon: "/static/icon/claude.png",
         modelinfo: ""
       },
@@ -253,7 +253,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Claude 4 Sonnet Thinking (Anthropic)",
         support: "text",
         type: 3,
-        desc: "情境理解与结构推理增强",
+        desc: "Enhanced contextual understanding and structural reasoning",
         modelicon: "/static/icon/claude.png",
         modelinfo: ""
       },
@@ -265,7 +265,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Grok 3 Thinking (Elon Musk)",
         support: "image",
         type: 3,
-        desc: "强化逻辑推理与知识表达",
+        desc: "Strengthened logical reasoning and knowledge expression",
         modelicon: "/static/icon/grok.png",
         modelinfo: ""
       },
@@ -277,7 +277,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Gemini 2.5 Pro",
         support: "text",
         type: 3,
-        desc: "多模态能力强，图文代码都行",
+        desc: "Powerful multimodal capabilities, proficient in graphics, text, and code",
         modelicon: "/static/icon/gemini.png",
         modelinfo: ""
       }

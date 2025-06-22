@@ -89,19 +89,20 @@
   {#if modObj}
     <div class="flex flex-col items-center w-full {$mobile ? 'mb-10':'mb-16'}">
       <img class="size-8" src="{modObj[0].modelicon}" alt=""/>
-      <span class="text-lg font-bold mt-1">{ modObj[0]?.name }</span>
-      <span class="w-full max-w-[600px] text-sm text-center mt-2">{ modObj[0]?.modelinfo }</span>
+      <span class="text-xl font-bold mt-1">{ modObj[0]?.name }</span>
+      <span class="w-full max-w-[600px] text-lg text-center mt-2">{ $i18n.t(modObj[0]?.desc) }</span>
     </div>
   {/if}
   <div class="flex gap-3 my-2 mt-20
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
-    <div class="flex flex-col {$mobile ? '' : 'pb-6'}">
+    <!-- 节点选择 -->
+    <!-- <div class="flex flex-col {$mobile ? '' : 'pb-6'}">
       <ModelDeSelector />
-      <!-- <span class="text-xl ml-10 mt-1">
-        {$i18n.t("Unlimited DGC Reward Task")}
-      </span> -->
-    </div>
-    <!-- 模型介绍 -->
+      //<span class="text-xl ml-10 mt-1">
+      //  {$i18n.t("Unlimited DGC Reward Task")}
+      //</span>
+    </div> -->
+    <!-- app下载 -->
     <div class="flex flex-col self-start">
       {#if !checkUniapp() }
         <div class="flex justify-center items-center">
