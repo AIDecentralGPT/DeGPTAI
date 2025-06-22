@@ -40,11 +40,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "doubao-seed-1.6 (Tiktok)",
+        name: "DouBao 1.5 (Tiktok)",
         model: "doubao-seed-1-6-250615",
         textmodel: "doubao-seed-1-6-250615",
         think: false,
-        tip: "doubao-seed-1.6 (Tiktok)",
+        tip: "DouBao 1.5 (Tiktok)",
         support: "image",
         type: 1,
         desc: "Multimodal, suitable for daily tasks",
@@ -52,11 +52,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Qwen3 235B (阿里云)",
+        name: "Qwen3 (阿里云)",
         model: "Qwen3-235B-A22B-FP8",
         textmodel: "qwen3-235b-a22b",
         think: false,
-        tip: "Qwen3 235B (阿里云)",
+        tip: "Qwen3 (阿里云)",
         support: "text",
         type: 1,
         desc: "Strong language skills",
@@ -64,11 +64,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Qwen3 235B Thinking (阿里云)",
+        name: "Qwen3 Thinking (阿里云)",
         model: "Qwen3-235B-A22B-FP8-think",
         textmodel: "qwen3-235b-a22b",
         think: true,
-        tip: "Qwen3 235B Thinking (阿里云)",
+        tip: "Qwen3 Thinking (阿里云)",
         support: "text",
         type: 1,
         desc: "Enhanced reasoning, suitable for complex tasks",
@@ -161,11 +161,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "doubao-seed-1.6 Thinking (Tiktok)",
+        name: "DouBao 1.5 Thinking (Tiktok)",
         model: "doubao-seed-1-6-thinking-250615",
         textmodel: "doubao-seed-1-6-thinking-250615",
         think: true,
-        tip: "doubao-seed-1.6 Thinking (Tiktok)",
+        tip: "DouBao 1.5 Thinking (Tiktok)",
         support: "image",
         type: 1,
         desc: "Multimodal with enhanced reasoning",
@@ -222,11 +222,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Claude 40pus (Anthropic)",
+        name: "Claude 4Opus (Anthropic)",
         model: "claude-opus-4-20250514",
         textmodel: "claude-opus-4-20250514",
         think: false,
-        tip: "Claude 40pus (Anthropic)",
+        tip: "Claude 4Opus (Anthropic)",
         support: "text",
         type: 3,
         desc: "Strongest in coding, suitable for complex tasks",
@@ -234,11 +234,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Claude 4 0pus Thinking (Anthropic)",
+        name: "Claude 4 Opus Thinking (Anthropic)",
         model: "claude-opus-4-20250514-think",
         textmodel: "claude-opus-4-20250514",
         think: true,
-        tip: "Claude 4 0pus Thinking (Anthropic)",
+        tip: "Claude 4 Opus Thinking (Anthropic)",
         support: "text",
         type: 3,
         desc: "Deep reasoning enhancement",
