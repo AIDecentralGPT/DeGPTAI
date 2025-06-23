@@ -62,7 +62,7 @@
 <DropdownMenu.Root bind:open={show}>
   <DropdownMenu.Trigger class="relative text-left">
     <span class="mt-0.5 ml-1 text-[0.7rem] text-gray-500">
-      {$i18n.t("Click to select more models")}
+      {$i18n.t("Click to switch models")}
     </span>
   </DropdownMenu.Trigger>
 
