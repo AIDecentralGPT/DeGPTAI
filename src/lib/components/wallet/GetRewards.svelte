@@ -15,6 +15,7 @@
     mobile,
     settings,
     models,
+    showUserVerifyModal
   } from "$lib/stores";
 
   import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
@@ -262,22 +263,30 @@
                   $showShareModal = true;
                 } else if (item.id === "clock_in") {
                   if ($chats.length > 0) {
-                    clockLoading = true;
-                    await clockIn(localStorage.token)
-                      .then((res) => {
-                        console.log("Clock In  res", res);
-                        getCount();
-                        if (res?.ok) {
-                          toast.success($i18n.t(res?.message));
-                        }
-                        if (res?.detail) {
-                          toast.warning($i18n.t(res?.detail));
-                        }
-                      })
-                      .catch((res) => {
-                        console.log("Clock In  error", res);
-                      });
-                    clockLoading = false;
+                    if ($user?.verified) {
+                      clockLoading = true;
+                      await clockIn(localStorage.token)
+                        .then((res) => {
+                          console.log("Clock In  res", res);
+                          getCount();
+                          if (res?.ok) {
+                            toast.success($i18n.t(res?.message));
+                          }
+                          if (res?.detail) {
+                            toast.warning($i18n.t(res?.detail));
+                          }
+                        })
+                        .catch((res) => {
+                          console.log("Clock In  error", res);
+                        });
+                      clockLoading = false;
+                    } else {
+                      toast.warning(
+                        $i18n.t("Please complete the KYC verification !")
+                      );
+                      $showUserVerifyModal = true;
+                    }
+                    
                   } else {
                     toast.warning(
                       $i18n.t(

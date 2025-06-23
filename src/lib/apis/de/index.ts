@@ -52,11 +52,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Qwen3 (阿里云)",
+        name: "Qwen3 (Ali Cloud)",
         model: "Qwen3-235B-A22B-FP8",
         textmodel: "qwen3-235b-a22b",
         think: false,
-        tip: "Qwen3 (阿里云)",
+        tip: "Qwen3 (Ali Cloud)",
         support: "text",
         type: 1,
         desc: "Strong language skills",
@@ -64,11 +64,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Qwen3 Thinking (阿里云)",
+        name: "Qwen3 Thinking (Ali Cloud)",
         model: "Qwen3-235B-A22B-FP8-think",
         textmodel: "qwen3-235b-a22b",
         think: true,
-        tip: "Qwen3 Thinking (阿里云)",
+        tip: "Qwen3 Thinking (Ali Cloud)",
         support: "text",
         type: 1,
         desc: "Enhanced reasoning, suitable for complex tasks",
