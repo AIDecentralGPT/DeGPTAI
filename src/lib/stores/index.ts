@@ -72,6 +72,7 @@ export const initPageFlag = writable(false);
 
 // 下载相关
 export const showDownLoad = writable(false);
+export const downLoadUrl = writable('')
 
 // 人脸认证url
 export const faceUrl = writable({url: ""});

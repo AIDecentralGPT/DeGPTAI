@@ -874,15 +874,16 @@
       </div> -->
       <div class="flex flex-row gap-2 px-3">
         {#if $initPageFlag}
-          <button id="wallet-btn" class="primaryButton px-3 py-2 rounded-lg transition mt-2 mb-2"
+          <button id="wallet-btn" class="flex flex-col items-center justify-center primaryButton px-3 py-2 text-gray-100 rounded-lg transition mt-2 mb-2"
           on:mouseenter = {showWalletFun}
           on:mouseleave={closeWalletFun}>
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
               <path d="M976.896 883.712q0 19.456-6.656 36.352t-18.944 29.696-28.672 19.968-35.84 7.168l-743.424 0q-19.456 0-36.864-7.168t-30.72-19.968-20.992-29.696-7.68-36.352l0-510.976q0-38.912 27.136-66.048t66.048-27.136l743.424 0q38.912 0 66.048 27.136t27.136 66.048l0 139.264-232.448 0q-38.912 0-66.048 26.624t-27.136 65.536q1.024 26.624 11.264 47.104 8.192 17.408 27.136 31.744t54.784 14.336l232.448 0 0 186.368zM837.632 232.448l-464.896 0q55.296-28.672 104.448-55.296 43.008-22.528 84.992-45.056t65.536-34.816q35.84-19.456 64-17.92t47.616 9.728q22.528 11.264 38.912 29.696zM698.368 604.16q0-19.456 13.312-32.768t32.768-13.312 32.768 13.312 13.312 32.768-13.312 33.28-32.768 13.824-32.768-13.824-13.312-33.28z" fill="#ffffff"/>
             </svg>
+            <span class="text-xs">{$i18n.t("Wallet")}</span>
           </button>
         {/if}
-        <button class="primaryButton px-3 py-2 text-gray-100 transition rounded-lg mt-2 mb-2"
+        <button class="flex flex-col items-center justify-center primaryButton px-3 py-2 text-gray-100 transition rounded-lg mt-2 mb-2"
           on:click={async () => {
             await goto("/");
             const newChatButton = document.getElementById("new-chat-button");
@@ -896,6 +897,7 @@
           <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
             <path d="M786.88711111 644.43733333c45.51111111-58.70933333 72.81777778-132.43733333 72.81777778-212.53688888 0-192.05688889-155.648-347.70488889-347.70488889-347.7048889s-347.70488889 155.648-347.70488889 347.7048889c0 80.09955555 27.30666667 153.37244445 72.81777778 212.53688888L84.19555555 797.80977778h142.44977778v142.44977777l177.49333334-177.49333333c33.67822222 10.92266667 70.08711111 17.29422222 107.40622222 17.29422223s73.728-5.91644445 107.40622222-17.29422223l177.49333334 177.49333333v-142.44977777H939.80444445l-152.91733334-153.37244445z m-162.92977778-66.90133333L512 519.28177778l-111.95733333 58.70933333 21.39022222-124.70044444-91.02222222-88.29155556 125.15555555-18.20444444 55.97866667-113.77777778 55.97866666 113.77777778 125.15555556 18.20444444-90.112 88.29155556 21.39022222 124.24533333z" fill="#ffffff"></path>
           </svg>
+          <span class="text-xs">{$i18n.t("Claim Rewards")}</span>
         </button>
       </div>    
     </div>

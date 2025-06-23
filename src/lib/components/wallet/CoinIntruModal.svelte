@@ -32,7 +32,7 @@
         },
       },
       inst: "Instructions",
-      desc: "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.",
+      desc: "Before the mainnet launch on any trading platform, DGC tokens are designated as points. When DGC is officially launched, these points will be converted at a predetermined ratio. The DGC team will ensure a smooth conversion process and prevent any misuse of this policy.",
       help: "If the problem remains unresolved, please join the Telegram group and follow us on X",
     },
     {

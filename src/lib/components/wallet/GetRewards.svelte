@@ -2,7 +2,6 @@
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
   import { getModels as _getModels, checkUniapp, checkPlatform } from "$lib/utils";
-  import ModelDeSelector from "$lib/components/chat/ModelDeSelector.svelte";
 
   import {
     chats,
@@ -11,6 +10,7 @@
     showRewardsHistoryModal,
     showNewWalletModal,
     showRewardDetailModal,
+    downLoadUrl,
     showDownLoad,
     mobile,
     settings,
@@ -20,7 +20,6 @@
   import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
 
   import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
-    import { modelContract } from "$lib/utils/wallet/ether/modelabi";
 
   const i18n = getContext("i18n");
 
@@ -179,7 +178,12 @@
       <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
           on:click={() => {
-            window.open("https://www.decentralgpt.org", "_blank");
+            if (checkUniapp()) {
+              $downLoadUrl = "https://www.decentralgpt.org";
+              $showDownLoad = true;
+            } else {
+              window.open("https://www.decentralgpt.org", "_blank");
+            }
           }}
         >
           <span> {$i18n.t("Visit")}{$i18n.t("official website")}</span>

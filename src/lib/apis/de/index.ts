@@ -40,11 +40,11 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "DouBao 1.5 (Tiktok)",
+        name: "DouBao 1.6 (Tiktok)",
         model: "doubao-seed-1-6-250615",
         textmodel: "doubao-seed-1-6-250615",
         think: false,
-        tip: "DouBao 1.5 (Tiktok)",
+        tip: "DouBao 1.6 (Tiktok)",
         support: "image",
         type: 1,
         desc: "Multimodal, suitable for daily tasks",
@@ -161,13 +161,13 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "DouBao 1.5 Thinking (Tiktok)",
+        name: "DouBao 1.6 Thinking (Tiktok)",
         model: "doubao-seed-1-6-thinking-250615",
         textmodel: "doubao-seed-1-6-thinking-250615",
         think: true,
-        tip: "DouBao 1.5 Thinking (Tiktok)",
+        tip: "DouBao 1.6 Thinking (Tiktok)",
         support: "image",
-        type: 1,
+        type: 2,
         desc: "Multimodal with enhanced reasoning",
         modelicon: "/static/icon/doubao.png",
         modelinfo: ""

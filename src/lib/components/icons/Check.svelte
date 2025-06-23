@@ -5,7 +5,7 @@
 </script>
 
 {#if checkFlag}
-	<div class="flex justify-center item-center size-5 border border-grey-600 dark:border-grey-100">
+	<div class="flex justify-center item-center size-5">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
@@ -18,6 +18,6 @@
 		</svg>
 	</div>
 {:else}
-	<div class="flex justify-center item-center size-5 border border-grey-600 dark:border-grey-100"></div>
+	<div class="flex justify-center item-center size-5"></div>
 {/if}
 

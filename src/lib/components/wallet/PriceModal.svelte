@@ -72,9 +72,9 @@
   let prostat = false;
 </script>
 
-<Modal bind:show size="lg">
+<Modal bind:show size="big">
   <div class="max-h-[80vh] xs:h-auto flex flex-col">
-    <div class="flex justify-between dark:text-gray-300 px-5 pt-4 pb-2">
+    <div class="flex justify-between dark:text-gray-300 px-8 pt-4 pb-2">
       <div class="text-lg font-medium self-center">{$i18n.t("Upgrade")}</div>
       <button
         class="self-center"
@@ -95,17 +95,17 @@
       </button>
     </div>
 
-    <div class="mx-auto max-w-7xl px-6 lg:px-8 flex-1 overflow-auto">
-      <div class="mx-auto max-w-4xl text-center">
+    <div class="mx-4 px-2 flex-1 overflow-auto">
+      <div class="mx-4 text-center">
         <h2 class="font-semibold leading-7 primaryText text-2xl">
           {$i18n.t("Pricing")}
         </h2>
       </div>
 
       <div
-        class="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-2 h-8/10 md:h-108 overflow-y-auto pb-4"
+        class="flex flex-row flex-wrap lg:justify-between justify-center h-8/10 md:h-108 overflow-y-auto pb-4 mt-4"
       >
-        <div class="rounded-3xl p-8 ring-1 xl:p-10 ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
           <h3 id="tier-free" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Free")}
           </h3>
@@ -226,7 +226,7 @@
             </li>
           </ul>
         </div>
-        <div class="rounded-3xl p-8 ring-1 xl:p-10 ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
           <h3 id="tier-plus" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Basic Vip")}
           </h3>
@@ -515,7 +515,7 @@
             </li>
           </ul>
         </div>
-        <div class="rounded-3xl p-8 ring-1 xl:p-10 ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
           <h3 id="tier-plus" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Standard Vip")}
           </h3>
@@ -804,7 +804,7 @@
             </li>
           </ul>
         </div>
-        <div class="rounded-3xl p-8 ring-1 xl:p-10 ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
           <h3 id="tier-plus" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Pro Vip")}
           </h3>
