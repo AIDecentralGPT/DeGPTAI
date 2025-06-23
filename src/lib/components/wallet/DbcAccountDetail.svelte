@@ -334,10 +334,10 @@
         // $showBuyCoinModal = true;
         // 用新标签打开
         if (checkUniapp()) {
-          $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken ";
+          $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken";
           $showDownLoad = true;
         } else {
-          window.open("https://www.drcpad.io/token?name=DGCToken ", "_blank");
+          window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
         }
       }}
     >
