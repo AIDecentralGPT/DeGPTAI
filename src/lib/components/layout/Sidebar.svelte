@@ -23,7 +23,8 @@
     showCoinIntruModal,
     showFollowTwitterModal,
     showFollowTGGroupModal,
-    initPageFlag
+    initPageFlag,
+    showWalletView
   } from "$lib/stores";
   import { getCurrentPair } from "$lib/utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
@@ -112,6 +113,7 @@
   const onResize = () => {
     if ($showSidebar && window.innerWidth < BREAKPOINT) {
       showSidebar.set(false);
+      showWalletView.set(false);
     }
   };
 
@@ -134,6 +136,10 @@
     } 
   }
 
+  $: if (!$showSidebar) {
+    showWalletView.set(false);
+  }
+
   onMount(async () => {
     // 登录账号
     const pair = getCurrentPair();
@@ -148,6 +154,7 @@
     mobile.subscribe((e) => {
       if ($showSidebar && e) {
         showSidebar.set(false);
+        showWalletView.set(false);
       }
 
       if (!$showSidebar && !e) {
@@ -253,12 +260,11 @@
     await chats.set(await getChatList(localStorage.token));
   };
 
-  let showWalletView = false;
   const showWalletFun = () => {
-    showWalletView = true;
+    $showWalletView = true;
   };
   const closeWalletFun = () => {
-    showWalletView = false;
+    $showWalletView = false;
   }
 </script>
 
@@ -903,7 +909,7 @@
     </div>
   </div>
 
-  <div class="min-w-[246px] max-w-[306px] fixed bottom-1.5 left-1 dark:bg-gray-950 bg-gray-50 pb-[45px] rounded dark:border-gray-800 border-gray-200 ease-in-out duration-700 {showWalletView ? 'scale-100' : 'hidden scale-0'}"
+  <div class="min-w-[246px] max-w-[306px] fixed bottom-1.5 left-1 dark:bg-gray-950 bg-gray-50 pb-[45px] rounded dark:border-gray-800 border-gray-200 ease-in-out duration-700 {$showWalletView ? 'scale-100' : 'hidden scale-0'}"
     style="border-width: 1px;"
     on:mouseenter={showWalletFun}
     on:mouseleave={closeWalletFun}

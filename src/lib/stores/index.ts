@@ -74,6 +74,9 @@ export const initPageFlag = writable(false);
 export const showDownLoad = writable(false);
 export const downLoadUrl = writable('')
 
+// 用户钱包视图
+export const showWalletView = writable(false);
+
 // 人脸认证url
 export const faceUrl = writable({url: ""});
 

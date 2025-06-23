@@ -1,24 +1,21 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { toast } from "svelte-sonner";
   import { getModels as _getModels, checkUniapp, checkPlatform } from "$lib/utils";
 
   import {
-    chats,
     user,
-    showShareModal,
     showRewardsHistoryModal,
-    showNewWalletModal,
     showRewardDetailModal,
     downLoadUrl,
     showDownLoad,
     mobile,
     settings,
     models,
-    showUserVerifyModal
+    showSidebar,
+    showWalletView
   } from "$lib/stores";
 
-  import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
+  import { getRewardsCount } from "$lib/apis/rewards/index.js";
 
   import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
 
@@ -105,7 +102,7 @@
     <!-- app下载 -->
     <div class="flex flex-col self-start">
       {#if !checkUniapp() }
-        <div class="flex justify-center items-center">
+        <div class="flex justify-center items-center my-1">
           <span class="text-base region-text-color font-bold">
             {$i18n.t("Download DeGPT APP")}
           </span>
@@ -175,9 +172,9 @@
         </div>  -->
       {/if}
     </div>
-    <div class="flex text-xs {$mobile ? 'self-start' : 'self-end'}">
+    <div class="flex text-xs gap-1 {$mobile ? 'flex-wrap self-stat' : 'self-end'}">
       <button
-          class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
+          class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
           on:click={() => {
             if (checkUniapp()) {
               $downLoadUrl = "https://www.decentralgpt.org";
@@ -191,7 +188,7 @@
       </button>
       {#if $user?.id?.startsWith("0x")}
         <button
-          class="flex gap-1 items-center cursor-pointer primaryButton ml-2 text-gray-100 rounded-lg px-2 py-1"
+          class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
           on:click={() => {
             $showRewardsHistoryModal = true;
           }}
@@ -211,7 +208,7 @@
         </button>
       {/if}
       <button
-        class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1"
+        class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
         on:click={() => {
           $showRewardDetailModal = true;
         }}
@@ -228,6 +225,15 @@
           /></svg
         >
         <span> {$i18n.t("Rewards Details")} </span>
+      </button>
+      <button
+        class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
+        on:click={() => {
+          $showSidebar = true;
+          $showWalletView = true;
+        }}
+      >
+        <span> {$i18n.t("Enter wallet")} </span>
       </button>
     </div>
   </div>
@@ -255,47 +261,7 @@
                 ? "background: rgba(251, 251, 251, 0.8)"
                 : ""}
               on:click={async () => {
-                console.log("user info ", $user);
-
-                if (item.id === "new_wallet") {
-                  $showNewWalletModal = true;
-                } else if (item.id === "invite") {
-                  $showShareModal = true;
-                } else if (item.id === "clock_in") {
-                  if ($chats.length > 0) {
-                    if ($user?.verified) {
-                      clockLoading = true;
-                      await clockIn(localStorage.token)
-                        .then((res) => {
-                          console.log("Clock In  res", res);
-                          getCount();
-                          if (res?.ok) {
-                            toast.success($i18n.t(res?.message));
-                          }
-                          if (res?.detail) {
-                            toast.warning($i18n.t(res?.detail));
-                          }
-                        })
-                        .catch((res) => {
-                          console.log("Clock In  error", res);
-                        });
-                      clockLoading = false;
-                    } else {
-                      toast.warning(
-                        $i18n.t("Please complete the KYC verification !")
-                      );
-                      $showUserVerifyModal = true;
-                    }
-                    
-                  } else {
-                    toast.warning(
-                      $i18n.t(
-                        "You need to complete a conversation to receive a reward ！"
-                      )
-                    );
-                  }
-                }
-                return;
+                
               }}
             >
               {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
