@@ -245,9 +245,9 @@
             <div
               class="flex flex-col mt-6 px-1 py-1.5 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
             >
-              <div class="text-white text-center text-base leading-5">{$i18n.t("Basic VIP")}</div>       
-              <div class="flex-1 flex flex-row justify-center items-center leading-4">
-                {$i18n.t("Valid until")} { basicInfo.end_date}
+              <div class="text-white text-center text-xs font-bold leading-5">{$i18n.t("Basic VIP")}</div>       
+              <div class="flex-1 flex flex-row justify-center items-center leading-4 text-xs">
+                <span>{$i18n.t("Valid until")} { basicInfo.end_date}</span>
                 {#if checkProLoading}
                   <svg class="animate-spin ml-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -544,9 +544,9 @@
             <div
               class="flex flex-col mt-6 px-1 py-1.5 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
             >
-              <div class="text-white text-center text-base leading-5">{$i18n.t("Standard VIP")}</div>       
+              <div class="text-white text-center text-xs font-bold leading-5">{$i18n.t("Standard VIP")}</div>       
               <div class="flex-1 flex flex-row justify-center items-center leading-4">
-                {$i18n.t("Valid until")} {standardInfo.end_date}
+                <span class="text-xs">{$i18n.t("Valid until")} {standardInfo.end_date}</span>
                 {#if checkProLoading}
                   <svg class="animate-spin ml-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -842,9 +842,9 @@
             <div
               class="flex flex-col mt-6 px-1 py-1.5 primaryButton text-gray-100 text-sm transition rounded-lg w-full"
             >
-              <div class="text-white text-center text-base leading-5">{$i18n.t("Pro VIP")}</div>       
+              <div class="text-white text-center text-xs font-bold leading-5">{$i18n.t("Pro VIP")}</div>       
               <div class="flex-1 flex flex-row justify-center items-center leading-4">
-                {$i18n.t("Valid until")} {proInfo.end_date}
+                <span class="text-xs">{$i18n.t("Valid until")} {proInfo.end_date}</span>
                 {#if checkProLoading}
                   <svg class="animate-spin ml-2"
                     xmlns="http://www.w3.org/2000/svg"

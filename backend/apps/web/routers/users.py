@@ -32,7 +32,7 @@ from utils.misc import parse_duration, validate_email_format
 # --------钱包相关--------
 from web3 import Web3
 #w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
-w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新以太坊主网
+w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io')) # 新以太坊主网
 
 # from web3.auto import w3
 import asyncio

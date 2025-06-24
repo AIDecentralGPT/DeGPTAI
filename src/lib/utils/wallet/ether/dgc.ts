@@ -36,7 +36,7 @@ const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1';
 // ];
 // 定义 RPC URL 和 Chain ID
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
-const rpcUrl = "https://rpc.dbcwallet.io";  // 新 的 RPC URL
+const rpcUrl = "https://rpc1.dbcwallet.io";  // 新 的 RPC URL
 
 // const chainId = 19850818; // 旧 的 Chain ID
 const chainId = 19880818; // 新 的 Chain ID

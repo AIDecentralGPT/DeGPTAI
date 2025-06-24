@@ -10,7 +10,7 @@ import { defaultWagmiConfig } from "@web3modal/wagmi";
 
 // import { provider, signData, getCurrencyPrice, getGas } from "../ether/utils";
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
-const rpcUrl = "https://rpc.dbcwallet.io"; // 新得 的 RPC URL
+const rpcUrl = "https://rpc1.dbcwallet.io"; // 新得 的 RPC URL
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 import ABI from "../ether/abi.json";
@@ -74,7 +74,7 @@ const dbcTestnet = {
   },
   // network: "dbcTestnet",
   rpcUrls: {
-    default: { http: ["https://rpc.dbcwallet.io"] },
+    default: { http: ["https://rpc1.dbcwallet.io"] },
   },
 
   blockExplorers: {
@@ -92,6 +92,6 @@ export const config = defaultWagmiConfig({
   chains,
   metadata,
   transports: {
-    [dbcTestnet.id]: http("https://rpc.dbcwallet.io"),
+    [dbcTestnet.id]: http("https://rpc1.dbcwallet.io"),
   },
 });

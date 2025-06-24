@@ -21,7 +21,7 @@
           tip: "Enter the following information",
           list: [
             { tip: "Network Name", info: "DeepBrain Chain Mainnet" },
-            { tip: "Chain RPC Address", info: "https://rpc.dbcwallet.io" },
+            { tip: "Chain RPC Address", info: "https://rpc1.dbcwallet.io" },
             { tip: "Chain ID", info: "19880818" },
             { tip: "Coin Symbol", info: "DBC" },
           ],

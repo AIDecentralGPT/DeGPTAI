@@ -31,18 +31,13 @@
       class="w-full px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
     > 
       {#if $user?.vipInfo && $user?.vipInfo.length > 0}
-        {#if $user?.vipInfo.length > 1}
-          <div class="text-white text-center text-sm leading-4">VIP({$user?.vipInfo.length})</div>       
-          <div class="flex-1 flex flex-row text-xs justify-center items-center leading-3 mt-1">
-            {$i18n.t("Valid until")} {$user?.vipInfo[0].end_date}
-          </div>
-        {:else}
+        {#if $user?.vipInfo.length > 0}
           <div class="text-white text-center text-sm leading-4">
-            {$user?.vipInfo[0].vip=="basic" ? $i18n.t("Basic VIP") : $user?.vipInfo[0].vip=="pro" ? $i18n.t("Pro VIP") : $i18n.t("Standard VIP")}
+            {$user?.vipInfo[0].vip=="basic" ? $i18n.t("Basic VIP") : ($user?.vipInfo[0].vip=="pro" ? $i18n.t("Pro VIP") : $i18n.t("Standard VIP"))}
           </div>       
           <div class="flex-1 flex flex-row text-xs justify-center items-center leading-3 mt-1">
             {$i18n.t("Valid until")} {$user?.vipInfo[0].end_date}
-          </div>
+          </div>       
         {/if}
       {:else}
         <span class="relative">{$i18n.t("Upgrade Plan")}</span>

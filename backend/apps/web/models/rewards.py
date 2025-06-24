@@ -18,7 +18,7 @@ log.setLevel(logging.INFO)
 
 # 初始化Web3
 # w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io')) 旧 合约 RPC
-w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io'))  # 新 合约 RPC
+w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io'))  # 新 合约 RPC
 router = APIRouter()
 
 # 获取当前文件的目录
