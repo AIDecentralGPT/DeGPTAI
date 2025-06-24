@@ -38,7 +38,7 @@
           </div>
         {:else}
           <div class="text-white text-center text-sm leading-4">
-            {$user?.vipInfo[0].vip=="basic" ? $i18n.t("Basic Vip") : $user?.vipInfo[0].vip=="pro" ? $i18n.t("Pro Vip") : $i18n.t("Standard Vip")}
+            {$user?.vipInfo[0].vip=="basic" ? $i18n.t("Basic VIP") : $user?.vipInfo[0].vip=="pro" ? $i18n.t("Pro VIP") : $i18n.t("Standard VIP")}
           </div>       
           <div class="flex-1 flex flex-row text-xs justify-center items-center leading-3 mt-1">
             {$i18n.t("Valid until")} {$user?.vipInfo[0].end_date}

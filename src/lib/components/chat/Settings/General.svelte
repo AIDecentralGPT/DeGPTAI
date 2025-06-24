@@ -158,7 +158,7 @@ onMount(() => {
 <div class="flex flex-col h-full justify-between text-sm">
 	<div class="  pr-1.5 overflow-y-scroll max-h-[25rem]">
 		<div class="">
-			<div class=" mb-1 text-sm font-medium">{$i18n.t('WebUI Settings')}</div>
+			<div class=" mb-1 text-sm font-medium">{$i18n.t('User interface settings')}</div>
 
 			<!-- {#if !isMobile} -->
 			<div class="flex w-full justify-between">
@@ -170,10 +170,10 @@ onMount(() => {
 						placeholder="Select a theme"
 						on:change={() => themeChangeHandler(selectedTheme)}
 					>
-						<option class="leading-5 text-center" value="system">⚙️ {$i18n.t('System')}</option>
-						<option class="leading-5 text-center" value="dark">🌑 {$i18n.t('Dark')}</option>
-						<option class="leading-5 text-center" value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
-						<option class="leading-5 text-center" value="light">☀️ {$i18n.t('Light')}</option>
+						<option class="leading-5 text-center" value="system">⚙️ {$i18n.t('System')}&nbsp;&nbsp;</option>
+						<option class="leading-5 text-center" value="dark">🌑 {$i18n.t('Dark')}&nbsp;&nbsp;</option>
+						<option class="leading-5 text-center" value="oled-dark">🌃 {$i18n.t('OLED Dark')}&nbsp;&nbsp;</option>
+						<option class="leading-5 text-center" value="light">☀️ {$i18n.t('Light')}&nbsp;&nbsp;</option>
 					</select>
 				</div>
 			</div>
@@ -191,7 +191,7 @@ onMount(() => {
 							updateUserLanguage(localStorage.token, lang);
 						}}>
 						{#each languages as language}
-							<option class="leading-5 text-center" value={language['code']}>{language['title']}</option>
+							<option class="leading-5 text-center" value={language['code']}>{language['title']}&nbsp;&nbsp;</option>
 						{/each}
 					</select>
 				</div>

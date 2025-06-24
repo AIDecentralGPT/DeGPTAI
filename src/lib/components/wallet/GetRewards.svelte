@@ -4,6 +4,7 @@
 
   import {
     user,
+    chats,
     showRewardsHistoryModal,
     showRewardDetailModal,
     downLoadUrl,
@@ -12,12 +13,16 @@
     settings,
     models,
     showSidebar,
-    showWalletView
+    showWalletView,
+    showNewWalletModal,
+    showShareModal,
+    showUserVerifyModal
   } from "$lib/stores";
 
   import { getRewardsCount } from "$lib/apis/rewards/index.js";
 
   import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
+    import { toast } from "svelte-sonner";
 
   const i18n = getContext("i18n");
 
@@ -85,7 +90,7 @@
   <!-- 模型介绍 -->
   {#if modObj}
     <div class="flex flex-col items-center w-full {$mobile ? 'mb-10':'mb-16'}">
-      <img class="size-8" src="{modObj[0].modelicon}" alt=""/>
+      <img class="size-8" src="{modObj[0]?.modelicon}" alt=""/>
       <span class="text-xl font-bold mt-1">{ modObj[0]?.name }</span>
       <span class="w-full max-w-[600px] text-lg text-center mt-2">{ $i18n.t(modObj[0]?.desc) }</span>
     </div>
@@ -261,7 +266,40 @@
                 ? "background: rgba(251, 251, 251, 0.8)"
                 : ""}
               on:click={async () => {
-                
+                if (item.id === "new_wallet") {
+                  $showNewWalletModal = true;
+                } else if (item.id === "invite") {
+                  $showShareModal = true;
+                } else if (item.id === "clock_in") {
+                  if (!$user?.verified) {
+                    toast.warning($i18n.t("Please complete the KYC verification !"));
+                    $showUserVerifyModal = true;
+                  }else if ($chats.length > 0) {
+                    clockLoading = true;
+                    await clockIn(localStorage.token)
+                      .then((res) => {
+                        console.log("Clock In  res", res);
+                        getCount();
+                        if (res?.ok) {
+                          toast.success($i18n.t(res?.message));
+                        }
+                        if (res?.detail) {
+                          toast.warning($i18n.t(res?.detail));
+                        }
+                      })
+                      .catch((res) => {
+                        console.log("Clock In  error", res);
+                      });
+                    clockLoading = false;
+                  } else {
+                    toast.warning(
+                      $i18n.t(
+                        "You need to complete a conversation to receive a reward ！"
+                      )
+                    );
+                  }
+                }
+                return;
               }}
             >
               {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
