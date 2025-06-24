@@ -13,7 +13,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	import { config, settings, models, theme, showPriceModal } from '$lib/stores';
+	import { config, settings, models, theme, user, showPriceModal, showSidebar, showWalletView } from '$lib/stores';
 
 	import { synthesizeOpenAISpeech } from '$lib/apis/audio';
 	import { imageGenerations } from '$lib/apis/images';
@@ -758,10 +758,19 @@
 									</svg>
 									<div class=" self-center">
 										{message.content}
-										<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
-											on:click={() => { $showPriceModal = true; }}>
-											{$i18n.t("Click To Upgrade")}
-										</button>
+										{#if $user?.id?.startsWith("0x")}
+											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+												on:click={() => { $showPriceModal = true; }}>
+												{$i18n.t("Click To Upgrade")}
+											</button>
+										{:else}
+											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+												on:click={() => { 
+													$showSidebar = true;
+          								$showWalletView = true; }}>
+												{$i18n.t("Enter wallet")}
+											</button>
+										{/if}
 									</div>
 								</div>
 							{:else if message.content === '' && !message?.done}

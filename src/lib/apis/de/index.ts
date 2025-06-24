@@ -30,6 +30,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "DeepSeek V3",
         model: "deepseek-chat",
+        imagemodel: "deepseek-chat",
         textmodel: "deepseek-chat",
         think: false,
         tip: "DeepSeek V3",
@@ -42,6 +43,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "DouBao 1.6 (TikTok)",
         model: "doubao-seed-1-6-250615",
+        imagemodel: "doubao-seed-1-6-250615",
         textmodel: "doubao-seed-1-6-250615",
         think: false,
         tip: "DouBao 1.6 (TikTok)",
@@ -54,10 +56,11 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Qwen3 (Ali Cloud)",
         model: "qwen3-235b-a22b",
+        imagemodel: "qwen-vl-plus",
         textmodel: "qwen3-235b-a22b",
         think: false,
         tip: "Qwen3 (Ali Cloud)",
-        support: "text",
+        support: "image",
         type: 1,
         desc: "Strong language skills",
         modelicon: "/static/icon/qwen.png",
@@ -66,10 +69,11 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Qwen3 Thinking (Ali Cloud)",
         model: "qwen3-235b-a22b-think",
+        imagemodel: "qvq-max",
         textmodel: "qwen3-235b-a22b",
         think: true,
         tip: "Qwen3 Thinking (Ali Cloud)",
-        support: "text",
+        support: "image",
         type: 1,
         desc: "Enhanced reasoning, suitable for complex tasks",
         modelicon: "/static/icon/qwen.png",
@@ -78,6 +82,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "GPT-4o mini (OpenAI)",
         model: "gpt-4o-mini",
+        imagemodel: "gpt-4o-mini",
         textmodel: "gpt-4o-mini",
         think: false,
         tip: "GPT-4o mini (OpenAI)",
@@ -91,6 +96,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "GPT-4o (OpenAI)",
         model: "gpt-4o",
+        imagemodel: "gpt-4o",
         textmodel: "gpt-4o",
         think: false,
         tip: "GPT-4o (OpenAI)",
@@ -103,6 +109,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "DeepSeek R1",
         model: "deepseek-reasoner",
+        imagemodel: "deepseek-reasoner",
         textmodel: "deepseek-reasoner",
         think: true,
         tip: "DeepSeek R1",
@@ -115,6 +122,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Gemini 2.5 Flash (Google)",
         model: "gemini-2.5-flash-preview-05-20",
+        imagemodel: "gemini-2.5-flash-preview-05-20",
         textmodel: "gemini-2.5-flash-preview-05-20",
         think: false,
         tip: "Gemini 2.5 Flash (Google)",
@@ -127,6 +135,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Grok 3 (Elon Musk)",
         model: "grok-3",
+        imagemodel: "grok-3",
         textmodel: "grok-3",
         think: false,
         tip: "Grok 3 (Elon Musk)",
@@ -139,6 +148,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "DouBao 1.6 Thinking (TikTok)",
         model: "doubao-seed-1-6-thinking-250615",
+        imagemodel: "doubao-seed-1-6-thinking-250615",
         textmodel: "doubao-seed-1-6-thinking-250615",
         think: true,
         tip: "DouBao 1.6 Thinking (TikTok)",
@@ -152,6 +162,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "GPT o3 (OpenAI)",
         model: "o3",
+        imagemodel: "o3",
         textmodel: "o3",
         think: false,
         tip: "GPT o3 (OpenAI)",
@@ -164,6 +175,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "GPT o4-mini (OpenAI)",
         model: "o4-mini",
+        imagemodel: "o4-mini",
         textmodel: "o4-mini",
         think: false,
         tip: "GPT o4-mini (OpenAI)",
@@ -176,6 +188,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "GPT o4-mini high (OpenAI)",
         model: "o4-mini-high",
+        imagemodel: "o4-mini-high",
         textmodel: "o4-mini-high",
         think: false,
         tip: "GPT o4-mini high (OpenAI)",
@@ -188,6 +201,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "GPT-4.1 (OpenAI)",
         model: "gpt-4.1",
+        imagemodel: "gpt-4.1",
         textmodel: "gpt-4.1",
         think: false,
         tip: "GPT-4.1 (OpenAI)",
@@ -200,6 +214,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "GPT 4.5 (OpenAI)",
         model: "gpt-4.5-preview",
+        imagemodel: "gpt-4.5-preview",
         textmodel: "gpt-4.5-preview",
         think: false,
         tip: "GPT 4.5 (OpenAI)",
@@ -212,6 +227,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Claude 4Opus (Anthropic)",
         model: "claude-opus-4-20250514",
+        imagemodel: "claude-opus-4-20250514",
         textmodel: "claude-opus-4-20250514",
         think: false,
         tip: "Claude 4Opus (Anthropic)",
@@ -224,6 +240,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Claude 4 Opus Thinking (Anthropic)",
         model: "claude-opus-4-20250514-think",
+        imagemodel: "claude-opus-4-20250514-think",
         textmodel: "claude-opus-4-20250514-think",
         think: true,
         tip: "Claude 4 Opus Thinking (Anthropic)",
@@ -236,6 +253,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Grok 3 Thinking (Elon Musk)",
         model: "grok-3-mini",
+        imagemodel: "grok-3-mini",
         textmodel: "grok-3-mini",
         think: true,
         tip: "Grok 3 Thinking (Elon Musk)",
@@ -248,6 +266,7 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Gemini 2.5 Pro (Google)",
         model: "gemini-2.5-pro-preview-06-05",
+        imagemodel: "gemini-2.5-pro-preview-06-05",
         textmodel: "gemini-2.5-pro-preview-06-05",
         think: false,
         tip: "Gemini 2.5 Pro (Google)",

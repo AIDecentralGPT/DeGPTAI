@@ -207,36 +207,37 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
     
   // 校验模型是否支持文件类型
 	// let imageModels = $models.filter(item => item.support == "image");
-  // if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
-  //   let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
-  //   if (checkSelectedModels.length == 0) {
-	// 		selectedModels = imageModels.map(item => item.model);
-  //   } else {
-	// 		selectedModels = checkSelectedModels;
-	// 	}
-	// 	fileFlag = true;
-  // } else {
-	// 	let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
-	// 	let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
-	// 	if (checkMessages.length > 0) {
-  //     if (checkSelectModels.length == 0) {
-	// 			fileFlag = false;
-  //       switchModel.set({
-  //         content: prompt,
-  //         search: search,
-  //         searchType: search_type,
-  //         status: true
-  //       })
-  //       await goto("/");
-  //       return;
-  //     } else {
-	// 			fileFlag = true;
-  //       selectedModels = checkSelectModels.map(item => item.model);
-  //     } 
-  //   } else {
-	// 		fileFlag = false;
-	// 	}
-	// }
+  if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
+    // let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
+    // if (checkSelectedModels.length == 0) {
+		// 	selectedModels = imageModels.map(item => item.model);
+    // } else {
+		// 	selectedModels = checkSelectedModels;
+		// }
+		fileFlag = true;
+  } else {
+		let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
+		// let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
+		if (checkMessages.length > 0) {
+      // if (checkSelectModels.length == 0) {
+			// 	fileFlag = false;
+      //   switchModel.set({
+      //     content: prompt,
+      //     search: search,
+      //     searchType: search_type,
+      //     status: true
+      //   })
+      //   await goto("/");
+      //   return;
+      // } else {
+			// 	fileFlag = true;
+      //   selectedModels = checkSelectModels.map(item => item.model);
+      // }
+			fileFlag = true;
+    } else {
+			fileFlag = false;
+		}
+	}
 
 
 	// 如果开启网络搜索只选择一个模型回复
@@ -689,7 +690,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
-					model: fileFlag ? model.id : (model.textmodel??model.id),
+					model: fileFlag ? model.imagemodel : model.textmodel,
 					messages: send_message,
 					enable_thinking: model.think
 				},
