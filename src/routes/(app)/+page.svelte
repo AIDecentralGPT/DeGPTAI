@@ -233,7 +233,7 @@
   //////////////////////////
   let thirdData: any = {};
 
-  const submitPrompt = async (userPrompt, userWebInfo,_user = null) => {
+  const submitPrompt = async (userPrompt, userToolInfo,_user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
     if (!search) {
       chatInputPlaceholder = "";
@@ -325,7 +325,7 @@
         files: files.length > 0 ? files : undefined,
         search: search,
         search_type: search_type,
-        webInfo: userWebInfo,
+        toolInfo: userToolInfo,
         models: selectedModels.filter(
           (m, mIdx) => selectedModels.indexOf(m) === mIdx
         ),
@@ -354,8 +354,8 @@
             search: search,
             search_type: search_type,
             search_content: thirdData,
-            webanalysis: (userWebInfo?.url) ? true : false,
-            webanalysis_content: null,
+            toolanalysis: false,
+            toolanalysis_content: null,
             keyword: userPrompt,
             childrenIds: [],
             role: "assistant",
@@ -392,43 +392,62 @@
       // 校验图片获取图片信息
       // await analysisimageinfo(userMessageId);
 
-      // 获取网络搜索内容
+      // 获取工具操作内容
+      let toolContent = null;
       if (search) {
-        await tick();
-        await handleSearchWeb(userPrompt);
-        selectedModels.map(async (modelId) => {
-          const model = $models.filter((m) => m.id === modelId).at(0);
-          // 如果已创建信息赋值web数据
-          if (responseMap[model?.id]) {
-            let responseMessageId = responseMap[model?.id].id;
-            let responseMessage = responseMap[model?.id];
-            responseMessage.search_content = thirdData;
-            history.messages[responseMessageId] = responseMessage;
+        await tick(); 
+        if (search_type == "webread") {
+          // 网页分析
+          if ((userToolInfo?.url??"").length > 0) {
+            let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
+            if (webResult?.ok) {
+              toolContent = webResult?.data;
+            }
+            await tick();
+            for (const key in responseMap) {
+              if (responseMap.hasOwnProperty(key)) {
+                let responseMessage = responseMap[key]
+                responseMessage.toolanalysis = true;
+                responseMessage.toolanalysis_content = toolContent;
+                // Add message to history and Set currentId to messageId
+                history.messages[responseMessage.id] = responseMessage;
+                history.currentId = responseMessage.id;
+                responseMap[key] = responseMessage;
+              }
+            }
+            await tick();
           }
-        });
+        } else if (search_type == "translate") {
+            toolContent = userToolInfo?.trantip;
+            for (const key in responseMap) {
+              if (responseMap.hasOwnProperty(key)) {
+                let responseMessage = responseMap[key]
+                responseMessage.toolanalysis = true;
+                responseMessage.toolanalysis_content = toolContent;
+                // Add message to history and Set currentId to messageId
+                history.messages[responseMessage.id] = responseMessage;
+                history.currentId = responseMessage.id;
+                responseMap[key] = responseMessage;
+              }
+            }
+            await tick();
+        } else {
+          await handleSearchWeb(userPrompt);
+          selectedModels.map(async (modelId) => {
+            const model = $models.filter((m) => m.id === modelId).at(0);
+            // 如果已创建信息赋值web数据
+            if (responseMap[model?.id]) {
+              let responseMessageId = responseMap[model?.id].id;
+              let responseMessage = responseMap[model?.id];
+              responseMessage.search_content = thirdData;
+              history.messages[responseMessageId] = responseMessage;
+            }
+          });
+        }
+        
         scrollToBottom();
       }
-
-      // 如果是网址分析
-      let webContent = null;
-      if ((userWebInfo?.url??"").length > 0) {
-        let webResult = await getWebContent(localStorage.token, userWebInfo?.url);
-        if (webResult?.ok) {
-          webContent = webResult?.data;
-        }
-        await tick();
-        for (const key in responseMap) {
-          if (responseMap.hasOwnProperty(key)) {
-            let responseMessage = responseMap[key]
-            responseMessage.webanalysis_content = webContent;
-            // Add message to history and Set currentId to messageId
-            history.messages[responseMessage.id] = responseMessage;
-            history.currentId = responseMessage.id;
-            responseMap[key] = responseMessage;
-          }
-        }
-        await tick();
-      }
+      
 
       // 校验模型已使用次数
       let modelLimit:any = {}
@@ -472,11 +491,11 @@
         await tick();
       }
       // Send prompt
-      await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit, webContent);
+      await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit, toolContent);
     }
   };
 
-  const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, webContent = null, modelId = null) => {
+  const sendPrompt = async (prompt, parentId, responseMap = null, modelLimit = {}, toolContent = null, modelId = null) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
       // 此判断毫无意义-判断结果就是selectedModels
@@ -497,8 +516,8 @@
               search: search,
               search_type: search_type,
               search_content: thirdData,
-              webanalysis: webContent ? true : false,
-              webanalysis_content: webContent,
+              toolanalysis: toolContent ? true : false,
+              toolanalysis_content: toolContent,
               keyword: prompt,
               childrenIds: [],
               role: "assistant",
@@ -557,7 +576,7 @@
             await handleLimitError(modelLimit[model.id], responseMessage);
           } else {  
 						// 文本搜索
-            await sendPromptDeOpenAI(model, responseMessageId, _chatId, webContent);
+            await sendPromptDeOpenAI(model, responseMessageId, _chatId, toolContent);
           }
           // if (model?.external) {
           // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
@@ -590,7 +609,7 @@
     model,
     responseMessageId,
     _chatId,
-    webContent
+    toolContent
   ) => {
     const responseMessage = history.messages[responseMessageId];
 
@@ -637,9 +656,12 @@
         if (item?.role != 'user' && item?.search) {
           let preMessage = send_message[index-1].content;
           if (item?.search_type == "webread") {
-            let analyContent = "网页标题：" + webContent?.title;
-            analyContent = "；网页内容：" + webContent?.content;
+            let analyContent = "网页标题：" + toolContent?.title;
+            analyContent = "；网页内容：" + toolContent?.content;
             analyContent = analyContent + "\n" + send_message[index-1].content;
+            send_message[index-1].content = analyContent;
+          } else if (item?.search_type == "translate") {
+            let analyContent = send_message[index-1].content + "\n" + toolContent;
             send_message[index-1].content = analyContent;
           } else if (item?.search_type == "youtube") {
 						if (item?.search_content?.videos) {
@@ -931,12 +953,10 @@
 
   // 获取搜索网页
   const handleSearchWeb= async(userPrompt: string) => {
-    if (search && search_type != 'translate' && search_type != "webread") {
-      const ai_keyword = await generateSearchChatKeyword(userPrompt);
-      let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
-      if (result?.ok) {
-        thirdData = result.data;
-      }
+    const ai_keyword = await generateSearchChatKeyword(userPrompt);
+    let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
+    if (result?.ok) {
+      thirdData = result.data;
     }
     await tick();
   }

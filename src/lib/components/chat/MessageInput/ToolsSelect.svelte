@@ -1,10 +1,42 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { onMount, getContext } from "svelte";
+  import { DropdownMenu } from "bits-ui";
   const i18n = getContext("i18n");
+  let show = false;
 
   export let inputplaceholder = "";
   export let search = false;
   export let type = "";
+  export let tranLang = "";
+
+  let languages = [
+    {"code": "de-DE", "tip": "German"},
+    {"code": "en-US", "tip": "English"},
+    {"code": "es-ES", "tip": "Spanish"},
+    {"code": "fr-FR", "tip": "French"},
+    {"code": "id-ID", "tip": "Indonesian"},
+    {"code": "ja-JP", "tip": "Japanese"},
+    {"code": "ko-KR", "tip": "Korean"},
+    {"code": "pt-PT", "tip": "Portuguese"},
+    {"code": "ru-RU", "tip": "Russian"},
+    {"code": "th-TH", "tip": "Thai"},
+    {"code": "tr-TR", "tip": "Turkish"},
+    {"code": "vi-VN", "tip": "Vietnamese"},
+    {"code": "zh-CN", "tip": "Chinese"}
+  ];
+
+  let lanindex = 1;
+  function changeTranLang(index:number) {
+    lanindex = index;
+    tranLang = $i18n.t(languages[lanindex].tip);
+    show = false;
+  }
+
+  onMount(() => {
+    let langcode = $i18n.language;
+    lanindex = languages.findIndex(item => item.code == langcode);
+    tranLang = $i18n.t(languages[lanindex].tip);
+  })
 
 </script>
 
@@ -97,7 +129,7 @@
           </button>
         </div>
         <div class="flex flex-row items-center pt-3 pb-2">
-          <div class="border border-gray-500 px-2 py-1 rounded-lg">{$i18n.t("Auto-detect")}</div>
+          <div class="text-sm border border-gray-500 px-3 py-2 rounded-lg">{$i18n.t("Auto-detect")}</div>
           <svg xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 1024 1024" 
             version="1.1"
@@ -105,6 +137,41 @@
             fill="currentColor">
             <path d="M951.127 483.716L668.284 200.873c-7.811-7.811-18.048-11.716-28.284-11.716-10.237 0-20.474 3.905-28.284 11.716-15.621 15.621-15.621 40.947 0 56.568L826.274 472H104c-22.092 0-40 17.908-40 40 0 22.091 17.908 40 40 40h722.274L611.716 766.559c-15.621 15.62-15.621 40.947 0 56.568 7.811 7.811 18.047 11.716 28.284 11.716 10.236 0 20.474-3.905 28.284-11.716l282.843-282.843c15.621-15.621 15.621-40.948 0-56.568z"/>
           </svg>
+          <DropdownMenu.Root bind:open={show}>
+            <DropdownMenu.Trigger>
+              <div class="flex flex-row">
+                <button class="flex flex-row text-sm border border-gray-500 px-3 py-2 rounded-lg"
+                  on:click={(e) => {
+                    e.preventDefault();
+                  }}>
+                  <span class="text-sm mr-1">{$i18n.t(languages[lanindex].tip)}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="self-center ml-1 size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+                  </svg>
+                </button>
+              </div>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content side="top">
+              <slot>
+                <div class="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+                  dark:text-gray-300 text-gray-700 shadow-lg px-3 py-3 rounded-2xl mb-1">
+                  {#each languages as langitem, index}
+                    <button
+                    aria-label="model-item"
+                      class="flex item-center w-full text-left font-medium line-clamp-1 select-none items-center rounded-button px-2 py-1
+                        hover:bg-gray-100 dark:hover:bg-gray-850 rounded-lg cursor-pointer data-[highlighted]:bg-muted"
+                      on:click={(e) => {
+                        e.preventDefault();
+                        changeTranLang(index);
+                      }}
+                    >
+                      <span class="text-sm ml-1">{$i18n.t(langitem.tip)}</span>
+                    </button>
+                  {/each}
+                </div>
+              </slot>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         </div>
       </div>
       

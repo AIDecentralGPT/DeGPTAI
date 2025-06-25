@@ -103,9 +103,9 @@
       </div>
 
       <div
-        class="flex flex-row flex-wrap lg:justify-between justify-center h-8/10 md:h-108 overflow-y-auto pb-4 mt-4"
+        class="flex flex-gird flex-wrap justify-center h-8/10 md:h-108 overflow-y-auto pb-4 mt-4"
       >
-        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 min-w-[337px] max-w-[376px] ring-gray-200 m-4">
           <h3 id="tier-free" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Free")}
           </h3>
@@ -230,7 +230,7 @@
             </li>
           </ul>
         </div>
-        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 min-w-[337px] max-w-[376px] ring-gray-200 m-4">
           <h3 id="tier-plus" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Basic VIP")}
           </h3>
@@ -529,7 +529,7 @@
             </li>
           </ul>
         </div>
-        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 min-w-[337px] max-w-[376px] ring-gray-200 m-4">
           <h3 id="tier-plus" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Standard VIP")}
           </h3>
@@ -827,7 +827,7 @@
             </li>
           </ul>
         </div>
-        <div class="rounded-3xl p-4 ring-1 xl:w-[22%] lg:w-[30%] md:w-[45%] ring-gray-200 m-4">
+        <div class="rounded-3xl p-4 ring-1 min-w-[337px] max-w-[376px] ring-gray-200 m-4">
           <h3 id="tier-plus" class="text-lg font-semibold leading-8 text-center">
             {$i18n.t("Pro VIP")}
           </h3>

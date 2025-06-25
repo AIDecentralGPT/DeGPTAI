@@ -60,7 +60,7 @@
 
   // 文件选择
   export let files: any[] = [];
-  export let webInfo: any = {url: ""};
+  export let toolInfo: any = {url: "", trantip: ""};
 
   // 搜索网页开启标志
   export let search = false;
@@ -73,7 +73,11 @@
   export let chatInputPlaceholder = "";
   export let messages: any[] = [];
 
+  // 要翻译的语言
+  let tranlang = "";
+
   let speechRecognition: any;
+  
 
   let selectUrlUserPrompt = [
 		"Analyze the content of the web page",
@@ -143,7 +147,7 @@
         chatTextAreaElement?.focus();
 
         if (prompt !== "" && $settings?.speechAutoSend === true) {
-          submitPrompt(prompt, webInfo, user);
+          submitPrompt(prompt, toolInfo, user);
         }
       }
 
@@ -264,7 +268,7 @@
             console.log("recognition ended");
             isRecording = false;
             if (prompt !== "" && $settings?.speechAutoSend === true) {
-              submitPrompt(prompt, webInfo, user);
+              submitPrompt(prompt, toolInfo, user);
             }
           };
 
@@ -762,7 +766,10 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              submitPrompt(prompt, webInfo, user);
+              if(search && search_type == "translate") {
+                toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
+              }
+              submitPrompt(prompt, toolInfo, user);
             }}
           >
             {#if files.length > 0}
@@ -1045,7 +1052,7 @@
             {/if}
 
             {#if search_type != ""}
-              <ToolsSelect bind:type={search_type} bind:search={search} bind:inputplaceholder={chatInputPlaceholder}/>
+              <ToolsSelect bind:type={search_type} bind:search={search} bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
             {/if}
             <div class="flex flex-col">
               <textarea
@@ -1073,7 +1080,7 @@
                       e.preventDefault();
                     }
                     if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
-                      submitPrompt(prompt, webInfo, user);
+                      submitPrompt(prompt, toolInfo, user);
                     }
                   }
                 }}
@@ -1280,11 +1287,6 @@
                       }
                     }
                   }
-                  // const text = clipboardData.getData('text/plain');
-                  // if (isValidUrl(text)) {
-                  //   webInfo = {url: text};
-                  //   e.preventDefault();
-                  // }
                 }}
               />
               <div class="flex justify-between">
@@ -1315,7 +1317,7 @@
                     </div>
                   {/if}
 
-                  <!-- 网络搜索 -->
+                  <!-- 工具组件 -->
                   <div class="self-star mb-2 ml-1 mr-1">
                     <Tools bind:type = {search_type} bind:search={search} bind:inputplaceholder={chatInputPlaceholder}/>
                   </div>

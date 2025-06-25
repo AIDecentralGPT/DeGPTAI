@@ -82,7 +82,7 @@
     </div>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content
-    class=" z-[90] {$mobile ? `w-full max-w-[90%]`: `${className} max-w-[400px]`}  justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none"
+    class=" z-[90] {$mobile ? `w-full max-w-[90%]`: `max-w-[80%]`}  justify-start rounded-md  bg-white dark:bg-gray-850 dark:text-white shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none"
     transition={flyAndScale}
     side={$mobile ? "bottom" : "bottom-start"}
     sideOffset={4}

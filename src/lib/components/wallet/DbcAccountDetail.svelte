@@ -328,7 +328,7 @@
   <!-- 二级按钮 -->
   <div class="flex justify-between gap-2 mt-1 mb-2">
     <button
-      class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
       type="submit"
       on:click={async () => {
         // $showBuyCoinModal = true;
@@ -354,7 +354,7 @@
       {$i18n.t("Rewards")}
     </button> -->
     <button
-      class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
       type="submit"
       on:click={async () => {
         $showTransactionsModal = true;
@@ -364,14 +364,14 @@
     </button>
     {#if $user?.verified}
       <button
-        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
       >
         {$i18n.t("Authed KYC")}
       </button>
     {:else}
       <button
-        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           try {

@@ -149,7 +149,6 @@
 			} else {
 				langmt = 0;
 			}
-			console.log("==================", rect.top);
 		}
 	}
 
