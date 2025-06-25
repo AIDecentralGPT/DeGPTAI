@@ -176,7 +176,7 @@
           $showExportWalletJsonModal = true;
         }}
       >
-        {$i18n.t("Export Wallet")}
+        {$i18n.t("Export")}
       </button>
       <button
         class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
@@ -189,7 +189,7 @@
           await initLanguage();
         }}
       >
-        {$i18n.t("Close Wallet")}
+        {$i18n.t("Close")}
       </button>
     </div>
   {/if}
@@ -342,7 +342,7 @@
       }}
     >
       <!-- {$i18n.t("Buy")} -->
-      {$i18n.t("Purchase DGC")}
+      {$i18n.t("Buy DGC")}
     </button>
     <!-- <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
