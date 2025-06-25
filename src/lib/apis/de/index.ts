@@ -225,12 +225,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Claude 4Opus (Anthropic)",
+        name: "Claude 4 Opus (Anthropic)",
         model: "claude-opus-4-20250514",
         imagemodel: "claude-opus-4-20250514",
         textmodel: "claude-opus-4-20250514",
         think: false,
-        tip: "Claude 4Opus (Anthropic)",
+        tip: "Claude 4 Opus (Anthropic)",
         support: "text",
         type: 3,
         desc: "Strongest in coding, suitable for complex tasks",

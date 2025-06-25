@@ -78,15 +78,19 @@
         <div class="px-2 w-full">
           <button class="flex justify-between items-center cursor-pointer w-full pb-1"
             on:click={() => {
-              seltype =1;
+              if (seltype == 1) {
+                seltype = 0;
+              } else {
+                seltype =1;
+              }
             }}>
-            <span class="text-sm font-bold">{$i18n.t("Foundation Models")}</span>
+            <span class="text-base font-bold">{$i18n.t("Foundation Models")}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 1024" 
               version="1.1"
               fill="currentColor"
-              class="size-3 {seltype == 1 ? 'rotate-90' : 'none'}">
+              class="size-4 {seltype == 1 ? 'rotate-90' : 'none'}">
               <path d="M534.826667 935.466667a47.36 47.36 0 0 1-66.986667-66.773334L835.413333 501.333333 467.84 133.973333a47.36 47.36 0 1 1 66.986667-66.773333l400.64 400.64a47.36 47.36 0 0 1 0 66.986667z"/>
             </svg>
           </button>
@@ -118,15 +122,19 @@
         <div class="px-2 w-full">
           <button class="flex justify-between items-center cursor-pointer w-full pb-1"
             on:click={() => {
-              seltype =2;
+              if (seltype == 2) {
+                seltype = 0;
+              } else {
+                seltype =2;
+              }
             }}>
-            <span class="text-sm font-bold">{$i18n.t("Advanced Models")}</span>
+            <span class="text-base font-bold">{$i18n.t("Advanced Models")}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 1024" 
               version="1.1"
               fill="currentColor"
-              class="size-3 {seltype == 2 ? 'rotate-90' : 'none'}">
+              class="size-4 {seltype == 2 ? 'rotate-90' : 'none'}">
               <path d="M534.826667 935.466667a47.36 47.36 0 0 1-66.986667-66.773334L835.413333 501.333333 467.84 133.973333a47.36 47.36 0 1 1 66.986667-66.773333l400.64 400.64a47.36 47.36 0 0 1 0 66.986667z"/>
             </svg>
           </button>
@@ -158,15 +166,19 @@
         <div class="px-2 w-full">
           <button class="flex justify-between items-center cursor-pointer w-full pb-1"
             on:click={() => {
-              seltype =3;
+              if (seltype == 3) {
+                seltype = 0;
+              } else {
+                seltype =3;
+              }
             }}>
-            <span class="text-sm font-bold">{$i18n.t("Top-Level Models")}</span>
+            <span class="text-base font-bold">{$i18n.t("Top-Level Models")}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 1024" 
               version="1.1"
               fill="currentColor"
-              class="size-3 {seltype == 3 ? 'rotate-90' : 'none'}">
+              class="size-4 {seltype == 3 ? 'rotate-90' : 'none'}">
               <path d="M534.826667 935.466667a47.36 47.36 0 0 1-66.986667-66.773334L835.413333 501.333333 467.84 133.973333a47.36 47.36 0 1 1 66.986667-66.773333l400.64 400.64a47.36 47.36 0 0 1 0 66.986667z"/>
             </svg>
           </button>

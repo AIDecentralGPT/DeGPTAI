@@ -376,9 +376,9 @@
 		}
 	}
 
-
+	let webFlag = true;
 	$: webShow = webFlag;
-	let webFlag = false;
+
 	// 隐藏web搜索
 	const handleWebHidden = () => {
 		webFlag = !webFlag;

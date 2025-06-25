@@ -90,7 +90,7 @@
 	let files = [];
 	let fileFlag = false;
 	let search = false;
-	let search_type = "bing";
+	let search_type = "";
 	let messages = [];
 	let history = {
 		messages: {},
@@ -584,7 +584,12 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
         // 判断不同类型提问不同内容
         if (item?.role != 'user' && item?.search) {
           let preMessage = send_message[index-1].content;
-          if (item?.search_type == "youtube") {
+					if (item?.search_type == "webread") {
+						let analyContent = "网页标题：" + webContent?.title;
+						analyContent = "；网页内容：" + webContent?.content;
+						analyContent = analyContent + "\n" + send_message[index-1].content;
+						send_message[index-1].content = analyContent;
+					}else if (item?.search_type == "youtube") {
 						if (item?.search_content?.videos) {
 							let analyContent = item?.search_content?.videos.map((vItem: any) => vItem?.description).join('\n');
 							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:") + preMessage;
@@ -603,11 +608,6 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 							send_message[index-1].content = analyContent;
 						}
           }
-        } else if (item?.role != 'user' && webContent) {
-          let analyContent = "网页标题：" + webContent?.title;
-          analyContent = "；网页内容：" + webContent?.content;
-					analyContent = analyContent + "\n" + send_message[index-1].content;
-					send_message[index-1].content = analyContent;
         } else if (item?.role != 'user' && docs.length > 0) {
           if (docs[0].image.length > 0) {
             let content = [];
@@ -1340,7 +1340,7 @@ const submitPrompt = async (userPrompt, userWebInfo, _user = null) => {
 
   // 获取搜索网页
   const handleSearchWeb= async(userPrompt: string) => {
-    if (search) {
+    if (search && search_type != 'translate' && search_type != "webread") {
       const ai_keyword = await generateSearchChatKeyword(userPrompt);
       let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
       if (result?.ok) {
