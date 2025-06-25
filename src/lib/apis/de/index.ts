@@ -240,8 +240,8 @@ export const getDeModels = async (token: string = "") => {
       {
         name: "Claude 4 Opus Thinking (Anthropic)",
         model: "claude-opus-4-20250514-think",
-        imagemodel: "claude-opus-4-20250514-think",
-        textmodel: "claude-opus-4-20250514-think",
+        imagemodel: "claude-opus-4-20250514",
+        textmodel: "claude-opus-4-20250514",
         think: true,
         tip: "Claude 4 Opus Thinking (Anthropic)",
         support: "text",

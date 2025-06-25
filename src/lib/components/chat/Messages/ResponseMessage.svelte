@@ -441,16 +441,16 @@
 						{#if message?.search_content?.web|| message?.search_content?.videos || message?.search_content?.content}
 							<Replying/>
 						{:else}
-							{#if message?.search_type == "twitter"}
+							{#if message?.search_type == "webread"}
+								<WebAnalysis/>
+							{:else if message?.search_type == "twitter"}
 								<Searching typeName="Twitter"/>
 							{:else if message?.search_type == "youtube"}
 								<Searching typeName="YouTube"/>
 							{:else}
 								<Searching typeName="Bing"/>
 							{/if}
-						{/if}
-					{:else if message?.webanalysis && !message?.webanalysis_content}
-						<WebAnalysis/>
+						{/if}	
 					{:else}
 						<Thinking/>
 					{/if}
@@ -479,7 +479,7 @@
 					{/each}
 				</div>
 			{/if}
-			<!-- 网络搜索 -->
+			<!-- 工具检索 -->
 			{#if message?.search}
 				{#if message?.search_type == 'web' || message?.search_type == 'bing'}
 					<!-- 网站搜索 -->

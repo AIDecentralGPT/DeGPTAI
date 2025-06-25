@@ -643,17 +643,18 @@
               </div>
             </div>
           {/if}
-
-          <UrlModels
-            bind:this={urlPromptElement}
-            bind:prompt
-            bind:selectUrlUserPrompt={selectUrlUserPrompt}
-            on:select={(e) => {
-              let selectedUserPrompt = e.detail.prompt;
-              let analysisUrl = e.detail.url;
-              submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
-            }}
-          />
+          {#if search}
+            <UrlModels
+              bind:this={urlPromptElement}
+              bind:prompt
+              bind:selectUrlUserPrompt={selectUrlUserPrompt}
+              on:select={(e) => {
+                let selectedUserPrompt = e.detail.prompt;
+                let analysisUrl = e.detail.url;
+                submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
+              }}
+            />
+          {/if}
         </div>
       </div>
     </div>
