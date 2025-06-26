@@ -312,7 +312,7 @@
                   $showShareModal = true;
                 } else if (item.id === "clock_in") {
                   if (!$user?.verified) {
-                    toast.warning($i18n.t("Please complete the KYC verification !"));
+                    toast.warning($i18n.t("To claim the reward, you must first complete user verification !"));
                     $showUserVerifyModal = true;
                   }else if ($chats.length > 0) {
                     clockLoading = true;

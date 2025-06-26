@@ -936,5 +936,6 @@
   "invite": "Inviter",
   "new_wallet": "Créer un portefeuille",
   "Small Tip:": "Petit conseil :",
-  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Si vous utilisez un compte Gmail et que vous ne trouvez pas le code de vérification dans votre boîte de réception, il est très probable qu'il ait été filtré dans votre dossier Spam."
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Si vous utilisez un compte Gmail et que vous ne trouvez pas le code de vérification dans votre boîte de réception, il est très probable qu'il ait été filtré dans votre dossier Spam.",
+  "To claim the reward, you must first complete user verification !": "Pour recevoir la récompense, vous devez d'abord terminer la vérification de l'utilisateur !"
 }

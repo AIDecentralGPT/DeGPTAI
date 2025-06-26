@@ -935,5 +935,6 @@
   "invite": "Einladen",
   "new_wallet": "Geldbörse erstellen",
   "Small Tip:": "Kleiner Tipp:",
-  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Wenn Sie ein Gmail-Konto verwenden und den Bestätigungscode nicht in Ihrem Posteingang finden, wurde er höchstwahrscheinlich in Ihren Spam-Ordner gefiltert."
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Wenn Sie ein Gmail-Konto verwenden und den Bestätigungscode nicht in Ihrem Posteingang finden, wurde er höchstwahrscheinlich in Ihren Spam-Ordner gefiltert.",
+  "To claim the reward, you must first complete user verification !": "Um die Belohnung zu erhalten, müssen Sie zuerst die Benutzerüberprüfung abschließen !"
 }

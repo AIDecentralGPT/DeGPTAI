@@ -936,5 +936,6 @@
   "invite": "เชิญ",
   "new_wallet": "สร้างกระเป๋าเงิน",
   "Small Tip:": "เคล็ดลับเล็กๆ น้อยๆ:",
-  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "หากคุณใช้บัญชี Gmail และไม่พบรหัสยืนยันในกล่องจดหมายของคุณ มีความเป็นไปได้สูงที่มันจะถูกกรองไปยังโฟลเดอร์สแปม"
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "หากคุณใช้บัญชี Gmail และไม่พบรหัสยืนยันในกล่องจดหมายของคุณ มีความเป็นไปได้สูงที่มันจะถูกกรองไปยังโฟลเดอร์สแปม",
+  "To claim the reward, you must first complete user verification !": "เพื่อรับรางวัล คุณต้องทำการยืนยันตัวตนให้เสร็จสิ้นก่อน"
 }

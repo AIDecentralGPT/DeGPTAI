@@ -936,5 +936,6 @@
   "invite": "Пригласить",
   "new_wallet": "Создать кошелек",
   "Small Tip:": "Маленький совет:",
-  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Если вы используете учетную запись Gmail и не можете найти код подтверждения во Входящих, скорее всего, он был отфильтрован в папку «Спам»."
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Если вы используете учетную запись Gmail и не можете найти код подтверждения во Входящих, скорее всего, он был отфильтрован в папку «Спам».",
+  "To claim the reward, you must first complete user verification !": "Чтобы получить вознаграждение, сначала необходимо пройти проверку пользователя !"
 }

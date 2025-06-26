@@ -937,5 +937,6 @@
   "invite": "招待する",
   "new_wallet": "ウォレットを作成",
   "Small Tip:": "小さなヒント：",
-  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Gmailアカウントを使用していて、受信トレイに確認コードが見つからない場合、スパムフォルダに振り分けられている可能性が高いです。"
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Gmailアカウントを使用していて、受信トレイに確認コードが見つからない場合、スパムフォルダに振り分けられている可能性が高いです。",
+  "To claim the reward, you must first complete user verification !": "報酬を受け取るには、まずユーザー認証を完了する必要があります !"
 }
