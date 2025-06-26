@@ -924,5 +924,7 @@
   "Complete Authentication": "Hoàn Thành Xác Thực",
   "clock_in": "Chấm công",
   "invite": "Mời",
-  "new_wallet": "Tạo ví"
+  "new_wallet": "Tạo ví",
+  "Small Tip:": "Mẹo nhỏ:",
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Nếu bạn đang sử dụng tài khoản Gmail và không thể tìm thấy mã xác minh trong Hộp thư đến, rất có thể nó đã bị lọc vào thư mục Spam."
 }

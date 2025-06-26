@@ -934,5 +934,7 @@
   "Complete Authentication": "Compléter l'Authentification",
   "clock_in": "Pointer",
   "invite": "Inviter",
-  "new_wallet": "Créer un portefeuille"
+  "new_wallet": "Créer un portefeuille",
+  "Small Tip:": "Petit conseil :",
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Si vous utilisez un compte Gmail et que vous ne trouvez pas le code de vérification dans votre boîte de réception, il est très probable qu'il ait été filtré dans votre dossier Spam."
 }

@@ -934,5 +934,7 @@
   "Complete Authentication": "完成认证",
   "clock_in": "打卡",
   "invite": "邀请",
-  "new_wallet": "创建钱包"
+  "new_wallet": "创建钱包",
+  "Small Tip:": "小提示：",
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "如果您使用的是Gmail账户，并且在收件箱中找不到验证码，那么它很可能被过滤到了垃圾邮件文件夹中。"
 }

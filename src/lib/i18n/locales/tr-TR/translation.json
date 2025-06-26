@@ -935,5 +935,7 @@
   "Complete Authentication": "Doğrulamayı Tamamla",
   "clock_in": "Giriş yapmak",
   "invite": "Davet etmek",
-  "new_wallet": "Cüzdan oluştur"
+  "new_wallet": "Cüzdan oluştur",
+  "Small Tip:": "Küçük Bir İpucu:",
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Bir Gmail hesabı kullanıyorsanız ve doğrulama kodunu Gelen Kutunuzda bulamıyorsanız, büyük olasılıkla Spam Klasörünüze filtrelenmiştir."
 }

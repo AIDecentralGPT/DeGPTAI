@@ -935,5 +935,7 @@
   "Complete Authentication": "Selesaikan Otentikasi",
   "clock_in": "Masuk kerja",
   "invite": "Mengundang",
-  "new_wallet": "Buat dompet"
+  "new_wallet": "Buat dompet",
+  "Small Tip:": "Tip Kecil:",
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Jika Anda menggunakan akun Gmail dan tidak dapat menemukan kode verifikasi di Kotak Masuk, kemungkinan besar kode tersebut telah difilter ke folder Spam Anda."
 }

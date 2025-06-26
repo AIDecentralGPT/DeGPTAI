@@ -935,5 +935,7 @@
   "Complete Authentication": "인증 완료",
   "clock_in": "출근하다",
   "invite": "초대하다",
-  "new_wallet": "지갑 생성"
+  "new_wallet": "지갑 생성",
+  "Small Tip:": "작은 팁:",
+  "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "Gmail 계정을 사용 중이고 수신함에서 인증 코드를 찾을 수 없다면, 스팸 폴더로 필터링되었을 가능성이 높습니다."
 }
