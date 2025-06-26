@@ -913,9 +913,9 @@
   "Accessible Foundation Model": "Zugängliches Basismodell",
   "Accessible Advanced Model": "Zugängliches Fortgeschrittenes Modell",
   "Accessible Top-Level Model": "Zugängliches Spitzenmodell",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Für Benutzer, die noch kein Wallet erstellt haben, das Basismodell: {{ num }} Mal pro Tag",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Für Benutzer, die bereits ein Wallet erstellt haben, das Basismodell: {{ num }} Mal pro Tag",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Für Benutzer, die KYC abgeschlossen haben, das Basismodell: {{ num }} Mal pro Tag",
+  "Non-wallet users: {{ num }} times/day": "Nutzer ohne Wallet: {{ num }} Mal/Tag",
+  "Wallet users: {{ num }} times/day": "Wallet-Nutzer: {{ num }} Mal/Tag",
+  "KYC-verified users: {{ num }} times/day": "KYC-verifizierte Nutzer: {{ num }} Mal/Tag",
   "Basic Model: {{ num }} Times/Month": "Grundmodell: {{ num }} Mal/Monat",
   "Premium Model: {{ num }} Times/Month": "Premiummodell: {{ num }} Mal/Monat",
   "Top-tier Model: {{ num }} Times/Month": "Top-Tier-Modell: {{ num }} Mal/Monat",
@@ -930,6 +930,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Öffnen Sie Ihren Browser. Unterstützt werden Chrome, Firefox, Microsoft Edge und Safari ab iOS 14.3.",
   "Paste the copied link and enable identity certificate recognition.": "Einfügen Sie den kopierten Link und aktivieren Sie die Identitätszertifikaterkennung.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "Nach der Authentifizierung kehren Sie zur APP zurück und klicken Sie auf \"Authentifizierung abschließen\".",
-  "Complete Authentication": "Authentifizierung abschließen"
-
+  "Complete Authentication": "Authentifizierung abschließen",
+  "clock_in": "Einchecken",
+  "invite": "Einladen",
+  "new_wallet": "Geldbörse erstellen"
 }

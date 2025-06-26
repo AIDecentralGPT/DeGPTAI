@@ -8,6 +8,8 @@
     showNewWalletModal,
     showOpenWalletModal,
     showSidebar,
+    toolflag,
+    tooltype
   } from "$lib/stores";
   import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
 
@@ -43,7 +45,7 @@
 
   export let autoScroll = true;
   export let selectedModel = "";
-  export let deepsearch = false;
+  // export let deepsearch = false;
 
   let chatTextAreaElement: HTMLTextAreaElement;
   let filesInputElement: any;
@@ -61,10 +63,6 @@
   // 文件选择
   export let files: any[] = [];
   export let toolInfo: any = {url: "", trantip: ""};
-
-  // 搜索网页开启标志
-  export let search = false;
-  export let search_type = "";
 
   export let fileUploadEnabled = true;
   // export let speechRecognitionEnabled = true;
@@ -103,7 +101,7 @@
     }
   }
 
-  $: if (search) {
+  $: if (toolflag) {
     files = [];
   }
 
@@ -597,7 +595,8 @@
             />
           {/if}
 
-          <Models
+          <!-- 屏蔽调@弹出model选择 -->
+          <!-- <Models
             bind:this={modelsElement}
             bind:prompt
             bind:user
@@ -607,7 +606,7 @@
               selectedModel = e.detail;
               chatTextAreaElement?.focus();
             }}
-          />
+          /> -->
 
           {#if selectedModel !== ""}
             <div
@@ -643,7 +642,7 @@
               </div>
             </div>
           {/if}
-          {#if search}
+          {#if $toolflag}
             <UrlModels
               bind:this={urlPromptElement}
               bind:prompt
@@ -767,7 +766,7 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              if(search && search_type == "translate") {
+              if($toolflag && $tooltype == "translate") {
                 toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
               }
               submitPrompt(prompt, toolInfo, user);
@@ -1052,8 +1051,8 @@
               {/if}
             {/if}
 
-            {#if search_type != ""}
-              <ToolsSelect bind:type={search_type} bind:search={search} bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
+            {#if $tooltype != ""}
+              <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
             {/if}
             <div class="flex flex-col">
               <textarea
@@ -1125,81 +1124,81 @@
                     }
                   }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowUp"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "ArrowUp"
+                  // ) {
+                  //   e.preventDefault();
 
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectUp();
+                  //   (
+                  //     promptsElement ||
+                  //     documentsElement ||
+                  //     modelsElement
+                  //   ).selectUp();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+                  //   commandOptionButton.scrollIntoView({ block: "center" });
+                  // }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowDown"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "ArrowDown"
+                  // ) {
+                  //   e.preventDefault();
 
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectDown();
+                  //   (
+                  //     promptsElement ||
+                  //     documentsElement ||
+                  //     modelsElement
+                  //   ).selectDown();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+                  //   commandOptionButton.scrollIntoView({ block: "center" });
+                  // }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Enter"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "Enter"
+                  // ) {
+                  //   e.preventDefault();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
 
-                    if (commandOptionButton) {
-                      commandOptionButton?.click();
-                    } else {
-                      document.getElementById("send-message-button")?.click();
-                    }
-                  }
+                  //   if (commandOptionButton) {
+                  //     commandOptionButton?.click();
+                  //   } else {
+                  //     document.getElementById("send-message-button")?.click();
+                  //   }
+                  // }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Tab"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "Tab"
+                  // ) {
+                  //   e.preventDefault();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
 
-                    commandOptionButton?.click();
-                  } else if (e.key === "Tab") {
+                  //   commandOptionButton?.click();
+                  // } else 
+                  if (e.key === "Tab") {
                     const words = findWordIndices(prompt);
-
                     if (words.length > 0) {
                       const word = words.at(0);
                       const fullPrompt = prompt;
@@ -1293,34 +1292,33 @@
               <div class="flex justify-between">
                 <div class="flex flex-row">
                   <!-- 图片上传 -->
-                  {#if fileUploadEnabled && !search}
+                  {#if fileUploadEnabled && !$toolflag}
                     <div class="self-star mb-2 ml-1 mr-1">
-                      <Tooltip content={$i18n.t("Attach files")}>
-                        <button
-                          class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
-                          type="button"
-                          on:click={() => {
-                            filesInputElement.click();
-                          }}
+                      <button
+                        class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
+                        type="button"
+                        on:click={() => {
+                          filesInputElement.click();
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                          class="w-[1.2rem] h-[1.2rem]"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 16"
-                            fill="currentColor"
-                            class="w-[1.2rem] h-[1.2rem]"
-                          >
-                            <path
-                              d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
-                            />
-                          </svg>
-                        </button>
-                      </Tooltip>
+                          <path
+                            d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
+                          />
+                        </svg>
+                      </button>
+                      <!-- <Tooltip content={$i18n.t("Attach files")}></Tooltip> -->
                     </div>
                   {/if}
 
                   <!-- 工具组件 -->
                   <div class="self-star mb-2 ml-1 mr-1">
-                    <Tools bind:type = {search_type} bind:search={search} bind:inputplaceholder={chatInputPlaceholder}/>
+                    <Tools bind:inputplaceholder={chatInputPlaceholder}/>
                   </div>
 
                   <!-- 深度搜索 -->

@@ -915,9 +915,9 @@
   "Accessible Foundation Model": "",
   "Accessible Advanced Model": "",
   "Accessible Top-Level Model": "",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "",
+  "Non-wallet users: {{ num }} times/day": "",
+  "Wallet users: {{ num }} times/day": "",
+  "KYC-verified users: {{ num }} times/day": "",
   "Please create or log in to your wallet first.": "",
   "Basic Model: {{ num }} Times/Month": "",
   "Premium Model: {{ num }} Times/Month": "",
@@ -932,6 +932,9 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "",
   "Paste the copied link and enable identity certificate recognition.": "",
   "After authentication, return to the APP and click \"Complete Authentication\".": "",
-  "Complete Authentication": ""
+  "Complete Authentication": "",
+  "clock_in": "Clock In",
+  "invite": "Invite",
+  "new_wallet": "Creat Wallet"
 }
 

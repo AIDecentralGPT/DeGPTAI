@@ -138,6 +138,27 @@
                   clip-rule="evenodd"
                 />
               </svg>
+              <div>
+                <div>{$i18n.t("Basic Model")}:</div>
+                <div>{$i18n.t("Non-wallet users: {{ num }} times/day", {num: 3})}</div>
+                <div>{$i18n.t("Wallet users: {{ num }} times/day", {num: 5})}</div>
+                <div>{$i18n.t("KYC-verified users: {{ num }} times/day", {num: 10})}</div>
+              </div>
+            </li>
+
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
               {$i18n.t("All models share memory with each other.")}
             </li>
             <li class="flex gap-x-3">
@@ -208,26 +229,7 @@
                 />
               </svg>
               {$i18n.t("Access on web, iOS, Android")}
-            </li>
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              <div>
-                <div>{$i18n.t("For users who have not created a wallet, the foundation model: {{ num }} times/day", {num: 3})}</div>
-                <div>{$i18n.t("For users who have created a wallet, the foundation model: {{ num }} times/day", {num: 5})}</div>
-                <div>{$i18n.t("For users who have completed KYC, the foundation model: {{ num }} times/day", {num: 10})}</div>
-              </div>
-            </li>
+            </li> 
           </ul>
         </div>
         <div class="rounded-3xl p-4 ring-1 min-w-[337px] max-w-[376px] ring-gray-200 m-4">
@@ -268,7 +270,7 @@
                   <span class="text-sm tracking-tight font-bold primaryText mr-2">(={33/0.00006}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
-                  <Switch bind:state={prostat}/>
+                  <Switch bind:state={basicstat}/>
                 </div>
               </div>
               <button
@@ -318,6 +320,52 @@
                   clip-rule="evenodd"
                 />
               </svg>
+              {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "1,000"})}
+            </li>
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 100})}
+            </li>
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 10})}
+            </li>
+
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
               {$i18n.t("All models share memory with each other.")}
             </li>
             <li class="flex gap-x-3">
@@ -432,10 +480,10 @@
                     <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o3 (OpenAI)</span>
                   </div>
-                  <div class="flex flex-row items-center mt-2">
+                  <!-- <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini (OpenAI)</span>
-                  </div>
+                  </div> -->
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini high (OpenAI)</span>
@@ -481,52 +529,6 @@
               </svg>
               {$i18n.t("Access on web, iOS, Android")}
             </li>
-
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "1,000"})}
-            </li>
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 100})}
-            </li>
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 10})}
-            </li>
           </ul>
         </div>
         <div class="rounded-3xl p-4 ring-1 min-w-[337px] max-w-[376px] ring-gray-200 m-4">
@@ -567,7 +569,7 @@
                   <span class="text-sm tracking-tight font-bold primaryText mr-2">(={Math.round(88/0.00006)}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
-                  <Switch bind:state={prostat}/>
+                  <Switch bind:state={standardstat}/>
                 </div>
               </div>
               <button
@@ -617,6 +619,52 @@
                   clip-rule="evenodd"
                 />
               </svg>
+              {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "5,000"})}
+            </li>
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 300})}
+            </li>
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 100})}
+            </li>
+
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
               {$i18n.t("All models share memory with each other.")}
             </li>
             <li class="flex gap-x-3">
@@ -730,10 +778,10 @@
                     <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o3 (OpenAI)</span>
                   </div>
-                  <div class="flex flex-row items-center mt-2">
+                  <!-- <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini (OpenAI)</span>
-                  </div>
+                  </div> -->
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini high (OpenAI)</span>
@@ -778,52 +826,6 @@
                 />
               </svg>
               {$i18n.t("Access on web, iOS, Android")}
-            </li>
-
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "5,000"})}
-            </li>
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 300})}
-            </li>
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 100})}
             </li>
           </ul>
         </div>
@@ -915,8 +917,39 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              {$i18n.t("All models share memory with each other.")}
+              {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "10,000"})}
             </li>
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("Premium Model: {{ num }} Times/Month", {num: "5,000"})}
+            </li>
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 250})}
+            </li>
+
             <li class="flex gap-x-3">
               <svg
                 class="h-6 w-5 flex-none primaryText"
@@ -1028,10 +1061,10 @@
                     <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o3 (OpenAI)</span>
                   </div>
-                  <div class="flex flex-row items-center mt-2">
+                  <!-- <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini (OpenAI)</span>
-                  </div>
+                  </div> -->
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT o4-mini high (OpenAI)</span>
@@ -1076,52 +1109,6 @@
                 />
               </svg>
               {$i18n.t("Access on web, iOS, Android")}
-            </li>
-
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "10,000"})}
-            </li>
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Premium Model: {{ num }} Times/Month", {num: "5,000"})}
-            </li>
-            <li class="flex gap-x-3">
-              <svg
-                class="h-6 w-5 flex-none primaryText"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 250})}
             </li>
           </ul>
         </div>

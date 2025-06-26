@@ -172,19 +172,19 @@ export const getDeModels = async (token: string = "") => {
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
-      {
-        name: "GPT o4-mini (OpenAI)",
-        model: "o4-mini",
-        imagemodel: "o4-mini",
-        textmodel: "o4-mini",
-        think: false,
-        tip: "GPT o4-mini (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Using advanced reasoning",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
+      // {
+      //   name: "GPT o4-mini (OpenAI)",
+      //   model: "o4-mini",
+      //   imagemodel: "o4-mini",
+      //   textmodel: "o4-mini",
+      //   think: false,
+      //   tip: "GPT o4-mini (OpenAI)",
+      //   support: "image",
+      //   type: 3,
+      //   desc: "Using advanced reasoning",
+      //   modelicon: "/static/icon/gpt_round.png",
+      //   modelinfo: ""
+      // },
       {
         name: "GPT o4-mini high (OpenAI)",
         model: "o4-mini-high",

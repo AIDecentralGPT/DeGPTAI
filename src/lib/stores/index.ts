@@ -90,6 +90,10 @@ export const deApiBaseUrl = writable({
 export const showFollowTwitterModal = writable(false);
 export const showFollowTGGroupModal = writable(false);
 
+// 使用工具会话
+export const toolflag = writable(false);
+export const tooltype = writable("")
+
 // 钱包数据
 export let currentWalletData = writable(DefaultCurrentWalletData)
 export let threesideAccount = writable({})
@@ -114,8 +118,8 @@ export let channel = writable("")
 // 切换模型相关
 export const switchModel = writable({
 	content: '',
-	search: false,
-	searchType: 'web',
+	toolFlag: false,
+	toolType: 'web',
 	status: false
 });
 

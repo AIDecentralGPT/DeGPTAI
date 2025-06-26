@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onMount, getContext } from "svelte";
+  import { toolflag, tooltype } from "$lib/stores";
   import { DropdownMenu } from "bits-ui";
+
   const i18n = getContext("i18n");
   let show = false;
 
   export let inputplaceholder = "";
-  export let search = false;
-  export let type = "";
   export let tranLang = "";
 
   let languages = [
@@ -40,9 +40,9 @@
 
 </script>
 
-{#if type != ""}
+{#if $toolflag && $tooltype != ""}
   <div class="w-full">
-    {#if type == 'bing'}
+    {#if $tooltype == 'bing'}
       <div class="flex justify-between p-4 border-b border-gray-300">
         <div class="flex flex-row items-center">
           <svg  xmlns="http://www.w3.org/2000/svg"
@@ -54,8 +54,8 @@
           <span class="ml-2">{$i18n.t("Search the Web")}</span>
         </div>
         <button on:click={() => {
-          search = false;
-          type = "";
+          toolflag.set(false);
+          tooltype.set("");
           inputplaceholder= "";
         }}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 s-00buWcsF1gFk">
@@ -63,7 +63,7 @@
           </svg>
         </button>
       </div>
-    {:else if type == 'twitter'}
+    {:else if $tooltype == 'twitter'}
       <div class="flex justify-between p-4 border-b border-gray-300">
         <div class="flex flex-row items-center">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -75,8 +75,8 @@
           <span class="ml-2">{$i18n.t("Search the Twitter")}</span>
         </div>
         <button on:click={() => {
-          search = false;
-          type = "";
+          toolflag.set(false);
+          tooltype.set("");
           inputplaceholder= "";
         }}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 s-00buWcsF1gFk">
@@ -84,7 +84,7 @@
           </svg>
         </button>
       </div>
-    {:else if type == 'youtube'}
+    {:else if $tooltype == 'youtube'}
       <div class="flex justify-between p-4 border-b border-gray-300">
         <div class="flex flex-row items-center">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -97,8 +97,8 @@
           <span class="ml-2">{$i18n.t("Search the YouTube")}</span>
         </div>
         <button on:click={() => {
-          search = false;
-          type = "";
+          toolflag.set(false);
+          tooltype.set("");
           inputplaceholder= "";
         }}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 s-00buWcsF1gFk">
@@ -106,7 +106,7 @@
           </svg>
         </button>
       </div>
-    {:else if type == 'translate'}
+    {:else if $tooltype == 'translate'}
       <div class="flex flex-col px-4 pt-4 border-b border-gray-300">
         <div class="flex justify-between">
           <div class="flex flex-row items-center">
@@ -119,8 +119,8 @@
             <span class="ml-2">{$i18n.t("Translate")}</span>
           </div>
           <button on:click={() => {
-            search = false;
-            type = "";
+            toolflag.set(false);
+            tooltype.set("");
             inputplaceholder= "";
           }}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 s-00buWcsF1gFk">
@@ -175,7 +175,7 @@
         </div>
       </div>
       
-    {:else if type == 'webread'}
+    {:else if $tooltype == 'webread'}
       <div class="flex justify-between p-4 border-b border-gray-300">
         <div class="flex flex-row items-center">
           <svg xmlns="http://www.w3.org/2000/svg" 
@@ -188,8 +188,8 @@
           <span class="ml-2">{$i18n.t("Webpage Reading")}</span>
         </div>
         <button on:click={() => {
-          search = false;
-          type = "";
+          toolflag.set(false);
+          tooltype.set("");
           inputplaceholder= "";
         }}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 s-00buWcsF1gFk">

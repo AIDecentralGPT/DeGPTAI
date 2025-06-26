@@ -904,9 +904,9 @@
   "Accessible Foundation Model": "Mô hình Cơ sở Có Thể Truy Cập",
   "Accessible Advanced Model": "Mô hình Cao Cấp Có Thể Truy Cập",
   "Accessible Top-Level Model": "Mô hình Cấp Top Có Thể Truy Cập",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Đối với người dùng chưa tạo ví, mô hình cơ sở: {{ num }} lần/ngày",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Đối với người dùng đã tạo ví, mô hình cơ sở: {{ num }} lần/ngày",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Đối với người dùng đã hoàn thành KYC, mô hình cơ sở: {{ num }} lần/ngày",
+  "Non-wallet users: {{ num }} times/day": "Người dùng không có ví: {{ num }} lần/ngày",
+  "Wallet users: {{ num }} times/day": "Người dùng có ví: {{ num }} lần/ngày",
+  "KYC-verified users: {{ num }} times/day": "Người dùng đã xác minh KYC: {{ num }} lần/ngày",
   "Basic Model: {{ num }} Times/Month": "Mô Hình Cơ Bản: {{ num }} Lần/Tháng",
   "Premium Model: {{ num }} Times/Month": "Mô Hình Premium: {{ num }} Lần/Tháng",
   "Top-tier Model: {{ num }} Times/Month": "Mô Hình Top-tier: {{ num }} Lần/Tháng",
@@ -921,5 +921,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Mở trình duyệt. Chrome, Firefox, Microsoft Edge và Safari trên iOS 14.3 trở lên đều được hỗ trợ.",
   "Paste the copied link and enable identity certificate recognition.": "Dán liên kết đã sao chép và bật tính năng nhận dạng chứng chỉ danh tính.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "Sau khi xác thực, trở lại ứng dụng và nhấp vào \"Hoàn Thành Xác Thực\".",
-  "Complete Authentication": "Hoàn Thành Xác Thực"
+  "Complete Authentication": "Hoàn Thành Xác Thực",
+  "clock_in": "Chấm công",
+  "invite": "Mời",
+  "new_wallet": "Tạo ví"
 }

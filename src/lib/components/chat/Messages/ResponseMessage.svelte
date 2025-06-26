@@ -437,18 +437,20 @@
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
 				{#if message.content == '' && !message?.done}
-					{#if message?.search}
+					{#if message?.toolflag}
 						{#if message?.search_content?.web|| message?.search_content?.videos || message?.search_content?.content}
 							<Replying/>
 						{:else}
-							{#if message?.search_type == "webread"}
+							{#if message?.tooltype == "webread"}
 								<WebAnalysis/>
-							{:else if message?.search_type == "twitter"}
+							{:else if message?.tooltype == "twitter"}
 								<Searching typeName="Twitter"/>
-							{:else if message?.search_type == "youtube"}
+							{:else if message?.tooltype == "youtube"}
 								<Searching typeName="YouTube"/>
-							{:else}
+							{:else if message?.tooltype == "bing"}
 								<Searching typeName="Bing"/>
+							{:else}
+								<Thinking/>
 							{/if}
 						{/if}	
 					{:else}
@@ -480,8 +482,8 @@
 				</div>
 			{/if}
 			<!-- 工具检索 -->
-			{#if message?.search}
-				{#if message?.search_type == 'web' || message?.search_type == 'bing'}
+			{#if message?.toolflag}
+				{#if message?.tooltype == 'web' || message?.tooltype == 'bing'}
 					<!-- 网站搜索 -->
 					{#if message?.search_content?.web}
 						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
@@ -565,7 +567,7 @@
 						</div>
 					{/if}
 				{/if}
-				{#if message?.search_type == 'youtube'}
+				{#if message?.tooltype == 'youtube'}
 					<!-- youtube搜索 -->
 					{#if message?.search_content?.videos}
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
@@ -625,7 +627,7 @@
 						</div>
 					{/if}
 				{/if}
-				{#if message?.search_type == 'twitter'}
+				{#if message?.tooltype == 'twitter'}
 					<!-- twitter搜索 -->
 					{#if message?.search_content?.content}
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">

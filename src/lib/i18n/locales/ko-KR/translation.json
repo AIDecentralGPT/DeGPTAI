@@ -915,9 +915,9 @@
   "Accessible Foundation Model": "액세스 가능한 기저 모델",
   "Accessible Advanced Model": "액세스 가능한 고급 모델",
   "Accessible Top-Level Model": "액세스 가능한 최상위 모델",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "지갑을 생성하지 않은 사용자는 기저 모델: {{ num }} 회/일",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "지갑을 생성한 사용자는 기저 모델: {{ num }} 회/일",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "KYC를 완료한 사용자는 기저 모델: {{ num }} 회/일",
+  "Non-wallet users: {{ num }} times/day": "지갑 미생성 사용자: 하루 {{ num }}회",
+  "Wallet users: {{ num }} times/day": "지갑 사용자: 하루 {{ num }}회",
+  "KYC-verified users: {{ num }} times/day": "KYC 인증 사용자: 하루 {{ num }}회",
   "Basic Model: {{ num }} Times/Month": "기본 모델: {{ num }} 회/월",
   "Premium Model: {{ num }} Times/Month": "프리미엄 모델: {{ num }} 회/월",
   "Top-tier Model: {{ num }} Times/Month": "최상위 계층 모델: {{ num }} 회/월",
@@ -932,5 +932,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "브라우저를 엽니다. Chrome, Firefox, iOS 14.3 이상의 Microsoft Edge 및 Safari가 모두 지원됩니다.",
   "Paste the copied link and enable identity certificate recognition.": "복사한 링크를 붙여넣고 신분 증명서 인식을 활성화하세요.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "인증이 완료되면 앱으로 돌아가 \"인증 완료\"를 클릭하세요.",
-  "Complete Authentication": "인증 완료"
+  "Complete Authentication": "인증 완료",
+  "clock_in": "출근하다",
+  "invite": "초대하다",
+  "new_wallet": "지갑 생성"
 }

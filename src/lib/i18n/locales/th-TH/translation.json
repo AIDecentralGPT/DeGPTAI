@@ -914,9 +914,9 @@
   "Accessible Foundation Model": "รุ่นแบบพื้นฐานที่เข้าถึงได้",
   "Accessible Advanced Model": "รุ่นแบบที่มีอัตราการขั้นสูงและเข้าถึงได้",
   "Accessible Top-Level Model": "รุ่นแบบระดับสูงสุดที่เข้าถึงได้",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "สำหรับผู้ใช้ที่ยังไม่ได้สร้างกระเป๋าเงิน โมเดลพื้นฐาน: {{ num }} ครั้ง/วัน",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "สำหรับผู้ใช้ที่สร้างกระเป๋าเงินแล้ว โมเดลพื้นฐาน: {{ num }} ครั้ง/วัน",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "สำหรับผู้ใช้ที่ยืนยันตัวตน (KYC) เสร็จสิ้น โมเดลพื้นฐาน: {{ num }} ครั้ง/วัน",
+  "Non-wallet users: {{ num }} times/day": "ผู้ใช้ที่ไม่มีวอลเล็ต: {{ num }} ครั้ง/วัน",
+  "Wallet users: {{ num }} times/day": "ผู้ใช้ที่มีวอลเล็ต: {{ num }} ครั้ง/วัน",
+  "KYC-verified users: {{ num }} times/day": "ผู้ใช้ที่ผ่านการยืนยันตัวตน KYC: {{ num }} ครั้ง/วัน",
   "Basic Model: {{ num }} Times/Month": "แบบเบื้องต้น: {{ num }} ครั้ง/เดือน",
   "Premium Model: {{ num }} Times/Month": "แบบพิเศษ: {{ num }} ครั้ง/เดือน",
   "Top-tier Model: {{ num }} Times/Month": "แบบท็อปทियर: {{ num }} ครั้ง/เดือน",
@@ -931,5 +931,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "เปิดเบราว์เซอร์ Chrome, Firefox, Microsoft Edge และ Safari บน iOS 14.3 หรือเวอร์ชั่นใหม่กว่า ทั้งหมดПоддерживается",
   "Paste the copied link and enable identity certificate recognition.": "วางลิงค์ที่คัดลอกและเปิดใช้การ認識ใบรับรองตัวตน",
   "After authentication, return to the APP and click \"Complete Authentication\".": "หลังจากการยืนยันตัวตน คืนมาที่แอปพลิเคชันและคลิก \"Завершитьการยืนยันตัวตน\"",
-  "Complete Authentication": "Завершитьการยืนยันตัวตน"
+  "Complete Authentication": "Завершитьการยืนยันตัวตน",
+  "clock_in": "ลงเวลางาน",
+  "invite": "เชิญ",
+  "new_wallet": "สร้างกระเป๋าเงิน"
 }

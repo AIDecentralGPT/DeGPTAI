@@ -915,9 +915,9 @@
   "Accessible Foundation Model": "Model Dasar Aksesibel",
   "Accessible Advanced Model": "Model Tingkat Aksesibel",
   "Accessible Top-Level Model": "Model Tertinggi Aksesibel",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Bagi pengguna yang belum membuat dompet, model dasar: {{ num }} kali per hari",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Bagi pengguna yang telah membuat dompet, model dasar: {{ num }} kali per hari",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Bagi pengguna yang telah menyelesaikan KYC, model dasar: {{ num }} kali per hari",
+  "Non-wallet users: {{ num }} times/day": "Pengguna tanpa dompet: {{ num }} kali/hari",
+  "Wallet users: {{ num }} times/day": "Pengguna dompet: {{ num }} kali/hari",
+  "KYC-verified users: {{ num }} times/day": "Pengguna terverifikasi KYC: {{ num }} kali/hari",
   "Basic Model: {{ num }} Times/Month": "Model Dasar: {{ num }} Kali/Bulan",
   "Premium Model: {{ num }} Times/Month": "Model Premium: {{ num }} Kali/Bulan",
   "Top-tier Model: {{ num }} Times/Month": "Model Top-tier: {{ num }} Kali/Bulan",
@@ -932,5 +932,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Buka browser Anda. Chrome, Firefox, Microsoft Edge, dan Safari pada iOS 14.3 atau versi lebih tinggi semuanya didukung.",
   "Paste the copied link and enable identity certificate recognition.": "Tempel tautan yang disalin dan aktifkan pengenalan sertifikat identitas.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "Setelah otentikasi, kembali ke Aplikasi dan klik \"Selesaikan Otentikasi\".",
-  "Complete Authentication": "Selesaikan Otentikasi"
+  "Complete Authentication": "Selesaikan Otentikasi",
+  "clock_in": "Masuk kerja",
+  "invite": "Mengundang",
+  "new_wallet": "Buat dompet"
 }

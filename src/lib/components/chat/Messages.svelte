@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
-	import { chats, config, modelfiles, models, settings, user as _user, mobile, deApiBaseUrl } from '$lib/stores';
+	import { chats, config, modelfiles, models, settings, user as _user, mobile, deApiBaseUrl, toolflag } from '$lib/stores';
 	import { tick, getContext } from 'svelte';
 
 	import { toast } from 'svelte-sonner';
@@ -424,7 +424,7 @@
 		<div class="w-full pt-2">
 			{#key chatId}
 				{#each messages as message, messageIdx}
-					<div class=" w-full {messageIdx === messages.length - 1 ? 'pb-28' : ''}">
+					<div class=" w-full {messageIdx === messages.length - 1 ? ($toolflag ? 'pb-48' : 'pb-28') : ''}">
 						<div
 							class="flex flex-col justify-between px-6 md:px-20 mb-3 {$settings?.fullScreenMode ?? null
 								? 'max-w-full'

@@ -915,9 +915,9 @@
   "Accessible Foundation Model": "アクセシブルファウンデーションモデル",
   "Accessible Advanced Model": "アクセシブル高度モデル",
   "Accessible Top-Level Model": "アクセシブルトップレベルモデル",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "ウォレットを作成していないユーザーの場合、ファウンデーションモデル：{{ num }} 回 / 日",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "ウォレットを作成したユーザーの場合、ファウンデーションモデル：{{ num }} 回 / 日",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "KYC を完了したユーザーの場合、ファウンデーションモデル：{{ num }} 回 / 日",
+  "Non-wallet users: {{ num }} times/day": "ウォレット未作成ユーザー: 1日{{ num }}回",
+  "Wallet users: {{ num }} times/day": "ウォレットユーザー: 1日{{ num }}回",
+  "KYC-verified users: {{ num }} times/day": "KYC認証済みユーザー: 1日{{ num }}回",
   "Basic Model: {{num}} Times/Month": "基本モデル: {{ num }} 回 / 月",
   "Premium Model: {{ num }} Times/Month": "プレミアムモデル: {{ num }} 回 / 月",
   "Top-tier Model: {{ num }} Times/Month": "トップティアモデル: {{ num }} 回 / 月",
@@ -932,5 +932,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "ブラウザを開いてください。Chrome、Firefox、iOS 14.3 以降の Microsoft Edge および Safari がすべてサポートされています。",
   "Paste the copied link and enable identity certificate recognition.": "コピーしたリンクを貼り付け、身分証明書認識を有効にしてください。",
   "After authentication, return to the APP and click \"Complete Authentication\".": "認証が完了したら APP に戻り、「認証を完了」をクリックしてください。",
-  "Complete Authentication": "認証を完了"
+  "Complete Authentication": "認証を完了",
+  "clock_in": "出勤する",
+  "invite": "招待する",
+  "new_wallet": "ウォレットを作成"
 }

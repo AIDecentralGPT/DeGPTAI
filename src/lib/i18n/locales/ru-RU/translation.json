@@ -914,9 +914,9 @@
   "Accessible Foundation Model": "Доступная фундаментальная модель",
   "Accessible Advanced Model": "Доступная продвинутая модель",
   "Accessible Top-Level Model": "Доступная верхнего уровня модель",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Для пользователей, которые не создали кошелек, фундаментальная модель: {{ num }} раз/день",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Для пользователей, которые создали кошелек, фундаментальная модель: {{ num }} раз/день",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Для пользователей, которые завершили KYC, фундаментальная модель: {{ num }} раз/день",
+  "Non-wallet users: {{ num }} times/day": "Пользователи без кошелька: {{ num }} раз/день",
+  "Wallet users: {{ num }} times/day": "Пользователи с кошельком: {{ num }} раз/день",
+  "KYC-verified users: {{ num }} times/day": "KYC-верифицированные пользователи: {{ num }} раз/день",
   "Basic Model: {{ num }} Times/Month": "Базовая Модель: {{ num }} Раз/Месяц",
   "Premium Model: {{ num }} Times/Month": "Премиум Модель: {{ num }} Раз/Месяц",
   "Top-tier Model: {{ num }} Times/Month": "Топ-Тиер Модель: {{ num }} Раз/Месяц",
@@ -931,5 +931,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Откройте браузер. Поддерживаются Chrome, Firefox, Microsoft Edge и Safari на iOS 14.3 и более поздних версиях.",
   "Paste the copied link and enable identity certificate recognition.": "Вставьте скопированную ссылку и включите распознавание удостоверяющего сертификата.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "После аутентификации вернитесь в приложение и нажмите \"Завершить аутентификацию\".",
-  "Complete Authentication": "Завершить аутентификацию"
+  "Complete Authentication": "Завершить аутентификацию",
+  "clock_in": "Отметиться",
+  "invite": "Пригласить",
+  "new_wallet": "Создать кошелек"
 }

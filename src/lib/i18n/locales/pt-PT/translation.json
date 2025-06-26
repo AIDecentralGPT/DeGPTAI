@@ -915,9 +915,9 @@
   "Accessible Foundation Model": "Modelo de Fundação Acessível",
   "Accessible Advanced Model": "Modelo Avançado Acessível",
   "Accessible Top-Level Model": "Modelo de Nível Top Acessível",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Para os usuários que não criaram um wallet, o modelo de fundação: {{ num }} vezes por dia",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Para os usuários que criaram um wallet, o modelo de fundação: {{ num }} vezes por dia",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Para os usuários que completaram o KYC, o modelo de fundação: {{ num }} vezes por dia",
+  "Non-wallet users: {{ num }} times/day": "Usuários sem carteira: {{ num }} vezes/dia",
+  "Wallet users: {{ num }} times/day": "Usuários com carteira: {{ num }} vezes/dia",
+  "KYC-verified users: {{ num }} times/day": "Usuários verificados por KYC: {{ num }} vezes/dia",
   "Basic Model: {{ num }} Times/Month": "Modelo Básico: {{ num }} Vezes/Mês",
   "Premium Model: {{ num }} Times/Month": "Modelo Premium: {{ num }} Vezes/Mês",
   "Top-tier Model: {{ num }} Times/Month": "Modelo Top-tier: {{ num }} Vezes/Mês",
@@ -932,5 +932,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Abra seu navegador. O Chrome, Firefox, Microsoft Edge e Safari no iOS 14.3 ou versões posteriores são todos suportados.",
   "Paste the copied link and enable identity certificate recognition.": "Cole o link copiado e ative o reconhecimento de certificado de identidade.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "Após a autenticação, retorne ao APP e clique em \"Completar Autenticação\".",
-  "Complete Authentication": "Completar Autenticação"
+  "Complete Authentication": "Completar Autenticação",
+  "clock_in": "Bater o ponto",
+  "invite": "Convidar",
+  "new_wallet": "Criar carteira"
 }

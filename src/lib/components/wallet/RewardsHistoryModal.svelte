@@ -343,7 +343,7 @@
                 {dayjs(historyItem.reward_date).format("YYYY-MM-DD HH:mm:ss")}
               </td>
               <td class="px-6 py-4 whitespace-nowrap"
-                >{historyItem.reward_type}</td
+                >{ $i18n.t(historyItem.reward_type) }</td
               >
             </tr>
           {/each}

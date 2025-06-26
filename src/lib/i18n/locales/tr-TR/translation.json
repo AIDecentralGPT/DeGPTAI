@@ -915,9 +915,9 @@
   "Accessible Foundation Model": "Erişilebilir Temel Model",
   "Accessible Advanced Model": "Erişilebilir Gelişmiş Model",
   "Accessible Top-Level Model": "Erişilebilir En Üst Seviye Model",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Cüzdan oluşturmayan kullanıcılar için temel model: {{ num }} kez/gün",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Cüzdan oluşturan kullanıcılar için temel model: {{ num }} kez/gün",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "KYC'yi tamamlayan kullanıcılar için temel model: {{ num }} kez/gün",
+  "Non-wallet users: {{ num }} times/day": "Cüzdanı olmayan kullanıcılar: günde {{ num }} kez",
+  "Wallet users: {{ num }} times/day": "Cüzdan kullanıcıları: günde {{ num }} kez",
+  "KYC-verified users: {{ num }} times/day": "KYC doğrulamalı kullanıcılar: günde {{ num }} kez",
   "Basic Model: {{ num }} Times/Month": "Temel Model: {{ num }} Kere/Ay",
   "Premium Model: {{ num }} Times/Month": "Premium Model: {{ num }} Kere/Ay",
   "Top-tier Model: {{ num }} Times/Month": "Top-Tier Model: {{ num }} Kere/Ay",
@@ -932,5 +932,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Tarayıcınızı açın. Chrome, Firefox, iOS 14.3 veya üzeri sürümlerdeki Microsoft Edge ve Safari tümü desteklenir.",
   "Paste the copied link and enable identity certificate recognition.": "Kopyalanan bağlantıyı yapıştırın ve kimlik sertifika tanıma özelliğini etkinleştirin.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "Doğrulama tamamlandıktan sonra UYGULAMAYA dönün ve \"Doğrulamayı Tamamla\"'ya tıklayın.",
-  "Complete Authentication": "Doğrulamayı Tamamla"
+  "Complete Authentication": "Doğrulamayı Tamamla",
+  "clock_in": "Giriş yapmak",
+  "invite": "Davet etmek",
+  "new_wallet": "Cüzdan oluştur"
 }

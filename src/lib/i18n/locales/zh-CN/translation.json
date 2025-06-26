@@ -914,9 +914,9 @@
   "Accessible Foundation Model": "可访问基础模型",
   "Accessible Advanced Model": "可访问高级模型",
   "Accessible Top-Level Model": "可访问顶级模型",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "未创建钱包的用户，基础模型：{{ num }}次/天",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "已经创建钱包的用户，基础模型：{{ num }}次/天",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "已完成KYC的用户，基础模型：{{ num }}次/天",
+  "Non-wallet users: {{ num }} times/day": "未创建钱包：{{ num }}次/天",
+  "Wallet users: {{ num }} times/day": "钱包用户：{{ num }}次/天",
+  "KYC-verified users: {{ num }} times/day": "KYC用户：{{ num }}次/天",
   "Basic Model: {{ num }} Times/Month": "基础模型：{{ num }}次/月",
   "Premium Model: {{ num }} Times/Month": "高级模型：{{ num }}次/月",
   "Top-tier Model: {{ num }} Times/Month": "顶级模型：{{ num }}次/月",
@@ -931,5 +931,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "打开浏览器。Chrome、Firefox、iOS 14.3 及以上版本的 Microsoft Edge 和 Safari 均受支持。",
   "Paste the copied link and enable identity certificate recognition.": "粘贴复制的链接，并启用身份证书识别。",
   "After authentication, return to the APP and click \"Complete Authentication\".": "认证完成返回APP点击“完成认证“",
-  "Complete Authentication": "完成认证"
+  "Complete Authentication": "完成认证",
+  "clock_in": "打卡",
+  "invite": "邀请",
+  "new_wallet": "创建钱包"
 }

@@ -914,9 +914,9 @@
   "Accessible Foundation Model": "Modèle de Base Accessible",
   "Accessible Advanced Model": "Modèle Avancé Accessible",
   "Accessible Top-Level Model": "Modèle de Niveau Supérieur Accessible",
-  "For users who have not created a wallet, the foundation model: {{ num }} times/day": "Pour les utilisateurs qui n'ont pas créé de wallet, le modèle de base : {{ num }} fois par jour",
-  "For users who have created a wallet, the foundation model: {{ num }} times/day": "Pour les utilisateurs qui ont créé un wallet, le modèle de base : {{ num }} fois par jour",
-  "For users who have completed KYC, the foundation model: {{ num }} times/day": "Pour les utilisateurs qui ont terminé le KYC, le modèle de base : {{ num }} fois par jour",
+  "Non-wallet users: {{ num }} times/day": "Usuarios sin monedero: {{ num }} veces/día",
+  "Wallet users: {{ num }} times/day": "Usuarios con monedero: {{ num }} veces/día",
+  "KYC-verified users: {{ num }} times/day": "Usuarios verificados con KYC: {{ num }} veces/día",
   "Basic Model: {{ num }} Times/Month": "Modèle de Base : {{ num }} Fois/Month",
   "Premium Model: {{ num }} Times/Month": "Modèle Premium : {{ num }} Fois/Mois",
   "Top-tier Model: {{ num }} Times/Month": "Modèle Top-tier : {{ num }} Fois/Mois",
@@ -931,5 +931,8 @@
   "Open your browser. Chrome, Firefox, Microsoft Edge and Safari on iOS 14.3 or later are all supported.": "Ouvrez votre navigateur. Chrome, Firefox, Microsoft Edge et Safari sur iOS 14.3 ou versions ultérieures sont tous pris en charge.",
   "Paste the copied link and enable identity certificate recognition.": "Collez le lien copié et activez la reconnaissance de certificat d'identité.",
   "After authentication, return to the APP and click \"Complete Authentication\".": "Après l'authentification, retournez dans l'APP et cliquez sur \"Compléter l'Authentification\".",
-  "Complete Authentication": "Compléter l'Authentification"
+  "Complete Authentication": "Compléter l'Authentification",
+  "clock_in": "Registrar entrada",
+  "invite": "Invitar",
+  "new_wallet": "Crear monedero"
 }

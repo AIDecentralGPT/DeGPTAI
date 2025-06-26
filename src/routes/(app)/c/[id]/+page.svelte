@@ -15,7 +15,9 @@
 		tags as _tags,
 		showSidebar,
 		switchModel,
-		deApiBaseUrl
+		deApiBaseUrl,
+		toolflag,
+    tooltype
 	} from '$lib/stores';
 	import { copyToClipboard, splitStream, convertMessagesToHistory, addTextSlowly } from '$lib/utils';
 
@@ -89,8 +91,6 @@
 	let prompt = '';
 	let files = [];
 	let fileFlag = false;
-	let search = false;
-	let search_type = "";
 	let messages = [];
 	let history = {
 		messages: {},
@@ -99,6 +99,8 @@
 	let firstResAlready = false // 已经有了第一个响应
 
 	let webInfo = {url: ""}
+
+	let chatInputPlaceholder = "";
 
 	$: if (history.currentId !== null) {
 		let _messages = [];
@@ -195,352 +197,300 @@
 	//////////////////////////
 	// Ollama functions
 	//////////////////////////
-let thirdData: any = {};
-// 2. 点击提交按钮，触发检查
-const submitPrompt = async (userPrompt, userToolInfo, _user = null) => {
-	console.log('submitPrompt', $chatId);
-	thirdData = {};
-
-	selectedModels = selectedModels.map((modelId) =>
-    $models.map((m) => m.id).includes(modelId) ? modelId : ""
-  );
-    
-  // 校验模型是否支持文件类型
-	// let imageModels = $models.filter(item => item.support == "image");
-  if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
-    // let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
-    // if (checkSelectedModels.length == 0) {
-		// 	selectedModels = imageModels.map(item => item.model);
-    // } else {
-		// 	selectedModels = checkSelectedModels;
-		// }
-		fileFlag = true;
-  } else {
-		let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
-		// let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
-		if (checkMessages.length > 0) {
-      // if (checkSelectModels.length == 0) {
-			// 	fileFlag = false;
-      //   switchModel.set({
-      //     content: prompt,
-      //     search: search,
-      //     searchType: search_type,
-      //     status: true
-      //   })
-      //   await goto("/");
-      //   return;
-      // } else {
-			// 	fileFlag = true;
-      //   selectedModels = checkSelectModels.map(item => item.model);
-      // }
-			fileFlag = true;
-    } else {
-			fileFlag = false;
+	// 2. 点击提交按钮，触发检查
+	const submitPrompt = async (userPrompt, userToolInfo, _user = null) => {
+		console.log('submitPrompt', $chatId);
+		if (!$toolflag) {
+			chatInputPlaceholder = "";
 		}
-	}
 
-
-	// 如果开启网络搜索只选择一个模型回复
-	if (search) {
-    selectedModels = [selectedModels[0]];
-  }
-			
-	firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
-	await tick()
-
-	if (selectedModels.includes('')) {
-		toast.error($i18n.t('Model not selected'));
-	} else 
-	if (messages.length != 0 && messages.at(-1).done != true) {
-		// 响应未完成
-		console.log('wait');
-	} else if (
-		files.length > 0 &&
-		files.filter((file) => file.upload_status === false).length > 0
-	) {
-		// 上传未完成
-		toast.error(
-			`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`
+		selectedModels = selectedModels.map((modelId) =>
+			$models.map((m) => m.id).includes(modelId) ? modelId : ""
 		);
-	} else {
-		// 重置聊天消息文本区高度
-		document.getElementById('chat-textarea').style.height = '';
-
-		// 创建用户消息
-		let userMessageId = uuidv4();
-		let userMessage = {
-			id: userMessageId,
-			parentId: messages.length !== 0 ? messages.at(-1).id : null,
-			childrenIds: [],
-			role: 'user',
-			user: _user ?? undefined,
-			content: userPrompt,
-			files: files.length > 0 ? files : undefined,
-			search: search,
-      search_type: search_type,
-			toolInfo: userToolInfo,
-			timestamp: Math.floor(Date.now() / 1000), // Unix epoch
-			models: selectedModels
-		};
-
-		// 将消息添加到历史记录并设置 currentId 为 messageId
-		history.messages[userMessageId] = userMessage;
-		history.currentId = userMessageId;
-
-		// 将 messageId 附加到父消息的 childrenIds 中
-		if (messages.length !== 0) {
-			history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
-		}
-
-		// Create Simulate ResopnseMessage
-		let responseMap: any = {};
-    selectedModels.map(async (modelId) => {
-      const model = $models.filter((m) => m.id === modelId).at(0);
-      if (model) {
-        // Create response message
-        let responseMessageId = uuidv4();
-        let responseMessage = {
-          parentId: userMessageId,
-          id: responseMessageId,
-					search: search,
-					search_type: search_type,
-					search_content: thirdData,
-					toolanalysis: false,
-					toolanalysis_content: null,
-					keyword: userPrompt,
-          childrenIds: [],
-          role: "assistant",
-          content: "",
-					think_content: "",
-          model: model.id,
-          userContext: null,
-          timestamp: Math.floor(Date.now() / 1000), // Unix epoch
-        };
-
-        // Add message to history and Set currentId to messageId
-        history.messages[responseMessageId] = responseMessage;
-        history.currentId = responseMessageId;
-
-        // Append messageId to childrenIds of parent message
-        if (userMessageId !== null) {
-          history.messages[userMessageId].childrenIds = [
-            ...history.messages[userMessageId].childrenIds,
-            responseMessageId,
-          ];
-        }
-        responseMap[model?.id] = responseMessage;
-      }
-    });
-
-		// 重置聊天输入文本区
-		prompt = '';
-		files = [];
-		webInfo = {url:""};
-
-		scrollToBottom();
-
-		// 校验图片获取图片信息
-		// await analysisimageinfo(userMessageId);
-
-		// 获取工具操作内容
-    let toolContent = null;
-		if (search) {
-      await tick(); 
-      if (search_type == "webread") {
-        // 网页分析
-        if ((userToolInfo?.url??"").length > 0) {
-          let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
-          if (webResult?.ok) {
-            toolContent = webResult?.data;
-          }
-          await tick();
-          for (const key in responseMap) {
-            if (responseMap.hasOwnProperty(key)) {
-              let responseMessage = responseMap[key]
-              responseMessage.toolanalysis = true;
-              responseMessage.toolanalysis_content = toolContent;
-              // Add message to history and Set currentId to messageId
-              history.messages[responseMessage.id] = responseMessage;
-              history.currentId = responseMessage.id;
-              responseMap[key] = responseMessage;
-            }
-          }
-        }
-      } else if (search_type == "translate") {
-        toolContent = userToolInfo?.trantip;
-        for (const key in responseMap) {
-          if (responseMap.hasOwnProperty(key)) {
-            let responseMessage = responseMap[key]
-            responseMessage.toolanalysis = true;
-            responseMessage.toolanalysis_content = toolContent;
-            // Add message to history and Set currentId to messageId
-            history.messages[responseMessage.id] = responseMessage;
-            history.currentId = responseMessage.id;
-            responseMap[key] = responseMessage;
-          }
-        }
-      } else {
-				await handleSearchWeb(userPrompt);
-				await tick();
-				selectedModels.map(async (modelId) => {
-					const model = $models.filter((m) => m.id === modelId).at(0);
-					// 如果已创建信息赋值web数据
-					if (responseMap[model?.id]) {
-						let responseMessageId = responseMap[model?.id].id;
-						let responseMessage = responseMap[model?.id];
-						responseMessage.search_content = thirdData;
-						history.messages[responseMessageId] = responseMessage;
-					}
-				});
-			}
-
-      await tick();
-			scrollToBottom();
-    }
-		
-		// 校验模型已使用次数
-		let modelLimit:any = {}
-    const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
-    if (passed) {
-      for (const item of selectedModels) {
-        data.forEach((dItem:any) => {
-          if(dItem.model == item) {
-            if (!dItem.passed) {
-              modelLimit[dItem.model] = dItem.message;
-            }
-          }
-        }) 
-      }
-    }
-
-		// 等待 history/message 更新完成
-		await tick();
-
-		// 如果 messages 中只有一条消息，则创建新的聊天
-		if (messages.length == 2) {
-			if ($settings.saveChatHistory ?? true) {
-				// 3\1. 创建新的会话
-				chat = await createNewChat(localStorage.token, {
-					id: $chatId,
-					title: $i18n.t('New Chat'),
-					models: selectedModels,
-					system: $settings.system ?? undefined,
-					options: {
-						...($settings.options ?? {})
-					},
-					messages: messages,
-					history: history,
-					timestamp: Date.now()
-				});
-				await chats.set(await getChatList(localStorage.token));
-				await chatId.set(chat.id);
+			
+		// 校验模型是否支持文件类型
+		// let imageModels = $models.filter(item => item.support == "image");
+		if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
+			// let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model)).map(item => item.model);
+			// if (checkSelectedModels.length == 0) {
+			// 	selectedModels = imageModels.map(item => item.model);
+			// } else {
+			// 	selectedModels = checkSelectedModels;
+			// }
+			fileFlag = true;
+		} else {
+			let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
+			// let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
+			if (checkMessages.length > 0) {
+				// if (checkSelectModels.length == 0) {
+				// 	fileFlag = false;
+				//   switchModel.set({
+				//     content: prompt,
+				//     search: search,
+				//     searchType: search_type,
+				//     status: true
+				//   })
+				//   await goto("/");
+				//   return;
+				// } else {
+				// 	fileFlag = true;
+				//   selectedModels = checkSelectModels.map(item => item.model);
+				// }
+				fileFlag = true;
 			} else {
-				await chatId.set('local');
+				fileFlag = false;
 			}
-			await tick();
 		}
-		// 发送提示
-		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit, toolContent);
 
-	}
-};
+
+		// 如果开启网络搜索只选择一个模型回复
+		if ($toolflag) {
+			selectedModels = [selectedModels[0]];
+		}
+				
+		firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
+		await tick()
+
+		if (selectedModels.includes('')) {
+			toast.error($i18n.t('Model not selected'));
+		} else 
+		if (messages.length != 0 && messages.at(-1).done != true) {
+			// 响应未完成
+			console.log('wait');
+		} else if (
+			files.length > 0 &&
+			files.filter((file) => file.upload_status === false).length > 0
+		) {
+			// 上传未完成
+			toast.error(
+				`Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.`
+			);
+		} else {
+			// 重置聊天消息文本区高度
+			document.getElementById('chat-textarea').style.height = '';
+
+			// 创建用户消息
+			let userMessageId = uuidv4();
+			let userMessage = {
+				id: userMessageId,
+				parentId: messages.length !== 0 ? messages.at(-1).id : null,
+				childrenIds: [],
+				role: 'user',
+				user: _user ?? undefined,
+				content: userPrompt,
+				files: files.length > 0 ? files : undefined,
+				toolflag: $toolflag,
+				tooltype: $tooltype,
+				toolInfo: userToolInfo,
+				parseInfo: "", // 解析后数据
+				timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+				models: selectedModels
+			};
+
+			// 将消息添加到历史记录并设置 currentId 为 messageId
+			history.messages[userMessageId] = userMessage;
+			history.currentId = userMessageId;
+
+			// 将 messageId 附加到父消息的 childrenIds 中
+			if (messages.length !== 0) {
+				history.messages[messages.at(-1).id].childrenIds.push(userMessageId);
+			}
+
+			// Create Simulate ResopnseMessage
+			let responseMap: any = {};
+			selectedModels.map(async (modelId) => {
+				const model = $models.filter((m) => m.id === modelId).at(0);
+				if (model) {
+					// Create response message
+					let responseMessageId = uuidv4();
+					let responseMessage = {
+						parentId: userMessageId,
+						id: responseMessageId,
+						toolflag: $toolflag,
+						tooltype: $tooltype,
+						parseInfo: "",
+						keyword: userPrompt,
+						childrenIds: [],
+						role: "assistant",
+						content: "",
+						think_content: "",
+						model: model.id,
+						userContext: null,
+						timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+					};
+
+					// Add message to history and Set currentId to messageId
+					history.messages[responseMessageId] = responseMessage;
+					history.currentId = responseMessageId;
+
+					// Append messageId to childrenIds of parent message
+					if (userMessageId !== null) {
+						history.messages[userMessageId].childrenIds = [
+							...history.messages[userMessageId].childrenIds,
+							responseMessageId,
+						];
+					}
+					responseMap[model?.id] = responseMessage;
+				}
+			});
+
+			// 重置聊天输入文本区
+			prompt = '';
+			files = [];
+			webInfo = {url:""};
+
+			scrollToBottom();
+
+			// 校验图片获取图片信息
+			// await analysisimageinfo(userMessageId);
+			
+			// 校验模型已使用次数
+			let modelLimit:any = {}
+			const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+			if (passed) {
+				for (const item of selectedModels) {
+					data.forEach((dItem:any) => {
+						if(dItem.model == item) {
+							if (!dItem.passed) {
+								modelLimit[dItem.model] = dItem.message;
+							}
+						}
+					}) 
+				}
+			}
+
+			// 等待 history/message 更新完成
+			await tick();
+
+			// 获取工具操作内容
+			if ($toolflag) {
+				if ($tooltype == "webread") {
+					// 网页分析
+					if ((userToolInfo?.url??"").length > 0) {
+						let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
+						if (webResult?.ok) {
+							// 更新UserMessge信息
+							userMessage.parseInfo = webResult?.data;
+							history.messages[userMessageId] = userMessage;
+						} 
+						await tick();
+					}
+				} else if ($tooltype == "translate") {
+						// 更新UserMessge信息
+						userMessage.parseInfo = userToolInfo?.trantip;
+						history.messages[userMessageId] = userMessage;
+						await tick();
+				} else {
+					let searchData = await handleSearchWeb(userPrompt);
+
+					// 更新UserMessge信息
+					userMessage.parseInfo = searchData;
+					history.messages[userMessageId] = userMessage;
+
+					// 更新回复会话搜索信息
+					selectedModels.map(async (modelId) => {
+						const model = $models.filter((m) => m.id === modelId).at(0);  
+						if (responseMap[model?.id]) {
+							let responseMessageId = responseMap[model?.id].id;
+							let responseMessage = responseMap[model?.id];
+							responseMessage.search_content = searchData;
+							history.messages[responseMessageId] = responseMessage;
+						}
+					});
+					await tick();
+				}
+					
+				scrollToBottom();
+			}
+
+			// 如果 messages 中只有一条消息，则创建新的聊天
+			if (messages.length == 2) {
+				if ($settings.saveChatHistory ?? true) {
+					// 3\1. 创建新的会话
+					chat = await createNewChat(localStorage.token, {
+						id: $chatId,
+						title: $i18n.t('New Chat'),
+						models: selectedModels,
+						system: $settings.system ?? undefined,
+						options: {
+							...($settings.options ?? {})
+						},
+						messages: messages,
+						history: history,
+						timestamp: Date.now()
+					});
+					await chats.set(await getChatList(localStorage.token));
+					await chatId.set(chat.id);
+				} else {
+					await chatId.set('local');
+				}
+				await tick();
+			}
+			// 发送提示
+			await sendPrompt(userPrompt, responseMap, modelLimit);
+
+		}
+	};
 
 	// 3\2. 继续聊天会话
-	const sendPrompt = async (prompt, parentId, responseMap, modelLimit, toolContent = null, modelId = null) => {
+	const sendPrompt = async (prompt, responseMap, modelLimit, modelId = null) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		// 对每个模型都做请求
 		await Promise.all(
-			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : selectedModels).map(
-				async (modelId) => {
-					console.log('modelId', modelId);
-					const model = $models.filter((m) => m.id === modelId).at(0);
-					if (model) {
-						// 创建响应消息
-						let responseMessageId = uuidv4();
-						let responseMessage = {}
-						if (responseMap[model?.id]) {
-							responseMessageId = responseMap[model?.id].id;
-							responseMessage = responseMap[model?.id];
-						} else {
-							// Create response message
-							responseMessage = {
-								parentId: parentId,
-								id: responseMessageId,
-								search: search,
-								search_type: search_type,
-								search_content: thirdData,
-								webanalysis: toolContent ? true : false,
-								webanalysis_content: toolContent,
-								keyword: prompt,
-								childrenIds: [],
-								role: "assistant",
-								content: "",
-								think_content: "",
-								model: model.id,
-								userContext: null,
-								timestamp: Math.floor(Date.now() / 1000), // Unix epoch
-							};
+			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : Object.keys(responseMap)).map(
+        async (modelId) => {
+          const model = $models.filter((m) => m.id === modelId).at(0);
+          if (model) {
+            // 创建响应消息
+            let responseMessage = responseMap[model?.id];
+            let responseMessageId = responseMessage?.id;
 
-							// Add message to history and Set currentId to messageId
-							history.messages[responseMessageId] = responseMessage;
-							history.currentId = responseMessageId;
+            let userContext = null;
+            if ($settings?.memory ?? false) {
+              if (userContext === null) {
+                const res = await queryMemory(localStorage.token, prompt).catch(
+                  (error) => {
+                    toast.error(error);
+                    return null;
+                  }
+                );
 
-							// Append messageId to childrenIds of parent message
-							if (parentId !== null) {
-								history.messages[parentId].childrenIds = [
-									...history.messages[parentId].childrenIds,
-									responseMessageId,
-								];
-							}
-						}
+                if (res) {
+                  if (res.documents[0].length > 0) {
+                    userContext = res.documents.reduce((acc, doc, index) => {
+                      const createdAtTimestamp =
+                        res.metadatas[index][0].created_at;
+                      const createdAtDate = new Date(createdAtTimestamp * 1000)
+                        .toISOString()
+                        .split("T")[0];
+                      acc.push(`${index + 1}. [${createdAtDate}]. ${doc[0]}`);
+                      return acc;
+                    }, []);
+                  }
 
-						// 等待 history/message 更新完成
-						await tick();
+                  console.log(userContext);
+                }
+              }
+            }
+            responseMessage.userContext = userContext;
 
-						let userContext = null;
-						if ($settings?.memory ?? false) {
-							if (userContext === null) {
-								const res = await queryMemory(localStorage.token, prompt).catch((error) => {
-									toast.error(error);
-									return null;
-								});
-
-								if (res) {
-									if (res.documents[0].length > 0) {
-										userContext = res.documents.reduce((acc, doc, index) => {
-											const createdAtTimestamp = res.metadatas[index][0].created_at;
-											const createdAtDate = new Date(createdAtTimestamp * 1000)
-												.toISOString()
-												.split('T')[0];
-											acc.push(`${index + 1}. [${createdAtDate}]. ${doc[0]}`);
-											return acc;
-										}, []);
-									}
-
-									console.log(userContext);
-								}
-							}
-						}
-						responseMessage.userContext = userContext;
-
-						console.log("responseMessage:", responseMessage);
-						
-						// 校验是否超过次数
-						if (modelLimit[model.id]) {
-							await handleLimitError(modelLimit[model.id], responseMessage)
-						} else {
-							// 文本搜索
-							await sendPromptDeOpenAI(model, responseMessageId, _chatId, toolContent);
-						}
-
-					} else {
-						console.error($i18n.t(`Model {{modelId}} not found`, { }));
-
-						// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
-					}
-					
-				}
-			)
+            // 校验是否超过次数
+            if (modelLimit[model.id]) {
+              await handleLimitError(modelLimit[model.id], responseMessage);
+            } else {  
+              // 文本搜索
+              await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+            }
+            // if (model?.external) {
+            // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
+            // } else if (model) {
+            // 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
+            // }
+          } else {
+            console.error($i18n.t(`Model {{modelId}} not found`, {}));
+            // toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+          }
+      })
 		);
 
 		// 所有模型响应结束后，还原firstResAlready为初始状态false
@@ -557,7 +507,7 @@ const submitPrompt = async (userPrompt, userToolInfo, _user = null) => {
 	};
 
 	// 对话DeGpt
-	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId, toolContent) => {			
+	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = [messages[messages.length - 2]]
 			.filter((message) => message?.files ?? null)
@@ -566,20 +516,20 @@ const submitPrompt = async (userPrompt, userToolInfo, _user = null) => {
 			)
 			.flat(1);
 
-		// 获取上一个对应模型回复的消息
-    const modelmessage = messages;
-    if (messages.length > 2) {
-      let checkmessage = modelmessage[messages.length - 3];
-      let checkchildrenIds = history.messages[checkmessage.parentId]?.childrenIds;
-      if (checkchildrenIds) {
-        checkchildrenIds.forEach(item => {
-          let sonMessage = history.messages[item];
-          if (sonMessage.model == model.id) {
-            checkmessage.content = sonMessage.content;
-          }
-        });
-      }
-    }
+		// 获取上一个对应模型回复的消息(每次只选一个模型可去除)
+    // const modelmessage = messages;
+    // if (messages.length > 2) {
+    //   let checkmessage = modelmessage[messages.length - 3];
+    //   let checkchildrenIds = history.messages[checkmessage.parentId]?.childrenIds;
+    //   if (checkchildrenIds) {
+    //     checkchildrenIds.forEach(item => {
+    //       let sonMessage = history.messages[item];
+    //       if (sonMessage.model == model.id) {
+    //         checkmessage.content = sonMessage.content;
+    //       }
+    //     });
+    //   }
+    // }
 
 		scrollToBottom();
 
@@ -594,67 +544,69 @@ const submitPrompt = async (userPrompt, userToolInfo, _user = null) => {
               responseMessage?.userContext ?? null
                 ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
             } : undefined,
-            ...modelmessage,
+            ...messages,
         ].filter((message) => message);
 			
-			// 判断是否网络搜索重新赋值
+			// 判断是否需要重新赋值
 			send_message.forEach((item, index) => {
         // 判断不同类型提问不同内容
-        if (item?.role != 'user' && item?.search) {
-          let preMessage = send_message[index-1].content;
-					if (item?.search_type == "webread") {
-						let analyContent = "网页标题：" + toolContent?.title;
-						analyContent = "；网页内容：" + toolContent?.content;
-						analyContent = analyContent + "\n" + send_message[index-1].content;
-						send_message[index-1].content = analyContent;
-					} else if (item?.search_type == "translate") {
-            let analyContent = send_message[index-1].content + "\n" + toolContent;
-            send_message[index-1].content = analyContent;
-					} else if (item?.search_type == "youtube") {
-						if (item?.search_content?.videos) {
-							let analyContent = item?.search_content?.videos.map((vItem: any) => vItem?.description).join('\n');
-							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:") + preMessage;
-							send_message[index-1].content = analyContent;
+        if (item?.role == 'user' && item?.toolflag) {
+          if (item?.tooltype == "webread") {
+            let analyContent = "网页标题：" + item?.parseInfo?.title;
+            analyContent = "；网页内容：" + item?.parseInfo?.content;
+            analyContent = analyContent + "\n" + item?.content;
+            item.content = analyContent;
+          } else if (item?.tooltype == "translate") {
+            let analyContent = item?.content + "\n" + item?.parseInfo;
+            item.content = analyContent;
+          } else if (item?.tooltype == "youtube") {
+						if (item?.parseInfo?.videos) {
+							let analyContent = item?.parseInfo?.videos.map((vItem: any) => vItem?.description).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:");
+							item.content = analyContent + item.content;
 						}
-          } else if (item?.search_type == "twitter") {
-						if (item?.search_content?.content) {
-							let analyContent = item?.search_content?.content.map((tItem: any) => tItem?.full_text).join('\n');
-							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results:") + preMessage;
-							send_message[index-1].content = analyContent;
+          } else if (item?.tooltype == "twitter") {
+						if (item?.parseInfo?.content) {
+							let analyContent = item?.parseInfo?.content.map((tItem: any) => tItem?.full_text).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results:");
+							item.content = analyContent + item.content;
 						}
-          } else {
-						if (item?.search_content?.web) {
-							let analyContent = item?.search_content?.web.map((wItem: any) => wItem?.content).join('\n');
-							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:") + preMessage;
-							send_message[index-1].content = analyContent;
+          } else if (item?.tooltype == "bing") {
+						if (item?.parseInfo?.web) {
+							let analyContent = item?.parseInfo?.web.map((wItem: any) => wItem?.content).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:");
+							item.content = analyContent + item.content;
 						}
           }
-        } else if (item?.role != 'user' && docs.length > 0) {
-          if (docs[0].image.length > 0) {
-            let content = [];
-            if (docs[0].text[0]?.page_content.length > 0) {
-							let analyContent = "";
-              docs[0].text.forEach(item => {
-                analyContent = analyContent + item?.page_content + "\n";
-              });
-              content.push({type: "text", text: "文档内容：" + analyContent + send_message[index-1].content});
-            } else {
-              content.push({type: "text", text: send_message[index-1].content});
-            }
-            content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
-            send_message[index-1].content = content;
-          } else {
-            let analyContent = "";
-            docs[0].text.forEach(item => {
-              analyContent = analyContent + item?.page_content + "\n";
-            });
-            send_message[index-1].content = "文档内容：" + analyContent + send_message[index-1].content;
-          }
-        }
+        } 
+        // else if (item?.role != 'user' && docs.length > 0) {
+        //   if (docs[0].image.length > 0) {
+        //     let content = [];
+        //     if (docs[0].text[0]?.page_content.length > 0) {
+        //       let analyContent = "";
+        //       docs[0].text.forEach(item => {
+        //         analyContent = analyContent + item?.page_content + "\n";
+        //       });
+        //       content.push({type: "text", text: "文档内容：" + analyContent + send_message[index-1].content});
+        //     } else {
+        //       content.push({type: "text", text: send_message[index-1].content});
+        //     }
+        //     content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
+        //     send_message[index-1].content = content;
+        //   } else {
+        //     let analyContent = "";
+        //     docs[0].text.forEach(item => {
+        //         analyContent = analyContent + item?.page_content + "\n";
+        //     });
+        //     send_message[index-1].content = "文档内容：" + analyContent + send_message[index-1].content;
+        //   }
+        // }
       });
+
 			// 过滤掉error和 content为空数据
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
 
+			// 处理图片消息
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
@@ -1362,11 +1314,12 @@ const submitPrompt = async (userPrompt, userToolInfo, _user = null) => {
   // 获取搜索网页
   const handleSearchWeb= async(userPrompt: string) => {
     const ai_keyword = await generateSearchChatKeyword(userPrompt);
-    let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
+    let result = await thirdSearch(localStorage.token, ai_keyword, $tooltype);
     if (result?.ok) {
-      thirdData = result.data;
+      return result.data;
+    } else {
+      return "";
     }
-    await tick();
   }
 
 	// 获取图片描述
@@ -1623,6 +1576,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 						bind:messages
 						bind:autoScroll
 						bind:prompt
+						bind:chatInputPlaceholder
 						bottomPadding={files.length > 0}
 						{sendPrompt}
 						{continueGeneration}
@@ -1639,11 +1593,10 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 	<MessageInput
 		bind:files
 		bind:webInfo
-		bind:search
-		bind:search_type
 		bind:deepsearch
 		bind:prompt
 		bind:autoScroll
+		bind:chatInputPlaceholder
 		bind:selectedModel={atSelectedModel}
 		{messages}
 		{submitPrompt}

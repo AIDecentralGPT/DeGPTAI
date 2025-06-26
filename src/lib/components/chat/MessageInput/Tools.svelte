@@ -1,6 +1,7 @@
 <script lang="ts">
   import { DropdownMenu } from "bits-ui";
   import { onMount, getContext } from "svelte";
+  import { toolflag, tooltype } from "$lib/stores";
   const i18n = getContext("i18n");
 
   let show = false;
@@ -9,8 +10,6 @@
   let resizeObserver: ResizeObserver;
 
   export let inputplaceholder = "";
-  export let search = false;
-  export let type = "";
 
   onMount(() => {
     resizeObserver = new ResizeObserver((entries) => {
@@ -51,8 +50,8 @@
             hover:bg-gray-100 dark:hover:bg-gray-850 rounded-xl cursor-pointer data-[highlighted]:bg-muted"
           on:click={(e) => {
             e.preventDefault();
-            search = true;
-            type="bing"
+            toolflag.set(true);
+            tooltype.set("bing");
             inputplaceholder = "";
             show = false;
           }}
@@ -73,8 +72,8 @@
             hover:bg-gray-100 dark:hover:bg-gray-850 rounded-xl cursor-pointer data-[highlighted]:bg-muted"
           on:click={(e) => {
             e.preventDefault();
-            search = true;
-            type = "twitter";
+            toolflag.set(true);
+            tooltype.set("twitter");
             inputplaceholder = "";
             show = false;
           }}
@@ -95,8 +94,8 @@
             hover:bg-gray-100 dark:hover:bg-gray-850 rounded-xl cursor-pointer data-[highlighted]:bg-muted"
           on:click={(e) => {
             e.preventDefault();
-            search = true;
-            type="youtube";
+            toolflag.set(true);
+            tooltype.set("youtube");
             inputplaceholder = "";
             show = false;
           }}
@@ -118,8 +117,8 @@
             hover:bg-gray-100 dark:hover:bg-gray-850 rounded-xl cursor-pointer data-[highlighted]:bg-muted"
           on:click={(e) => {
             e.preventDefault();
-            search = true;
-            type="translate";
+            toolflag.set(true);
+            tooltype.set("translate");
             inputplaceholder= $i18n.t("Enter text to translate...");
             show = false;
           }}
@@ -140,8 +139,8 @@
             hover:bg-gray-100 dark:hover:bg-gray-850 rounded-xl cursor-pointer data-[highlighted]:bg-muted"
           on:click={(e) => {
             e.preventDefault();
-            search = true;
-            type="webread";
+            toolflag.set(true);
+            tooltype.set("webread");
             inputplaceholder = $i18n.t("Paste or enter a link...");
             show = false;
           }}

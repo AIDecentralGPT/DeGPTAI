@@ -108,9 +108,9 @@
     <div class="flex flex-col self-start">
       {#if !checkUniapp() }
         <div class="flex justify-center items-center my-1">
-          <span class="text-base region-text-color font-bold">
+          <!-- <span class="text-base region-text-color font-bold">
             {$i18n.t("Download DeGPT APP")}
-          </span>
+          </span> -->
           {#if checkPlatform() == "ios"}
             <button
               class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
