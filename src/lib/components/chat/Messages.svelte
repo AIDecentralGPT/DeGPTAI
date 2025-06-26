@@ -177,6 +177,83 @@
 		await sendPrompt(userPrompt, responseMap, modelLimit);
 	};
 
+	const resentMessage = async (messageId) => {
+		let userMessage = {
+			...history.messages[messageId]
+		};
+		
+		if (toolTypes.includes(userMessage?.tooltype)) {
+			userMessage = {
+				...userMessage,
+				parseInfo: ""
+			};
+		}
+
+		let userPrompt = userMessage?.content;
+
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+		history.messages[messageId].childrenIds.forEach((responseMessageId: string) => {
+			let responseMessage = history.messages[responseMessageId];
+			responseMessage = {
+				...responseMessage,
+				parseInfo: "",
+				error: false,
+				content: "",
+				done: false
+			}
+			history.messages[responseMessageId] = responseMessage;
+
+			responseMap[responseMessage?.model] = responseMessage;
+		});
+
+		// 校验模型已使用次数
+    let modelLimit = {}
+		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!dItem.passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+      	}) 
+    	}
+    }
+
+		// 获取网络搜索内容
+		if (userMessage?.toolflag) {
+			if (userMessage?.tooltype && toolTypes.includes(userMessage?.tooltype)) {
+
+				let response = await handleSearchWeb(userPrompt, userMessage?.tooltype);
+				
+				// 更新回复解析内容
+				userMessage?.models.forEach(async (modelId: string) => {
+					// 如果已创建信息赋值web数据
+					if (responseMap[modelId]) {
+						let responseMessageId = responseMap[modelId].id;
+						let responseMessage = responseMap[modelId];
+						responseMessage.parseInfo = response;
+						history.messages[responseMessageId] = responseMessage;
+					}
+				});
+
+				// 更新提问解析内容
+				userMessage = {
+					...userMessage,
+					parseInfo: response
+				}
+				history.messages[messageId] = userMessage;
+			}
+      
+      scrollToBottom();
+    }
+
+		await tick();
+		await sendPrompt(userPrompt, responseMap, modelLimit);
+	};
+
 	const updateChatMessages = async () => {
 		await tick();
 		await updateChatById(localStorage.token, chatId, {
@@ -462,6 +539,7 @@
 										siblings={history.messages[message.parentId]?.childrenIds ?? []}
 										isLastMessage={messageIdx + 1 === messages.length}
 										{readOnly}
+										{resentMessage}
 										{updateChatMessages}
 										{confirmEditResponseMessage}
 										{showPreviousMessage}

@@ -344,91 +344,110 @@
 			// 校验图片获取图片信息
 			// await analysisimageinfo(userMessageId);
 			
-			// 校验模型已使用次数
-			let modelLimit:any = {}
-			const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
-			if (passed) {
-				for (const item of selectedModels) {
-					data.forEach((dItem:any) => {
-						if(dItem.model == item) {
-							if (!dItem.passed) {
-								modelLimit[dItem.model] = dItem.message;
+			try {
+				// 校验模型已使用次数
+				let modelLimit:any = {}
+				const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+				if (passed) {
+					for (const item of selectedModels) {
+						data.forEach((dItem:any) => {
+							if(dItem.model == item) {
+								if (!dItem.passed) {
+									modelLimit[dItem.model] = dItem.message;
+								}
 							}
-						}
-					}) 
+						}) 
+					}
 				}
-			}
 
-			// 等待 history/message 更新完成
-			await tick();
+				// 等待 history/message 更新完成
+				await tick();
 
-			// 获取工具操作内容
-			if ($toolflag) {
-				if ($tooltype == "webread") {
-					// 网页分析
-					if ((userToolInfo?.url??"").length > 0) {
-						let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
-						if (webResult?.ok) {
+				// 获取工具操作内容
+				if ($toolflag) {
+					if ($tooltype == "webread") {
+						// 网页分析
+						if ((userToolInfo?.url??"").length > 0) {
+							let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
+							if (webResult?.ok) {
+								// 更新UserMessge信息
+								userMessage.parseInfo = webResult?.data;
+								history.messages[userMessageId] = userMessage;
+							} 
+							await tick();
+						}
+					} else if ($tooltype == "translate") {
 							// 更新UserMessge信息
-							userMessage.parseInfo = webResult?.data;
+							userMessage.parseInfo = userToolInfo?.trantip;
 							history.messages[userMessageId] = userMessage;
-						} 
+							await tick();
+					} else {
+						let searchData = await handleSearchWeb(userPrompt);
+
+						// 更新UserMessge信息
+						userMessage.parseInfo = searchData;
+						history.messages[userMessageId] = userMessage;
+
+						// 更新回复会话搜索信息
+						selectedModels.map(async (modelId) => {
+							const model = $models.filter((m) => m.id === modelId).at(0);  
+							if (responseMap[model?.id]) {
+								let responseMessageId = responseMap[model?.id].id;
+								let responseMessage = responseMap[model?.id];
+								responseMessage.parseInfo = searchData;
+								history.messages[responseMessageId] = responseMessage;
+							}
+						});
 						await tick();
 					}
-				} else if ($tooltype == "translate") {
-						// 更新UserMessge信息
-						userMessage.parseInfo = userToolInfo?.trantip;
-						history.messages[userMessageId] = userMessage;
-						await tick();
-				} else {
-					let searchData = await handleSearchWeb(userPrompt);
+						
+					scrollToBottom();
+				}
 
-					// 更新UserMessge信息
-					userMessage.parseInfo = searchData;
-					history.messages[userMessageId] = userMessage;
-
-					// 更新回复会话搜索信息
-					selectedModels.map(async (modelId) => {
-						const model = $models.filter((m) => m.id === modelId).at(0);  
-						if (responseMap[model?.id]) {
-							let responseMessageId = responseMap[model?.id].id;
-							let responseMessage = responseMap[model?.id];
-							responseMessage.parseInfo = searchData;
-							history.messages[responseMessageId] = responseMessage;
-						}
-					});
+				// 如果 messages 中只有一条消息，则创建新的聊天
+				if (messages.length == 2) {
+					if ($settings.saveChatHistory ?? true) {
+						// 3\1. 创建新的会话
+						chat = await createNewChat(localStorage.token, {
+							id: $chatId,
+							title: $i18n.t('New Chat'),
+							models: selectedModels,
+							system: $settings.system ?? undefined,
+							options: {
+								...($settings.options ?? {})
+							},
+							messages: messages,
+							history: history,
+							timestamp: Date.now()
+						});
+						await chats.set(await getChatList(localStorage.token));
+						await chatId.set(chat.id);
+					} else {
+						await chatId.set('local');
+					}
 					await tick();
 				}
-					
-				scrollToBottom();
-			}
 
-			// 如果 messages 中只有一条消息，则创建新的聊天
-			if (messages.length == 2) {
-				if ($settings.saveChatHistory ?? true) {
-					// 3\1. 创建新的会话
-					chat = await createNewChat(localStorage.token, {
-						id: $chatId,
-						title: $i18n.t('New Chat'),
-						models: selectedModels,
-						system: $settings.system ?? undefined,
-						options: {
-							...($settings.options ?? {})
-						},
-						messages: messages,
-						history: history,
-						timestamp: Date.now()
-					});
-					await chats.set(await getChatList(localStorage.token));
-					await chatId.set(chat.id);
-				} else {
-					await chatId.set('local');
-				}
-				await tick();
-			}
-			// 发送提示
-			await sendPrompt(userPrompt, responseMap, modelLimit);
+				// 发送提示
+				await sendPrompt(userPrompt, responseMap, modelLimit);
+			} catch (err) {
+				const _chatId = JSON.parse(JSON.stringify($chatId));
+        Object.keys(responseMap).map(async (modelId) => {
+          const model = $models.filter((m) => m.id === modelId).at(0);
+          let responseMessage = responseMap[model?.id];
+          await handleOpenAIError(err, null, model, responseMessage);
 
+          // 更新消息到数据库
+          await updateChatMessage(responseMessage, _chatId);
+
+          await tick();
+          
+          if (autoScroll) {
+            scrollToBottom();
+          }
+        })
+			}
+			
 		}
 	};
 
@@ -783,13 +802,24 @@
 			await handleOpenAIError(error, null, model, responseMessage);
 		}
 
-		await checkThinkContent(responseMessage);
-		messages = messages;
+		// 更新消息到数据库
+		await updateChatMessage(responseMessage, _chatId);
 
-		stopResponseFlag = false;
+		await tick();
+		if (autoScroll) {
+			scrollToBottom();
+		}
+	};
 
-		// 更新聊天记录
-		if (_chatId === $chatId) {  
+	// 更新消息到数据库
+  const updateChatMessage = async (responseMessage: any, _chatId) => {
+    await checkThinkContent(responseMessage);
+    messages = messages;
+
+    stopResponseFlag = false;
+    
+    // 更新聊天记录
+    if (_chatId === $chatId) {  
       if ($settings.saveChatHistory ?? true) {
         await updateChatById(localStorage.token, _chatId, {
           messages: messages,
@@ -797,12 +827,7 @@
         });
       }
     }
-
-		await tick();
-		if (autoScroll) {
-			scrollToBottom();
-		}
-	};
+  }
 
 
 	const sendPromptOllama = async (model, userPrompt, responseMessageId, _chatId) => {
