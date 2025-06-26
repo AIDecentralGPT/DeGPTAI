@@ -29,9 +29,14 @@
           money/0.00006,
           $currentWalletData?.walletInfo?.privateKey
         );
-        if (response?.hash) {
-          await uploadVip(response?.hash)
+        if (response?.ok) {
+          if (response?.data?.hash) {
+            await uploadVip(response?.hash)
+          }
+        } else {
+          toast.error($i18n.t(response?.msg))
         }
+        
       } catch (error) {
         loading = false;
         toast.error(error?.message);

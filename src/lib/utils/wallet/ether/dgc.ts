@@ -1,10 +1,7 @@
 // dgc.js
 
 import { ethers } from "ethers";
-import {
-  //  provider,
-  
-  signData, getCurrencyPrice, getGas } from "./utils";
+import { getCurrencyPrice, getGas } from "./utils";
 import ABI from "./abi.json";
 import { getDbcBalance } from "./dbc";
 import { toast } from "svelte-sonner";
@@ -80,8 +77,10 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 
   // 比较余额和gas费用
   if (gasNumber > dbcBalance) {
-    toast.error("The DBC balance is not enough to pay gas.");
-    return;
+    return {
+      ok: false,
+      msg: "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance."
+    };
   }
   const tx = {
     to: DGC_TOKEN_CONTRACT_ADDRESS,
@@ -93,12 +92,15 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 
   try {
     const txResponse = await wallet.sendTransaction(tx);
-    console.log("========================", txResponse);
-    return txResponse;
+    return {
+      ok: true,
+      data: txResponse
+    };
   } catch (error) {
-    console.log("==============transferDgc=============", error) ;
-    toast.error("The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC");
-    return;
+    return {
+      ok: false,
+      msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."
+    };
   }
 }
 

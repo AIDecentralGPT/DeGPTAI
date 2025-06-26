@@ -699,17 +699,17 @@
   "Support image recognition": "",
   "Optimize code writing": "",
   "Suitable for reasoning and writing": "",
-  "Multimodal, suitable for daily tasks": "",
+  "Multimodal graphics and text, suitable for daily tasks": "",
   "Strong language skills": "",
   "Enhanced reasoning, suitable for complex tasks": "",
   "Lightweight general-purpose model with fast response speed": "",
-  "Multimodal, suitable for most tasks": "",
+  "Multimodal graphics and text, suitable for most tasks": "",
   "Well-suited for handling daily tasks": "",
   "Strong writing and coding skills": "",
-  "Multimodal with fast response": "",
+  "Multimodal graphics and text, quick response": "",
   "Expert in Q&A, lively expression style": "",
   "Strong writing ability, high stability": "",
-  "Multimodal with enhanced reasoning": "",
+  "Multimodal graphics and text, reasoning enhancement": "",
   "Using advanced reasoning": "",
   "Good at fast coding and analysis": "",
   "Skilled in writing and generating ideas": "",
@@ -938,6 +938,9 @@
   "new_wallet": "Creat Wallet",
   "Small Tip:": "",
   "If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.": "",
-  "To claim the reward, you must first complete user verification !": ""
+  "To claim the reward, you must first complete user verification !": "",
+  "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "",
+  "Failed to send transaction !": "",
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": ""
 }
 

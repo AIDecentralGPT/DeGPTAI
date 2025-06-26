@@ -49,7 +49,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "DouBao 1.6 (TikTok)",
         support: "image",
         type: 1,
-        desc: "Multimodal, suitable for daily tasks",
+        desc: "Multimodal graphics and text, suitable for daily tasks",
         modelicon: "/static/icon/doubao.png",
         modelinfo: ""
       },
@@ -102,7 +102,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "GPT-4o (OpenAI)",
         support: "image",
         type: 2,
-        desc: "Multimodal, suitable for most tasks",
+        desc: "Multimodal graphics and text, suitable for most tasks",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -128,7 +128,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "Gemini 2.5 Flash (Google)",
         support: "text",
         type: 2,
-        desc: "Multimodal with fast response",
+        desc: "Multimodal graphics and text, quick response",
         modelicon: "/static/icon/gemini.png",
         modelinfo: ""
       },
@@ -154,7 +154,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "DouBao 1.6 Thinking (TikTok)",
         support: "image",
         type: 2,
-        desc: "Multimodal with enhanced reasoning",
+        desc: "Multimodal graphics and text, reasoning enhancement",
         modelicon: "/static/icon/doubao.png",
         modelinfo: ""
       },
