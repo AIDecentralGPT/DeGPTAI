@@ -438,7 +438,7 @@
 				{/if}
 				{#if message.content == '' && !message?.done}
 					{#if message?.toolflag}
-						{#if message?.search_content?.web|| message?.search_content?.videos || message?.search_content?.content}
+						{#if message?.parseInfo?.web|| message?.parseInfo?.videos || message?.parseInfo?.content}
 							<Replying/>
 						{:else}
 							{#if message?.tooltype == "webread"}
@@ -485,7 +485,7 @@
 			{#if message?.toolflag}
 				{#if message?.tooltype == 'web' || message?.tooltype == 'bing'}
 					<!-- 网站搜索 -->
-					{#if message?.search_content?.web}
+					{#if message?.parseInfo?.web}
 						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
@@ -500,7 +500,7 @@
 									</div>
 									<div class="flex flex-col ml-1">
 										<span class="text-sm">{ $i18n.t("Web Search") }</span>
-										<span class="text-xs"> {message?.search_content?.web.length} Results</span>
+										<span class="text-xs"> {message?.parseInfo?.web.length} Results</span>
 									</div>
 								</div>
 								<button on:click={() => {
@@ -518,7 +518,7 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
-									{#each message?.search_content?.web ?? [] as item}
+									{#each message?.parseInfo?.web ?? [] as item}
 										<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
 											<div class="flex flex-row">
 												<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
@@ -527,7 +527,7 @@
 													</svg>
 												</div>
 												<div class="ml-2">
-													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.search_content?.keyword??"")}</div>
+													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.parseInfo?.keyword??"")}</div>
 													<div class="flex flex-row items-center w-[300px] text-xs">
 														<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
 														<svg 
@@ -543,7 +543,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.search_content?.keyword??"")}</div>
+											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.parseInfo?.keyword??"")}</div>
 										</div>
 									{/each}
 								</div>
@@ -555,9 +555,9 @@
 						</div>
 					{/if}
 					<!-- 图片搜索 -->
-					{#if message?.search_content?.images}
+					{#if message?.parseInfo?.images}
 						<div class="flex flex-wrap mt-3">
-							{#each message?.search_content?.images ?? [] as item, index}
+							{#each message?.parseInfo?.images ?? [] as item, index}
 								{#if item?.url && (visibleIndices[index]??true)}
 									<div class="p-1 lg:w-[12%] w-1/6 aspect-square">
 										<Image src={item.url} imgIndex={index} alt="" on:imageLoadFailed={handleImageLoadFailed} className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
@@ -569,7 +569,7 @@
 				{/if}
 				{#if message?.tooltype == 'youtube'}
 					<!-- youtube搜索 -->
-					{#if message?.search_content?.videos}
+					{#if message?.parseInfo?.videos}
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
@@ -585,7 +585,7 @@
 									</div>
 									<div class="flex flex-col ml-1">
 										<span class="text-sm">{ $i18n.t("YouTube Search") }</span>
-										<span class="text-xs"> {message?.search_content?.videos.length} videos</span>
+										<span class="text-xs"> {message?.parseInfo?.videos.length} videos</span>
 									</div>
 								</div>
 								<button on:click={() => {
@@ -603,7 +603,7 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
-									{#each message?.search_content?.videos ?? [] as item}
+									{#each message?.parseInfo?.videos ?? [] as item}
 										<div class="flex flex-col rounded-xl bg-white dark:bg-black mx-2 mb-4 pb-2">
 											<a class="flex flex-col w-[230px]" href="{item.video_url}" target="_blank">
 												<img class="rounded-t-xl drag-none" src={item.thumbnail_url} alt=""/>
@@ -629,7 +629,7 @@
 				{/if}
 				{#if message?.tooltype == 'twitter'}
 					<!-- twitter搜索 -->
-					{#if message?.search_content?.content}
+					{#if message?.parseInfo?.content}
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
@@ -644,7 +644,7 @@
 									</div>
 									<div class="flex flex-col ml-1">
 										<span class="text-sm">{ $i18n.t("Twitter Search") }</span>
-										<span class="text-xs"> {message?.search_content?.content.length} tweets</span>
+										<span class="text-xs"> {message?.parseInfo?.content.length} tweets</span>
 									</div>
 								</div>
 								<button on:click={() => {
@@ -662,7 +662,7 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto overflow-y-hidden {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
-									{#each message?.search_content?.content ?? [] as item}
+									{#each message?.parseInfo?.content ?? [] as item}
 										<!-- 带自定义选项 -->
 										 	<div class="mr-3 h-[300px]">
 												<TwitterEmbed data="{item}"/>
@@ -736,9 +736,17 @@
 										/>
 									</svg>
 
-									<div class=" self-center">
-										{message.content}
+									<div class=" self-center flex-1">
+										{$i18n.t(message.content)}
 									</div>
+									<button on:click={() => {
+
+									}}>
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1402 1024" version="1.1" fill="currentColor" class="w-5 h-5 self-center">
+											<path d="M56.256426 523.180601a54.884318 54.884318 0 0 1-37.046915-94.675448l189.350896-177.001925a54.884318 54.884318 0 0 1 75.465937 1.372108l181.118249 177.001925a54.884318 54.884318 0 0 1-76.838045 78.210153L244.235214 366.760296 93.30334 508.087414a54.884318 54.884318 0 0 1-37.046914 15.093187zM1166.291751 789.369542a54.884318 54.884318 0 0 1-37.046914-15.093188L938.521833 597.27443a55.337113 55.337113 0 1 1 75.465937-80.954369l150.931873 142.699226 144.071334-141.327118a54.884318 54.884318 0 0 1 76.838045 78.210153L1204.710774 774.276354a54.884318 54.884318 0 0 1-38.419023 15.093188z"/>
+											<path d="M1163.547535 785.253218a54.884318 54.884318 0 0 1-54.884317-54.884318V513.575845c0-222.281487-181.118248-403.399735-403.399736-403.399735a403.399735 403.399735 0 0 0-264.816832 98.791772 54.922737 54.922737 0 0 1-72.721721-82.326476 513.16837 513.16837 0 0 1 850.706924 386.934439v216.793055a54.884318 54.884318 0 0 1-54.884318 54.884318zM705.263482 1024a513.16837 513.16837 0 0 1-513.16837-513.16837V294.038575a54.884318 54.884318 0 0 1 109.768635 0v216.793055c0 222.281487 181.118248 403.399735 403.399735 403.399735a402.027627 402.027627 0 0 0 271.677373-105.652312 54.884318 54.884318 0 0 1 74.093829 80.954369 511.796263 511.796263 0 0 1-345.771202 134.466578z"/>
+										</svg>
+									</button>
 								</div>
 							{:else if message?.warning === true}
 								<div
@@ -777,7 +785,7 @@
 								</div>
 							{:else if message.content === '' && !message?.done}
 								{#if message.search}
-									{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content}	
+									{#if message?.parseInfo?.web || message?.parseInfo?.videos || message?.parseInfo?.content}	
 										<Skeleton />
 									{/if}
 								{:else}

@@ -908,6 +908,7 @@
   "Year": "Год",
   "Instant Savings": "Мгновенные Экономии",
   "Current Status": "Текущий статус",
+  "Basic Model": "Базовая Модель",
   "Foundation Models": "Базовые Модели",
   "Advanced Models": "Продвинутые Модели",
   "Top-Level Models": "Топ-Уровневые Модели",
@@ -940,5 +941,6 @@
   "To claim the reward, you must first complete user verification !": "Чтобы получить вознаграждение, сначала необходимо пройти проверку пользователя !",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "Недостаточно DBC. На вашем кошельке должно быть не менее 0,01 DBC.",
   "Failed to send transaction !": "Ошибка отправки транзакции!",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Недостаточно средств на балансе DGC. Вы можете пригласить друга, чтобы получить 3000 DGC."
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Недостаточно средств на балансе DGC. Вы можете пригласить друга, чтобы получить 3000 DGC.",
+  "It seems that you are offline. Please reconnect to send messages.": "Кажется, вы не в сети. Пожалуйста, переподключитесь, чтобы отправлять сообщения."
 }

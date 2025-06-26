@@ -908,6 +908,7 @@
   "Year": "ปี",
   "Instant Savings": "การประหยัดทันที",
   "Current Status": "สถานะปัจจุบัน",
+  "Basic Model": "โมเดลพื้นฐาน",
   "Foundation Models": "โมเดลพื้นฐาน",
   "Advanced Models": "โมเดลขั้นสูง",
   "Top-Level Models": "โมเดลระดับสูงสุด",
@@ -940,5 +941,6 @@
   "To claim the reward, you must first complete user verification !": "เพื่อรับรางวัล คุณต้องทำการยืนยันตัวตนให้เสร็จสิ้นก่อน",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "ยอด DBC ไม่เพียงพอ จำเป็นต้องมียอดในกระเป๋าเงินอย่างน้อย 0.01 DBC",
   "Failed to send transaction !": "ส่งธุรกรรมล้มเหลว!",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "ยอด DGC ไม่เพียงพอสำหรับการชำระ คุณสามารถเชิญเพื่อนเพื่อรับ 3000 DGC"
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "ยอด DGC ไม่เพียงพอสำหรับการชำระ คุณสามารถเชิญเพื่อนเพื่อรับ 3000 DGC",
+  "It seems that you are offline. Please reconnect to send messages.": "ดูเหมือนว่าคุณออฟไลน์อยู่ กรุณาเชื่อมต่ออีกครั้งเพื่อส่งข้อความ"
 }

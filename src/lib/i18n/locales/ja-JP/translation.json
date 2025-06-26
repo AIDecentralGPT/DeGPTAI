@@ -909,6 +909,7 @@
   "Year": "年",
   "Instant Savings": "即時節約",
   "Current Status": "現在の状態",
+  "Basic Model": "基本モデル",
   "Foundation Models": "基盤モデル",
   "Advanced Models": "高度なモデル",
   "Top-Level Models": "トップレベルモデル",
@@ -941,5 +942,6 @@
   "To claim the reward, you must first complete user verification !": "報酬を受け取るには、まずユーザー認証を完了する必要があります !",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "DBC残高が不足しています。ウォレットに0.01 DBC以上必要です。",
   "Failed to send transaction !": "トランザクションの送信に失敗しました！",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC残高が不足しています。友達を招待すると3000 DGCを獲得できます。"
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC残高が不足しています。友達を招待すると3000 DGCを獲得できます。",
+  "It seems that you are offline. Please reconnect to send messages.": "オフラインのようです。メッセージを送信するには再接続してください。"
 }

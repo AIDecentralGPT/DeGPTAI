@@ -909,6 +909,7 @@
   "Year": "",
   "Instant Savings": "",
   "Current Status": "",
+  "Basic Model": "",
   "Foundation Models": "",
   "Advanced Models": "",
   "Top-Level Models": "",
@@ -941,6 +942,7 @@
   "To claim the reward, you must first complete user verification !": "",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "",
   "Failed to send transaction !": "",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": ""
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "",
+  "It seems that you are offline. Please reconnect to send messages.": ""
 }
 

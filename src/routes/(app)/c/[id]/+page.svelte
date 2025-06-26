@@ -393,7 +393,7 @@
 						if (responseMap[model?.id]) {
 							let responseMessageId = responseMap[model?.id].id;
 							let responseMessage = responseMap[model?.id];
-							responseMessage.search_content = searchData;
+							responseMessage.parseInfo = searchData;
 							history.messages[responseMessageId] = responseMessage;
 						}
 					});
@@ -1336,38 +1336,38 @@
   }
 
 	const handleOpenAIError = async (error, res: Response | null, model, responseMessage) => {
-		let errorMessage = '';
-		let innerError;
+		// let errorMessage = '';
+		// let innerError;
 
-		if (error) {
-			innerError = error;
-		} else if (res !== null) {
-			innerError = await res.json();
-		}
-		console.error(innerError);
-		if ('detail' in innerError) {
-			toast.error(innerError.detail);
-			errorMessage = innerError.detail;
-		} else if ('error' in innerError) {
-			if ('message' in innerError.error) {
-				toast.error(innerError.error.message);
-				errorMessage = innerError.error.message;
-			} else {
-				toast.error(innerError.error);
-				errorMessage = innerError.error;
-			}
-		} else if ('message' in innerError) {
-			toast.error(innerError.message);
-			errorMessage = innerError.message;
-		}
+		// if (error) {
+		// 	innerError = error;
+		// } else if (res !== null) {
+		// 	innerError = await res.json();
+		// }
+		// console.error(innerError);
+		// if ('detail' in innerError) {
+		// 	toast.error(innerError.detail);
+		// 	errorMessage = innerError.detail;
+		// } else if ('error' in innerError) {
+		// 	if ('message' in innerError.error) {
+		// 		toast.error(innerError.error.message);
+		// 		errorMessage = innerError.error.message;
+		// 	} else {
+		// 		toast.error(innerError.error);
+		// 		errorMessage = innerError.error;
+		// 	}
+		// } else if ('message' in innerError) {
+		// 	toast.error(innerError.message);
+		// 	errorMessage = innerError.message;
+		// }
 
 		responseMessage.error = true;
-		responseMessage.content =
-			$i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
-				provider: model.name ?? model.id
-			}) +
-			'\n' +
-			errorMessage;
+		responseMessage.content = "It seems that you are offline. Please reconnect to send messages.";
+			// $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
+			// 	provider: model.name ?? model.id
+			// }) +
+			// '\n' +
+			// errorMessage;
 		responseMessage.done = true;
 
 		messages = messages;

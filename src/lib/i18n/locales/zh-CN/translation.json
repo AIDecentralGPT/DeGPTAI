@@ -908,6 +908,7 @@
   "Year": "年",
   "Instant Savings": "立省",
   "Current Status": "当前状态",
+  "Basic Model": "基础模型",
   "Foundation Models": "基础模型",
   "Advanced Models": "高级模型",
   "Top-Level Models": "顶级模型",
@@ -940,5 +941,6 @@
   "To claim the reward, you must first complete user verification !": "领取奖励需要先完成用户认证 !",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "DBC数量不足，需要钱包余额中至少有0.01个DBC。",
   "Failed to send transaction !": "交易发送失败！",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC余额不足支付。您可以邀请好友获得3000 DGC。"
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC余额不足支付。您可以邀请好友获得3000 DGC。",
+  "It seems that you are offline. Please reconnect to send messages.": "您似乎已离线。请重新连接以发送消息。"
 }

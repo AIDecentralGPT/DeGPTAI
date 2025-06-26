@@ -388,91 +388,112 @@
 
       // 校验图片获取图片信息
       // await analysisimageinfo(userMessageId);
-      
-      // 校验模型已使用次数
-      let modelLimit:any = {}
-      const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
-      if (passed) {
-        for (const item of selectedModels) {
-          data.forEach((dItem:any) => {
-            if(dItem.model == item) {
-              if (!dItem.passed) {
-                modelLimit[dItem.model] = dItem.message;
+
+      // 代码有调用接口，放到try中可方便捕获异常
+      try {
+        // 校验模型已使用次数
+        let modelLimit:any = {}
+        const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+        if (passed) {
+          for (const item of selectedModels) {
+            data.forEach((dItem:any) => {
+              if(dItem.model == item) {
+                if (!dItem.passed) {
+                  modelLimit[dItem.model] = dItem.message;
+                }
               }
-            }
-          }) 
+            }) 
+          }
         }
-      }
 
-      // Wait until history/message have been updated
-      await tick();
+        // Wait until history/message have been updated
+        await tick();
 
-      // 获取工具操作内容
-      if ($toolflag) {
-        if ($tooltype == "webread") {
-          // 网页分析
-          if ((userToolInfo?.url??"").length > 0) {
-            let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
-            if (webResult?.ok) {
+        // 获取工具操作内容
+        if ($toolflag) {
+          if ($tooltype == "webread") {
+            // 网页分析
+            if ((userToolInfo?.url??"").length > 0) {
+              let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
+              if (webResult?.ok) {
+                // 更新UserMessge信息
+                userMessage.parseInfo = webResult?.data;
+                history.messages[userMessageId] = userMessage;
+              } 
+              await tick();
+            }
+          } else if ($tooltype == "translate") {
               // 更新UserMessge信息
-              userMessage.parseInfo = webResult?.data;
+              userMessage.parseInfo = userToolInfo?.trantip;
               history.messages[userMessageId] = userMessage;
-            } 
+              await tick();
+          } else {
+            let searchData = await handleSearchWeb(userPrompt);
+
+            // 更新UserMessge信息
+            userMessage.parseInfo = searchData;
+            history.messages[userMessageId] = userMessage;
+
+            // 更新回复会话搜索信息
+            Object.keys(responseMap).map(async (modelId) => {
+              const model = $models.filter((m) => m.id === modelId).at(0);  
+              if (responseMap[model?.id]) {
+                let responseMessageId = responseMap[model?.id].id;
+                let responseMessage = responseMap[model?.id];
+                responseMessage.parseInfo = searchData;
+                history.messages[responseMessageId] = responseMessage;
+              }
+            });
             await tick();
           }
-        } else if ($tooltype == "translate") {
-            // 更新UserMessge信息
-            userMessage.parseInfo = userToolInfo?.trantip;
-            history.messages[userMessageId] = userMessage;
-            await tick();
-        } else {
-          let searchData = await handleSearchWeb(userPrompt);
+          
+          scrollToBottom();
+        }
 
-          // 更新UserMessge信息
-          userMessage.parseInfo = searchData;
-          history.messages[userMessageId] = userMessage;
-
-          // 更新回复会话搜索信息
-          selectedModels.map(async (modelId) => {
-            const model = $models.filter((m) => m.id === modelId).at(0);  
-            if (responseMap[model?.id]) {
-              let responseMessageId = responseMap[model?.id].id;
-              let responseMessage = responseMap[model?.id];
-              responseMessage.search_content = searchData;
-              history.messages[responseMessageId] = responseMessage;
-            }
-          });
+        // Create new chat if only one message in messages
+        if (messages.length == 2) {
+          if ($settings.saveChatHistory ?? true) {
+            chat = await createNewChat(localStorage.token, {
+              id: $chatId,
+              title: $i18n.t("New Chat"),
+              models: selectedModels,
+              system: $settings.system ?? undefined,
+              options: {
+                ...($settings.options ?? {}),
+              },
+              messages: messages,
+              history: history,
+              tags: [],
+              timestamp: Date.now(),
+            });
+            await chats.set(await getChatList(localStorage.token));
+            await chatId.set(chat.id);
+          } else {
+            await chatId.set("local");
+          }
           await tick();
         }
-        
-        scrollToBottom();
-      }
 
-      // Create new chat if only one message in messages
-      if (messages.length == 2) {
-        if ($settings.saveChatHistory ?? true) {
-          chat = await createNewChat(localStorage.token, {
-            id: $chatId,
-            title: $i18n.t("New Chat"),
-            models: selectedModels,
-            system: $settings.system ?? undefined,
-            options: {
-              ...($settings.options ?? {}),
-            },
-            messages: messages,
-            history: history,
-            tags: [],
-            timestamp: Date.now(),
-          });
-          await chats.set(await getChatList(localStorage.token));
-          await chatId.set(chat.id);
-        } else {
-          await chatId.set("local");
-        }
-        await tick();
-      }
-      // Send prompt
-      await sendPrompt(userPrompt, responseMap, modelLimit);
+        // Send prompt
+        await sendPrompt(userPrompt, responseMap, modelLimit);
+
+      } catch (err) {
+        const _chatId = JSON.parse(JSON.stringify($chatId));
+        Object.keys(responseMap).map(async (modelId) => {
+          const model = $models.filter((m) => m.id === modelId).at(0);
+          let responseMessage = responseMap[model?.id];
+          await handleOpenAIError(err, null, model, responseMessage);
+
+          // 更新消息到数据库
+          await updateChatMessage(responseMessage, _chatId);
+
+          await tick();
+          
+          if (autoScroll) {
+            scrollToBottom();
+          }
+        })  
+      }  
     }
   };
 
@@ -849,6 +870,18 @@
       await handleOpenAIError(error, null, model, responseMessage);
     }
 
+    // 更新消息到数据库
+    await updateChatMessage(responseMessage, _chatId);
+
+    await tick();
+
+    if (autoScroll) {
+      scrollToBottom();
+    }
+  };
+
+  // 更新消息到数据库
+  const updateChatMessage = async (responseMessage: any, _chatId) => {
     await checkThinkContent(responseMessage);
     messages = messages;
 
@@ -863,12 +896,7 @@
         });
       }
     }
-
-    await tick();
-    if (autoScroll) {
-      scrollToBottom();
-    }
-  };
+  }
 
   // 校验模型是否有think思考内容
   const checkThinkContent = async(responseMessage: any) => {
@@ -921,40 +949,39 @@
     model,
     responseMessage
   ) => {
-    let errorMessage = "";
-    let innerError;
+    // let errorMessage = "";
+    // let innerError;
 
-    if (error) {
-      innerError = error;
-    } else if (res !== null) {
-      innerError = await res.json();
-    }
-    console.error(innerError);
-    if ("detail" in innerError) {
-      toast.error(innerError.detail);
-      errorMessage = innerError.detail;
-    } else if ("error" in innerError) {
-      if ("message" in innerError.error) {
-        toast.error(innerError.error.message);
-        errorMessage = innerError.error.message;
-      } else {
-        toast.error(innerError.error);
-        errorMessage = innerError.error;
-      }
-    } else if ("message" in innerError) {
-      toast.error(innerError.message);
-      errorMessage = innerError.message;
-    }
+    // if (error) {
+    //   innerError = error;
+    // } else if (res !== null) {
+    //   innerError = await res.json();
+    // }
+    // console.error(innerError);
+    // if ("detail" in innerError) {
+    //   toast.error(innerError.detail);
+    //   errorMessage = innerError.detail;
+    // } else if ("error" in innerError) {
+    //   if ("message" in innerError.error) {
+    //     toast.error(innerError.error.message);
+    //     errorMessage = innerError.error.message;
+    //   } else {
+    //     toast.error(innerError.error);
+    //     errorMessage = innerError.error;
+    //   }
+    // } else if ("message" in innerError) {
+    //   toast.error(innerError.message);
+    //   errorMessage = innerError.message;
+    // }
 
     responseMessage.error = true;
-    responseMessage.content =
-      $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
-        provider: model.name ?? model.id,
-      }) +
-      "\n" +
-      errorMessage;
+    responseMessage.content = "It seems that you are offline. Please reconnect to send messages.";
+      // $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
+      //   provider: model.name ?? model.id,
+      // }) +
+      // "\n" +
+      // errorMessage;
     responseMessage.done = true;
-
     messages = messages;
   };
 

@@ -909,6 +909,7 @@
   "Year": "Ano",
   "Instant Savings": "Economias Imediatas",
   "Current Status": "Status Atual",
+  "Basic Model": "Modelo Básico",
   "Foundation Models": "Modelos Base",
   "Advanced Models": "Modelos Avançados",
   "Top-Level Models": "Modelos de Alto Nível",
@@ -941,5 +942,6 @@
   "To claim the reward, you must first complete user verification !": "Para reivindicar a recompensa, você deve primeiro concluir a verificação do usuário !",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "Saldo de DBC insuficiente. Você precisa ter pelo menos 0,01 DBC na sua carteira.",
   "Failed to send transaction !": "Falha ao enviar transação!",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "O saldo de DGC não é suficiente para pagar. Você pode convidar um amigo para obter 3000 DGC."
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "O saldo de DGC não é suficiente para pagar. Você pode convidar um amigo para obter 3000 DGC.",
+  "It seems that you are offline. Please reconnect to send messages.": "Parece que você está offline. Por favor, reconecte-se para enviar mensagens."
 }

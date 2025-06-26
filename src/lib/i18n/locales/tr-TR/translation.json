@@ -909,6 +909,7 @@
   "Year": "Yıl",
   "Instant Savings": "Anlık Tasarruflar",
   "Current Status": "Geçerli Durum",
+  "Basic Model": "Temel Model",
   "Foundation Models": "Temel Modeller",
   "Advanced Models": "Gelişmiş Modeller",
   "Top-Level Models": "Üst Düzey Modeller",
@@ -941,5 +942,6 @@
   "To claim the reward, you must first complete user verification !": "Ödülü talep etmek için önce kullanıcı doğrulamasını tamamlamanız gerekir !",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "DBC bakiyesi yetersiz. Cüzdanınızda en az 0.01 DBC olmalıdır.",
   "Failed to send transaction !": "İşlem gönderilemedi!",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC bakiyesi ödeme yapmaya yetmiyor. 3000 DGC kazanmak için bir arkadaşınızı davet edebilirsiniz."
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC bakiyesi ödeme yapmaya yetmiyor. 3000 DGC kazanmak için bir arkadaşınızı davet edebilirsiniz.",
+  "It seems that you are offline. Please reconnect to send messages.": "Çevrimdışı görünüyorsunuz. Mesaj göndermek için lütfen yeniden bağlanın."
 }

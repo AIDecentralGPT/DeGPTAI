@@ -898,6 +898,7 @@
   "Year": "Năm",
   "Instant Savings": "Tiết Kiệm Ngay Lập Tức",
   "Current Status": "Trạng Thái Hiện Tại",
+  "Basic Model": "Mô hình Cơ bản",
   "Foundation Models": "Mô Hình Nền Tảng",
   "Advanced Models": "Mô Hình Nâng Cao",
   "Top-Level Models": "Mô Hình Cấp Cao",
@@ -930,5 +931,6 @@
   "To claim the reward, you must first complete user verification !": "Để nhận phần thưởng, trước tiên bạn phải hoàn thành xác minh người dùng !",
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "Số dư DBC không đủ. Bạn cần có ít nhất 0,01 DBC trong ví của mình.",
   "Failed to send transaction !": "Gửi giao dịch thất bại!",
-  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Số dư DGC không đủ để thanh toán. Bạn có thể mời bạn bè để nhận 3000 DGC."
+  "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Số dư DGC không đủ để thanh toán. Bạn có thể mời bạn bè để nhận 3000 DGC.",
+  "It seems that you are offline. Please reconnect to send messages.": "Có vẻ như bạn đang ngoại tuyến. Vui lòng kết nối lại để gửi tin nhắn."
 }

@@ -69,17 +69,25 @@ class TwitterLib:
             'Authorization': f'Bearer {SOCIAL_KEY}',
             'Accept': 'application/json'
         }
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            if data.get("tweets"):
-                # 使用字典推导式过滤重复的 id
-                unique_dict = {item["user"]["id"]: item for item in data.get("tweets")}
-                unique_data = list(unique_dict.values())
-                return {"content": unique_data}
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("tweets"):
+                    # 使用字典推导式过滤重复的 id
+                    unique_dict = {item["user"]["id"]: item for item in data.get("tweets")}
+                    unique_data = list(unique_dict.values())
+                    return {"content": unique_data}
+                else:
+                    return None
             else:
                 return None
-        else:
+        except requests.exceptions.HTTPError as err:
+            print("具体401错误信息:", response.text)
+            return None
+        except requests.exceptions.RequestException as err:
+            print(f"请求异常: {err}")
             return None
 
 TwitterApi = TwitterLib()
