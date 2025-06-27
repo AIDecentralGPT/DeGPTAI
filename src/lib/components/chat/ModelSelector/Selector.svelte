@@ -72,7 +72,7 @@
       class="flex flex-row w-full text-left px-0.5 outline-none bg-transparent truncate text-lg font-semibold placeholder-gray-400 focus:outline-none"
     >
       {#if selectedModel}
-        <span class="text-ellipsis overflow-hidden">{selectedModel.label}</span>
+        <span class="text-ellipsis overflow-hidden primaryText">{selectedModel.label}</span>
       {:else}
         <span class="text-ellipsis overflow-hidden">{placeholder}</span>
       {/if}
@@ -99,7 +99,7 @@
                 seltype =1;
               }
             }}>
-            <span class="text-base font-bold">{$i18n.t("Foundation Models")}</span>
+            <span class="text-base font-bold primaryText">{$i18n.t("Foundation Models")}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 1024" 
@@ -122,7 +122,7 @@
                   <div class="flex items-center gap-2 mr-1">
                     <div class="flex flex-col line-clamp-1">
                       <span class="text-sm text-gray-900 dark:text-gray-100">{item?.info?.tip}</span>
-                      <span class="text-xs text-gray-600 dark:text-gray-500 mt-0.5">{$i18n.t(item?.info?.desc)}</span>
+                      <span class="text-xs mt-0.5 primaryText">{$i18n.t(item?.info?.desc)}</span>
                     </div>
                   </div>
                   <div class="ml-auto">
@@ -143,7 +143,7 @@
                 seltype =2;
               }
             }}>
-            <span class="text-base font-bold">{$i18n.t("Advanced Models")}</span>
+            <span class="text-base font-bold primaryText">{$i18n.t("Advanced Models")}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 1024" 
@@ -166,7 +166,7 @@
                   <div class="flex items-center gap-2 mr-1">
                     <div class="flex flex-col line-clamp-1">
                       <span class="text-sm text-gray-900 dark:text-gray-100">{item?.info?.tip}</span>
-                      <span class="text-xs text-gray-600 dark:text-gray-500 mt-0.5">{$i18n.t(item?.info?.desc)}</span>
+                      <span class="text-xs primaryText mt-0.5">{$i18n.t(item?.info?.desc)}</span>
                     </div>
                   </div>
                   <div class="ml-auto">
@@ -187,7 +187,7 @@
                 seltype =3;
               }
             }}>
-            <span class="text-base font-bold">{$i18n.t("Top-Level Models")}</span>
+            <span class="text-base font-bold primaryText">{$i18n.t("Top-Level Models")}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1024 1024" 
@@ -210,7 +210,7 @@
                   <div class="flex items-center gap-2 mr-1">
                     <div class="flex flex-col line-clamp-1">
                       <span class="text-sm text-gray-900 dark:text-gray-100">{item?.info?.tip}</span>
-                      <span class="text-xs text-gray-600 dark:text-gray-500 mt-0.5">{$i18n.t(item?.info?.desc)}</span>
+                      <span class="text-xs primaryText mt-0.5">{$i18n.t(item?.info?.desc)}</span>
                     </div>
                   </div>
                   <div class="ml-auto">

@@ -187,9 +187,9 @@ export const getDeModels = async (token: string = "") => {
       // },
       {
         name: "GPT o4-mini high (OpenAI)",
-        model: "o4-mini-high",
-        imagemodel: "o4-mini-high",
-        textmodel: "o4-mini-high",
+        model: "o4-mini",
+        imagemodel: "o4-mini", //o4-mini-deep-research
+        textmodel: "o4-mini",
         think: false,
         tip: "GPT o4-mini high (OpenAI)",
         support: "image",
