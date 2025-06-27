@@ -66,7 +66,7 @@
             <span class="text-sm ml-1">{$i18n.t("Search the Web")}</span>
           </div>
         </button>
-        <button
+        <!-- <button
           aria-label="model-item"
           class="flex item-center w-full text-left font-medium line-clamp-1 select-none items-center rounded-button p-2 
             hover:bg-gray-100 dark:hover:bg-gray-850 rounded-xl cursor-pointer data-[highlighted]:bg-muted"
@@ -87,7 +87,7 @@
             </svg>
             <span class="text-sm ml-1">{$i18n.t("Search the Twitter")}</span>
           </div>
-        </button>
+        </button> -->
         <button
           aria-label="model-item"
           class="flex item-center w-full text-left font-medium line-clamp-1 select-none items-center rounded-button p-2 
