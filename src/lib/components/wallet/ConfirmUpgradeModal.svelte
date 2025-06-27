@@ -26,12 +26,12 @@
       try {
         let response = await transferDgc(
           address,
-          money/0.00006,
+          money,
           $currentWalletData?.walletInfo?.privateKey
         );
         if (response?.ok) {
           if (response?.data?.hash) {
-            await uploadVip(response?.hash)
+            await uploadVip(response?.data?.hash)
           }
         } else {
           toast.error($i18n.t(response?.msg))
