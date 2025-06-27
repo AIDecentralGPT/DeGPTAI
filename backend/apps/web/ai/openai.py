@@ -8,7 +8,7 @@ client = OpenAI(api_key=apikey)
 
 class OpenAiApi:
     def check_model(self, model: str):
-        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","o4-mini-high","gpt-4.1","gpt-4.5-preview"]
+        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1","gpt-4.5-preview"]
         return model in models
    
     def completion(self, param: AiModelReq):
@@ -16,7 +16,7 @@ class OpenAiApi:
             if param.enable_thinking:
                 completion = client.chat.completions.create(
                     model=param.model,
-                    reasoning={"effort": "medium"},
+                    reasoning_effort="medium",
                     messages=param.messages,
                     stream=param.stream
                 )
