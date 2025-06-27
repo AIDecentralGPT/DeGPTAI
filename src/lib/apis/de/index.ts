@@ -265,9 +265,9 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "Gemini 2.5 Pro (Google)",
-        model: "gemini-2.5-pro-preview-06-05",
-        imagemodel: "gemini-2.5-pro-preview-06-05",
-        textmodel: "gemini-2.5-pro-preview-06-05",
+        model: "gemini-2.5-pro",
+        imagemodel: "gemini-2.5-pro",
+        textmodel: "gemini-2.5-pro",
         think: false,
         tip: "Gemini 2.5 Pro (Google)",
         support: "text",
