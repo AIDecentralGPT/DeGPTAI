@@ -8,6 +8,8 @@
     showNewWalletModal,
     showOpenWalletModal,
     showSidebar,
+    toolflag,
+    tooltype
   } from "$lib/stores";
   import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
 
@@ -25,11 +27,12 @@
   import { transcribeAudio } from "$lib/apis/audio";
 
   import Prompts from "./MessageInput/PromptCommands.svelte";
-  import Suggestions from "./MessageInput/Suggestions.svelte";
   import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
   import Documents from "./MessageInput/Documents.svelte";
   import Models from "./MessageInput/Models.svelte";
   import UrlModels from "./MessageInput/UrlModels.svelte";
+  import Tools from "./MessageInput/Tools.svelte";
+  import ToolsSelect from "./MessageInput/ToolsSelect.svelte";
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
@@ -42,7 +45,7 @@
 
   export let autoScroll = true;
   export let selectedModel = "";
-  export let deepsearch = false;
+  // export let deepsearch = false;
 
   let chatTextAreaElement: HTMLTextAreaElement;
   let filesInputElement: any;
@@ -59,13 +62,7 @@
 
   // 文件选择
   export let files: any[] = [];
-  export let webInfo: any = {url: ""};
-
-  // 搜索网页开启标志
-  export let search = false;
-  export let search_type = "web";
-  let search_icon_show = false;
-  let isTouched = false;
+  export let toolInfo: any = {url: "", trantip: ""};
 
   export let fileUploadEnabled = true;
   // export let speechRecognitionEnabled = true;
@@ -74,7 +71,11 @@
   export let chatInputPlaceholder = "";
   export let messages: any[] = [];
 
+  // 要翻译的语言
+  let tranlang = "";
+
   let speechRecognition: any;
+  
 
   let selectUrlUserPrompt = [
 		"Analyze the content of the web page",
@@ -100,7 +101,7 @@
     }
   }
 
-  $: if (search) {
+  $: if (toolflag) {
     files = [];
   }
 
@@ -144,7 +145,7 @@
         chatTextAreaElement?.focus();
 
         if (prompt !== "" && $settings?.speechAutoSend === true) {
-          submitPrompt(prompt, webInfo, user);
+          submitPrompt(prompt, toolInfo, user);
         }
       }
 
@@ -265,7 +266,7 @@
             console.log("recognition ended");
             isRecording = false;
             if (prompt !== "" && $settings?.speechAutoSend === true) {
-              submitPrompt(prompt, webInfo, user);
+              submitPrompt(prompt, toolInfo, user);
             }
           };
 
@@ -497,9 +498,12 @@
     };
   });
 
-  const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
-    ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
-    ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml,.zip,.rar";
+  // const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
+  //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
+  //   ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml,.zip,.rar";
+  const know_ext = "image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*," +
+         "text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python," +
+         "text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed"
 </script>
 
 {#if dragged}
@@ -591,7 +595,8 @@
             />
           {/if}
 
-          <Models
+          <!-- 屏蔽调@弹出model选择 -->
+          <!-- <Models
             bind:this={modelsElement}
             bind:prompt
             bind:user
@@ -601,7 +606,7 @@
               selectedModel = e.detail;
               chatTextAreaElement?.focus();
             }}
-          />
+          /> -->
 
           {#if selectedModel !== ""}
             <div
@@ -637,17 +642,18 @@
               </div>
             </div>
           {/if}
-
-          <UrlModels
-            bind:this={urlPromptElement}
-            bind:prompt
-            bind:selectUrlUserPrompt={selectUrlUserPrompt}
-            on:select={(e) => {
-              let selectedUserPrompt = e.detail.prompt;
-              let analysisUrl = e.detail.url;
-              submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
-            }}
-          />
+          {#if $toolflag}
+            <UrlModels
+              bind:this={urlPromptElement}
+              bind:prompt
+              bind:selectUrlUserPrompt={selectUrlUserPrompt}
+              on:select={(e) => {
+                let selectedUserPrompt = e.detail.prompt;
+                let analysisUrl = e.detail.url;
+                submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
+              }}
+            />
+          {/if}
         </div>
       </div>
     </div>
@@ -666,7 +672,7 @@
 
             <div class="flex gap-2">
               <button
-                class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+                class=" px-2 py-1 primaryButton text-gray-100 transition rounded-lg"
                 on:click={async () => {
                   $showOpenWalletModal = true;
                 }}
@@ -675,7 +681,7 @@
               </button>
 
               <button
-                class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+                class=" px-2 py-1 primaryButton text-gray-100 transition rounded-lg"
                 on:click={async () => {
                   $showNewWalletModal = true;
                 }}
@@ -760,7 +766,10 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              submitPrompt(prompt, webInfo, user);
+              if($toolflag && $tooltype == "translate") {
+                toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
+              }
+              submitPrompt(prompt, toolInfo, user);
             }}
           >
             {#if files.length > 0}
@@ -1042,73 +1051,9 @@
               {/if}
             {/if}
 
-            <!-- {#if (webInfo?.url??"").length > 0}
-              <div class="mx-2 mt-2 mb-1 px-2 flex items-center max-w-[200px] h-[45px] gap-2 bg-gray-50 rounded-md">
-                <div class=" relative group w-full flex flex-row">
-                  <div class="w-[20px] mr-1">
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 1024 1024" 
-                      version="1.1" 
-                      fill="currentColor"
-                      class="w-5 h-5">
-                      <path d="M512 34.133333a477.866667 477.866667 0 1 0 477.866667 477.866667A477.866667 477.866667 0 0 0 512 34.133333z m0 887.466667c-56.32 0-117.76-106.496-142.336-264.192A1219.584 1219.584 0 0 1 512 648.533333a1155.413333 1155.413333 0 0 1 142.336 9.216C629.76 815.104 568.32 921.6 512 921.6z m0-341.333333a1282.389333 1282.389333 0 0 0-150.528 9.216c-2.048-24.917333-3.072-50.858667-3.072-77.482667s0-52.565333 3.072-77.482667A1282.389333 1282.389333 0 0 0 512 443.733333a1214.122667 1214.122667 0 0 0 150.528-9.557333q3.072 37.888 3.072 77.824t-3.072 77.824A1214.122667 1214.122667 0 0 0 512 580.266667zM102.4 512a406.869333 406.869333 0 0 1 21.504-129.706667 1194.666667 1194.666667 0 0 0 170.666667 41.984c-2.389333 28.330667-3.754667 57.685333-3.754667 87.722667s0 59.392 3.754667 87.722667a1194.666667 1194.666667 0 0 0-170.666667 41.984A406.869333 406.869333 0 0 1 102.4 512zM512 102.4c56.32 0 117.76 106.496 142.336 263.850667A1155.413333 1155.413333 0 0 1 512 375.466667a1219.584 1219.584 0 0 1-142.336-8.874667C394.24 208.896 455.68 102.4 512 102.4z m218.112 321.877333a1194.666667 1194.666667 0 0 0 170.666667-41.984 402.090667 402.090667 0 0 1 0 259.413334 1194.666667 1194.666667 0 0 0-170.666667-41.984c2.389333-28.330667 3.754667-57.685333 3.754667-87.722667s-1.365333-59.392-3.754667-87.722667z m143.018667-105.130666a1173.504 1173.504 0 0 1-150.528 36.864 609.621333 609.621333 0 0 0-77.482667-231.082667 411.648 411.648 0 0 1 228.010667 194.218667zM378.88 124.928a609.621333 609.621333 0 0 0-77.482667 231.082667 1173.504 1173.504 0 0 1-150.528-36.864 411.648 411.648 0 0 1 228.010667-194.218667z m-228.010667 580.266667a1204.906667 1204.906667 0 0 1 150.528-37.205334 611.669333 611.669333 0 0 0 77.482667 231.424 411.648 411.648 0 0 1-228.010667-194.56z m494.250667 193.877333a609.621333 609.621333 0 0 0 77.482667-231.082667 1173.504 1173.504 0 0 1 150.528 36.864 411.648 411.648 0 0 1-228.010667 194.218667z"/>
-                    </svg>
-                  </div>
-                  <span class="inline-block whitespace-nowrap overflow-hidden text-ellipsis text-sm">{webInfo?.url}</span>
-                  <div class=" absolute -top-4 -right-4">
-                    <button
-                      class=" bg-gray-400 text-white border border-white rounded-full group-hover:visible invisible transition"
-                      type="button"
-                      on:click={() => {
-                        webInfo.url = "";
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="w-4 h-4"
-                      >
-                        <path
-                          d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-1">
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("Summarize web content");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("Summarize web content") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("Tell me what the web page is about");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("Tell me what the web page is about") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("Write an original article referring to the web page");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("Write an original article referring to the web page") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-              </div>
-            {/if} -->
-
+            {#if $tooltype != ""}
+              <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
+            {/if}
             <div class="flex flex-col">
               <textarea
                 id="chat-textarea"
@@ -1135,7 +1080,7 @@
                       e.preventDefault();
                     }
                     if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
-                      submitPrompt(prompt, webInfo, user);
+                      submitPrompt(prompt, toolInfo, user);
                     }
                   }
                 }}
@@ -1179,81 +1124,81 @@
                     }
                   }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowUp"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "ArrowUp"
+                  // ) {
+                  //   e.preventDefault();
 
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectUp();
+                  //   (
+                  //     promptsElement ||
+                  //     documentsElement ||
+                  //     modelsElement
+                  //   ).selectUp();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+                  //   commandOptionButton.scrollIntoView({ block: "center" });
+                  // }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowDown"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "ArrowDown"
+                  // ) {
+                  //   e.preventDefault();
 
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectDown();
+                  //   (
+                  //     promptsElement ||
+                  //     documentsElement ||
+                  //     modelsElement
+                  //   ).selectDown();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+                  //   commandOptionButton.scrollIntoView({ block: "center" });
+                  // }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Enter"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "Enter"
+                  // ) {
+                  //   e.preventDefault();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
 
-                    if (commandOptionButton) {
-                      commandOptionButton?.click();
-                    } else {
-                      document.getElementById("send-message-button")?.click();
-                    }
-                  }
+                  //   if (commandOptionButton) {
+                  //     commandOptionButton?.click();
+                  //   } else {
+                  //     document.getElementById("send-message-button")?.click();
+                  //   }
+                  // }
 
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Tab"
-                  ) {
-                    e.preventDefault();
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "Tab"
+                  // ) {
+                  //   e.preventDefault();
 
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
 
-                    commandOptionButton?.click();
-                  } else if (e.key === "Tab") {
+                  //   commandOptionButton?.click();
+                  // } else 
+                  if (e.key === "Tab") {
                     const words = findWordIndices(prompt);
-
                     if (words.length > 0) {
                       const word = words.at(0);
                       const fullPrompt = prompt;
@@ -1342,345 +1287,38 @@
                       }
                     }
                   }
-                  // const text = clipboardData.getData('text/plain');
-                  // if (isValidUrl(text)) {
-                  //   webInfo = {url: text};
-                  //   e.preventDefault();
-                  // }
                 }}
               />
               <div class="flex justify-between">
                 <div class="flex flex-row">
                   <!-- 图片上传 -->
-                  {#if fileUploadEnabled && !search}
+                  {#if fileUploadEnabled && !$toolflag}
                     <div class="self-star mb-2 ml-1 mr-1">
-                      <Tooltip content={$i18n.t("Attach files")}>
-                        <button
-                          class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
-                          type="button"
-                          on:click={() => {
-                            filesInputElement.click();
-                          }}
+                      <button
+                        class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
+                        type="button"
+                        on:click={() => {
+                          filesInputElement.click();
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                          class="w-[1.2rem] h-[1.2rem]"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 16"
-                            fill="currentColor"
-                            class="w-[1.2rem] h-[1.2rem]"
-                          >
-                            <path
-                              d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
-                            />
-                          </svg>
-                        </button>
-                      </Tooltip>
+                          <path
+                            d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
+                          />
+                        </svg>
+                      </button>
+                      <!-- <Tooltip content={$i18n.t("Attach files")}></Tooltip> -->
                     </div>
                   {/if}
 
-                  <!-- 网络搜索 -->
+                  <!-- 工具组件 -->
                   <div class="self-star mb-2 ml-1 mr-1">
-                    <button class="flex flex-row items-center text-gray-800 dark:text-white transition rounded-full pr-3 cursor-pointer 
-                      ease-in-out duration-700 {(!search_icon_show && search) ? 'bg-black' : 'bg-gray-50 dark:bg-gray-800'}"
-                      type="button"
-                      on:mouseenter={async (event) => {
-                        event.stopPropagation();
-                        search_icon_show = true;
-                      }}
-                      on:mouseleave={async (event) => {
-                        event.stopPropagation();
-                        search_icon_show = false;
-                      }}
-                      on:touchstart={async (event) => {
-                        event.stopPropagation();
-                        if (!search_icon_show) {
-                          isTouched = true;
-                          search_icon_show = true;
-                        } 
-                      }}>
-                      <button class="flex flex-row pl-2 pr-1 py-2 rounded-full button-select-none {search? 'bg-black' : ''}"
-                        type="button"
-                        on:click={async (event) => {
-                          event.stopPropagation();
-                          if (checkPlatform() != "ios") {
-                            if (isTouched) {
-                              isTouched = false;
-                              return;
-                            }
-                          }
-                          search_icon_show = false;
-                          search = !search;
-                        }}>
-                        {#if search}
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="icon ml-1" 
-                            viewBox="0 0 1024 1024" 
-                            fill="#D0A870"
-                            version="1.1" 
-                            width="1em" 
-                            height="1em">
-                            <path d="M912 325.1c0 13.8-4.8 25.5-14.4 35.1L523.9 733.9l-70.3 70.3c-9.6 9.6-21.4 14.4-35.1 14.4-13.8 0-25.5-4.8-35.1-14.4l-70.3-70.3-186.7-186.8c-9.6-9.6-14.4-21.4-14.4-35.1 0-13.8 4.8-25.5 14.4-35.1l70.3-70.3c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4L418.6 559l338.5-339.1c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4l70.3 70.3c9.5 9.5 14.4 21.2 14.4 34.9z"/>
-                          </svg>
-                        {/if}
-                        <!-- {#if search_type == "web"}
-                          <Tooltip content={$i18n.t("Search the Web")}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 1024 1024"
-                              class="w-[1rem] h-[1rem] ml-1 mr-1" 
-                              fill="#D0A870">
-                              <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                            </svg>
-                          </Tooltip>
-                        {/if} -->
-                        {#if search_type == "bing"}
-                          <Tooltip content={$i18n.t("Search the Bing")}>
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 1024 1024"
-                              class="w-[1rem] h-[1rem] ml-1 mr-1"
-                              fill="#D0A870">
-                              <path d="M911.36 426.666667L433.493333 238.933333c-6.826667-3.413333-13.653333 0-17.066666 3.413334-6.826667 6.826667-6.826667 13.653333-6.826667 20.48l102.4 238.933333 10.24 10.24 146.773333 40.96-416.426666 225.28 116.053333-98.986667c3.413333-3.413333 6.826667-6.826667 6.826667-13.653333V102.4c0-6.826667-3.413333-13.653333-10.24-17.066667L126.293333 0c-6.826667 0-13.653333 0-17.066666 3.413333-3.413333 3.413333-6.826667 6.826667-6.826667 13.653334v853.333333c0 3.413333 0 3.413333 3.413333 6.826667l3.413334 3.413333 3.413333 3.413333 238.933333 136.533334c3.413333 0 6.826667 3.413333 6.826667 3.413333 3.413333 0 6.826667 0 10.24-3.413333l546.133333-341.333334c3.413333-3.413333 6.826667-10.24 6.826667-13.653333V443.733333c0-6.826667-3.413333-13.653333-10.24-17.066666z"/>
-                            </svg>
-                          </Tooltip>
-                        {/if}
-                        {#if search_type == "twitter"}
-                          <Tooltip content={$i18n.t("Search the Twitter")}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 1024 1024"
-                              class="w-[1rem] h-[1rem] ml-1 mr-1" 
-                              fill="#D0A870">
-                              <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
-                            </svg>
-                          </Tooltip>
-                        {/if}
-                        {#if search_type == "youtube"}
-                          <Tooltip content={$i18n.t("Search the YouTube")}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 1024 1024"
-                              class="w-[1rem] h-[1rem] ml-1 mr-1" 
-                              fill="#D0A870">
-                              <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                              <path d="M416.896 640l256-128.256-256-127.744z"/>
-                            </svg>
-                          </Tooltip>
-                        {/if}
-                        </button>
-                        {#if search_icon_show}
-                          {#if checkPlatform() == 'other'}
-                            <div class="flex flex-row py-1 ease-in-out duration-700 {(search_icon_show && search) ? 'px-1' : ''}">
-                              <!-- {#if search_type != "web"}
-                                <Tooltip content={$i18n.t("Search the Web")}>
-                                  <button
-                                    class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1
-                                    { (search_icon_show && search && search_type == 'web') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                    type="button"
-                                    on:click={async (event) => {
-                                      event.stopPropagation();
-                                      search_type = "web";
-                                      search_icon_show = false;
-                                      search = true;
-                                      isTouched = false;
-                                      await tick(); 
-                                    }}
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 1024 1024"
-                                      class="w-[1rem] h-[1rem]" 
-                                      fill="#D0A870">
-                                      <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                                    </svg>
-                                  </button>
-                                </Tooltip>
-                              {/if} -->
-                              {#if search_type != "bing"}
-                                <Tooltip content={$i18n.t("Search the Bing")}>
-                                  <button
-                                    class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1
-                                    { (search_icon_show && search && search_type == 'bing') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                    type="button"
-                                    on:click={async (event) => {
-                                      event.stopPropagation();
-                                      search_type = "bing";
-                                      search_icon_show = false;
-                                      search = true;
-                                      isTouched = false;
-                                      await tick(); 
-                                    }}
-                                  >
-                                    <svg 
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 1024 1024"
-                                      class="w-[1rem] h-[1rem]"
-                                      fill="#D0A870">
-                                      <path d="M911.36 426.666667L433.493333 238.933333c-6.826667-3.413333-13.653333 0-17.066666 3.413334-6.826667 6.826667-6.826667 13.653333-6.826667 20.48l102.4 238.933333 10.24 10.24 146.773333 40.96-416.426666 225.28 116.053333-98.986667c3.413333-3.413333 6.826667-6.826667 6.826667-13.653333V102.4c0-6.826667-3.413333-13.653333-10.24-17.066667L126.293333 0c-6.826667 0-13.653333 0-17.066666 3.413333-3.413333 3.413333-6.826667 6.826667-6.826667 13.653334v853.333333c0 3.413333 0 3.413333 3.413333 6.826667l3.413334 3.413333 3.413333 3.413333 238.933333 136.533334c3.413333 0 6.826667 3.413333 6.826667 3.413333 3.413333 0 6.826667 0 10.24-3.413333l546.133333-341.333334c3.413333-3.413333 6.826667-10.24 6.826667-13.653333V443.733333c0-6.826667-3.413333-13.653333-10.24-17.066666z"/>
-                                    </svg>
-                                  </button>
-                                </Tooltip>
-                              {/if}
-                              {#if search_type != "twitter"}
-                                <Tooltip content={$i18n.t("Search the Twitter")}>
-                                  <button
-                                    class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 ml-1
-                                    { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                    type="button"
-                                    on:click={async (event) => {
-                                      event.stopPropagation();
-                                      search_type = "twitter";
-                                      search_icon_show = false;
-                                      search = true;
-                                      isTouched = false;
-                                      await tick(); 
-                                    }}
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 1024 1024"
-                                      class="w-[1rem] h-[1rem]" 
-                                      fill="#D0A870">
-                                      <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
-                                    </svg>
-                                  </button>
-                                </Tooltip>
-                              {/if}
-                              {#if search_type != "youtube"}
-                                <Tooltip content={$i18n.t("Search the YouTube")}>
-                                  <button
-                                    class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none select-none p-1 ml-1
-                                    { (search_icon_show && search && search_type == 'youtube') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                    type="button"
-                                    on:click={async (event) => {
-                                      event.stopPropagation();
-                                      search_type = "youtube";
-                                      search_icon_show = false;
-                                      search = true;
-                                      isTouched = false;
-                                      await tick();
-                                    }}
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 1024 1024"
-                                      class="w-[1rem] h-[1rem]" 
-                                      fill="#D0A870">
-                                      <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                                      <path d="M416.896 640l256-128.256-256-127.744z"/>
-                                    </svg>
-                                  </button>
-                                </Tooltip>
-                              {/if}
-                            </div>
-                          {:else}
-                            <div class="flex flex-row py-1 ease-in-out duration-700 {(search_icon_show && search) ? 'px-1' : ''}">
-                              <!-- <Tooltip content={$i18n.t("Search the Web")}>
-                                <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 button-select-none
-                                  { (search_icon_show && search && search_type == 'web') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                  type="button"
-                                  on:click={ async (event) => {
-                                    event.stopPropagation();
-                                    if (search_type == "web") {
-                                      search_icon_show = false;
-                                    }
-                                    search_type = "web";
-                                    search = true;
-                                    isTouched = false;
-                                    await tick(); 
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 1024 1024"
-                                    class="w-[1rem] h-[1rem]" 
-                                    fill="#D0A870">
-                                    <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                                  </svg>
-                                </button>
-                              </Tooltip> -->
-                              <Tooltip content={$i18n.t("Search the Bing")}>
-                                <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 ml-1 button-select-none
-                                  { (search_icon_show && search && search_type == 'bing') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                  type="button"
-                                  on:click={ async (event) => {
-                                    event.stopPropagation();
-                                    if (search_type == "bing") {
-                                      search_icon_show = false;
-                                    }
-                                    search_type = "bing";
-                                    search = true;
-                                    isTouched = false;
-                                    await tick(); 
-                                  }}
-                                >
-                                  <svg 
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 1024 1024"
-                                    class="w-[1rem] h-[1rem]"
-                                    fill="#D0A870">
-                                    <path d="M911.36 426.666667L433.493333 238.933333c-6.826667-3.413333-13.653333 0-17.066666 3.413334-6.826667 6.826667-6.826667 13.653333-6.826667 20.48l102.4 238.933333 10.24 10.24 146.773333 40.96-416.426666 225.28 116.053333-98.986667c3.413333-3.413333 6.826667-6.826667 6.826667-13.653333V102.4c0-6.826667-3.413333-13.653333-10.24-17.066667L126.293333 0c-6.826667 0-13.653333 0-17.066666 3.413333-3.413333 3.413333-6.826667 6.826667-6.826667 13.653334v853.333333c0 3.413333 0 3.413333 3.413333 6.826667l3.413334 3.413333 3.413333 3.413333 238.933333 136.533334c3.413333 0 6.826667 3.413333 6.826667 3.413333 3.413333 0 6.826667 0 10.24-3.413333l546.133333-341.333334c3.413333-3.413333 6.826667-10.24 6.826667-13.653333V443.733333c0-6.826667-3.413333-13.653333-10.24-17.066666z"/>
-                                  </svg>
-                                </button>
-                              </Tooltip>
-                              <Tooltip content={$i18n.t("Search the Twitter")}>
-                                <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 ml-1 button-select-none
-                                  { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                  type="button"
-                                  on:click={ async (event) => {
-                                    event.stopPropagation();
-                                    if (search_type == "twitter") {
-                                      search_icon_show = false;
-                                    }
-                                    search_type = "twitter";
-                                    search = true;
-                                    isTouched = false;
-                                    await tick(); 
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 1024 1024"
-                                    class="w-[1rem] h-[1rem]" 
-                                    fill="#D0A870">
-                                    <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
-                                  </svg>
-                                </button>
-                              </Tooltip>
-                              <Tooltip content={$i18n.t("Search the YouTube")}>
-                                <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none select-none p-1 ml-1 button-select-none
-                                  { (search_icon_show && search && search_type == 'youtube') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                  type="button"
-                                  on:click={ async (event) => {
-                                    event.stopPropagation();
-                                    if (search_type == "youtube") {
-                                      search_icon_show = false;
-                                    }
-                                    search_type = "youtube";
-                                    search = true;
-                                    isTouched = false;
-                                    await tick(); 
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 1024 1024"
-                                    class="w-[1rem] h-[1rem]" 
-                                    fill="#D0A870">
-                                    <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                                    <path d="M416.896 640l256-128.256-256-127.744z"/>
-                                  </svg>
-                                </button>
-                              </Tooltip>
-                            </div>
-                          {/if}
-                        {/if}
-                        <span class="text-sm font-bold text-[#D0A870] select-none {(search_icon_show && !search) ? 'ml-1' : ''}">{$i18n.t("search")}</span>
-                    </button>  
+                    <Tools bind:inputplaceholder={chatInputPlaceholder}/>
                   </div>
 
                   <!-- 深度搜索 -->

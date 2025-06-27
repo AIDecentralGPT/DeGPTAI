@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
-	import { chats, config, modelfiles, models, settings, user as _user, mobile, deApiBaseUrl } from '$lib/stores';
+	import { chats, config, modelfiles, models, settings, user as _user, mobile, deApiBaseUrl, toolflag } from '$lib/stores';
 	import { tick, getContext } from 'svelte';
 
 	import { toast } from 'svelte-sonner';
@@ -46,8 +46,6 @@
 		})();
 	}
 
-	let thirdData = {};
-
 	const scrollToBottom = () => {
 		const element = document.getElementById('messages-container');
 		element.scrollTop = element.scrollHeight;
@@ -60,6 +58,9 @@
 		}
 	};
 
+	// 用于判断是否是网络搜索需要重新赋值
+	const toolTypes = ["bing", "twitter", "youtube"];
+
 	const confirmEditMessage = async (messageId, content) => {
 		let userPrompt = content;
 		let userMessageId = uuidv4();
@@ -71,9 +72,10 @@
 			role: 'user',
 			content: userPrompt,
 			...(history.messages[messageId].files && { files: history.messages[messageId].files }),
-			...(history.messages[messageId].search && { search: history.messages[messageId].search }),
-			...(history.messages[messageId].search_type && { search_type: history.messages[messageId].search_type }),
-			...(history.messages[messageId].webInfo && { webInfo: history.messages[messageId].webInfo }),
+			...(history.messages[messageId].toolflag && { toolflag: history.messages[messageId].toolflag }),
+			...(history.messages[messageId].tooltype && { tooltype: history.messages[messageId].tooltype }),
+			...(history.messages[messageId].toolInfo && { toolInfo: history.messages[messageId].toolInfo }),
+			...(history.messages[messageId].parseInfo && { parseInfo: history.messages[messageId].parseInfo }),
 			models: selectedModels.filter((m, mIdx) => selectedModels.indexOf(m) === mIdx)
 		};
 
@@ -99,9 +101,9 @@
         let responseMessage = {
           parentId: userMessageId,
           id: responseMessageId,
-          search: userMessage?.search,
-          search_type: userMessage?.search_type,
-          search_content: userMessage?.thirdData,
+          toolflag: userMessage?.toolflag,
+          tooltype: userMessage?.tooltype,
+          parseInfo: toolTypes.includes(userMessage?.tooltype) ? "" : userMessage?.parseInfo,
           keyword: userPrompt,
           childrenIds: [],
           role: "assistant",
@@ -130,7 +132,7 @@
 
 		// 校验模型已使用次数
     let modelLimit = {}
-		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels);
+		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
     if (passed) {
       for (const item of selectedModels) {
         data.forEach((dItem:any) => {
@@ -144,31 +146,112 @@
     }
 
 		// 获取网络搜索内容
-		if (userMessage?.search) {
-      await handleSearchWeb(userPrompt, userMessage?.search_type);
-      userMessage?.models.forEach(async (modelId: string) => {
-        // 如果已创建信息赋值web数据
-        if (responseMap[modelId]) {
-          let responseMessageId = responseMap[modelId].id;
-          let responseMessage = responseMap[modelId];
-          responseMessage.search_content = thirdData;
-          history.messages[responseMessageId] = responseMessage;
-        }
-      });
+		if (userMessage?.toolflag) {
+			if (userMessage?.tooltype && toolTypes.includes(userMessage?.tooltype)) {
+
+				let response = await handleSearchWeb(userPrompt, userMessage?.tooltype);
+				
+				// 更新回复解析内容
+				userMessage?.models.forEach(async (modelId: string) => {
+					// 如果已创建信息赋值web数据
+					if (responseMap[modelId]) {
+						let responseMessageId = responseMap[modelId].id;
+						let responseMessage = responseMap[modelId];
+						responseMessage.parseInfo = response;
+						history.messages[responseMessageId] = responseMessage;
+					}
+				});
+
+				// 更新提问解析内容
+				userMessage = {
+					...userMessage,
+					parseInfo: response
+				}
+				history.messages[userMessageId] = userMessage;
+			}
+      
       scrollToBottom();
     }
 
-		// 如果是网址分析
-		let webContent = null;
-		if ((userMessage?.webInfo?.url??"").length > 0) {
-			let webResult = await getWebContent(localStorage.token, userMessage?.webInfo?.url);
-			if (webResult?.ok) {
-				webContent = webResult?.data;
-			}
+		await tick();
+		await sendPrompt(userPrompt, responseMap, modelLimit);
+	};
+
+	const resentMessage = async (messageId) => {
+		let userMessage = {
+			...history.messages[messageId]
+		};
+		
+		if (toolTypes.includes(userMessage?.tooltype)) {
+			userMessage = {
+				...userMessage,
+				parseInfo: ""
+			};
 		}
 
+		let userPrompt = userMessage?.content;
+
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+		history.messages[messageId].childrenIds.forEach((responseMessageId: string) => {
+			let responseMessage = history.messages[responseMessageId];
+			responseMessage = {
+				...responseMessage,
+				parseInfo: "",
+				error: false,
+				content: "",
+				done: false
+			}
+			history.messages[responseMessageId] = responseMessage;
+
+			responseMap[responseMessage?.model] = responseMessage;
+		});
+
+		// 校验模型已使用次数
+    let modelLimit = {}
+		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!dItem.passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+      	}) 
+    	}
+    }
+
+		// 获取网络搜索内容
+		if (userMessage?.toolflag) {
+			if (userMessage?.tooltype && toolTypes.includes(userMessage?.tooltype)) {
+
+				let response = await handleSearchWeb(userPrompt, userMessage?.tooltype);
+				
+				// 更新回复解析内容
+				userMessage?.models.forEach(async (modelId: string) => {
+					// 如果已创建信息赋值web数据
+					if (responseMap[modelId]) {
+						let responseMessageId = responseMap[modelId].id;
+						let responseMessage = responseMap[modelId];
+						responseMessage.parseInfo = response;
+						history.messages[responseMessageId] = responseMessage;
+					}
+				});
+
+				// 更新提问解析内容
+				userMessage = {
+					...userMessage,
+					parseInfo: response
+				}
+				history.messages[messageId] = userMessage;
+			}
+      
+      scrollToBottom();
+    }
+
 		await tick();
-		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit, webContent);
+		await sendPrompt(userPrompt, responseMap, modelLimit);
 	};
 
 	const updateChatMessages = async () => {
@@ -330,13 +413,14 @@
 	};
 
 	// 获取搜索网页
-  const handleSearchWeb= async(userPrompt: string, search_type: string) => {
+  const handleSearchWeb= async(userPrompt: string, toolType: string) => {
     const ai_keyword = await generateSearchChatKeyword(userPrompt);
-    let result = await thirdSearch(localStorage.token, ai_keyword, search_type);
+    let result = await thirdSearch(localStorage.token, ai_keyword, toolType);
     if (result?.ok) {
-      thirdData = result.data;
-    }
-    await tick();
+      return result.data;
+    } else {
+			return "";
+		}
   }
 
 	const generateSearchChatKeyword = async (userPrompt: string) => {
@@ -424,7 +508,7 @@
 		<div class="w-full pt-2">
 			{#key chatId}
 				{#each messages as message, messageIdx}
-					<div class=" w-full {messageIdx === messages.length - 1 ? 'pb-28' : ''}">
+					<div class=" w-full {messageIdx === messages.length - 1 ? ($toolflag ? 'pb-48' : 'pb-28') : ''}">
 						<div
 							class="flex flex-col justify-between px-6 md:px-20 mb-3 {$settings?.fullScreenMode ?? null
 								? 'max-w-full'
@@ -455,6 +539,7 @@
 										siblings={history.messages[message.parentId]?.childrenIds ?? []}
 										isLastMessage={messageIdx + 1 === messages.length}
 										{readOnly}
+										{resentMessage}
 										{updateChatMessages}
 										{confirmEditResponseMessage}
 										{showPreviousMessage}

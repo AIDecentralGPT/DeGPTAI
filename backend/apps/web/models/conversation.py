@@ -11,7 +11,7 @@ import uuid
 class Conversation(Model):
     id = CharField(primary_key=True, default=str(uuid.uuid4)) #主键
     user_id = CharField() # 用户ID
-    model = CharField() # 模型名称
+    model_type = CharField() # 模型类型
     chat_time = DateField()  # 会话日期
     chat_num = IntegerField() # 会话总数
     created_at = BigIntegerField() # 创建时间
@@ -24,7 +24,7 @@ class Conversation(Model):
 class ConversationModel(BaseModel):
     id: str # 主键
     user_id: str # 用户ID
-    model: str # 模型名称
+    model_type: str # 模型类型
     chat_time: datetime  # 会话日期
     chat_num: int # 会话总数
     created_at: int # 创建时间
@@ -32,7 +32,7 @@ class ConversationModel(BaseModel):
 
 
 class ConversationRequest(BaseModel):
-    models: list
+    model: str
 
 
 # 定义ConversationTable类，用于操作Conversation表
@@ -41,12 +41,12 @@ class ConversationTable:
         self.db = db  # 初始化数据库实例
         db.create_tables([Conversation])
 
-    def insert(self, user_id: str, model: str) -> bool:
+    def insert(self, user_id: str, model_type: str) -> bool:
       try:
         conversation = ConversationModel(
           id = str(uuid.uuid4()),
           user_id = user_id,
-          model = model,
+          model_type = model_type,
           chat_time =  date.today(),
           chat_num = 1,
           created_at = int(time.time()),
@@ -54,7 +54,8 @@ class ConversationTable:
         )
         Conversation.create(**conversation.model_dump())
         return True
-      except:
+      except Exception as e:
+        print("========conversation insert========", e)
         return False
 
     def update(self, conversation: ConversationModel) -> bool:
@@ -66,9 +67,9 @@ class ConversationTable:
       except Exception as e:
         return False
 
-    def get_info_by_userid_model_date(self, user_id: str, model: str, chat_time: date) -> Optional[ConversationModel]:
+    def get_info_by_userid_mtype_date(self, user_id: str, model_type: str, chat_time: date) -> Optional[ConversationModel]:
       try:
-        conversation = Conversation.get_or_none(Conversation.user_id == user_id, Conversation.model == model, SQL('date(chat_time)') == chat_time)
+        conversation = Conversation.get_or_none(Conversation.user_id == user_id, Conversation.model_type == model_type, SQL('date(chat_time)') == chat_time)
         if conversation is None:
           return None
         else:
@@ -76,18 +77,18 @@ class ConversationTable:
           conversation_model = ConversationModel(**conversation_dict)  # 将字典转换为Pydantic模型
           return conversation_model
       except Exception as e:
-        print("========================", e)
+        print("=============get_info_by_userid_mtype_date===========", e)
         return None
       
     #获取用户今天多个模型使用情况
-    def get_info_by_userid_models_date(self, user_id: str, models: list, chat_time: date) -> Optional[List[ConversationModel]]:
+    def get_info_by_userid_mtypes_date(self, user_id: str, types: list, chat_time: date) -> Optional[List[ConversationModel]]:
       try:
-        conversations = Conversation.select().where(Conversation.user_id == user_id, Conversation.model.in_(models), SQL('date(chat_time)') == chat_time)
+        conversations = Conversation.select().where(Conversation.user_id == user_id, Conversation.model_type.in_(types), SQL('date(chat_time)') == chat_time)
         # 将数据库对象转换为字典
         conversation_list = [ConversationModel(**model_to_dict(conversation)) for conversation in conversations]
         return conversation_list  
       except Exception as e:
-        print("========================", e)
+        print("===========get_info_by_userid_mtypes_date=============", e)
         return None
 
 # 实例化ConversationTable类

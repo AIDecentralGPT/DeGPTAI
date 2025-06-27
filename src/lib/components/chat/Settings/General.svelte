@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { DropdownMenu } from "bits-ui";
+	import ChevronDown from "$lib/components/icons/ChevronDown.svelte";
 	import { toast } from 'svelte-sonner';
 	import { createEventDispatcher, onMount, getContext } from 'svelte';
 	import { getLanguages } from '$lib/i18n';
@@ -122,6 +124,7 @@
 		console.log(_theme);
 	};
 
+	let themeshow = false;
 	const themeChangeHandler = (_theme: string) => {
 		theme.set(_theme);
 		localStorage.setItem('theme', _theme);
@@ -131,26 +134,38 @@
 			document.documentElement.classList.add('dark');
 		}
 		applyTheme(_theme);
+		selectedTheme = localStorage.theme ?? 'light';
+		themeshow = false;
 	};
 
-
-
-
+	let languageshow = false;
+	let langmt = 0;
+	let langselView:any;
+	$: if (languageshow) {
+		if (langselView) {
+			const rect = langselView.getBoundingClientRect();
+			if (rect.top < 380) {
+				langmt = 400 - rect.top;
+			} else {
+				langmt = 0;
+			}
+		}
+	}
 
 	let isMobile = false;
 
-const checkUserAgent = () => {
-	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-	// 检测常见的移动设备标识
-	isMobile = /android|iphone|ipad|iPod|blackberry|opera mini|iemobile|wpdesktop/i.test(userAgent);
-	if(isMobile) {
-		// themeChangeHandler("dark")
-	}
-};
+	const checkUserAgent = () => {
+		const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+		// 检测常见的移动设备标识
+		isMobile = /android|iphone|ipad|iPod|blackberry|opera mini|iemobile|wpdesktop/i.test(userAgent);
+		if(isMobile) {
+			// themeChangeHandler("dark")
+		}
+	};
 
-onMount(() => {
-	checkUserAgent();
-});
+	onMount(() => {
+		checkUserAgent();
+	});
 
 
 </script>
@@ -158,42 +173,109 @@ onMount(() => {
 <div class="flex flex-col h-full justify-between text-sm">
 	<div class="  pr-1.5 overflow-y-scroll max-h-[25rem]">
 		<div class="">
-			<div class=" mb-1 text-sm font-medium">{$i18n.t('WebUI Settings')}</div>
+			<div class=" mb-1 text-sm font-medium">{$i18n.t('User interface settings')}</div>
 
 			<!-- {#if !isMobile} -->
-			<div class="flex w-full justify-between">
+			<div class="flex w-full justify-between mt-1">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Theme')}</div>
-				<div class="flex items-center relative">
-					<select
-						class=" dark:bg-gray-900 w-fit pr-5 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
-						bind:value={selectedTheme}
-						placeholder="Select a theme"
-						on:change={() => themeChangeHandler(selectedTheme)}
-					>
-						<option class="leading-5 text-center" value="system">⚙️ {$i18n.t('System')}</option>
-						<option class="leading-5 text-center" value="dark">🌑 {$i18n.t('Dark')}</option>
-						<option class="leading-5 text-center" value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
-						<option class="leading-5 text-center" value="light">☀️ {$i18n.t('Light')}</option>
-					</select>
+				<div class="flex items-center">
+					<DropdownMenu.Root bind:open={themeshow}>
+						<DropdownMenu.Trigger>
+							<div class="flex flex-row justify-end mr-1">
+								<span class="text-ellipsis overflow-hidden">
+									{#if selectedTheme == "system"}
+										⚙️ {$i18n.t('System')}
+									{:else if selectedTheme == "dark"}
+										🌑 {$i18n.t('Dark')}
+									{:else if selectedTheme == "oled-dark"}
+										🌃 {$i18n.t('OLED Dark')}
+									{:else}
+										☀️ {$i18n.t('Light')}
+									{/if}
+								</span>
+								<ChevronDown className=" self-center ml-2 size-3" strokeWidth="2.5" />
+							</div>	
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="z-[10000] rounded-md  bg-white dark:bg-gray-850 dark:text-white 
+							shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none" 
+							side="bottom-end">
+							<slot>
+								<div class="flex flex-col px-1 py-2">
+									<button class="flex justify-between items-center cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-800 py-1 px-6 rounded-lg"
+										on:click={() => {
+											themeChangeHandler("system")
+										}}>
+										<span class="text-sm">⚙️ {$i18n.t('System')}</span>
+									</button>
+									<button class="flex justify-between items-center cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-800 py-1 px-6 rounded-lg"
+										on:click={() => {
+											themeChangeHandler("dark")
+										}}>
+										<span class="text-sm">🌑 {$i18n.t('Dark')}</span>
+									</button>
+									<button class="flex justify-between items-center cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-800 py-1 px-6 rounded-lg"
+										on:click={() => {
+											themeChangeHandler("oled-dark")
+										}}>
+										<span class="text-sm">🌃 {$i18n.t('OLED Dark')}</span>
+									</button>
+									<button class="flex justify-between items-center cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-800 py-1 px-6 rounded-lg"
+										on:click={() => {
+											themeChangeHandler("light")
+										}}>
+										<span class="text-sm">☀️ {$i18n.t('Light')}</span>
+									</button>
+								</div>
+								<div class="hidden w-[42rem]" />
+      					<div class="hidden w-[32rem]" />
+							</slot>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
 				</div>
 			</div>
 			<!-- {/if} -->
 
-			<div class=" flex w-full justify-between">
+			<div class=" flex w-full justify-between mt-1">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Language')}</div>
-				<div class="flex items-center relative">
-					<select
-						class=" dark:bg-gray-900 w-fit pr-5 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
-						bind:value={lang}
-						placeholder="Select a language"
-						on:change={(e) => {
-							$i18n.changeLanguage(lang);
-							updateUserLanguage(localStorage.token, lang);
-						}}>
-						{#each languages as language}
-							<option class="leading-5 text-center" value={language['code']}>{language['title']}</option>
-						{/each}
-					</select>
+				<div bind:this={langselView} class="flex items-center">
+					<DropdownMenu.Root bind:open={languageshow}>
+						<DropdownMenu.Trigger>
+							<div class="flex flex-row justify-end mr-1">
+								<span class="text-ellipsis overflow-hidden">
+									{#each languages as language}
+										{#if language['code'] == lang}
+											{language['title']}
+										{/if}
+									{/each}
+								</span>
+								<ChevronDown className=" self-center ml-2 size-3" strokeWidth="2.5" />
+							</div>	
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="z-[10000] rounded-md  bg-white dark:bg-gray-850 dark:text-white 
+							shadow-lg border border-gray-300/30 dark:border-gray-700/50  outline-none"
+							style="margin-top:{langmt}px"
+							avoidCollisions={true}
+							collisionPadding={10} 
+							side="bottom-end">
+							<slot>
+								<div class="flex flex-col px-1 py-2">
+									{#each languages as language}
+										<button class="flex justify-between items-center cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-800 py-1 px-6 rounded-lg"
+											on:click={() => {
+												lang = language['code'];
+												$i18n.changeLanguage(lang);
+												updateUserLanguage(localStorage.token, lang);
+												languageshow = false;
+											}}>
+											<span class="text-sm">{language['title']}</span>
+										</button>
+									{/each}
+								</div>
+								<div class="hidden w-[42rem]" />
+      					<div class="hidden w-[32rem]" />
+							</slot>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
 				</div>
 			</div>
 			{#if $i18n.language === 'en-US'}
@@ -234,14 +316,14 @@ onMount(() => {
 
 		<hr class=" dark:border-gray-700 my-3" />
 		{#if false}
-		<div>
-			<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
-			<textarea
-				bind:value={system}
-				class="w-full rounded-lg p-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none resize-none"
-				rows="4"
-			/>
-		</div>
+			<div>
+				<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
+				<textarea
+					bind:value={system}
+					class="w-full rounded-lg p-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none resize-none"
+					rows="4"
+				/>
+			</div>
 		{/if}
 
 		<div class="mt-2 space-y-3 pr-1.5">

@@ -53,10 +53,16 @@ export async function transferDbc(toAddress, amountDbc, privateKey) {
     const txResponse = await wallet.sendTransaction(tx);
     console.log("Transaction sent:", txResponse);
     console.log("Transaction hash:", txResponse.hash);
-    return txResponse;
+    return {
+      ok: true,
+      data: txResponse
+    };
   } catch (error) {
     console.error("Failed to send transaction:", error);
-    throw error;
+    return {
+      ok: false,
+      msg: "Failed to send transaction !"
+    };
   }
 }
 

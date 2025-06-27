@@ -34,14 +34,14 @@ export const defaultBackendConfig = async () => {
     "auth": true,
     "default_locale": "en-US",
     "images": false,
-    "default_models": "Qwen3-235B-A22B-FP8-think",
+    "default_models": "deepseek-chat",
     "default_prompt_suggestions": [
 				{
 					"title": [
 							"Webpage Subscription and Data Insights",
 							"Automatically crawl the subscribed content on web pages through a large model and conduct data analysis."
 					],
-					"content": "Please paste the website domain name"
+					"content": "Paste or enter a link..."
 				},
         {
             "title": [

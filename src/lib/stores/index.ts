@@ -63,12 +63,22 @@ export const showCoinIntruModal = writable(false);
 export const showCoinIntruType = writable('dgc');
 export const dbcRate = writable({rate: 0.0002, time: ""});
 
+// 升级VIP标志用于实时更新升级数据
+export const vipupgrade = writable(false);
+
 
 // 页面初始化完成状态
 export const initPageFlag = writable(false);
 
 // 下载相关
 export const showDownLoad = writable(false);
+export const downLoadUrl = writable('')
+
+// 用户钱包视图
+export const showWalletView = writable(false);
+
+// 人脸认证url
+export const faceUrl = writable({url: ""});
 
 // 默认模型请求地址
 export const deApiBaseUrl = writable({
@@ -79,6 +89,10 @@ export const deApiBaseUrl = writable({
 // 推特相关
 export const showFollowTwitterModal = writable(false);
 export const showFollowTGGroupModal = writable(false);
+
+// 使用工具会话
+export const toolflag = writable(false);
+export const tooltype = writable("")
 
 // 钱包数据
 export let currentWalletData = writable(DefaultCurrentWalletData)
@@ -104,8 +118,8 @@ export let channel = writable("")
 // 切换模型相关
 export const switchModel = writable({
 	content: '',
-	search: false,
-	searchType: 'web',
+	toolFlag: false,
+	toolType: 'web',
 	status: false
 });
 

@@ -118,13 +118,17 @@
 
 
         try {
-          await transferMethod(
+          let response = await transferMethod(
             address,
             amount,
             $currentWalletData?.walletInfo?.privateKey
           );
-          toast.success($i18n.t("Transfer successful,please be patient!"));
-
+          if (response?.ok) {
+            toast.success($i18n.t("Transfer successful,please be patient!"));
+          } else {
+            toast.error($i18n.t(response?.msg));
+          }
+          
         } catch (error) {
           loading = false;
           toast.error(error?.message);

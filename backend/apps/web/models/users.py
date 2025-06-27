@@ -13,7 +13,7 @@ from apps.web.internal.db import DB, aspect_database_operations  # 导入数据�
 from apps.web.models.chats import Chats  # 导入Chats模型
 from apps.web.models.rewards import RewardsTableInstance
 from fastapi import APIRouter, Depends, HTTPException, Request
-from apps.web.models.vip import VIPStatus
+from apps.web.models.vipstatus import VIPStatus
 from apps.redis.redis_client import RedisClientInstance
 import json
 from apps.web.models.reward_data import RewardDateTableInstance
@@ -27,6 +27,8 @@ from apps.web.models.reward_data import RewardDateTableInstance
 class UserRoleUpdateProForm(BaseModel):
     tx: str  # 定义id字段，类型为字符串
     amount: int  # 定义role字段，类型为字符串
+    vip: str # vip 类型
+    viptime: str # vip 时间
 
 # 定义Pydantic模型UserRequest
 class UserRequest(BaseModel):

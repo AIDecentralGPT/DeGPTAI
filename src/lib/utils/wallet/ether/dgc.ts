@@ -1,10 +1,7 @@
 // dgc.js
 
 import { ethers } from "ethers";
-import {
-  //  provider,
-  
-  signData, getCurrencyPrice, getGas } from "./utils";
+import { getCurrencyPrice, getGas } from "./utils";
 import ABI from "./abi.json";
 import { getDbcBalance } from "./dbc";
 import { toast } from "svelte-sonner";
@@ -36,7 +33,7 @@ const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1';
 // ];
 // 定义 RPC URL 和 Chain ID
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
-const rpcUrl = "https://rpc.dbcwallet.io";  // 新 的 RPC URL
+const rpcUrl = "https://rpc1.dbcwallet.io";  // 新 的 RPC URL
 
 // const chainId = 19850818; // 旧 的 Chain ID
 const chainId = 19880818; // 新 的 Chain ID
@@ -80,8 +77,10 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 
   // 比较余额和gas费用
   if (gasNumber > dbcBalance) {
-    toast.error("The DBC balance is not enough to pay gas.");
-    return;
+    return {
+      ok: false,
+      msg: "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance."
+    };
   }
   const tx = {
     to: DGC_TOKEN_CONTRACT_ADDRESS,
@@ -93,12 +92,15 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 
   try {
     const txResponse = await wallet.sendTransaction(tx);
-    console.log("========================", txResponse);
-    return txResponse;
+    return {
+      ok: true,
+      data: txResponse
+    };
   } catch (error) {
-    console.log("==============transferDgc=============", error) ;
-    toast.error("The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC");
-    return;
+    return {
+      ok: false,
+      msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."
+    };
   }
 }
 

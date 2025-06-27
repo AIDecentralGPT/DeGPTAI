@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, getContext } from "svelte";
-  import { copyToClipboard } from "$lib/utils";
+  import { checkUniapp, copyToClipboard } from "$lib/utils";
   import { toast } from "svelte-sonner";
   import {
     currentWalletData,
@@ -16,11 +16,12 @@
     settings,
     config,
     channel,
+    downLoadUrl,
+    showDownLoad,
   } from "$lib/stores";
   import { addErrorLog } from "$lib/apis/errorlog";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getDbcRate } from "$lib/apis/wallet/index";
-  import { getUserInfo } from "$lib/apis/users";
   import { goto } from "$app/navigation";
   import { getLanguages } from "$lib/i18n/index";
   import { checkKyc } from "$lib/apis/kycrestrict";
@@ -158,9 +159,9 @@
       <w3m-button class="v-btn" label="组件方式打开" />
     </div>
   {:else}
-    <div class="flex justify-start gap-2 mt-1 mb5">
+    <div class="flex justify-between gap-2 mt-1 mb5">
       <button
-        class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           $showTransferModal = true;
@@ -169,16 +170,16 @@
         {$i18n.t("Transfer")}
       </button>
       <button
-        class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           $showExportWalletJsonModal = true;
         }}
       >
-        {$i18n.t("Export Wallet")}
+        {$i18n.t("Export")}
       </button>
       <button
-        class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           await closeWallet($channel);
@@ -188,7 +189,7 @@
           await initLanguage();
         }}
       >
-        {$i18n.t("Close Wallet")}
+        {$i18n.t("Close")}
       </button>
     </div>
   {/if}
@@ -317,7 +318,7 @@
         <div class="opacity-50 leading-normal text-xs">
           Total ${floorToFixed(
             Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
-            4
+            5
           )}u
         </div>
       </div> 
@@ -325,18 +326,23 @@
   </div>
 
   <!-- 二级按钮 -->
-  <div class="flex justify-start gap-2 mt-1 mb-2">
+  <div class="flex justify-between gap-2 mt-1 mb-2">
     <button
-      class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
       type="submit"
       on:click={async () => {
         // $showBuyCoinModal = true;
         // 用新标签打开
-        window.open("https://www.drcpad.io/project?name=DeGPT", "_blank");
+        if (checkUniapp()) {
+          $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken";
+          $showDownLoad = true;
+        } else {
+          window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+        }
       }}
     >
       <!-- {$i18n.t("Buy")} -->
-      {$i18n.t("Node Sale")}
+      {$i18n.t("Buy DGC")}
     </button>
     <!-- <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
@@ -348,7 +354,7 @@
       {$i18n.t("Rewards")}
     </button> -->
     <button
-      class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
       type="submit"
       on:click={async () => {
         $showTransactionsModal = true;
@@ -358,14 +364,14 @@
     </button>
     {#if $user?.verified}
       <button
-        class="px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
       >
         {$i18n.t("Authed KYC")}
       </button>
     {:else}
       <button
-        class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
           try {

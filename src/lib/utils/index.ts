@@ -587,13 +587,13 @@ function isPageCurrentlyVisible(): boolean {
 }
 
 const timeoutIdMap = new Map();
-export const addTextSlowly = async (target, text, model) => {
+export const addTextSlowly = async (updateTarget, target, text, model) => {
 	// 检查页面当前可见状态
 	const isVisible = isPageCurrentlyVisible();
 	if (isVisible) {
-			console.log('页面切换到前台，变为可见' + model);
+		console.log('页面切换到前台，变为可见' + model);
 	} else {
-			console.log('页面切换到后台或切换了选项卡，变为不可见' + model);
+		console.log('页面切换到后台或切换了选项卡，变为不可见' + model);
 	}
 	for (const char of text) {
 		target += char;
@@ -604,9 +604,10 @@ export const addTextSlowly = async (target, text, model) => {
 				const timeoutId = setTimeout(() => {
 					resolve();
 					timeoutIdMap.delete(model); // 定时完成后移除ID
-				}, 12.5);
+				}, 25);
 				timeoutIdMap.set(model, timeoutId);
-			});	
+			});
+			updateTarget(target)
 		} else {
 			if (timeoutIdMap.has(model)) {
 				clearTimeout(timeoutIdMap.get(model));

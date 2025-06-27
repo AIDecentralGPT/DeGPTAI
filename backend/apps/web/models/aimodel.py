@@ -1,13 +1,13 @@
 from pydantic import BaseModel
 from typing import List
 
-class AliQwenMessageModel(BaseModel):
+class AiMessageModel(BaseModel):
     role: str
-    content: str
+    content: object
 
-class AliQwenModelReq(BaseModel):
+class AiModelReq(BaseModel):
     model: str
-    messages: List[AliQwenMessageModel]
+    messages: List[AiMessageModel]
     project: str
     stream : bool
     enable_thinking: bool

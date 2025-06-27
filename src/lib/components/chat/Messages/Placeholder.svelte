@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 
 	import Suggestions from '../MessageInput/Suggestions.svelte';
-  	import GetRewards from '$lib/components/wallet/GetRewards.svelte';
+  import GetRewards from '$lib/components/wallet/GetRewards.svelte';
 
 	export let models = [];
 	export let modelfiles = [];
@@ -29,7 +29,7 @@
 </script>
 
 {#key mounted}
-	<div class="m-auto w-full px-8 lg:px-20 pb-16">
+	<div class="m-auto w-full px-8 lg:px-20 pb-[120px]">
 		<div class="flex justify-start">
 			<div class="flex space-x-4 mb-1" in:fade={{ duration: 200 }}></div>
 		</div>

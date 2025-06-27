@@ -10,7 +10,7 @@ import { Base64 } from 'js-base64';
 
 // 定义 RPC URL 和 Chain ID
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
-const rpcUrl = "https://rpc.dbcwallet.io"; // 新 的 RPC URL
+const rpcUrl = "https://rpc1.dbcwallet.io"; // 新 的 RPC URL
 // const chainId = 19850818; // 旧 的 Chain ID
 const chainId = 19880818; //新 的 Chain ID
 
@@ -381,8 +381,7 @@ async function handleWalletSignIn({
     const proInfo = await isPro(localStorage.token);
     user.set({
       ...walletSignInResult,
-      isPro: proInfo ? proInfo.is_pro : false,
-      proEndDate: proInfo ? proInfo.end_date : null
+      vipInfo: proInfo
     });
 
   }

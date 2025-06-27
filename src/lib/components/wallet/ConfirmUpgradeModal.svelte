@@ -5,139 +5,58 @@
   import { getModels as _getModels } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import {
-    currentWalletData,
-    showConfirmUpgradeModal,
-    user,
-  } from "$lib/stores";
-  import {
-    checkMoney,
-    authSigner,
-    payForVip,
-  } from "$lib/utils/wallet/ether/modelabi.js";
-  import { openProServices, isPro } from "$lib/apis/users/index.js";
+  import { user, currentWalletData } from "$lib/stores";
+  import { openProServices } from "$lib/apis/users/index.js";
 
-  import { getAccount } from "@wagmi/core";
-  import { config } from "$lib/utils/wallet/walletconnect/index";
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
+  import { transferDgc } from "$lib/utils/wallet/ether/dgc"
 
   const i18n = getContext("i18n");
 
   export let show = false;
   let loading = false;
-  let showTip = false;
-  let step = 0;
-  let progress = 0;
-  let progressInterval: NodeJS.Timeout;
 
-  function startProgress() {
-    progressInterval = setInterval(() => {
-      if (step == 0 && progress <= 10) {
-        if (progress < 10) {
-          progress < 10 ? progress++ : (progress = 10);
-        } else {
-          progress = 10;
-        }
-      } else if (step == 1 && progress <= 20) {
-        if (progress < 20) {
-          progress < 10 ? (progress = 10) : progress++;
-        } else {
-          progress = 20;
-        }
-      } else if (step == 2 && progress <= 30) {
-        if (progress < 30) {
-          progress < 20 ? (progress = 20) : progress++;
-        } else {
-          progress = 30;
-        }
-      } else if (step == 3 && progress <= 80) {
-        if (progress < 80) {
-          progress < 30 ? (progress = 30) : progress++;
-        } else {
-          progress = 80;
-        }
-      } else if (step == 4 && progress <= 99) {
-        if (progress < 99) {
-          progress < 80 ? (progress = 80) : progress++;
-        } else {
-          progress = 99;
-        }
-      } else if (step == 5) {
-        progress = 100;
-      }
-    }, 800);
-  }
-
-  async function handleUpgrade() {
-    if (progressInterval) {
-      clearInterval(progressInterval);
-    }
-    startProgress();
-    if ($currentWalletData && $currentWalletData?.walletInfo?.address) {
-    } else {
-      toast.error($i18n.t("Please log in to your wallet first!"));
-      return;
-    }
-    step = 1;
-
-    let checkRet = await checkMoney($currentWalletData?.walletInfo?.address);
-    if (!checkRet?.ok) {
-      toast.error($i18n.t(checkRet.message));
-      loading = false;
-      showTip = false;
-      return;
-    }
-    step = 2;
-
-    let signerRet = await authSigner($currentWalletData, $user?.address_type);
-    if (!signerRet?.ok) {
-      toast.error($i18n.t(signerRet?.message));
-      loading = false;
-      showTip = false;
-      return;
-    }
-    step = 3;
-
-    if ($user?.address_type != "dbc") {
-      const account = await getAccount(config);
-      const provider = await account?.connector?.getProvider();
-      if (provider?.namespace) {
-        showTip = true;
-      }
-    }
-
-    // 更新合约VIP
-    let result = await payForVip(signerRet?.data);
-    step = 4;
-    if (result?.ok) {
-      let res = await openProServices(
-        localStorage.token,
-        result?.data?.hash,
-        0
-      );
-      if (res) {
-        toast.success(
-          $i18n.t("Congratulations on successfully upgrading pro!")
+  export let viptype = "basic";
+  export let viptime = "month";
+  export let money = 3;
+  let address = "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8";
+  async function upgradeVip() {
+    if ($currentWalletData?.walletInfo) {
+      loading = true;
+      try {
+        let response = await transferDgc(
+          address,
+          money/0.00006,
+          $currentWalletData?.walletInfo?.privateKey
         );
-        $showConfirmUpgradeModal = false;
-        show = false;
-        const userPro = await isPro(localStorage.token); // 发送请求到你的 API
-        if (userPro && userPro.is_pro) {
-          user.set({
-            ...$user,
-            isPro: userPro ? userPro.is_pro : false,
-            proEndDate: userPro ? userPro.end_date : null,
-          });
+        if (response?.ok) {
+          if (response?.data?.hash) {
+            await uploadVip(response?.hash)
+          }
+        } else {
+          toast.error($i18n.t(response?.msg))
         }
-      } else {
-        toast.error($i18n.t("Upgrading pro failed!"));
+        
+      } catch (error) {
+        loading = false;
+        toast.error(error?.message);
       }
-    } else {
-      toast.error($i18n.t(result.message));
+      loading = false;
+      updateWalletData($currentWalletData?.walletInfo)
     }
-    step = 5;
-    clearInterval(progressInterval);
-    loading = false;
-    showTip = false;
+  }
+  async function uploadVip(tx: string) {
+    let result = await openProServices(localStorage.token, tx, money, viptype, viptime);
+    if (result?.ok) {
+      user.set({
+        ...$user,
+        vipInfo: result?.data,
+      });
+      toast.success($i18n.t("VIP Upgrade Successful!"));
+      show = false;
+    } else {
+      toast.error($i18n.t("Failed to upgrade to VIP!"));
+    }
   }
 </script>
 
@@ -173,45 +92,31 @@
     </div>
 
     <!-- 主体 -->
-    <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-      <div class="w-full">
-        <p class="text-md mb-4 w-full">
-          {$i18n.t("Are you sure to become a distinguished Plus member?")}
-        </p>
-        {#if showTip}
-          <p class="text-sm mb-4 w-full text-gray-400 dark:text-gray-600">
-            *{$i18n.t(
-              "Please open the mobile app and approve the transaction request."
-            )}
+    <div class="flex flex-col">
+      <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
+        <div class="w-full">
+          <p class="text-md mb-4 w-full">
+            {$i18n.t("Are you sure to become a distinguished member?")}
           </p>
-        {/if}
-        <!-- 提交按钮 -->
-        <div class="flex justify-end my-4">
-          <button
-            disabled={loading}
-            class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-            style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
-            type="submit"
-            on:click={async () => {
-              loading = true;
-              step = 0;
-              progress = 0;
-              await tick();
-              try {
-                await handleUpgrade();
-                loading = false;
-              } catch (error) {
-                loading = false;
-              }
-              // toast.success("Upgrade Successfully!");
-            }}
-          >
-            {#if loading}
-              <span>{progress}% {$i18n.t("Upgrading")}</span>
-            {:else}
-              <span>{$i18n.t("Yes")}</span>
-            {/if}
-          </button>
+          <div class="flex justify-end my-4">
+            <button
+              disabled={loading}
+              class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+              style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+              type="submit"
+              on:click={async () => {
+                loading = true;
+                await tick();
+                await upgradeVip();
+              }}
+            >
+              {#if loading}
+                <span>{$i18n.t("Upgrading")}</span>
+              {:else}
+                <span>{$i18n.t("Yes")}</span>
+              {/if}
+            </button>
+          </div>
         </div>
       </div>
     </div>

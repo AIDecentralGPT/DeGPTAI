@@ -65,7 +65,7 @@ log = logging.getLogger(__name__)
 
 # --------钱包相关--------
 #w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
-w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新以太坊主网
+w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io')) # 新以太坊主网
 
 # ————————————————————————
 
@@ -666,11 +666,6 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
                 <p>Verification codes expire after two hours.</p>
                 <p>Thank you.</p>  
                 <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
-                    <div style="display: flex; align-items: center;">
-                        <img src="https://www.degpt.ai/static/email/tip.png" style="width: 20px; margin-right: 5px;"/>
-                        <span>Small Tip:</span>
-                    </div>
-                    <p>If you're using a Gmail account and can't find the verification code in you Inbox, it's highly likely that it's been filtered into your SpamFolder.</p>
                     <img src="https://www.degpt.ai/static/email/telegram_icon_url.png" alt="DecentralGPT Logo" style="width: 200px; height: auto;">
                     <div style="margin-top: 15px;">
                         <a style="margin-right: 10px; color: #3498db; text-decoration: none;" href="https://www.decentralgpt.org/">DecentralGPT Website</a>

@@ -13,7 +13,7 @@ import { config } from "$lib/utils/wallet/walletconnect/index";
 const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新合约地址
 
 // const modelUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 合约RPC网址
-const modelUrl = "https://rpc.dbcwallet.io"; // 新 合约RPC网址
+const modelUrl = "https://rpc1.dbcwallet.io"; // 新 合约RPC网址
 
 // 模型旧合约地址
 // const MODEL_TOKEN_CONTRACT_ADDRESS = '0x8588fb0Fec459d44a75135EE74E532a34539C749';

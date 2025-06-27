@@ -18,6 +18,8 @@
 			return 'w-[30rem]';
 		} else if (size === 'md') {
 			return 'w-[48rem]';
+		} else if (size === 'big') {
+			return 'w-[110rem]';
 		} else {
 			return 'w-[56rem]';
 		}

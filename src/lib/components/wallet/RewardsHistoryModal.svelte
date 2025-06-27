@@ -5,7 +5,7 @@
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
-  import { user } from "$lib/stores";
+  import { user, showUserVerifyModal } from "$lib/stores";
   import {
     getRewardsHistory,
     creatWalletCheck,
@@ -325,6 +325,7 @@
                             toast.warning(
                               $i18n.t("Please complete the KYC verification !")
                             );
+                            $showUserVerifyModal = true;
                           }
                         }}
                       >
@@ -342,7 +343,7 @@
                 {dayjs(historyItem.reward_date).format("YYYY-MM-DD HH:mm:ss")}
               </td>
               <td class="px-6 py-4 whitespace-nowrap"
-                >{historyItem.reward_type}</td
+                >{ $i18n.t(historyItem.reward_type) }</td
               >
             </tr>
           {/each}

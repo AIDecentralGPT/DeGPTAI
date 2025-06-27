@@ -26,106 +26,256 @@ export const getDeModels = async (token: string = "") => {
 
   const format_res = {
     models: [
-      // {
-      //   name: "Llama 3.1",
-      //   model: "Llama-3.1-405B",
-      //   tip: "Llama 3.1",
-      //   desc: "Suitable for most tasks"
-      // },
+      // 基础模型
       {
-        name: "Qwen O3",
-        model: "Qwen3-235B-A22B-FP8-think",
-        textmodel: "qwen3-235b-a22b",
-        think: true,
-        tip: "Qwen O3",
+        name: "DeepSeek V3",
+        model: "deepseek-chat",
+        imagemodel: "deepseek-chat",
+        textmodel: "deepseek-chat",
+        think: false,
+        tip: "DeepSeek V3",
         support: "text",
-        desc: "Deep thinking,mathematical and writing abilities ≈ o3."
+        type: 1,
+        desc: "Suitable for reasoning and writing",
+        modelicon: "/static/icon/deepseek.png",
+        modelinfo: ""
       },
       {
-        name: "Qwen3",
-        model: "Qwen3-235B-A22B-FP8",
+        name: "DouBao 1.6 (TikTok)",
+        model: "doubao-seed-1-6-250615",
+        imagemodel: "doubao-seed-1-6-250615",
+        textmodel: "doubao-seed-1-6-250615",
+        think: false,
+        tip: "DouBao 1.6 (TikTok)",
+        support: "image",
+        type: 1,
+        desc: "Multimodal graphics and text, suitable for daily tasks",
+        modelicon: "/static/icon/doubao.png",
+        modelinfo: ""
+      },
+      {
+        name: "Qwen3 (Ali Cloud)",
+        model: "qwen3-235b-a22b",
+        imagemodel: "qwen-vl-plus",
         textmodel: "qwen3-235b-a22b",
         think: false,
-        tip: "Qwen3",
+        tip: "Qwen3 (Ali Cloud)",
+        support: "image",
+        type: 1,
+        desc: "Strong language skills",
+        modelicon: "/static/icon/qwen.png",
+        modelinfo: ""
+      },
+      {
+        name: "Qwen3 Thinking (Ali Cloud)",
+        model: "qwen3-235b-a22b-think",
+        imagemodel: "qvq-max",
+        textmodel: "qwen3-235b-a22b",
+        think: true,
+        tip: "Qwen3 Thinking (Ali Cloud)",
+        support: "image",
+        type: 1,
+        desc: "Enhanced reasoning, suitable for complex tasks",
+        modelicon: "/static/icon/qwen.png",
+        modelinfo: ""
+      },
+      {
+        name: "GPT-4o mini (OpenAI)",
+        model: "gpt-4o-mini",
+        imagemodel: "gpt-4o-mini",
+        textmodel: "gpt-4o-mini",
+        think: false,
+        tip: "GPT-4o mini (OpenAI)",
+        support: "image",
+        type: 1,
+        desc: "Lightweight general-purpose model with fast response speed",
+        modelicon: "/static/icon/gpt3.png",
+        modelinfo: ""
+      },
+      // 高级模型
+      {
+        name: "GPT-4o (OpenAI)",
+        model: "gpt-4o",
+        imagemodel: "gpt-4o",
+        textmodel: "gpt-4o",
+        think: false,
+        tip: "GPT-4o (OpenAI)",
+        support: "image",
+        type: 2,
+        desc: "Multimodal graphics and text, suitable for most tasks",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
+      },
+      {
+        name: "DeepSeek R1",
+        model: "deepseek-reasoner",
+        imagemodel: "deepseek-reasoner",
+        textmodel: "deepseek-reasoner",
+        think: true,
+        tip: "DeepSeek R1",
         support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
+        type: 2,
+        desc: "Strong writing and coding skills",
+        modelicon: "/static/icon/deepseek.png",
+        modelinfo: ""
+      },
+      {
+        name: "Gemini 2.5 Flash (Google)",
+        model: "gemini-2.5-flash-preview-05-20",
+        imagemodel: "gemini-2.5-flash-preview-05-20",
+        textmodel: "gemini-2.5-flash-preview-05-20",
+        think: false,
+        tip: "Gemini 2.5 Flash (Google)",
+        support: "text",
+        type: 2,
+        desc: "Multimodal graphics and text, quick response",
+        modelicon: "/static/icon/gemini.png",
+        modelinfo: ""
+      },
+      {
+        name: "Grok 3 (Elon Musk)",
+        model: "grok-3",
+        imagemodel: "grok-3",
+        textmodel: "grok-3",
+        think: false,
+        tip: "Grok 3 (Elon Musk)",
+        support: "image",
+        type: 2,
+        desc: "Expert in Q&A, lively expression style",
+        modelicon: "/static/icon/grok.png",
+        modelinfo: ""
+      },
+      {
+        name: "DouBao 1.6 Thinking (TikTok)",
+        model: "doubao-seed-1-6-thinking-250615",
+        imagemodel: "doubao-seed-1-6-thinking-250615",
+        textmodel: "doubao-seed-1-6-thinking-250615",
+        think: true,
+        tip: "DouBao 1.6 Thinking (TikTok)",
+        support: "image",
+        type: 2,
+        desc: "Multimodal graphics and text, reasoning enhancement",
+        modelicon: "/static/icon/doubao.png",
+        modelinfo: ""
+      },
+      // 顶级模型
+      {
+        name: "GPT o3 (OpenAI)",
+        model: "o3",
+        imagemodel: "o3",
+        textmodel: "o3",
+        think: false,
+        tip: "GPT o3 (OpenAI)",
+        support: "image",
+        type: 3,
+        desc: "Using advanced reasoning",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
+      },
+      // {
+      //   name: "GPT o4-mini (OpenAI)",
+      //   model: "o4-mini",
+      //   imagemodel: "o4-mini",
+      //   textmodel: "o4-mini",
+      //   think: false,
+      //   tip: "GPT o4-mini (OpenAI)",
+      //   support: "image",
+      //   type: 3,
+      //   desc: "Using advanced reasoning",
+      //   modelicon: "/static/icon/gpt_round.png",
+      //   modelinfo: ""
+      // },
+      {
+        name: "GPT o4-mini high (OpenAI)",
+        model: "o4-mini-high",
+        imagemodel: "o4-mini-high",
+        textmodel: "o4-mini-high",
+        think: false,
+        tip: "GPT o4-mini high (OpenAI)",
+        support: "image",
+        type: 3,
+        desc: "Using advanced reasoning",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
+      },
+      {
+        name: "GPT-4.1 (OpenAI)",
+        model: "gpt-4.1",
+        imagemodel: "gpt-4.1",
+        textmodel: "gpt-4.1",
+        think: false,
+        tip: "GPT-4.1 (OpenAI)",
+        support: "image",
+        type: 3,
+        desc: "Good at fast coding and analysis",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
+      },
+      {
+        name: "GPT 4.5 (OpenAI)",
+        model: "gpt-4.5-preview",
+        imagemodel: "gpt-4.5-preview",
+        textmodel: "gpt-4.5-preview",
+        think: false,
+        tip: "GPT 4.5 (OpenAI)",
+        support: "image",
+        type: 3,
+        desc: "Skilled in writing and generating ideas",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
+      },
+      {
+        name: "Claude 4 Opus (Anthropic)",
+        model: "claude-opus-4-20250514",
+        imagemodel: "claude-opus-4-20250514",
+        textmodel: "claude-opus-4-20250514",
+        think: false,
+        tip: "Claude 4 Opus (Anthropic)",
+        support: "text",
+        type: 3,
+        desc: "Strongest in coding, suitable for complex tasks",
+        modelicon: "/static/icon/claude.png",
+        modelinfo: ""
+      },
+      {
+        name: "Claude 4 Opus Thinking (Anthropic)",
+        model: "claude-opus-4-20250514-think",
+        imagemodel: "claude-opus-4-20250514",
+        textmodel: "claude-opus-4-20250514",
+        think: true,
+        tip: "Claude 4 Opus Thinking (Anthropic)",
+        support: "text",
+        type: 3,
+        desc: "Deep reasoning enhancement",
+        modelicon: "/static/icon/claude.png",
+        modelinfo: ""
+      },
+      {
+        name: "Grok 3 Thinking (Elon Musk)",
+        model: "grok-3-mini",
+        imagemodel: "grok-3-mini",
+        textmodel: "grok-3-mini",
+        think: true,
+        tip: "Grok 3 Thinking (Elon Musk)",
+        support: "image",
+        type: 3,
+        desc: "Strengthened logical reasoning and knowledge expression",
+        modelicon: "/static/icon/grok.png",
+        modelinfo: ""
+      },
+      {
+        name: "Gemini 2.5 Pro (Google)",
+        model: "gemini-2.5-pro-preview-06-05",
+        imagemodel: "gemini-2.5-pro-preview-06-05",
+        textmodel: "gemini-2.5-pro-preview-06-05",
+        think: false,
+        tip: "Gemini 2.5 Pro (Google)",
+        support: "text",
+        type: 3,
+        desc: "Powerful multimodal capabilities, proficient in graphics, text, and code",
+        modelicon: "/static/icon/gemini.png",
+        modelinfo: ""
       }
-      // {
-      //   name: "DeepSeek V3",
-      //   model: "DeepSeek-V3-0324",
-      //   tip: "DeepSeek V3",
-      //   support: "text",
-      //   desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      // },
-      // {
-      //   name: "DeepSeek R1",
-      //   model: "DeepSeek-R1",
-      //   tip: "DeepSeek R1",
-      //   support: "text",
-      //   desc: "Deep thinking,mathematical and writing abilities ≈ o3"
-      // },
-      // {
-      //   name: "Llama4",
-      //   model: "Llama-4-Scout-Instruct",
-      //   tip: "Llama4",
-      //   support: "image",
-      //   desc: "Suitable for most tasks, taking photos to solve math problems."
-      // }
-      // {
-      //   name: "Pixtral Large 1.0",
-      //   model: "Pixtral-124B",
-      //   tip: "Pixtral Large 1.0",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // }
-      // {
-      //   name: "sana",
-      //   model: "sana",
-      //   tip: "sana",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // }
-      // {
-      //   name: "Qwen 2.5",
-      //   model: "Qwen2.5-72B",
-      //   tip: "Qwen 2.5",
-      //   support: "text",
-      //   desc: "Suitable for most tasks"
-      // },
-      // {
-      //   name: "Nemotron 3.1",
-      //   model: "Llama-3.1-Nemotron-70B",
-      //   tip: "Nemotron 3.1",
-      //   support: "text",
-      //   desc: "Suitable for most tasks"
-      // },
-      // {
-      //   name: "Nvidia 3.1",
-      //   model: "NVLM-D-72B",
-      //   tip: "Nvidia 3.1",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // },
-      // {
-      //   name: "Deepseek coder2.0",
-      //   model: "DeepSeek-Coder-V2",
-      //   tip: "Deepseek coder2.0",
-      //   support: "text",
-      //   desc: "Optimize code writing"
-      // },
-      // {
-      //   name: "Codestral 0.1", 
-      //   model: "Codestral-22B-v0.1",
-      //   tip: "Codestral 0.1",
-      //   desc: "Optimize code writing"
-      // },
-      // {
-      //   name: "Qwen 2.5 Code",
-      //   model: "Qwen2.5-Coder-32B",
-      //   tip: "Qwen 2.5 Code",
-      //   support: "text",
-      //   desc: "Optimize code writing"
-      // }
     ],
   };
   return (format_res?.models ?? []).map((model) => ({

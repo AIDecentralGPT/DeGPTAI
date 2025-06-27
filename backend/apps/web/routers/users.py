@@ -1,6 +1,7 @@
 from fastapi import Response, Request
 from fastapi import Depends, FastAPI, HTTPException, status
 from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta
 from typing import List, Union, Optional, Any
 
 from fastapi import APIRouter
@@ -11,7 +12,7 @@ from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm,
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
 from apps.web.models.rewards import RewardsTableInstance
-from apps.web.models.vip import VIPStatuses, VIPStatusModelResp, VipTotalModel
+from apps.web.models.vipstatus import VIPStatuses, VIPStatusModelResp, VipTotalModel
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
 from constants import ERROR_MESSAGES
@@ -31,7 +32,7 @@ from utils.misc import parse_duration, validate_email_format
 # --------钱包相关--------
 from web3 import Web3
 #w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
-w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io')) # 新以太坊主网
+w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io')) # 新以太坊主网
 
 # from web3.auto import w3
 import asyncio
@@ -258,38 +259,42 @@ def get_transaction_receipt(tx_hash):
 #         raise HTTPException(400, detail="update_user_vip error")
 
 
-def update_user_vip(user_id, tx_hash):
+def update_user_vip(user_id, tx_hash, vip, time):
     try:
         # 获取当前时间并计算一个月后的日期
         start_date = datetime.now().date()
-        end_date = (datetime.now() + timedelta(days=30)).date()
+        if (time == "month"):
+            end_date = (datetime.now() + timedelta(days=30)).date()
+        else:
+            end_date = (datetime.now() + relativedelta(years=1)).date()
 
         # 获取用户的VIP状态
-        vip_status = VIPStatuses.get_vip_status_by_user_id(user_id)
+        vip_status = VIPStatuses.get_vip_status_by_userid_vip(user_id, vip)
         
-        if vip_status and VIPStatuses.is_vip_active(user_id):
-            # 用户已经是VIP，续费一个月
-            new_end_date = vip_status.end_date + timedelta(days=30)
-            updated = VIPStatuses.update_vip_end_date(user_id, new_end_date)
-            print(f"VIP续费成功，新结束日期: {new_end_date}, 更新结果: {updated}")
+        if vip_status:
+            # 用户已经是VIP
+            if (time == "month"):
+                new_end_date = vip_status.end_date + timedelta(days=30)
+            else:
+                new_end_date = vip_status.end_date + relativedelta(years=1)
+            
+            VIPStatuses.update_vip_end_date(vip_status.id, new_end_date)
         else:
             # 用户不是VIP，创建新的VIP状态并设置时长为一个月
-            new_vip_status = VIPStatuses.insert_vip_status(
+            level = 1
+            if vip == "standard":
+                level = 2
+            elif vip == "pro":
+                level = 3
+            VIPStatuses.insert_vip_status(
                 user_id=user_id,
+                vip=vip,
+                level=level,
                 start_date=start_date,
                 end_date=end_date,
                 order_id=tx_hash
             )
-            print(f"新VIP创建成功: {new_vip_status}")
-
-        # # 插入付费日志
-        # new_payment_log = PaymentLogs.insert_payment_log(
-        #     user_id=user_id,
-        #     payment_date=datetime.now(),
-        #     order_id=tx_hash
-        # )
-        # print(f"付费日志记录成功: {new_payment_log}")
-
+            
     except Exception as e:
         print("更新vip报错", e)
         raise HTTPException(400, detail="update_user_vip error")
@@ -297,7 +302,7 @@ def update_user_vip(user_id, tx_hash):
 
 
 # 升级为pro
-@router.post("/pro", response_model=bool)
+@router.post("/pro")
 async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_current_user)):
 
     if session_user:
@@ -334,16 +339,18 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
                         print(f"From: {from_address}")
                         print(f"To: {to_address}")
                             
-                        if to_address == "0x2e0a85CB5352d7C542D632EdB4949DF879f8e981": 
+                        if to_address == "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8": 
                             print("执行update_user_vip")
-                            update_user_vip(session_user.id, tx_hash)
-                            # Users.update_user_role_by_id(session_user.id, "pro")
-                            return True             
+                            update_user_vip(session_user.id, tx_hash, form_data.vip, form_data.viptime)
+
+                            # 获取VIP信息
+                            viplist = VIPStatuses.get_vip_status_by_user_id(session_user.id)
+                            return {"ok": True, "data": viplist}
                 else:
-                    return False
+                    return {"ok": False, "data": []}
 
         except Exception as e:
-            print("获取所有邀请用户时发生错误", e)
+            print("============upgradeVip==========", e)
             raise HTTPException(400, detail="Error retrieving invited users")
   
 
@@ -352,7 +359,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
         detail=ERROR_MESSAGES.ACTION_PROHIBITED,
     )
 
-@router.post("/is_pro", response_model=Optional[VIPStatusModelResp])
+@router.post("/is_pro", response_model=Optional[List[VIPStatusModelResp]])
 async def isPro(session_user=Depends(get_current_user)):
     # print("isPro session_user", session_user)
     if session_user:
@@ -361,14 +368,6 @@ async def isPro(session_user=Depends(get_current_user)):
             # print("user_id", user_id, session_user.id, session_user.role)
             # 获取用户的VIP状态
             vip_status = VIPStatuses.get_vip_status_by_user_id(user_id)
-            # print("vip_status", vip_status)
-            # is_pro = vip_status and VIPStatuses.is_vip_active(user_id)
-            if vip_status is None:
-                return None
-            is_pro = bool(vip_status and VIPStatuses.is_vip_active(user_id))
-
-            # print("isPro", is_pro, vip_status, VIPStatuses.is_vip_active(user_id), user_id, session_user.id, session_user.role)
-            vip_status.is_pro = is_pro
             return vip_status
         except Exception as e:
             print("判断是否为vip", e)

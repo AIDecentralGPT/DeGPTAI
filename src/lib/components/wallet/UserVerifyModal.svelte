@@ -2,7 +2,7 @@
   import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
   import { WEBUI_API_BASE_URL } from "$lib/constants";
-  import { copyToClipboard } from "$lib/utils";
+  import { copyToClipboard, checkUniapp } from "$lib/utils";
   import {
     faceliveness,
     facelivenessRes,
@@ -10,7 +10,7 @@
     verifyCode,
     servetime,
   } from "$lib/apis/auths";
-  import { user, theme } from "$lib/stores";
+  import { user, theme, faceUrl } from "$lib/stores";
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
@@ -87,6 +87,7 @@
 
   async function sendVerificationCode() {
     if (countdown === 0) {
+      email = email.trim();
       if (validateEmail(email)) {
         sendCode(localStorage.token, email).then((res) => {
           if (res.pass) {
@@ -169,7 +170,14 @@
       faceLivenessInitialData = res;
       if (res.transaction_url) {
         if (isMobile) {
-          await goto(res.transaction_url);
+          if (checkUniapp()) {
+            faceUrl.set({
+              url: res.transaction_url
+            })
+            goto("/kyc")
+          } else {
+            await goto(res.transaction_url);
+          }
         } else {
           faceTime = new Date(res.face_time);
           getQrCode(res.transaction_url);
@@ -393,7 +401,7 @@
       {/if}
 
       {#if current === 1}
-        <div class="flex flex-col w-full md:w-4/5">
+        <div class="flex flex-col w-full">
           <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
           <div class="flex flex-col w-full mb-3">
             <div
@@ -455,6 +463,16 @@
               bind:value={code}
               class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg w-full md:flex-1"
             />
+          </div>
+
+          <div class="flex flex-col">
+            <div class="flex flex-row items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" fill="#ee6a0c" class="size-[1.6rem]">
+                <path d="M228.3 219.4c-11.7-11-30.6-11-42.2 0-11.7 11-11.7 28.8 0 39.7l42.2 39.7c11.7 11 30.6 11 42.2 0 11.7-11 11.7-28.8 0-39.7l-42.2-39.7z m567.4 0l-42.2 39.7c-11.7 11-11.7 28.8 0 39.7 11.7 11 30.6 11 42.2 0l42.2-39.7c11.7-11 11.7-28.8 0-39.7-11.6-11-30.5-11-42.2 0zM153.6 441.7H93.9c-16.5 0-29.9 12.6-29.9 28.1 0 15.5 13.4 28.1 29.9 28.1h59.7c16.5 0 29.9-12.6 29.9-28.1 0-15.5-13.4-28.1-29.9-28.1z m776.5 0h-59.7c-16.5 0-29.9 12.6-29.9 28.1 0 15.5 13.4 28.1 29.9 28.1h59.7c16.5 0 29.9-12.6 29.9-28.1 0-15.5-13.4-28.1-29.9-28.1z m-448-323.1v56.2c0 15.5 13.4 28.1 29.9 28.1s29.9-12.6 29.9-28.1v-56.2c0-15.5-13.4-28.1-29.9-28.1-16.5 0.1-29.9 12.6-29.9 28.1zM243.2 512c0 139.7 120.3 252.9 268.8 252.9S780.8 651.7 780.8 512 660.5 259.1 512 259.1 243.2 372.3 243.2 512z m209.1 393.3c0 15.5 13.4 28.1 29.9 28.1h59.7c16.5 0 29.9-12.6 29.9-28.1 0-15.5-13.4-28.1-29.9-28.1h-59.7c-16.6 0.1-29.9 12.6-29.9 28.1z m-59.8-84.2c0 15.5 13.4 28.1 29.9 28.1h179.2c16.5 0 29.9-12.6 29.9-28.1 0-15.5-13.4-28.1-29.9-28.1H422.4c-16.5 0-29.9 12.5-29.9 28.1z m0 0"/>
+              </svg>
+              <span class="ml-1 font-bold mt-1">{$i18n.t("Small Tip:")}</span>
+            </div>
+            <span class="ml-2 mt-2">{$i18n.t("If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.")}</span>
           </div>
         </div>
       {/if}
@@ -657,7 +675,7 @@
           {:else}
             <button
               disabled
-              class="px-4 py-2 primaryButton text-gray-600 transition rounded-lg w-[100px]"
+              class="px-4 py-2 primaryButton text-gray-600 transition rounded-lg w-[100px] mr-4"
             >
               {$i18n.t("Finish")}</button
             >
@@ -665,7 +683,7 @@
         {/if}
         {#if current !== 2}
           <button
-            class=" px-4 py-2 flex justify-center items-center primaryButton text-gray-100 transition rounded-lg w-[100px]"
+            class=" px-4 py-2 flex justify-center items-center primaryButton text-gray-100 transition rounded-lg w-[100px] mr-4"
             disabled={nextLoading}
             on:click={nextStep}
           >
