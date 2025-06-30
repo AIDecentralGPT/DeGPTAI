@@ -943,5 +943,7 @@
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "Saldo de DBC insuficiente. Você precisa ter pelo menos 0,01 DBC na sua carteira.",
   "Failed to send transaction !": "Falha ao enviar transação!",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "O saldo de DGC não é suficiente para pagar. Você pode convidar um amigo para obter 3000 DGC.",
-  "It seems that you are offline. Please reconnect to send messages.": "Parece que você está offline. Por favor, reconecte-se para enviar mensagens."
+  "It seems that you are offline. Please reconnect to send messages.": "Parece que você está offline. Por favor, reconecte-se para enviar mensagens.",
+  "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "A quantidade de DGC é insuficiente, é necessário comprar {{ num }} DGC adicionais. Após a compra de DGC ser concluída, atualize para VIP.",
+  "Recharge DGC": "Recarregar DGC"
 }

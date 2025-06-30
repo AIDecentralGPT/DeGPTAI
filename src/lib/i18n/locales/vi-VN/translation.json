@@ -932,5 +932,7 @@
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "Số dư DBC không đủ. Bạn cần có ít nhất 0,01 DBC trong ví của mình.",
   "Failed to send transaction !": "Gửi giao dịch thất bại!",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Số dư DGC không đủ để thanh toán. Bạn có thể mời bạn bè để nhận 3000 DGC.",
-  "It seems that you are offline. Please reconnect to send messages.": "Có vẻ như bạn đang ngoại tuyến. Vui lòng kết nối lại để gửi tin nhắn."
+  "It seems that you are offline. Please reconnect to send messages.": "Có vẻ như bạn đang ngoại tuyến. Vui lòng kết nối lại để gửi tin nhắn.",
+  "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "Số lượng DGC không đủ, cần mua thêm {{ num }} DGC. Sau khi mua DGC thành công, hãy nâng cấp lên VIP.",
+  "Recharge DGC": "Nạp DGC"
 }

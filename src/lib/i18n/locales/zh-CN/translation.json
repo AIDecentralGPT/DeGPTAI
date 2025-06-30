@@ -942,5 +942,7 @@
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "DBC数量不足，需要钱包余额中至少有0.01个DBC。",
   "Failed to send transaction !": "交易发送失败！",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC余额不足支付。您可以邀请好友获得3000 DGC。",
-  "It seems that you are offline. Please reconnect to send messages.": "您似乎已离线。请重新连接以发送消息。"
+  "It seems that you are offline. Please reconnect to send messages.": "您似乎已离线。请重新连接以发送消息。",
+  "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGC数量不够，需要额外购买{{ num }}DGC，购买DGC成功后，再升级为VIP.",
+  "Recharge DGC": "充值DGC"
 }

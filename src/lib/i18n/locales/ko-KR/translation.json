@@ -943,5 +943,7 @@
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "DBC 잔액이 부족합니다. 지갑에 최소 0.01 DBC가 필요합니다.",
   "Failed to send transaction !": "거래 전송 실패!",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC 잔액이 부족합니다. 친구를 초대하면 3000 DGC를 얻을 수 있습니다.",
-  "It seems that you are offline. Please reconnect to send messages.": "오프라인 상태인 것 같습니다. 메시지를 보내려면 다시 연결하세요."
+  "It seems that you are offline. Please reconnect to send messages.": "오프라인 상태인 것 같습니다. 메시지를 보내려면 다시 연결하세요.",
+  "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGC 수량이 부족합니다. 추가로 {{ num }} DGC를 구매해야 합니다. DGC 구매가 성공한 후 VIP로 업그레이드하세요.",
+  "Recharge DGC": "DGC 충전"
 }

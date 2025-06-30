@@ -943,5 +943,7 @@
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "DBC残高が不足しています。ウォレットに0.01 DBC以上必要です。",
   "Failed to send transaction !": "トランザクションの送信に失敗しました！",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC残高が不足しています。友達を招待すると3000 DGCを獲得できます。",
-  "It seems that you are offline. Please reconnect to send messages.": "オフラインのようです。メッセージを送信するには再接続してください。"
+  "It seems that you are offline. Please reconnect to send messages.": "オフラインのようです。メッセージを送信するには再接続してください。",
+  "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGCの数量が不足しています。追加で{{ num }}DGCを購入する必要があります。DGCの購入が成功した後、VIPにアップグレードしてください。",
+  "Recharge DGC": "DGCをチャージ"
 }

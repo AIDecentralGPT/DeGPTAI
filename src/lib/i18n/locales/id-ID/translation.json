@@ -943,5 +943,7 @@
   "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance.": "Saldo DBC tidak mencukupi. Anda perlu memiliki setidaknya 0,01 DBC di dompet Anda.",
   "Failed to send transaction !": "Gagal mengirim transaksi!",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Saldo DGC tidak cukup untuk membayar. Anda dapat mengundang teman untuk mendapatkan 3000 DGC.",
-  "It seems that you are offline. Please reconnect to send messages.": "Sepertinya Anda sedang offline. Harap sambung kembali untuk mengirim pesan."
+  "It seems that you are offline. Please reconnect to send messages.": "Sepertinya Anda sedang offline. Harap sambung kembali untuk mengirim pesan.",
+  "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "Jumlah DGC tidak mencukupi, tambahan {{ num }} DGC perlu dibeli. Setelah pembelian DGC berhasil, tingkatkan ke VIP.",
+  "Recharge DGC": "Isi ulang DGC"
 }

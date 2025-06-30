@@ -2,10 +2,10 @@
   import { getContext, tick } from "svelte";
   import { toast } from "svelte-sonner";
 
-  import { getModels as _getModels } from "$lib/utils";
+  import { getModels as _getModels, checkUniapp } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import { user, currentWalletData } from "$lib/stores";
+  import { user, currentWalletData, downLoadUrl, showDownLoad } from "$lib/stores";
   import { openProServices } from "$lib/apis/users/index.js";
 
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
@@ -26,7 +26,7 @@
       try {
         let response = await transferDgc(
           address,
-          money/0.00006,
+          +(money/0.00006).toFixed(2),
           $currentWalletData?.walletInfo?.privateKey
         );
         if (response?.ok) {
@@ -62,6 +62,15 @@
   function floorToFixed(num, digits) {
     let pow = Math.pow(10, digits);
     return (Math.floor(num * pow) / pow).toFixed(digits);
+  }
+
+  function formatUSNumber(num, digits) {
+    const options = {
+      style: 'decimal',
+      minimumFractionDigits: 0,  // 最少 0 位小数
+      maximumFractionDigits: digits,  // 最多 2 位小数
+    };
+    return new Intl.NumberFormat('en-US', options).format(num);
   }
 
   $: if (show) {
@@ -103,10 +112,10 @@
     <!-- 主体 -->
     <div class="flex flex-col">
       <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-        {#if floorToFixed(Number($currentWalletData?.dgcBalance), 2) < (floorToFixed(money/0.00006, 2))}
+        {#if (floorToFixed(money/0.00006, 2) - floorToFixed(Number($currentWalletData?.dgcBalance), 2)) > 0}
           <div class="w-full">
             <p class="text-md mb-4 w-full">
-              {$i18n.t("DGC数量不够，需要额外购买" + floorToFixed(money/0.00006, 2) + "DGC，购买DGC成功后，再升级为VIP.")}
+              {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: formatUSNumber(money/0.00006, 2)})}
             </p>
             <div class="flex justify-end my-4">
               <button
@@ -115,16 +124,18 @@
                 style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
                 type="submit"
                 on:click={async () => {
-                  loading = true;
-                  await tick();
-                  await upgradeVip();
+                  // 用新标签打开
+                  if (checkUniapp()) {
+                    $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken";
+                    $showDownLoad = true;
+                    show = false;
+                  } else {
+                    show = false;
+                    window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+                  }
                 }}
               >
-                {#if loading}
-                  <span>{$i18n.t("Upgrading")}</span>
-                {:else}
-                  <span>{$i18n.t("Yes")}</span>
-                {/if}
+                <span>{$i18n.t("Recharge DGC")}</span>
               </button>
             </div>
           </div>
