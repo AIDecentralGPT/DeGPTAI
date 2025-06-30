@@ -26,7 +26,7 @@
       try {
         let response = await transferDgc(
           address,
-          money,
+          +(money/0.00006).toFixed(2),
           $currentWalletData?.walletInfo?.privateKey
         );
         if (response?.ok) {
