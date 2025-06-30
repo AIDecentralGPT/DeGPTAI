@@ -12,7 +12,7 @@
   <div class="flex justify-between gap-6 px-3 pt-2 pb-1">
     <div class="text-sm leading-6">{$i18n.t('Join Our Community')}:</div>
 
-    <div class="flex gap-4 items-center">
+    <div class="flex gap-6 items-center">
       <button
         on:click={() => {
           if (checkUniapp()) {
@@ -27,8 +27,8 @@
         xmlns:xlink="http://www.w3.org/1999/xlink"
         fill="none"
         version="1.1"
-        width="12"
-        height="14"
+        width="14"
+        height="16"
         viewBox="0 0 16 14"
         ><defs
           ><clipPath id="master_svg0_3_1076"
@@ -58,8 +58,8 @@
         xmlns:xlink="http://www.w3.org/1999/xlink"
         fill="none"
         version="1.1"
-        width="14"
-        height="14"
+        width="16"
+        height="16"
         viewBox="0 0 18 14"
         ><defs
           ><clipPath id="master_svg0_1_11376"
@@ -89,8 +89,8 @@
         xmlns:xlink="http://www.w3.org/1999/xlink"
         fill="none"
         version="1.1"
-        width="14"
-        height="14"
+        width="16"
+        height="16"
         viewBox="0 0 18 14"
         ><defs
           ><clipPath id="master_svg0_3_1080"

@@ -26,7 +26,7 @@
       try {
         let response = await transferDgc(
           address,
-          money,
+          money/0.00006,
           $currentWalletData?.walletInfo?.privateKey
         );
         if (response?.ok) {
@@ -46,7 +46,7 @@
     }
   }
   async function uploadVip(tx: string) {
-    let result = await openProServices(localStorage.token, tx, money, viptype, viptime);
+    let result = await openProServices(localStorage.token, tx, money/0.00006, viptype, viptime);
     if (result?.ok) {
       user.set({
         ...$user,
@@ -57,6 +57,15 @@
     } else {
       toast.error($i18n.t("Failed to upgrade to VIP!"));
     }
+  }
+
+  function floorToFixed(num, digits) {
+    let pow = Math.pow(10, digits);
+    return (Math.floor(num * pow) / pow).toFixed(digits);
+  }
+
+  $: if (show) {
+    updateWalletData($currentWalletData?.walletInfo);
   }
 </script>
 
@@ -94,30 +103,57 @@
     <!-- 主体 -->
     <div class="flex flex-col">
       <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-        <div class="w-full">
-          <p class="text-md mb-4 w-full">
-            {$i18n.t("Are you sure to become a distinguished member?")}
-          </p>
-          <div class="flex justify-end my-4">
-            <button
-              disabled={loading}
-              class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-              style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
-              type="submit"
-              on:click={async () => {
-                loading = true;
-                await tick();
-                await upgradeVip();
-              }}
-            >
-              {#if loading}
-                <span>{$i18n.t("Upgrading")}</span>
-              {:else}
-                <span>{$i18n.t("Yes")}</span>
-              {/if}
-            </button>
+        {#if floorToFixed(Number($currentWalletData?.dgcBalance), 2) < (floorToFixed(money/0.00006, 2))}
+          <div class="w-full">
+            <p class="text-md mb-4 w-full">
+              {$i18n.t("DGC数量不够，需要额外购买" + floorToFixed(money/0.00006, 2) + "DGC，购买DGC成功后，再升级为VIP.")}
+            </p>
+            <div class="flex justify-end my-4">
+              <button
+                disabled={loading}
+                class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+                style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+                type="submit"
+                on:click={async () => {
+                  loading = true;
+                  await tick();
+                  await upgradeVip();
+                }}
+              >
+                {#if loading}
+                  <span>{$i18n.t("Upgrading")}</span>
+                {:else}
+                  <span>{$i18n.t("Yes")}</span>
+                {/if}
+              </button>
+            </div>
           </div>
-        </div>
+        {:else}
+          <div class="w-full">
+            <p class="text-md mb-4 w-full">
+              {$i18n.t("Are you sure to become a distinguished member?")}
+            </p>
+            <div class="flex justify-end my-4">
+              <button
+                disabled={loading}
+                class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+                style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+                type="submit"
+                on:click={async () => {
+                  loading = true;
+                  await tick();
+                  await upgradeVip();
+                }}
+              >
+                {#if loading}
+                  <span>{$i18n.t("Upgrading")}</span>
+                {:else}
+                  <span>{$i18n.t("Yes")}</span>
+                {/if}
+              </button>
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
   </div>
