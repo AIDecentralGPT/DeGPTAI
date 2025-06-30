@@ -89,7 +89,7 @@
     if (countdown === 0) {
       email = email.trim();
       if (validateEmail(email)) {
-        sendCode(localStorage.token, email).then((res) => {
+        sendCode(localStorage.token, email, $i18n.language).then((res) => {
           if (res.pass) {
             checkCaptcha = false;
             startCountdown();
@@ -198,13 +198,24 @@
   }
 
   function getQrCode(url) {
-    QRCode.toDataURL(url, function (err, url) {
-      console.log(url);
-      qrcodeUrl = url;
-      qrCodeFinish = false;
-      checkQrResult = false;
-      startQrCountdown();
-    });
+    let qrConfig = {
+      errorCorrectionLevel: 'H',
+      margin: 4,
+      width: 600,
+      color: {
+        dark: '#000000',
+        light: '#ffffff'
+      }
+    };
+    QRCode.toDataURL(url, qrConfig, 
+      function (err, url) {
+        console.log(url);
+        qrcodeUrl = url;
+        qrCodeFinish = false;
+        checkQrResult = false;
+        startQrCountdown();
+      }
+    );
   }
 
   // 二维码有效时长

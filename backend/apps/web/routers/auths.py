@@ -652,32 +652,7 @@ async def send_code(email_request: EmailRequest, user=Depends(get_current_user))
     code = email_code_operations.generate_code()  # 生成验证码
     result = email_code_operations.create(email, code)  # 将验证码保存到数据库
     if result:
-        email_body = f"""
-        <html>
-        <head>
-            <meta charset="UTF-8">
-        </head>
-        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <div style="max-width: 750px; margin: 0 auto; padding: 20px;">
-                <h1 style="color: #2c3e50;">Confirm Your Email Address</h1>
-                <p style="color:rgba(184, 142, 86, 1); font-size: 20px;">Wallet Address: {user.id}</p>
-                <p>Let's make sure this is the right email address for you. Please enter the following verification code to continue using DeGPT:</p>
-                <p style="font-size: 24px; font-weight: bold; color: #3498db;">{code}</p>
-                <p>Verification codes expire after two hours.</p>
-                <p>Thank you.</p>  
-                <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
-                    <img src="https://www.degpt.ai/static/email/telegram_icon_url.png" alt="DecentralGPT Logo" style="width: 200px; height: auto;">
-                    <div style="margin-top: 15px;">
-                        <a style="margin-right: 10px; color: #3498db; text-decoration: none;" href="https://www.decentralgpt.org/">DecentralGPT Website</a>
-                        <a style="margin-right: 10px; color: #3498db; text-decoration: none;" href="https://x.com/DecentralGPT">Follow on Twitter</a>
-                        <a style="margin-right: 10px; color: #3498db; text-decoration: none;" href="https://t.me/DecentralGPT">Join Telegram</a>
-                    </div>
-                    <p>Best regards,<br>DecentralGPT Team</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
+        email_body = email_code_operations.create_email_body(user.id, code, email_request.language)
         # 发送邮件
         email_code_operations.send_email(email, "DeGPT Code", email_body) 
         return {"pass": True, "message": "验证码已发送"}
