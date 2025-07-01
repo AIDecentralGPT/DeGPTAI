@@ -60,7 +60,7 @@
           {#if Array.isArray(reward.description)}
             <ul>
               {#each reward.description as desc, index}
-                <li>{ index + 1}. {@html $i18n.t(desc, {time: "2025-07-14 00:00:00"})}</li>
+                <li>{ index + 1}. {@html $i18n.t(desc, {time: "2025-07-15 00:00:00"})}</li>
               {/each}
             </ul>
           {:else}
