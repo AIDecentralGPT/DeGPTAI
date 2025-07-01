@@ -164,9 +164,7 @@
   function faceLiveness() {
     const MetaInfo = window.getMetaInfo();
     console.log("进入faceliveness", MetaInfo);
-
     faceliveness(MetaInfo).then(async (res) => {
-      console.log(res);
       faceLivenessInitialData = res;
       if (res.transaction_url) {
         if (isMobile) {
@@ -198,7 +196,6 @@
   }
 
   function getQrCode(url) {
-    console.log("=========================", url);
     let qrConfig = {
       errorCorrectionLevel: 'M',
       margin: 2,
