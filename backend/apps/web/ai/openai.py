@@ -24,7 +24,8 @@ class OpenAiApi:
                 completion = client.chat.completions.create(
                     model=param.model,
                     messages=param.messages,
-                    stream=param.stream
+                    stream=param.stream,
+                    temperature=0.7
                 )
             
         except APIError as e:

@@ -198,6 +198,7 @@
   }
 
   function getQrCode(url) {
+    console.log("=========================", url);
     let qrConfig = {
       errorCorrectionLevel: 'M',
       margin: 2,
