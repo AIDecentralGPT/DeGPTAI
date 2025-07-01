@@ -199,9 +199,9 @@
 
   function getQrCode(url) {
     let qrConfig = {
-      errorCorrectionLevel: 'H',
-      margin: 4,
-      width: 600,
+      errorCorrectionLevel: 'M',
+      margin: 2,
+      width: 300,
       color: {
         dark: '#000000',
         light: '#ffffff'
