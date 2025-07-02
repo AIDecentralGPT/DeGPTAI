@@ -199,6 +199,7 @@
     let token = localStorage.token;
     let lang = $i18n.language;
     url = WEBUI_BASE_URL + "/kyc/ewm?token=" + token + "&lang=" + lang;
+    console.log("============ewm_url==========", url);
     let qrConfig = {
       errorCorrectionLevel: 'M',
       margin: 2,
