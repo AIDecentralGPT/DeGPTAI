@@ -196,7 +196,9 @@
   }
 
   function getQrCode(url: string) {
-    url = WEBUI_BASE_URL + "/kyc/ewm?token=" + localStorage.token;
+    let token = localStorage.token;
+    let lang = $i18n.language;
+    url = WEBUI_BASE_URL + "/kyc/ewm?token=" + token + "&lang=" + lang;
     let qrConfig = {
       errorCorrectionLevel: 'M',
       margin: 2,

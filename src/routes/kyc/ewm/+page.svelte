@@ -8,6 +8,8 @@
   onMount(() => {
     const queryParams = new URLSearchParams($page.url.search);
     let token: any = queryParams.get("token");
+    let lang: any = queryParams.get("lang");
+    $i18n.changeLanguage(lang);
     toAliFace(token)
   });
 
