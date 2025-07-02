@@ -198,7 +198,7 @@
   function getQrCode(url: string) {
     let token = localStorage.token;
     let lang = $i18n.language;
-    url = WEBUI_BASE_URL + "/kyc/ewm?token=" + token + "&lang=" + lang;
+    url = "https://test.degpt.ai/kyc/ewm?token=" + token + "&lang=" + lang;
     console.log("============ewm_url==========", url);
     let qrConfig = {
       errorCorrectionLevel: 'M',
