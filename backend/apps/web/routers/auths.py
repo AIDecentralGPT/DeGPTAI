@@ -59,6 +59,8 @@ from apps.web.models.email_codes import (
 from apps.web.models.kyc_restrict import KycRestrictInstance
 from apps.web.api.captcha import CaptchaApiInstance
 
+from apps.redis.redis_client import RedisClientInstance
+
 from constants import USER_CONSTANTS
 import logging
 log = logging.getLogger(__name__)
@@ -722,6 +724,9 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         face_time = datetime.now()
         Users.update_user_verify_info(
             user.id, transaction_id, merchant_biz_id, face_time)
+        
+        # 添加到redis缓存中
+        RedisClientInstance.add_key_value(f"chat:{user.id}", transaction_url)
 
         return {
             "merchant_biz_id": merchant_biz_id,
@@ -732,6 +737,15 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
 
     else:
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+    
+# 获取人脸识别连接
+@router.get("/get_liveness", response_model=FaceLivenessResponse)
+async def get_liveness(user=Depends(get_current_user)):
+    face_url = RedisClientInstance.get_value_by_key(f"chat:{user.id}")
+    if face_url is None:
+        return None
+    else:
+        return face_url
 
 # 人脸绑定
 @router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)

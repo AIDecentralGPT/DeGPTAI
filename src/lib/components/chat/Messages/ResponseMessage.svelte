@@ -740,7 +740,8 @@
 									</svg>
 
 									<div class=" self-center flex-1">
-										{$i18n.t(message.content)}
+										<!-- 默认错误输出信息 -->
+										{$i18n.t("It seems that you are offline. Please reconnect to send messages.")}
 									</div>
 									{#if isLastMessage}
 										<button on:click={() => {
