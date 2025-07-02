@@ -943,5 +943,7 @@
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Der DGC-Kontostand reicht nicht aus. Sie können einen Freund einladen, um 3000 DGC zu erhalten.",
   "It seems that you are offline. Please reconnect to send messages.": "Sie scheinen offline zu sein. Bitte verbinden Sie sich erneut, um Nachrichten zu senden.",
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "Die Menge an DGC ist unzureichend, es müssen zusätzliche {{ num }} DGC gekauft werden. Nach erfolgreichem Kauf der DGC, upgraden Sie auf VIP.",
-  "Recharge DGC": "DGC aufladen"
+  "Recharge DGC": "DGC aufladen",
+  "Time expired": "Zeit abgelaufen",
+  "QR code is invalid": "QR-Code ist ungültig"
 }

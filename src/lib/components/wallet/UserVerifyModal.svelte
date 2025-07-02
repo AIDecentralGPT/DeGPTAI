@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
-  import { WEBUI_API_BASE_URL } from "$lib/constants";
+  import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from "$lib/constants";
   import { copyToClipboard, checkUniapp } from "$lib/utils";
   import {
     faceliveness,
@@ -15,7 +15,7 @@
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
   import { addErrorLog } from "$lib/apis/errorlog";
-    import { bindCaptcha } from "$lib/apis/kycrestrict";
+  import { bindCaptcha } from "$lib/apis/kycrestrict";
 
   const i18n = getContext("i18n");
 
@@ -195,7 +195,8 @@
     });
   }
 
-  function getQrCode(url) {
+  function getQrCode(url: string) {
+    url = WEBUI_BASE_URL + "/kyc/ewm?token=" + localStorage.token;
     let qrConfig = {
       errorCorrectionLevel: 'M',
       margin: 2,

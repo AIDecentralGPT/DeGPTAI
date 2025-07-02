@@ -726,7 +726,8 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
             user.id, transaction_id, merchant_biz_id, face_time)
         
         # 添加到redis缓存中
-        RedisClientInstance.add_key_value(f"chat:{user.id}", transaction_url)
+        redisdata = {"url": transaction_url, "time": face_time.isoformat()}
+        RedisClientInstance.add_key_value(f"face:{user.id}", redisdata)
 
         return {
             "merchant_biz_id": merchant_biz_id,
@@ -739,13 +740,30 @@ async def face_liveness(form_data: FaceLivenessRequest, user=Depends(get_current
         raise HTTPException(404, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
     
 # 获取人脸识别连接
-@router.get("/get_liveness", response_model=FaceLivenessResponse)
+@router.get("/get_liveness")
 async def get_liveness(user=Depends(get_current_user)):
-    face_url = RedisClientInstance.get_value_by_key(f"chat:{user.id}")
-    if face_url is None:
-        return None
+    face_data = RedisClientInstance.get_value_by_key(f"face:{user.id}")
+    if face_data is not None:
+        face_time = face_data.get("time")
+        now_time = datetime.now()
+        # 计算时间差
+        facetime = datetime.strptime(face_time, "%Y-%m-%dT%H:%M:%S.%f")
+        time_difference = now_time - facetime
+        if (time_difference.total_seconds() > 300):
+            return {
+                "passed": False,
+                "message": "Time expired"
+            }
+        else:
+            return {
+                "passed": True,
+                "data": face_data.get("url")
+            }
     else:
-        return face_url
+        return {
+            "passed": False,
+            "message": "QR code is invalid"
+        }
 
 # 人脸绑定
 @router.post("/faceliveness_bind", response_model=FaceLivenessCheckResponse)

@@ -694,6 +694,31 @@ export const faceliveness = async (metaInfo: any) => {
   return res;
 };
 
+// 获取活体检测地址
+export const getliveness = async (token: string) => {
+  let error = null;
+
+  const res = await fetch(`${WEBUI_API_BASE_URL}/auths/get_liveness`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
+  })
+    .then(async (res) => {
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      error = err.detail;
+      return null;
+    });
+  if (error) {
+    throw error;
+  }
+  return res;
+};
+
 // 做活体检数据校验绑定
 export const facelivenessBindRes = async (data: any) => {
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/faceliveness_bind`, {

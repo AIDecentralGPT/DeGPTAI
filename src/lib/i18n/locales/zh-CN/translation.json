@@ -944,5 +944,7 @@
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC余额不足支付。您可以邀请好友获得3000 DGC。",
   "It seems that you are offline. Please reconnect to send messages.": "您似乎已离线。请重新连接以发送消息。",
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGC数量不够，需要额外购买{{ num }}DGC，购买DGC成功后，再升级为VIP.",
-  "Recharge DGC": "充值DGC"
+  "Recharge DGC": "充值DGC",
+  "Time expired": "时间已过期",
+  "QR code is invalid": "二维码无效"
 }

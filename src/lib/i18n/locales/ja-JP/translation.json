@@ -945,5 +945,7 @@
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC残高が不足しています。友達を招待すると3000 DGCを獲得できます。",
   "It seems that you are offline. Please reconnect to send messages.": "オフラインのようです。メッセージを送信するには再接続してください。",
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGCの数量が不足しています。追加で{{ num }}DGCを購入する必要があります。DGCの購入が成功した後、VIPにアップグレードしてください。",
-  "Recharge DGC": "DGCをチャージ"
+  "Recharge DGC": "DGCをチャージ",
+  "Time expired": "時間切れ",
+  "QR code is invalid": "QRコードが無効です"
 }

@@ -945,5 +945,7 @@
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Saldo DGC tidak cukup untuk membayar. Anda dapat mengundang teman untuk mendapatkan 3000 DGC.",
   "It seems that you are offline. Please reconnect to send messages.": "Sepertinya Anda sedang offline. Harap sambung kembali untuk mengirim pesan.",
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "Jumlah DGC tidak mencukupi, tambahan {{ num }} DGC perlu dibeli. Setelah pembelian DGC berhasil, tingkatkan ke VIP.",
-  "Recharge DGC": "Isi ulang DGC"
+  "Recharge DGC": "Isi ulang DGC",
+  "Time expired": "Waktu habis",
+  "QR code is invalid": "Kode QR tidak valid"
 }

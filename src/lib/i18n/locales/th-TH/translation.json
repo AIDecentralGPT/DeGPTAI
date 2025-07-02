@@ -944,5 +944,7 @@
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "ยอด DGC ไม่เพียงพอสำหรับการชำระ คุณสามารถเชิญเพื่อนเพื่อรับ 3000 DGC",
   "It seems that you are offline. Please reconnect to send messages.": "ดูเหมือนว่าคุณออฟไลน์อยู่ กรุณาเชื่อมต่ออีกครั้งเพื่อส่งข้อความ",
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "จำนวน DGC ไม่เพียงพอ จำเป็นต้องซื้อ DGC เพิ่มเติมอีก {{ num }} DGC หลังจากซื้อ DGC สำเร็จแล้ว อย่าลืมอัปเกรดเป็น VIP",
-  "Recharge DGC": "เติม DGC"
+  "Recharge DGC": "เติม DGC",
+  "Time expired": "หมดเวลา",
+  "QR code is invalid": "QR โค้ดไม่ถูกต้อง"
 }

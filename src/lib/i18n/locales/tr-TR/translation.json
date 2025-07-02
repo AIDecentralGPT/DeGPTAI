@@ -945,5 +945,7 @@
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC bakiyesi ödeme yapmaya yetmiyor. 3000 DGC kazanmak için bir arkadaşınızı davet edebilirsiniz.",
   "It seems that you are offline. Please reconnect to send messages.": "Çevrimdışı görünüyorsunuz. Mesaj göndermek için lütfen yeniden bağlanın.",
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGC miktarı yetersiz, ek olarak {{ num }} DGC satın alınması gerekiyor. DGC satın alma işlemi başarılı olduktan sonra VIP'e yükseltin.",
-  "Recharge DGC": "DGC Şarj Et"
+  "Recharge DGC": "DGC Şarj Et",
+  "Time expired": "Süre doldu",
+  "QR code is invalid": "QR kodu geçersiz"
 }

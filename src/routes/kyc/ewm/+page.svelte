@@ -1,23 +1,36 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { faceliveness } from "$lib/apis/auths";
-  import { goto } from "$app/navigation";
+  import { onMount, getContext } from 'svelte';
+  import { getliveness } from "$lib/apis/auths";
   import { page } from '$app/stores';
 
-  let metadata:any = {};
-  let token:any = "";
+  const i18n = getContext("i18n");
+
   onMount(() => {
     const queryParams = new URLSearchParams($page.url.search);
-    metadata = queryParams.get('metainfo');
-    token = queryParams.get("token");
-    toAliFace()
+    let token: any = queryParams.get("token");
+    toAliFace(token)
   });
 
-  function toAliFace() {
-    faceliveness(token, metadata).then(async (res) => {
-      goto(res.transaction_url);
+  let error: string = "";
+  let loading = true;
+  function toAliFace(token: string) {
+    loading = true;
+    getliveness(token).then((res) => {
+      if (res.passed) {
+        window.location.href = res.data;
+      } else {
+        error = res.message;
+      }
+      loading = false;
     })
   }
 
 </script>
+
+<div class="flex flex-col justify-center items-center w-full h-screen">
+  <img src="/static/logo.png" alt=""/>
+  {#if !loading}
+    <div class="mt-2">{$i18n.t(error)}</div>
+  {/if}
+</div>
 
