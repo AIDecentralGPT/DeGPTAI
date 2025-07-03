@@ -164,7 +164,7 @@ export const getDeModels = async (token: string = "") => {
         model: "o3",
         imagemodel: "o3",
         textmodel: "o3",
-        think: false,
+        think: true,
         tip: "GPT o3 (OpenAI)",
         support: "image",
         type: 3,

@@ -5,7 +5,62 @@ from apps.web.models.aimodel import AiModelReq, AiMessageModel
 apikey = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=apikey)
 
-sysmessage = [AiMessageModel(role="system", content="You are ChatGPT, a helpful, honest, and polite AI assistant developed by OpenAI. You answer questions clearly, provide explanations when needed, and are always respectful and concise. If you are unsure about something, you say so. You aim to be as useful as possible without pretending to know things you don’t.")]
+#sysmessage = [AiMessageModel(role="system", content="You are ChatGPT, a helpful, honest, and polite AI assistant developed by OpenAI. You answer questions clearly, provide explanations when needed, and are always respectful and concise. If you are unsure about something, you say so. You aim to be as useful as possible without pretending to know things you don’t.")]
+sysmessage = [AiMessageModel(role="system", content="用中文回复")]
+tools = [{
+    "type": "function",
+    "name": "search_knowledge_base",
+    "description": "Query a knowledge base to retrieve relevant info on a topic.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "The user question or search query."
+            },
+            "options": {
+                "type": "object",
+                "properties": {
+                    "num_results": {
+                        "type": "number",
+                        "description": "Number of top results to return."
+                    },
+                    "domain_filter": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "Optional domain to narrow the search (e.g. 'finance', 'medical'). Pass null if not needed."
+                    },
+                    "sort_by": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "enum": [
+                            "relevance",
+                            "date",
+                            "popularity",
+                            "alphabetical"
+                        ],
+                        "description": "How to sort results. Pass null if not needed."
+                    }
+                },
+                "required": [
+                    "num_results",
+                    "domain_filter",
+                    "sort_by"
+                ],
+                "additionalProperties": False
+            }
+        },
+        "required": [
+            "query",
+            "options"
+        ],
+        "additionalProperties": False
+    }
+}]
 
 class OpenAiApi:
     def check_model(self, model: str):
@@ -13,22 +68,30 @@ class OpenAiApi:
         return model in models
    
     def completion(self, param: AiModelReq):
-        messages = sysmessage + param.messages
-        print("====================", messages)
+        messages = param.messages
         try:
             if param.enable_thinking:
-                completion = client.chat.completions.create(
+                completion = client.responses.create(
                     model=param.model,
-                    reasoning_effort="medium",
-                    messages=messages,
-                    stream=param.stream
+                    reasoning={
+                        "effort": "high",       # 深度推理
+                        "summary": "detailed"   # 输出详细推理步骤
+                    },
+                    input=messages,
+                    stream=param.stream,
+                    tools=tools,
+                    top_p=1,
+                    store=False,
+                    temperature=1
                 )
             else:
-                completion = client.chat.completions.create(
+                completion = client.responses.create(
                     model=param.model,
-                    messages=messages,
+                    input=messages,
                     stream=param.stream,
-                    temperature=0.7
+                    top_p=1,
+                    store=False,
+                    temperature=1
                 )
             
         except APIError as e:

@@ -34,6 +34,7 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
         # 获取今天的聊天次数
         date_time = date.today()
         conversation = ConversationInstance.get_info_by_userid_mtype_date(user.id, modelinfo.type, date_time)
+        month_total = ConversationInstance.get_info_by_userid_mtype_month(user.id, modelinfo.type, date_time)
 
         total = 0
         # 获取非VIP请求模型的总次数
@@ -68,9 +69,9 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
                 })
             else:
                 if conversation is None:
-                    # 基础模型直接天机数量
+                    # 基础模型直接添加数据
                     if modelinfo.type == "base":
-                        ConversationInstance.insert(user.id, modelinfo.type)
+                        ConversationInstance.insert(user.id, userrole, modelinfo.type)
                         result.append({
                             "passed": True,
                             "model": conversation_req.model,
@@ -80,7 +81,7 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
                     # 非基础模型判断是否是VIP
                     else:
                         if vipStatus is not None:
-                            ConversationInstance.insert(user.id, modelinfo.type)
+                            ConversationInstance.insert(user.id, userrole, modelinfo.type)
                             result.append({
                                 "passed": True,
                                 "model": conversation_req.model,
@@ -95,7 +96,8 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
                                 "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
                             })
                 else:
-                    if conversation.chat_num < total:
+                    if (conversation.chat_num + month_total) < total:
+                        conversation.user_role = userrole
                         ConversationInstance.update(conversation)
                         result.append({
                             "passed": True,
@@ -126,4 +128,18 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
             "passed": False,
             "message": "Failed"
         }
+    
+@router.post("/total")
+async def conversationTotal(user=Depends(get_current_user)):
+
+    # 获取用户当前VIP信息
+    vipStatuss = VIPStatuses.get_vip_status_by_user_id(user.id)
+
+    # 获取今天的聊天次数
+    date_time = date.today()
+
+    result = ConversationInstance.get_info_by_userid_user_total(user, vipStatuss, date_time)
+
+    return result
+        
 

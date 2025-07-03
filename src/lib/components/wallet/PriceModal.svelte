@@ -11,6 +11,7 @@
   import { isPro } from "$lib/apis/users/index.js";
   import Switch from "../common/Switch.svelte";
   import { toast } from "svelte-sonner";
+  import { conversationUseTotal } from "$lib/apis/chats/index.js";
   const i18n = getContext("i18n");
 
   let checkProLoading = true;
@@ -55,13 +56,16 @@
   $: if (vipupgrade || !vipupgrade) {
     if ($user?.vipInfo) {
       assiganVip($user?.vipInfo);
+      getUserUserTotal();
     }
   }
 
   // 显示初始化Socket
   $: if (show) {
     checkProLoading = true;
-    checkPlus(); 
+    checkPlus();
+    isLoaded = false;
+    getUserUserTotal();
   }
 
   let viptype = "basic";
@@ -70,6 +74,36 @@
   let basicstat = false;
   let standardstat = false;
   let prostat = false;
+
+  // 获取用户使用汇总
+  let userTotal:any = {}
+  let isLoaded = false;
+  function getUserUserTotal() {
+    conversationUseTotal().then(res => {
+      console.log("=====================", res);
+      userTotal = res;
+      isLoaded = true;
+    })
+  }
+  function checkUse(type, vip) {
+    let html = "";
+    userTotal?.month_total?.forEach(item => {
+      if (item?.type==type && item?.vip == vip) {
+        if (item?.show) {
+          if (item?.use / item?.total > 0.9) {
+            html = "<div><span class='text-red-900 font-bold'>" + item?.use + "</span>" + 
+              "<span class='mx-0.5 text-red-900'>/</span>" + 
+              "<span class='primaryText'>" + item?.total + "</span></div>";
+          } else {
+            html = "<div><span class='text-green-900'>" + item?.use + "</span>" + 
+              "<span class='mx-0.5 text-green-900'>/</span>" + 
+              "<span class='primaryText'>" + item?.total + "</span></div>";
+          }
+        }    
+      }
+    })
+    return html;
+  }
 </script>
 
 <Modal bind:show size="big">
@@ -124,7 +158,11 @@
               {/if}
             </button>
           </div>
-          
+          <div class="flex justify-center mt-2">
+            <span class="{userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900 font-bold' : 'text-green-900'}">{userTotal?.free_total?.use}</span>
+            <span class="mx-0.5 {userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900' : 'text-green-900'}">/</span>
+            <span class="primaryText">{userTotal?.free_total?.total}</span>
+          </div>
           <ul
             role="list"
             class="mt-8 space-y-3 text-sm leading-6 xl:mt-10 font-bold text-gray-600 dark:text-gray-300"
@@ -325,6 +363,9 @@
                 />
               </svg>
               {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "1,000"})}
+              {#if isLoaded}
+                {@html checkUse("base", "basic")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -340,6 +381,9 @@
                 />
               </svg>
               {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 100})}
+              {#if isLoaded}
+                {@html checkUse("adv", "basic")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -355,6 +399,9 @@
                 />
               </svg>
               {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 10})}
+              {#if isLoaded}
+                {@html checkUse("top", "basic")}
+              {/if}
             </li>
 
             <li class="flex gap-x-3">
@@ -371,6 +418,7 @@
                 />
               </svg>
               {$i18n.t("All models share memory with each other.")}
+              {@html checkUse("top", "basic")}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -624,6 +672,9 @@
                 />
               </svg>
               {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "5,000"})}
+              {#if isLoaded}
+                {@html checkUse("base", "standard")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -639,6 +690,9 @@
                 />
               </svg>
               {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 300})}
+              {#if isLoaded}
+                {@html checkUse("adv", "standard")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -654,6 +708,9 @@
                 />
               </svg>
               {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 100})}
+              {#if isLoaded}
+                {@html checkUse("top", "standard")}
+              {/if}
             </li>
 
             <li class="flex gap-x-3">
@@ -922,6 +979,9 @@
                 />
               </svg>
               {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "10,000"})}
+              {#if isLoaded}
+                {@html checkUse("base", "pro")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -937,6 +997,9 @@
                 />
               </svg>
               {$i18n.t("Premium Model: {{ num }} Times/Month", {num: "5,000"})}
+              {#if isLoaded}
+                {@html checkUse("adv", "pro")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -952,6 +1015,9 @@
                 />
               </svg>
               {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 250})}
+              {#if isLoaded}
+                {@html checkUse("top", "pro")}
+              {/if}
             </li>
 
             <li class="flex gap-x-3">

@@ -78,19 +78,70 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                         }]
                     }
                     yield f"data: {json.dumps(chat_result)}\n\n" 
+            elif OpenAiApiInstance.check_model(param.model):
+                completion = OpenAiApiInstance.completion(param)
+                if completion is not None:
+                    for chunk in completion:
+                        try:
+                            if chunk:
+                                json_dict = json.loads(chunk.model_dump_json())
+                                print("===================", json_dict)
+                                if json_dict.get("type") == "response.reasoning_summary_text.delta":
+                                    chat_result = {
+                                        "id": json_dict.get("item_id"),
+                                        "object": param.model,
+                                        "created": datetime.now().timestamp(),
+                                        "model": param.model,
+                                        "choices": [{
+                                            "index": 0,
+                                            "delta": {"reasoning_content": json_dict.get("delta")},
+                                            "logprobs": None,
+                                            "finish_reason": None
+                                        }]
+                                    }
+                                    yield f"data: {json.dumps(chat_result)}\n\n"
+                                if json_dict.get("type") == "response.output_text.delta":
+                                    chat_result = {
+                                        "id": json_dict.get("item_id"),
+                                        "object": param.model,
+                                        "created": datetime.now().timestamp(),
+                                        "model": param.model,
+                                        "choices": [{
+                                            "index": 0,
+                                            "delta": {"content": json_dict.get("delta")},
+                                            "logprobs": None,
+                                            "finish_reason": None
+                                        }]
+                                    }
+                                    yield f"data: {json.dumps(chat_result)}\n\n"
+                        except:
+                            print("=====解析失败====", chunk)
+                else:
+                    chat_result = {
+                        "id": str(uuid.uuid4()),
+                        "object": param.model,
+                        "created": datetime.now().timestamp(),
+                        "model": param.model,
+                        "choices": [{
+                            "index": 0,
+                            "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
+                            "logprobs": None,
+                            "finish_reason": None
+                        }]
+                    }
+                    yield f"data: {json.dumps(chat_result)}\n\n" 
             else:
                 completion = None
-                if OpenAiApiInstance.check_model(param.model):
-                    completion = OpenAiApiInstance.completion(param)
                 if AliQwenApiInstance.check_model(param.model):
                     completion = AliQwenApiInstance.completion(param)
-                if GeminiApiInstance.check_model(param.model):
+                elif GeminiApiInstance.check_model(param.model):
                     completion = GeminiApiInstance.completion(param)
-                if DeepseekApiInstance.check_model(param.model):
+                elif DeepseekApiInstance.check_model(param.model):
+                    print("===================DeepseekApiInstance======================")
                     completion = DeepseekApiInstance.completion(param)
-                if DoubaoApiInstance.check_model(param.model):
+                elif DoubaoApiInstance.check_model(param.model):
                     completion = DoubaoApiInstance.completion(param)
-                if GrokApiInstance.check_model(param.model):
+                elif GrokApiInstance.check_model(param.model):
                     completion = GrokApiInstance.completion(param)
 
                 if completion is not None:
