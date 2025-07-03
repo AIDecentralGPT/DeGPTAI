@@ -418,7 +418,6 @@
                 />
               </svg>
               {$i18n.t("All models share memory with each other.")}
-              {@html checkUse("top", "basic")}
             </li>
             <li class="flex gap-x-3">
               <svg
