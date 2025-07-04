@@ -26,7 +26,7 @@
       try {
         let response = await transferDgc(
           address,
-          +(money/0.00006).toFixed(2),
+          Math.round(money/0.00006),
           $currentWalletData?.walletInfo?.privateKey
         );
         if (response?.ok) {
@@ -46,7 +46,7 @@
     }
   }
   async function uploadVip(tx: string) {
-    let result = await openProServices(localStorage.token, tx, money/0.00006, viptype, viptime);
+    let result = await openProServices(localStorage.token, tx, Math.round(money/0.00006), viptype, viptime);
     if (result?.ok) {
       user.set({
         ...$user,
@@ -71,10 +71,6 @@
       maximumFractionDigits: digits,  // 最多 2 位小数
     };
     return new Intl.NumberFormat('en-US', options).format(num);
-  }
-
-  $: if (show) {
-    updateWalletData($currentWalletData?.walletInfo);
   }
 </script>
 

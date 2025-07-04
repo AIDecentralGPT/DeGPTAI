@@ -680,7 +680,8 @@ export const conversationRefresh = async (token: string, model: string) => {
 			...(token && { authorization: `Bearer ${token}` })
 		},
 		body: JSON.stringify({
-			model: model
+			model,
+			equip_id: localStorage.visitor_id
 		})
 	})
 		.then(async (res) => {

@@ -15,9 +15,11 @@ class Conversation(Model):
     id = CharField(primary_key=True, default=str(uuid.uuid4)) #主键
     user_id = CharField() # 用户ID
     user_role = CharField() # 用户角色
+    equip_id = CharField() # 设备ID
     model_type = CharField() # 模型类型
     chat_time = DateField()  # 会话日期
     chat_num = IntegerField() # 会话总数
+    vip = CharField() # 消耗次数所诉VIP
     created_at = BigIntegerField() # 创建时间
     updated_at = BigIntegerField() # 更新时间
 
@@ -29,15 +31,18 @@ class ConversationModel(BaseModel):
     id: str # 主键
     user_id: str # 用户ID
     user_role: str # 用户角色
+    equip_id: str # 设备ID
     model_type: str # 模型类型
-    chat_time: datetime  # 会话日期
+    chat_time: date  # 会话日期
     chat_num: int # 会话总数
+    vip: Optional[str]= None # 消耗次数所诉VIP
     created_at: int # 创建时间
     updated_at: int # 更新时间
 
 
 class ConversationRequest(BaseModel):
     model: str
+    equip_id: str
 
 
 # 定义ConversationTable类，用于操作Conversation表
@@ -46,15 +51,17 @@ class ConversationTable:
         self.db = db  # 初始化数据库实例
         db.create_tables([Conversation])
 
-    def insert(self, user_id: str, user_role: str, model_type: str) -> bool:
+    def insert(self, user_id: str, user_role: str, equip_id: str, model_type: str, vip: str, chat_num: int) -> bool:
       try:
         conversation = ConversationModel(
           id = str(uuid.uuid4()),
           user_id = user_id,
           user_role= user_role,
+          equip_id = equip_id,
           model_type = model_type,
           chat_time =  date.today(),
-          chat_num = 1,
+          chat_num = chat_num,
+          vip = vip,
           created_at = int(time.time()),
           updated_at = int(time.time())
         )
@@ -66,17 +73,18 @@ class ConversationTable:
 
     def update(self, conversation: ConversationModel) -> bool:
       try:
-        chat_num = conversation.chat_num + 1
+        chat_num = conversation.chat_num
         update = Conversation.update(chat_num=chat_num, user_role = conversation.user_role,updated_at=int(time.time())).where(Conversation.id==conversation.id)
         update.execute()
         return True
       except Exception as e:
         return False
 
-    # 获取当天的聊天数据根据模型类型
-    def get_info_by_userid_mtype_date(self, user_id: str, model_type: str, chat_time: date) -> Optional[ConversationModel]:
+    # 获取非会员用户当天的聊天数据
+    def get_info_by_user_mtype_date(self, user_id: str, user_role: str, model_type: str, chat_time: date) -> Optional[ConversationModel]:
       try:
-        conversation = Conversation.get_or_none(Conversation.user_id == user_id, Conversation.model_type == model_type, SQL('date(chat_time)') == chat_time)
+        conversation = Conversation.get_or_none(Conversation.user_id == user_id, Conversation.user_role == user_role, Conversation.model_type == model_type, 
+                            SQL('date(chat_time)') == chat_time, Conversation.vip.is_null(True))
         if conversation is None:
           return None
         else:
@@ -86,105 +94,103 @@ class ConversationTable:
       except Exception as e:
         print("=============get_info_by_userid_mtype_date===========", e)
         return None
-
-    # 获取本月的聊天数据根据模型类型（VIP用户使用）
-    def get_info_by_userid_mtype_month(self, user_id: str, model_type: str, chat_time: date) -> Optional[int]:
+      
+    # 获会员用户当天的聊天数据
+    def get_info_by_user_mtype_vip_date(self, user_id: str, user_role: str, model_type: str, vip: str, chat_time: date) -> Optional[ConversationModel]:
       try:
-        year_month = chat_time.strftime("%Y-%m")
-        conversations = Conversation.select().where(Conversation.user_id == user_id, Conversation.model_type == model_type, fn.TO_CHAR(Conversation.chat_time, 'YYYY-MM') == year_month)
-        if len(conversations) > 0:
-          total = 0
-          conversaton_list = [ConversationModel(**conversation) for conversation in conversations]
-          for conversation in conversaton_list:
-            if conversation.user_role == "kyc":
-              if conversation.chat_num > 10:
-                total = total + conversation.chat_num - 10
-            elif conversation.user_role == "wallet":
-              if conversation.chat_num > 5:
-                total = total + conversation.chat_num - 5
-            else:
-              if conversation.chat_num > 3:
-                total = total + conversation.chat_num - 3    
-          return total
+        conversation = Conversation.get_or_none(Conversation.user_id == user_id, Conversation.user_role == user_role, Conversation.model_type == model_type, 
+                            SQL('date(chat_time)') == chat_time, Conversation.vip==vip)
+        if conversation is None:
+          return None
         else:
-          return 0;
+          conversation_dict = model_to_dict(conversation)  # 将数据库对象转换为字典
+          conversation_model = ConversationModel(**conversation_dict)  # 将字典转换为Pydantic模型
+          return conversation_model
       except Exception as e:
-        print("=============get_info_by_userid_mtype_month===========", e)
+        print("=============get_info_by_userid_mtype_date===========", e)
+        return None
+      
+    # 获取会员某个时间段内用户会话总数 
+    def get_info_by_userid_mtype_between(self, user_id: str, model_type: str, start_time: date) -> Optional[int]:
+      try:
+        conversations = Conversation.select().where(
+            Conversation.user_id == user_id,
+            Conversation.model_type == model_type,
+            Conversation.chat_time >= start_time,
+            Conversation.vip.is_null(False)
+        )
+        return sum(conv.chat_num for conv in conversations)
+      except Exception as e:
         return 0
+
+    # 获取同一设备非vip的钱包用户聊天总数最大的一条数据
+    def get_info_by_equipid(self, equip_id: str, user_role: str, model_type: str, chat_time: date) -> Optional[ConversationModel]:
+      try:
+        conversation = Conversation.filter(Conversation.equip_id == equip_id,Conversation.user_role == user_role, Conversation.model_type == model_type,
+            SQL('date(chat_time)') == chat_time, Conversation.vip.is_null(True)).order_by(Conversation.chat_num.desc()).first()
+        if conversation is None:
+          return None
+        else:
+          conversation_dict = model_to_dict(conversation)  # 将数据库对象转换为字典
+          conversation_model = ConversationModel(**conversation_dict)  # 将字典转换为Pydantic模型
+          return conversation_model
+      except Exception as e:
+        print("=============get_info_by_equipid===========", e)
+        return None
       
     #获取用户今天多个模型使用情况
     def get_info_by_userid_user_total(self, user: UserModel, vips: List[VIPStatusModelResp], chat_time: date):
       try:
         result_data = {
-          "free_total": {"use": 0, "total": 0, "type": "base"},
+          "free_total": {"use": 0, "total": 0, "type": "base", "show": False},
           "month_total": [
-            {"use": 0, "total": 1000, "type": "base", "show": False, "vip": "basic"},
-            {"use": 0, "total": 100, "type": "adv", "show": False, "vip": "basic"},
-            {"use": 0, "total": 10, "type": "top", "show": False, "vip": "basic"},
-            {"use": 0, "total": 5000, "type": "base", "show": False, "vip": "standard"},
-            {"use": 0, "total": 300, "type": "adv", "show": False, "vip": "standard"},
-            {"use": 0, "total": 100, "type": "top", "show": False, "vip": "standard"},
-            {"use": 0, "total": 10000, "type": "base", "show": False, "vip": "pro"},
-            {"use": 0, "total": 5000, "type": "adv", "show": False, "vip": "pro"},
-            {"use": 0, "total": 250, "type": "top", "show": False, "vip": "pro"}
+            {"use": 0, "total": 1000, "type": "base", "show": False, "vip": "basic", "time": "month"},
+            {"use": 0, "total": 100, "type": "adv", "show": False, "vip": "basic", "time": "month"},
+            {"use": 0, "total": 10, "type": "top", "show": False, "vip": "basic", "time": "month"},
+            {"use": 0, "total": 5000, "type": "base", "show": False, "vip": "standard", "time": "month"},
+            {"use": 0, "total": 300, "type": "adv", "show": False, "vip": "standard", "time": "month"},
+            {"use": 0, "total": 100, "type": "top", "show": False, "vip": "standard", "time": "month"},
+            {"use": 0, "total": 10000, "type": "base", "show": False, "vip": "pro", "time": "month"},
+            {"use": 0, "total": 5000, "type": "adv", "show": False, "vip": "pro", "time": "month"},
+            {"use": 0, "total": 250, "type": "top", "show": False, "vip": "pro", "time": "month"}
           ]
         }
 
-        #判断用户角色赋值免费总条数
-        free_total = 0
-        if user.id.startswith("0x"):
-          free_total = 5
-          if user.verified:
-            free_total = 10
+        #VIP会员显示
+        if len(vips) > 0:
+          min_start_date = min(vips, key=lambda x: x.start_date).start_date
+          conversations = Conversation.select().where(Conversation.user_id == user.id, Conversation.chat_time >= min_start_date).order_by(Conversation.chat_time.desc())
+          conversation_list = [ConversationModel(**model_to_dict(conversation)) for conversation in conversations]
+          #获取所有聊天记录
+          for vipStatu in vips:
+            for vipitem in result_data["month_total"]:
+              if vipitem["vip"] == vipStatu.vip:
+                vipitem["show"] = True
+                vipitem["time"] = vipStatu.type
+                if len(conversation_list) > 0:
+                  vip_conversations = [conv for conv in conversation_list if conv.vip == vipStatu.vip]
+                  date_conversations = [conv for conv in vip_conversations if  vipStatu.start_date <= conv.chat_time <= vipStatu.end_date]
+                  mtype_conversations = [conv for conv in date_conversations if  conv.model_type == vipitem["type"]]
+                  vipitem["use"] = sum(conv.chat_num for conv in mtype_conversations) if mtype_conversations else 0
+                else:
+                  vipitem["use"] = 0
+        # 非VIP会员显示
         else:
-          free_total = 3
-        result_data["free_total"]["total"] = free_total
+          free_total = 0
+          userrole = "user"
+          if user.id.startswith("0x"):
+            free_total = 5
+            userrole = "wallet"
+            if user.verified:
+              free_total = 10
+              userrole = "kyc"
+          else:
+            free_total = 3
+          result_data["free_total"]["total"] = free_total
+          result_data["free_total"]["show"] = True
+          freeconversation = self.get_info_by_user_mtype_date(user.id, userrole, "base", chat_time)
+          result_data["free_total"]["use"] = freeconversation.chat_num
 
-        # 判断用户VIP情况设置显示隐藏
-        for vipStatu in vips:
-          vip_type = vipStatu.vip
-          for vipitem in result_data["month_total"]:
-            if vipitem["vip"] == vip_type:
-              vipitem["show"] = True
-        
-        year_month = chat_time.strftime("%Y-%m")
-        conversations = Conversation.select().where(Conversation.user_id == user.id, fn.TO_CHAR(Conversation.chat_time, 'YYYY-MM') == year_month).order_by(Conversation.chat_time.desc())
-        print("conversations", conversations)
-        # 将数据库对象转换为字典
-        conversation_list = [ConversationModel(**model_to_dict(conversation)) for conversation in conversations]
-        print("conversation_list", conversation_list)
-        base_use_total = 0
-        adv_use_total = 0
-        top_use_total = 0
-        for conversation in conversation_list:
-          # 获取免费条数使用情况
-          if conversation.chat_time.date() == chat_time and conversation.model_type == "base":
-            result_data["free_total"]["use"] = min(conversation.chat_num, free_total)
-          # 获取VIP使用条数情况
-          if conversation.model_type == "base":
-            free_allowance = 10 if conversation.user_role == "kyc" else 5 if conversation.user_role == "wallet" else 3
-            if conversation.chat_num > free_allowance:
-              base_use_total += conversation.chat_num - free_allowance
-          elif conversation.model_type == "adv":
-            adv_use_total += conversation.chat_num
-          elif conversation.model_type == "top":
-            top_use_total += conversation.chat_num
-
-        # 计算模型汇总数据
-        for modeltype in ['base', 'adv', 'top']:
-          # 不通类型赋值计算总数
-          dim_total = base_use_total if modeltype == "base" else adv_use_total if modeltype == "adv" else top_use_total
-
-          # 循环判断使用总数
-          for modelitem in result_data["month_total"]:
-            if modelitem["type"] == modeltype:
-              if dim_total > modelitem["total"]:
-                modelitem["use"] = modelitem["total"]
-                dim_total -= modelitem["total"]
-              else:
-                modelitem["use"] = dim_total
-                dim_total = 0
-        
         return result_data  
       except Exception as e:
         print("===========get_info_by_userid_user_total=============", e)

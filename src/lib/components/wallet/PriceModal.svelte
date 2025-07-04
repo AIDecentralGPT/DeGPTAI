@@ -5,7 +5,8 @@
   import {
     user,
     showConfirmUpgradeModal,
-    vipupgrade
+    vipupgrade,
+    currentWalletData
   } from "$lib/stores";
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
   import { isPro } from "$lib/apis/users/index.js";
@@ -13,6 +14,8 @@
   import { toast } from "svelte-sonner";
   import { conversationUseTotal } from "$lib/apis/chats/index.js";
   const i18n = getContext("i18n");
+
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
 
   let checkProLoading = true;
   function checkPlus() {
@@ -90,19 +93,36 @@
     userTotal?.month_total?.forEach(item => {
       if (item?.type==type && item?.vip == vip) {
         if (item?.show) {
-          if (item?.use / item?.total > 0.9) {
-            html = "<div><span class='text-red-900 font-bold'>" + item?.use + "</span>" + 
-              "<span class='mx-0.5 text-red-900'>/</span>" + 
-              "<span class='primaryText'>" + item?.total + "</span></div>";
+          if (item?.time == "month") {
+            if (item?.use / item?.total > 0.9) {
+              html = "<div><span class='text-red-900 font-bold'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-red-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + "</span></div>";
+            } else {
+              html = "<div><span class='text-green-900'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-green-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + "</span></div>";
+            }
           } else {
-            html = "<div><span class='text-green-900'>" + item?.use + "</span>" + 
-              "<span class='mx-0.5 text-green-900'>/</span>" + 
-              "<span class='primaryText'>" + item?.total + "</span></div>";
+            if (item?.use / (item?.total * 12) > 0.9) {
+              html = "<div><span class='text-red-900 font-bold'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-red-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + ' x 12' + "</span></div>";
+            } else {
+              html = "<div><span class='text-green-900'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-green-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + ' x 12' + "</span></div>";
+            }
           }
         }    
       }
     })
     return html;
+  }
+
+  function openUpgradeModel() {
+    updateWalletData($currentWalletData?.walletInfo);
+    $showConfirmUpgradeModal = true;
   }
 </script>
 
@@ -159,9 +179,11 @@
             </button>
           </div>
           <div class="flex justify-center mt-2">
-            <span class="{userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900 font-bold' : 'text-green-900'}">{userTotal?.free_total?.use}</span>
-            <span class="mx-0.5 {userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900' : 'text-green-900'}">/</span>
-            <span class="primaryText">{userTotal?.free_total?.total}</span>
+            {#if userTotal?.free_total?.show}
+              <span class="{userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900 font-bold' : 'text-green-900'}">{userTotal?.free_total?.use}</span>
+              <span class="mx-0.5 {userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900' : 'text-green-900'}">/</span>
+              <span class="primaryText">{userTotal?.free_total?.total}</span>
+            {/if}
           </div>
           <ul
             role="list"
@@ -321,7 +343,7 @@
                     viptype = "basic";
                     viptime = basicstat ? "year" : "month";
                     money = basicstat ? 33 : 3;
-                    $showConfirmUpgradeModal = true;
+                    openUpgradeModel();
                   } else {
                     toast.warning($i18n.t("Please create or log in to your wallet first."))
                   }
@@ -629,7 +651,7 @@
                     viptype = "standard";
                     viptime = standardstat ? "year" : "month";
                     money = standardstat ? 88 : 8;
-                    $showConfirmUpgradeModal = true;
+                    openUpgradeModel();
                   } else {
                     toast.warning($i18n.t("Please create or log in to your wallet first."))
                   }
@@ -936,7 +958,7 @@
                     viptype = "pro";
                     viptime = prostat ? "year" : "month";
                     money = prostat ? 165 : 15;
-                    $showConfirmUpgradeModal = true;
+                    openUpgradeModel();
                   } else {
                     toast.warning($i18n.t("Please create or log in to your wallet first."))
                   }

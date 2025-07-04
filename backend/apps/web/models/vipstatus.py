@@ -45,6 +45,7 @@ class VIPStatus(Model):
     user_id = CharField()
     vip=CharField()
     level=IntegerField()
+    type=CharField()
     start_date = DateField()
     end_date = DateField()
 
@@ -58,6 +59,7 @@ class VIPStatusModel(BaseModel):
     user_id: str
     vip: str
     level: int
+    type: str
     start_date: date
     end_date: date
 
@@ -66,6 +68,7 @@ class VIPStatusModelResp(BaseModel):
     user_id: str
     vip: str
     level: int
+    type: str
     start_date: date
     end_date: date
 
@@ -82,13 +85,14 @@ class VIPStatusTable:
         self.db = db
         db.create_tables([VIPStatus])
 
-    def insert_vip_status(self, user_id: str, vip: str, level: int, start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
+    def insert_vip_status(self, user_id: str, vip: str, level: int, type: str,start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
         # order_id = str(uuid.uuid4())
         vip_status = VIPStatusModel(
             id=order_id,
             user_id=user_id,
             vip=vip,
             level=level,
+            type=type,
             start_date=start_date,
             end_date=end_date
         )

@@ -82,7 +82,7 @@ class OpenAiApi:
                     tools=tools,
                     top_p=1,
                     store=False,
-                    temperature=1
+                    temperature=0.7
                 )
             else:
                 completion = client.responses.create(
@@ -91,7 +91,7 @@ class OpenAiApi:
                     stream=param.stream,
                     top_p=1,
                     store=False,
-                    temperature=1
+                    temperature=0.7
                 )
             
         except APIError as e:
