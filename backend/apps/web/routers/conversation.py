@@ -66,21 +66,18 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
                 if user_total < total:
                     #判断是否开启会员
                     if len(vipStatuss) > 0:
-                        chat_num = user_total
-                        sorted_vipStatuss = sorted(vipStatuss, key=lambda x: x.end_date)
+                        sorted_vipStatuss = sorted(vipStatuss, key=lambda x: (x.end_date, x.created_at))
                         for vipStatus in sorted_vipStatuss:
                             modellimit = ModelLimitInstance.get_info_by_user_vip("all", vipStatus.vip, modelinfo.type)
-                            if (user_total < modellimit.limits):
-                                chat_num = chat_num + 1
-                                vipconversation = ConversationInstance.get_info_by_user_mtype_vip_date(user.id, userrole, modelinfo.type, vipStatus.vip, date_time)
-                                if vipconversation is None:
-                                    ConversationInstance.insert(user.id, userrole, conversation_req.equip_id, modelinfo.type, vipStatus.vip, chat_num)
-                                else:
-                                    vipconversation.chat_num = chat_num
-                                    ConversationInstance.update(vipconversation)
+                            vipconversation = ConversationInstance.get_info_by_user_mtype_vip_date(user.id, userrole, modelinfo.type, vipStatus.vip, date_time)
+                            if vipconversation is None:
+                                ConversationInstance.insert(user.id, userrole, conversation_req.equip_id, modelinfo.type, vipStatus.vip, 1)
                                 break
                             else:
-                                chat_num = chat_num - modellimit.limits
+                                if (vipconversation.chat_num < modellimit.limits):
+                                    vipconversation.chat_num += 1
+                                    ConversationInstance.update(vipconversation)
+                                    break
 
                         result.append({
                             "passed": True,
