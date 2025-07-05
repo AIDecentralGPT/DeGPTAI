@@ -4,7 +4,6 @@ from pydantic import BaseModel
 import requests
 import os
 
-
 consumer_key = os.getenv("dev_consumer_key")
 consumer_secret = os.getenv("dev_consumer_secret")
 bearer_token = os.getenv("dev_bearer_token")
@@ -84,7 +83,7 @@ class TwitterLib:
         accounts = await api.pool.get_all()
         if not any(acc.username == "BrookeHamp25599" for acc in accounts):
             print("==========添加账号===========")
-            await api.pool.add_account("BrookeHamp25599", "i1FpNoLs6EIVsUiu", "ydarsmjzaq@rambler.ru", "8989201HZkEjR")
+            await api.pool.add_account("BrookeHamp25599", "i1FpNoLs6EIVsUiu", "ydarsmjzaq@rambler.ru")
         
         await api.pool.login_all()     
         tweets = []
@@ -96,6 +95,5 @@ class TwitterLib:
                 "url": f"https://x.com/{tweet.user.username}/status/{tweet.id}",
             })
         return tweets
-
         
 TwitterApi = TwitterLib()
