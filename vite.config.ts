@@ -1,6 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import legacy from '@vitejs/plugin-legacy';
 
 // /** @type {import('vite').Plugin} */
 // const viteServerConfig = {
@@ -18,11 +17,7 @@ import legacy from '@vitejs/plugin-legacy';
 
 export default defineConfig({
 	plugins: [
-		sveltekit(),
-		legacy({
-      targets: ['defaults', 'not IE 11'], // 支持主流浏览器，排除IE11
-      modernPolyfills: true, // 现代浏览器也支持部分polyfill
-    })
+		sveltekit()
 	],
 	define: {
 		APP_VERSION: JSON.stringify(process.env.npm_package_version)
