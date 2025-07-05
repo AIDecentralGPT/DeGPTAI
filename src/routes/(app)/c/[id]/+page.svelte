@@ -1564,7 +1564,6 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 					currentRequestId = null;
 				}
 				prompt = "";
-				search = false;
 				goto('/');
 			}}
 		/>
