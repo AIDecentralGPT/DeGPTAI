@@ -26,7 +26,7 @@
       try {
         let response = await transferDgc(
           address,
-          Math.round(money/0.00006),
+          money/0.0001,
           $currentWalletData?.walletInfo?.privateKey
         );
         if (response?.ok) {
@@ -46,7 +46,7 @@
     }
   }
   async function uploadVip(tx: string) {
-    let result = await openProServices(localStorage.token, tx, Math.round(money/0.00006), viptype, viptime);
+    let result = await openProServices(localStorage.token, tx, Math.round(money/0.0001), viptype, viptime);
     if (result?.ok) {
       user.set({
         ...$user,
@@ -108,10 +108,10 @@
     <!-- 主体 -->
     <div class="flex flex-col">
       <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-        {#if (floorToFixed(money/0.00006, 2) - floorToFixed(Number($currentWalletData?.dgcBalance), 2)) > 0}
+        {#if ((money/0.0001) - floorToFixed(Number($currentWalletData?.dgcBalance), 2)) > 0}
           <div class="w-full">
             <p class="text-md mb-4 w-full">
-              {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: formatUSNumber(money/0.00006, 2)})}
+              {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: money/0.0001})}
             </p>
             <div class="flex justify-end my-4">
               <button

@@ -304,7 +304,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$3</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
-              <span class="text-sm">(={3/0.00006}DGC)</span>
+              <span class="text-sm">(={3/0.0001}DGC)</span>
             </div>
           </div>
           {#if basicInfo}
@@ -331,7 +331,7 @@
               <div class="flex flex-row justify-start mb-2 ml-1">
                 <div class="flex flex-row flex-wrap">
                   <span class="text-sm tracking-tight primaryText font-bold mr-1">$33 / {$i18n.t("Year")} ({$i18n.t("Instant Savings")} 8%)</span>
-                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={33/0.00006}DGC)</span>
+                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={33/0.0001}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
                   <Switch bind:state={basicstat}/>
@@ -612,7 +612,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$8</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
-              <span class="text-sm">(={Math.round(8/0.00006)}DGC)</span>
+              <span class="text-sm">(={Math.round(8/0.0001)}DGC)</span>
             </div>
           </div>
           {#if standardInfo}
@@ -639,7 +639,7 @@
               <div class="flex flex-row justify-start mb-2 ml-1">
                 <div class="flex flex-row flex-wrap">
                   <span class="text-sm tracking-tight primaryText font-bold mr-1">$88 / {$i18n.t("Year")} ({$i18n.t("Instant Savings")} 8%)</span>
-                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={Math.round(88/0.00006)}DGC)</span>
+                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={Math.round(88/0.0001)}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
                   <Switch bind:state={standardstat}/>
@@ -919,7 +919,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$15</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
-              <span class="text-sm">(={15/0.00006}DGC)</span>
+              <span class="text-sm">(={15/0.0001}DGC)</span>
             </div>
           </div>
           {#if proInfo}
@@ -946,7 +946,7 @@
               <div class="flex flex-row justify-start mb-2 ml-1">
                 <div class="flex flex-row flex-wrap">
                   <span class="text-sm tracking-tight primaryText font-bold mr-1">$165 / {$i18n.t("Year")} ({$i18n.t("Instant Savings")} 9%)</span>
-                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={165/0.00006}DGC)</span>
+                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={165/0.0001}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
                   <Switch bind:state={prostat}/>
