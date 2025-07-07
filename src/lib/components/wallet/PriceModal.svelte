@@ -171,7 +171,7 @@
               disabled
               class="w-full block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100"
             >
-              {#if $user?.vipInfo.length > 0}
+              {#if $user?.vipInfo?.length > 0}
                 {$i18n.t("Free")}
               {:else}
                 {$i18n.t("Current Status")}
