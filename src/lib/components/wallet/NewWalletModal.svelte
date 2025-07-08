@@ -230,7 +230,7 @@
                   <button
                     class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-100"
                     on:click={() => {
-                      window.open("/static/app/degptv1.0_0712.apk", "_blank");
+                      window.open("/static/app/degpt_v2.0_250707.apk", "_blank");
                     }}
                   >
                     <svg
@@ -477,7 +477,7 @@
                   <button
                     class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-900"
                     on:click={() => {
-                      window.open("/static/app/degptv1.0_0712.apk", "_blank");
+                      window.open("/static/app/degpt_v2.0_250707.apk", "_blank");
                     }}
                   >
                     <svg
