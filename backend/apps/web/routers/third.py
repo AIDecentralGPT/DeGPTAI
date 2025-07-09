@@ -16,7 +16,7 @@ router = APIRouter()
 @router.post("/search", response_model=dict)
 async def tavilySearch(form: TavilySearchForm, user=Depends(get_current_user)):
     if form.type == 'twitter':
-        data = TwitterApi.scrape_nitter(form.keyword)
+        data = TwitterApi.search_snscrape(form.keyword)
         return { "ok": True, "data": data}
     elif form.type == 'youtube':
         data = YoutubeClientApi.search(form.keyword)

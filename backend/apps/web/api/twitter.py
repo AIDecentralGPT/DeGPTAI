@@ -3,10 +3,8 @@ from twscrape import API
 from pydantic import BaseModel
 import requests
 import os
-from bs4 import BeautifulSoup
+import snscrape.modules.twitter as sntwitter
 
-from playwright.sync_api import sync_playwright
-import time
 
 consumer_key = os.getenv("dev_consumer_key")
 consumer_secret = os.getenv("dev_consumer_secret")
@@ -100,31 +98,26 @@ class TwitterLib:
             })
         return tweets
 
-    def scrape_nitter(self, keyword):
-        url = f"https://nitter.net/search?f=tweets&q={keyword}"
-        headers = {"User-Agent": "Mozilla/5.0"}
-        r = requests.get(url, headers=headers)
-        print("=====================", r)
-        soup = BeautifulSoup(r.text, "html.parser")
+    def search_snscrape(self, keword: str):
+        start_date = "2025-07-01"
+        end_date = "2025-07-09"
+        query = f'{keword} since:{start_date} until:{end_date}'
+
+        max_tweets = 10
         
-        tweets = soup.select('.timeline-item .tweet-content')
-        for tweet in tweets[:5]:
-            print("=============", tweet.text.strip())
-        
-        return []
+        # 用于存储抓取结果
+        tweets = []
+        # 遍历抓取
+        for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
+            if max_tweets and i >= max_tweets:
+                break
+            tweets.append([
+                tweet.date.strftime('%Y-%m-%d %H:%M:%S'),
+                tweet.user.username,
+                tweet.content,
+                tweet.url
+            ])
+        return tweets
     
-    async def scrape_twitter(self, keyword):
-        async with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            url = f"https://twitter.com/search?q={keyword}&src=typed_query&f=live"
-            page.goto(url)
-            time.sleep(5)  # 等待加载
-
-            tweets = page.query_selector_all('article div[lang]')
-            for tweet in tweets[:5]:  # 抓前5条
-                print(tweet.inner_text())
-
-            browser.close()
 
 TwitterApi = TwitterLib()
