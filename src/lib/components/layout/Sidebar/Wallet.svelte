@@ -46,7 +46,7 @@
   </div>
   
   <!-- 第三方方式登录钱包 -->
-  <WalletConnect />
+  <!-- <WalletConnect /> -->
 
   <!-- 创建，连接，打开钱包，三个按钮 -->
   {#if !($user?.id && $user?.id?.startsWith('0x'))}
