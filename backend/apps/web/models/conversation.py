@@ -189,7 +189,7 @@ class ConversationTable:
           result_data["free_total"]["total"] = free_total
           result_data["free_total"]["show"] = True
           freeconversation = self.get_info_by_user_mtype_date(user.id, userrole, "base", chat_time)
-          result_data["free_total"]["use"] = freeconversation.chat_num
+          result_data["free_total"]["use"] = 0 if freeconversation is None else freeconversation.chat_num
 
         return result_data  
       except Exception as e:

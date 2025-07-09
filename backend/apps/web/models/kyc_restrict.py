@@ -144,10 +144,25 @@ class KycRestrictTable:
             return None
         
     # 更新captcha_code记录
-    def update_capcher(self, user_id: str, captcha_code: str) -> Optional[KycRestrictModel]:
+    def update_capcher(self, user_id: str, captcha_code: str, client_ip: str) -> Optional[KycRestrictModel]:
         try:
-            query = KycRestrict.update(captcha_code=captcha_code).where(KycRestrict.user_id == user_id)
-            query.execute()  # 执行更新操作
+            kycrestrict = KycRestrict.get_or_none(KycRestrict.user_id == user_id)
+            if kycrestrict is not None:
+                query = KycRestrict.update(captcha_code=captcha_code).where(KycRestrict.user_id == user_id)
+                query.execute()  # 执行更新操作
+            else:
+                kycrestrict = KycRestrictModel(
+                    user_id=user_id,
+                    ip_address=client_ip,
+                    mac_id=None,
+                    cpu_id=None,
+                    email=None,
+                    captcha_code=captcha_code,
+                    tracking=None,
+                    status=False,
+                    created_date=datetime.now()
+                )
+                KycRestrict.create(**kycrestrict.model_dump())
 
             # 查询更新后数据
             kycrestrict = KycRestrict.get(KycRestrict.user_id == user_id)
