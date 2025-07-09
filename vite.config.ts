@@ -38,6 +38,13 @@ export default defineConfig({
 	build: {
     // 开启代码压缩
     minify: 'terser',
+		rollupOptions: {
+			output: {
+				assetFileNames: 'assets/[name]-[hash][extname]',
+				chunkFileNames: 'chunks/[name]-[hash].js',
+				entryFileNames: 'entries/[name]-[hash].js'
+			}
+		},
     terserOptions: {
       // 自定义 terser 配置
       compress: {
