@@ -4,7 +4,8 @@ import { ethers } from "ethers";
 import { getCurrencyPrice, getGas } from "./utils";
 import ABI from "./abi.json";
 import { getDbcBalance } from "./dbc";
-import { toast } from "svelte-sonner";
+import { getAccount } from "@wagmi/core";
+import { config } from "$lib/utils/wallet/walletconnect/index";
 
 // DGC 合约地址
 //const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧地址
@@ -101,6 +102,43 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
       ok: false,
       msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."
     };
+  }
+}
+
+// 第三方登陆转账
+export async function thirdTransferDgc(address:string, toAddress:string, amountDgc) {
+  const dbcBalance = await getDbcBalance(address);
+  const dgcBalance = await getDgcBalance(address);
+  if (parseFloat(dbcBalance) < 0.01) {
+    return {ok: false, message: "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance."};
+  }
+  if (parseFloat(dgcBalance) < amountDgc) {
+    return {ok: false, message: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."};
+  }
+  try {
+    const { gasLimit, gasPrice  } = await getGas();
+    const account = getAccount(config);
+    const provider = await account?.connector?.getProvider();
+    let eprovider = new ethers.BrowserProvider(provider);
+    await eprovider.send('eth_requestAccounts', []);
+    let signer = await eprovider.getSigner();
+    // 创建 DGC 合约实例
+    const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, ABI?.abi, signer);
+    const amountWei = ethers.parseUnits(amountDgc.toString());
+    const tx = {
+      to: DGC_TOKEN_CONTRACT_ADDRESS,
+      value: 0,
+      data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
+      gasPrice: gasPrice, // 设置燃气价格
+      // gasLimit: gasLimit
+    };
+    const txResponse = await dgcContract.sendTransaction(tx);
+    return {
+      ok: true,
+      data: txResponse
+    };
+  } catch(e) {
+    return {ok: false, message: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."};
   }
 }
 

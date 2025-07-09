@@ -15,6 +15,9 @@ const config = {
 			assets: 'build',
 			fallback: 'index.html'
 		}),
+		paths: {
+      base: '/app'
+    }
 	},
 	onwarn: (warning, handler) => {
 		const { code, _ } = warning;
