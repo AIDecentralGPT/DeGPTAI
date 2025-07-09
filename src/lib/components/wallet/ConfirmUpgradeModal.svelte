@@ -9,7 +9,7 @@
   import { openProServices } from "$lib/apis/users/index.js";
 
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
-  import { transferDgc } from "$lib/utils/wallet/ether/dgc"
+  import { thirdTransferDgc, transferDgc } from "$lib/utils/wallet/ether/dgc"
 
   const i18n = getContext("i18n");
 
@@ -24,11 +24,21 @@
     if ($currentWalletData?.walletInfo) {
       loading = true;
       try {
-        let response = await transferDgc(
-          address,
-          money/0.0001,
-          $currentWalletData?.walletInfo?.privateKey
-        );
+        let response = {ok: false, msg: ""};
+        if ($user?.address_type != "threeSide") {
+          response = await transferDgc(
+            address,
+            money/0.0001,
+            $currentWalletData?.walletInfo?.privateKey
+          );
+        } else {
+          response = await thirdTransferDgc(
+            $currentWalletData?.walletInfo?.address,
+            address,
+            money/0.0001
+          );
+        }
+        
         if (response?.ok) {
           if (response?.data?.hash) {
             await uploadVip(response?.data?.hash)
@@ -108,7 +118,7 @@
     <!-- 主体 -->
     <div class="flex flex-col">
       <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-        {#if ((money/0.0001) - floorToFixed(Number($currentWalletData?.dgcBalance), 2)) > 0}
+        {#if ((money/0.0001) - floorToFixed(Number($currentWalletData?.dgcBalance), 2)) < 0}
           <div class="w-full">
             <p class="text-md mb-4 w-full">
               {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: money/0.0001})}
