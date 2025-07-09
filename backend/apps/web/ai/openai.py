@@ -79,17 +79,17 @@ class OpenAiApi:
                     },
                     input=messages,
                     stream=param.stream,
-                    tools=tools,
                     top_p=1,
-                    store=False
+                    tools=tools
                 )
             else:
                 completion = client.responses.create(
                     model=param.model,
                     input=messages,
                     stream=param.stream,
+                    tools=tools,
                     top_p=1,
-                    store=False
+                    temperature=0.7
                 )
             
         except APIError as e:

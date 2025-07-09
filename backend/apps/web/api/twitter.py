@@ -3,6 +3,10 @@ from twscrape import API
 from pydantic import BaseModel
 import requests
 import os
+from bs4 import BeautifulSoup
+
+from playwright.sync_api import sync_playwright
+import time
 
 consumer_key = os.getenv("dev_consumer_key")
 consumer_secret = os.getenv("dev_consumer_secret")
@@ -95,5 +99,32 @@ class TwitterLib:
                 "url": f"https://x.com/{tweet.user.username}/status/{tweet.id}",
             })
         return tweets
+
+    def scrape_nitter(self, keyword):
+        url = f"https://nitter.net/search?f=tweets&q={keyword}"
+        headers = {"User-Agent": "Mozilla/5.0"}
+        r = requests.get(url, headers=headers)
+        print("=====================", r)
+        soup = BeautifulSoup(r.text, "html.parser")
         
+        tweets = soup.select('.timeline-item .tweet-content')
+        for tweet in tweets[:5]:
+            print("=============", tweet.text.strip())
+        
+        return []
+    
+    async def scrape_twitter(self, keyword):
+        async with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            url = f"https://twitter.com/search?q={keyword}&src=typed_query&f=live"
+            page.goto(url)
+            time.sleep(5)  # 等待加载
+
+            tweets = page.query_selector_all('article div[lang]')
+            for tweet in tweets[:5]:  # 抓前5条
+                print(tweet.inner_text())
+
+            browser.close()
+
 TwitterApi = TwitterLib()
