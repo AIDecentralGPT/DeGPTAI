@@ -13,12 +13,20 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: 'index.html'
+			fallback: 'index.html',
+			precompress: false
 		}),
-		paths: {
-      base: '/app'
-    }
+		// 关闭 SvelteKit 默认的代码分割
+    prerender: { entries: [] }
 	},
+	base: './',
+	build: {
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true // 强制内联动态导入
+      }
+    }
+  },
 	onwarn: (warning, handler) => {
 		const { code, _ } = warning;
 		if (code === 'css-unused-selector') return;
