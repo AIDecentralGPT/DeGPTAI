@@ -53,6 +53,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@capacitor/android": "^7.4.1",
+		"@capacitor/cli": "^7.4.1",
+		"@capacitor/core": "^7.4.1",
+		"@capacitor/ios": "^7.4.1",
 		"@fingerprintjs/fingerprintjs": "^4.3.0",
 		"@gregg-cbs/svelte-date-picker": "^3.0.3",
 		"@polkadot/api": "^11.2.1",

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DeGPT</string>
+    <string name="title_activity_main">DeGPT</string>
+    <string name="package_name">com.degpt.app</string>
+    <string name="custom_url_scheme">com.degpt.app</string>
+</resources>

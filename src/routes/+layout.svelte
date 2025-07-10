@@ -20,8 +20,8 @@
   import "../app.css";
 
   // 打开调试模式
-  import VConsole from 'vconsole';
-  const vConsole = new VConsole();
+  // import VConsole from 'vconsole';
+  // const vConsole = new VConsole();
 
 
   import "tippy.js/dist/tippy.css";
@@ -168,7 +168,7 @@
   <link
     crossorigin="anonymous"
     rel="icon"
-    href="{WEBUI_BASE_URL}/static/favicon.png"
+    href="/static/favicon.png"
   />
 
   <script

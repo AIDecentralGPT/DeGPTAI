@@ -78,7 +78,7 @@
 			<div class=" self-center">
 				<img
 					crossorigin="anonymous"
-					src="{WEBUI_BASE_URL}/static/favicon.png"
+					src="/static/favicon.png"
 					class=" w-8 rounded-full"
 					alt="logo"
 				/>

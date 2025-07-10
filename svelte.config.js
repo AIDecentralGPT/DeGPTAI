@@ -14,14 +14,22 @@ const config = {
 			pages: 'build',
 			assets: 'build',
 			fallback: 'index.html',
-			// 新增预渲染选项（确保哈希正常工作）
-			precompress: true // 如果不需要gzip压缩可以设为false
+			precompress: false
 		}),
-		// 确保输出文件带哈希（默认已启用，显式声明更明确）
-		version: {
-			name: Date.now().toString() // 每次构建生成唯一版本ID
-		}
+		files: {
+      assets: 'static' // 确保指向你的静态资源目录
+    },
+		// 关闭 SvelteKit 默认的代码分割
+    prerender: { entries: [] }
 	},
+	base: './',
+	build: {
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true // 强制内联动态导入
+      }
+    }
+  },
 	onwarn: (warning, handler) => {
 		const { code, _ } = warning;
 		if (code === 'css-unused-selector') return;
