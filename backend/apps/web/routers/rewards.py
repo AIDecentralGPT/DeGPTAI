@@ -9,6 +9,7 @@ from utils.utils import get_verified_user
 from datetime import date, datetime
 import threading
 import concurrent.futures
+from apps.web.api.rewardapi import ClockInAmount
 
 router = APIRouter()
 
@@ -97,16 +98,16 @@ async def clock_in(user=Depends(get_verified_user)):
     # 检查用户是否已经在今天获得过奖励
     existing_rewards = RewardsTableInstance.get_rewards_by_user_id_and_date_and_reward_type(user.id, today, reward_type)
     if existing_rewards:
-        raise HTTPException(status_code=400, detail="You have received 100 DGC points !")
+        raise HTTPException(status_code=400, detail="You have received {{clockin}} DGC points !")
     
-    rewards = RewardsTableInstance.create_reward(user.id, 100, reward_type)
+    rewards = RewardsTableInstance.create_reward(user.id, ClockInAmount, reward_type)
     if rewards is not None:
         # 领取奖励
         RewardApiInstance.dailyReward(rewards.id, user.id)
         # 判断是否发放邀请奖励
         checkInviteReward(user.id)
             
-        return {"ok": True, "message": "You have received 100 DGC points !"}
+        return {"ok": True, "message": "You have received {{clockin}} DGC points !"}
     else:
         raise HTTPException(status_code=500, detail="Failed to received reward")
 

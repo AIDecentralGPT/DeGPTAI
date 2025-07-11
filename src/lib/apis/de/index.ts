@@ -133,12 +133,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Grok 3 (Elon Musk)",
-        model: "grok-3",
-        imagemodel: "grok-3",
-        textmodel: "grok-3",
+        name: "Grok 4 (Elon Musk)",
+        model: "grok-4-0709",
+        imagemodel: "grok-4-0709",
+        textmodel: "grok-4-0709",
         think: false,
-        tip: "Grok 3 (Elon Musk)",
+        tip: "Grok 4 (Elon Musk)",
         support: "image",
         type: 2,
         desc: "Expert in Q&A, lively expression style",
