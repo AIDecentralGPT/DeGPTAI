@@ -22,6 +22,7 @@
   import { getRewardsCount, clockIn } from "$lib/apis/rewards/index.js";
 
   import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
+  import { RewardProperties } from "$lib/constants"
   import { toast } from "svelte-sonner";
 
   const i18n = getContext("i18n");
@@ -323,10 +324,10 @@
                         console.log("Clock In  res", res);
                         getCount();
                         if (res?.ok) {
-                          toast.success($i18n.t(res?.message));
+                          toast.success($i18n.t(res?.message, RewardProperties));
                         }
                         if (res?.detail) {
-                          toast.warning($i18n.t(res?.detail));
+                          toast.warning($i18n.t(res?.detail, RewardProperties));
                         }
                       })
                       .catch((res) => {

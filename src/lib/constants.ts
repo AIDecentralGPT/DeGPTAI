@@ -106,3 +106,14 @@ export const DefaultCurrentWalletData = {
     dlc: 0,
   },
 };
+
+export const RewardProperties = {
+  "regist": 10000,
+  "invite": "10,000",
+  "ipeoples": 20,
+  "itimes": 3,
+  "clockin": 1000,
+  "civalid": 180,
+  "citimes": 30,
+  "endtime": "2025-08-16 00:00:00"
+}

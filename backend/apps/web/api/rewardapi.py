@@ -8,6 +8,10 @@ import threading
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
 baseUrl = "http://34.234.201.126:8082" # 新地址
 
+RegistAmount = 10000
+InviteAmount = 10000
+ClockInAmount = 1000
+
 class RewardApi: 
 
     def __init__(self, url):
@@ -23,7 +27,7 @@ class RewardApi:
             #拼接请求地址
             url = f"{self.apiUrl}/claim_register_reward"
             #请求体
-            data = {"user_id": user_id}
+            data = {"user_id": user_id, "amount": int(reward.reward_amount)}
             # 发送POST请求
             response = requests.post(url, json.dumps(data))
             # 校验请求是否成功
@@ -101,7 +105,7 @@ class RewardApi:
             #拼接请求地址
             url = f"{self.apiUrl}/claim_daily_rewards"
             #请求体
-            data = {"user_id": user_id}
+            data = {"user_id": user_id, "amount": int(reward.reward_amount)}
             # 发送POST请求
             response = requests.post(url, json.dumps(data))
             # 校验请求是否成功

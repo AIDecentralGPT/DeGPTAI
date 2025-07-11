@@ -17,6 +17,7 @@ from apps.web.models.vipstatus import VIPStatus
 from apps.redis.redis_client import RedisClientInstance
 import json
 from apps.web.models.reward_data import RewardDateTableInstance
+from apps.web.api.rewardapi import RegistAmount, InviteAmount
 
 
 ####################
@@ -225,19 +226,19 @@ class UsersTable:
                             invite_user = UserModel(**invite_user_dict)
                             if invite_user.verified:
                                 # 注册奖励绑定邀请人
-                                RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
+                                RewardsTableInstance.create_reward(user.id, RegistAmount, "new_wallet",True, invitee)
                                 if len(invite_list) < 20:
                                     print("邀请人得奖励", user.inviter_id)
-                                    RewardsTableInstance.create_reward(user.inviter_id, 3000, "invite", True, invitee)
+                                    RewardsTableInstance.create_reward(user.inviter_id, InviteAmount, "invite", True, invitee)
                             else:
                                 # 注册奖励绑定邀请人
-                                RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
+                                RewardsTableInstance.create_reward(user.id, RegistAmount, "new_wallet",True, invitee)
                                 if len(invite_list) < 20:
                                     print("邀请人得奖励0", user.inviter_id)
                                     RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
                     else:
                         # 注册奖励
-                        RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
+                        RewardsTableInstance.create_reward(user.id, RegistAmount, "new_wallet",True)
         
         # return user info:
         return user  # 返回创建的用户 

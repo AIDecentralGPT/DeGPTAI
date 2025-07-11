@@ -1,11 +1,12 @@
 
 <script>
   import { getContext } from "svelte";
+  import { RewardProperties } from "$lib/constants"
   const i18n = getContext("i18n");
   let rewards = [
     {
       title: "I. New User Creation Reward",
-      description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward."
+      description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>{{regist}}</span> DGC reward."
     },
     {
       title: "II. Referral Reward",
@@ -14,8 +15,8 @@
     {
       title: "III. Clock in Reward",
       description: [
-        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.",
-        "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.",
+        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>{{civalid}}</span> days after authentication is completed.",
+        "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>{{clockin}}</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>{{citimes}}</span> Clock in rewards.",
       ]
     }
   ];
@@ -50,11 +51,11 @@
     {#if Array.isArray(reward.description)}
       <ul>
         {#each reward.description as desc, index}
-          <li>{index + 1}. {$i18n.t(desc)}</li>
+          <li>{index + 1}. {$i18n.t(desc, RewardProperties)}</li>
         {/each}
       </ul>
     {:else}
-      <p>{$i18n.t(reward.description)}</p>
+      <p>{$i18n.t(reward.description, RewardProperties)}</p>
     {/if}
   {/each}
 </main>
