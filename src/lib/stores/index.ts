@@ -124,6 +124,13 @@ export const switchModel = writable({
 });
 
 
+interface SafeAreaInsets {
+    top: number;
+    bottom: number;
+}
+export const safeArea = writable<SafeAreaInsets>({ top: 0, bottom: 0 });
+
+
 
 
 // 初始化

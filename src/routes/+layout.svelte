@@ -183,7 +183,7 @@
 </svelte:head>
 
 {#if loaded}
-  <slot />
+  <slot style="padding-top: 100px;"/>
 {/if}
 
 <Toaster richColors position="top-center" class="flex" />
