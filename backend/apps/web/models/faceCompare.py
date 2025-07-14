@@ -26,14 +26,6 @@ class FaceCompare:
             endpoint=ENDPOINT
         )
         
-        
-        # AccessKey ID
-        # LTAI5tKRwDnNYRAjF9SkeFv6
-        # LTAI5tQC7rgovBXLJK9nAh9H
-
-        # AccessKey Secret
-        # 6T5Vf8TNbPJ7fGYREpcZGg9oAYWGde
-        # y41BCjq6yck32Mw050vGkdMNO8nPqF
         self.client = CloudauthClient(self.config)
 
     # 初始化请求数据
