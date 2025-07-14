@@ -113,6 +113,7 @@ export const RewardProperties = {
   "ipeoples": 20,
   "itimes": 3,
   "clockin": "1,000",
+  "clockinall": "300,000",
   "civalid": 180,
   "citimes": 30,
   "endtime": "2025-08-16 00:00:00"
