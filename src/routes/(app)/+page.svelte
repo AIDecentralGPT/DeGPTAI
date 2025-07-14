@@ -20,8 +20,16 @@
     showSidebar,
     showUserVerifyModal,
     user,
+<<<<<<< HEAD
     deApiBaseUrl } from "$lib/stores";
   import { copyToClipboard, splitStream, addTextSlowly } from "$lib/utils";
+=======
+    switchModel,
+    deApiBaseUrl,
+    toolflag,
+    tooltype } from "$lib/stores";
+  import { copyToClipboard, addTextSlowly } from "$lib/utils";
+>>>>>>> fingerprintAuth-out
 
   import {
     addTagById,
@@ -35,10 +43,15 @@
   } from "$lib/apis/chats";
   import {
     cancelOllamaRequest,
+<<<<<<< HEAD
     generateChatCompletion,
   } from "$lib/apis/ollama";
   import {
     generateOpenAIChatCompletion,
+=======
+  } from "$lib/apis/ollama";
+  import {
+>>>>>>> fingerprintAuth-out
     generateTitle,
   } from "$lib/apis/openai";
   import {
@@ -58,9 +71,14 @@
     OPENAI_API_BASE_URL,
   } from "$lib/constants";
 
+<<<<<<< HEAD
   import { thirdSearch } from "$lib/apis/thirdsearch";
 
   import { addErrorLog } from "$lib/apis/errorlog";
+=======
+  import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
+  import { analysisImageInfo } from "$lib/apis/rag";
+>>>>>>> fingerprintAuth-out
 
   let inviter: any = "";
   let channelName: any = "";
@@ -74,6 +92,10 @@
   let currentRequestId: any = null;
 
   let showModelSelector = true;
+<<<<<<< HEAD
+=======
+  let deepsearch = false;
+>>>>>>> fingerprintAuth-out
 
   let selectedModels = [""];
   let atSelectedModel = "";
@@ -106,17 +128,31 @@
   let title = "";
   let prompt = "";
   let files = [];
+<<<<<<< HEAD
   let search = false;
   let search_type = "web";
+=======
+  let fileFlag = false;
+>>>>>>> fingerprintAuth-out
   let messages = [];
   let history = {
     messages: {},
     currentId: null,
   };
 
+<<<<<<< HEAD
   // Trigger the initialization of the current component
   $: $pageUpdateNumber, initNewChat();
   let firstResAlready = false; // The first response has already been received
+=======
+  let webInfo = {url:""};
+
+  let chatInputPlaceholder = "";
+
+  // 触发当前组件初始化
+  $: $pageUpdateNumber, initNewChat();
+  let firstResAlready = false; // 已经有了第一个响应
+>>>>>>> fingerprintAuth-out
 
   $: if (history.currentId !== null) {
     let _messages = [];
@@ -124,7 +160,11 @@
     let currentMessage = history.messages[history.currentId];
 
     while (currentMessage !== null) {
+<<<<<<< HEAD
       _messages.unshift({ ...currentMessage }); // Add element at the beginning of _messages
+=======
+      _messages.unshift({ ...currentMessage }); // _messages开头添加元素
+>>>>>>> fingerprintAuth-out
       currentMessage = currentMessage.parentId !== null ? history.messages[currentMessage.parentId] : null;
     }
 
@@ -153,14 +193,28 @@
 
     await initNewChat();
 
+<<<<<<< HEAD
+=======
+    // 触发直接发送消息
+    if ($switchModel.status) {
+      prompt = $switchModel.content;
+      $toolflag = $switchModel.toolFlag;
+      $tooltype = $switchModel.toolType;
+      switchModel.set({content: "", toolFlag: false, toolType: 'web', status: false});
+      await submitPrompt(prompt, null, $user);
+    }
+>>>>>>> fingerprintAuth-out
   });
 
   //////////////////////////
   // Web functions
   //////////////////////////
+<<<<<<< HEAD
 
   let monitorLog = [];
 
+=======
+>>>>>>> fingerprintAuth-out
   const initNewChat = async () => {
     if (currentRequestId !== null) {
       await cancelOllamaRequest(localStorage.token, currentRequestId);
@@ -168,10 +222,19 @@
     }
     window.history.replaceState(history.state, "", `/`);
     await chatId.set("");
+<<<<<<< HEAD
+=======
+    await toolflag.set(false);
+    await tooltype.set("");
+>>>>>>> fingerprintAuth-out
 
     autoScroll = true;
 
     title = "";
+<<<<<<< HEAD
+=======
+    prompt = "";
+>>>>>>> fingerprintAuth-out
     messages = [];
     history = {
       messages: {},
@@ -220,16 +283,25 @@
   //////////////////////////
   // Ollama functions
   //////////////////////////
+<<<<<<< HEAD
 
   const submitPrompt = async (userPrompt, _user = null) => {
     console.log("submitPrompt", $chatId, userPrompt);
     monitorLog = [];
     monitorLog.push({fun: "start", time: new Date()});
+=======
+  const submitPrompt = async (userPrompt, userToolInfo,_user = null) => {
+    console.log("submitPrompt", $chatId, userPrompt);
+    if (!$toolflag) {
+      chatInputPlaceholder = "";
+    }
+>>>>>>> fingerprintAuth-out
 
     selectedModels = selectedModels.map((modelId) =>
       $models.map((m) => m.id).includes(modelId) ? modelId : ""
     );
     
+<<<<<<< HEAD
     // Verify if the model supports file types
     if (files.length > 0) {
       let imageModels = $models.filter(item => item.support == "image");
@@ -247,6 +319,56 @@
 
     // If only one model is selected for online search reply
     if (search) {
+=======
+    // 校验模型是否支持文件类型
+    // let imageModels = $models.filter(item => item.support == "image");
+    if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
+      // let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
+      //   .map(item => item.model);
+      // if (checkSelectedModels.length == 0) {
+      //   selectedModels = imageModels.map(item => item.model);
+      // } else {
+      //   selectedModels = checkSelectedModels;
+      // }
+      fileFlag = true;
+    } else {
+      // 校验历史记录是否有图片
+      let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
+      // let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
+      if (checkMessages.length > 0) {
+        // if (checkSelectModels.length == 0) {
+        //   fileFlag = false;
+        //   switchModel.set({
+        //     content: prompt,
+        //     search: search,
+        //     searchType: search_type,
+        //     status: true
+        //   })
+        //   await initNewChat();
+        //   // 触发直接发送消息
+        //   if ($switchModel.status) {
+        //     prompt = $switchModel.content;
+        //     search = $switchModel.search;
+        //     search_type = $switchModel.searchType;
+        //     switchModel.set({content: "", search: false, searchType: 'web', status: false});
+        //     await submitPrompt(prompt, $user);
+        //   };
+        //   return;
+        // } else {
+          
+        //   selectedModels = checkSelectModels.map(item => item.model);
+        // } 
+        fileFlag = true;
+      } else{
+        fileFlag = false;
+      }
+    }
+
+    // console.log("selectedModels", selectedModels);
+
+    // 如果开启网络搜索只选择一个模型回复
+    if ($toolflag) {
+>>>>>>> fingerprintAuth-out
       selectedModels = [selectedModels[0]];
     }
 
@@ -275,8 +397,18 @@
         childrenIds: [],
         role: "user",
         user: _user ?? undefined,
+<<<<<<< HEAD
         content: userPrompt,
         files: files.length > 0 ? files : undefined,
+=======
+        imageinfo: "",
+        content: userPrompt,
+        files: files.length > 0 ? files : undefined,
+        toolflag: $toolflag,
+        tooltype: $tooltype,
+        toolInfo: userToolInfo, // 直接传过来数据
+        parseInfo: "", // 解析后数据
+>>>>>>> fingerprintAuth-out
         models: selectedModels.filter(
           (m, mIdx) => selectedModels.indexOf(m) === mIdx
         ),
@@ -302,9 +434,15 @@
           let responseMessage = {
             parentId: userMessageId,
             id: responseMessageId,
+<<<<<<< HEAD
             search: search,
             search_type: search_type,
             search_content: {},
+=======
+            toolflag: $toolflag,
+            tooltype: $tooltype,
+            parseInfo: "",
+>>>>>>> fingerprintAuth-out
             keyword: userPrompt,
             childrenIds: [],
             role: "assistant",
@@ -331,6 +469,7 @@
         }
       });
 
+<<<<<<< HEAD
       scrollToBottom();
 
       monitorLog.push({fun: "checkLimit-start", time: new Date()});
@@ -492,6 +631,189 @@
     firstResAlready = false;
 
     // Load chat list (assign chat title)
+=======
+      // Reset chat input textarea
+      prompt = "";
+      files = [];
+      webInfo = {url:""};
+
+      scrollToBottom();
+
+      // 校验图片获取图片信息
+      // await analysisimageinfo(userMessageId);
+
+      // 代码有调用接口，放到try中可方便捕获异常
+      try {
+        // 校验模型已使用次数
+        let modelLimit:any = {}
+        const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+        if (passed) {
+          for (const item of selectedModels) {
+            data.forEach((dItem:any) => {
+              if(dItem.model == item) {
+                if (!dItem.passed) {
+                  modelLimit[dItem.model] = dItem.message;
+                }
+              }
+            }) 
+          }
+        }
+
+        // Wait until history/message have been updated
+        await tick();
+
+        // 获取工具操作内容
+        if ($toolflag) {
+          if ($tooltype == "webread") {
+            // 网页分析
+            if ((userToolInfo?.url??"").length > 0) {
+              let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
+              if (webResult?.ok) {
+                // 更新UserMessge信息
+                userMessage.parseInfo = webResult?.data;
+                history.messages[userMessageId] = userMessage;
+              } 
+              await tick();
+            }
+          } else if ($tooltype == "translate") {
+              // 更新UserMessge信息
+              userMessage.parseInfo = userToolInfo?.trantip;
+              history.messages[userMessageId] = userMessage;
+              await tick();
+          } else {
+            let searchData = await handleSearchWeb(userPrompt);
+
+            // 更新UserMessge信息
+            userMessage.parseInfo = searchData;
+            history.messages[userMessageId] = userMessage;
+
+            // 更新回复会话搜索信息
+            Object.keys(responseMap).map(async (modelId) => {
+              const model = $models.filter((m) => m.id === modelId).at(0);  
+              if (responseMap[model?.id]) {
+                let responseMessageId = responseMap[model?.id].id;
+                let responseMessage = responseMap[model?.id];
+                responseMessage.parseInfo = searchData;
+                history.messages[responseMessageId] = responseMessage;
+              }
+            });
+            await tick();
+          }
+          
+          scrollToBottom();
+        }
+
+        // Create new chat if only one message in messages
+        if (messages.length == 2) {
+          if ($settings.saveChatHistory ?? true) {
+            chat = await createNewChat(localStorage.token, {
+              id: $chatId,
+              title: $i18n.t("New Chat"),
+              models: selectedModels,
+              system: $settings.system ?? undefined,
+              options: {
+                ...($settings.options ?? {}),
+              },
+              messages: messages,
+              history: history,
+              tags: [],
+              timestamp: Date.now(),
+            });
+            await chats.set(await getChatList(localStorage.token));
+            await chatId.set(chat.id);
+          } else {
+            await chatId.set("local");
+          }
+          await tick();
+        }
+
+        // Send prompt
+        await sendPrompt(userPrompt, responseMap, modelLimit);
+
+      } catch (err) {
+        const _chatId = JSON.parse(JSON.stringify($chatId));
+        Object.keys(responseMap).map(async (modelId) => {
+          const model = $models.filter((m) => m.id === modelId).at(0);
+          let responseMessage = responseMap[model?.id];
+          await handleOpenAIError(err, null, model, responseMessage);
+
+          // 更新消息到数据库
+          await updateChatMessage(responseMessage, _chatId);
+
+          await tick();
+          
+          if (autoScroll) {
+            scrollToBottom();
+          }
+        })  
+      }  
+    }
+  };
+
+  const sendPrompt = async (prompt, responseMap = null, modelLimit = {}, modelId = null) => {
+    const _chatId = JSON.parse(JSON.stringify($chatId));
+    await Promise.all(
+      (modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : Object.keys(responseMap)).map(
+        async (modelId) => {
+          const model = $models.filter((m) => m.id === modelId).at(0);
+          if (model) {
+            // 创建响应消息
+            let responseMessage = responseMap[model?.id];
+            let responseMessageId = responseMessage?.id;
+
+            let userContext = null;
+            if ($settings?.memory ?? false) {
+              if (userContext === null) {
+                const res = await queryMemory(localStorage.token, prompt).catch(
+                  (error) => {
+                    toast.error(error);
+                    return null;
+                  }
+                );
+
+                if (res) {
+                  if (res.documents[0].length > 0) {
+                    userContext = res.documents.reduce((acc, doc, index) => {
+                      const createdAtTimestamp =
+                        res.metadatas[index][0].created_at;
+                      const createdAtDate = new Date(createdAtTimestamp * 1000)
+                        .toISOString()
+                        .split("T")[0];
+                      acc.push(`${index + 1}. [${createdAtDate}]. ${doc[0]}`);
+                      return acc;
+                    }, []);
+                  }
+
+                  console.log(userContext);
+                }
+              }
+            }
+            responseMessage.userContext = userContext;
+
+            // 校验是否超过次数
+            if (modelLimit[model.id]) {
+              await handleLimitError(modelLimit[model.id], responseMessage);
+            } else {  
+              // 文本搜索
+              await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+            }
+            // if (model?.external) {
+            // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
+            // } else if (model) {
+            // 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
+            // }
+          } else {
+            console.error($i18n.t(`Model {{modelId}} not found`, {}));
+            // toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+          }
+      })
+    );
+
+    // 所有模型响应结束后，还原firstResAlready为初始状态false
+    firstResAlready = false;
+
+    // 加载聊天列表（赋值聊天title）
+>>>>>>> fingerprintAuth-out
     if (messages.length == 2) {
       window.history.replaceState(history.state, "", `/c/${_chatId}`);
       const _title = await generateDeChatTitle(prompt);
@@ -502,6 +824,7 @@
 
   };
 
+<<<<<<< HEAD
   // De's openai, come here!
   const sendPromptDeOpenAI = async (
     model,
@@ -535,6 +858,35 @@
         });
       }
     }
+=======
+  // De的openai走这里！
+  const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {
+    const responseMessage = history.messages[responseMessageId];
+
+    const docs = [messages[messages.length - 2]]
+      .filter((message) => message?.files ?? null)
+      .map((message) =>
+        message.files.filter(
+          (item) => item.type === "doc" || item.type === "collection"
+        )
+      )
+      .flat(1);
+
+    // 获取上一个对应模型回复的消息(每次只选一个模型可去除)
+    // const modelmessage = messages;
+    // if (messages.length > 2) {
+    //   let checkmessage = modelmessage[messages.length - 3];
+    //   let checkchildrenIds = history.messages[checkmessage.parentId]?.childrenIds;
+    //   if (checkchildrenIds) {
+    //     checkchildrenIds.forEach(item => {
+    //       let sonMessage = history.messages[item];
+    //       if (sonMessage.model == model.id) {
+    //         checkmessage.content = sonMessage.content;
+    //       }
+    //     });
+    //   }
+    // }
+>>>>>>> fingerprintAuth-out
     
     scrollToBottom();
 
@@ -547,6 +899,7 @@
               responseMessage?.userContext ?? null
                 ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
             } : undefined,
+<<<<<<< HEAD
             ...modelmessage,
         ].filter((message) => message);
       // Determine whether to reassign the value through network search
@@ -578,6 +931,69 @@
 			// Filter out data with errors and empty content
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
 
+=======
+            ...messages,
+        ].filter((message) => message);
+      // 判断是否需要重新赋值
+			send_message.forEach((item, index) => {
+        // 判断不同类型提问不同内容
+        if (item?.role == 'user' && item?.toolflag) {
+          if (item?.tooltype == "webread") {
+            let analyContent = "网页标题：" + item?.parseInfo?.title;
+            analyContent = "；网页内容：" + item?.parseInfo?.content;
+            analyContent = analyContent + "\n" + item?.content;
+            item.content = analyContent;
+          } else if (item?.tooltype == "translate") {
+            let analyContent = item?.content + "\n" + item?.parseInfo;
+            item.content = analyContent;
+          } else if (item?.tooltype == "youtube") {
+						if (item?.parseInfo?.videos) {
+							let analyContent = item?.parseInfo?.videos.map((vItem: any) => vItem?.description).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:");
+							item.content = analyContent + item.content;
+						}
+          } else if (item?.tooltype == "twitter") {
+						if (item?.parseInfo?.content) {
+							let analyContent = item?.parseInfo?.content.map((tItem: any) => tItem?.full_text).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results:");
+							item.content = analyContent + item.content;
+						}
+          } else if (item?.tooltype == "bing") {
+						if (item?.parseInfo?.web) {
+							let analyContent = item?.parseInfo?.web.map((wItem: any) => wItem?.content).join('\n');
+							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:");
+							item.content = analyContent + item.content;
+						}
+          }
+        } 
+        // else if (item?.role != 'user' && docs.length > 0) {
+        //   if (docs[0].image.length > 0) {
+        //     let content = [];
+        //     if (docs[0].text[0]?.page_content.length > 0) {
+        //       let analyContent = "";
+        //       docs[0].text.forEach(item => {
+        //         analyContent = analyContent + item?.page_content + "\n";
+        //       });
+        //       content.push({type: "text", text: "文档内容：" + analyContent + send_message[index-1].content});
+        //     } else {
+        //       content.push({type: "text", text: send_message[index-1].content});
+        //     }
+        //     content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
+        //     send_message[index-1].content = content;
+        //   } else {
+        //     let analyContent = "";
+        //     docs[0].text.forEach(item => {
+        //         analyContent = analyContent + item?.page_content + "\n";
+        //     });
+        //     send_message[index-1].content = "文档内容：" + analyContent + send_message[index-1].content;
+        //   }
+        // }
+      });
+			// 过滤掉error和 content为空数据
+			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
+
+      // 处理图片消息
+>>>>>>> fingerprintAuth-out
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
         ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
@@ -609,6 +1025,7 @@
           }),
       }));
 
+<<<<<<< HEAD
       monitorLog.push({fun: model?.id + "de-send-start", time: new Date()});
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
@@ -618,6 +1035,37 @@
         },
         $deApiBaseUrl?.url,
         monitorLog
+=======
+      // send_message = send_message.map((message, idx, arr) => ({
+      //   role: message.role,
+      //   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+      //   message.role === "user"
+      //     ? {
+      //         content: arr.length - 1 !== idx
+      //           ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
+      //           : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
+      //       }
+      //     : {
+      //       content:
+      //         arr.length - 1 !== idx
+      //           ? message.content
+      //           : message?.raContent ?? message.content,
+      //     }),
+      // }));
+
+      // 发送内容添加 nothink 内容
+      // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
+      //   send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
+      // }
+      const [res, controller] = await generateDeOpenAIChatCompletion(
+        localStorage.token,
+        {
+          model: fileFlag ? model.imagemodel : model.textmodel,
+          messages: send_message,
+          enable_thinking: model.think
+        },
+        $deApiBaseUrl?.url,
+>>>>>>> fingerprintAuth-out
       );
 
       // console.log("res controller", res, controller);
@@ -639,12 +1087,40 @@
           $settings.splitLargeChunks
         );
         responseMessage.replytime = Math.floor(Date.now() / 1000);
+<<<<<<< HEAD
         // Add a think header to the judgment model
         if (model.id == "DeepSeek-R1") {
           responseMessage.think_content = "<think>";
         }
         for await (const update of textStream) {
           const { value, done, citations, error } = update;
+=======
+        // 判断模型添加think头
+        let first_think = false;
+        if (model.think) {
+          responseMessage.think_content = "<think>";
+        }
+        for await (const update of textStream) {
+          const { value, done, citations, error, think } = update;
+
+          // 校验是否思考过程
+          if (model.think && think) {
+            first_think = true;
+          }
+          if (model.think && first_think && !think) {
+            first_think = false;
+            responseMessage.content = await addTextSlowly(
+              (text: string) => {
+                responseMessage.content = text;
+              },
+              responseMessage.content,
+              "</think>",
+              model.id,
+            );
+            messages = messages;
+          }
+
+>>>>>>> fingerprintAuth-out
           if (error) {
             await handleOpenAIError(error, null, model, responseMessage);
             break;
@@ -657,7 +1133,11 @@
           //   error
           // );
 
+<<<<<<< HEAD
           // When responding for the first time, set the current ID to the current response ID
+=======
+          // 第一次响应的时候，把当前的id设置为当前响应的id
+>>>>>>> fingerprintAuth-out
           if (value && !firstResAlready) {
             firstResAlready = true;
             history.currentId = responseMessageId;
@@ -680,9 +1160,15 @@
           }
 
           if (!firstResAlready && responseMessage.content.length > 0) {
+<<<<<<< HEAD
             // When responding for the first time, set the current ID to the current response ID
             console.log(
               "Model call completed?",
+=======
+            // 第一次响应的时候，把当前的id设置为当前响应的id
+            console.log(
+              "模型调用完毕？",
+>>>>>>> fingerprintAuth-out
               res,
               model.id,
               firstResAlready,
@@ -700,6 +1186,12 @@
           } else {
             // responseMessage.content += value;
             responseMessage.content = await addTextSlowly(
+<<<<<<< HEAD
+=======
+              (text: string) => {
+                responseMessage.content = text;
+              },
+>>>>>>> fingerprintAuth-out
               responseMessage.content,
               value,
               model.id
@@ -736,6 +1228,7 @@
       await handleOpenAIError(error, null, model, responseMessage);
     }
 
+<<<<<<< HEAD
     await checkThinkContent(responseMessage);
     messages = messages;
 
@@ -756,6 +1249,10 @@
     monitorLog.push({fun: model?.id + "update-chat", time: new Date()});
     addErrorLog(_chatId + "conversation", JSON.stringify(monitorLog));
 
+=======
+    // 更新消息到数据库
+    await updateChatMessage(responseMessage, _chatId);
+>>>>>>> fingerprintAuth-out
 
     await tick();
 
@@ -764,7 +1261,29 @@
     }
   };
 
+<<<<<<< HEAD
   // Verify if the model has thought content
+=======
+  // 更新消息到数据库
+  const updateChatMessage = async (responseMessage: any, _chatId) => {
+    await checkThinkContent(responseMessage);
+    messages = messages;
+
+    stopResponseFlag = false;
+    
+    // 更新聊天记录
+    if (_chatId === $chatId) {  
+      if ($settings.saveChatHistory ?? true) {
+        await updateChatById(localStorage.token, _chatId, {
+          messages: messages,
+          history: history
+        });
+      }
+    }
+  }
+
+  // 校验模型是否有think思考内容
+>>>>>>> fingerprintAuth-out
   const checkThinkContent = async(responseMessage: any) => {
     let checkMessage = responseMessage.think_content + responseMessage.content;
     if (checkMessage.startsWith("<think>")) {
@@ -785,6 +1304,7 @@
     }
   }
 
+<<<<<<< HEAD
   // Get search webpage
   const handleSearchWeb= async(responseMessage: any, responseMessageId: string) => {
     if (search) {
@@ -797,6 +1317,30 @@
     }
     await tick();
     scrollToBottom();
+=======
+  // 获取搜索网页
+  const handleSearchWeb= async(userPrompt: string) => {
+    const ai_keyword = await generateSearchChatKeyword(userPrompt);
+    let result = await thirdSearch(localStorage.token, ai_keyword, $tooltype);
+    if (result?.ok) {
+      return result.data;
+    } else {
+      return "";
+    }
+  }
+
+  // 获取图片描述
+  const analysisimageinfo = async(messageId: string) => {
+    let userMessage = history.messages[messageId];
+    if (userMessage.files) {
+      if (userMessage.files.length > 0 && (userMessage.files[0].type == "image" || (userMessage.files[0]?.image??[]).length > 0)) {
+        let result = await analysisImageInfo(localStorage.token, userMessage.files[0].url);
+        userMessage.imageinfo = result;
+        history.messages[messageId] = userMessage;
+      }
+    }
+    await tick();
+>>>>>>> fingerprintAuth-out
   }
 
   const handleOpenAIError = async (
@@ -805,6 +1349,7 @@
     model,
     responseMessage
   ) => {
+<<<<<<< HEAD
     let errorMessage = "";
     let innerError;
 
@@ -839,13 +1384,54 @@
       errorMessage;
     responseMessage.done = true;
 
+=======
+    // let errorMessage = "";
+    // let innerError;
+
+    // if (error) {
+    //   innerError = error;
+    // } else if (res !== null) {
+    //   innerError = await res.json();
+    // }
+    // console.error(innerError);
+    // if ("detail" in innerError) {
+    //   toast.error(innerError.detail);
+    //   errorMessage = innerError.detail;
+    // } else if ("error" in innerError) {
+    //   if ("message" in innerError.error) {
+    //     toast.error(innerError.error.message);
+    //     errorMessage = innerError.error.message;
+    //   } else {
+    //     toast.error(innerError.error);
+    //     errorMessage = innerError.error;
+    //   }
+    // } else if ("message" in innerError) {
+    //   toast.error(innerError.message);
+    //   errorMessage = innerError.message;
+    // }
+
+    responseMessage.error = true;
+    responseMessage.content = "It seems that you are offline. Please reconnect to send messages.";
+      // $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
+      //   provider: model.name ?? model.id,
+      // }) +
+      // "\n" +
+      // errorMessage;
+    responseMessage.done = true;
+>>>>>>> fingerprintAuth-out
     messages = messages;
   };
 
   const handleLimitError = async (content: string, responseMessage: any) => {
+<<<<<<< HEAD
     responseMessage.content = content;
     responseMessage.replytime = Math.floor(Date.now() / 1000);
     responseMessage.error = true;
+=======
+    responseMessage.content = $i18n.t(content);
+    responseMessage.replytime = Math.floor(Date.now() / 1000);
+    responseMessage.warning = true;
+>>>>>>> fingerprintAuth-out
     responseMessage.done = true;
     messages = messages;
     scrollToBottom();
@@ -937,6 +1523,7 @@
 
   const generateSearchChatKeyword = async (userPrompt: string) => {
     if ($settings?.title?.auto ?? true) {
+<<<<<<< HEAD
       // Get keywords
       let send_messages = messages.filter(item => item.role == 'user')
         .map(item => ({role: item.role, content: item.content}));
@@ -946,6 +1533,29 @@
       })
       const title = await generateSearchKeyword(
         send_messages,
+=======
+      // 获取关键词
+      let send_messages = messages.filter(item => item.content != '')
+        .map(item => {
+					let custmessage = {role: item.role, content: item.content};
+					if (item.files) {
+						custmessage.content = [{"type": "text","text": item.content}];
+						item.files.forEach((fitem:any) => {
+              let url = fitem.url;
+							custmessage.content.push({"type": "image_url", "image_url": {url}})
+						})
+					}
+					return custmessage;
+				});
+      send_messages.push({
+        role: "user",
+        content: $i18n.t("Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters")
+      });
+      const title = await generateSearchKeyword(
+        localStorage.token,
+        send_messages,
+        userPrompt,
+>>>>>>> fingerprintAuth-out
         $deApiBaseUrl?.url
       );
       return title;
@@ -1062,7 +1672,11 @@
         autoScroll =
           messagesContainerElement.scrollHeight -
             messagesContainerElement.scrollTop <=
+<<<<<<< HEAD
           messagesContainerElement.clientHeight + 5;
+=======
+          messagesContainerElement.clientHeight + 45;
+>>>>>>> fingerprintAuth-out
       }}
     >
       <div class=" h-full w-full flex flex-col pt-2 pb-4">
@@ -1076,6 +1690,10 @@
           bind:messages
           bind:autoScroll
           bind:prompt
+<<<<<<< HEAD
+=======
+          bind:chatInputPlaceholder
+>>>>>>> fingerprintAuth-out
           bottomPadding={files.length > 0}
           suggestionPrompts={selectedModelfile?.suggestionPrompts ??
             $config?.default_prompt_suggestions}
@@ -1090,12 +1708,24 @@
 
 <MessageInput
   bind:files
+<<<<<<< HEAD
   bind:search
   bind:search_type
   bind:prompt
   bind:autoScroll
+=======
+  bind:webInfo
+  bind:deepsearch
+  bind:prompt
+  bind:autoScroll
+  bind:chatInputPlaceholder
+>>>>>>> fingerprintAuth-out
   bind:selectedModel={atSelectedModel}
   {messages}
   {submitPrompt}
   {stopResponse}
+<<<<<<< HEAD
 />
+=======
+/>
+>>>>>>> fingerprintAuth-out

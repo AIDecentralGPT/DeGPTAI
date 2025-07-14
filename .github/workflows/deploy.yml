@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Deploy them independently 
 
 # SERVER_HOST：Your server's IP address or domain name。
@@ -24,12 +25,39 @@ jobs: # Define the tasks to be performed
     steps: # Define the steps for execution
       - name: Checkout code # step name
         uses: actions/checkout@v2 # Use the official actions provided by GitHub Action/ checkout@v2 Action, used to check out warehouse code
+=======
+# SERVER_HOST：您服务器的IP地址或域名。
+# SERVER_USER：SSH登录用户名。
+# SERVER_PASSWORD：SSH登录密码。（推荐使用SSH密钥对认证代替密码）
+# DOCKER_PASSWORD
+# DOCKER_USERNAME
+
+name: Deploy to Server # 定义工作流程的名称
+
+on: # 定义触发工作流程的事件
+  push: # 当代码被推送时
+    branches: # 指定触发工作流程的分支
+      - main # 只有main分支的推送才会触发此工作流程
+      - fingerprintAuth  # 指纹登录，无需用户登录 
+      - wallet-connection  # 钱包管理 
+      - wallet-ether  # 更新为ethers处理的钱包 
+
+jobs: # 定义需要执行的工作
+  build: # 工作的标识符，这里是构建工作
+
+    runs-on: ubuntu-latest # 指定运行环境为最新版本的Ubuntu虚拟环境
+
+    steps: # 定义执行的步骤
+      - name: Checkout code # 步骤名称
+        uses: actions/checkout@v2 # 使用GitHub Action官方提供的actions/checkout@v2动作，用于检出仓库代码
+>>>>>>> fingerprintAuth-out
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
         # run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
 
 
+<<<<<<< HEAD
       - name: Build and Push Docker image # step name
         uses: docker/build-push-action@v5 # Using Docker/ build-push-action@v2 Action, used to build and push Docker images
         with: # Parameters passed to the action
@@ -60,6 +88,38 @@ jobs: # Define the tasks to be performed
               docker rm open-webui  # Delete Container
               
               # Waiting for the container to be completely deleted
+=======
+      - name: Build and Push Docker image # 步骤名称
+        uses: docker/build-push-action@v5 # 使用docker/build-push-action@v2动作，用于构建并推送Docker镜像
+        with: # 传递给动作的参数
+          # username: ${{ secrets.DOCKER_USERNAME }}
+          # password: ${{ secrets.DOCKER_PASSWORD }}
+
+          push: true # 推送镜像到Docker Hub
+          tags: dianbobo202311/open-webui:latest # 设置镜像的标签
+
+
+      - name: Deploy to Server # 步骤名称
+        timeout-minutes: 40 # 设置超时时间为40分钟
+        uses: appleboy/ssh-action@master # 使用appleboy/ssh-action@master动作，用于通过SSH连接到服务器
+        with: # 传递给动作的参数
+          host: ${{ secrets.SERVER_HOST }} # 服务器的IP地址或域名
+          username: ${{ secrets.SERVER_USER }} # SSH登录用户名
+          # password: ${{ secrets.SERVER_PASSWORD }} # SSH登录密码
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # SSH私钥
+
+          script: | # 通过SSH执行的脚本
+      
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
+            docker pull dianbobo202311/open-webui:latest # 拉取最新的Docker镜像
+      
+            # 检查并停止已经运行的容器
+            if [ "$(docker ps -q -f name=open-webui)" ]; then
+              docker stop open-webui # 停止运行中的容器
+              docker rm open-webui  # 删除容器
+              
+              # 等待容器完全删除
+>>>>>>> fingerprintAuth-out
               while [ "$(docker ps -a -f name=open-webui -q)" ]; do
                 echo "Waiting for open-webui container to be removed..."
                 sleep 2
@@ -67,9 +127,33 @@ jobs: # Define the tasks to be performed
 
             fi
       
+<<<<<<< HEAD
             # Run a new Docker container
             docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:latest # Run Docker container
             docker images -q | tail -n +3 | xargs docker rmi # Delete all Docker images except for the first two
+=======
+            # 运行新的Docker容器
+            docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:latest # 运行Docker容器
+            docker images -q | tail -n +3 | xargs docker rmi # 删除除前2个以外的所有Docker镜像
+
+
+# 注释解释
+# docker run --rm -d --name open-webui dianbobo202311/open-webui:latest
+# --rm: 容器退出时自动清理容器文件系统
+# -d: 后台运行容器
+# --name open-webui: 为容器指定一个名称
+# dianbobo202311/open-webui:latest: 使用的镜像及其标签
+
+
+# 先提前到服务器安装docker并docker login
+
+# 步骤1：下载并运行Docker安装脚本
+# curl -fsSL https://get.docker.com -o get-docker.sh
+# sudo sh get-docker.sh
+
+# 步骤2：登录
+# docker login -u XXX  -p xxx
+>>>>>>> fingerprintAuth-out
 
 
 

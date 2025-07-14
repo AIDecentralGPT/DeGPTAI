@@ -9,6 +9,7 @@ import {
 import { defaultWagmiConfig } from "@web3modal/wagmi";
 
 // import { provider, signData, getCurrencyPrice, getGas } from "../ether/utils";
+<<<<<<< HEAD
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // Old RPC URL
 const rpcUrl = "https://rpc.dbcwallet.io"; // New RPC URL
 const provider = new ethers.JsonRpcProvider(rpcUrl);
@@ -16,6 +17,15 @@ const provider = new ethers.JsonRpcProvider(rpcUrl);
 import ABI from "../ether/abi.json";
 // const DGC_TOKEN_CONTRACT_ADDRESS = "0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1"; // Old contract address
 const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // New contract address
+=======
+// const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
+const rpcUrl = "https://rpc1.dbcwallet.io"; // 新得 的 RPC URL
+const provider = new ethers.JsonRpcProvider(rpcUrl);
+
+import ABI from "../ether/abi.json";
+// const DGC_TOKEN_CONTRACT_ADDRESS = "0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1"; // 旧合约地址
+const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新合约地址
+>>>>>>> fingerprintAuth-out
 
 const signer = new ethers.JsonRpcSigner(provider, DGC_TOKEN_CONTRACT_ADDRESS);
 const dgcSignerContract = new ethers.Contract(
@@ -36,7 +46,11 @@ export const walletconnectSignMessage = async (message: string) => {
   }
 };
 
+<<<<<<< HEAD
 // Automatically connect to the testing network
+=======
+// 自动连接到测试网
+>>>>>>> fingerprintAuth-out
 const connectToTestnet = async () => {
   try {
     const chainId = await getChainId(config);
@@ -74,7 +88,11 @@ const dbcTestnet = {
   },
   // network: "dbcTestnet",
   rpcUrls: {
+<<<<<<< HEAD
     default: { http: ["https://rpc.dbcwallet.io"] },
+=======
+    default: { http: ["https://rpc1.dbcwallet.io"] },
+>>>>>>> fingerprintAuth-out
   },
 
   blockExplorers: {
@@ -92,6 +110,10 @@ export const config = defaultWagmiConfig({
   chains,
   metadata,
   transports: {
+<<<<<<< HEAD
     [dbcTestnet.id]: http("https://rpc.dbcwallet.io"),
+=======
+    [dbcTestnet.id]: http("https://rpc1.dbcwallet.io"),
+>>>>>>> fingerprintAuth-out
   },
 });

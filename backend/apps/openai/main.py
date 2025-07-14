@@ -31,7 +31,10 @@ from config import (
 )
 from typing import List, Optional
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> fingerprintAuth-out
 import hashlib
 from pathlib import Path
 

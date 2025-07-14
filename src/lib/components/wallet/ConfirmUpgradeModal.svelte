@@ -5,6 +5,7 @@
   import { getModels as _getModels } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
+<<<<<<< HEAD
   import {
     currentWalletData,
     showConfirmUpgradeModal,
@@ -19,11 +20,19 @@
 
   import { getAccount } from "@wagmi/core";
   import { config } from "$lib/utils/wallet/walletconnect/index";
+=======
+  import { user, currentWalletData } from "$lib/stores";
+  import { openProServices } from "$lib/apis/users/index.js";
+
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
+  import { transferDgc } from "$lib/utils/wallet/ether/dgc"
+>>>>>>> fingerprintAuth-out
 
   const i18n = getContext("i18n");
 
   export let show = false;
   let loading = false;
+<<<<<<< HEAD
   let showTip = false;
   let step = 0;
   let progress = 0;
@@ -138,6 +147,50 @@
     clearInterval(progressInterval);
     loading = false;
     showTip = false;
+=======
+
+  export let viptype = "basic";
+  export let viptime = "month";
+  export let money = 3;
+  let address = "0x40Ff2BD3668B38B0dd0BD7F26Aa809239Fc9113a";
+  async function upgradeVip() {
+    if ($currentWalletData?.walletInfo) {
+      loading = true;
+      try {
+        let response = await transferDgc(
+          address,
+          money/0.0001,
+          $currentWalletData?.walletInfo?.privateKey
+        );
+        if (response?.ok) {
+          if (response?.data?.hash) {
+            await uploadVip(response?.data?.hash)
+          }
+        } else {
+          toast.error($i18n.t(response?.msg))
+        }
+        
+      } catch (error) {
+        loading = false;
+        toast.error(error?.message);
+      }
+      loading = false;
+      updateWalletData($currentWalletData?.walletInfo)
+    }
+  }
+  async function uploadVip(tx: string) {
+    let result = await openProServices(localStorage.token, tx, money, viptype, viptime);
+    if (result?.ok) {
+      user.set({
+        ...$user,
+        vipInfo: result?.data,
+      });
+      toast.success($i18n.t("VIP Upgrade Successful!"));
+      show = false;
+    } else {
+      toast.error($i18n.t("Failed to upgrade to VIP!"));
+    }
+>>>>>>> fingerprintAuth-out
   }
 </script>
 
@@ -152,7 +205,11 @@
         {$i18n.t("Upgrade ")}
       </div>
 
+<<<<<<< HEAD
       <!-- X Close Btn -->
+=======
+      <!-- X 关闭键 -->
+>>>>>>> fingerprintAuth-out
       <button
         class="self-center"
         on:click={() => {
@@ -172,6 +229,7 @@
       </button>
     </div>
 
+<<<<<<< HEAD
     <!-- Main -->
     <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
       <div class="w-full">
@@ -212,6 +270,34 @@
               <span>{$i18n.t("Yes")}</span>
             {/if}
           </button>
+=======
+    <!-- 主体 -->
+    <div class="flex flex-col">
+      <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
+        <div class="w-full">
+          <p class="text-md mb-4 w-full">
+            {$i18n.t("Are you sure to become a distinguished member?")}
+          </p>
+          <div class="flex justify-end my-4">
+            <button
+              disabled={loading}
+              class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+              style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+              type="submit"
+              on:click={async () => {
+                loading = true;
+                await tick();
+                await upgradeVip();
+              }}
+            >
+              {#if loading}
+                <span>{$i18n.t("Upgrading")}</span>
+              {:else}
+                <span>{$i18n.t("Yes")}</span>
+              {/if}
+            </button>
+          </div>
+>>>>>>> fingerprintAuth-out
         </div>
       </div>
     </div>
@@ -240,6 +326,10 @@
   }
 
   .text-red-500 {
+<<<<<<< HEAD
     color: #f56565; /* Use common errors in red */
+=======
+    color: #f56565; /* 使用常见的错误红色 */
+>>>>>>> fingerprintAuth-out
   }
 </style>

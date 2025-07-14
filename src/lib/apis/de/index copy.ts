@@ -9,11 +9,19 @@ function transformModelData(input) {
 					"name": model.id.replace("luchenyu/", ""),
 					"model": model.id,
 					"modified_at": new Date(model.created * 1000).toISOString(),
+<<<<<<< HEAD
 					"size": 0, // Need to fill in based on actual data
 					"digest": "", // Need to fill in based on actual data
 					"details": {
 							"parent_model": model.parent,
 							"format": "", // Need to fill in based on actual data
+=======
+					"size": 0, // 需要根据实际数据填充
+					"digest": "", // 需要根据实际数据填充
+					"details": {
+							"parent_model": model.parent,
+							"format": "", // 需要根据实际数据填充
+>>>>>>> fingerprintAuth-out
 							"family": "",
 							"families": [],
 							"parameter_size": "",
@@ -21,7 +29,11 @@ function transformModelData(input) {
 					},
 					"expires_at": "0001-01-01T00:00:00Z",
 					"urls": [
+<<<<<<< HEAD
 							0 // Need to fill in based on actual data
+=======
+							0 // 需要根据实际数据填充
+>>>>>>> fingerprintAuth-out
 					]
 			};
 	});
@@ -30,7 +42,11 @@ function transformModelData(input) {
 }
 
 
+<<<<<<< HEAD
 // Get a list of all De models
+=======
+// 获取De的所有模型列表
+>>>>>>> fingerprintAuth-out
 export const getDeModels = async (token: string = '') => {
 	let error = null;
 
@@ -42,11 +58,19 @@ export const getDeModels = async (token: string = '') => {
 				"name": "Qwen2-72B (General Large Model)",
 				"model": "Qwen2-72B",
 				"modified_at": new Date().toISOString(),
+<<<<<<< HEAD
 				"size": 0, // Need to fill in based on actual data
 				"digest": "", // Need to fill in based on actual data
 				"details": {
 						"parent_model": "",
 						"format": "", // Need to fill in based on actual data
+=======
+				"size": 0, // 需要根据实际数据填充
+				"digest": "", // 需要根据实际数据填充
+				"details": {
+						"parent_model": "",
+						"format": "", // 需要根据实际数据填充
+>>>>>>> fingerprintAuth-out
 						"family": "",
 						"families": [],
 						"parameter_size": "",
@@ -66,11 +90,19 @@ export const getDeModels = async (token: string = '') => {
 				"name": "Llama3-8B (General Large Model)",
 				"model": "Llama3-8B",
 				"modified_at": new Date().toISOString(),
+<<<<<<< HEAD
 				"size": 0, // Need to fill in based on actual data
 				"digest": "", // Need to fill in based on actual data
 				"details": {
 						"parent_model": "",
 						"format": "", // Need to fill in based on actual data
+=======
+				"size": 0, // 需要根据实际数据填充
+				"digest": "", // 需要根据实际数据填充
+				"details": {
+						"parent_model": "",
+						"format": "", // 需要根据实际数据填充
+>>>>>>> fingerprintAuth-out
 						"family": "",
 						"families": [],
 						"parameter_size": "",
@@ -89,11 +121,19 @@ export const getDeModels = async (token: string = '') => {
 			"name": "LIama3 70B (General Large Model)",
 			"model": "Llama3-70B",
 			"modified_at": new Date().toISOString(),
+<<<<<<< HEAD
 			"size": 0, // Need to fill in based on actual data
 			"digest": "", // Need to fill in based on actual data
 			"details": {
 					"parent_model": "",
 					"format": "", // Need to fill in based on actual data
+=======
+			"size": 0, // 需要根据实际数据填充
+			"digest": "", // 需要根据实际数据填充
+			"details": {
+					"parent_model": "",
+					"format": "", // 需要根据实际数据填充
+>>>>>>> fingerprintAuth-out
 					"family": "",
 					"families": [],
 					"parameter_size": "",
@@ -112,11 +152,19 @@ export const getDeModels = async (token: string = '') => {
 			"name": "Yi1.5-34B (General Large Model)",
 			"model": "Yi1.5-34B",
 			"modified_at": new Date().toISOString(),
+<<<<<<< HEAD
 			"size": 0, // Need to fill in based on actual data
 			"digest": "", // Need to fill in based on actual data
 			"details": {
 					"parent_model": "",
 					"format": "", // Need to fill in based on actual data
+=======
+			"size": 0, // 需要根据实际数据填充
+			"digest": "", // 需要根据实际数据填充
+			"details": {
+					"parent_model": "",
+					"format": "", // 需要根据实际数据填充
+>>>>>>> fingerprintAuth-out
 					"family": "",
 					"families": [],
 					"parameter_size": "",
@@ -142,11 +190,19 @@ export const getDeModels = async (token: string = '') => {
 // 	"name": "Qwen1.5-110B",
 // 	"model": "Qwen1.5-110B",
 // 	"modified_at": new Date().toISOString(),
+<<<<<<< HEAD
 // 	"size": 0, // Need to fill in based on actual data
 // 	"digest": "", // Need to fill in based on actual data
 // 	"details": {
 // 			"parent_model": "",
 // 			"format": "", // Need to fill in based on actual data
+=======
+// 	"size": 0, // 需要根据实际数据填充
+// 	"digest": "", // 需要根据实际数据填充
+// 	"details": {
+// 			"parent_model": "",
+// 			"format": "", // 需要根据实际数据填充
+>>>>>>> fingerprintAuth-out
 // 			"family": "",
 // 			"families": [],
 // 			"parameter_size": "",
@@ -173,7 +229,11 @@ export const getDeModels = async (token: string = '') => {
 		// });
 };
 
+<<<<<<< HEAD
 // // Get a list of all De models
+=======
+// // 获取De的所有模型列表
+>>>>>>> fingerprintAuth-out
 // export const getDeModels = async (token: string = '') => {
 // 	let error = null;
 
@@ -224,7 +284,11 @@ export const getDeModels = async (token: string = '') => {
 
 
 
+<<<<<<< HEAD
 // Dialogue with De's model
+=======
+// 和De的模型对话
+>>>>>>> fingerprintAuth-out
 export const generateDeOpenAIChatCompletion = async (
 	token: string = '',
 	body: object,

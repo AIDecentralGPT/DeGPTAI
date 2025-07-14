@@ -23,28 +23,51 @@
   <hr class=" dark:border-gray-800 my-1 p-0" />
 
   <div class="flex flex-row gap-2 px-2">
+<<<<<<< HEAD
     <!-- Upgrade Plain -->
+=======
+    <!-- 升级计划 -->
+>>>>>>> fingerprintAuth-out
     <button
       on:click={() => {
         $showPriceModal = true;
       }}
       class="w-full px-4 py-2 primaryButton text-gray-100 transition rounded-lg mt-2 mb-2"
     > 
+<<<<<<< HEAD
       {#if $user?.isPro}
         <div class="text-white text-center text-sm leading-4">VIP</div>       
         <div class="flex-1 flex flex-row text-xs justify-center items-center leading-3">
           {$i18n.t("Valid until")} {$user?.proEndDate}
         </div>
+=======
+      {#if $user?.vipInfo && $user?.vipInfo.length > 0}
+        {#if $user?.vipInfo.length > 0}
+          <div class="text-white text-center text-sm leading-4">
+            {$user?.vipInfo[0].vip=="basic" ? $i18n.t("Basic VIP") : ($user?.vipInfo[0].vip=="pro" ? $i18n.t("Pro VIP") : $i18n.t("Standard VIP"))}
+          </div>       
+          <div class="flex-1 flex flex-row text-xs justify-center items-center leading-3 mt-1">
+            {$i18n.t("Valid until")} {$user?.vipInfo[0].end_date}
+          </div>       
+        {/if}
+>>>>>>> fingerprintAuth-out
       {:else}
         <span class="relative">{$i18n.t("Upgrade Plan")}</span>
       {/if}
     </button>
   </div>
   
+<<<<<<< HEAD
   <!-- Third Wallet Connect -->
   <WalletConnect />
 
   <!-- Three buttons: Create Wallet, Connect Wallet, Open Wallet -->
+=======
+  <!-- 第三方方式登录钱包 -->
+  <!-- <WalletConnect /> -->
+
+  <!-- 创建，连接，打开钱包，三个按钮 -->
+>>>>>>> fingerprintAuth-out
   {#if !($user?.id && $user?.id?.startsWith('0x'))}
     <div>
       <button
@@ -108,7 +131,11 @@
     </div>
   {/if}
 
+<<<<<<< HEAD
   <!-- Wallet Data Panel -->
+=======
+  <!-- 钱包数据面板 -->
+>>>>>>> fingerprintAuth-out
   <!-- {#if $user?.id?.startsWith('0x') && $user?.address_type === 'dbc'} -->
   {#if $user?.id?.startsWith('0x')}
     <DbcAccountDetail />

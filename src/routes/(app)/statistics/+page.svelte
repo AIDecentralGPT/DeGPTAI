@@ -156,7 +156,11 @@
     initInfo();
   });
 
+<<<<<<< HEAD
   // Monitor window size change event
+=======
+  // 监听窗口大小改变事件
+>>>>>>> fingerprintAuth-out
   let resize = 0;
   window.onresize = function () {
     resize == 0 ? (resize = 1) : (resize = 0);

@@ -3,7 +3,11 @@
 
 
 
+<<<<<<< HEAD
 Focused on DBC, converted to 10, but only converted to 0.01?
+=======
+专注dbc，转10，但是只转了0.01？
+>>>>>>> fingerprintAuth-out
 
 
 
@@ -40,9 +44,15 @@ Required-by: alibabacloud-cloudauth-intl20220809
 
 
 
+<<<<<<< HEAD
 Click to complete verification, merchant_biz_id and tra. Storage and verification 
 Check for plagiarism in face_id during verification 
 After completing the facial recognition, jump to the page
+=======
+点击完成校验，merchant_biz_id和tra。的存储，校验
+校验时候对 face_id的查重
+人脸完成后跳转页面
+>>>>>>> fingerprintAuth-out
 
 
 
@@ -59,14 +69,22 @@ After completing the facial recognition, jump to the page
 
 
 
+<<<<<<< HEAD
 Account：
+=======
+账号：
+>>>>>>> fingerprintAuth-out
 
 0x1502587239ca6893f8A70a2363E2038B1B343E8e
 0x0b49cbbdb80dfa2160508b91ef6b40c77c2c252b8c6c4da51765a3c37a4a1094
 
 
 
+<<<<<<< HEAD
 0xfa419592Eb6E61aAA113D078276f022eE0B57292  (Use this for live testing)
+=======
+0xfa419592Eb6E61aAA113D078276f022eE0B57292  (用这个通过活体检测)
+>>>>>>> fingerprintAuth-out
 0xfc86cf668c2c9b5defd9f6c5859af5ac3abe27c61ec44ed3bf8a742b166d54dd
 0 0
 
@@ -76,6 +94,7 @@ DBC: 4.99
 DGC: 985.00
 
 
+<<<<<<< HEAD
 Add a check to determine if plugins have been installed
 
 Live detection 
@@ -98,3 +117,39 @@ Share it out,
 3 Recommendations 
 On the mobile web version, add two buttons, Android Download and Apple Download, but there is no need to add a download button in the Android and Apple client. 
 I have updated the chat.degpt.ai node
+=======
+加一个检测有没有安装插件的判断
+
+活体检测
+三方钱包转账dgc
+
+限制次数，需要传
+1.用户钱包公钥地址
+2.签名
+3.签名的数据hash
+
+
+活体检测如果用户不点击完成活体按钮，这时候如何修改 认证状态（下一次点击的时候修改，得存两个id，还有其他方法吗？）
+
+
+奖励数量，由heaven接口去定
+
+在域名degpt.ai/后面加两个页面：一个是privicy，一个是terms。
+
+
+1. 增加钱包签名相关的参数。
+2. 优化使用项目名而且不带 NodeID 参数的模型调用接口。
+
+
+1分享出来，
+  ①内容（起码是A用户的提示词可以分线给B用户，B用户打开可以直接看见）。
+  ②可以游戏化。分享到tg或推特或微信里面。绑定分享人的id。参考deeplink，只要下载好的自动绑定。
+2积分兑换成dgc，任务，积分是不是直接dgc
+3推荐
+4手机网页端，加两个按钮，安卓下载和苹果下载，但安卓和苹果客户端里面，不用加下载按钮。
+
+
+
+
+chat.degpt.ai那个节点我更新了
+>>>>>>> fingerprintAuth-out

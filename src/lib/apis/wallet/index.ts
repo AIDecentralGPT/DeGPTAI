@@ -32,7 +32,11 @@ export const getTransactions = async (address: string) => {
   return json;
 };
 
+<<<<<<< HEAD
 // Obtain DBC exchange rate
+=======
+// 获取dbc汇率
+>>>>>>> fingerprintAuth-out
 export const getDbcRate = async (token: string) => {
 
   let error = null;

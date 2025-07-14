@@ -5,7 +5,11 @@ from utils.utils import get_verified_user
 
 router = APIRouter()
 
+<<<<<<< HEAD
 # Add IP record
+=======
+# 添加IP记录
+>>>>>>> fingerprintAuth-out
 @router.post("/ip_logs")
 async def add_ip_log(user_id: str, ip_address: str, user=Depends(get_verified_user)):
     try:

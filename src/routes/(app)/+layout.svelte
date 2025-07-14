@@ -50,16 +50,28 @@
 	};
 
 	async function checkLogin() {
+<<<<<<< HEAD
     // Load FingerprintJS library
     const fp = await FingerprintJS.load();
     // Obtain device fingerprint
     const result = await fp.get();
     // `result.visitorId` is a device fingerprint ID
+=======
+    // 加载 FingerprintJS 库
+    const fp = await FingerprintJS.load();
+    // 获取设备指纹
+    const result = await fp.get();
+    // `result.visitorId` 是设备指纹 ID
+>>>>>>> fingerprintAuth-out
     const visitorId = result.visitorId;
     console.log("visitorId", visitorId); // 27841987f3d61173059f66f530b63f15
     localStorage.setItem("visitor_id", visitorId);
 
+<<<<<<< HEAD
 		// Initialize visitor
+=======
+		// 初始化访客
+>>>>>>> fingerprintAuth-out
 		await user.set({
 			id: visitorId,
 			name: visitorId,
@@ -68,17 +80,28 @@
 		});
 
     if (localStorage?.token) {
+<<<<<<< HEAD
       // Retrieve cached user information
+=======
+      // 获取缓存用户信息
+>>>>>>> fingerprintAuth-out
       try {
         let localUser = JSON.parse(localStorage?.user);
         if (localUser?.address_type == "dbc") {
           getUserInfo(localStorage.token).then(async (res) => {
 						if (res?.id === localUser?.id) {
+<<<<<<< HEAD
 							const proInfo = await isPro(localStorage.token);
 							await user.set({
 								...localUser,
 								isPro: proInfo ? proInfo.is_pro : false,
 								proEndDate: proInfo ? proInfo.end_date : null,
+=======
+							const vipInfo = await isPro(localStorage.token);
+							await user.set({
+								...localUser,
+								vipInfo: vipInfo ?? [],
+>>>>>>> fingerprintAuth-out
 								models: res?.models,
 								verified: res?.verified,
 								language: res?.language
@@ -86,7 +109,11 @@
 						}
 						localStorage.user = JSON.stringify($user);
 
+<<<<<<< HEAD
 						// Verify wallet
+=======
+						// 校验钱包
+>>>>>>> fingerprintAuth-out
 						if (localStorage.walletImported) {
 							let walletImported = JSON.parse(localStorage.walletImported);
 							if (walletImported) {
@@ -96,6 +123,7 @@
 								updateWalletData(walletImportedInfo?.data);
 							}
 						}
+<<<<<<< HEAD
 						// Update user model
 						await initUserModels();
 						// Update system language
@@ -103,11 +131,21 @@
 						// Update user chat history
 						// await updateChats();
 						// Initialization completed
+=======
+						// 更新用户模型
+						await initUserModels();
+						// 更新系统语言
+						await initLanguage();
+						// 更新用户聊天记录
+						// await updateChats();
+						// 初始化完成
+>>>>>>> fingerprintAuth-out
 						$initPageFlag = true;
 					});
           
         } else {
           signOut($channel).then(async() => {
+<<<<<<< HEAD
 						// Update user model
 						await initUserModels();
 						// Update system language
@@ -115,12 +153,22 @@
 						// Update user chat history
 						await updateChats();
 						// Initialization completed
+=======
+						// 更新用户模型
+						await initUserModels();
+						// 更新系统语言
+						await initLanguage();
+						// 更新用户聊天记录
+						await updateChats();
+						// 初始化完成
+>>>>>>> fingerprintAuth-out
 						$initPageFlag = true;
 					});
           
         }
       } catch (error) {
         signOut($channel).then(async() => {
+<<<<<<< HEAD
 					// Update user model
 					await initUserModels();
 					// Update system language
@@ -128,11 +176,21 @@
 					// Update user chat history
 					await updateChats();
 					// Initialization completed
+=======
+					// 更新用户模型
+					await initUserModels();
+					// 更新系统语言
+					await initLanguage();
+					// 更新用户聊天记录
+					await updateChats();
+					// 初始化完成
+>>>>>>> fingerprintAuth-out
 					$initPageFlag = true;
 				});
       }
     } else {
       signOut($channel).then(async() => {
+<<<<<<< HEAD
 				// Update user model
 				await initUserModels();
 				// Update system language
@@ -140,12 +198,25 @@
 				// Update user chat history
 				await updateChats();
 				// Initialization completed
+=======
+				// 更新用户模型
+				await initUserModels();
+				// 更新系统语言
+				await initLanguage();
+				// 更新用户聊天记录
+				await updateChats();
+				// 初始化完成
+>>>>>>> fingerprintAuth-out
 				$initPageFlag = true;
 			});
     }
   }
 
+<<<<<<< HEAD
 	// Update user model
+=======
+	// 更新用户模型
+>>>>>>> fingerprintAuth-out
   const initUserModels = async() => {
     if ($user?.models) {
       settings.set({ ...$settings, models: $user?.models.split(",") });
@@ -163,7 +234,11 @@
     }, 0);
   };
 
+<<<<<<< HEAD
 	// Update system language
+=======
+	// 更新用户语言
+>>>>>>> fingerprintAuth-out
 	async function initLanguage() {
     if ($user?.language) {
       $i18n.changeLanguage($user?.language);
@@ -179,7 +254,11 @@
     }
   }
 
+<<<<<<< HEAD
 	// Update user chat history
+=======
+	// 更新用户聊天记录
+>>>>>>> fingerprintAuth-out
 	async function updateChats() {
     if (localStorage.token){
 			chats.set([]);
@@ -197,7 +276,11 @@
 			await channel.set(channelName);
 		}
 		if ($config) {
+<<<<<<< HEAD
 			// User login verification
+=======
+			// 用户登陆校验
+>>>>>>> fingerprintAuth-out
 			await checkLogin();
 		}
 

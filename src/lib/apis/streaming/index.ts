@@ -8,6 +8,10 @@ type TextStreamUpdate = {
 	citations?: any;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	error?: any;
+<<<<<<< HEAD
+=======
+	think?: boolean;
+>>>>>>> fingerprintAuth-out
 };
 
 // createOpenAITextStream takes a responseBody with a SSE response,
@@ -33,7 +37,11 @@ async function* openAIStreamToIterator(
 	while (true) {
 		const { value, done } = await reader.read();
 		if (done) {
+<<<<<<< HEAD
 			yield { done: true, value: '' };
+=======
+			yield { done: true, value: ''};
+>>>>>>> fingerprintAuth-out
 			break;
 		}
 		if (!value) {
@@ -58,7 +66,15 @@ async function* openAIStreamToIterator(
 				continue;
 			}
 
+<<<<<<< HEAD
 			yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
+=======
+			if (parsedData.choices?.[0]?.delta?.reasoning_content != null) {
+				yield { done: false, value: parsedData.choices?.[0]?.delta?.reasoning_content ?? '', think: true };
+			} else {
+				yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
+			}
+>>>>>>> fingerprintAuth-out
 		} catch (e) {
 			console.error('Error extracting delta from SSE event:', e);
 		}

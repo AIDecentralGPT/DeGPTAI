@@ -6,6 +6,10 @@
 	import ProfileImage from './ProfileImage.svelte';
 	import { modelfiles, settings } from '$lib/stores';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
+<<<<<<< HEAD
+=======
+	import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
+>>>>>>> fingerprintAuth-out
 
 	import { user as _user } from '$lib/stores';
 	import Image from '$lib/components/common/Image.svelte'
@@ -37,7 +41,11 @@
 		messageEditTextAreaElement.style.height = '';
 		messageEditTextAreaElement.style.height = `${messageEditTextAreaElement.scrollHeight}px`;
 
+<<<<<<< HEAD
 		messageEditTextAreaElement?.focus();
+=======
+		// messageEditTextAreaElement?.focus();
+>>>>>>> fingerprintAuth-out
 	};
 
 	const editMessageConfirmHandler = async () => {
@@ -109,6 +117,7 @@
 								<button
 									class="h-16 w-72 flex items-center space-x-3 px-2.5 dark:bg-gray-850 rounded-xl border border-gray-200 dark:border-none text-left"
 									type="button"
+<<<<<<< HEAD
 									on:click={() => {
 										if (file?.url) {
 											window.open(file?.url, '_blank').focus();
@@ -131,6 +140,11 @@
 												d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z"
 											/>
 										</svg>
+=======
+								>
+									<div class="text-white rounded-lg">
+										<FileSvg bind:filename={file.name}/>
+>>>>>>> fingerprintAuth-out
 									</div>
 
 									<div class="flex flex-col justify-center -space-y-0.5">
@@ -176,6 +190,27 @@
 				</div>
 			{/if}
 
+<<<<<<< HEAD
+=======
+			{#if message?.toolInfo?.url}
+				<div class="w-full flex justify-end mb-2">
+					<div class="flex flex-row max-w-[200px] bg-gray-100 dark:bg-gray-850 p-3 rounded-full">
+						<div class="w-[20px] mr-1">
+							<svg 
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 1024 1024" 
+								version="1.1" 
+								fill="currentColor"
+								class="w-5 h-5">
+								<path d="M512 34.133333a477.866667 477.866667 0 1 0 477.866667 477.866667A477.866667 477.866667 0 0 0 512 34.133333z m0 887.466667c-56.32 0-117.76-106.496-142.336-264.192A1219.584 1219.584 0 0 1 512 648.533333a1155.413333 1155.413333 0 0 1 142.336 9.216C629.76 815.104 568.32 921.6 512 921.6z m0-341.333333a1282.389333 1282.389333 0 0 0-150.528 9.216c-2.048-24.917333-3.072-50.858667-3.072-77.482667s0-52.565333 3.072-77.482667A1282.389333 1282.389333 0 0 0 512 443.733333a1214.122667 1214.122667 0 0 0 150.528-9.557333q3.072 37.888 3.072 77.824t-3.072 77.824A1214.122667 1214.122667 0 0 0 512 580.266667zM102.4 512a406.869333 406.869333 0 0 1 21.504-129.706667 1194.666667 1194.666667 0 0 0 170.666667 41.984c-2.389333 28.330667-3.754667 57.685333-3.754667 87.722667s0 59.392 3.754667 87.722667a1194.666667 1194.666667 0 0 0-170.666667 41.984A406.869333 406.869333 0 0 1 102.4 512zM512 102.4c56.32 0 117.76 106.496 142.336 263.850667A1155.413333 1155.413333 0 0 1 512 375.466667a1219.584 1219.584 0 0 1-142.336-8.874667C394.24 208.896 455.68 102.4 512 102.4z m218.112 321.877333a1194.666667 1194.666667 0 0 0 170.666667-41.984 402.090667 402.090667 0 0 1 0 259.413334 1194.666667 1194.666667 0 0 0-170.666667-41.984c2.389333-28.330667 3.754667-57.685333 3.754667-87.722667s-1.365333-59.392-3.754667-87.722667z m143.018667-105.130666a1173.504 1173.504 0 0 1-150.528 36.864 609.621333 609.621333 0 0 0-77.482667-231.082667 411.648 411.648 0 0 1 228.010667 194.218667zM378.88 124.928a609.621333 609.621333 0 0 0-77.482667 231.082667 1173.504 1173.504 0 0 1-150.528-36.864 411.648 411.648 0 0 1 228.010667-194.218667z m-228.010667 580.266667a1204.906667 1204.906667 0 0 1 150.528-37.205334 611.669333 611.669333 0 0 0 77.482667 231.424 411.648 411.648 0 0 1-228.010667-194.56z m494.250667 193.877333a609.621333 609.621333 0 0 0 77.482667-231.082667 1173.504 1173.504 0 0 1 150.528 36.864 411.648 411.648 0 0 1-228.010667 194.218667z"/>
+							</svg>
+						</div>
+						<span class="inline-block whitespace-nowrap overflow-hidden text-ellipsis text-sm">{message?.toolInfo?.url}</span>
+					</div>
+				</div>
+			{/if}
+
+>>>>>>> fingerprintAuth-out
 			{#if edit === true}
 				<div class=" w-full bg-gray-50 dark:bg-gray-800 rounded-3xl px-5 py-3 mb-2">
 					<textarea
@@ -204,7 +239,11 @@
 					<div class=" mt-2 mb-1 flex justify-end space-x-1.5 text-sm font-medium">
 						<button
 							id="close-edit-message-button"
+<<<<<<< HEAD
 							class=" px-4 py-2 bg-gray-900 hover:bg-gray-850 text-gray-100 transition rounded-3xl"
+=======
+							class=" px-4 py-2 bg-gray-900 hover:bg-gray-850 text-gray-100 transition rounded-3xl close-edit-message-button"
+>>>>>>> fingerprintAuth-out
 							on:click={() => {
 								cancelEditMessage();
 							}}

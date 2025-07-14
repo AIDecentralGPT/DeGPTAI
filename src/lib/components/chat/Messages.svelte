@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
+<<<<<<< HEAD
 	import { chats, config, modelfiles, settings, user as _user, mobile } from '$lib/stores';
+=======
+	import { chats, config, modelfiles, models, settings, user as _user, mobile, deApiBaseUrl, toolflag } from '$lib/stores';
+>>>>>>> fingerprintAuth-out
 	import { tick, getContext } from 'svelte';
 
 	import { toast } from 'svelte-sonner';
@@ -15,6 +19,11 @@
 	import { copyToClipboard, findWordIndices } from '$lib/utils';
 	import CompareMessages from './Messages/CompareMessages.svelte';
 	import { stringify } from 'postcss';
+<<<<<<< HEAD
+=======
+	import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
+	import { generateSearchKeyword } from "$lib/apis/de";
+>>>>>>> fingerprintAuth-out
 
 	const i18n = getContext('i18n');
 
@@ -32,6 +41,10 @@
 	export let autoScroll;
 	export let history = {};
 	export let messages = [];
+<<<<<<< HEAD
+=======
+	export let chatInputPlaceholder = "";
+>>>>>>> fingerprintAuth-out
 
 	export let selectedModels;
 	export let selectedModelfiles = [];
@@ -55,6 +68,12 @@
 		}
 	};
 
+<<<<<<< HEAD
+=======
+	// 用于判断是否是网络搜索需要重新赋值
+	const toolTypes = ["bing", "twitter", "youtube"];
+
+>>>>>>> fingerprintAuth-out
 	const confirmEditMessage = async (messageId, content) => {
 		let userPrompt = content;
 		let userMessageId = uuidv4();
@@ -66,6 +85,13 @@
 			role: 'user',
 			content: userPrompt,
 			...(history.messages[messageId].files && { files: history.messages[messageId].files }),
+<<<<<<< HEAD
+=======
+			...(history.messages[messageId].toolflag && { toolflag: history.messages[messageId].toolflag }),
+			...(history.messages[messageId].tooltype && { tooltype: history.messages[messageId].tooltype }),
+			...(history.messages[messageId].toolInfo && { toolInfo: history.messages[messageId].toolInfo }),
+			...(history.messages[messageId].parseInfo && { parseInfo: history.messages[messageId].parseInfo }),
+>>>>>>> fingerprintAuth-out
 			models: selectedModels.filter((m, mIdx) => selectedModels.indexOf(m) === mIdx)
 		};
 
@@ -81,6 +107,7 @@
 		history.messages[userMessageId] = userMessage;
 		history.currentId = userMessageId;
 
+<<<<<<< HEAD
 		// Verify the number of times the model has been used
     let modelLimit = {}
     for (const item of selectedModels) {
@@ -95,6 +122,169 @@
 
 		await tick();
 		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
+=======
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+		userMessage?.models.forEach(async (modelId:string) => {
+      const model = $models.filter((m) => m.id === modelId).at(0);
+      if (model) {
+        // Create response message
+        let responseMessageId = uuidv4();
+        let responseMessage = {
+          parentId: userMessageId,
+          id: responseMessageId,
+          toolflag: userMessage?.toolflag,
+          tooltype: userMessage?.tooltype,
+          parseInfo: toolTypes.includes(userMessage?.tooltype) ? "" : userMessage?.parseInfo,
+          keyword: userPrompt,
+          childrenIds: [],
+          role: "assistant",
+          content: "",
+          think_content: "",
+          model: modelId,
+          userContext: null,
+          timestamp: Math.floor(Date.now() / 1000), // Unix epoch
+        };
+
+        // Add message to history and Set currentId to messageId
+        history.messages[responseMessageId] = responseMessage;
+        history.currentId = responseMessageId;
+
+        // Append messageId to childrenIds of parent message
+        if (userMessageId !== null) {
+          history.messages[userMessageId].childrenIds = [
+            ...history.messages[userMessageId].childrenIds,
+          	responseMessageId,
+          ];
+        }
+
+        responseMap[modelId] = responseMessage;
+      }
+    });
+
+		// 校验模型已使用次数
+    let modelLimit = {}
+		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!dItem.passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+      	}) 
+    	}
+    }
+
+		// 获取网络搜索内容
+		if (userMessage?.toolflag) {
+			if (userMessage?.tooltype && toolTypes.includes(userMessage?.tooltype)) {
+
+				let response = await handleSearchWeb(userPrompt, userMessage?.tooltype);
+				
+				// 更新回复解析内容
+				userMessage?.models.forEach(async (modelId: string) => {
+					// 如果已创建信息赋值web数据
+					if (responseMap[modelId]) {
+						let responseMessageId = responseMap[modelId].id;
+						let responseMessage = responseMap[modelId];
+						responseMessage.parseInfo = response;
+						history.messages[responseMessageId] = responseMessage;
+					}
+				});
+
+				// 更新提问解析内容
+				userMessage = {
+					...userMessage,
+					parseInfo: response
+				}
+				history.messages[userMessageId] = userMessage;
+			}
+      
+      scrollToBottom();
+    }
+
+		await tick();
+		await sendPrompt(userPrompt, responseMap, modelLimit);
+	};
+
+	const resentMessage = async (messageId) => {
+		let userMessage = {
+			...history.messages[messageId]
+		};
+		
+		if (toolTypes.includes(userMessage?.tooltype)) {
+			userMessage = {
+				...userMessage,
+				parseInfo: ""
+			};
+		}
+
+		let userPrompt = userMessage?.content;
+
+		// Create Simulate ResopnseMessage
+		let responseMap: any = {};
+		history.messages[messageId].childrenIds.forEach((responseMessageId: string) => {
+			let responseMessage = history.messages[responseMessageId];
+			responseMessage = {
+				...responseMessage,
+				parseInfo: "",
+				error: false,
+				content: "",
+				done: false
+			}
+			history.messages[responseMessageId] = responseMessage;
+
+			responseMap[responseMessage?.model] = responseMessage;
+		});
+
+		// 校验模型已使用次数
+    let modelLimit = {}
+		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+    if (passed) {
+      for (const item of selectedModels) {
+        data.forEach((dItem:any) => {
+          if(dItem.model == item) {
+            if (!dItem.passed) {
+              modelLimit[dItem.model] = dItem.message;
+            }
+          }
+      	}) 
+    	}
+    }
+
+		// 获取网络搜索内容
+		if (userMessage?.toolflag) {
+			if (userMessage?.tooltype && toolTypes.includes(userMessage?.tooltype)) {
+
+				let response = await handleSearchWeb(userPrompt, userMessage?.tooltype);
+				
+				// 更新回复解析内容
+				userMessage?.models.forEach(async (modelId: string) => {
+					// 如果已创建信息赋值web数据
+					if (responseMap[modelId]) {
+						let responseMessageId = responseMap[modelId].id;
+						let responseMessage = responseMap[modelId];
+						responseMessage.parseInfo = response;
+						history.messages[responseMessageId] = responseMessage;
+					}
+				});
+
+				// 更新提问解析内容
+				userMessage = {
+					...userMessage,
+					parseInfo: response
+				}
+				history.messages[messageId] = userMessage;
+			}
+      
+      scrollToBottom();
+    }
+
+		await tick();
+		await sendPrompt(userPrompt, responseMap, modelLimit);
+>>>>>>> fingerprintAuth-out
 	};
 
 	const updateChatMessages = async () => {
@@ -254,6 +444,51 @@
 			history: history
 		});
 	};
+<<<<<<< HEAD
+=======
+
+	// 获取搜索网页
+  const handleSearchWeb= async(userPrompt: string, toolType: string) => {
+    const ai_keyword = await generateSearchChatKeyword(userPrompt);
+    let result = await thirdSearch(localStorage.token, ai_keyword, toolType);
+    if (result?.ok) {
+      return result.data;
+    } else {
+			return "";
+		}
+  }
+
+	const generateSearchChatKeyword = async (userPrompt: string) => {
+    if ($settings?.title?.auto ?? true) {
+      // 获取关键词
+      let send_messages = messages.filter(item => item.role == 'user')
+        .map(item => {
+					let custmessage = {role: item.role, content: item.content};
+					if (item.files) {
+						custmessage.content = [{"type": "text","text": item.content}];
+						item.files.forEach((fitem:any) => {
+              let url = fitem.url;
+							custmessage.content.push({"type": "image_url", "image_url": {url}})
+						})
+					}
+					return custmessage;
+				});
+      send_messages.push({
+        role: "user",
+        content: $i18n.t("Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters")
+      });
+      const title = await generateSearchKeyword(
+				localStorage.token,
+        send_messages,
+        userPrompt,
+        $deApiBaseUrl?.url
+      );
+      return title;
+    } else {
+      return `${userPrompt}`;
+    }
+  };
+>>>>>>> fingerprintAuth-out
 </script>
 
 <div class="h-full flex mb-16">
@@ -262,9 +497,15 @@
 			models={selectedModels}
 			modelfiles={selectedModelfiles}
 			{suggestionPrompts}
+<<<<<<< HEAD
 			submitPrompt={async (p) => {
 				let text = p;
 
+=======
+			submitPrompt={async (p, idx) => {
+				prompt = "";
+				let text = p;
+>>>>>>> fingerprintAuth-out
 				if (p.includes('{{CLIPBOARD}}')) {
 					const clipboardText = await navigator.clipboard.readText().catch((err) => {
 						toast.error($i18n.t('Failed to read clipboard contents'));
@@ -274,13 +515,30 @@
 					text = p.replaceAll('{{CLIPBOARD}}', clipboardText);
 				}
 
+<<<<<<< HEAD
 				prompt = text;
 
+=======
+				if (idx == 0) {
+					chatInputPlaceholder = text;
+				} else {
+					prompt = text;
+				}
+				
+>>>>>>> fingerprintAuth-out
 				await tick();
 
 				const chatInputElement = document.getElementById('chat-textarea');
 				if (chatInputElement) {
+<<<<<<< HEAD
 					prompt = p;
+=======
+					if (idx == 0) {
+						chatInputPlaceholder = text;
+					} else {
+						prompt = text;
+					}
+>>>>>>> fingerprintAuth-out
 
 					chatInputElement.style.height = '';
 					chatInputElement.style.height = Math.min(chatInputElement.scrollHeight, 200) + 'px';
@@ -293,7 +551,11 @@
 						chatInputElement.setSelectionRange(word?.startIndex, word.endIndex + 1);
 					}
 				}
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> fingerprintAuth-out
 				await tick();
 			}}
 		/>
@@ -301,7 +563,11 @@
 		<div class="w-full pt-2">
 			{#key chatId}
 				{#each messages as message, messageIdx}
+<<<<<<< HEAD
 					<div class=" w-full {messageIdx === messages.length - 1 ? 'pb-28' : ''}">
+=======
+					<div class=" w-full {messageIdx === messages.length - 1 ? ($toolflag ? 'pb-48' : 'pb-28') : ''}">
+>>>>>>> fingerprintAuth-out
 						<div
 							class="flex flex-col justify-between px-6 md:px-20 mb-3 {$settings?.fullScreenMode ?? null
 								? 'max-w-full'
@@ -332,6 +598,10 @@
 										siblings={history.messages[message.parentId]?.childrenIds ?? []}
 										isLastMessage={messageIdx + 1 === messages.length}
 										{readOnly}
+<<<<<<< HEAD
+=======
+										{resentMessage}
+>>>>>>> fingerprintAuth-out
 										{updateChatMessages}
 										{confirmEditResponseMessage}
 										{showPreviousMessage}

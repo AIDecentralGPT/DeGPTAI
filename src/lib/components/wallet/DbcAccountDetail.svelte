@@ -1,6 +1,10 @@
 <script lang="ts">
   import { onMount, getContext } from "svelte";
+<<<<<<< HEAD
   import { copyToClipboard } from "$lib/utils";
+=======
+  import { checkUniapp, copyToClipboard } from "$lib/utils";
+>>>>>>> fingerprintAuth-out
   import { toast } from "svelte-sonner";
   import {
     currentWalletData,
@@ -16,11 +20,19 @@
     settings,
     config,
     channel,
+<<<<<<< HEAD
+=======
+    downLoadUrl,
+    showDownLoad,
+>>>>>>> fingerprintAuth-out
   } from "$lib/stores";
   import { addErrorLog } from "$lib/apis/errorlog";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { getDbcRate } from "$lib/apis/wallet/index";
+<<<<<<< HEAD
   import { getUserInfo } from "$lib/apis/users";
+=======
+>>>>>>> fingerprintAuth-out
   import { goto } from "$app/navigation";
   import { getLanguages } from "$lib/i18n/index";
   import { checkKyc } from "$lib/apis/kycrestrict";
@@ -35,9 +47,15 @@
   let updateWalletLoad = false;
 
   async function refreshDbcRate() {
+<<<<<<< HEAD
     // First time acquisition
     if ($dbcRate?.time) {
       // Retrieve again after more than 5 minutes
+=======
+    // 第一次获取
+    if ($dbcRate?.time) {
+      // 大于5分钟重新获取一次
+>>>>>>> fingerprintAuth-out
       const diffInMilliseconds = Math.abs(
         new Date().getTime() - new Date($dbcRate.time).getTime()
       );
@@ -57,7 +75,11 @@
     }
   }
 
+<<<<<<< HEAD
   // Update user model
+=======
+  // 更新用户模型
+>>>>>>> fingerprintAuth-out
   const initUserModels = async () => {
     if ($user?.models) {
       settings.set({ ...$settings, models: $user?.models.split(",") });
@@ -75,7 +97,11 @@
     }, 0);
   };
 
+<<<<<<< HEAD
   // Update user language
+=======
+  // 更新用户语言
+>>>>>>> fingerprintAuth-out
   async function initLanguage() {
     if ($user?.language) {
       $i18n.changeLanguage($user?.language);
@@ -98,8 +124,13 @@
 
 <div class="flex flex-col gap-2 px-3">
   <!-- <div class="py-2 px-3"> -->
+<<<<<<< HEAD
   <!-- Address Display -->
   <div class="opacity-80 text-sm font-medium leading-6">
+=======
+  <!-- 地址展示 -->
+  <div class="opacity-80 text-sm font-medium leading-6 text-left">
+>>>>>>> fingerprintAuth-out
     {$i18n.t("Wallet Address")}
   </div>
   <div class="pt-0.5">
@@ -152,6 +183,7 @@
     </div>
   </div>
 
+<<<<<<< HEAD
   <!-- Secondary button -->
   {#if $user?.address_type === "threeSide"}
     <div class="flex justify-center">
@@ -161,6 +193,17 @@
     <div class="flex justify-start gap-2 mt-1 mb5">
       <button
         class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+=======
+  <!-- 二级按钮 -->
+  {#if $user?.address_type === "threeSide"}
+    <div class="flex justify-center">
+      <w3m-button class="v-btn" label="组件方式打开" />
+    </div>
+  {:else}
+    <div class="flex justify-between gap-2 mt-1 mb5">
+      <button
+        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+>>>>>>> fingerprintAuth-out
         type="submit"
         on:click={async () => {
           $showTransferModal = true;
@@ -169,12 +212,17 @@
         {$i18n.t("Transfer")}
       </button>
       <button
+<<<<<<< HEAD
         class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+=======
+        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+>>>>>>> fingerprintAuth-out
         type="submit"
         on:click={async () => {
           $showExportWalletJsonModal = true;
         }}
       >
+<<<<<<< HEAD
         {$i18n.t("Export Wallet")}
       </button>
       <button
@@ -189,6 +237,22 @@
         }}
       >
         {$i18n.t("Close Wallet")}
+=======
+        {$i18n.t("Export")}
+      </button>
+      <button
+        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+        type="submit"
+        on:click={async () => {
+          await closeWallet($channel);
+          // 更新用户模型
+          await initUserModels();
+          // 更新语言模型
+          await initLanguage();
+        }}
+      >
+        {$i18n.t("Close")}
+>>>>>>> fingerprintAuth-out
       </button>
     </div>
   {/if}
@@ -197,7 +261,12 @@
   <hr class="dark:border-gray-800 my-1 p-0" />
 
   <!-- ------------ -->
+<<<<<<< HEAD
   <!-- Wallet balance -->
+=======
+  <!-- 钱包余额 -->
+  <!-- 标题 -->
+>>>>>>> fingerprintAuth-out
   <div class="flex justify-between items-center">
     <div class="opacity-80 text-sm font-medium leading-6 flex items-center">
       {$i18n.t("Wallet Balance")}
@@ -250,7 +319,11 @@
       </button>
     </div>
   </div>
+<<<<<<< HEAD
   <!-- Balance details -->
+=======
+  <!-- 余额详情 -->
+>>>>>>> fingerprintAuth-out
   <div class="flex flex-col gap-2">
     <div
       class="flex flex-col px-4 py-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
@@ -277,10 +350,17 @@
       </div>
         
       <div class="flex justify-between">
+<<<<<<< HEAD
         <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">1DGC=0.0005u</div>
         <div class="opacity-50 leading-normal text-xs">
           Total ${floorToFixed(
             Number($currentWalletData?.dgcBalance) * 0.0005,
+=======
+        <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">1DGC=0.0001u</div>
+        <div class="opacity-50 leading-normal text-xs">
+          Total ${floorToFixed(
+            Number($currentWalletData?.dgcBalance) * 0.0001,
+>>>>>>> fingerprintAuth-out
             4
           )}u
         </div>
@@ -316,13 +396,18 @@
         <div class="opacity-50 leading-normal text-xs">
           Total ${floorToFixed(
             Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
+<<<<<<< HEAD
             4
+=======
+            5
+>>>>>>> fingerprintAuth-out
           )}u
         </div>
       </div> 
     </div>
   </div>
 
+<<<<<<< HEAD
   <!-- Secondary button -->
   <div class="flex justify-start gap-2 mt-1 mb-2">
     <button
@@ -336,6 +421,26 @@
     >
       <!-- {$i18n.t("Buy")} -->
       {$i18n.t("Node Sale")}
+=======
+  <!-- 二级按钮 -->
+  <div class="flex justify-between gap-2 mt-1 mb-2">
+    <button
+      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+      type="submit"
+      on:click={async () => {
+        // $showBuyCoinModal = true;
+        // 用新标签打开
+        if (checkUniapp()) {
+          $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken";
+          $showDownLoad = true;
+        } else {
+          window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+        }
+      }}
+    >
+      <!-- {$i18n.t("Buy")} -->
+      {$i18n.t("Buy DGC")}
+>>>>>>> fingerprintAuth-out
     </button>
     <!-- <button
       class=" px-4 py-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg fs12"
@@ -347,7 +452,11 @@
       {$i18n.t("Rewards")}
     </button> -->
     <button
+<<<<<<< HEAD
       class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+=======
+      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+>>>>>>> fingerprintAuth-out
       type="submit"
       on:click={async () => {
         $showTransactionsModal = true;
@@ -357,14 +466,22 @@
     </button>
     {#if $user?.verified}
       <button
+<<<<<<< HEAD
         class="px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+=======
+        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+>>>>>>> fingerprintAuth-out
         type="submit"
       >
         {$i18n.t("Authed KYC")}
       </button>
     {:else}
       <button
+<<<<<<< HEAD
         class=" px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+=======
+        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+>>>>>>> fingerprintAuth-out
         type="submit"
         on:click={async () => {
           try {
@@ -383,7 +500,11 @@
             }
             
           } catch (error) {
+<<<<<<< HEAD
             await addErrorLog("KYC authentication button", error.toString());
+=======
+            await addErrorLog("kyc认证按钮", error.toString());
+>>>>>>> fingerprintAuth-out
           }
         }}
       >

@@ -39,11 +39,36 @@
   let languages = [];
   onMount(async () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+<<<<<<< HEAD
     // Check if it is a mobile device
     isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
     languages = await getLanguages();
 	});
   
+=======
+    // 检查是否为移动端设备
+    isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
+    languages = await getLanguages();
+	});
+
+
+	const demo = async () => {
+
+    // 在调用服务端初始化请求时需要传入该MetaInfo值
+    const MetaInfo = window.getMetaInfo();
+
+    console.log("MetaInfo:", MetaInfo);
+    toast.success(JSON.stringify(MetaInfo))
+    
+    // 接下来您进行调用服务端初始化请求获取TransactionUrl
+    const TransactionUrl = ''; // 此处值应为调用服务端初始化接口返回的TransactionUrl
+
+    // // 接下来直接跳转TransactionUrl即可开始服务
+    // window.location.href = TransactionUrl;
+
+}
+
+>>>>>>> fingerprintAuth-out
 </script>
 
 

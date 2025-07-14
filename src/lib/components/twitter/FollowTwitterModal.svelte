@@ -7,7 +7,11 @@
   let account = "";
   let loading = false;
 
+<<<<<<< HEAD
   // initialization
+=======
+  // 显示初始化Socket
+>>>>>>> fingerprintAuth-out
   $: if (show) {
   }
 </script>

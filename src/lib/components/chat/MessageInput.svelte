@@ -8,6 +8,11 @@
     showNewWalletModal,
     showOpenWalletModal,
     showSidebar,
+<<<<<<< HEAD
+=======
+    toolflag,
+    tooltype
+>>>>>>> fingerprintAuth-out
   } from "$lib/stores";
   import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
 
@@ -25,6 +30,7 @@
   import { transcribeAudio } from "$lib/apis/audio";
 
   import Prompts from "./MessageInput/PromptCommands.svelte";
+<<<<<<< HEAD
   import Suggestions from "./MessageInput/Suggestions.svelte";
   import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
   import Documents from "./MessageInput/Documents.svelte";
@@ -32,6 +38,18 @@
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
+=======
+  import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
+  import Documents from "./MessageInput/Documents.svelte";
+  import Models from "./MessageInput/Models.svelte";
+  import UrlModels from "./MessageInput/UrlModels.svelte";
+  import Tools from "./MessageInput/Tools.svelte";
+  import ToolsSelect from "./MessageInput/ToolsSelect.svelte";
+  import Tooltip from "../common/Tooltip.svelte";
+  import XMark from "$lib/components/icons/XMark.svelte";
+  import { user as userStore } from "$lib/stores";
+  import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
+>>>>>>> fingerprintAuth-out
 
   const i18n = getContext("i18n");
 
@@ -40,6 +58,10 @@
 
   export let autoScroll = true;
   export let selectedModel = "";
+<<<<<<< HEAD
+=======
+  // export let deepsearch = false;
+>>>>>>> fingerprintAuth-out
 
   let chatTextAreaElement: HTMLTextAreaElement;
   let filesInputElement: any;
@@ -47,11 +69,16 @@
   let promptsElement: any;
   let documentsElement: any;
   let modelsElement: any;
+<<<<<<< HEAD
+=======
+  let urlPromptElement: any;
+>>>>>>> fingerprintAuth-out
 
   let inputFiles: any;
   let dragged = false;
 
   let user: any = null;
+<<<<<<< HEAD
   let chatInputPlaceholder = "";
 
   // file selection
@@ -62,14 +89,39 @@
   export let search_type = "web";
   let search_icon_show = false;
   let isTouched = false;
+=======
+
+  // 文件选择
+  export let files: any[] = [];
+  export let toolInfo: any = {url: "", trantip: ""};
+>>>>>>> fingerprintAuth-out
 
   export let fileUploadEnabled = true;
   // export let speechRecognitionEnabled = true;
 
   export let prompt = "";
+<<<<<<< HEAD
   export let messages: any[] = [];
 
   let speechRecognition: any;
+=======
+  export let chatInputPlaceholder = "";
+  export let messages: any[] = [];
+
+  // 要翻译的语言
+  let tranlang = "";
+
+  let speechRecognition: any;
+  
+
+  let selectUrlUserPrompt = [
+		"Analyze the content of the web page",
+    "Summarize the web page",
+    "Extract the key data from the web page",
+		"Tell me what the web page is about",
+		"Write an original article referring to the web page"
+	];
+>>>>>>> fingerprintAuth-out
 
   $: if (prompt) {
     if (chatTextAreaElement) {
@@ -79,6 +131,21 @@
     }
   }
 
+<<<<<<< HEAD
+=======
+  $: if(chatInputPlaceholder) {
+    if (chatTextAreaElement) {
+      chatTextAreaElement.style.height = "";
+      chatTextAreaElement.style.height =
+        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+    }
+  }
+
+  $: if (toolflag) {
+    files = [];
+  }
+
+>>>>>>> fingerprintAuth-out
   let mediaRecorder: any;
   let audioChunks: any[] = [];
   let isRecording = false;
@@ -119,7 +186,11 @@
         chatTextAreaElement?.focus();
 
         if (prompt !== "" && $settings?.speechAutoSend === true) {
+<<<<<<< HEAD
           submitPrompt(prompt, user);
+=======
+          submitPrompt(prompt, toolInfo, user);
+>>>>>>> fingerprintAuth-out
         }
       }
 
@@ -240,7 +311,11 @@
             console.log("recognition ended");
             isRecording = false;
             if (prompt !== "" && $settings?.speechAutoSend === true) {
+<<<<<<< HEAD
               submitPrompt(prompt, user);
+=======
+              submitPrompt(prompt, toolInfo, user);
+>>>>>>> fingerprintAuth-out
             }
           };
 
@@ -270,13 +345,25 @@
       type: "doc",
       name: file.name,
       collection_name: "",
+<<<<<<< HEAD
       upload_status: false,
+=======
+      anaylis_type: "file",
+      upload_status: false,
+      text: "",
+      image: [],
+>>>>>>> fingerprintAuth-out
       error: "",
     };
 
     try {
+<<<<<<< HEAD
       files = [...files, doc];
 
+=======
+      // files = [...files, doc];
+      files = [doc];
+>>>>>>> fingerprintAuth-out
       if (["audio/mpeg", "audio/wav"].includes(file["type"])) {
         const res = await transcribeAudio(localStorage.token, file).catch(
           (error) => {
@@ -297,6 +384,12 @@
       if (res) {
         doc.upload_status = true;
         doc.collection_name = res.collection_name;
+<<<<<<< HEAD
+=======
+        doc.anaylis_type = res.anaylis_type
+        doc.text = res.text;
+        doc.image = res.image;
+>>>>>>> fingerprintAuth-out
         files = files;
       }
     } catch (e) {
@@ -406,15 +499,25 @@
                   canvas.height = img.height;
                   ctx?.drawImage(img, 0, 0);
                   let compressedDataUrl;
+<<<<<<< HEAD
                   let quality = 1; // The initial mass is 1, indicating no damage
+=======
+                  let quality = 1; // 初始质量为 1，表示无损
+>>>>>>> fingerprintAuth-out
                   while (true) {
                     compressedDataUrl = canvas.toDataURL(file?.type, quality);
                     if (compressedDataUrl.length <= 300 * 1024) {
                       break;
                     }
+<<<<<<< HEAD
                     quality -= 0.1; // Gradually reducing quality
                     if (quality < 0) {
                       break; // Prevent low quality
+=======
+                    quality -= 0.1; // 逐渐降低质量
+                    if (quality < 0) {
+                      break; // 防止质量过低
+>>>>>>> fingerprintAuth-out
                     }
                   }
                   files = [
@@ -465,6 +568,16 @@
       dropZone?.removeEventListener("dragleave", onDragLeave);
     };
   });
+<<<<<<< HEAD
+=======
+
+  // const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
+  //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
+  //   ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml,.zip,.rar";
+  const know_ext = "image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*," +
+         "text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python," +
+         "text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed"
+>>>>>>> fingerprintAuth-out
 </script>
 
 {#if dragged}
@@ -556,7 +669,12 @@
             />
           {/if}
 
+<<<<<<< HEAD
           <Models
+=======
+          <!-- 屏蔽调@弹出model选择 -->
+          <!-- <Models
+>>>>>>> fingerprintAuth-out
             bind:this={modelsElement}
             bind:prompt
             bind:user
@@ -566,7 +684,11 @@
               selectedModel = e.detail;
               chatTextAreaElement?.focus();
             }}
+<<<<<<< HEAD
           />
+=======
+          /> -->
+>>>>>>> fingerprintAuth-out
 
           {#if selectedModel !== ""}
             <div
@@ -602,6 +724,21 @@
               </div>
             </div>
           {/if}
+<<<<<<< HEAD
+=======
+          {#if $toolflag}
+            <UrlModels
+              bind:this={urlPromptElement}
+              bind:prompt
+              bind:selectUrlUserPrompt={selectUrlUserPrompt}
+              on:select={(e) => {
+                let selectedUserPrompt = e.detail.prompt;
+                let analysisUrl = e.detail.url;
+                submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
+              }}
+            />
+          {/if}
+>>>>>>> fingerprintAuth-out
         </div>
       </div>
     </div>
@@ -620,7 +757,11 @@
 
             <div class="flex gap-2">
               <button
+<<<<<<< HEAD
                 class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+=======
+                class=" px-2 py-1 primaryButton text-gray-100 transition rounded-lg"
+>>>>>>> fingerprintAuth-out
                 on:click={async () => {
                   $showOpenWalletModal = true;
                 }}
@@ -629,7 +770,11 @@
               </button>
 
               <button
+<<<<<<< HEAD
                 class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
+=======
+                class=" px-2 py-1 primaryButton text-gray-100 transition rounded-lg"
+>>>>>>> fingerprintAuth-out
                 on:click={async () => {
                   $showNewWalletModal = true;
                 }}
@@ -645,9 +790,14 @@
             bind:this={filesInputElement}
             bind:files={inputFiles}
             type="file"
+<<<<<<< HEAD
             accept="image/*"
             hidden
             multiple
+=======
+            accept={know_ext}
+            hidden
+>>>>>>> fingerprintAuth-out
             on:change={() => {
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
@@ -663,12 +813,17 @@
                         canvas.height = img.height;
                         ctx?.drawImage(img, 0, 0);
                         let compressedDataUrl;
+<<<<<<< HEAD
                         let quality = 1; // The initial mass is 1, indicating no damage
+=======
+                        let quality = 1; // 初始质量为 1，表示无损
+>>>>>>> fingerprintAuth-out
                         while (true) {
                           compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
                           if (compressedDataUrl.length <= 200 * 1024) {
                             break;
                           }
+<<<<<<< HEAD
                           quality -= 0.1; // Gradually reducing quality
                           if (quality < 0.1) {
                             break; // Prevent low quality
@@ -676,6 +831,15 @@
                         };  
                         files = [
                           ...files,
+=======
+                          quality -= 0.1; // 逐渐降低质量
+                          if (quality < 0.1) {
+                            break; // 防止质量过低
+                          }
+                        };  
+                        files = [
+                          // ...files,
+>>>>>>> fingerprintAuth-out
                           {
                             type: "image",
                             url: compressedDataUrl,
@@ -715,7 +879,14 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
+<<<<<<< HEAD
               submitPrompt(prompt, user);
+=======
+              if($toolflag && $tooltype == "translate") {
+                toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
+              }
+              submitPrompt(prompt, toolInfo, user);
+>>>>>>> fingerprintAuth-out
             }}
           >
             {#if files.length > 0}
@@ -732,6 +903,7 @@
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
+<<<<<<< HEAD
                         <div class="p-2.5 bg-red-400 text-white rounded-lg">
                           {#if file.upload_status}
                             <svg
@@ -749,6 +921,11 @@
                                 d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z"
                               />
                             </svg>
+=======
+                        <div class="text-white rounded-lg {file.upload_status?'':'p-2.5 bg-red-400'}">
+                          {#if file.upload_status}
+                            <FileSvg bind:filename={file.name}/>
+>>>>>>> fingerprintAuth-out
                           {:else}
                             <svg
                               class=" w-6 h-6 translate-y-[0.5px]"
@@ -879,6 +1056,7 @@
                   </div>
                 {/each}
               </div>
+<<<<<<< HEAD
               <div class="flex flex-wrap gap-2 mt-1">
                 <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                   on:click={() => {
@@ -928,6 +1106,143 @@
               </div>
             {/if}
 
+=======
+              {#if files[0]?.type === "image"}
+                <div class="flex flex-wrap gap-2 mt-1">
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("What does this picture mean?");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("What does this picture mean?") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("Explain this picture");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("Explain this picture") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("What is the main idea of this picture?");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("What is the main idea of this picture?") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("What does the symbol in the picture represent?");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("What does the symbol in the picture represent?") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    on:click={() => {
+                      prompt = $i18n.t("Help me solve problems");
+                    }}>
+                    <span class="mr-1">{ $i18n.t("Help me solve problems") }</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+              {/if}
+              {#if files[0]?.type === "doc" && files[0]?.upload_status}
+                {#if files[0]?.anaylis_type == "progrem"}
+                  <div class="flex flex-wrap gap-2 mt-1">
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Introduce the code in the file");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Introduce the code in the file") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("What's the main purpose of the file's code");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("What's the main purpose of the file's code") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Optimize the code in the file");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Optimize the code in the file") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
+                {:else}
+                  <div class="flex flex-wrap gap-2 mt-1">
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Summarize the content of this document");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Summarize the content of this document") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Generate a brief summary");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Generate a brief summary") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Extract document key info");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Extract document key info") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Polish the content of the document");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Polish the content of the document") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                      on:click={() => {
+                        prompt = $i18n.t("Generate an analysis report");
+                      }}>
+                      <span class="mr-1">{ $i18n.t("Generate an analysis report") }</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
+                {/if}
+              {/if}
+            {/if}
+
+            {#if $tooltype != ""}
+              <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
+            {/if}
+>>>>>>> fingerprintAuth-out
             <div class="flex flex-col">
               <textarea
                 id="chat-textarea"
@@ -954,7 +1269,11 @@
                       e.preventDefault();
                     }
                     if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
+<<<<<<< HEAD
                       submitPrompt(prompt, user);
+=======
+                      submitPrompt(prompt, toolInfo, user);
+>>>>>>> fingerprintAuth-out
                     }
                   }
                 }}
@@ -981,6 +1300,7 @@
 
                   if (prompt === "" && e.key == "ArrowUp") {
                     e.preventDefault();
+<<<<<<< HEAD
 
                     const userMessageElement = [
                       ...document.getElementsByClassName("user-message"),
@@ -1073,6 +1393,100 @@
                   } else if (e.key === "Tab") {
                     const words = findWordIndices(prompt);
 
+=======
+                    const userMessageElement = [
+                      ...document.getElementsByClassName("user-message"),
+                    ]?.at(-1);
+                    // 开启新的edit
+                    // const editButton = [
+                    //   ...document.getElementsByClassName(
+                    //     "edit-user-message-button"
+                    //   ),
+                    // ]?.at(-1);
+                    userMessageElement?.scrollIntoView({ block: "center" });
+                    // editButton?.click();
+                    const textarea = document.getElementById("chat-textarea");
+                    if (textarea) {
+                      textarea.value = (userMessageElement?.innerText) ?? "";
+                    }
+                  }
+
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "ArrowUp"
+                  // ) {
+                  //   e.preventDefault();
+
+                  //   (
+                  //     promptsElement ||
+                  //     documentsElement ||
+                  //     modelsElement
+                  //   ).selectUp();
+
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+                  //   commandOptionButton.scrollIntoView({ block: "center" });
+                  // }
+
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "ArrowDown"
+                  // ) {
+                  //   e.preventDefault();
+
+                  //   (
+                  //     promptsElement ||
+                  //     documentsElement ||
+                  //     modelsElement
+                  //   ).selectDown();
+
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+                  //   commandOptionButton.scrollIntoView({ block: "center" });
+                  // }
+
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "Enter"
+                  // ) {
+                  //   e.preventDefault();
+
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+
+                  //   if (commandOptionButton) {
+                  //     commandOptionButton?.click();
+                  //   } else {
+                  //     document.getElementById("send-message-button")?.click();
+                  //   }
+                  // }
+
+                  // if (
+                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
+                  //   e.key === "Tab"
+                  // ) {
+                  //   e.preventDefault();
+
+                  //   const commandOptionButton = [
+                  //     ...document.getElementsByClassName(
+                  //       "selected-command-option-button"
+                  //     ),
+                  //   ]?.at(-1);
+
+                  //   commandOptionButton?.click();
+                  // } else 
+                  if (e.key === "Tab") {
+                    const words = findWordIndices(prompt);
+>>>>>>> fingerprintAuth-out
                     if (words.length > 0) {
                       const word = words.at(0);
                       const fullPrompt = prompt;
@@ -1096,6 +1510,34 @@
                       Math.min(e.target.scrollHeight, 200) + "px";
                   }
 
+<<<<<<< HEAD
+=======
+                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
+                     && e.key === "ArrowUp") {
+                    e.preventDefault();
+
+                    (urlPromptElement).selectUp();
+                    const commandOptionButton = [
+                      ...document.getElementsByClassName(
+                        "selected-command-option-button"
+                      ),
+                    ]?.at(-1);
+                    commandOptionButton.scrollIntoView({ block: "center" });
+                  }
+                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
+                     && e.key === "ArrowDown") {
+                    e.preventDefault();
+
+                    (urlPromptElement).selectDown();
+                    const commandOptionButton = [
+                      ...document.getElementsByClassName(
+                        "selected-command-option-button"
+                      ),
+                    ]?.at(-1);
+                    commandOptionButton.scrollIntoView({ block: "center" });
+                  }
+
+>>>>>>> fingerprintAuth-out
                   if (e.key === "Escape") {
                     console.log("Escape");
                     selectedModel = "";
@@ -1113,7 +1555,11 @@
                   e.target.style.height =
                     Math.min(e.target.scrollHeight, 200) + "px";
                 }}
+<<<<<<< HEAD
                 on:paste={(e) => {
+=======
+                on:paste={async (e) => {
+>>>>>>> fingerprintAuth-out
                   const clipboardData = e.clipboardData || window.clipboardData;
 
                   if (clipboardData && clipboardData.items) {
@@ -1124,7 +1570,11 @@
 
                         reader.onload = function (e) {
                           files = [
+<<<<<<< HEAD
                             ...files,
+=======
+                            // ...files,
+>>>>>>> fingerprintAuth-out
                             {
                               type: "image",
                               url: `${e.target.result}`,
@@ -1140,6 +1590,7 @@
               />
               <div class="flex justify-between">
                 <div class="flex flex-row">
+<<<<<<< HEAD
                   <!-- Image Upload -->
                   {#if fileUploadEnabled}
                     <div class="self-star mb-2 ml-1 mr-1">
@@ -1409,6 +1860,58 @@
                         <span class="text-sm font-bold text-[#D0A870] select-none {(search_icon_show && !search) ? 'ml-1' : ''}">{$i18n.t("search")}</span>
                     </button>  
                   </div>  
+=======
+                  <!-- 图片上传 -->
+                  {#if fileUploadEnabled && !$toolflag}
+                    <div class="self-star mb-2 ml-1 mr-1">
+                      <button
+                        class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
+                        type="button"
+                        on:click={() => {
+                          filesInputElement.click();
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                          class="w-[1.2rem] h-[1.2rem]"
+                        >
+                          <path
+                            d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
+                          />
+                        </svg>
+                      </button>
+                      <!-- <Tooltip content={$i18n.t("Attach files")}></Tooltip> -->
+                    </div>
+                  {/if}
+
+                  <!-- 工具组件 -->
+                  <div class="self-star mb-2 ml-1 mr-1">
+                    <Tools bind:inputplaceholder={chatInputPlaceholder}/>
+                  </div>
+
+                  <!-- 深度搜索 -->
+                  <!-- <div class="self-star mb-2 ml-1 mr-1">
+                    <button class="flex flex-row items-center transition rounded-full cursor-pointer px-3 py-1.5
+                      {deepsearch ? 'bg-[#D0A870] text-white' : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'}"
+                      type="button"
+                      on:click={async (event) => {
+                        event.stopPropagation();
+                        deepsearch = !deepsearch;
+                      }}>
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        class="w-[1.1rem] h-[1.1rem]"
+                        fill="currentColor">
+                        <path d="M2.656 17.344c-1.016-1.015-1.15-2.75-.313-4.925.325-.825.73-1.617 1.205-2.365L3.582 10l-.033-.054c-.5-.799-.91-1.596-1.206-2.365-.836-2.175-.703-3.91.313-4.926.56-.56 1.364-.86 2.335-.86 1.425 0 3.168.636 4.957 1.756l.053.034.053-.034c1.79-1.12 3.532-1.757 4.957-1.757.972 0 1.776.3 2.335.86 1.014 1.015 1.148 2.752.312 4.926a13.892 13.892 0 0 1-1.206 2.365l-.034.054.034.053c.5.8.91 1.596 1.205 2.365.837 2.175.704 3.911-.311 4.926-.56.56-1.364.861-2.335.861-1.425 0-3.168-.637-4.957-1.757L10 16.415l-.053.033c-1.79 1.12-3.532 1.757-4.957 1.757-.972 0-1.776-.3-2.335-.86zm13.631-4.399c-.187-.488-.429-.988-.71-1.492l-.075-.132-.092.12a22.075 22.075 0 0 1-3.968 3.968l-.12.093.132.074c1.308.734 2.559 1.162 3.556 1.162.563 0 1.006-.138 1.298-.43.3-.3.436-.774.428-1.346-.008-.575-.159-1.264-.449-2.017zm-6.345 1.65l.058.042.058-.042a19.881 19.881 0 0 0 4.551-4.537l.043-.058-.043-.058a20.123 20.123 0 0 0-2.093-2.458 19.732 19.732 0 0 0-2.458-2.08L10 5.364l-.058.042A19.883 19.883 0 0 0 5.39 9.942L5.348 10l.042.059c.631.874 1.332 1.695 2.094 2.457a19.74 19.74 0 0 0 2.458 2.08zm6.366-10.902c-.293-.293-.736-.431-1.298-.431-.998 0-2.248.429-3.556 1.163l-.132.074.12.092a21.938 21.938 0 0 1 3.968 3.968l.092.12.074-.132c.282-.504.524-1.004.711-1.492.29-.753.442-1.442.45-2.017.007-.572-.129-1.045-.429-1.345zM3.712 7.055c.202.514.44 1.013.712 1.493l.074.13.092-.119a21.94 21.94 0 0 1 3.968-3.968l.12-.092-.132-.074C7.238 3.69 5.987 3.262 4.99 3.262c-.563 0-1.006.138-1.298.43-.3.301-.436.774-.428 1.346.007.575.159 1.264.448 2.017zm0 5.89c-.29.753-.44 1.442-.448 2.017-.008.572.127 1.045.428 1.345.293.293.736.431 1.298.431.997 0 2.247-.428 3.556-1.162l.131-.074-.12-.093a21.94 21.94 0 0 1-3.967-3.968l-.093-.12-.074.132a11.712 11.712 0 0 0-.71 1.492z" fill="currentColor" stroke="currentColor" stroke-width=".1"/>
+                        <path d="M10.706 11.704A1.843 1.843 0 0 1 8.155 10a1.845 1.845 0 1 1 2.551 1.704z" fill="currentColor" stroke="currentColor" stroke-width=".2"/>
+                      </svg>
+                      <span class="text-sm ml-1">{$i18n.t("Deep Research")}</span>
+                    </button>
+                  </div> -->
+>>>>>>> fingerprintAuth-out
                 </div>
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">
@@ -1563,11 +2066,20 @@
     visibility: hidden;
   }
   .button-select-none {
+<<<<<<< HEAD
     -webkit-touch-callout: none; /* Disable system default menu */
     -webkit-user-select: none; /* Safari Browser prohibits selection */
     -khtml-user-select: none; /* Early browsers */
     -moz-user-select: none; /* Firefox Browser prohibits selection */
     -ms-user-select: none; /* IE Browser prohibits selection */
     user-select: none; /* Standard grammar, no selection allowed */
+=======
+    -webkit-touch-callout: none; /* 禁止系统默认菜单 */
+    -webkit-user-select: none; /* Safari 浏览器禁止选择 */
+    -khtml-user-select: none; /* 早期浏览器 */
+    -moz-user-select: none; /* Firefox 浏览器禁止选择 */
+    -ms-user-select: none; /* IE 浏览器禁止选择 */
+    user-select: none; /* 标准语法，禁止选择 */
+>>>>>>> fingerprintAuth-out
   }
 </style>

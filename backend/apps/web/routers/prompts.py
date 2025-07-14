@@ -16,8 +16,11 @@ router = APIRouter()
 ############################
 # GetPrompts
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.get("/", response_model=List[PromptModel])
 async def get_prompts(user=Depends(get_current_user)):
     return Prompts.get_prompts()
@@ -26,8 +29,11 @@ async def get_prompts(user=Depends(get_current_user)):
 ############################
 # CreateNewPrompt
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.post("/create", response_model=Optional[PromptModel])
 async def create_new_prompt(form_data: PromptForm, user=Depends(get_admin_user)):
     prompt = Prompts.get_prompt_by_command(form_data.command)
@@ -49,8 +55,11 @@ async def create_new_prompt(form_data: PromptForm, user=Depends(get_admin_user))
 ############################
 # GetPromptByCommand
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.get("/command/{command}", response_model=Optional[PromptModel])
 async def get_prompt_by_command(command: str, user=Depends(get_current_user)):
     prompt = Prompts.get_prompt_by_command(f"/{command}")
@@ -67,8 +76,11 @@ async def get_prompt_by_command(command: str, user=Depends(get_current_user)):
 ############################
 # UpdatePromptByCommand
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.post("/command/{command}/update", response_model=Optional[PromptModel])
 async def update_prompt_by_command(
     command: str, form_data: PromptForm, user=Depends(get_admin_user)
@@ -86,8 +98,11 @@ async def update_prompt_by_command(
 ############################
 # DeletePromptByCommand
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.delete("/command/{command}/delete", response_model=bool)
 async def delete_prompt_by_command(command: str, user=Depends(get_admin_user)):
     result = Prompts.delete_prompt_by_command(f"/{command}")

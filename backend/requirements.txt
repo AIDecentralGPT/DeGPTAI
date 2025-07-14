@@ -74,4 +74,14 @@ google-api-python-client==2.156.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
 redis==5.2.1
+<<<<<<< HEAD
 jieba==0.42.1
+=======
+jieba==0.42.1
+playwright==1.43.0
+pymupdf==1.25.5
+nltk==3.9.1
+python-docx==1.1.2
+openai==1.78.1
+anthropic==0.54.0
+>>>>>>> fingerprintAuth-out

@@ -9,9 +9,15 @@
 
 	let prompts = [];
 
+<<<<<<< HEAD
 	$: prompts = suggestionPrompts
 		.reduce((acc, current) => [...acc, ...[current]], [])
 		.sort(() => Math.random() - 0.5);
+=======
+	$: prompts = suggestionPrompts;
+		// .reduce((acc, current) => [...acc, ...[current]], [])
+		// .sort(() => Math.random() - 0.5);
+>>>>>>> fingerprintAuth-out
 	// suggestionPrompts.length <= 4
 	// 	? suggestionPrompts
 	// 	: suggestionPrompts.sort(() => Math.random() - 0.5).slice(0, 4);
@@ -47,15 +53,26 @@
 		{#each prompts as prompt, promptIdx}
 			<div class="snap-center shrink-0">
 				<button
+<<<<<<< HEAD
 					class="flex flex-col flex-1 shrink-0 w-64 justify-between h-36 p-5 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
 					on:click={() => {
 						submitPrompt($i18n.t(prompt.content));
+=======
+					class="flex flex-col flex-1 shrink-0 w-64 justify-between h-36 p-5 px-6 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-3xl transition group
+					bg-gray-50 dark:bg-gray-850"
+					on:click={() => {
+						submitPrompt($i18n.t(prompt.content), promptIdx);
+>>>>>>> fingerprintAuth-out
 					}}
 				>
 					<div class="flex flex-col text-left">
 						{#if prompt.title && prompt.title[0] !== ''}
 							<div
+<<<<<<< HEAD
 								class="  font-medium dark:text-gray-300 dark:group-hover:text-gray-200 transition"
+=======
+								class="font-medium dark:text-gray-300 dark:group-hover:text-gray-200 transition"
+>>>>>>> fingerprintAuth-out
 							>
 								{$i18n.t(prompt.title[0])}
 							</div>

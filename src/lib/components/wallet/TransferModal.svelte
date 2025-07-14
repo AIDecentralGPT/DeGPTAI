@@ -33,7 +33,11 @@
 
   $: buttonStyle = loading ? "background: rgba(184, 142, 86, 0.6)" : "";
 
+<<<<<<< HEAD
   // Monitor the changes in the 'show' variable and clear the input box when 'show' becomes false
+=======
+  // 监听show变量的变化，当show变为false时清空输入框
+>>>>>>> fingerprintAuth-out
   $: if (!show) {
     amount = "";
     address = "";
@@ -54,18 +58,30 @@
   async function handleAmountChange() {
     if (amount) {
       if (transferType === "DBC") {
+<<<<<<< HEAD
         // Get gasLimit
+=======
+        // 获取gasLimit
+>>>>>>> fingerprintAuth-out
         const transaction = {
           to: '0xEc9011d12CCBE93C7213C176dEFEa998bfbBA21b',
           value: ethers.parseUnits('1')
         };
         const gasLimit = await provider.estimateGas(transaction);
+<<<<<<< HEAD
         // Call here provider.getFeeData()
+=======
+        // 在这里调用 provider.getFeeData()
+>>>>>>> fingerprintAuth-out
         await provider.getFeeData().then((data) => {
           const gasPrice = BigInt(data?.gasPrice) * gasLimit;
           const maxFeePerGas = BigInt(data?.maxFeePerGas) * gasLimit;
           const maxPriorityFeePerGas = data?.maxPriorityFeePerGas;
+<<<<<<< HEAD
           // Update gas variable
+=======
+          // 更新 gas 变量
+>>>>>>> fingerprintAuth-out
           gas = {
             gasPrice,
             maxFeePerGas,
@@ -73,14 +89,24 @@
           }
         });
       } else {
+<<<<<<< HEAD
         // Obtain estimated gasLimit
         const gasLimit = await tranGasLimit($currentWalletData?.walletInfo);
         // Call here provider.getFeeData()
+=======
+        // 获取预估gasLimit
+        const gasLimit = await tranGasLimit($currentWalletData?.walletInfo);
+        // 在这里调用 provider.getFeeData()
+>>>>>>> fingerprintAuth-out
         await provider.getFeeData().then((data) => {
           const gasPrice = BigInt(data?.gasPrice) * gasLimit;
           const maxFeePerGas = BigInt(data?.maxFeePerGas) * gasLimit;
           const maxPriorityFeePerGas = data?.maxPriorityFeePerGas;
+<<<<<<< HEAD
           // Update gas variable
+=======
+          // 更新 gas 变量
+>>>>>>> fingerprintAuth-out
           gas = {
             gasPrice,
             maxFeePerGas,
@@ -109,7 +135,11 @@
         loading = true;
 
         const transferMethod =
+<<<<<<< HEAD
           transferType === "DBC" ? transferDbc : transferDgc; // Select method based on transferType
+=======
+          transferType === "DBC" ? transferDbc : transferDgc; // 根据 transferType 选择方法
+>>>>>>> fingerprintAuth-out
 
         console.log(
           "currentWalletData?.walletInfo?.privateKey",
@@ -118,13 +148,26 @@
 
 
         try {
+<<<<<<< HEAD
           await transferMethod(
+=======
+          let response = await transferMethod(
+>>>>>>> fingerprintAuth-out
             address,
             amount,
             $currentWalletData?.walletInfo?.privateKey
           );
+<<<<<<< HEAD
           toast.success($i18n.t("Transfer successful,please be patient!"));
 
+=======
+          if (response?.ok) {
+            toast.success($i18n.t("Transfer successful,please be patient!"));
+          } else {
+            toast.error($i18n.t(response?.msg));
+          }
+          
+>>>>>>> fingerprintAuth-out
         } catch (error) {
           loading = false;
           toast.error(error?.message);

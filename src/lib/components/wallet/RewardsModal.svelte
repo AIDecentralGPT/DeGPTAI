@@ -190,7 +190,11 @@
                   <h3 class="text-lg font-bold mb-2">01</h3>
                   <p class="text-sm text-gray-600">
                     {$i18n.t(
+<<<<<<< HEAD
                       "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards."
+=======
+                      "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards."
+>>>>>>> fingerprintAuth-out
                     )}
                   </p>
                 </div>

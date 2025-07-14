@@ -28,8 +28,11 @@ async def get_embeddings(request: Request):
 ############################
 # GetMemories
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.get("/", response_model=List[MemoryModel])
 async def get_memories(user=Depends(get_verified_user)):
     return Memories.get_memories_by_user_id(user.id)
@@ -38,8 +41,11 @@ async def get_memories(user=Depends(get_verified_user)):
 ############################
 # AddMemory
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 class AddMemoryForm(BaseModel):
     content: str
 
@@ -65,8 +71,11 @@ async def add_memory(
 ############################
 # QueryMemory
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 class QueryMemoryForm(BaseModel):
     content: str
 
@@ -110,8 +119,11 @@ async def reset_memory_from_vector_db(
 ############################
 # DeleteMemoriesByUserId
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.delete("/user", response_model=bool)
 async def delete_memory_by_user_id(user=Depends(get_verified_user)):
     result = Memories.delete_memories_by_user_id(user.id)
@@ -129,8 +141,11 @@ async def delete_memory_by_user_id(user=Depends(get_verified_user)):
 ############################
 # DeleteMemoryById
 ############################
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fingerprintAuth-out
 @router.delete("/{memory_id}", response_model=bool)
 async def delete_memory_by_id(memory_id: str, user=Depends(get_verified_user)):
     result = Memories.delete_memory_by_id_and_user_id(memory_id, user.id)

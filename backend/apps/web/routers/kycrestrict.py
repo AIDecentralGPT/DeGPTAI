@@ -6,12 +6,17 @@ from datetime import datetime, timedelta
 
 router = APIRouter()
 
+<<<<<<< HEAD
 # Check kyc
+=======
+# 添加IP记录
+>>>>>>> fingerprintAuth-out
 @router.post("/check_kyc")
 async def check_kyc(request: Request, user=Depends(get_verified_user)):
     try:
         if user.verified:
             return {"pass": True, "data": user}
+<<<<<<< HEAD
         # Obtain client IP address
         client_ip = request.client.host
         # Determine if there are two successful KYC authentication attempts for the same IP address
@@ -19,6 +24,15 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
         if  kycrestricts is not None and len(kycrestricts) >= 2:
             return {"pass": False, "message": "A single IP address can be used for a maximum of two KYC verifications"}
         # Verify if the user is still undergoing KYC authentication
+=======
+        # 获取客户端IP
+        client_ip = request.client.host
+        # 判断同一个IP认证kyc成功的是否有两个
+        kycrestricts = KycRestrictInstance.get_by_ip(client_ip)
+        if  kycrestricts is not None and len(kycrestricts) >= 2:
+            return {"pass": False, "message": "A single IP address can be used for a maximum of two KYC verifications"}
+        # 校验用户是否再kyc认证中
+>>>>>>> fingerprintAuth-out
         kycrestrict = KycRestrictInstance.get_by_userid(user.id)
         if kycrestrict is not None:
             if kycrestrict.status == False:
@@ -33,7 +47,11 @@ async def check_kyc(request: Request, user=Depends(get_verified_user)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+<<<<<<< HEAD
 # Bind email
+=======
+# 绑定邮箱
+>>>>>>> fingerprintAuth-out
 @router.post("/bind_email")
 async def bind_email(bindemail: BindEmailRequest, user=Depends(get_verified_user)):
     try:
@@ -45,11 +63,20 @@ async def bind_email(bindemail: BindEmailRequest, user=Depends(get_verified_user
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+<<<<<<< HEAD
 # Bind image authentication
 @router.post("/bind_captcha")
 async def bind_captcha(bindcaptcha: BindCaptchaRequest, user=Depends(get_verified_user)):
     try:
         kycrestrict = KycRestrictInstance.update_capcher(user.id, bindcaptcha.captcha_code)
+=======
+# 绑定图片认证
+@router.post("/bind_captcha")
+async def bind_captcha(request:Request, bindcaptcha: BindCaptchaRequest, user=Depends(get_verified_user)):
+    try:
+        clinet_ip = request.client.host
+        kycrestrict = KycRestrictInstance.update_capcher(user.id, bindcaptcha.captcha_code, clinet_ip)
+>>>>>>> fingerprintAuth-out
         if kycrestrict is None:
             raise HTTPException(status_code=400, detail="The binding of the picture authentication failed")
         else:
@@ -57,7 +84,11 @@ async def bind_captcha(bindcaptcha: BindCaptchaRequest, user=Depends(get_verifie
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+<<<<<<< HEAD
 # Bind buried points
+=======
+# 绑定埋点
+>>>>>>> fingerprintAuth-out
 @router.post("/bind_tracking")
 async def bind_tracking(bindtracking: BindTrackingRequest, user=Depends(get_verified_user)):
     try:

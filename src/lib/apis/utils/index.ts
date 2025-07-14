@@ -109,7 +109,11 @@ export const downloadDatabase = async (token: string) => {
 	}
 };
 
+<<<<<<< HEAD
 // Obtain all request nodes of De
+=======
+// 获取De的所有请求节点
+>>>>>>> fingerprintAuth-out
 export const getRegionDict = () => {
 
 	const regionDict = {

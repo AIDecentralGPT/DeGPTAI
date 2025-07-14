@@ -171,7 +171,11 @@ export const uploadDocToVectorDB = async (token: string, collection_name: string
 
 	let error = null;
 
+<<<<<<< HEAD
 	const res = await fetch(`${RAG_API_BASE_URL}/doc`, {
+=======
+	const res = await fetch(`https://www.degptfile.info/api/v1/file/analysis`, {
+>>>>>>> fingerprintAuth-out
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -196,6 +200,39 @@ export const uploadDocToVectorDB = async (token: string, collection_name: string
 	return res;
 };
 
+<<<<<<< HEAD
+=======
+export const analysisImageInfo = async (token: string, base64str: string) => {
+	let error = null;
+	const res = await fetch(`https://www.degptfile.info/api/v1/file/caption/info`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			base64str: base64str
+		})
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			error = err.detail;
+			console.log(err);
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+>>>>>>> fingerprintAuth-out
 export const uploadWebToVectorDB = async (token: string, collection_name: string, url: string) => {
 	let error = null;
 

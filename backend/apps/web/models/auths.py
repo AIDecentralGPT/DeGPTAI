@@ -177,7 +177,11 @@ class AuthsTable:
         address_type: str = None,
         address: str = None,
         channel: str = None
+<<<<<<< HEAD
     ) -> Optional[TypingTuple[UserModel, int]]:  # Modify the return type declaration
+=======
+    ) -> Optional[TypingTuple[UserModel, int]]:  # 修改返回类型声明
+>>>>>>> fingerprintAuth-out
         
         print("insert_new_auth:1", id, role, inviter_id, address_type, address)
 
@@ -189,6 +193,7 @@ class AuthsTable:
 
         user = Users.insert_new_user(id, name, email, inviter_id, address_type=address_type, address=address, role=role, profile_image_url=profile_image_url, channel = channel)
 
+<<<<<<< HEAD
         user_count = Users.get_user_count()  # Obtain the number of users
 
         if result and user:
@@ -221,6 +226,40 @@ class AuthsTable:
         except Exception as e:
             print("authenticate_user Exception：", e)
             # If an exception occurs, return None
+=======
+        user_count = Users.get_user_count()  # 获取用户个数
+
+        if result and user:
+            return user, user_count  # 返回用户和用户个数
+        else:
+            return None
+
+    # 验证用户
+    def authenticate_user(self, email: str, password: str) -> Optional[UserModel]:
+        # 记录日志，打印要验证的用户邮箱
+        log.info(f"authenticate_user: {email}")
+        try:
+            # 根据邮箱和活动状态查询Auth表中的记录
+            auth = Auth.get(Auth.email == email, Auth.active == True)
+            # print("auth", auth)
+            if auth:
+                # 如果找到了匹配的Auth记录
+                # 验证密码是否正确
+                if verify_password(password, auth.password):
+                    # 如果密码验证通过，根据Auth记录的id查询Users表中的用户信息
+                    user = Users.get_user_by_id(auth.id)
+                    # 返回用户信息
+                    return user
+                else:
+                    # 如果密码验证失败，返回None
+                    return None
+            else:
+                # 如果没有找到匹配的Auth记录��返回None
+                return None
+        except Exception as e:
+            print("authenticate_user Exception：", e)
+            # 如果发生异常，返回None
+>>>>>>> fingerprintAuth-out
             return None
 
     def authenticate_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
@@ -282,11 +321,19 @@ class AuthsTable:
 
     def update_user_id(self, old_id: str, new_id: str) -> bool:
         try:
+<<<<<<< HEAD
             # Update the user ID in the Auth table
             query = Auth.update(id=new_id).where(Auth.id == old_id)
             result = query.execute()
 
             # Update user IDs in the Users table
+=======
+            # 更新Auth表中的用户ID
+            query = Auth.update(id=new_id).where(Auth.id == old_id)
+            result = query.execute()
+
+            # 更新Users表中的用户ID
+>>>>>>> fingerprintAuth-out
             if result == 1:
                 user_update_result = Users.update_user_id(old_id, new_id)
                 return user_update_result

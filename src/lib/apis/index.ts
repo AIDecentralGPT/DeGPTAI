@@ -34,8 +34,20 @@ export const defaultBackendConfig = async () => {
     "auth": true,
     "default_locale": "en-US",
     "images": false,
+<<<<<<< HEAD
     "default_models": "DeepSeek-R1,DeepSeek-V3",
     "default_prompt_suggestions": [
+=======
+    "default_models": "deepseek-chat",
+    "default_prompt_suggestions": [
+				{
+					"title": [
+							"Webpage Subscription and Data Insights",
+							"Automatically crawl the subscribed content on web pages through a large model and conduct data analysis."
+					],
+					"content": "Paste or enter a link..."
+				},
+>>>>>>> fingerprintAuth-out
         {
             "title": [
                 "Help me study",
@@ -50,6 +62,7 @@ export const defaultBackendConfig = async () => {
             ],
             "content": "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter."
         },
+<<<<<<< HEAD
         {
             "title": [
                 "Tell me a fun fact",
@@ -57,6 +70,15 @@ export const defaultBackendConfig = async () => {
             ],
             "content": "Tell me a random fun fact about the Roman Empire"
         },
+=======
+				{
+					"title": [
+							"Tell me a fun fact",
+							"about the Roman Empire"
+					],
+					"content": "Tell me a random fun fact about the Roman Empire"
+				},
+>>>>>>> fingerprintAuth-out
         {
             "title": [
                 "Show me a code snippet",

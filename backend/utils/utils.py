@@ -40,6 +40,7 @@ def get_password_hash(password):
 
 def create_token(data: dict, expires_delta: Union[timedelta, None] = None) -> str:
     """
+<<<<<<< HEAD
     Generate JWT Token
     
     Args:
@@ -61,6 +62,29 @@ def create_token(data: dict, expires_delta: Union[timedelta, None] = None) -> st
         payload.update({"exp": expire})
 
     # Encode the payload using the JWT library to generate JWT
+=======
+    生成JWT Token
+    
+    Args:
+        data (dict): 包含JWT负载信息的字典
+        expires_delta (Union[timedelta, None], optional): Token过期时间差，默认为None。
+    
+    Returns:
+        str: 生成的JWT Token字符串
+    
+    """
+    # 复制传入的字典数据
+    payload = data.copy()
+
+    # 如果传入了过期时间差
+    if expires_delta:
+        # 计算过期时间
+        expire = datetime.utcnow() + expires_delta
+        # 将过期时间加入到payload中
+        payload.update({"exp": expire})
+
+    # 使用jwt库对payload进行编码生成JWT
+>>>>>>> fingerprintAuth-out
     encoded_jwt = jwt.encode(payload, SESSION_SECRET, algorithm=ALGORITHM)
     return encoded_jwt
 
@@ -122,6 +146,7 @@ def get_http_authorization_cred(auth_header: str):
 
 
 def get_current_user(
+<<<<<<< HEAD
     # Pass in the auth_token parameter of HTTPAuthorityCredentials type, which defaults to Depends (bearer.security)
     auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
 ):
@@ -136,6 +161,22 @@ def get_current_user(
     
     Raises:
         HTTPException: If the token is invalid or unauthorized
+=======
+    # 传入HTTPAuthorizationCredentials类型的auth_token参数，默认为Depends(bearer_security)
+    auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
+):
+    """
+    根据传入的auth_token参数获取当前用户
+    
+    Args:
+        auth_token (HTTPAuthorizationCredentials): 用户的认证令牌，默认为Depends(bearer_security)
+    
+    Returns:
+        Union[User, None]: 当前用户对象或None（如果未找到用户）
+    
+    Raises:
+        HTTPException: 如果token无效或未授权
+>>>>>>> fingerprintAuth-out
     """
     # print("auth_token.id",  auth_token.id)
 
@@ -163,6 +204,7 @@ def get_current_user(
 
     print("auth_token", auth_token)
 
+<<<<<<< HEAD
     # Authentication based on API key
     # auth by api key
     if auth_token.credentials.startswith("sk-"):
@@ -170,11 +212,21 @@ def get_current_user(
         return get_current_user_by_api_key(auth_token.credentials)
 
     # Decoding Token
+=======
+    # 根据API密钥进行认证
+    # auth by api key
+    if auth_token.credentials.startswith("sk-"):
+        # 调用get_current_user_by_api_key函数，传入auth_token.credentials作为参数，返回当前用户
+        return get_current_user_by_api_key(auth_token.credentials)
+
+    # 解码token
+>>>>>>> fingerprintAuth-out
     # auth by jwt token
     data = decode_token(auth_token.credentials)
 
     print("get_current_user - data", data)
 
+<<<<<<< HEAD
     # If the decoded data is not empty and contains an 'id' field
     if data != None and "id" in data:
         # Retrieve users based on their ID
@@ -183,15 +235,40 @@ def get_current_user(
         # If the user does not exist
         if user is None:
             # Throwing HTTP exception with status code 401 and error details as invalid token
+=======
+    # 如果解码后的数据不为空且包含"id"字段
+    if data != None and "id" in data:
+        # 根据id获取用户
+        user = Users.get_user_by_id(data["id"])
+
+        # 如果用户不存在
+        if user is None:
+            # 抛出HTTP异常，状态码为401，错误详情为无效的token
+>>>>>>> fingerprintAuth-out
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=ERROR_MESSAGES.INVALID_TOKEN,
             )
+<<<<<<< HEAD
         # Return to current user
         return user
 
     else:
         # Throwing HTTP exception with status code 401 and error details as unauthorized
+=======
+        # else:
+        #     # 更新用户的最后活跃时间
+        #     try:
+        #         Users.update_user_last_active_by_id(user.id)
+        #     except Exception as e:
+        #         print("get_current_user - user-error", e) 
+        # print("最终的user", user)
+        # 返回当前用户
+        return user
+
+    else:
+        # 抛出HTTP异常，状态码为401，错误详情为未授权
+>>>>>>> fingerprintAuth-out
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=ERROR_MESSAGES.UNAUTHORIZED,

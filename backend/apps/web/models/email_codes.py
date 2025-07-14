@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 from peewee import Model, CharField, DateTimeField, fn
 from apps.web.internal.db import DB
 from pydantic import BaseModel
 from typing import Optional
 from playhouse.shortcuts import model_to_dict
+=======
+from peewee import Model, CharField, DateTimeField, fn  # 导入Peewee中的Model、CharField和DateTimeField
+from apps.web.internal.db import DB  # 导入数据库实例DB
+from pydantic import BaseModel  # 导入Pydantic中的BaseModel
+from typing import Optional  # 导入类型提示
+from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
+>>>>>>> fingerprintAuth-out
 from datetime import datetime, timedelta
 import string
 import secrets
@@ -10,8 +18,17 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import uuid
+<<<<<<< HEAD
 
 
+=======
+import os
+
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PWD = os.getenv("EMAIL_PWD")
+>>>>>>> fingerprintAuth-out
 
 
 class EmailRequest(BaseModel):
@@ -24,6 +41,7 @@ class VerifyCodeRequest(BaseModel):
 class TimeRequest(BaseModel):
     time: str
 
+<<<<<<< HEAD
 # Define EmailCodeTable model
 class EmailCodeTable(Model):
     id = CharField(primary_key=True, unique=True)  # Define a unique primary key character field id
@@ -53,6 +71,37 @@ class EmailCodeOperations:
 
     def generate_code(self, length: int = 6) -> str:
         characters = string.ascii_letters + string.digits  # A character set containing letters and numbers
+=======
+# 定义EmailCodeTable模型
+class EmailCodeTable(Model):
+    id = CharField(primary_key=True, unique=True)  # 定义唯一的主键字符字段id
+    email = CharField(index=True)  # 定义索引字符字段email
+    code = CharField()  # 定义字符字段code
+    created_at = DateTimeField(default=datetime.now)  # 定义默认值为当前时间的日期时间字段created_at
+
+    class Meta:
+        database = DB  # 指定数据库
+        table_name = 'email_codes'  # 指定表名
+
+# 定义Pydantic模型EmailCodeModel
+class EmailCodeModel(BaseModel):
+    id: str  # 定义id字段，类型为字符串
+    email: str  # 定义email字段，类型为字符串
+    code: str  # 定义code字段，类型为字符串
+    created_at: datetime  # 定义created_at字段，类型为日期时间
+
+# 定义EmailCodeOperations类，用于操作EmailCodeTable表
+class EmailCodeOperations:
+    def __init__(self, db):
+        self.db = db  # 初始化数据库实例
+        self.db.create_tables([EmailCodeTable])  # 创建EmailCodeTable表
+        self.server = None
+        self.connect()  # 初始化时建立连接
+
+
+    def generate_code(self, length: int = 6) -> str:
+        characters = string.ascii_letters + string.digits  # 包含字母和数字的字符集
+>>>>>>> fingerprintAuth-out
         return ''.join(secrets.choice(characters) for _ in range(length))
 
     def is_expired(self, created_at: datetime) -> bool:
@@ -61,25 +110,40 @@ class EmailCodeOperations:
 
     def get_by_email(self, email: str) -> Optional[EmailCodeModel]:
         try:
+<<<<<<< HEAD
             # code_record = EmailCodeTable.get(EmailCodeTable.email == email)  # Query records in the database
+=======
+            # code_record = EmailCodeTable.get(EmailCodeTable.email == email)  # 查询数据库中的记录
+>>>>>>> fingerprintAuth-out
             code_record = (EmailCodeTable
                 .select()
                 .where(EmailCodeTable.email == email)
                 .order_by(EmailCodeTable.created_at.desc())
                 .get())
             
+<<<<<<< HEAD
             return EmailCodeModel(**model_to_dict(code_record))  # Convert database objects to Pydantic models and return
         except EmailCodeTable.DoesNotExist:
             return None  # If the query fails, return None
+=======
+            return EmailCodeModel(**model_to_dict(code_record))  # 将数据库对象转换为Pydantic模型并返回
+        except EmailCodeTable.DoesNotExist:
+            return None  # 如果查询失败，返回None
+>>>>>>> fingerprintAuth-out
 
     def create(self, email: str, code: str) -> Optional[EmailCodeModel]:
         code_record = EmailCodeModel(
 
+<<<<<<< HEAD
             id=str(uuid.uuid4()),
+=======
+            id=str(uuid.uuid4()),  # 这里使用email作为id，只是为了示例，实际情况可能需要使用UUID或其他唯一标识符
+>>>>>>> fingerprintAuth-out
             email=email,
             code=code,
             created_at=datetime.now()
         )
+<<<<<<< HEAD
         result = EmailCodeTable.create(**code_record.dict())  # Create a new record in the database
         if result:
             return code_record  # Return the created record
@@ -95,6 +159,62 @@ class EmailCodeOperations:
             
         except Exception as e:
             print(f"SMTP connection failed: {e}")
+=======
+        result = EmailCodeTable.create(**code_record.dict())  # 在数据库中创建新记录
+        if result:
+            return code_record  # 返回创建的记录
+        else:
+            return None  # 如果创建失败，返回None
+
+    # def send_email(self, to_email: str, subject: str, body: str):
+
+    #     if not to_email or to_email == '':
+    #         return
+
+    #     if self.server is None:
+    #         print("SMTP连接已丢失，尝试重新连接")
+    #         # try:
+    #         self.connect()
+    #         self.send_email(to_email, subject, body)  # 确保连接有效
+    #         # except Exception as e:
+    #         #     print(e)
+    #         #     print("send_email error")
+    #         #     self.connect()
+    #         #     self.send_email(to_email, subject, body)  # 确保连接有效
+                
+    #         return
+    #     else:
+    #         print("发送邮件", self.server)
+    #         msg = MIMEMultipart()  # message结构体初始化
+    #         from_email = 'degpt'
+    #         msg['From'] = from_email
+    #         msg['To'] = to_email
+    #         msg['Subject'] = subject
+    #         try:
+    #             msg.attach(MIMEText(body, 'html', "utf-8"))
+                
+    #             self.server.sendmail(from_email, to_email, msg.as_string())
+    #             print(f"邮件发送成功：{to_email}")
+    #         except Exception as e:
+    #             print(e)
+    #             print("send_email error")
+    #             self.connect()
+    #             self.send_email(to_email, subject, body)  # 确保连接有效
+            
+    #     # finally:
+    #     #     self.server.quit()  # Close the connection
+
+
+    def connect(self):
+        try:   
+            self.server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=3000)
+            self.server.starttls()  # 启动TLS加密
+            self.server.login(EMAIL_USER, EMAIL_PWD)
+            print("SMTP连接成功")
+            
+        except Exception as e:
+            print(f"SMTP连接失败: {e}")
+>>>>>>> fingerprintAuth-out
             self.server = None
 
     def send_email(self, to_email: str, subject: str, body: str):
@@ -102,6 +222,7 @@ class EmailCodeOperations:
             return
 
         if not self.server:
+<<<<<<< HEAD
             print("SMTP connection lost, try reconnecting")
             self.connect()
             print("Email service recipients:", self.server)
@@ -109,6 +230,15 @@ class EmailCodeOperations:
         print("Email service recipients:", self.server)
         msg = MIMEMultipart()
         from_email = 'service@dgc.degpt.ai'
+=======
+            print("SMTP连接已丢失，尝试重新连接")
+            self.connect()
+            print("邮件服务对象", self.server)
+            
+        print("邮件服务对象", self.server)
+        msg = MIMEMultipart()
+        from_email = EMAIL_USER
+>>>>>>> fingerprintAuth-out
         msg['From'] = from_email
         msg['To'] = to_email
         msg['Subject'] = subject
@@ -117,24 +247,38 @@ class EmailCodeOperations:
 
         try:
             self.server.sendmail(from_email, to_email, msg.as_string())
+<<<<<<< HEAD
             print(f"Email sent successfully：{to_email}")
         except smtplib.SMTPException as e:
             print(f"Sending email failed: {e}")
             self.server = None  # Make the connection fail in order to reconnect
+=======
+            print(f"邮件发送成功：{to_email}")
+        except smtplib.SMTPException as e:
+            print(f"发送邮件失败: {e}")
+            self.server = None  # 使连接失效，以便重新连接
+>>>>>>> fingerprintAuth-out
             self.connect()
 
             if self.server:
                 try:
                     self.server.sendmail(from_email, to_email, msg.as_string())
+<<<<<<< HEAD
                     print(f"Email resent successfully：{to_email}")
                 except smtplib.SMTPException as e:
                     print(f"Email resend failed: {e}")
 
 
+=======
+                    print(f"邮件重新发送成功：{to_email}")
+                except smtplib.SMTPException as e:
+                    print(f"邮件重新发送失败: {e}")
+>>>>>>> fingerprintAuth-out
 
 
     @staticmethod
     def connect_smtp():
+<<<<<<< HEAD
         # This is the link to the smtp website, which can be viewed through Google Mail
         # server = smtplib.SMTP('smtp.163.com', 25, timeout=10)
 
@@ -150,12 +294,30 @@ class EmailCodeOperations:
         print("ensure_connection server", self.server)
         if self.server is None:
             print("SMTP connection lost, try reconnecting...")
+=======
+        # 这里是smtp网站的连接，可以通过谷歌邮箱查看
+        server = smtplib.SMTP(EMAIL_SERVER, EMAIL_PORT, timeout=3000)
+        # 连接tls
+        server.starttls()
+        server.login(EMAIL_USER, EMAIL_PWD)
+        return server
+
+    def ensure_connection(self):
+        """确保SMTP连接可用，如果不可用则尝试重连"""
+        print("ensure_connection server", self.server)
+        if self.server is None:
+            print("SMTP连接已丢失，尝试重新连接...")
+>>>>>>> fingerprintAuth-out
             self.connect()
 
         
 
 
 
+<<<<<<< HEAD
 # Instantiate EmailCodeOperations class
+=======
+# 实例化EmailCodeOperations类
+>>>>>>> fingerprintAuth-out
 email_code_operations = EmailCodeOperations(DB)
 

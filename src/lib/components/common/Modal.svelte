@@ -18,6 +18,11 @@
 			return 'w-[30rem]';
 		} else if (size === 'md') {
 			return 'w-[48rem]';
+<<<<<<< HEAD
+=======
+		} else if (size === 'big') {
+			return 'w-[110rem]';
+>>>>>>> fingerprintAuth-out
 		} else {
 			return 'w-[56rem]';
 		}

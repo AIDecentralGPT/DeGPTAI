@@ -36,6 +36,7 @@ export default defineConfig({
 		}
 	},
 	build: {
+<<<<<<< HEAD
     // Enable code compression
     minify: 'terser',
     terserOptions: {
@@ -43,6 +44,15 @@ export default defineConfig({
       compress: {
         drop_console: true, // Remove console statement
         drop_debugger: true // Remove the debugger statement
+=======
+    // 开启代码压缩
+    minify: 'terser',
+    terserOptions: {
+      // 自定义 terser 配置
+      compress: {
+        drop_console: true, // 移除 console 语句
+        drop_debugger: true // 移除 debugger 语句
+>>>>>>> fingerprintAuth-out
       }
     }
   }

@@ -6,7 +6,10 @@
 	import auto_render from 'katex/dist/contrib/auto-render.mjs';
 	import 'katex/dist/katex.min.css';
 
+<<<<<<< HEAD
 	import { fade } from 'svelte/transition';
+=======
+>>>>>>> fingerprintAuth-out
 	import { createEventDispatcher } from 'svelte';
 	import { onMount, tick, getContext } from 'svelte';
 
@@ -14,7 +17,11 @@
 
 	const dispatch = createEventDispatcher();
 
+<<<<<<< HEAD
 	import { config, settings, models, theme } from '$lib/stores';
+=======
+	import { config, settings, models, theme, user, showPriceModal, showSidebar, showWalletView } from '$lib/stores';
+>>>>>>> fingerprintAuth-out
 
 	import { synthesizeOpenAISpeech } from '$lib/apis/audio';
 	import { imageGenerations } from '$lib/apis/images';
@@ -30,6 +37,11 @@
 	import ProfileImage from './ProfileImage.svelte';
 	import Thinking from './Thinking.svelte';
 	import Searching from './Searching.svelte';
+<<<<<<< HEAD
+=======
+	import WebAnalysis from './WebAnalysis.svelte';
+	import Replying from './Replying.svelte';
+>>>>>>> fingerprintAuth-out
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
 	import Image from '$lib/components/common/Image.svelte';
@@ -46,6 +58,12 @@
 
 	export let readOnly = false;
 
+<<<<<<< HEAD
+=======
+	// 重新获取会话
+	export let resentMessage: Function;
+
+>>>>>>> fingerprintAuth-out
 	export let updateChatMessages: Function;
 	export let confirmEditResponseMessage: Function;
 	export let showPreviousMessage: Function;
@@ -73,9 +91,15 @@
 
 	let selectedCitation = null;
 
+<<<<<<< HEAD
 	$: tokens = deepseekAnalysis((message?.think_content??'') + message?.content);
 
 	function deepseekAnalysis(content: any) {
+=======
+	$: tokens = thinkAnalysis((message?.think_content??'') + message?.content);
+
+	function thinkAnalysis(content: any) {
+>>>>>>> fingerprintAuth-out
 		if (content.startsWith("<think>")) {
 			let firstIndex = content.indexOf('</think>');
 			if (firstIndex == -1) {
@@ -356,7 +380,11 @@
 		renderStyling();
 	});
 
+<<<<<<< HEAD
 	// Format model name
+=======
+	// 格式化模型名字
+>>>>>>> fingerprintAuth-out
 	const formatModelName = (model) => {
 		// console.log("models", $models);
 		const modelName = $models.filter((item) => item.model === model)?.[0]?.name || model
@@ -364,7 +392,11 @@
 		return modelName
 	}
 
+<<<<<<< HEAD
 	// Verify image model
+=======
+	// 校验图片模型
+>>>>>>> fingerprintAuth-out
 	const checkModelImage = (model) => {
 		// console.log("models", $models);
 		const checkModel = $models.filter((item) => item?.model === model);
@@ -375,10 +407,17 @@
 		}
 	}
 
+<<<<<<< HEAD
 
 	$: webShow = webFlag;
 	let webFlag = false;
 	// Hide web search
+=======
+	let webFlag = true;
+	$: webShow = webFlag;
+
+	// 隐藏web搜索
+>>>>>>> fingerprintAuth-out
 	const handleWebHidden = () => {
 		webFlag = !webFlag;
 	}
@@ -387,19 +426,45 @@
 
 	function highlightedText(content: string, keyword: string) {
 		let keywords = keyword.split("/");
+<<<<<<< HEAD
 		keywords.forEach((item) => {
 			const regex = new RegExp(item, "gi");
 			content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+=======
+		if (content.length > 150) {
+			content = content.substring(0, 150);
+		}
+		keywords.forEach((item) => {
+			// 匹配空格或标点符号的正则表达式
+			const regexText = /^[\s.,!?;:'"()[\]{}<>]+$/;
+			if (!regexText.test(item)) {
+				const regex = new RegExp(item, "gi");
+				content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+			}
+>>>>>>> fingerprintAuth-out
 		})
     return content;
   }
 
+<<<<<<< HEAD
 	// Monitor theme changes
+=======
+	// 监听主题变化
+>>>>>>> fingerprintAuth-out
 	let currentTheme = $theme;
 	$: {
 		currentTheme = ($theme === "system" || $theme === "light") ? 'light' : 'dark';
 	}
 
+<<<<<<< HEAD
+=======
+	let visibleIndices:any = [];
+	function handleImageLoadFailed({ detail }) {
+        const { index } = detail;
+        visibleIndices[index] = false;
+    }
+
+>>>>>>> fingerprintAuth-out
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
@@ -416,12 +481,17 @@
 
 		<div class="w-full overflow-hidden pl-1">
 			<!-- {console.log("modelfiles", modelfiles, message)} -->
+<<<<<<< HEAD
 			<Name>
+=======
+			<Name>	
+>>>>>>> fingerprintAuth-out
 				{#if message.model in modelfiles}
 					{modelfiles[message.model]?.title}
 				{:else}
 					{message.model ? ` ${formatModelName(message.model)}` : ''}
 				{/if}
+<<<<<<< HEAD
 				{#if message.content == ''}
 					{#if message?.search}
 						{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content }
@@ -429,6 +499,25 @@
 						{:else}
 							<Searching/>
 						{/if}
+=======
+				{#if message.content == '' && !message?.done}
+					{#if message?.toolflag}
+						{#if message?.parseInfo?.web|| message?.parseInfo?.videos || message?.parseInfo?.content}
+							<Replying/>
+						{:else}
+							{#if message?.tooltype == "webread"}
+								<WebAnalysis/>
+							{:else if message?.tooltype == "twitter"}
+								<Searching typeName="Twitter"/>
+							{:else if message?.tooltype == "youtube"}
+								<Searching typeName="YouTube"/>
+							{:else if message?.tooltype == "bing"}
+								<Searching typeName="Bing"/>
+							{:else}
+								<Thinking/>
+							{/if}
+						{/if}	
+>>>>>>> fingerprintAuth-out
 					{:else}
 						<Thinking/>
 					{/if}
@@ -457,11 +546,19 @@
 					{/each}
 				</div>
 			{/if}
+<<<<<<< HEAD
 			<!-- Web Search -->
 			{#if message?.search}
 				{#if message?.search_type == 'web'}
 					<!-- Web Search -->
 					{#if message?.search_content?.web}
+=======
+			<!-- 工具检索 -->
+			{#if message?.toolflag}
+				{#if message?.tooltype == 'web' || message?.tooltype == 'bing'}
+					<!-- 网站搜索 -->
+					{#if message?.parseInfo?.web}
+>>>>>>> fingerprintAuth-out
 						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
@@ -476,7 +573,11 @@
 									</div>
 									<div class="flex flex-col ml-1">
 										<span class="text-sm">{ $i18n.t("Web Search") }</span>
+<<<<<<< HEAD
 										<span class="text-xs"> {message?.search_content?.web.length} Results</span>
+=======
+										<span class="text-xs"> {message?.parseInfo?.web.length} Results</span>
+>>>>>>> fingerprintAuth-out
 									</div>
 								</div>
 								<button on:click={() => {
@@ -494,7 +595,11 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
+<<<<<<< HEAD
 									{#each message?.search_content?.web ?? [] as item}
+=======
+									{#each message?.parseInfo?.web ?? [] as item}
+>>>>>>> fingerprintAuth-out
 										<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
 											<div class="flex flex-row">
 												<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
@@ -503,7 +608,11 @@
 													</svg>
 												</div>
 												<div class="ml-2">
+<<<<<<< HEAD
 													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.search_content?.keyword??"")}</div>
+=======
+													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.parseInfo?.keyword??"")}</div>
+>>>>>>> fingerprintAuth-out
 													<div class="flex flex-row items-center w-[300px] text-xs">
 														<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
 														<svg 
@@ -519,7 +628,11 @@
 													</div>
 												</div>
 											</div>
+<<<<<<< HEAD
 											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.search_content?.keyword??"")}</div>
+=======
+											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.parseInfo?.keyword??"")}</div>
+>>>>>>> fingerprintAuth-out
 										</div>
 									{/each}
 								</div>
@@ -530,6 +643,7 @@
 								</div>			 -->	
 						</div>
 					{/if}
+<<<<<<< HEAD
 					<!-- Image Search -->
 					{#if message?.search_content?.images}
 						<div class="flex flex-wrap mt-3">
@@ -537,15 +651,30 @@
 								{#if item?.url}
 									<div class="p-1 lg:w-[12%] w-1/6 aspect-square">
 										<Image src={item.url} alt="" className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+=======
+					<!-- 图片搜索 -->
+					{#if message?.parseInfo?.images}
+						<div class="flex flex-wrap mt-3">
+							{#each message?.parseInfo?.images ?? [] as item, index}
+								{#if item?.url && (visibleIndices[index]??true)}
+									<div class="p-1 lg:w-[12%] w-1/6 aspect-square">
+										<Image src={item.url} imgIndex={index} alt="" on:imageLoadFailed={handleImageLoadFailed} className="object-cover object-center w-full aspect-square rounded-lg cursor-pointer"/>
+>>>>>>> fingerprintAuth-out
 									</div>
 								{/if}
 							{/each}
 						</div>
 					{/if}
 				{/if}
+<<<<<<< HEAD
 				{#if message?.search_type == 'youtube'}
 					<!-- youtube Search -->
 					{#if message?.search_content?.videos}
+=======
+				{#if message?.tooltype == 'youtube'}
+					<!-- youtube搜索 -->
+					{#if message?.parseInfo?.videos}
+>>>>>>> fingerprintAuth-out
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
@@ -561,7 +690,11 @@
 									</div>
 									<div class="flex flex-col ml-1">
 										<span class="text-sm">{ $i18n.t("YouTube Search") }</span>
+<<<<<<< HEAD
 										<span class="text-xs"> {message?.search_content?.videos.length} videos</span>
+=======
+										<span class="text-xs"> {message?.parseInfo?.videos.length} videos</span>
+>>>>>>> fingerprintAuth-out
 									</div>
 								</div>
 								<button on:click={() => {
@@ -579,7 +712,11 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
+<<<<<<< HEAD
 									{#each message?.search_content?.videos ?? [] as item}
+=======
+									{#each message?.parseInfo?.videos ?? [] as item}
+>>>>>>> fingerprintAuth-out
 										<div class="flex flex-col rounded-xl bg-white dark:bg-black mx-2 mb-4 pb-2">
 											<a class="flex flex-col w-[230px]" href="{item.video_url}" target="_blank">
 												<img class="rounded-t-xl drag-none" src={item.thumbnail_url} alt=""/>
@@ -603,9 +740,15 @@
 						</div>
 					{/if}
 				{/if}
+<<<<<<< HEAD
 				{#if message?.search_type == 'twitter'}
 					<!-- twitter Search -->
 					{#if message?.search_content?.content}
+=======
+				{#if message?.tooltype == 'twitter'}
+					<!-- twitter搜索 -->
+					{#if message?.parseInfo?.content}
+>>>>>>> fingerprintAuth-out
 						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
@@ -620,7 +763,11 @@
 									</div>
 									<div class="flex flex-col ml-1">
 										<span class="text-sm">{ $i18n.t("Twitter Search") }</span>
+<<<<<<< HEAD
 										<span class="text-xs"> {message?.search_content?.content.length} tweets</span>
+=======
+										<span class="text-xs"> {message?.parseInfo?.content.length} tweets</span>
+>>>>>>> fingerprintAuth-out
 									</div>
 								</div>
 								<button on:click={() => {
@@ -638,11 +785,19 @@
 							</div>	
 							<div class="w-full transition ease-in-out delay-150 overflow-x-auto overflow-y-hidden {webShow ? 'h-0' : 'h-auto'}">
 								<div class="flex flex-row px-4 mr-2">
+<<<<<<< HEAD
 									{#each message?.search_content?.content ?? [] as item}
 										<!-- Twitter style -->
 										<div class="mr-3 h-[300px]">
 											<TwitterEmbed data="{item}"/>
 										</div>
+=======
+									{#each message?.parseInfo?.content ?? [] as item}
+										<!-- 带自定义选项 -->
+										 	<div class="mr-3 h-[300px]">
+												<TwitterEmbed data="{item}"/>
+										 	</div>
+>>>>>>> fingerprintAuth-out
 									{/each}
 								</div>
 							</div>
@@ -651,7 +806,11 @@
 				{/if}
 			{/if}
 			
+<<<<<<< HEAD
 			<!-- Text Output -->
+=======
+			<!-- 文本输出 -->
+>>>>>>> fingerprintAuth-out
 			<div
 					class="prose chat-{message.role} w-full max-w-full dark:prose-invert prose-headings:my-0 prose-p:m-0 prose-p:-mb-6 prose-pre:my-0 prose-table:my-0 prose-blockquote:my-0 prose-img:my-0 prose-ul:-my-4 prose-ol:-my-4 prose-li:-my-3 prose-ul:-mb-6 prose-ol:-mb-8 prose-ol:p-0 prose-li:-mb-4 whitespace-pre-line"
 				>
@@ -712,6 +871,7 @@
 										/>
 									</svg>
 
+<<<<<<< HEAD
 									<div class=" self-center">
 										{message.content}
 									</div>
@@ -719,6 +879,61 @@
 							{:else if message.content === ''}
 								{#if message.search}
 									{#if message?.search_content?.web || message?.search_content?.videos || message?.search_content?.content}	
+=======
+									<div class=" self-center flex-1">
+										<!-- 默认错误输出信息 -->
+										{$i18n.t("It seems that you are offline. Please reconnect to send messages.")}
+									</div>
+									{#if isLastMessage}
+										<button on:click={() => {
+											resentMessage(message?.parentId);
+										}}>
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1402 1024" version="1.1" fill="currentColor" class="w-5 h-5 self-center">
+												<path d="M56.256426 523.180601a54.884318 54.884318 0 0 1-37.046915-94.675448l189.350896-177.001925a54.884318 54.884318 0 0 1 75.465937 1.372108l181.118249 177.001925a54.884318 54.884318 0 0 1-76.838045 78.210153L244.235214 366.760296 93.30334 508.087414a54.884318 54.884318 0 0 1-37.046914 15.093187zM1166.291751 789.369542a54.884318 54.884318 0 0 1-37.046914-15.093188L938.521833 597.27443a55.337113 55.337113 0 1 1 75.465937-80.954369l150.931873 142.699226 144.071334-141.327118a54.884318 54.884318 0 0 1 76.838045 78.210153L1204.710774 774.276354a54.884318 54.884318 0 0 1-38.419023 15.093188z"/>
+												<path d="M1163.547535 785.253218a54.884318 54.884318 0 0 1-54.884317-54.884318V513.575845c0-222.281487-181.118248-403.399735-403.399736-403.399735a403.399735 403.399735 0 0 0-264.816832 98.791772 54.922737 54.922737 0 0 1-72.721721-82.326476 513.16837 513.16837 0 0 1 850.706924 386.934439v216.793055a54.884318 54.884318 0 0 1-54.884318 54.884318zM705.263482 1024a513.16837 513.16837 0 0 1-513.16837-513.16837V294.038575a54.884318 54.884318 0 0 1 109.768635 0v216.793055c0 222.281487 181.118248 403.399735 403.399735 403.399735a402.027627 402.027627 0 0 0 271.677373-105.652312 54.884318 54.884318 0 0 1 74.093829 80.954369 511.796263 511.796263 0 0 1-345.771202 134.466578z"/>
+											</svg>
+										</button>
+									{/if}
+								</div>
+							{:else if message?.warning === true}
+								<div
+									class="flex mt-2 mb-4 space-x-2 border px-4 py-3 border-amber-600 bg-amber-600/30 font-medium rounded-lg"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5 self-center"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+										/>
+									</svg>
+									<div class=" self-center">
+										{message.content}
+										{#if $user?.id?.startsWith("0x")}
+											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+												on:click={() => { $showPriceModal = true; }}>
+												{$i18n.t("Click To Upgrade")}
+											</button>
+										{:else}
+											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+												on:click={() => { 
+													$showSidebar = true;
+          								$showWalletView = true; }}>
+												{$i18n.t("Enter wallet")}
+											</button>
+										{/if}
+									</div>
+								</div>
+							{:else if message.content === '' && !message?.done}
+								{#if message.search}
+									{#if message?.parseInfo?.web || message?.parseInfo?.videos || message?.parseInfo?.content}	
+>>>>>>> fingerprintAuth-out
 										<Skeleton />
 									{/if}
 								{:else}

@@ -8,6 +8,7 @@ import { currentWalletData } from "$lib/stores";
 import { getAccount } from "@wagmi/core";
 import { config } from "$lib/utils/wallet/walletconnect/index";
 
+<<<<<<< HEAD
 // DGC Contract Information
 // const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // Old contract address
 const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // New contract address
@@ -25,6 +26,25 @@ const MODEL_TOKEN_CONTRACT_ADDRESS = '0x2e0a85CB5352d7C542D632EdB4949DF879f8e981
 const provider = new ethers.JsonRpcProvider(modelUrl);
 
 // Create DGC contract instance
+=======
+// DGC 合约信息
+// const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧合约地址
+const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新合约地址
+
+// const modelUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 合约RPC网址
+const modelUrl = "https://rpc1.dbcwallet.io"; // 新 合约RPC网址
+
+// 模型旧合约地址
+// const MODEL_TOKEN_CONTRACT_ADDRESS = '0x8588fb0Fec459d44a75135EE74E532a34539C749';
+// 模型新合约地址
+const MODEL_TOKEN_CONTRACT_ADDRESS = '0x2e0a85CB5352d7C542D632EdB4949DF879f8e981';
+
+
+// 创建 provider
+const provider = new ethers.JsonRpcProvider(modelUrl);
+
+// 创建 DGC 合约实例
+>>>>>>> fingerprintAuth-out
 export const modelContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, provider);
 
 export async function checkMoney(address: string) {
@@ -46,11 +66,19 @@ export async function checkMoney(address: string) {
     return {ok: true, message: "success."};;
 }
 
+<<<<<<< HEAD
 // Failed to obtain authorization information
 export async function authSigner(data:any, type: string) {
     try {
         if (type == 'dbc') {
             // Create a signer using a private key
+=======
+// 获取授权信息失败
+export async function authSigner(data:any, type: string) {
+    try {
+        if (type == 'dbc') {
+            // 通过私钥创建signer
+>>>>>>> fingerprintAuth-out
             let signer = new ethers.Wallet(data?.walletInfo?.privateKey, provider);
             return {ok: true, data: signer};
         } else { 
@@ -67,6 +95,7 @@ export async function authSigner(data:any, type: string) {
     }  
 }
 
+<<<<<<< HEAD
 // Upgrade VIP
 export async function payForVip(signer:any) {
     try {
@@ -74,10 +103,20 @@ export async function payForVip(signer:any) {
         const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, DGCABI?.abi, signer);
 
         // The authorized quantity, unit, and value can be adjusted according to the actual situation
+=======
+// 升级vip
+export async function payForVip(signer:any) {
+    try {
+        // 创建 DGC 合约实例
+        const dgcContract = new ethers.Contract(DGC_TOKEN_CONTRACT_ADDRESS, DGCABI?.abi, signer);
+
+        // 授权数量，单位和数值可根据实际情况调整
+>>>>>>> fingerprintAuth-out
         const amountToApprove = ethers.parseUnits('6000');
         let approveFlag = await dgcContract.approve(MODEL_TOKEN_CONTRACT_ADDRESS, amountToApprove)
             .then((tx) => tx.wait())
             .then((receipt) => {
+<<<<<<< HEAD
             console.log('Authorization successful, transaction receipt：', receipt);
             return true;
         }).catch((error) => {
@@ -91,12 +130,31 @@ export async function payForVip(signer:any) {
             const amount = await dgcContract.allowance(signer?.address, MODEL_TOKEN_CONTRACT_ADDRESS);
             console.log("============allowance=============", amount);
             // Model VIP Contract
+=======
+            console.log('授权成功，交易收据：', receipt);
+            return true;
+        }).catch((error) => {
+            console.error('授权失败：', error);
+            return false;
+        });
+
+        // 升级VIP方法
+        if (approveFlag) {
+            // 查询 授权额度
+            const amount = await dgcContract.allowance(signer?.address, MODEL_TOKEN_CONTRACT_ADDRESS);
+            console.log("============allowance=============", amount);
+            // 模型VIP合约
+>>>>>>> fingerprintAuth-out
             const vipContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, signer);
             const result = await vipContract.payForVip();
             console.log("payForVip:", result);
             return {ok: true, data: result};
         } else {
+<<<<<<< HEAD
             return {ok: false, message: "privilege grant failed!"};
+=======
+            return {ok: false, message: "授权失败!"};
+>>>>>>> fingerprintAuth-out
         }
 
     } catch(e) {
@@ -105,14 +163,22 @@ export async function payForVip(signer:any) {
     }  
 }
 
+<<<<<<< HEAD
 // The quantity of DBC required to purchase VIP
+=======
+// 购买vip需要支付的dbc的数量
+>>>>>>> fingerprintAuth-out
 export async function amountPay() {
     const result = await modelContract.amountPay();
     console.log("amountPay:", result);
     return result;
 }
 
+<<<<<<< HEAD
 // Remaining available quantity of a certain model (0: 405b model 1: other)
+=======
+// 某个模型剩余可用数量(0:是405b模型 1:其他)
+>>>>>>> fingerprintAuth-out
 export async function remainingAmount(address, models) {
     try {
         const result = await modelContract.remainingAmount(address, models);
@@ -128,7 +194,11 @@ export async function remainingAmount(address, models) {
     }
 }
 
+<<<<<<< HEAD
 // The model is called once per user request, reducing the number of available times
+=======
+// 用户请求一次模型就调用一次，可用次数减少
+>>>>>>> fingerprintAuth-out
 export async function requestModel(models) {
     try {
         const result = await modelContract.request(models);
