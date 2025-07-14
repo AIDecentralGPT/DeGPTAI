@@ -68,11 +68,7 @@
           {#if Array.isArray(reward.description)}
             <ul>
               {#each reward.description as desc, index}
-<<<<<<< HEAD
-                <li>{ index + 1}. {@html $i18n.t(desc)}</li>
-=======
                 <li>{ index + 1}. {@html $i18n.t(desc, {time: "2025-07-15 00:00:00"})}</li>
->>>>>>> fingerprintAuth-out
               {/each}
             </ul>
           {:else}
