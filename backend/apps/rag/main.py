@@ -29,21 +29,11 @@ from langchain_community.document_loaders import (
     UnstructuredRSTLoader,
     UnstructuredExcelLoader,
     UnstructuredPowerPointLoader,
-<<<<<<< HEAD
-=======
     UnstructuredRTFLoader,
->>>>>>> fingerprintAuth-out
     YoutubeLoader,
 )
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-<<<<<<< HEAD
-import validators
-import urllib.parse
-import socket
-
-
-=======
 # 导入 unstructured 库中涉及分词的模块
 import unstructured.nlp.tokenize
 
@@ -56,18 +46,14 @@ from PIL import Image
 from io import BytesIO
 from apps.rag.oss import OSSUtil
 from apps.rag.pptimage import PPTIMAGEUTIL
->>>>>>> fingerprintAuth-out
 from pydantic import BaseModel
 from typing import Optional
 import mimetypes
 import uuid
 import json
-<<<<<<< HEAD
-=======
 import fitz
 from apps.rag.csvutil import SafeCSVLoader
 from apps.rag.oss import OSSUtil
->>>>>>> fingerprintAuth-out
 
 import sentence_transformers
 
@@ -125,8 +111,6 @@ from config import (
 
 from constants import ERROR_MESSAGES
 
-<<<<<<< HEAD
-=======
 # import nltk
 # nltk.download('punkt_tab')
 # nltk.download('averaged_perceptron_tagger_eng')
@@ -136,7 +120,6 @@ from constants import ERROR_MESSAGES
 # pypandoc.download_pandoc()
 
 
->>>>>>> fingerprintAuth-out
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
 
@@ -730,15 +713,12 @@ def store_docs_in_vector_db(docs, collection_name, overwrite: bool = False) -> b
         return False
 
 
-<<<<<<< HEAD
-=======
 # 定义一个空的分词函数，直接返回包含原文本的列表
 def disable_tokenize(text):
     return [text]
 # 将 unstructured 库中用于句子分词的函数替换为自定义的空分词函数
 unstructured.nlp.tokenize._sent_tokenize = disable_tokenize
 
->>>>>>> fingerprintAuth-out
 def get_loader(filename: str, file_content_type: str, file_path: str):
     file_ext = filename.split(".")[-1].lower()
     known_type = True
@@ -793,9 +773,6 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
             file_path, extract_images=app.state.config.PDF_EXTRACT_IMAGES
         )
     elif file_ext == "csv":
-<<<<<<< HEAD
-        loader = CSVLoader(file_path)
-=======
         loader = SafeCSVLoader(
             file_path,
             encoding="utf-8",
@@ -806,7 +783,6 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
                 "skipinitialspace": True,
             }
         )
->>>>>>> fingerprintAuth-out
     elif file_ext == "rst":
         loader = UnstructuredRSTLoader(file_path, mode="elements")
     elif file_ext == "xml":
@@ -815,25 +791,16 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
         loader = BSHTMLLoader(file_path, open_encoding="unicode_escape")
     elif file_ext == "md":
         loader = UnstructuredMarkdownLoader(file_path)
-<<<<<<< HEAD
-=======
     elif file_ext == "rtf":
         loader = UnstructuredRTFLoader(file_path=file_path, mode="elements", encoding="GB2312")
->>>>>>> fingerprintAuth-out
     elif file_content_type == "application/epub+zip":
         loader = UnstructuredEPubLoader(file_path)
     elif (
         file_content_type
         == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-<<<<<<< HEAD
-        or file_ext in ["doc", "docx"]
-    ):
-        loader = Docx2txtLoader(file_path)
-=======
         or file_ext in ["docx"]
     ):
         loader = UnstructuredWordDocumentLoader(file_path)
->>>>>>> fingerprintAuth-out
     elif file_content_type in [
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -854,8 +821,6 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
 
     return loader, known_type
 
-<<<<<<< HEAD
-=======
 def get_images(filename: str, file_path: str):
     file_ext = filename.split(".")[-1].lower()
     images_base64 = []
@@ -1099,7 +1064,6 @@ def compress_image_base64(base64_str, max_size_kb=10):
     print(f"Compressed size: {compressed_size} bytes")
     
     return compressed_base64
->>>>>>> fingerprintAuth-out
 
 @app.post("/doc")
 def store_doc(
@@ -1121,15 +1085,6 @@ def store_doc(
             f.write(contents)
             f.close()
 
-<<<<<<< HEAD
-        f = open(file_path, "rb")
-        if collection_name == None:
-            collection_name = calculate_sha256(f)[:63]
-        f.close()
-
-        loader, known_type = get_loader(filename, file.content_type, file_path)
-        data = loader.load()
-=======
         # f = open(file_path, "rb")
         # if collection_name == None:
         #     collection_name = calculate_sha256(f)[:63]
@@ -1155,7 +1110,6 @@ def store_doc(
             "text": data,
             "image": images
         }
->>>>>>> fingerprintAuth-out
 
         try:
             result = store_data_in_vector_db(data, collection_name)

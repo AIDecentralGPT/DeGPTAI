@@ -25,11 +25,7 @@
   const uploadJson = async (file: any) => {
     // const res = await importAccountFromKeystore(file);
     // console.log("uploadJson", res);
-<<<<<<< HEAD
-    // encryptedJson = res; // Retrieve account pairs from the JSON file
-=======
     // encryptedJson = res; // 获取json文件中的账户对
->>>>>>> fingerprintAuth-out
 
     console.log("file", file);
     const reader = new FileReader();
@@ -60,11 +56,7 @@
     }, 0);
   }
 
-<<<<<<< HEAD
-  // Update user language
-=======
   // 更新用户语言
->>>>>>> fingerprintAuth-out
   async function initLanguage() {
     if ($user?.language) {
       $i18n.changeLanguage($user?.language);
@@ -100,11 +92,7 @@
         {$i18n.t("Open Wallet")}
       </div>
 
-<<<<<<< HEAD
-      <!-- X close btn -->
-=======
       <!-- X 关闭键 -->
->>>>>>> fingerprintAuth-out
       <button
         class="self-center"
         on:click={() => {
@@ -125,11 +113,7 @@
       </button>
     </div>
 
-<<<<<<< HEAD
-    <!-- Main -->
-=======
     <!-- 主体 -->
->>>>>>> fingerprintAuth-out
     <!-- flex flex-col md:space-x-4 -->
     <div class=" w-full p-4 px-8">
       <div class="flex w-full">
@@ -170,11 +154,7 @@
             on:click={async () => {
               loading = true;
               await tick();
-<<<<<<< HEAD
-              console.log("The color has changed", loading);
-=======
               console.log("变色了要", loading);
->>>>>>> fingerprintAuth-out
 
               try {
                 const walletImportedRet = await unlockWalletWithPrivateKey(
@@ -187,11 +167,7 @@
                   return;
                 }
 
-<<<<<<< HEAD
-                // Request the server to log in to the wallet account
-=======
                 // 请求服务端登录钱包账户
->>>>>>> fingerprintAuth-out
                 const walletImported = walletImportedRet?.data;
                 await handleWalletSignIn({
                   walletImported,
@@ -200,15 +176,9 @@
                   channel: $channel
                 });
 
-<<<<<<< HEAD
-                // Update user model
-                initUserModels();
-                // Update user language
-=======
                 // 更新用户模型
                 initUserModels();
                 // 更新用户语言
->>>>>>> fingerprintAuth-out
                 await initLanguage();
 
                 updateWalletData(walletImported);
@@ -252,17 +222,10 @@
           bind:files={inputFiles}
           type="file"
           hidden
-<<<<<<< HEAD
-          accept=".json"
-          on:change={async () => {
-            if (inputFiles && inputFiles.length > 0) {
-              const file = inputFiles[0]; // Assuming only one file is uploaded
-=======
           accept="application/json"
           on:change={async () => {
             if (inputFiles && inputFiles.length > 0) {
               const file = inputFiles[0]; // 假设只上传一个文件
->>>>>>> fingerprintAuth-out
               if (
                 file.type === "application/json" ||
                 file.name.split(".").pop().toLowerCase() === "json"
@@ -280,11 +243,7 @@
             }
           }}
         />
-<<<<<<< HEAD
-        <!-- input password -->
-=======
         <!-- 输入密码 -->
->>>>>>> fingerprintAuth-out
         {#if encryptedJson}
           <div class="mb-6 pt-0.5 max-w-[300px]">
             <div class="flex flex-col w-full">
@@ -322,11 +281,7 @@
               on:click={async () => {
                 loading = true;
                 await tick();
-<<<<<<< HEAD
-                console.log("The color has changed", loading);
-=======
                 console.log("变色了要", loading);
->>>>>>> fingerprintAuth-out
 
                 if (password=="") {
                   toast.error($i18n.t("Please input password"));
@@ -340,11 +295,7 @@
                     password
                   );
 
-<<<<<<< HEAD
-                  // Request the server to log in to the wallet account
-=======
                   // 请求服务端登录钱包账户
->>>>>>> fingerprintAuth-out
                   await handleWalletSignIn({
                     walletImported,
                     password,
@@ -352,15 +303,9 @@
                     channel: $channel
                   });
 
-<<<<<<< HEAD
-                  // Update user model
-                  initUserModels();
-                  // Update user language
-=======
                   // 更新用户模型
                   initUserModels();
                   // 更新用户语言
->>>>>>> fingerprintAuth-out
                   await initLanguage();
 
                   updateWalletData(walletImported);
@@ -375,11 +320,7 @@
                 }
                 loading = false;
 
-<<<<<<< HEAD
-                const lockIndex = 0; // Lock index
-=======
                 const lockIndex = 0; // 锁定索引
->>>>>>> fingerprintAuth-out
               }}
             >
               {#if loading}

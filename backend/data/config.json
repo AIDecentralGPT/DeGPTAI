@@ -53,11 +53,7 @@
 				"content": "Check the following sentence for grammar and clarity: '[sentence]'. Rewrite it for better readability while maintaining its original meaning."
 			}
 		],
-<<<<<<< HEAD
-		"default_models": "DeepSeek-R1,DeepSeek-V3"
-=======
 		"default_models": "deepseek-chat"
->>>>>>> fingerprintAuth-out
 	},
 	"openai": {
 		"api_base_urls": [

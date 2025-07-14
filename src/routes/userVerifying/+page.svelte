@@ -15,21 +15,13 @@
   let userId = null;
 
   onMount(() => {
-<<<<<<< HEAD
-    // Retrieve parameters from the URL
-=======
     // 获取URL中的参数
->>>>>>> fingerprintAuth-out
     const params = new URLSearchParams(window.location.search);
     userId = params.get("user_id");
     facelivenesdsBind();
   });
 
-<<<<<<< HEAD
-  // Function for sending messages
-=======
   // 用于发送消息的函数
->>>>>>> fingerprintAuth-out
   function facelivenesdsBind() {
     facelivenessBindRes({user_id: userId}).then(async (res) => {
       if (res) {
@@ -49,11 +41,7 @@
     })
   }
 
-<<<<<<< HEAD
-  // Reload page
-=======
   // 重新加载页面
->>>>>>> fingerprintAuth-out
   function refreshBind() {
     status = null;
     loading = true;
@@ -62,11 +50,7 @@
     facelivenesdsBind();
   }
 
-<<<<<<< HEAD
-  // Homepage
-=======
   // 返回首页
->>>>>>> fingerprintAuth-out
   function gotoHome() {
     window.location.href = "https://www.degpt.ai"
   }

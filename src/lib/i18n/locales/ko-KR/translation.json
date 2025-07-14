@@ -72,11 +72,7 @@
   "Archive": "아카이브",
   "Archived Chats": "아카이브된 채팅",
   "are allowed - Activate this command by typing": "허용됨 - 이 명령을 입력하여 활성화",
-<<<<<<< HEAD
-  "Are you sure to become a distinguished Plus member?": "특별한 플러스 회원이 되시겠습니까?",
-=======
   "Are you sure to become a distinguished member?": "뛰어난 회원이 될 확신이 있나요?",
->>>>>>> fingerprintAuth-out
   "Are you sure?": "확인하시겠습니까?",
   "Attach file": "파일 첨부",
   "Attention to detail": "세부사항에 주의",
@@ -160,10 +156,7 @@
   "Custom": "커스텀",
   "Customize Ollama models for a specific purpose": "특정 목적을 위해 Ollama 모델 커스터마이징",
   "Dashboard": "대시보드",
-<<<<<<< HEAD
-=======
   "Reward upkeep": "보상 유지",
->>>>>>> fingerprintAuth-out
   "Database": "데이터베이스",
   "December": "12월",
   "Default": "기본",
@@ -293,15 +286,9 @@
   "Input commands": "입력 명령",
   "Interface": "인터페이스",
   "Invalid Tag": "유효하지 않은 태그",
-<<<<<<< HEAD
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "친구를 초대하여 지갑을 생성하고 6000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
-  "Invite friends now": "지금 친구를 초대하세요",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "친구를 초대하여 지갑을 생성하고 1000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
-=======
   "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "친구를 초대하여 지갑을 생성하고 3000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
   "Invite friends now": "지금 친구를 초대하세요",
   "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "친구를 초대하여 지갑을 생성하고 3000 DGC 보상을 받으세요. 친구도 1000 DGC를 받습니다.",
->>>>>>> fingerprintAuth-out
   "Invite Friends to Earn DGC Rewards": "친구를 초대하여 DGC 보상을 받으세요",
   "invite new user": "새로운 사용자 초대",
   "January": "1월",
@@ -587,10 +574,7 @@
   "You": "당신",
   "You can copy the private key below:": "아래의 개인 키를 복사할 수 있습니다:",
   "You can copy the website below:": "아래 웹사이트를 복사할 수 있습니다:",
-<<<<<<< HEAD
-=======
   "Copy the link and open it in a browser": "링크 복사 후 브라우저에서 열기",
->>>>>>> fingerprintAuth-out
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "하루에 최대 10명의 친구를 초대할 수 있습니다. 하루에 최대 10,000 DGC의 보상을 받을 수 있습니다.",
   "You have no archived conversations.": "아카이브된 대화가 없습니다.",
   "You have shared this chat": "이 채팅을 공유했습니다.",
@@ -616,13 +600,8 @@
   "Upgrade Plan": "업그레이드 계획",
   "Upgrade": "업그레이드",
   "Upgrade ": "업그레이드 ",
-<<<<<<< HEAD
-  "Upgrade to Plus": "플러스로 업그레이드",
-  "Upgrade to Plus failed!": "플러스로 업그레이드 실패!",
-=======
   "Upgrade to VIP": "VIP로 업그레이드",
   "Upgrade to VIP failed!": "VIP로 업그레이드에 실패했습니다!",
->>>>>>> fingerprintAuth-out
   "Upgrading": "업그레이드 중",
   "Failed to obtain authorization information.": "인증 정보를 가져오는데 실패했습니다.",
   "Authorization failed!": "인증에 실패했습니다!",
@@ -635,29 +614,18 @@
   "Close Wallet": "지갑 닫기",
   "Share to Obtain DGC": "DGC를 얻기 위해 공유하기",
   "Buy": "구매",
-<<<<<<< HEAD
-  "Node Sale": "노드 판매",
-=======
   "Node Sale": "노드 세일",
   "Buy DGC": "DGC 구매",
   "Enter wallet": "지갑 열기",
->>>>>>> fingerprintAuth-out
   "Transactions": "거래",
   "Authed KYC": "인증된 KYC",
   "Complete KYC": "완료된 KYC",
   "Connect Wallet": "지갑 연결",
-<<<<<<< HEAD
-  "Create Wallet": "지갑 생성",
-  "Open Wallet": "지갑 열기",
-  "Set as default": "기본으로 설정",
-  "Click to select more models": "더 많은 모델을 선택하기 위해 클릭하세요",
-=======
   "Wallet": "지갑",
   "Create Wallet": "지갑 생성",
   "Open Wallet": "지갑 열기",
   "Set as default": "기본으로 설정",
   "Click to switch models": "모델 전환하기",
->>>>>>> fingerprintAuth-out
   "Unlimited DGC Reward Task": "제한 없는 DGC 보상 태스크",
   "Rewards History": "보상 이력",
   "Rewards Details": "보상 세부사항",
@@ -671,10 +639,7 @@
   "Account": "계정",
   "Statistics": "통계",
   "WebUI Settings": "웹UI 설정",
-<<<<<<< HEAD
-=======
   "User interface settings": "사용자 인터페이스 설정",
->>>>>>> fingerprintAuth-out
   "Theme": "테마",
   "System": "시스템",
   "Dark": "다크",
@@ -728,16 +693,6 @@
   "When an access node is located in a specific region, it will by default preferentially connect to GPU computing nodes within the same region, reducing latency and enhancing performance.": "접속 노드가 특정 지역에 위치할 때, 기본적으로 동일 지역의 GPU 계산 노드에 우선적으로 연결되어 지연을 줄이고 성능을 향상시킵니다.",
   "Download DeGPT to obtain rewards": "보상을 받기 위해 DeGPT를 다운로드하세요.",
   "Switch Models": "모델 전환",
-<<<<<<< HEAD
-  "Suitable for most tasks": "대부분의 작업에 적합합니다",
-  "Suitable for most tasks,Performance comparable to GPT-4o": "대부분의 작업에 적합합니다, 성능은 GPT-4o 과 견줍니다",
-  "Take photos to solve math problems": "수학 문제를 해결하기 위해 사진을 찍는다",
-  "Support image recognition": "이미지 인식을 지원합니다",
-  "Optimize code writing": "코드 작성 최적화합니다",
-  "Please select at least one model.": "적어도 하나의 모델을 선택하세요.",
-  "You can select up to four models at most.": "최대 4개의 모델을 선택할 수 있습니다.",
-  "Your friend not complete the KYC verification.": "귀하의 친구는 KYC 인증을 완료하지 않았습니다.",
-=======
   "Suitable for most tasks, taking photos to solve math problems.": "대부분의 작업에 적합합니다, 사진을 찍어 수학 문제를 해결할 수 있습니다",
   "Suitable for most tasks,Performance comparable to GPT-4o": "대부분의 작업에 적합합니다, 성능은 GPT-4o 과 견줍니다",
   "Deep thinking,mathematical and writing abilities ≈ o3.": "깊은 사고, 수학적 능력과 창작 능력은 o3과 비슷하며.",
@@ -767,7 +722,6 @@
   "Please select at least one model.": "적어도 하나의 모델을 선택하세요.",
   "You can select up to four models at most.": "최대 4개의 모델을 선택할 수 있습니다.",
   "Your friend needs to complete the check-in three times.": "네 친구는 세 번의 출석 체크인을 완료해야 합니다.",
->>>>>>> fingerprintAuth-out
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "키스토어가 자동으로 다운로드되었습니다. 필요한 경우 JSON을 수동으로 다운로드하거나 개인키를 복사할 수 있습니다.",
   "Total": "총계",
   "Channel Distribution": "채널 분포",
@@ -816,20 +770,12 @@
   "II. Referral Reward": "II. 추천 보상",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "KYC를 완료한 지갑 사용자들은 다른 사람들에게 지갑을 만들고 KYC를 완료하도록 초대합니다.",
   "The number of people invited each day should not exceed 20.": "하루에 초대할 수 있는 인원 수는 20명을 초과해서는 안 됩니다.",
-<<<<<<< HEAD
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.": "초대한 모든 사람에 대해 초대된 사람이 연속으로 세 번 로그인하면, 초대자는 <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC의 보상을 받을 것입니다.",
-  "III. Clock in Reward": "III. 출근 기록 보상",
-  "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "인증이 완료된 후 <span style='color: rgba(184, 142, 86, 1);'>60</span>일 동안 출근 기록 보상이 유효합니다.",
-  "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "<span style='color: rgba(184, 142, 86, 1);'>1</span>일 동안 로그인하고 출근 기록을 남기는 경우 <span style='color: rgba(184, 142, 86, 1);'>100</span>개의 DGC 보상을 받을 수 있습니다. 출근 기록 보상은 최대 <span style='color: rgba(184, 142, 86, 1);'>30</span>회까지 가능합니다.",
-  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC 보상은 고객인식 KYC 절차를 완료해야 하며, 같은 날에 청구해야 합니다. 청구하지 않으면 만료됩니다.",
-=======
   "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is {{ time }}.": "초대한 모든 사람에 대해 초대된 사람이 연속으로 세 번 로그인하면, 초대자는 <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC의 보상을 받을 것입니다，행사의 마감일은 {{ time }} 입니다.",
   "III. Clock in Reward": "III. 출근 기록 보상",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.": "인증이 완료된 후 <span style='color: rgba(184, 142, 86, 1);'>180</span>일 동안 출근 기록 보상이 유효합니다.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "<span style='color: rgba(184, 142, 86, 1);'>1</span>일 동안 로그인하고 출근 기록을 남기는 경우 <span style='color: rgba(184, 142, 86, 1);'>100</span>개의 DGC 보상을 받을 수 있습니다. 출근 기록 보상은 최대 <span style='color: rgba(184, 142, 86, 1);'>30</span>회까지 가능합니다.",
   "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC 보상은 고객인식 KYC 절차를 완료해야 하며, 같은 날에 청구해야 합니다. 청구하지 않으면 만료됩니다.",
   "The check-in reward has expired!": "체크인 보상이 만료되었습니다!",
->>>>>>> fingerprintAuth-out
   "Show me a code snippet": "코드 조각을 보여주세요",
   "of a website's sticky header": "웹사이트의 고정 헤더의",
   "Explain options trading": "옵션 거래를 설명해주세요",
@@ -865,11 +811,7 @@
   "The contract address of DGC": "DGC 계약 주소",
   "Instructions": "설명",
   "If the problem remains unresolved, please join the Telegram group and follow us on X": "문제가 해결되지 않으면 Telegram 그룹에 가입하고 X에서 팔로우하세요",
-<<<<<<< HEAD
-  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "어떤 거래 플랫폼의 메인넷에 출시되기 전에, DGC 토큰은 포인트로 표시됩니다. DGC가 공식적으로 출시될 때, 이러한 포인트는 1:1 비율로 변환됩니다. DGC 팀은 이 전환이 원활하게 이루어지고 이 정책의 남용을 방지할 것입니다.",
-=======
   "Before the mainnet launch on any trading platform, DGC tokens are designated as points. When DGC is officially launched, these points will be converted at a predetermined ratio. The DGC team will ensure a smooth conversion process and prevent any misuse of this policy.": "거래 플랫폼에서 메인넷이 출시되기 전에는 DGC 토큰이 포인트로 지정됩니다. DGC가 공식 출시되면, 이 포인트는 미리 정해진 비율로 전환됩니다. DGC 팀은 원활한 전환 과정을 보장하고 이 정책의 남용을 방지할 것입니다.",
->>>>>>> fingerprintAuth-out
   "About DBC": "DBC에 관하여",
   "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "딥브레인체인은 세계 최초의 AI 공개 체인입니다. 그 자체 토큰인 DBC는 이 프로젝트에서 가스 요금으로 사용됩니다. 모든 DGC 거래는 일정량의 명목상의 DBC를 요구합니다.",
   "Download DeGPT APP": "DeGPT 앱을 다운로드합니다.",
@@ -887,10 +829,7 @@
   "Generating by": "에 의해 생성되고 있는",
   "Thinking...": "생각 중...",
   "thinking...": "생각 중...",
-<<<<<<< HEAD
-=======
   "Replying...": "답변 중...",
->>>>>>> fingerprintAuth-out
   "have thought deeply": "깊이 생각했다",
   "What does this picture mean?": "이 그림은 무슨 의미입니까?",
   "Explain this picture": "이 그림을 설명해 주세요",
@@ -898,26 +837,17 @@
   "What does the symbol in the picture represent?": "그림 속 기호는 무엇을 나타내는 것입니까?",
   "Help me solve problems": "문제 해결을 돕 me 주세요.",
   "Last for {{ time }} seconds": "{{ time }} 초 동안 지속됩니다",
-<<<<<<< HEAD
-  "Search the web": "웹에서 검색하다",
-  "Search the Twitter": "트위터에서 검색하기",
-  "Search the YouTube": "유튜브에서 검색하기",
-=======
   "Tool": "도구",
   "Search the Web": "웹에서 검색하다",
   "Search the Twitter": "트위터에서 검색하기",
   "Search the YouTube": "유튜브에서 검색하기",
   "Translate": "번역",
   "Webpage Reading": "웹페이지 읽기",
->>>>>>> fingerprintAuth-out
   "search": "검색",
   "Web Search": "웹 검색",
   "YouTube Search": "YouTube 검색",
   "Twitter Search": "Twitter 검색",
   "Web Searching ...": "웹 검색 중...",
-<<<<<<< HEAD
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "심층적으로 생각하고 수학 및 창작 글쓰기와 같은 작업에서 o3의 성과에 맞먹을 수 있도록 하기",
-=======
   "Paste or enter a link...": "링크를 붙여넣거나 입력하세요...",
   "Enter text to translate...": "번역할 텍스트를 입력하세요...",
   "Auto-detect": "자동 감지",
@@ -936,7 +866,6 @@
   "Vietnamese": "베트남어",
   "Chinese": "중국어",
   "Deep thinking,mathematical and writing abilities ≈ o3": "깊은 사고, 수학적 능력과 창작 능력은 o3과 비슷하며",
->>>>>>> fingerprintAuth-out
   "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC 인증은 10분에 한 번으로 제한됩니다, 나중에 다시 시도해 주세요.",
   "A single IP address can be used for a maximum of two KYC verifications": "단일 IP 주소는 최대 두 번의 KYC 인증에 사용할 수 있습니다.",
   "Check kyc failed, Please try again.": "KYC 인증에 실패했습니다. 다시 시도해 주세요.",
@@ -944,10 +873,6 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "위 질문에서 마지막으로 한 질문의 내용이 무엇에 대한 것인지 파악하고 내용만 출력하세요",
   "Summarize based on the above YouTube search results:": "위의 YouTube 검색 결과를 바탕으로 요약하세요:",
   "Summarize based on the above Twitter search results:": "위의 Twitter 검색 결과를 바탕으로 요약하세요:",
-<<<<<<< HEAD
-  "Summarize based on the above web search results:": "위의 웹 검색 결과를 바탕으로 요약하세요:"
-}
-=======
   "Summarize based on the above web search results:": "위의 웹 검색 결과를 바탕으로 요약하세요:",
   "All Reward Range": "전체 보상 구간",
   "Status": "상태",
@@ -1020,4 +945,3 @@
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC 잔액이 부족합니다. 친구를 초대하면 3000 DGC를 얻을 수 있습니다.",
   "It seems that you are offline. Please reconnect to send messages.": "오프라인 상태인 것 같습니다. 메시지를 보내려면 다시 연결하세요."
 }
->>>>>>> fingerprintAuth-out

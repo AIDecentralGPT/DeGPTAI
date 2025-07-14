@@ -40,29 +40,6 @@ def get_password_hash(password):
 
 def create_token(data: dict, expires_delta: Union[timedelta, None] = None) -> str:
     """
-<<<<<<< HEAD
-    Generate JWT Token
-    
-    Args:
-        data (dict): Dictionary containing JWT load information
-        expires_delta (Union[timedelta, None], optional): Token expiration time difference, default is None.
-    
-    Returns:
-        str: Generated JWT Token string
-    
-    """
-    # Copy the incoming dictionary data
-    payload = data.copy()
-
-    # If an expiration time difference is passed in
-    if expires_delta:
-        # Calculate expiration time
-        expire = datetime.utcnow() + expires_delta
-        # Add the expiration date to the payload
-        payload.update({"exp": expire})
-
-    # Encode the payload using the JWT library to generate JWT
-=======
     生成JWT Token
     
     Args:
@@ -84,7 +61,6 @@ def create_token(data: dict, expires_delta: Union[timedelta, None] = None) -> st
         payload.update({"exp": expire})
 
     # 使用jwt库对payload进行编码生成JWT
->>>>>>> fingerprintAuth-out
     encoded_jwt = jwt.encode(payload, SESSION_SECRET, algorithm=ALGORITHM)
     return encoded_jwt
 
@@ -146,22 +122,6 @@ def get_http_authorization_cred(auth_header: str):
 
 
 def get_current_user(
-<<<<<<< HEAD
-    # Pass in the auth_token parameter of HTTPAuthorityCredentials type, which defaults to Depends (bearer.security)
-    auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
-):
-    """
-    Retrieve the current user based on the passed auth_token parameter
-    
-    Args:
-        auth_token (HTTPAuthorizationCredentials): The user's authentication token defaults to epends(bearer_security)
-    
-    Returns:
-        Union[User, None]: Current user object or None (if the user is not found)
-    
-    Raises:
-        HTTPException: If the token is invalid or unauthorized
-=======
     # 传入HTTPAuthorizationCredentials类型的auth_token参数，默认为Depends(bearer_security)
     auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
 ):
@@ -176,7 +136,6 @@ def get_current_user(
     
     Raises:
         HTTPException: 如果token无效或未授权
->>>>>>> fingerprintAuth-out
     """
     # print("auth_token.id",  auth_token.id)
 
@@ -204,15 +163,6 @@ def get_current_user(
 
     print("auth_token", auth_token)
 
-<<<<<<< HEAD
-    # Authentication based on API key
-    # auth by api key
-    if auth_token.credentials.startswith("sk-"):
-        # Call the get_current_user-by_api_key function, pass auth_token.credentials as a parameter, and return the current user
-        return get_current_user_by_api_key(auth_token.credentials)
-
-    # Decoding Token
-=======
     # 根据API密钥进行认证
     # auth by api key
     if auth_token.credentials.startswith("sk-"):
@@ -220,22 +170,11 @@ def get_current_user(
         return get_current_user_by_api_key(auth_token.credentials)
 
     # 解码token
->>>>>>> fingerprintAuth-out
     # auth by jwt token
     data = decode_token(auth_token.credentials)
 
     print("get_current_user - data", data)
 
-<<<<<<< HEAD
-    # If the decoded data is not empty and contains an 'id' field
-    if data != None and "id" in data:
-        # Retrieve users based on their ID
-        user = Users.get_user_by_id(data["id"])
-
-        # If the user does not exist
-        if user is None:
-            # Throwing HTTP exception with status code 401 and error details as invalid token
-=======
     # 如果解码后的数据不为空且包含"id"字段
     if data != None and "id" in data:
         # 根据id获取用户
@@ -244,18 +183,10 @@ def get_current_user(
         # 如果用户不存在
         if user is None:
             # 抛出HTTP异常，状态码为401，错误详情为无效的token
->>>>>>> fingerprintAuth-out
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=ERROR_MESSAGES.INVALID_TOKEN,
             )
-<<<<<<< HEAD
-        # Return to current user
-        return user
-
-    else:
-        # Throwing HTTP exception with status code 401 and error details as unauthorized
-=======
         # else:
         #     # 更新用户的最后活跃时间
         #     try:
@@ -268,7 +199,6 @@ def get_current_user(
 
     else:
         # 抛出HTTP异常，状态码为401，错误详情为未授权
->>>>>>> fingerprintAuth-out
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=ERROR_MESSAGES.UNAUTHORIZED,

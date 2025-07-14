@@ -39,13 +39,6 @@
   let languages = [];
   onMount(async () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-<<<<<<< HEAD
-    // Check if it is a mobile device
-    isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
-    languages = await getLanguages();
-	});
-  
-=======
     // 检查是否为移动端设备
     isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
     languages = await getLanguages();
@@ -68,7 +61,6 @@
 
 }
 
->>>>>>> fingerprintAuth-out
 </script>
 
 

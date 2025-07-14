@@ -533,20 +533,6 @@ async def healthcheck(image_str: str):
         encoded_bytes = image_str.encode('utf-8')
         decoded_bytes = base64.b64decode(encoded_bytes)
         image_url = decoded_bytes.decode('utf-8')
-<<<<<<< HEAD
-        # Send a request using a proxy
-        response = requests.get(image_url)
-        # Check the response status code
-        if response.status_code == 200:
-            # Retrieve image content
-            image_content = response.content
-            # Read file header information to determine image type
-            header = image_content[:8]
-            image_type = get_image_type(header)
-            # Convert image content to Base64 encoding
-            base64_encoded = base64.b64encode(image_content).decode('utf-8')
-            # Add Prefix
-=======
         # 发送请求，使用代理
         response = requests.get(image_url)
         # 检查响应状态码
@@ -559,7 +545,6 @@ async def healthcheck(image_str: str):
             # 将图片内容转换为 Base64 编码
             base64_encoded = base64.b64encode(image_content).decode('utf-8')
             #添加前缀
->>>>>>> fingerprintAuth-out
             if image_type != 'unknown':
                 prefix = f'data:image/{image_type};base64,'
             else:
@@ -571,11 +556,7 @@ async def healthcheck(image_str: str):
         return {"data": ""}
     
 def get_image_type(header):
-<<<<<<< HEAD
-    """Determine image type based on file header information"""
-=======
     """根据文件头信息判断图片类型"""
->>>>>>> fingerprintAuth-out
     header_hex = header.hex()
     if header_hex.startswith('ffd8ff'):
         return 'jpeg'

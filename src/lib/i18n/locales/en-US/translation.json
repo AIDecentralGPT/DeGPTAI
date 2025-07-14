@@ -72,11 +72,7 @@
   "Archive": "",
   "Archived Chats": "",
   "are allowed - Activate this command by typing": "",
-<<<<<<< HEAD
-  "Are you sure to become a distinguished Plus member?": "",
-=======
   "Are you sure to become a distinguished member?": "",
->>>>>>> fingerprintAuth-out
   "Are you sure?": "",
   "Attach file": "",
   "Attention to detail": "",
@@ -160,10 +156,7 @@
   "Custom": "",
   "Customize Ollama models for a specific purpose": "",
   "Dashboard": "",
-<<<<<<< HEAD
-=======
   "Reward upkeep": "",
->>>>>>> fingerprintAuth-out
   "Database": "",
   "December": "",
   "Default": "",
@@ -293,15 +286,9 @@
   "Input commands": "",
   "Interface": "",
   "Invalid Tag": "",
-<<<<<<< HEAD
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "",
-  "Invite friends now": "",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "",
-=======
   "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "",
   "Invite friends now": "",
   "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "",
->>>>>>> fingerprintAuth-out
   "Invite Friends to Earn DGC Rewards": "",
   "invite new user": "",
   "January": "",
@@ -587,10 +574,7 @@
   "You": "",
   "You can copy the private key below:": "",
   "You can copy the website below:": "",
-<<<<<<< HEAD
-=======
   "Copy the link and open it in a browser": "",
->>>>>>> fingerprintAuth-out
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "",
   "You have no archived conversations.": "",
   "You have shared this chat": "",
@@ -616,13 +600,8 @@
   "Upgrade Plan": "",
   "Upgrade": "",
   "Upgrade ": "",
-<<<<<<< HEAD
-  "Upgrade to Plus": "",
-  "Upgrade to Plus failed!": "",
-=======
   "Upgrade to VIP": "",
   "Upgrade to Vip failed!": "",
->>>>>>> fingerprintAuth-out
   "Upgrading": "",
   "Failed to obtain authorization information.": "",
   "Authorization failed!": "",
@@ -636,27 +615,17 @@
   "Share to Obtain DGC": "",
   "Buy": "",
   "Node Sale": "",
-<<<<<<< HEAD
-=======
   "Buy DGC": "",
   "Enter wallet": "",
->>>>>>> fingerprintAuth-out
   "Transactions": "",
   "Authed KYC": "",
   "Complete KYC": "",
   "Connect Wallet": "",
-<<<<<<< HEAD
-  "Create Wallet": "",
-  "Open Wallet": "",
-  "Set as default": "",
-  "Click to select more models": "",
-=======
   "Wallet": "",
   "Create Wallet": "",
   "Open Wallet": "",
   "Set as default": "",
   "Click to switch models": "",
->>>>>>> fingerprintAuth-out
   "Unlimited DGC Reward Task": "",
   "Rewards History": "",
   "Rewards Details": "",
@@ -670,10 +639,7 @@
   "Account": "",
   "Statistics": "",
   "WebUI Settings": "",
-<<<<<<< HEAD
-=======
   "User interface settings": "",
->>>>>>> fingerprintAuth-out
   "Theme": "",
   "System": "",
   "Dark": "",
@@ -727,16 +693,6 @@
   "When an access node is located in a specific region, it will by default preferentially connect to GPU computing nodes within the same region, reducing latency and enhancing performance.": "",
   "Download DeGPT to obtain rewards": "",
   "Switch Models": "",
-<<<<<<< HEAD
-  "Suitable for most tasks": "",
-  "Suitable for most tasks,Performance comparable to GPT-4o": "",
-  "Take photos to solve math problems": "",
-  "Support image recognition": "",
-  "Optimize code writing": "",
-  "Please select at least one model.": "",
-  "You can select up to four models at most.": "",
-  "Your friend not complete the KYC verification.": "",
-=======
   "Suitable for most tasks, taking photos to solve math problems.": "",
   "Suitable for most tasks,Performance comparable to GPT-4o": "",
   "Deep thinking,mathematical and writing abilities ≈ o3.": "",
@@ -766,7 +722,6 @@
   "Please select at least one model.": "",
   "You can select up to four models at most.": "",
   "Your friend needs to complete the check-in three times.": "",
->>>>>>> fingerprintAuth-out
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "",
   "Total": "",
   "Channel Distribution": "",
@@ -815,20 +770,12 @@
   "II. Referral Reward": "",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "",
   "The number of people invited each day should not exceed 20.": "",
-<<<<<<< HEAD
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.":"",
-  "III. Clock in Reward": "",
-  "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "",
-  "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "",
-  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "",
-=======
   "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is {{ time }}.":"",
   "III. Clock in Reward": "",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.": "",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "",
   "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "",
   "The check-in reward has expired!": "",
->>>>>>> fingerprintAuth-out
   "Show me a code snippet": "",
   "of a website's sticky header": "",
   "Explain options trading": "",
@@ -864,11 +811,7 @@
   "The contract address of DGC": "",
   "Instructions": "",
   "If the problem remains unresolved, please join the Telegram group and follow us on X": "",
-<<<<<<< HEAD
-  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "",
-=======
   "Before the mainnet launch on any trading platform, DGC tokens are designated as points. When DGC is officially launched, these points will be converted at a predetermined ratio. The DGC team will ensure a smooth conversion process and prevent any misuse of this policy.": "",
->>>>>>> fingerprintAuth-out
   "About DBC": "",
   "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "",
   "Download DeGPT APP": "",
@@ -886,10 +829,7 @@
   "Generating by": "",
   "Thinking...": "",
   "thinking...": "",
-<<<<<<< HEAD
-=======
   "Replying...": "",
->>>>>>> fingerprintAuth-out
   "have thought deeply": "",
   "What does this picture mean?": "",
   "Explain this picture": "",
@@ -897,26 +837,17 @@
   "What does the symbol in the picture represent?": "",
   "Help me solve problems": "",
   "Last for {{ time }} seconds": "",
-<<<<<<< HEAD
-  "Search the Web": "",
-  "Search the Twitter": "",
-  "Search the YouTube": "",
-=======
   "Tool": "",
   "Search the Web": "",
   "Search the Twitter": "",
   "Search the YouTube": "",
   "Translate": "",
   "Webpage Reading": "",
->>>>>>> fingerprintAuth-out
   "search": "",
   "Web Search": "",
   "YouTube Search": "",
   "Twitter Search": "",
   "Web Searching ...": "",
-<<<<<<< HEAD
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "",
-=======
   "Paste or enter a link...": "",
   "Enter text to translate...": "",
   "Auto-detect": "",
@@ -935,7 +866,6 @@
 	"Vietnamese": "",
 	"Chinese": "",
   "Deep thinking,mathematical and writing abilities ≈ o3": "",
->>>>>>> fingerprintAuth-out
   "KYC verification is limited to once every 10 minutes, Please try again later.": "",
   "A single IP address can be used for a maximum of two KYC verifications": "",
   "Check kyc failed, Please try again.": "",
@@ -943,9 +873,6 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "",
   "Summarize based on the above YouTube search results:": "",
   "Summarize based on the above Twitter search results:": "",
-<<<<<<< HEAD
-  "Summarize based on the above web search results:": ""
-=======
   "Summarize based on the above web search results:": "",
   "All Reward Range": "",
   "Status": "",
@@ -1017,6 +944,5 @@
   "Failed to send transaction !": "",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "",
   "It seems that you are offline. Please reconnect to send messages.": ""
->>>>>>> fingerprintAuth-out
 }
 

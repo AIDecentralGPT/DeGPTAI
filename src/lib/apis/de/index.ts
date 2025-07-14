@@ -1,28 +1,12 @@
 import { promptTemplate } from "$lib/utils";
-<<<<<<< HEAD
-
-// Obtain all request nodes of De
-=======
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 // 获取De的所有请求节点
->>>>>>> fingerprintAuth-out
 export const getDeBaseUrls = async () => {
 
   const baseUrls = [
     {
       name: "America",
-<<<<<<< HEAD
-      url: "https://usa-chat.degpt.ai/api",
-    },
-    {
-      name: "Singapore",
-      url: "https://singapore-chat.degpt.ai/api",
-    },
-    {
-      name: "Korea",
-      url: "https://korea-chat.degpt.ai/api",
-=======
       url: WEBUI_API_BASE_URL,
     },
     {
@@ -32,112 +16,16 @@ export const getDeBaseUrls = async () => {
     {
       name: "Korea",
       url: WEBUI_API_BASE_URL,
->>>>>>> fingerprintAuth-out
     }
   ];
   return baseUrls;
 };
 
-<<<<<<< HEAD
-// Get a list of all De models
-=======
 // 获取De的所有模型列表
->>>>>>> fingerprintAuth-out
 export const getDeModels = async (token: string = "") => {
 
   const format_res = {
     models: [
-<<<<<<< HEAD
-      // {
-      //   name: "Llama 3.1",
-      //   model: "Llama-3.1-405B",
-      //   tip: "Llama 3.1",
-      //   desc: "Suitable for most tasks"
-      // },
-      {
-        name: "DeepSeek R1",
-        model: "DeepSeek-R1",
-        tip: "DeepSeek R1",
-        support: "text",
-        desc: "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing"
-      },
-      {
-        name: "DeepSeek V3",
-        model: "DeepSeek-V3",
-        tip: "DeepSeek V3",
-        support: "text",
-        desc: "Suitable for most tasks,Performance comparable to GPT-4o"
-      },
-      {
-        name: "Llama3.3",
-        model: "Llama3.3-70B",
-        tip: "Llama3.3",
-        support: "text",
-        desc: "Suitable for most tasks"
-      },
-      {
-        name: "Qwen o1",
-        model: "Qwen2.5-VL-72B-Instruct",
-        tip: "Qwen o1",
-        support: "image",
-        desc: "Take photos to solve math problems"
-      }
-      // {
-      //   name: "Pixtral Large 1.0",
-      //   model: "Pixtral-124B",
-      //   tip: "Pixtral Large 1.0",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // }
-      // {
-      //   name: "sana",
-      //   model: "sana",
-      //   tip: "sana",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // }
-      // {
-      //   name: "Qwen 2.5",
-      //   model: "Qwen2.5-72B",
-      //   tip: "Qwen 2.5",
-      //   support: "text",
-      //   desc: "Suitable for most tasks"
-      // },
-      // {
-      //   name: "Nemotron 3.1",
-      //   model: "Llama-3.1-Nemotron-70B",
-      //   tip: "Nemotron 3.1",
-      //   support: "text",
-      //   desc: "Suitable for most tasks"
-      // },
-      // {
-      //   name: "Nvidia 3.1",
-      //   model: "NVLM-D-72B",
-      //   tip: "Nvidia 3.1",
-      //   support: "image",
-      //   desc: "Support image recognition"
-      // },
-      // {
-      //   name: "Deepseek coder2.0",
-      //   model: "DeepSeek-Coder-V2",
-      //   tip: "Deepseek coder2.0",
-      //   support: "text",
-      //   desc: "Optimize code writing"
-      // },
-      // {
-      //   name: "Codestral 0.1", 
-      //   model: "Codestral-22B-v0.1",
-      //   tip: "Codestral 0.1",
-      //   desc: "Optimize code writing"
-      // },
-      // {
-      //   name: "Qwen 2.5 Code",
-      //   model: "Qwen2.5-Coder-32B",
-      //   tip: "Qwen 2.5 Code",
-      //   support: "text",
-      //   desc: "Optimize code writing"
-      // }
-=======
       // 基础模型
       {
         name: "DeepSeek V3",
@@ -388,7 +276,6 @@ export const getDeModels = async (token: string = "") => {
         modelicon: "/static/icon/gemini.png",
         modelinfo: ""
       }
->>>>>>> fingerprintAuth-out
     ],
   };
   return (format_res?.models ?? []).map((model) => ({
@@ -398,19 +285,11 @@ export const getDeModels = async (token: string = "") => {
   }));
 };
 
-<<<<<<< HEAD
-// Dialogue with De's model
-=======
 // 和De的模型对话
->>>>>>> fingerprintAuth-out
 export const generateDeOpenAIChatCompletion = async (
   token: string = "",
   body: object,
   url: string,
-<<<<<<< HEAD
-  monitorLog: any
-=======
->>>>>>> fingerprintAuth-out
 ): Promise<[Response | null, AbortController]> => {
 
   let controller: any;
@@ -420,15 +299,9 @@ export const generateDeOpenAIChatCompletion = async (
   let urlObjs = await getDeBaseUrls();
   let index = urlObjs.findIndex(item => item.url === url);
   if (index !== -1) {
-<<<<<<< HEAD
-    // Remove this element
-    let koreaItem = urlObjs.splice(index, 1)[0];
-    // Add this element to the beginning of the array
-=======
     // 移除该元素
     let koreaItem = urlObjs.splice(index, 1)[0];
     // 将该元素添加到数组的开头
->>>>>>> fingerprintAuth-out
     urlObjs.unshift(koreaItem);
   }
 
@@ -437,13 +310,7 @@ export const generateDeOpenAIChatCompletion = async (
   for (const urlObj of urlObjs) {
     controller = new AbortController();
     try {
-<<<<<<< HEAD
-      monitorLog.push({fun: body?.model + "de-send-start" + urlObj.url, time: new Date()});
-      res = await getDeOpenAIChatCompletion(urlObj, body, controller, true);
-      monitorLog.push({fun: body?.model + "de-send-end" + urlObj.url, time: new Date()});
-=======
       res = await getDeOpenAIChatCompletion(urlObj, body, controller, true, token);
->>>>>>> fingerprintAuth-out
       if (res.status == 200) {
         break;
       } else {
@@ -461,13 +328,7 @@ export const generateDeOpenAIChatCompletion = async (
             repeatUrl = checkUrl[0];
           }
           controller = new AbortController();
-<<<<<<< HEAD
-          monitorLog.push({fun: body?.model + "de-last-send-start" + urlObj.url, time: new Date()});
           res = await getDeOpenAIChatCompletion(repeatUrl, body, controller, false);
-          monitorLog.push({fun: body?.model + "de-last-send-end" + urlObj.url, time: new Date()});
-=======
-          res = await getDeOpenAIChatCompletion(repeatUrl, body, controller, false);
->>>>>>> fingerprintAuth-out
           if (res.status == 200) {
             break;
           } else {
@@ -489,21 +350,13 @@ export const generateDeOpenAIChatCompletion = async (
   return [res, controller];
 };
 
-<<<<<<< HEAD
-// AI session request encapsulation
-=======
 // ai会话请求封装
->>>>>>> fingerprintAuth-out
 const getDeOpenAIChatCompletion = async (
   urlObj: any,
   body: Object,
   controller: any,
-<<<<<<< HEAD
-  timeFlag: boolean
-=======
   timeFlag: boolean,
   token:  string = ""
->>>>>>> fingerprintAuth-out
 ) => {
   let res: any;
   let overallTimeout = null
@@ -513,19 +366,11 @@ const getDeOpenAIChatCompletion = async (
       throw new Error('timeout');
     }, 10000);
   }
-<<<<<<< HEAD
-  res = await fetch(`${urlObj.url}/v0/chat/completion/proxy`, {
-    signal: controller.signal,
-    method: "POST",
-    headers: {
-      // Authorization: `Bearer ${token}`,
-=======
   res = await fetch(`${urlObj.url}/chat/completion/proxy`, {
     signal: controller.signal,
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
->>>>>>> fingerprintAuth-out
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -542,11 +387,7 @@ const getDeOpenAIChatCompletion = async (
   return res;
 }
 
-<<<<<<< HEAD
-// Add a brief sentence to the question in the dialogue
-=======
 // 型对话给提问内容添加一个简语
->>>>>>> fingerprintAuth-out
 export const generateDeTitle = async (
   token: string = "",
   template: string,
@@ -560,38 +401,22 @@ export const generateDeTitle = async (
   let urls = await getDeBaseUrls();
   let index = urls.findIndex(item => item.url === url);
   if (index !== -1) {
-<<<<<<< HEAD
-    // Remove this element
-    let koreaItem = urls.splice(index, 1)[0];
-    // Add this element to the beginning of the array
-=======
     // 移除该元素
     let koreaItem = urls.splice(index, 1)[0];
     // 将该元素添加到数组的开头
->>>>>>> fingerprintAuth-out
     urls.unshift(koreaItem);
   }
 
   template = promptTemplate(template, prompt);
-<<<<<<< HEAD
-  model = model=='DeepSeek-R1' ? 'Llama3.3-70B' : model;
-  for (const domain of urls) {
-    try {
-      const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
-=======
   model = 'qwen3-235b-a22b';
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/chat/completion/proxy`, {
->>>>>>> fingerprintAuth-out
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-<<<<<<< HEAD
-=======
           Authorization: `Bearer ${token}`,
->>>>>>> fingerprintAuth-out
         },
         body: JSON.stringify({
           model: model,
@@ -606,19 +431,13 @@ export const generateDeTitle = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
-<<<<<<< HEAD
-=======
           enable_thinking: false
->>>>>>> fingerprintAuth-out
         })
       });
       res = await result.json();
       break;
     } catch (err) {
-<<<<<<< HEAD
-=======
       console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
->>>>>>> fingerprintAuth-out
       if (domain.name == urls[urls.length - 1].name) {
         error = err;
       }
@@ -635,17 +454,11 @@ export const generateDeTitle = async (
 };
 
 
-<<<<<<< HEAD
-// Obtain the final word for the question
-export const generateSearchKeyword = async (
-  messages: Object,
-=======
 // 获取最后提问的词语
 export const generateSearchKeyword = async (
   token: string = "",
   messages: Object,
   content: string,
->>>>>>> fingerprintAuth-out
   url: string
 ) => {
   let error = null;
@@ -654,17 +467,6 @@ export const generateSearchKeyword = async (
   let urls = await getDeBaseUrls();
   let index = urls.findIndex(item => item.url === url);
   if (index !== -1) {
-<<<<<<< HEAD
-    // Remove this element
-    let koreaItem = urls.splice(index, 1)[0];
-    // Add this element to the beginning of the array
-    urls.unshift(koreaItem);
-  }
-  let model = 'Llama3.3-70B';
-  for (const domain of urls) {
-    try {
-      const result = await fetch(`${domain.url}/v0/chat/completion/proxy`, {
-=======
     // 移除该元素
     let koreaItem = urls.splice(index, 1)[0];
     // 将该元素添加到数组的开头
@@ -674,15 +476,11 @@ export const generateSearchKeyword = async (
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/chat/completion/proxy`, {
->>>>>>> fingerprintAuth-out
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-<<<<<<< HEAD
-=======
           Authorization: `Bearer ${token}`,
->>>>>>> fingerprintAuth-out
         },
         body: JSON.stringify({
           model: model,
@@ -692,19 +490,13 @@ export const generateSearchKeyword = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
-<<<<<<< HEAD
-=======
           enable_thinking: false
->>>>>>> fingerprintAuth-out
         })
       });
       res = await result.json();
       break;
     } catch (err) {
-<<<<<<< HEAD
-=======
       console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
->>>>>>> fingerprintAuth-out
       if (domain.name == urls[urls.length - 1].name) {
         error = err;
       }
@@ -714,13 +506,7 @@ export const generateSearchKeyword = async (
   if (error) {
     throw error;
   }
-<<<<<<< HEAD
-
-  return (
-    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
-=======
   return (
     res?.choices[0]?.message?.content.replace(/["']/g, "") ?? content
->>>>>>> fingerprintAuth-out
   );
 };

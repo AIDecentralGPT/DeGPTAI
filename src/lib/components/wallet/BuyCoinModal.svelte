@@ -43,11 +43,7 @@
     
 
     <!-- --------------- -->
-<<<<<<< HEAD
-    <!-- Chose By Type -->
-=======
     <!-- 选择购买类型 -->
->>>>>>> fingerprintAuth-out
     <div class="mb-6 pt-0.5 flex justify-start items-center">
       <label class="flex items-center gap-1 mr-4">
         {$i18n.t("Select purchase type")}:
@@ -77,11 +73,7 @@
       </div>
     </div>
 
-<<<<<<< HEAD
-    <!-- Purchase BDC -->
-=======
     <!-- 购买BDC -->
->>>>>>> fingerprintAuth-out
     {#if coinType === "DBC"}
       <div class="flex flex-col sm:flex-row sm:justify-between">
         <div

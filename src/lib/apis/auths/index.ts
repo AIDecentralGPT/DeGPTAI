@@ -29,9 +29,6 @@ export const getSessionUser = async (token: string, channel: string) => {
   return res;
 };
 
-<<<<<<< HEAD
-// No login identity verification (based on device ID)
-=======
 // // 免登身份校验（根据设备id）
 // export const fingerprintSignIn = async (visiterId: string, ) => {
 // 	let error = null;
@@ -66,7 +63,6 @@ export const getSessionUser = async (token: string, channel: string) => {
 // };
 
 // 免登身份校验（根据设备id）
->>>>>>> fingerprintAuth-out
 export const fingerprintSignIn = async (visiterId: string) => {
   let error = null;
 
@@ -180,12 +176,9 @@ export const printSignIn = async (channel: string) => {
     }),
   });
 
-<<<<<<< HEAD
-=======
   // // 每次指纹登录后都删除pair
   // localStorage.removeItem("pair");
 
->>>>>>> fingerprintAuth-out
   const userInfo = await res.json();
 
   localStorage.token = userInfo?.token;
@@ -195,11 +188,7 @@ export const printSignIn = async (channel: string) => {
   return userInfo;
 };
 
-<<<<<<< HEAD
-// Login Wallet
-=======
 // 登录钱包
->>>>>>> fingerprintAuth-out
 export const walletSignIn = async (payload: {
   address: string;
   nonce: string;
@@ -578,11 +567,7 @@ export const deleteAPIKey = async (token: string) => {
 };
 
 
-<<<<<<< HEAD
-// send code
-=======
 // 验证码
->>>>>>> fingerprintAuth-out
 export const sendCode = async (token: string, email: string) => {
   let error = null;
 
@@ -613,11 +598,7 @@ export const sendCode = async (token: string, email: string) => {
 
 
 
-<<<<<<< HEAD
-// Verification code
-=======
 // 验证码
->>>>>>> fingerprintAuth-out
 export const verifyCode = async (token: string, email: string, code: string) => {
   let error = null;
 
@@ -647,11 +628,7 @@ export const verifyCode = async (token: string, email: string, code: string) => 
   return res;
 };
 
-<<<<<<< HEAD
-// Get server time
-=======
 // 验证码
->>>>>>> fingerprintAuth-out
 export const servetime = async () => {
   let error = null;
 
@@ -679,11 +656,7 @@ export const servetime = async () => {
 
 
 
-<<<<<<< HEAD
-// Perform live testing
-=======
 // 做活体检测
->>>>>>> fingerprintAuth-out
 export const faceliveness = async (metaInfo: any) => {
   let error = null;
 
@@ -720,11 +693,7 @@ export const faceliveness = async (metaInfo: any) => {
   return res;
 };
 
-<<<<<<< HEAD
-// Perform active physical examination data verification binding
-=======
 // 做活体检数据校验绑定
->>>>>>> fingerprintAuth-out
 export const facelivenessBindRes = async (data: any) => {
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/faceliveness_bind`, {
     method: "POST",
@@ -741,11 +710,7 @@ export const facelivenessBindRes = async (data: any) => {
 };
 
 
-<<<<<<< HEAD
-// The results after conducting a live test
-=======
 // 做活体检测后的结果
->>>>>>> fingerprintAuth-out
 export const facelivenessRes = async (data: any) => {
   let error = null;
 

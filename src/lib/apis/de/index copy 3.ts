@@ -1,11 +1,7 @@
 import { DE_API_BASE_URL } from "$lib/constants";
 import { promptTemplate } from "$lib/utils";
 
-<<<<<<< HEAD
-// Get a list of all De models
-=======
 // 获取De的所有模型列表
->>>>>>> fingerprintAuth-out
 export const getDeModels = async (token: string = "") => {
 
   const format_res = {
@@ -49,11 +45,7 @@ export const getDeModels = async (token: string = "") => {
   }));
 };
 
-<<<<<<< HEAD
-// Dialogue with De's model
-=======
 // 和De的模型对话
->>>>>>> fingerprintAuth-out
 export const generateDeOpenAIChatCompletion = async (
   token: string = "",
   body: object,

@@ -246,11 +246,7 @@
 	};
 
 
-<<<<<<< HEAD
-	console.log("The Messages component includes questions and answers：", history);
-=======
 	console.log("Messages组件包含提问和回答：", history);
->>>>>>> fingerprintAuth-out
 
 </script>
 
@@ -306,11 +302,7 @@
 								? 'max-w-full'
 								: 'max-w-full'} mx-auto rounded-lg group"
 						>
-<<<<<<< HEAD
-						<!-- Check role is user -->
-=======
 						<!-- 角色是用户 -->
->>>>>>> fingerprintAuth-out
 							{#if message.role === 'user'}
 								<UserMessage
 									on:delete={() => messageDeleteHandler(message.id)}

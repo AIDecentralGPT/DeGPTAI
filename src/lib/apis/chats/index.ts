@@ -36,8 +36,6 @@ export const getChatList = async (token: string = '') => {
 	let error = null;
 
 	console.log("token", token);
-<<<<<<< HEAD
-=======
 	
 	
 	// if(!token || token === 'undefined') {
@@ -50,7 +48,6 @@ export const getChatList = async (token: string = '') => {
 
 	// 	return 
 	// }
->>>>>>> fingerprintAuth-out
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/chats/`, {
 		method: 'GET',
@@ -672,11 +669,7 @@ export const deleteAllChats = async (token: string) => {
 	return res;
 };
 
-<<<<<<< HEAD
-export const conversationRefresh = async (token: string, models: string[]) => {
-=======
 export const conversationRefresh = async (token: string, model: string) => {
->>>>>>> fingerprintAuth-out
 	let error = null;
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/conversation/refresh`, {
@@ -687,11 +680,7 @@ export const conversationRefresh = async (token: string, model: string) => {
 			...(token && { authorization: `Bearer ${token}` })
 		},
 		body: JSON.stringify({
-<<<<<<< HEAD
-			models: models
-=======
 			model: model
->>>>>>> fingerprintAuth-out
 		})
 	})
 		.then(async (res) => {

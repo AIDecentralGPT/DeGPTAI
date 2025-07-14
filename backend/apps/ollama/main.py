@@ -952,10 +952,7 @@ class OpenAIChatCompletionForm(BaseModel):
 
 
 
-<<<<<<< HEAD
-=======
 # 这是ollama！！！不要看这里！！！！！
->>>>>>> fingerprintAuth-out
 @app.post("/v1/chat/completions")
 @app.post("/v1/chat/completions/{url_idx}")
 async def generate_openai_chat_completion(
@@ -964,20 +961,6 @@ async def generate_openai_chat_completion(
     user=Depends(get_verified_user),
 ):
     """
-<<<<<<< HEAD
-    Generate OpenAI chat completion results
-    
-    Args:
-        form_data (OpenAIChatCompletionForm): Chat completion form data
-        url_idx (Optional[int], optional): URL index. Defaults to None.
-        user (Depends): Verify user information. Defaults to Depends(get_verified_user).
-    
-    Returns:
-        StreamingResponse: Streaming response of chat completion results
-    
-    Raises:
-        HTTPException: When the model does not exist or the server connection is incorrect, throw an exception
-=======
     生成OpenAI聊天补全结果
     
     Args:
@@ -990,7 +973,6 @@ async def generate_openai_chat_completion(
     
     Raises:
         HTTPException: 当模型不存在或服务器连接错误时抛出异常
->>>>>>> fingerprintAuth-out
     """
 
     if url_idx == None:

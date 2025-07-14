@@ -38,11 +38,6 @@ router = APIRouter()
 ############################
 # GetChatList
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/", response_model=List[ChatTitleIdResponse])
 @router.get("/list", response_model=List[ChatTitleIdResponse])
 async def get_session_user_chat_list(
@@ -55,11 +50,6 @@ async def get_session_user_chat_list(
 ############################
 # DeleteAllChats
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.delete("/", response_model=bool)
 async def delete_all_user_chats(request: Request, user=Depends(get_current_user)):
 
@@ -79,11 +69,6 @@ async def delete_all_user_chats(request: Request, user=Depends(get_current_user)
 ############################
 # GetUserChatList
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/list/user/{user_id}", response_model=List[ChatTitleIdResponse])
 async def get_user_chat_list_by_user_id(
     user_id: str, user=Depends(get_admin_user), skip: int = 0, limit: int = 50
@@ -94,11 +79,6 @@ async def get_user_chat_list_by_user_id(
 ############################
 # GetArchivedChats
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/archived", response_model=List[ChatTitleIdResponse])
 async def get_archived_session_user_chat_list(
     user=Depends(get_current_user), skip: int = 0, limit: int = 50
@@ -109,11 +89,6 @@ async def get_archived_session_user_chat_list(
 ############################
 # GetSharedChatById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/share/{share_id}", response_model=Optional[ChatResponse])
 async def get_shared_chat_by_id(share_id: str, user=Depends(get_current_user)):
     if user.role == "pending":
@@ -137,11 +112,6 @@ async def get_shared_chat_by_id(share_id: str, user=Depends(get_current_user)):
 ############################
 # GetChats
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/all", response_model=List[ChatResponse])
 async def get_user_chats(user=Depends(get_current_user)):
     return [
@@ -153,11 +123,6 @@ async def get_user_chats(user=Depends(get_current_user)):
 ############################
 # GetAllChatsInDB
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/all/db", response_model=List[ChatResponse])
 async def get_all_user_chats_in_db(user=Depends(get_admin_user)):
     if not ENABLE_ADMIN_EXPORT:
@@ -174,11 +139,6 @@ async def get_all_user_chats_in_db(user=Depends(get_admin_user)):
 ############################
 # CreateNewChat
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.post("/new", response_model=Optional[ChatResponse])
 async def create_new_chat(form_data: ChatForm, user=Depends(get_current_user)):
     print("create_new_chat")
@@ -195,11 +155,6 @@ async def create_new_chat(form_data: ChatForm, user=Depends(get_current_user)):
 ############################
 # GetChatsByTags
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 class TagNameForm(BaseModel):
     name: str
     skip: Optional[int] = 0
@@ -230,11 +185,6 @@ async def get_user_chat_list_by_tag_name(
 ############################
 # GetAllTags
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/tags/all", response_model=List[TagModel])
 async def get_all_tags(user=Depends(get_current_user)):
     try:
@@ -250,11 +200,6 @@ async def get_all_tags(user=Depends(get_current_user)):
 ############################
 # GetChatById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/{id}", response_model=Optional[ChatResponse])
 async def get_chat_by_id(id: str, user=Depends(get_current_user)):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
@@ -269,11 +214,6 @@ async def get_chat_by_id(id: str, user=Depends(get_current_user)):
 ############################
 # UpdateChatById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.post("/{id}", response_model=Optional[ChatResponse])
 async def update_chat_by_id(
     id: str, form_data: ChatForm, user=Depends(get_current_user)
@@ -294,11 +234,6 @@ async def update_chat_by_id(
 ############################
 # DeleteChatById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.delete("/{id}", response_model=bool)
 async def delete_chat_by_id(request: Request, id: str, user=Depends(get_current_user)):
 
@@ -319,11 +254,6 @@ async def delete_chat_by_id(request: Request, id: str, user=Depends(get_current_
 ############################
 # ArchiveChat
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/{id}/archive", response_model=Optional[ChatResponse])
 async def archive_chat_by_id(id: str, user=Depends(get_current_user)):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
@@ -339,11 +269,6 @@ async def archive_chat_by_id(id: str, user=Depends(get_current_user)):
 ############################
 # ShareChatById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.post("/{id}/share", response_model=Optional[ChatResponse])
 async def share_chat_by_id(id: str, user=Depends(get_current_user)):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
@@ -374,11 +299,6 @@ async def share_chat_by_id(id: str, user=Depends(get_current_user)):
 ############################
 # DeletedSharedChatById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.delete("/{id}/share", response_model=Optional[bool])
 async def delete_shared_chat_by_id(id: str, user=Depends(get_current_user)):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
@@ -400,11 +320,6 @@ async def delete_shared_chat_by_id(id: str, user=Depends(get_current_user)):
 ############################
 # GetChatTagsById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/{id}/tags", response_model=List[TagModel])
 async def get_chat_tags_by_id(id: str, user=Depends(get_current_user)):
     tags = Tags.get_tags_by_chat_id_and_user_id(id, user.id)
@@ -420,11 +335,6 @@ async def get_chat_tags_by_id(id: str, user=Depends(get_current_user)):
 ############################
 # AddChatTagById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.post("/{id}/tags", response_model=Optional[ChatIdTagModel])
 async def add_chat_tag_by_id(
     id: str, form_data: ChatIdTagForm, user=Depends(get_current_user)
@@ -450,11 +360,6 @@ async def add_chat_tag_by_id(
 ############################
 # DeleteChatTagById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.delete("/{id}/tags", response_model=Optional[bool])
 async def delete_chat_tag_by_id(
     id: str, form_data: ChatIdTagForm, user=Depends(get_current_user)
@@ -474,11 +379,6 @@ async def delete_chat_tag_by_id(
 ############################
 # DeleteAllChatTagsById
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.delete("/{id}/tags/all", response_model=Optional[bool])
 async def delete_all_chat_tags_by_id(id: str, user=Depends(get_current_user)):
     result = Tags.delete_tags_by_chat_id_and_user_id(id, user.id)

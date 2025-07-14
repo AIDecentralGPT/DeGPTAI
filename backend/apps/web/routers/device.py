@@ -6,11 +6,7 @@ from utils.utils import get_verified_user
 
 router = APIRouter()
 
-<<<<<<< HEAD
-# Add device records
-=======
 # 添加设备记录
->>>>>>> fingerprintAuth-out
 @router.post("/devices")
 async def add_device(user_id: str, device_id: str, user=Depends(get_verified_user)):
     try:

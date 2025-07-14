@@ -201,15 +201,6 @@ export const generateInitialsImage = (name) => {
 export const copyToClipboard = async (text, isMarkdown) => {
 	let result = false;
 	const textArea = document.createElement('textarea');
-<<<<<<< HEAD
-	// Remove the markdown format
-	if (isMarkdown) {
-		// Remove the - or * tag, which is li
-		text = text.replace(/^[ ]*[-*] /gm, "");
-		// Remove the 'strong' label from '*'
-		text = text.replace(/\*\*(.*?)\*\*/g, '$1');
-		// Remove the 'h' tag
-=======
 	// 去掉 markdown 格式
 	if (isMarkdown) {
 		// 去掉-或* 即 li 标签
@@ -217,7 +208,6 @@ export const copyToClipboard = async (text, isMarkdown) => {
 		// 去掉* 即 strong标签
 		text = text.replace(/\*\*(.*?)\*\*/g, '$1');
 		// 去掉# 即 h标签
->>>>>>> fingerprintAuth-out
 		text = text.replace(/^#{1,6}\s/gm, '');
 	}
 	textArea.value = text;
@@ -578,11 +568,7 @@ export const getTimeRange = (timestamp) => {
 	}
 };
 
-<<<<<<< HEAD
-// Encapsulate the function for obtaining visibility state attribute names to improve code reusability
-=======
 // 封装获取可见性状态属性名的函数，提高代码复用性
->>>>>>> fingerprintAuth-out
 function getVisibilityStateProperty(): string {
 	if (typeof document.hidden!== 'undefined') {
 			return 'visibilityState';
@@ -591,36 +577,16 @@ function getVisibilityStateProperty(): string {
 	} else if (typeof document.webkitHidden!== 'undefined') {
 			return 'webkitVisibilityState';
 	}
-<<<<<<< HEAD
-	return 'visibilityState'; // Default return standard attribute name
-}
-
-// Encapsulate the function that determines whether the page is visible, making the code logic clearer
-=======
 	return 'visibilityState'; // 默认返回标准属性名
 }
 
 // 封装判断页面是否可见的函数，使代码逻辑更清晰
->>>>>>> fingerprintAuth-out
 function isPageCurrentlyVisible(): boolean {
 	const visibilityStateProperty = getVisibilityStateProperty();
 	return (document[visibilityStateProperty]?? 'visible') === 'visible';
 }
 
 const timeoutIdMap = new Map();
-<<<<<<< HEAD
-export const addTextSlowly = async (target, text, model) => {
-	// Check the current visible status of the page
-	const isVisible = isPageCurrentlyVisible();
-	if (isVisible) {
-			console.log('The page switches to the foreground and becomes visible:' + model);
-	} else {
-			console.log('The page switched to the background or changed tabs, becoming invisible:' + model);
-	}
-	for (const char of text) {
-		target += char;
-		// Here, an appropriate delay can be set to simulate character by character display (to determine whether it is displayed in the foreground)
-=======
 export const addTextSlowly = async (updateTarget, target, text, model) => {
 	// 检查页面当前可见状态
 	const isVisible = isPageCurrentlyVisible();
@@ -632,24 +598,16 @@ export const addTextSlowly = async (updateTarget, target, text, model) => {
 	for (const char of text) {
 		target += char;
 		// 这里可以设置一个适当的延迟来模拟逐字符显示(判断是否前台显示)
->>>>>>> fingerprintAuth-out
 		// await new Promise(resolve => setTimeout(resolve, 12.5)); // 40token/1s
 		if (isVisible) {
 			await new Promise<void>((resolve) => {
 				const timeoutId = setTimeout(() => {
 					resolve();
-<<<<<<< HEAD
-					timeoutIdMap.delete(model); // Remove ID after scheduled completion
-				}, 12.5);
-				timeoutIdMap.set(model, timeoutId);
-			});	
-=======
 					timeoutIdMap.delete(model); // 定时完成后移除ID
 				}, 25);
 				timeoutIdMap.set(model, timeoutId);
 			});
 			updateTarget(target)
->>>>>>> fingerprintAuth-out
 		} else {
 			if (timeoutIdMap.has(model)) {
 				clearTimeout(timeoutIdMap.get(model));
@@ -657,21 +615,13 @@ export const addTextSlowly = async (updateTarget, target, text, model) => {
 			}
 		}
 	}
-<<<<<<< HEAD
-	// Update the interface or perform other operations
-=======
 	// 更新界面或进行其他操作
->>>>>>> fingerprintAuth-out
 	return target;
 }
 
 
 export const checkUniapp = () => {
-<<<<<<< HEAD
-	// In the uni app environment, determine whether it is a packaged app
-=======
 	// 在uni-app环境中，判断是否是打包的app
->>>>>>> fingerprintAuth-out
 	try {
 		if (typeof plus !== "undefined") {
 			return true;
@@ -684,11 +634,7 @@ export const checkUniapp = () => {
 }
 
 export const checkPlatform = () => {
-<<<<<<< HEAD
-	// In the uni app environment, determine whether it is a packaged app
-=======
 	// 在uni-app环境中，判断是否是打包的app
->>>>>>> fingerprintAuth-out
 	try {
 		const userAgent = navigator.userAgent.toLowerCase();
 		if (userAgent.indexOf('iphone') !== -1 || userAgent.indexOf('ipad') !== -1 || userAgent.indexOf('ipod') !== -1) {

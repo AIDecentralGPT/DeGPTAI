@@ -1,9 +1,5 @@
 node_modules
 .svelte-kit
 build
-<<<<<<< HEAD
-.env
-=======
 .env
 backend/pandoc-3.6.4-windows-x86_64.msi
->>>>>>> fingerprintAuth-out

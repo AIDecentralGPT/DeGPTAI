@@ -1,31 +1,12 @@
-<<<<<<< HEAD
-from pydantic import BaseModel
-from peewee import *
-from playhouse.shortcuts import model_to_dict
-from typing import List, Union, Optional
-import time
-=======
 from pydantic import BaseModel  # 导入Pydantic中的BaseModel
 from peewee import *  # 导入Peewee中的所有模块
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
 from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
->>>>>>> fingerprintAuth-out
 from datetime import datetime, timedelta
 
 import uuid
 
-<<<<<<< HEAD
-from utils.misc import get_gravatar_url
-
-from apps.web.internal.db import DB, aspect_database_operations
-from apps.web.models.chats import Chats
-from apps.web.models.rewards import RewardsTableInstance
-from fastapi import APIRouter, Depends, HTTPException, Request
-from apps.web.models.vip import VIPStatus
-from apps.redis.redis_client import RedisClientInstance
-import json
-=======
 from utils.misc import get_gravatar_url  # 导入获取Gravatar URL的方法
 
 from apps.web.internal.db import DB, aspect_database_operations  # 导入数据库实例DB
@@ -36,23 +17,12 @@ from apps.web.models.vipstatus import VIPStatus
 from apps.redis.redis_client import RedisClientInstance
 import json
 from apps.web.models.reward_data import RewardDateTableInstance
->>>>>>> fingerprintAuth-out
 
 
 ####################
 # User DB Schema
 ####################
 
-<<<<<<< HEAD
-# Define the Pydantic model UserRoleEtuProForm
-class UserRoleUpdateProForm(BaseModel):
-    tx: str  # Define the ID field as a string type
-    amount: int  # Define the role field as a string type
-
-# Define Pydance Model UserRequest
-class UserRequest(BaseModel):
-    user_id: str  # Define the ID field as a string type
-=======
 # 定义Pydantic模型UserRoleUpdateProForm
 class UserRoleUpdateProForm(BaseModel):
     tx: str  # 定义id字段，类型为字符串
@@ -63,27 +33,12 @@ class UserRoleUpdateProForm(BaseModel):
 # 定义Pydantic模型UserRequest
 class UserRequest(BaseModel):
     user_id: str  # 定义id字段，类型为字符串
->>>>>>> fingerprintAuth-out
 
 class UserPageRequest(BaseModel):
     pageSize: int
     pageNum: int
     channel: str
 
-<<<<<<< HEAD
-# Define User Model
-class User(Model):
-    id = CharField(unique=True)  # Define a unique character field ID
-    name = CharField()  # Define character field name
-    email = CharField()  # Define character field email
-    role = CharField()  # Define character field role
-    profile_image_url = TextField()  # Define the text field profile_image_url
-    last_active_at = BigIntegerField()  # Define the large integer field last_mactive_at
-    updated_at = BigIntegerField()  # Define the large integer field updated_at
-    created_at = BigIntegerField()  # Define the large integer field created_at
-    api_key = CharField(null=True, unique=True)  # Define a unique and empty character field api_key
-    inviter_id = CharField(null=True)  # Inviter ID
-=======
 # 定义User模型
 class User(Model):
     id = CharField(unique=True)  # 定义唯一的字符字段id
@@ -96,7 +51,6 @@ class User(Model):
     created_at = BigIntegerField()  # 定义大整数字段created_at
     api_key = CharField(null=True, unique=True)  # 定义可为空且唯一的字符字段api_key
     inviter_id = CharField(null=True)  # 邀请人id
->>>>>>> fingerprintAuth-out
     address_type = CharField(null=True)
     address = CharField(null=True)
     verified= CharField(null=False)
@@ -110,23 +64,6 @@ class User(Model):
     language = CharField(null=True)
 
     class Meta:
-<<<<<<< HEAD
-        database = DB  # Specify Database
-
-# Define Pydance Model UserModel
-class UserModel(BaseModel):
-    id: str  # Define a unique character field ID
-    name: str  # Define character field name
-    email: str  # Define character field email
-    role: str = "user"  # Define character field role
-    profile_image_url: str  # Define the text field profile_image_url
-
-    last_active_at: int  # Define the large integer field last_mactive_at
-    updated_at: int  # Define the large integer field updated_at
-    created_at: int  # Define the large integer field created_at
-
-    api_key: Optional[str] = None  # Define optional api_key field, type string, default value None
-=======
         database = DB  # 指定数据库
 
 # 定义Pydantic模型UserModel
@@ -142,7 +79,6 @@ class UserModel(BaseModel):
     created_at: int  # 定义created_at字段，类型为整型，表示epoch时间戳
 
     api_key: Optional[str] = None  # 定义可选的api_key字段，类型为字符串，默认值为None
->>>>>>> fingerprintAuth-out
     inviter_id: Optional[str] = None
     address_type: Optional[str] = None
     verified: Optional[bool] = False
@@ -156,38 +92,13 @@ class UserModel(BaseModel):
     models: Optional[str] = None
     language: Optional[str] = None
 
-<<<<<<< HEAD
-# Define Pydance's recent 15 day statistical data model UserLatelyModel
-=======
 # 定义Pydantic近15天统计数据模型UserLatelyModel
->>>>>>> fingerprintAuth-out
 class UserLatelyModel(BaseModel):
     wallet_count: Optional[int] = 0
     channel_count: Optional[int] = 0
     kyc_count: Optional[int] = 0
     create_date: Optional[str] = None
 
-<<<<<<< HEAD
-# Define Pydance Model UserModel
-class ChannelTotalModel(BaseModel):
-    channel: str  # Third party identification
-    total: int  # total
-
-# Define Pydance model UserTotalModel
-class UserTotalModel(BaseModel):
-    total: int = 0  # total
-    wallet_total: int = 0  # Total number of wallets
-    channel_total: int = 0  # Total number of third-party registrations
-    vip_total: int = 0  # Total number of VIPs
-    kyc_total: int = 0  # Total number of visitors
-
-# Define the Pydance model UserDisperModel
-class UserDisperModel(BaseModel):
-    date_list: List[str] = []  # date collection
-    wallet_list: List[int] = []  # wallet collection
-    channel_list: List[int] = []  # channel collection
-    kyc_list: List[int] = []  # KYC authentication collection
-=======
 # 定义Pydantic模型UserModel
 class ChannelTotalModel(BaseModel):
     channel: str  # 第三方标识
@@ -207,46 +118,11 @@ class UserDisperModel(BaseModel):
     wallet_list: List[int] = []  # 钱包注册数
     channel_list: List[int] = []  # 第三方注册数
     kyc_list: List[int] = []  # kyc认证数
->>>>>>> fingerprintAuth-out
     
 ####################
 # Forms
 ####################
 
-<<<<<<< HEAD
-# Define Pydantic Model UserRoleUpdate Form
-class UserRoleUpdateForm(BaseModel):
-    id: str  # Define the ID field as a string type
-    role: str  # Define the role field as a string type
-
-# Define Pydance Model UserUpdating Form
-class UserUpdateForm(BaseModel):
-    name: str  # Define the name field as a string type
-    email: str  # Define the email field as a string type
-    profile_image_url: str  # Define the profile_image_url field as a string type
-    password: Optional[str] = None  # Define an optional password field, of type string, with a default value of None
-
-# Update user selection model
-class UserModelsUpdateForm(BaseModel):
-    models: str  # Define model fields of type string
-
-# Update user selection language
-class UserLanguageUpdateForm(BaseModel):
-    language: str  # Define the language field as a string type
-
-# Define the UsersTable class for manipulating the User table
-class UsersTable:
-    def __init__(self, db):
-        self.db = db  # Initialize database instance
-        self.db.create_tables([User])  # Create User Table
-
-    # Determine if the result is a wallet address starting with 0x
-    def is_ethereum_address(address):
-        print("Verify if it is a wallet address:" ,isinstance(address, str) , address.startswith("0x"))
-        return isinstance(address, str) and address.startswith("0x")
-
-    # Insert new user
-=======
 # 定义Pydantic模型UserRoleUpdateForm
 class UserRoleUpdateForm(BaseModel):
     id: str  # 定义id字段，类型为字符串
@@ -279,7 +155,6 @@ class UsersTable:
         return isinstance(address, str) and address.startswith("0x")
 
     # 插入新用户
->>>>>>> fingerprintAuth-out
     def insert_new_user(
         self,
         id: str,
@@ -298,11 +173,7 @@ class UsersTable:
         channel: str = None
     ) -> Optional[UserModel]:
         
-<<<<<<< HEAD
-        # Create UserModel instance
-=======
         # 创建UserModel实例
->>>>>>> fingerprintAuth-out
         user = UserModel(
             **{
                 "id": id,
@@ -327,165 +198,11 @@ class UsersTable:
 
         print("User.create address", user.address)
 
-<<<<<<< HEAD
-        # Create a new user in the database
-=======
         # 在数据库中创建新用户
->>>>>>> fingerprintAuth-out
         result = User.create(**user.model_dump())
 
         print("User.create result", result.id)
 
-<<<<<<< HEAD
-        # Send rewards to the new wallet here
-        # if result and UsersTable.is_ethereum_address(result.id):
-        #     print("============Create registration reward============")
-        #     # Add invitation to create
-        #     if user.inviter_id is not None and user.inviter_id != '':
-        #         # Obtain inviter information
-        #         invite_user_ret = User.get_or_none(User.id == inviter_id)
-        #         # The inviter has created registration rewards and invitation rewards
-        #         if invite_user_ret is not None:
-        #             # Generate associated strings
-        #             invitee = str(uuid.uuid4())
-        #             invite_list = RewardsTableInstance.get_invitee_today_history(inviter_id)   
-        #             # Verify whether the inviter has KYC authentication
-        #             invite_user_dict = model_to_dict(invite_user_ret)
-        #             invite_user = UserModel(**invite_user_dict)
-        #             if invite_user.verified:
-        #                 # Register reward binding inviter
-        #                 RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
-        #                 if len(invite_list) < 24:
-        #                     print("Inviters receive rewards:", user.inviter_id)
-        #                     RewardsTableInstance.create_reward(user.inviter_id, 6000, "invite", True, invitee)
-        #             else:
-        #                 # Register reward binding inviter
-        #                 RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True, invitee)
-        #                 if len(invite_list) < 24:
-        #                     print("Inviters receive rewards:", user.inviter_id)
-        #                     RewardsTableInstance.create_reward(user.inviter_id, 0, "invite", False, invitee)
-        #     else:
-        #         # Registration Rewards
-        #         RewardsTableInstance.create_reward(user.id, 1000, "new_wallet",True)
-        
-        # return user info:
-        return user  # Return the created user 
-
-    # Retrieve users based on their ID
-    @aspect_database_operations
-    def get_user_by_id(self, id: str) -> Optional[UserModel]:
-        try:
-            # Retrieve user information from Redis
-            user_dict = RedisClientInstance.get_value_by_key(f"user:{id}")
-            if user_dict is None:
-                user = User.get_or_none(User.id == id)  # Query users in the database
-                if user is None:
-                    return None
-                else:
-                    user_dict = model_to_dict(user)  # Convert database objects to dictionaries
-                    RedisClientInstance.add_key_value(f"user:{id}", user_dict)
-                    user_model = UserModel(**user_dict)  # Convert dictionary to Pydantic model
-                    return user_model
-            else:
-                user_model = UserModel(**user_dict)
-                return user_model
-        except Exception as e:
-            print(f"get_user_by_id error: {e}")
-            # If the query fails, return None
-            return None
-
-    # Get all invited users
-    def get_users_invited(self, inviter_id: str) -> List[UserModel]:
-        try:
-            # Query users in the database
-            users = User.select().where(User.inviter_id == inviter_id)
-            # Convert database objects into dictionaries and Pydantic models
-            user_list = [UserModel(**model_to_dict(user)) for user in users]
-            print("Obtained user model list：", user_list)
-            return user_list
-        except Exception as e:
-            print(f"get_users_invited error: {e}")
-            return []  # If the query fails, return an empty list
-
-    # Retrieve users based on api_key
-    def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
-        try:
-            # Query users in the database
-            user = User.get(User.api_key == api_key)
-            # Convert database objects to Pydantic models and return
-            return UserModel(**model_to_dict(user))
-        except:
-            # If the query fails, return None
-            return None
-
-    # Retrieve users based on email
-    def get_user_by_email(self, email: str) -> Optional[UserModel]:
-        try:
-            # Query users in the database
-            user = User.get(User.email == email)
-            # Convert database objects to Pydantic models and return
-            return UserModel(**model_to_dict(user))
-        except:
-            # If the query fails, return None
-            return None
-
-    # Get user list
-    def get_users(self, skip: int = 0, limit: int = 50, role: str = "", search: str = "", verified: str = "", channel: str = "") -> List[UserModel]:
-        query = User.select()
-        # Role screening
-        if role:
-            query = query.where(User.role == role)
-        # search
-        if search:
-            query = query.where((User.name.contains(search)) | (User.id.contains(search)))
-        # KYC authentication screening
-        if verified:
-            query = query.where(User.verified == verified)
-
-        # Channel screening
-        if channel:
-            query = query.where(User.channel == channel)
-
-        # Obtain the total number of records
-        total = query.count()
-
-        # Retrieve the records of the current page
-        users = [
-            UserModel(**model_to_dict(user))
-            for user in query.limit(10).offset((skip - 1)*10) # Limit the number and offset of query results
-        ]
-
-        # Return result
-        return {'total': total, 'users': users}
-
-    # Obtain the number of users
-    def get_num_users(self) -> Optional[int]:
-        return User.select().count()
-
-    # Get the first user
-    def get_first_user(self) -> UserModel:
-        try:
-            user = User.select().order_by(User.created_at).first()  # Search for the first user
-            return UserModel(**model_to_dict(user))  # Convert database objects to Pydantic models and return
-        except:
-            # If the query fails, return None
-            return None
-
-    # Update user roles based on ID
-    def update_user_role_by_id(self, id: str, role: str) -> Optional[UserModel]:
-        try:
-            query = User.update(role=role).where(User.id == id)  # Update user roles
-            query.execute()  # Perform update operation
-            user = User.get(User.id == id)  # Query updated users
-            user_dict = model_to_dict(user)  # Convert database objects to dictionaries
-            RedisClientInstance.add_key_value(f"user:{id}", user_dict)
-            return UserModel(**user_dict)  # Convert database objects to Pydantic models and return
-        except:
-            # If the update fails, return None
-            return None
-
-    # Update the user's profile_image_url based on their ID
-=======
         rewarddate = RewardDateTableInstance.get_current_open()
         if rewarddate is not None:
             # 获取当前日期
@@ -631,27 +348,12 @@ class UsersTable:
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户的profile_image_url
->>>>>>> fingerprintAuth-out
     def update_user_profile_image_url_by_id(
         self, id: str, profile_image_url: str
     ) -> Optional[UserModel]:
         try:
             query = User.update(profile_image_url=profile_image_url).where(
                 User.id == id
-<<<<<<< HEAD
-            )  # Update user's profile_image_url
-            query.execute()  # Perform update operation
-
-            user = User.get(User.id == id)  # Query updated users
-            user_dict = model_to_dict(user)  # Convert database objects to dictionaries
-            RedisClientInstance.add_key_value(f"user:{id}", user_dict)
-            return UserModel(**user_dict)  # Convert database objects to Pydantic models and return
-        except:
-            # If the update fails, return None
-            return None
-
-    # Update the user's last_mactive_at based on their ID
-=======
             )  # 更新用户的profile_image_url
             query.execute()  # 执行更新操作
 
@@ -663,75 +365,10 @@ class UsersTable:
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户的last_active_at
->>>>>>> fingerprintAuth-out
     @aspect_database_operations
     def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
         try:
             print("update_user_last_active_by_id")
-<<<<<<< HEAD
-            query = User.update(last_active_at=int(time.time())).where(User.id == id)  # Update user's last_mactive_at
-            query.execute()  # Perform update operation
-            user = User.get(User.id == id)  # Query updated users
-            return UserModel(**model_to_dict(user))  # Convert database objects to Pydantic models and return
-        except Exception as e:
-            print("update_user_last_active_by_id error", e)
-            # If the update fails, return None
-            return None
-
-    # Update user information based on ID
-    def update_user_by_id(self, id: str, updated: dict) -> Optional[UserModel]:
-        try:
-            query = User.update(**updated).where(User.id == id)  # Update user information
-            query.execute()  # Perform update operation
-
-            user = User.get(User.id == id)  # Query updated users
-            return UserModel(**model_to_dict(user))  # Convert database objects to Pydantic models and return
-        except:
-            # If the update fails, return None
-            return None
-
-    # Delete users based on their ID
-    def delete_user_by_id(self, id: str) -> bool:
-        try:
-            # Delete user's chat history
-            result = Chats.delete_chats_by_user_id(id)  # Call the deletion method of Chats model
-            if result:
-                # delete user
-                query = User.delete().where(User.id == id)  # Delete user records
-                query.execute()  # Perform deletion operation
-                RedisClientInstance.delete_key(f"user:{id}")
-                return True  # If the deletion is successful, return True
-            else:
-                return False  # If deletion fails, return False
-        except:
-            return False  # If an exception occurs, return False
-
-    # Update the user's api_key based on their ID
-    def update_user_api_key_by_id(self, id: str, api_key: str) -> str:
-        try:
-            query = User.update(api_key=api_key).where(User.id == id)  # Update the user's api_key
-            result = query.execute()  # Perform update operation
-
-            return True if result == 1 else False  # If the update is successful, return True; otherwise, return False
-        except:
-            return False  # If an exception occurs, return False
-
-    # Retrieve the user's api_key based on their ID
-    def get_user_api_key_by_id(self, id: str) -> Optional[str]:
-        try:
-            user = User.get(User.id == id)  # Query users
-            return user.api_key  # Return the user's api_key
-        except:
-            return None  # If the query fails, return None
-        
-    # Obtain user_id based on face_id
-    def get_user_id_by_face_id(self, face_id: str) -> Optional[UserModel]:
-        try:
-            user = User.get(User.face_id == face_id)  # Query users
-            return user # Return to User
-        except:
-            return None  # If the query fails, return None
-=======
             query = User.update(last_active_at=int(time.time())).where(User.id == id)  # 更新用户的last_active_at
             query.execute()  # 执行更新操作
             # print("update_user_last_active_by_id222222")
@@ -796,7 +433,6 @@ class UsersTable:
             return user # 返回用户
         except:
             return None  # 如果查询失败，返回None
->>>>>>> fingerprintAuth-out
         
 
     def update_user_id(old_id: str, new_id: str) -> bool:
@@ -808,23 +444,14 @@ class UsersTable:
             print(f"update_user_id Exception: {e}")
             return False
              
-<<<<<<< HEAD
-    # Update the user's transaction-id and merchant_biz_id
-=======
     # 更新用户的transaction_id和merchant_biz_id
->>>>>>> fingerprintAuth-out
     def update_user_verify_info(self, id: str, transaction_id: str, merchant_biz_id: str, face_time: datetime) -> bool:
         try:
             query = User.update(transaction_id=transaction_id, merchant_biz_id =merchant_biz_id, face_time = face_time).where(User.id == id)
             result = query.execute()
             if result == 1:
-<<<<<<< HEAD
-                user = User.get(User.id == id)  # Query updated users
-                user_dict = model_to_dict(user)  # Convert database objects to dictionaries
-=======
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
->>>>>>> fingerprintAuth-out
                 RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
@@ -833,23 +460,14 @@ class UsersTable:
             print(f"update_user_id Exception: {e}")
             return False
   
-<<<<<<< HEAD
-    # Update whether the user has completed live detection authentication
-=======
     # 更新用户是否完成活体检测认证
->>>>>>> fingerprintAuth-out
     def update_user_verified(self, id: str, verified: bool, face_id: str) -> bool:
         try:
             query = User.update(verified=verified, face_id =face_id).where(User.id == id)
             result = query.execute()
             if result == 1:
-<<<<<<< HEAD
-                user = User.get(User.id == id)  # Query updated users
-                user_dict = model_to_dict(user)  # Convert database objects to dictionaries
-=======
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
->>>>>>> fingerprintAuth-out
                 RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
@@ -858,23 +476,14 @@ class UsersTable:
             print(f"update_user_id Exception: {e}")
             return False
         
-<<<<<<< HEAD
-    # Update user selection model
-=======
     # 更新用户选择模型
->>>>>>> fingerprintAuth-out
     def update_user_models(self, id: str, models: str) -> bool:
         try:
             query = User.update(models=models).where(User.id == id)
             result = query.execute()
             if result == 1:
-<<<<<<< HEAD
-                user = User.get(User.id == id)  # Query updated users
-                user_dict = model_to_dict(user)  # Convert database objects to dictionaries
-=======
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
->>>>>>> fingerprintAuth-out
                 RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
@@ -883,23 +492,14 @@ class UsersTable:
             print(f"update_user_id Exception: {e}")
             return False
         
-<<<<<<< HEAD
-    # Update user selection language
-=======
     # 更新用户选择语言
->>>>>>> fingerprintAuth-out
     def update_user_language(self, id: str, language: str) -> bool:
         try:
             query = User.update(language=language).where(User.id == id)
             result = query.execute()
             if result == 1:
-<<<<<<< HEAD
-                user = User.get(User.id == id)  # Query updated users
-                user_dict = model_to_dict(user)  # Convert database objects to dictionaries
-=======
                 user = User.get(User.id == id)  # 查询更新后的用户
                 user_dict = model_to_dict(user)  # 将数据库对象转换为字典
->>>>>>> fingerprintAuth-out
                 RedisClientInstance.add_key_value(f"user:{id}", user_dict)
                 return True
             else:
@@ -909,11 +509,7 @@ class UsersTable:
             return False
         
     def get_user_count(self) -> int:
-<<<<<<< HEAD
-        return User.select().count()  # Query the number of users
-=======
         return User.select().count()  # 查询用户数量
->>>>>>> fingerprintAuth-out
     
     def get_third_total(self, channel: Optional[str]="") -> int:
         if channel == "":
@@ -946,11 +542,7 @@ class UsersTable:
         return User.select().where(User.verified == True).count()
 
     def get_user_lately(self) -> Optional[List[UserLatelyModel]]:
-<<<<<<< HEAD
-        # Query users in the database
-=======
         # 查询数据库中的用户
->>>>>>> fingerprintAuth-out
         now = datetime.now()
         fifteen_days_ago = now - timedelta(days=15)
         target_timestamp = int(fifteen_days_ago.timestamp())
@@ -960,11 +552,7 @@ class UsersTable:
             to_char(to_timestamp(created_at) AT TIME ZONE 'Asia/Shanghai', 'MM-DD') AS create_date from \"user\" \
             where created_at > {target_timestamp} group by to_char(to_timestamp(created_at) AT TIME ZONE 'Asia/Shanghai', 'MM-DD')"
         users = User.raw(sql).dicts()
-<<<<<<< HEAD
-        # Convert database objects into dictionaries and Pydantic models
-=======
         # 将数据库对象转换为字典并转换为Pydantic模型
->>>>>>> fingerprintAuth-out
         user_list = [UserLatelyModel(**user) for user in users]
         return user_list
 
@@ -980,9 +568,5 @@ class UsersTable:
             print(f"get_third_list Exception: {e}")
             return None
 
-<<<<<<< HEAD
-# Instantiate UsersTable class
-=======
 # 实例化UsersTable类
->>>>>>> fingerprintAuth-out
 Users = UsersTable(DB)

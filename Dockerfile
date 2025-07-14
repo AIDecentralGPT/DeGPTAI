@@ -27,15 +27,9 @@ COPY . .
 RUN npm run build
 
 
-<<<<<<< HEAD
-# Delete the node_modules directory to reduce the image size.
-RUN rm -rf node_modules
-# Clean up the temporary files generated during the build process.
-=======
 # 删除node_modules以减小镜像体积
 RUN rm -rf node_modules
 # 清理构建中生成的临时文件
->>>>>>> fingerprintAuth-out
 RUN rm -rf /app/src /app/public /app/tests /app/*.js 
 
 ######## WebUI backend ########
@@ -146,11 +140,7 @@ COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 #     python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"; \
 #     fi
 
-<<<<<<< HEAD
-# Download and install CUDA-related dependencies.
-=======
 # 下载和安装 CUDA 相关依赖
->>>>>>> fingerprintAuth-out
 RUN pip3 install uv && \
     if [ "$USE_CUDA" = "true" ]; then \
     pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir; \
@@ -158,18 +148,6 @@ RUN pip3 install uv && \
     pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir; \
     fi
 
-<<<<<<< HEAD
-# Install Python dependencies
-COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
-RUN uv pip install --system -r requirements.txt --no-cache-dir
-
-# Download Hugging Face models
-RUN python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
-    python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"
-
-
-
-=======
 # 安装 Python 依赖
 COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 RUN uv pip install --system -r requirements.txt --no-cache-dir
@@ -228,7 +206,6 @@ Run playwright install
 RUN python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
     python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"
 
->>>>>>> fingerprintAuth-out
 # copy embedding weight from build
 # RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
 # COPY --from=build /app/onnx /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx
@@ -247,11 +224,7 @@ HEALTHCHECK CMD curl --silent --fail http://localhost:8080/health | jq -e '.stat
 
 USER $UID:$GID
 
-<<<<<<< HEAD
-# Time zone setting
-=======
 # 时区设置
->>>>>>> fingerprintAuth-out
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -260,19 +233,11 @@ CMD [ "bash", "start.sh"]
 
 # ARG USE_CUDA=false
 # ARG USE_OLLAMA=false
-<<<<<<< HEAD
-# # Whether to use CUDA and OLLAMA, with the default value being false.
-
-
-# ARG USE_CUDA_VER=cu121
-# # CUDA version, the default is cu121.
-=======
 # # 是否使用CUDA和OLLAMA，默认为false
 
 
 # ARG USE_CUDA_VER=cu121
 # # CUDA版本，默认是cu121
->>>>>>> fingerprintAuth-out
 
 
 
@@ -280,20 +245,12 @@ CMD [ "bash", "start.sh"]
 
 # ARG USE_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 # ARG USE_RERANKING_MODEL=""
-<<<<<<< HEAD
-# # Specify the embedding model and the re-ranking model to be used.
-=======
 # # 指定使用的嵌入模型和重新排序模型
->>>>>>> fingerprintAuth-out
 
 
 # ARG UID=0
 # ARG GID=0
-<<<<<<< HEAD
-# # User and group IDs, with the default being 0 (root).
-=======
 # # 用户和组的ID，默认是0（root）
->>>>>>> fingerprintAuth-out
 
 # ######## WebUI frontend ########
 # FROM --platform=$BUILDPLATFORM node:21-alpine3.19 as build
@@ -302,17 +259,6 @@ CMD [ "bash", "start.sh"]
 
 # COPY package.json package-lock.json ./
 # RUN npm ci
-<<<<<<< HEAD
-# # Install Node.js dependencies.
-
-# COPY . .
-# RUN npm run build
-# # Build the front end
-
-# # Delete the node_modules directory to reduce the image size
-# RUN rm -rf node_modules
-# # Clean up the temporary files generated during the build process
-=======
 # # 安装Node.js依赖
 
 # COPY . .
@@ -322,7 +268,6 @@ CMD [ "bash", "start.sh"]
 # # 删除node_modules以减小镜像体积
 # RUN rm -rf node_modules
 # # 清理构建中生成的临时文件
->>>>>>> fingerprintAuth-out
 # RUN rm -rf /app/src /app/public /app/tests /app/*.js 
 
 
@@ -332,11 +277,7 @@ CMD [ "bash", "start.sh"]
 
 
 
-<<<<<<< HEAD
-# ######## backend ########
-=======
 # ######## 后端 ########
->>>>>>> fingerprintAuth-out
 # FROM python:3.11-slim-bookworm as base
 
 # # Use args
@@ -347,11 +288,7 @@ CMD [ "bash", "start.sh"]
 # ARG USE_RERANKING_MODEL
 # ARG UID
 # ARG GID
-<<<<<<< HEAD
-# # Use the parameters defined above
-=======
 # # 使用上述定义的参数
->>>>>>> fingerprintAuth-out
 
 # ## Basis ##
 # ENV ENV=prod \
@@ -361,20 +298,12 @@ CMD [ "bash", "start.sh"]
 #     USE_CUDA_DOCKER_VER=${USE_CUDA_VER} \
 #     USE_EMBEDDING_MODEL_DOCKER=${USE_EMBEDDING_MODEL} \
 #     USE_RERANKING_MODEL_DOCKER=${USE_RERANKING_MODEL}
-<<<<<<< HEAD
-# # Set environment variables
-=======
 # # 设置环境变量
->>>>>>> fingerprintAuth-out
 
 # ## Basis URL Config ##
 # ENV OLLAMA_BASE_URL="/ollama" \
 #     OPENAI_API_BASE_URL=""
-<<<<<<< HEAD
-# # URL configuration
-=======
 # # URL配置
->>>>>>> fingerprintAuth-out
 
 # ## API Key and Security Config ##
 # ENV OPENAI_API_KEY="" \
@@ -382,17 +311,10 @@ CMD [ "bash", "start.sh"]
 #     SCARF_NO_ANALYTICS=true \
 #     DO_NOT_TRACK=true \
 #     ANONYMIZED_TELEMETRY=false
-<<<<<<< HEAD
-# # API key and security configuration
-
-# # Use locally bundled version of the LiteLLM cost map json
-# # Use the local LiteLLM cost map JSON
-=======
 # # API密钥和安全配置
 
 # # Use locally bundled version of the LiteLLM cost map json
 # # 使用本地的LiteLLM成本地图JSON
->>>>>>> fingerprintAuth-out
 
 # ENV LITELLM_LOCAL_MODEL_COST_MAP="True"
 
@@ -400,29 +322,17 @@ CMD [ "bash", "start.sh"]
 # ## whisper TTS model settings ##
 # ENV WHISPER_MODEL="base" \
 #     WHISPER_MODEL_DIR="/app/backend/data/cache/whisper/models"
-<<<<<<< HEAD
-# # Whisper TTS model configuration
-=======
 # # Whisper TTS模型配置
->>>>>>> fingerprintAuth-out
 
 # ## RAG Embedding model settings ##
 # ENV RAG_EMBEDDING_MODEL="$USE_EMBEDDING_MODEL_DOCKER" \
 #     RAG_RERANKING_MODEL="$USE_RERANKING_MODEL_DOCKER" \
 #     SENTENCE_TRANSFORMERS_HOME="/app/backend/data/cache/embedding/models"
-<<<<<<< HEAD
-# # RAG embedding model configuration
-
-# ## Hugging Face download cache ##
-# ENV HF_HOME="/app/backend/data/cache/embedding/models"
-# # Hugging Face download cache configuration
-=======
 # # RAG嵌入模型配置
 
 # ## Hugging Face download cache ##
 # ENV HF_HOME="/app/backend/data/cache/embedding/models"
 # # Hugging Face下载缓存配置
->>>>>>> fingerprintAuth-out
 
 # #### Other models ##########################################################
 
@@ -433,11 +343,7 @@ CMD [ "bash", "start.sh"]
 # WORKDIR /app/backend
 
 # ENV HOME /root
-<<<<<<< HEAD
-# # Create a user and a group if not the root user
-=======
 # # 创建用户和组，如果不是root
->>>>>>> fingerprintAuth-out
 # RUN if [ $UID -ne 0 ]; then \
 #       if [ $GID -ne 0 ]; then \
 #         addgroup --gid $GID app; \
@@ -448,11 +354,7 @@ CMD [ "bash", "start.sh"]
 # RUN mkdir -p $HOME/.cache/chroma
 # RUN echo -n 00000000-0000-0000-0000-000000000000 > $HOME/.cache/chroma/telemetry_user_id
 
-<<<<<<< HEAD
-# # Ensure that the user has access rights to the application and the root directory
-=======
 # # 确保用户对应用程序和根目录有访问权限
->>>>>>> fingerprintAuth-out
 # RUN chown -R $UID:$GID /app $HOME
 
 # RUN apt-get update && \
@@ -462,37 +364,21 @@ CMD [ "bash", "start.sh"]
 #     apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
 #     # cleanup
 #     rm -rf /var/lib/apt/lists/*; 
-<<<<<<< HEAD
-# # Install the corresponding dependencies according to the value of USE_OLLAMA
-
-
-
-# # Install Python dependencies
-=======
 # # 根据USE_OLLAMA的值安装相应的依赖
 
 
 
 # # 安装Python依赖
->>>>>>> fingerprintAuth-out
 # COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 # RUN pip3 install uv
 # RUN uv pip install --system -r requirements.txt --no-cache-dir
 
-<<<<<<< HEAD
-# # Copy the built front-end files
-=======
 # # 复制构建的前端文件
->>>>>>> fingerprintAuth-out
 # COPY --chown=$UID:$GID --from=build /app/build /app/build
 # COPY --chown=$UID:$GID --from=build /app/CHANGELOG.md /app/CHANGELOG.md
 # COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
 
-<<<<<<< HEAD
-# # Copy the back-end files
-=======
 # # 复制后端文件
->>>>>>> fingerprintAuth-out
 # COPY --chown=$UID:$GID ./backend .
 
 # EXPOSE 8080
@@ -502,8 +388,4 @@ CMD [ "bash", "start.sh"]
 # USER $UID:$GID
 
 # CMD [ "bash", "start.sh"]
-<<<<<<< HEAD
-# # Set the startup command
-=======
 # # 设置启动命令
->>>>>>> fingerprintAuth-out

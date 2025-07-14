@@ -20,11 +20,7 @@
 
   const i18n = getContext("i18n");
 
-<<<<<<< HEAD
-  // Define storage
-=======
   // 定义存储
->>>>>>> fingerprintAuth-out
   const walletAddress = writable("");
   const walletBalance = writable(0);
   let modal: any = { options: { themeMode: "dark" } };
@@ -68,11 +64,7 @@
     }, 0);
   };
 
-<<<<<<< HEAD
-  // Update user language
-=======
   // 更新用户语言
->>>>>>> fingerprintAuth-out
   const initLanguage = async () => {
     if ($user?.language) {
       $i18n.changeLanguage($user?.language);
@@ -117,15 +109,9 @@
               channel: $channel,
             });
 
-<<<<<<< HEAD
-            // Update user model
-            initUserModels();
-            // Update user language
-=======
             // 更新用户模型
             initUserModels();
             // 更新语言模型
->>>>>>> fingerprintAuth-out
             await initLanguage();
           }
         }
@@ -133,15 +119,6 @@
           user.set({});
           await closeWallet($channel);
           clearConnector();
-<<<<<<< HEAD
-          // Update user model
-          initUserModels();
-          // Update user language
-          await initLanguage();
-        }
-      } catch (error) {
-        addErrorLog("Third party login:", error.toString());
-=======
           // 更新用户模型
           initUserModels();
           // 更新语言模型
@@ -149,7 +126,6 @@
         }
       } catch (error) {
         addErrorLog("第三方登陆", error.toString());
->>>>>>> fingerprintAuth-out
       }
     },
   });

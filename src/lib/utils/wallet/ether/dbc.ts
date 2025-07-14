@@ -6,11 +6,7 @@ import { provider, signData, getCurrencyPrice, getGas } from "./utils";
 
 
 
-<<<<<<< HEAD
-// Get the current block height
-=======
 // 获取当前区块高度
->>>>>>> fingerprintAuth-out
 export async function getCurrentBlockNumber() {
   const blockNumber = await provider.getBlockNumber();
   console.log("Current block number:", blockNumber);
@@ -19,11 +15,7 @@ export async function getCurrentBlockNumber() {
 
 
 
-<<<<<<< HEAD
-// Query the DBC balance of the specified account
-=======
 // 查询指定账户的 DBC 余额
->>>>>>> fingerprintAuth-out
 export async function getDbcBalance(address) {
 
 
@@ -41,11 +33,7 @@ export async function getDbcBalance(address) {
   return balanceDBC;
 }
 
-<<<<<<< HEAD
-// Transfer DBC to the designated account
-=======
 // 转账 DBC 到指定账户
->>>>>>> fingerprintAuth-out
 export async function transferDbc(toAddress, amountDbc, privateKey) {
   const wallet = new ethers.Wallet(privateKey, provider);
   const amountWei = ethers.parseUnits(amountDbc.toString());
@@ -65,12 +53,6 @@ export async function transferDbc(toAddress, amountDbc, privateKey) {
     const txResponse = await wallet.sendTransaction(tx);
     console.log("Transaction sent:", txResponse);
     console.log("Transaction hash:", txResponse.hash);
-<<<<<<< HEAD
-    return txResponse;
-  } catch (error) {
-    console.error("Failed to send transaction:", error);
-    throw error;
-=======
     return {
       ok: true,
       data: txResponse
@@ -81,7 +63,6 @@ export async function transferDbc(toAddress, amountDbc, privateKey) {
       ok: false,
       msg: "Failed to send transaction !"
     };
->>>>>>> fingerprintAuth-out
   }
 }
 

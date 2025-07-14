@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-# Synchronize the local database to PostgreSQL
-
-=======
 # 把本地数据库同步为postgres
->>>>>>> fingerprintAuth-out
 
 ```
 ALTER TABLE auth

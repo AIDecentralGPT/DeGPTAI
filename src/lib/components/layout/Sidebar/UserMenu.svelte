@@ -113,10 +113,6 @@
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"
-<<<<<<< HEAD
-							stroke-width="1.5"
-=======
->>>>>>> fingerprintAuth-out
 							stroke="currentColor"
 							class="w-5 h-5"
 						>
@@ -131,8 +127,6 @@
 				</button>
 			{/if}
 
-<<<<<<< HEAD
-=======
 			{#if $user?.role === 'admin'}
 				<button
 					class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
@@ -154,7 +148,6 @@
 				</button>
 			{/if}
 
->>>>>>> fingerprintAuth-out
 			<!-- <hr class=" dark:border-gray-800 my-2 p-0" /> -->
 
 			<!-- <button

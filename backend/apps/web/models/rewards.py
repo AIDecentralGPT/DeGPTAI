@@ -16,25 +16,6 @@ import time
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
-<<<<<<< HEAD
-# Initialize Web3
-# w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io')) Old Contract RPC
-w3 = Web3(Web3.HTTPProvider('https://rpc.dbcwallet.io'))  # New Contract RPC
-router = APIRouter()
-
-# Retrieve the directory of the current file
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-# The absolute path to build the abi. json file
-abi_path = os.path.join(current_dir, 'abi.json')
-
-# ABI for loading DGC contract
-with open(abi_path, 'r') as abi_file:
-    DGC_ABI = json.load(abi_file)
-
-# DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'  # Old contract address
-DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'  # New contract address
-=======
 # 初始化Web3
 # w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io')) 旧 合约 RPC
 w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io'))  # 新 合约 RPC
@@ -52,16 +33,11 @@ with open(abi_path, 'r') as abi_file:
 
 # DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'  # 旧 合约地址
 DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'  # 新 合约地址
->>>>>>> fingerprintAuth-out
 
 dgc_contract = w3.eth.contract(
     address=DGC_TOKEN_CONTRACT_ADDRESS, abi=DGC_ABI['abi'])
 
-<<<<<<< HEAD
-# Define Rewards Table
-=======
 # 定义 Rewards 表
->>>>>>> fingerprintAuth-out
 
 
 class Rewards(Model):
@@ -74,11 +50,8 @@ class Rewards(Model):
     invitee = CharField(null=True)
     status = CharField(null=False)
     show = CharField(null=True)
-<<<<<<< HEAD
-=======
     auto = CharField(null=False)
     expird = CharField(null=False)
->>>>>>> fingerprintAuth-out
     amount_type = CharField()
 
     class Meta:
@@ -94,11 +67,7 @@ class RewardsPageRequest(BaseModel):
     pageSize: int
     pageNum: int
 
-<<<<<<< HEAD
-# Defining the Pydantic Model for Rewards
-=======
 # 定义 Rewards 的 Pydantic 模型
->>>>>>> fingerprintAuth-out
 
 
 class RewardsModel(BaseModel):
@@ -112,16 +81,10 @@ class RewardsModel(BaseModel):
     status: bool
     show: bool
     amount_type: str
-<<<<<<< HEAD
-    expird: bool = False
-
-# Define Rewards operation class
-=======
     auto: bool = False
     expird: bool = False
 
 # 定义 Rewards 操作类
->>>>>>> fingerprintAuth-out
 
 
 class RewardsTable:
@@ -129,11 +92,7 @@ class RewardsTable:
         self.db = db
         db.create_tables([Rewards])
 
-<<<<<<< HEAD
-    # Add reward record
-=======
     # 添加奖励记录
->>>>>>> fingerprintAuth-out
     def insert_reward(self, user_id: str, reward_amount: float, reward_date: datetime, reward_type: str, transfer_hash: str, invitee: str, status: bool, show: bool, amount_type: str) -> Optional[RewardsModel]:
         reward = RewardsModel(
             id=str(uuid.uuid4()),
@@ -158,17 +117,6 @@ class RewardsTable:
             log.error(f"insert_reward: {e}")
             return None
 
-<<<<<<< HEAD
-    # Update reward status
-    def update_reward(self, id: str, transfer_hash: str, status: bool) -> Optional[RewardsModel]:
-        try:
-            query = Rewards.update(
-                transfer_hash=transfer_hash, status=status).where(Rewards.id == id)
-            query.execute()  # Perform update operation
-
-            rewards = Rewards.get(Rewards.id == id)  # Query updated users
-            # Convert database objects to Pydantic models and return
-=======
     # 更新奖励状态
     def update_reward(self, id: str, transfer_hash: str, status: bool, auto: bool) -> Optional[RewardsModel]:
         try:
@@ -178,17 +126,12 @@ class RewardsTable:
 
             rewards = Rewards.get(Rewards.id == id)  # 查询更新后的用户
             # 将数据库对象转换为Pydantic模型并返回
->>>>>>> fingerprintAuth-out
             return RewardsModel(**model_to_dict(rewards))
         except Exception as e:
             log.error(f"update_reward: {e}")
             return None
 
-<<<<<<< HEAD
-    # Retrieve reward records through user ID pagination
-=======
     # 通过用户ID获取奖励记录 分页
->>>>>>> fingerprintAuth-out
     def get_rewards_by_user_id(self, user_id: str, pageNum: Optional[int] = 1, pageSize: Optional[int] = 10) -> Optional[List[RewardsModel]]:
         try:
             rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.show == True)
@@ -198,11 +141,7 @@ class RewardsTable:
             log.error(f"get_rewards_by_user_id: {e}")
             return None
 
-<<<<<<< HEAD
-    # Obtain the total number of rewards through user ID
-=======
     # 通过用户ID获取奖励总数
->>>>>>> fingerprintAuth-out
     def get_rewards_count_by_user_id(self, user_id: str) -> Optional[int]:
         try:
             total = Rewards.select().where((Rewards.user_id == user_id)
@@ -212,36 +151,22 @@ class RewardsTable:
             log.error(f"get_rewards_by_user_id: {e}")
             return 0
 
-<<<<<<< HEAD
-    # Obtain reward information through ID
-=======
     # 通过ID获取奖励信息
->>>>>>> fingerprintAuth-out
     def get_rewards_by_id(self, id: str) -> Optional[RewardsModel]:
         try:
             rewards = Rewards.get_or_none(Rewards.id == id)
             if rewards is None:
                 return None
             else:
-<<<<<<< HEAD
-                rewards_dict = model_to_dict(rewards)  # Convert database objects to dictionaries
-                rewards_model = RewardsModel(
-                    **rewards_dict)  # Convert dictionary to Pydantic model
-=======
                 rewards_dict = model_to_dict(rewards)  # 将数据库对象转换为字典
                 rewards_model = RewardsModel(
                     **rewards_dict)  # 将字典转换为Pydantic模型
->>>>>>> fingerprintAuth-out
                 return rewards_model
         except Exception as e:
             log.error(f"get_rewards_by_id: {e}")
             return None
 
-<<<<<<< HEAD
-    # Obtain user created wallet rewards through user ID
-=======
     # 通过用户ID获取用户创建钱包奖励
->>>>>>> fingerprintAuth-out
     def get_create_rewards_by_userid(self, user_id: str) -> Optional[RewardsModel]:
         try:
             rewards = Rewards.get_or_none(
@@ -249,25 +174,15 @@ class RewardsTable:
             if rewards is None:
                 return None
             else:
-<<<<<<< HEAD
-                rewards_dict = model_to_dict(rewards)  # Convert database objects to dictionaries
-                rewards_model = RewardsModel(
-                    **rewards_dict)  # Convert dictionary to Pydantic model
-=======
                 rewards_dict = model_to_dict(rewards)  # 将数据库对象转换为字典
                 rewards_model = RewardsModel(
                     **rewards_dict)  # 将字典转换为Pydantic模型
->>>>>>> fingerprintAuth-out
                 return rewards_model
         except Exception as e:
             log.error(f"get_rewards_by_id: {e}")
             return None
 
-<<<<<<< HEAD
-    # Obtain reward records through invitation codes
-=======
     # 通过邀请码获取奖励记录
->>>>>>> fingerprintAuth-out
     def get_rewards_by_invitee(self, invitee: str) -> Optional[List[RewardsModel]]:
         try:
             rewards = Rewards.select().where(Rewards.invitee == invitee)
@@ -276,11 +191,7 @@ class RewardsTable:
             log.error(f"get_rewards_by_id: {e}")
             return None
 
-<<<<<<< HEAD
-    # Obtain the reward information of a user for a certain day through their user ID and reward type
-=======
     # 通过用户ID和奖励类型获取用户某天的奖励信息
->>>>>>> fingerprintAuth-out
     def get_rewards_by_user_id_and_date_and_reward_type(self, user_id: str, reward_date: date, reward_type: str) -> Optional[List[RewardsModel]]:
         try:
             rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.reward_type == reward_type) & (Rewards.show == True)
@@ -290,17 +201,10 @@ class RewardsTable:
             log.error(f"get_rewards_by_user_id_and_date: {e}")
             return None
 
-<<<<<<< HEAD
-    # Interface call creation record
-    def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> Optional[RewardsModel]:
-        try:
-            # Insert reward record
-=======
     # 接口调用创建记录
     def create_reward(self, recipient_address: str, amount: float, reward_type: str, show: Optional[bool] = True, invitee: Optional[str] = None) -> Optional[RewardsModel]:
         try:
             # 插入奖励记录
->>>>>>> fingerprintAuth-out
             rewards = self.insert_reward(recipient_address, amount, datetime.now(
             ), reward_type, "***************", invitee, False, show, "DGC")
             return rewards
@@ -308,17 +212,10 @@ class RewardsTable:
             print("create_reward:", e)
             return None
 
-<<<<<<< HEAD
-    # API call to create DBC record
-    def create_dbc_reward(self, recipient_address: str, amount: float, reward_type: str, tx_hash: str, invitee: Optional[str] = None) -> Optional[RewardsModel]:
-        try:
-            # Insert reward record
-=======
     # 接口调用创建DBC记录
     def create_dbc_reward(self, recipient_address: str, amount: float, reward_type: str, tx_hash: str, invitee: Optional[str] = None) -> Optional[RewardsModel]:
         try:
             # 插入奖励记录
->>>>>>> fingerprintAuth-out
             rewards = self.insert_reward(recipient_address, amount, datetime.now(
             ), reward_type, tx_hash, invitee, True, True, "DBC")
             return rewards
@@ -326,9 +223,6 @@ class RewardsTable:
             print("create_dbc_reward:", e)
             return None
 
-<<<<<<< HEAD
-    # Verify transaction results
-=======
     # 指定账户给用户转账DGC
     def send_dgc_reward(self, index: int, recipient_address: str, amount: float) -> str:
         txn_hash = None
@@ -464,7 +358,6 @@ class RewardsTable:
             return {'hash': txn_hash, 'status': False}
 
     # 校验交易结果
->>>>>>> fingerprintAuth-out
     def check_reward(self, tx_hash: str) -> Optional[bool]:
         try:
             receipt = w3.eth.get_transaction_receipt(tx_hash)
@@ -478,17 +371,6 @@ class RewardsTable:
         except Exception as e:
             return False
 
-<<<<<<< HEAD
-    # Obtain the total number of rewards for creating wallets
-    def get_issue_reward(self) -> int:
-        return Rewards.select().where(Rewards.reward_type == "new_wallet", Rewards.amount_type == 'DGC', Rewards.status == True).count()
-
-    # Obtain the total number of invitation rewards
-    def get_invitee_total(self) -> int:
-        return Rewards.select().where(Rewards.reward_type == "invite", Rewards.show == True).count()
-
-    # Total number of invitation rewards to be distributed
-=======
     # 获取创建钱包奖励总数
     def get_issue_reward(self) -> int:
         return Rewards.select().where(Rewards.reward_type == "new_wallet", Rewards.amount_type == 'DGC', Rewards.status == True).count()
@@ -498,7 +380,6 @@ class RewardsTable:
         return Rewards.select().where(Rewards.reward_type == "invite", Rewards.show == True).count()
 
     # 获取邀请奖励应发放总数
->>>>>>> fingerprintAuth-out
     def get_invitee_reward_total(self) -> int:
         try:
             sql = "select count(r.*) as count from rewards r \
@@ -511,16 +392,6 @@ class RewardsTable:
                 return results[0]['count']
             return 0
         except Exception as e:
-<<<<<<< HEAD
-            print(f"An error occurred while executing the query: {e}")
-            return 0
-
-    # Total number of invitation rewards issued
-    def get_issue_invitee_reward_total(self) -> int:
-        return Rewards.select().where(Rewards.reward_type == "invite", Rewards.status == True, Rewards.show == True).count()
-
-    # Get registration rewards that have been KYC verified but not yet issued 30 minutes ago
-=======
             print(f"执行查询时出现错误: {e}")
             return 0
 
@@ -529,40 +400,24 @@ class RewardsTable:
         return Rewards.select().where(Rewards.reward_type == "invite", Rewards.status == True, Rewards.show == True).count()
 
     # 获取30分钟前KYC已认证未发放的注册奖励
->>>>>>> fingerprintAuth-out
     def sync_regist_rewards(self) -> Optional[List[RewardsModel]]:
         try:
             ten_minutes_ago = datetime.now() - timedelta(minutes=30)
             ten_minutes_ago_str = ten_minutes_ago.strftime('%Y-%m-%d %H:%M:%S')
             sql = f"select r.* from rewards r left join \"user\" u on r.user_id = u.id \
-<<<<<<< HEAD
-                where r.reward_type = 'new_wallet' and r.status = 'f' \
-                and u.verified = 't' and u.face_time < '{ten_minutes_ago_str}' \
-                limit 100"
-            rewards = Rewards.raw(sql)
-            # Convert database objects into dictionaries and Pydantic models
-=======
                 where r.reward_type = 'new_wallet' and r.status = 'f' and auto = 't' \
                 and u.verified = 't' and u.face_time < '{ten_minutes_ago_str}' \
                 limit 100"
             rewards = Rewards.raw(sql)
             # 将数据库对象转换为字典并转换为Pydantic模型
->>>>>>> fingerprintAuth-out
             reward_list = [RewardsModel(**model_to_dict(reward))
                            for reward in rewards]
             return reward_list
         except Exception as e:
-<<<<<<< HEAD
-            print(f"An error occurred while executing the query: {e}")
-            return None
-
-    # Get invitation rewards for KYC verified but not yet issued 30 minutes ago
-=======
             print(f"执行查询时出现错误: {e}")
             return None
 
     # 获取30分钟前KYC已认证未发放的邀请奖励
->>>>>>> fingerprintAuth-out
     def sync_invite_rewards(self) -> Optional[List[RewardsModel]]:
         try:
             ten_minutes_ago = datetime.now() - timedelta(minutes=30)
@@ -570,42 +425,14 @@ class RewardsTable:
             sql = f"select r.* from rewards r left join rewards r2 on r.invitee = r2.invitee \
                 and r2.reward_type = 'new_wallet' left join \"user\" u on r2.user_id = u.id \
                 and u.verified = 't' and u.face_time < '{ten_minutes_ago_str}' \
-<<<<<<< HEAD
-                where r.reward_type = 'invite' and r.status = 'f' and r.show = 't' \
-                limit 100"
-            rewards = Rewards.raw(sql)
-            # Convert database objects into dictionaries and Pydantic models
-=======
                 where r.reward_type = 'invite' and r.status = 'f' and r.show = 't' and r.auto= 't' \
                 limit 100"
             rewards = Rewards.raw(sql)
             # 将数据库对象转换为字典并转换为Pydantic模型
->>>>>>> fingerprintAuth-out
             reward_list = [RewardsModel(**model_to_dict(reward))
                            for reward in rewards]
             return reward_list
         except Exception as e:
-<<<<<<< HEAD
-            print(f"An error occurred while executing the query: {e}")
-            return None
-
-    # Retrieve the user's check-in records for the past three days
-    def get_triduum_history(self, user_id: str) -> Optional[List[RewardsModel]]:
-        try:
-            # Get the time three days ago
-            three_days_ago = datetime.now() - timedelta(days=2)
-            rewards = Rewards.select().where(Rewards.user_id == user_id, Rewards.reward_date > three_days_ago)
-            reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]
-            return reward_list
-        except Exception as e:
-            print(f"An error occurred while executing the query: {e}")
-            return None 
-        
-    # Get the number of invited users for today
-    def get_invitee_today_history(self, user_id: str) -> Optional[List[RewardsModel]]:
-        try:
-            # Get the number of invited users for today
-=======
             print(f"执行查询时出现错误: {e}")
             return None
 
@@ -625,22 +452,14 @@ class RewardsTable:
     def get_invitee_today_history(self, user_id: str) -> Optional[List[RewardsModel]]:
         try:
             #获取今天邀请用户数
->>>>>>> fingerprintAuth-out
             reward_date = datetime.now()
             rewards = Rewards.select().where((Rewards.user_id == user_id) & (Rewards.reward_type == 'invite') 
                                     & (SQL('date(reward_date)') == reward_date))
             reward_list = [RewardsModel(**model_to_dict(reward)) for reward in rewards]
             return reward_list
         except Exception as e:
-<<<<<<< HEAD
-            print(f"An error occurred while executing the query: {e}")
-            return None 
-
-# Initialize the Rewards table
-=======
             print(f"执行查询时出现错误: {e}")
             return None 
 
 # 初始化 Rewards 表
->>>>>>> fingerprintAuth-out
 RewardsTableInstance = RewardsTable(DB)

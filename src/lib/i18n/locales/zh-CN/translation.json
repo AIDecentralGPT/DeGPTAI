@@ -35,11 +35,7 @@
   "Admin Panel": "管理面板",
   "Admin Settings": "管理设置",
   "Advanced Parameters": "高级参数",
-<<<<<<< HEAD
-  "all": "全部；所有",
-=======
   "all": "全部",
->>>>>>> fingerprintAuth-out
   "All Documents": "所有文档",
   "All fields are required!": "所有字段都是必填的！",
   "All Users": "所有用户",
@@ -60,11 +56,7 @@
   "Archive": "存档",
   "Archived Chats": "已存档的聊天记录",
   "are allowed - Activate this command by typing": "是被允许的 - 通过输入来激活此命令",
-<<<<<<< HEAD
-  "Are you sure to become a distinguished Plus member?": "你确定要成为尊贵的 Plus 会员吗？",
-=======
   "Are you sure to become a distinguished member?": "你确定要成为尊贵的会员吗？",
->>>>>>> fingerprintAuth-out
   "Are you sure?": "你确定吗？",
   "Attach file": "附加文件",
   "Attention to detail": "注重细节",
@@ -85,11 +77,8 @@
   "Builder Mode": "构建模式",
   "Buy": "购买",
   "Node Sale": "节点销售",
-<<<<<<< HEAD
-=======
   "Buy DGC": "购买DGC",
   "Enter wallet": "进入钱包",
->>>>>>> fingerprintAuth-out
   "Buy Now": "立即购买",
   "Bypass SSL verification for Websites": "绕过网站的 SSL 验证",
   "Cancel": "取消",
@@ -132,10 +121,7 @@
   "Congratulations on successfully upgrading pro!": "恭喜成功升级为专业版！",
   "Upgrading pro failed!": "专业版升级失败!",
   "Connect Wallet": "连接钱包",
-<<<<<<< HEAD
-=======
   "Wallet": "钱包",
->>>>>>> fingerprintAuth-out
   "Connections": "连接；联系；关联",
   "Content": "内容",
   "Context Length": "上下文长度",
@@ -166,10 +152,7 @@
   "Customize Ollama models for a specific purpose": "为特定目的定制 Ollama 模型",
   "Dark": "深色",
   "Dashboard": "数据分析",
-<<<<<<< HEAD
-=======
   "Reward upkeep": "奖励维护",
->>>>>>> fingerprintAuth-out
   "Database": "数据库",
   "December": "十二月",
   "Default": "默认",
@@ -308,15 +291,9 @@
   "Input commands": "输入命令",
   "Interface": "界面；接口",
   "Invalid Tag": "无效标签",
-<<<<<<< HEAD
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "邀请一位朋友创建钱包以赚取 6000 个 DGC 奖励，你的朋友也将获得 1000 个 DGC",
-  "Invite friends now": "现在邀请朋友",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "邀请朋友创建钱包以赚取 1000 个 DGC 奖励，你的朋友们也将获得 1000 个 DGC 奖励。",
-=======
   "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "邀请一位朋友创建钱包以赚取 3000 个 DGC 奖励，你的朋友也将获得 1000 个 DGC",
   "Invite friends now": "现在邀请朋友",
   "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "邀请朋友创建钱包以赚取 3000 个 DGC 奖励，你的朋友们也将获得 1000 个 DGC 奖励。",
->>>>>>> fingerprintAuth-out
   "Invite Friends to Earn DGC Rewards": "邀请朋友赚取 DGC 奖励",
   "invite new user": "邀请新用户",
   "January": "一月",
@@ -476,11 +453,7 @@
   "reward amount": "奖励金额",
   "reward date": "奖励日期",
   "reward type": "奖励类型",
-<<<<<<< HEAD
-  "Rewards": "奖励（复数）",
-=======
   "Rewards": "奖励",
->>>>>>> fingerprintAuth-out
   "rewards amount": "奖励金额（复数形式，可能强调多个奖励的金额情况）",
   "Role": "角色",
   "RTL": "从右到左",
@@ -512,11 +485,7 @@
   "September": "九月",
   "Server connection verified": "服务器连接已验证",
   "Set as default": "设置为默认",
-<<<<<<< HEAD
-  "Click to select more models": "点击选择更多模型",
-=======
   "Click to switch models": "点击切换模型",
->>>>>>> fingerprintAuth-out
   "Set Default Model": "设置默认模型",
   "Set embedding model (e.g. {{model}})": "设置嵌入模型（例如 {{model}}）",
   "Set Image Size": "设置图像大小",
@@ -572,11 +541,7 @@
   "For VlP users, the daily limit is 500 times.": "对于 VIP 用户，每日限制为 500 次。",
   "For o1 and other models, the daily limit is 1000 times.": "对 o1 以及其他模型的每日1000次使用。",
   "The user you invite must complete wallet creation and KYC verification process before you can receive the reward": "你邀请的用户必须完成钱包创建和了解你的客户（KYC）验证流程，然后你才能获得奖励",
-<<<<<<< HEAD
-  "Theme": "主题；主题风格",
-=======
   "Theme": "主题风格",
->>>>>>> fingerprintAuth-out
   "This ensures that your valuable conversations are securely saved to your backend database. Thank you!": "这确保了您宝贵的对话被安全地保存到后端数据库。谢谢！",
   "This is an exclusive service for pro users. \n Please upgrade your pro permissions first!": "这是专业用户的专属服务。\n 请先升级您的专业权限！",
   "This setting does not sync across browsers or devices.": "此设置不会在浏览器或设备之间同步。",
@@ -615,13 +580,8 @@
   "Update password": "更新密码",
   "Upgrade": "升级",
   "Upgrade Plan": "升级计划",
-<<<<<<< HEAD
-  "Upgrade to Plus": "升级到 Plus",
-  "Upgrade to Plus failed!": "升级到 Plus 失败！",
-=======
   "Upgrade to VIP": "升级到 VIP",
   "Upgrade to Vip failed!": "升级到 Vip 失败！",
->>>>>>> fingerprintAuth-out
   "Upgrading": "正在升级",
   "Failed to obtain authorization information.": "获取授权信息失败。",
   "Authorization failed!": "授权失败！",
@@ -659,10 +619,7 @@
   "Webhook URL": "网络钩子网址（在网络开发中，用于实现不同应用之间的实时通信等）",
   "WebUI Add-ons": "网页用户界面（WebUI）插件",
   "WebUI Settings": "网页用户界面（WebUI）设置",
-<<<<<<< HEAD
-=======
   "User interface settings": "用户界面设置",
->>>>>>> fingerprintAuth-out
   "WebUI will make requests to": "网页用户界面（WebUI）将向…… 发出请求",
   "What’s New in": "…… 中的新内容",
   "When history is turned off, new chats on this browser won't appear in your history on any of your devices.": "当历史记录功能关闭时，此浏览器上的新聊天记录不会出现在您任何设备的历史记录中。",
@@ -675,10 +632,7 @@
   "You": "您",
   "You can copy the private key below:": "您可以复制下面的私钥：",
   "You can copy the website below:": "您可以复制下面的网址:",
-<<<<<<< HEAD
-=======
   "Copy the link and open it in a browser": "复制链接在浏览器中打开",
->>>>>>> fingerprintAuth-out
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "您每天最多可以邀请 10 个朋友，每天的最高奖励为 10,000 个 DGC。",
   "You have no archived conversations.": "您没有已存档的对话记录。",
   "You have shared this chat": "您已经分享了此聊天记录",
@@ -738,16 +692,6 @@
   "When an access node is located in a specific region, it will by default preferentially connect to GPU computing nodes within the same region, reducing latency and enhancing performance.": "当接入节点位于某个特定区域时，其默认优先连接至同区域 的GPU计算节点，降低延迟，提升性能。",
   "Download DeGPT to obtain rewards": "下载 DeGPT 以便获得奖励",
   "Switch Models": "切换模型",
-<<<<<<< HEAD
-  "Suitable for most tasks": "适用于大多数任务",
-  "Suitable for most tasks,Performance comparable to GPT-4o": "适用于大多数任务，性能比肩GPT-4o",
-  "Take photos to solve math problems": "使用高级推理，可拍照解数学题",
-  "Support image recognition": "支持图片识别",
-  "Optimize code writing": "优化写代码功能",
-  "Please select at least one model.": "请至少选择一个模型。",
-  "You can select up to four models at most.": "你最多可以选择四个模型。",
-  "Your friend not complete the KYC verification.": "你的朋友没有完成 KYC 验证。",
-=======
   "Suitable for most tasks, taking photos to solve math problems.": "适用于大多数任务, 可拍照解数学题。",
   "Suitable for most tasks,Performance comparable to GPT-4o": "适用于大多数任务，性能比肩GPT-4o",
   "Deep thinking,mathematical and writing abilities ≈ o3.": "深度思考，在数学、创意写作等任务性能上比肩o3",
@@ -777,7 +721,6 @@
   "Please select at least one model.": "请至少选择一个模型。",
   "You can select up to four models at most.": "你最多可以选择四个模型。",
   "Your friend needs to complete the check-in three times.": "你的朋友需要完成三次签到。",
->>>>>>> fingerprintAuth-out
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "密钥库已自动下载。如有必要，你可以手动下载 JSON 或复制私钥。",
   "Total": "总数",
   "Channel Distribution": "渠道分布",
@@ -826,20 +769,12 @@
   "II. Referral Reward(The activity lasts until January 2nd, 2025)": "II. 推荐奖励",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "完成KYC的钱包用户，邀请他人创建钱包且完成KYC",
   "The number of people invited each day should not exceed 20.": "每天邀请人数不超过20人。",
-<<<<<<< HEAD
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.":"每邀请一个人，且被邀请者连续3 次签到，邀请者将获得 <span style='color: rgba(184, 142, 86, 1);'>6,000</span>  DGC 的奖励。",
-  "III. Clock in Reward": "III. 签到奖励",
-  "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "签到奖励在完成认证后的<span style='color: rgba(184, 142, 86, 1);'>60</span>天内有效。",
-  "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "每日登录并签到可赚取<span style='color: rgba(184, 142, 86, 1);'>100</span>个 DGC 奖励；最多可获得<span style='color: rgba(184, 142, 86, 1);'>30</span>次签到奖励。",
-  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> 个 DGC 奖励需要完成 KYC 流程，并且必须在同一天内领取；若未领取将会过期。",
-=======
   "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is {{ time }}.":"每邀请一个人，且被邀请者连续3 次签到，邀请者将获得 <span style='color: rgba(184, 142, 86, 1);'>3,000</span>  DGC 的奖励, 活动截止日到{{ time }}。",
   "III. Clock in Reward": "III. 签到奖励",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.": "签到奖励在完成认证后的<span style='color: rgba(184, 142, 86, 1);'>180</span>天内有效。",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "每日登录并签到可赚取<span style='color: rgba(184, 142, 86, 1);'>100</span>个 DGC 奖励；最多可获得<span style='color: rgba(184, 142, 86, 1);'>30</span>次签到奖励。",
   "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "<span style='color: rgba(184, 142, 86, 1);'>100</span> 个 DGC 奖励需要完成 KYC 流程，并且必须在同一天内领取；若未领取将会过期。",
   "The check-in reward has expired!": "签到奖励已过期！",
->>>>>>> fingerprintAuth-out
   "Show me a code snippet": "给我展示一段代码片段",
   "of a website's sticky header": "一个网站的粘性头部（固定头部）的",
   "Explain options trading": "解释一下期权交易",
@@ -875,11 +810,7 @@
   "The contract address of DGC": "DGC的合约地址",
   "Instructions": "说明",
   "If the problem remains unresolved, please join the Telegram group and follow us on X": "如问题未解决，请加入TG群和关注X",
-<<<<<<< HEAD
-  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "在任何交易平台的主网启动之前，DGC 代币被标记为积分。当 DGC 正式上线时，这些积分将按照 1:1 的比例进行转换。DGC 团队将确保这一转换过程顺利进行，并防止对这一政策的任何滥用。",
-=======
   "Before the mainnet launch on any trading platform, DGC tokens are designated as points. When DGC is officially launched, these points will be converted at a predetermined ratio. The DGC team will ensure a smooth conversion process and prevent any misuse of this policy.": "在任何交易平台的主网启动之前，DGC 代币被标记为积分。当 DGC 正式上线时，这些积分将按照一定比例进行转换。DGC 团队将确保这一转换过程顺利进行，并防止对这一政策的任何滥用。",
->>>>>>> fingerprintAuth-out
   "About DBC": "关于 DBC",
   "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "深脑链（DeepBrainChain）是世界上首个人工智能公链。其原生代币 DBC 在该项目中被用作燃气费（手续费）。任何 DGC 交易都需要一定数量的名义上的 DBC。",
   "Download DeGPT APP": "下载 DeGPT 应用",
@@ -897,10 +828,7 @@
   "Generating by": "正在生成由",
   "Thinking...": "正在思考...",
   "thinking...": "思考中...",
-<<<<<<< HEAD
-=======
   "Replying...": "模型回复中...",
->>>>>>> fingerprintAuth-out
   "have thought deeply": "已深度思考",
   "What does this picture mean?": "这张图是什么意思？",
   "Explain this picture": "解释这张图",
@@ -908,26 +836,17 @@
   "What does the symbol in the picture represent?": "图中的符号代表什么?",
   "Help me solve problems": "帮我解题",
   "Last for {{ time }} seconds": "持续{{ time }}秒",
-<<<<<<< HEAD
-  "Search the Web": "搜索网页",
-  "Search the Twitter": "搜索推特",
-  "Search the YouTube": "搜索YouTube",
-=======
   "Tool": "工具",
   "Search the Web": "搜索网页",
   "Search the Twitter": "搜索推特",
   "Search the YouTube": "搜索YouTube",
   "Translate": "翻译",
   "Webpage Reading": "网页阅读",
->>>>>>> fingerprintAuth-out
   "search": "搜索",
   "Web Search": "网络搜索",
   "YouTube Search": "YouTube 搜索",
   "Twitter Search": "Twitter 搜索",
   "Web Searching ...": "正在进行网络搜索...",
-<<<<<<< HEAD
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "深度思考，在数学、创意写作等任务性能上比肩o3",
-=======
   "Paste or enter a link...": "粘贴或输入链接...",
   "Enter text to translate...": "输入要翻译的文本...",
   "Auto-detect": "自动检测",
@@ -946,7 +865,6 @@
 	"Vietnamese": "越南语",
 	"Chinese": "汉语",
   "Deep thinking,mathematical and writing abilities ≈ o3": "深度思考，在数学、创意写作等任务性能上比肩o3",
->>>>>>> fingerprintAuth-out
   "KYC verification is limited to once every 10 minutes, Please try again later.": "KYC 认证每 10 分钟只能进行一次。请稍后再试。",
   "A single IP address can be used for a maximum of two KYC verifications": "单个 IP 地址最多可用于两次 KYC 认证。",
   "Check kyc failed, Please try again.": "KYC 验证失败。请再次尝试。",
@@ -954,9 +872,6 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "获取以上提问中最后一次提问的内容是关于什么的，只输出内容",
   "Summarize based on the above YouTube search results:": "根据以上 YouTube 搜索结果进行汇总:",
   "Summarize based on the above Twitter search results": "根据以上 Twitter 搜索结果进行汇总:",
-<<<<<<< HEAD
-  "Summarize based on the above web search results:": "根据以上网络搜索结果进行汇总:"
-=======
   "Summarize based on the above web search results:": "根据以上网络搜索结果进行汇总:",
   "All Reward Range": "所有奖励区间",
   "Status": "状态",
@@ -1028,5 +943,4 @@
   "Failed to send transaction !": "交易发送失败！",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "DGC余额不足支付。您可以邀请好友获得3000 DGC。",
   "It seems that you are offline. Please reconnect to send messages.": "您似乎已离线。请重新连接以发送消息。"
->>>>>>> fingerprintAuth-out
 }

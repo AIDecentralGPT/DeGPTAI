@@ -39,11 +39,7 @@ fi
 
 echo "Starting uvicorn..."
 echo WEBUI_SECRET_KEY="$WEBUI_SECRET_KEY" uvicorn main:app --host "$HOST" --port "$PORT" --forwarded-allow-ips '*'
-<<<<<<< HEAD
-#  Add -- reload for hot updates
-=======
 #  加上 --reload进行热更新
->>>>>>> fingerprintAuth-out
 # WEBUI_SECRET_KEY="$WEBUI_SECRET_KEY" exec uvicorn main:app  --host "$HOST" --port "$PORT" --forwarded-allow-ips '*'
 WEBUI_SECRET_KEY="$WEBUI_SECRET_KEY" exec uvicorn main:app \
     --workers 4 \

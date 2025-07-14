@@ -72,11 +72,7 @@
   "Archive": "Arquivo",
   "Archived Chats": "Chats arquivados",
   "are allowed - Activate this command by typing": "são permitidos - Ative esse comando digitando",
-<<<<<<< HEAD
-  "Are you sure to become a distinguished Plus member?": "Você tem certeza de se tornar um membro Plus distinto?",
-=======
   "Are you sure to become a distinguished member?": "Você tem certeza de se tornar um membro distinto?",
->>>>>>> fingerprintAuth-out
   "Are you sure?": "Você tem certeza?",
   "Attach file": "Anexar arquivo",
   "Attention to detail": "Atenção aos detalhes",
@@ -161,10 +157,7 @@
   "Custom": "Personalizado",
   "Customize Ollama models for a specific purpose": "Personalizar modelos Ollama para um propósito específico",
   "Dashboard": "Painel de controle",
-<<<<<<< HEAD
-=======
   "Reward upkeep": "Manutenção das recompensas",
->>>>>>> fingerprintAuth-out
   "Database": "Banco de dados",
   "December": "Dezembro",
   "Default": "Padrão",
@@ -293,15 +286,9 @@
   "Input commands": "Comandos de entrada",
   "Interface": "Interface",
   "Invalid Tag": "Tag inválida",
-<<<<<<< HEAD
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "Convide um amigo para criar uma carteira e ganhar 6000 DGC, seu amigo também ganhará 1000 DGC",
-  "Invite friends now": "Convide seus amigos agora",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Convide seus amigos para criar uma carteira e ganhar 1000 DGC, seus amigos também ganharão 1000 DGC",
-=======
   "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "Convide um amigo para criar uma carteira e ganhar 3000 DGC, seu amigo também ganhará 1000 DGC",
   "Invite friends now": "Convide seus amigos agora",
   "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Convide seus amigos para criar uma carteira e ganhar 3000 DGC, seus amigos também ganharão 1000 DGC",
->>>>>>> fingerprintAuth-out
   "Invite Friends to Earn DGC Rewards": "Convide seus amigos para ganhar recompensas em DGC",
   "invite new user": "Convidar um novo usuário",
   "January": "Janeiro",
@@ -587,10 +574,7 @@
   "You": "Você",
   "You can copy the private key below:": "Você pode copiar a chave privada abaixo:",
   "You can copy the website below:": "Você pode copiar o site da web abaixo:",
-<<<<<<< HEAD
-=======
   "Copy the link and open it in a browser": "Copiar o link e abrir no navegador",
->>>>>>> fingerprintAuth-out
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "Você pode convidar até 10 amigos por dia, com uma recompensa máxima de 10,000 DGC por dia.",
   "You have no archived conversations.": "Você não tem conversas arquivadas.",
   "You have shared this chat": "Você compartilhou este chat",
@@ -616,13 +600,8 @@
   "Upgrade Plan": "Plano de atualização",
   "Upgrade": "Atualizar",
   "Upgrade ": "Atualizar ",
-<<<<<<< HEAD
-  "Upgrade to Plus": "Atualizar para Plus",
-  "Upgrade to Plus failed!": "A atualização para Plus falhou!",
-=======
   "Upgrade to VIP": "Atualizar para VIP",
   "Upgrade to Vip failed!": "A atualização para Vip falhou!",
->>>>>>> fingerprintAuth-out
   "Upgrading": "Atualizando",
   "Failed to obtain authorization information.": "Falha ao obter informações de autorização.",
   "Authorization failed!": "A autorização falhou!",
@@ -635,29 +614,18 @@
   "Close Wallet": "Fechar a carteira",
   "Share to Obtain DGC": "Compartilhar para obter DGC",
   "Buy": "Comprar",
-<<<<<<< HEAD
-  "Node Sale": "Venda de Nó",
-=======
   "Node Sale": "Venda Node",
   "Buy DGC": "Comprar DGC",
   "Enter wallet": "Abrir carteira",
->>>>>>> fingerprintAuth-out
   "Transactions": "Transações",
   "Authed KYC": "KYC autorizado",
   "Complete KYC": "Completar o KYC",
   "Connect Wallet": "Conectar a carteira",
-<<<<<<< HEAD
-  "Create Wallet": "Criar a carteira",
-  "Open Wallet": "Abrir a carteira",
-  "Set as default": "Definir como padrão",
-  "Click to select more models": "Clique para selecionar mais modelos",
-=======
   "Wallet": "Carteira",
   "Create Wallet": "Criar a carteira",
   "Open Wallet": "Abrir a carteira",
   "Set as default": "Definir como padrão",
   "Click to switch models": "Clique para trocar de modelo",
->>>>>>> fingerprintAuth-out
   "Unlimited DGC Reward Task": "Tarefa de recompensa DGC ilimitada",
   "Rewards History": "História de recompensas",
   "Rewards Details": "Detalhes das recompensas",
@@ -671,10 +639,7 @@
   "Account": "Conta",
   "Statistics": "Estatísticas",
   "WebUI Settings": "Configurações da interface web",
-<<<<<<< HEAD
-=======
   "User interface settings": "Configurações da interface do usuário",
->>>>>>> fingerprintAuth-out
   "Theme": "Tema",
   "System": "Sistema",
   "Dark": "Escuro",
@@ -728,16 +693,6 @@
   "When an access node is located in a specific region, it will by default preferentially connect to GPU computing nodes within the same region, reducing latency and enhancing performance.": "Quando um nó de acesso estiver localizado em uma região específica, ele se conectará preferencialmente, por padrão, aos nós de computação GPU da mesma região, reduzindo a latência e melhorando o desempenho.",
   "Download DeGPT to obtain rewards": "Faça o download do DeGPT para obter recompensas.",
   "Switch Models": "Mudar modelos",
-<<<<<<< HEAD
-  "Suitable for most tasks": "Apropriado para a maioria das tarefas",
-  "Suitable for most tasks,Performance comparable to GPT-4o": "Adequado para a maioria das tarefas, Desempenho comparável ao do GPT-4o",
-  "Take photos to solve math problems": "Tirar fotos para resolver problemas de matemática",
-  "Support image recognition": "Suporte para o reconhecimento de imagens",
-  "Optimize code writing": "Otimizar a escrita de código",
-  "Please select at least one model.": "Por favor, selecione pelo menos um modelo.",
-  "You can select up to four models at most.": "Você pode selecionar até quatro modelos no máximo.",
-  "Your friend not complete the KYC verification.": "Seu amigo não completou a verificação KYC.",
-=======
   "Suitable for most tasks, taking photos to solve math problems.": "Apropriado para a maioria das tarefas, resolver problemas matemáticos tirando fotos.",
   "Suitable for most tasks,Performance comparable to GPT-4o": "Adequado para a maioria das tarefas, Desempenho comparável ao do GPT-4o",
   "Deep thinking,mathematical and writing abilities ≈ o3.": "Pensamento profundo, habilidades matemáticas e de escrita ≈ o3.",
@@ -767,7 +722,6 @@
   "Please select at least one model.": "Por favor, selecione pelo menos um modelo.",
   "You can select up to four models at most.": "Você pode selecionar até quatro modelos no máximo.",
   "Your friend needs to complete the check-in three times.": "Seu amigo precisa concluir o check-in três vezes.",
->>>>>>> fingerprintAuth-out
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "O KeyStore foi baixado automaticamente. Se necessário, você pode baixar o JSON manualmente ou copiar a chave privada.",
   "Total": "Total",
   "Channel Distribution": "Distribuição de canais",
@@ -816,20 +770,12 @@
   "II. Referral Reward": "II. Recompensa por Indicação",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "Os usuários da carteira digital que concluíram o KYC convidam outras pessoas a criar carteiras digitais e a concluir o KYC.",
   "The number of people invited each day should not exceed 20.": "O número de pessoas convidadas a cada dia não deve exceder 20.",
-<<<<<<< HEAD
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.": "Para cada pessoa convidada, e se a pessoa convidada fizer login continuamente por três vezes, o convidante receberá uma recompensa de <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.",
-  "III. Clock in Reward": "III. Recompensa por Check-in",
-  "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "A recompensa por check-in é válida por <span style='color: rgba(184, 142, 86, 1);'>60</span> dias após a conclusão da autenticação.",
-  "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Fazer login e check-in por <span style='color: rgba(184, 142, 86, 1);'>1</span> dia pode ganhar recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; máximo de <span style='color: rgba(184, 142, 86, 1);'>30</span> recompensas por check-in.",
-  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "As recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC exigem a conclusão do processo de Conhecimento do Cliente KYC e devem ser reclamadas no mesmo dia; expirarão se não forem reclamadas.",
-=======
   "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is {{ time }}.": "Para cada pessoa convidada, e se a pessoa convidada fizer login continuamente por três vezes, o convidante receberá uma recompensa de <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, A data-limite da atividade é {{ time }}.",
   "III. Clock in Reward": "III. Recompensa por Check-in",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.": "A recompensa por check-in é válida por <span style='color: rgba(184, 142, 86, 1);'>180</span> dias após a conclusão da autenticação.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Fazer login e check-in por <span style='color: rgba(184, 142, 86, 1);'>1</span> dia pode ganhar recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC; máximo de <span style='color: rgba(184, 142, 86, 1);'>30</span> recompensas por check-in.",
   "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "As recompensas de <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC exigem a conclusão do processo de Conhecimento do Cliente KYC e devem ser reclamadas no mesmo dia; expirarão se não forem reclamadas.",
   "The check-in reward has expired!": "O prêmio de check-in expirou!",
->>>>>>> fingerprintAuth-out
   "Show me a code snippet": "Mostre-me um trecho de código",
   "of a website's sticky header": "de um cabeçalho fixo de um site web",
   "Explain options trading": "Explique o trading de opções",
@@ -865,11 +811,7 @@
   "The contract address of DGC": "Endereço do contrato de DGC",
   "Instructions": "Instruções",
   "If the problem remains unresolved, please join the Telegram group and follow us on X": "Se o problema permanecer sem solução, junte-se ao grupo do Telegram e siga-nos no X",
-<<<<<<< HEAD
-  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "Antes do lançamento na rede principal de qualquer plataforma de negociação, as fichas DGC são marcadas como pontos. Esses pontos serão convertidos na proporção 1:1 quando o DGC for lançado oficialmente. A equipe do DGC vai garantir que essa transição ocorra sem problemas e evitar qualquer abuso dessa política.",
-=======
   "Before the mainnet launch on any trading platform, DGC tokens are designated as points. When DGC is officially launched, these points will be converted at a predetermined ratio. The DGC team will ensure a smooth conversion process and prevent any misuse of this policy.": "Antes do lançamento da mainnet em qualquer plataforma de negociação, os tokens DGC são designados como pontos. Quando o DGC for lançado oficialmente, esses pontos serão convertidos em uma proporção predeterminada. A equipe da DGC garantirá um processo de conversão tranquilo e evitará qualquer uso indevido desta política.",
->>>>>>> fingerprintAuth-out
   "About DBC": "Sobre DBC",
   "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "A DeepBrainChain é a primeira cadeia pública de IA do mundo. Seu token nativo, DBC, é usado como taxa de gás neste projeto. Todas as transações DGC requerem uma certa quantidade de DBCs nominais.",
   "Download DeGPT APP": "Baixar o aplicativo DeGPT",
@@ -887,10 +829,7 @@
   "Generating by": "Está sendo gerado por",
   "Thinking...": "Pensando...",
   "thinking...": "pensando...",
-<<<<<<< HEAD
-=======
   "Replying...": "Respondendo...",
->>>>>>> fingerprintAuth-out
   "have thought deeply": "tenho pensado profundamente",
   "What does this picture mean?": "O que significa esta imagem?",
   "Explain this picture": "Explique esta imagem",
@@ -898,26 +837,17 @@
   "What does the symbol in the picture represent?": "O que o símbolo na imagem representa?",
   "Help me solve problems": "Ajude - me a resolver problemas",
   "Last for {{ time }} seconds": "Dura {{ time }} segundos",
-<<<<<<< HEAD
-  "Search the web": "Pesquisar na web",
-  "Search the Twitter": "Pesquisar na Twitter",
-  "Search the YouTube": "Pesquisar na YouTube",
-=======
   "Tool": "Ferramenta",
   "Search the Web": "Pesquisar na web",
   "Search the Twitter": "Pesquisar na Twitter",
   "Search the YouTube": "Pesquisar na YouTube",
   "Translate": "Traduzir",
   "Webpage Reading": "Leitura de página web",
->>>>>>> fingerprintAuth-out
   "search": "pesquisar",
   "Web Search": "Pesquisa na web",
   "YouTube Search": "Pesquisa na YouTube",
   "Twitter Search": "Pesquisa na Twitter",
   "Web Searching ...": "Pesquisando na web ...",
-<<<<<<< HEAD
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Pense profundamente e iguale o desempenho do o3 em tarefas como matemática e escrita criativa",
-=======
   "Paste or enter a link...": "Colar ou inserir um link...",
   "Enter text to translate...": "Digite o texto para traduzir...",
   "Auto-detect": "Detecção automática",
@@ -936,7 +866,6 @@
   "Vietnamese": "vietnamita",
   "Chinese": "chinês",
   "Deep thinking,mathematical and writing abilities ≈ o3": "Pensamento profundo, habilidades matemáticas e de escrita ≈ o3",
->>>>>>> fingerprintAuth-out
   "KYC verification is limited to once every 10 minutes, Please try again later.": "A verificação KYC é limitada a uma vez a cada 10 minutos. Por favor tente novamente mais tarde.",
   "A single IP address can be used for a maximum of two KYC verifications": "Um único endereço IP pode ser usado no máximo duas vezes para verificações KYC.",
   "Check kyc failed, Please try again.": "A verificação KYC falhou. Por favor, tente novamente.",
@@ -944,9 +873,6 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Determine sobre o que se trata o conteúdo da última pergunta nas perguntas acima e apenas exiba o conteúdo",
   "Summarize based on the above YouTube search results:": "Resuma com base nos resultados da pesquisa do YouTube acima:",
   "Summarize based on the above Twitter search results:": "Resuma com base nos resultados da pesquisa do Twitter acima:",
-<<<<<<< HEAD
-  "Summarize based on the above web search results:": "Resuma com base nos resultados da pesquisa na web acima:"
-=======
   "Summarize based on the above web search results:": "Resuma com base nos resultados da pesquisa na web acima:",
   "All Reward Range": "Intervalo total de recompensas",
   "Status": "Status",
@@ -1018,5 +944,4 @@
   "Failed to send transaction !": "Falha ao enviar transação!",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "O saldo de DGC não é suficiente para pagar. Você pode convidar um amigo para obter 3000 DGC.",
   "It seems that you are offline. Please reconnect to send messages.": "Parece que você está offline. Por favor, reconecte-se para enviar mensagens."
->>>>>>> fingerprintAuth-out
 }

@@ -1,9 +1,6 @@
 <script lang="ts">
-<<<<<<< HEAD
-=======
 	import { DropdownMenu } from "bits-ui";
 	import ChevronDown from "$lib/components/icons/ChevronDown.svelte";
->>>>>>> fingerprintAuth-out
 	import { toast } from 'svelte-sonner';
 	import { createEventDispatcher, onMount, getContext } from 'svelte';
 	import { getLanguages } from '$lib/i18n';
@@ -127,10 +124,7 @@
 		console.log(_theme);
 	};
 
-<<<<<<< HEAD
-=======
 	let themeshow = false;
->>>>>>> fingerprintAuth-out
 	const themeChangeHandler = (_theme: string) => {
 		theme.set(_theme);
 		localStorage.setItem('theme', _theme);
@@ -140,28 +134,6 @@
 			document.documentElement.classList.add('dark');
 		}
 		applyTheme(_theme);
-<<<<<<< HEAD
-	};
-
-
-
-
-
-	let isMobile = false;
-
-const checkUserAgent = () => {
-	const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-	// Detecting common mobile device identifiers
-	isMobile = /android|iphone|ipad|iPod|blackberry|opera mini|iemobile|wpdesktop/i.test(userAgent);
-	if(isMobile) {
-		themeChangeHandler("dark")
-	}
-};
-
-onMount(() => {
-	checkUserAgent();
-});
-=======
 		selectedTheme = localStorage.theme ?? 'light';
 		themeshow = false;
 	};
@@ -194,7 +166,6 @@ onMount(() => {
 	onMount(() => {
 		checkUserAgent();
 	});
->>>>>>> fingerprintAuth-out
 
 
 </script>
@@ -202,25 +173,6 @@ onMount(() => {
 <div class="flex flex-col h-full justify-between text-sm">
 	<div class="  pr-1.5 overflow-y-scroll max-h-[25rem]">
 		<div class="">
-<<<<<<< HEAD
-			<div class=" mb-1 text-sm font-medium">{$i18n.t('WebUI Settings')}</div>
-
-			<!-- {#if !isMobile} -->
-			<div class="flex w-full justify-between">
-				<div class=" self-center text-xs font-medium">{$i18n.t('Theme')}</div>
-				<div class="flex items-center relative">
-					<select
-						class=" dark:bg-gray-900 w-fit pr-5 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
-						bind:value={selectedTheme}
-						placeholder="Select a theme"
-						on:change={() => themeChangeHandler(selectedTheme)}
-					>
-						<option class="leading-5 text-center" value="system">⚙️ {$i18n.t('System')}</option>
-						<option class="leading-5 text-center" value="dark">🌑 {$i18n.t('Dark')}</option>
-						<option class="leading-5 text-center" value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
-						<option class="leading-5 text-center" value="light">☀️ {$i18n.t('Light')}</option>
-					</select>
-=======
 			<div class=" mb-1 text-sm font-medium">{$i18n.t('User interface settings')}</div>
 
 			<!-- {#if !isMobile} -->
@@ -279,28 +231,10 @@ onMount(() => {
 							</slot>
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
->>>>>>> fingerprintAuth-out
 				</div>
 			</div>
 			<!-- {/if} -->
 
-<<<<<<< HEAD
-			<div class=" flex w-full justify-between">
-				<div class=" self-center text-xs font-medium">{$i18n.t('Language')}</div>
-				<div class="flex items-center relative">
-					<select
-						class=" dark:bg-gray-900 w-fit pr-5 rounded py-2 px-2 text-xs bg-transparent outline-none text-right"
-						bind:value={lang}
-						placeholder="Select a language"
-						on:change={(e) => {
-							$i18n.changeLanguage(lang);
-							updateUserLanguage(localStorage.token, lang);
-						}}>
-						{#each languages as language}
-							<option class="leading-5 text-center" value={language['code']}>{language['title']}</option>
-						{/each}
-					</select>
-=======
 			<div class=" flex w-full justify-between mt-1">
 				<div class=" self-center text-xs font-medium">{$i18n.t('Language')}</div>
 				<div bind:this={langselView} class="flex items-center">
@@ -342,7 +276,6 @@ onMount(() => {
 							</slot>
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
->>>>>>> fingerprintAuth-out
 				</div>
 			</div>
 			{#if $i18n.language === 'en-US'}
@@ -383,16 +316,6 @@ onMount(() => {
 
 		<hr class=" dark:border-gray-700 my-3" />
 		{#if false}
-<<<<<<< HEAD
-		<div>
-			<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
-			<textarea
-				bind:value={system}
-				class="w-full rounded-lg p-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none resize-none"
-				rows="4"
-			/>
-		</div>
-=======
 			<div>
 				<div class=" my-2.5 text-sm font-medium">{$i18n.t('System Prompt')}</div>
 				<textarea
@@ -401,7 +324,6 @@ onMount(() => {
 					rows="4"
 				/>
 			</div>
->>>>>>> fingerprintAuth-out
 		{/if}
 
 		<div class="mt-2 space-y-3 pr-1.5">

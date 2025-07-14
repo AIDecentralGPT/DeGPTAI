@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-Based on the code snippets you provided, the following technical stack and project directory structure can be inferred.
-
-### **technology stack**
-
-1. **Backend framework**：FastAPI
-2. **ORM**：Peewee
-3. **database**：Not explicitly specified in the code, but Peevee supports databases such as SQLite, PostgreSQL, MySQL, etc.
-4. **Data validation**：Pydantic
-5. **Asynchronous HTTP request**：aiohttp
-6. **Log management**：logging
-7. **middleware**：CORS middleware in FastAPI
-8. **Other libraries** likes **`requests`**、**`uuid`**、**`time`**、**`json`** Used for various auxiliary functions
-
-### **Project directory structure**
-
-Based on the code snippet, it can be inferred that the project directory structure may be as follows:
-
-```csharp
-CSharp Copy Code
-=======
 根据你提供的代码片段，可以推断出以下技术栈和项目目录结构。
 
 ### **技术栈**
@@ -38,49 +17,11 @@ CSharp Copy Code
 
 ```csharp
 csharp复制代码
->>>>>>> fingerprintAuth-out
 project_root/
 │
 ├── apps/
 │   ├── web/
 │   │   ├── internal/
-<<<<<<< HEAD
-│   │   │   └── db.py         # Database initialization and connection
-│   │   ├── models/
-│   │   │   ├── users.py      # User Model Definition
-│   │   │   └── chats.py      # Chats Model definition (speculation)
-│   │   └── internal/
-│   │       └── db.py         # Database connection configuration
-│   └── other_apps/           # Other applications (if any)
-│
-├── utils/
-│   ├── utils.py              # Various practical functions (such as decode_token, get_current user, etc.)
-│   ├── misc.py               # Other miscellaneous utility functions (such as get_gravatar_url, etc.)
-│
-├── config.py                  # Configuration file, containing various constants and configurations
-├── constants.py               # Constant definition file, containing error information, etc
-├── main.py                    # Main application entrance, FastAPI instance, and routing definition
-└── requirements.txt           # Dependency package list
-
-```
-
-### **Specific file content**
-
-- **`apps/web/internal/db.py`**：Define database connection.
-    
-    ```python
-    Copy code in Python
-    from peewee import SqliteDatabase
-    
-    DB = SqliteDatabase('database.db')  # Assuming the use of SQLite database here
-    
-    ```
-    
-- **`apps/web/models/users.py`**：Define operations for the User model and user tables.
-    
-    ```python
-    Copy code in Python
-=======
 │   │   │   └── db.py         # 数据库的初始化和连接
 │   │   ├── models/
 │   │   │   ├── users.py      # User 模型定义
@@ -116,51 +57,26 @@ project_root/
     
     ```python
     python复制代码
->>>>>>> fingerprintAuth-out
     from peewee import *
     from pydantic import BaseModel
     
     class User(Model):
-<<<<<<< HEAD
-        # Model field definition
-=======
         # 模型字段定义
->>>>>>> fingerprintAuth-out
         ...
     
         class Meta:
             database = DB
     
     class UserModel(BaseModel):
-<<<<<<< HEAD
-        # Pydantic Model field definition
-        ...
-    
-    class UsersTable:
-        # Definition of User Table Operation Methods
-=======
         # Pydantic 模型字段定义
         ...
     
     class UsersTable:
         # 用户表操作方法定义
->>>>>>> fingerprintAuth-out
         ...
     
     ```
     
-<<<<<<< HEAD
-- **`utils/utils.py`**：Define utility functions.
-    
-    ```python
-    Copy code in Python
-    def decode_token(token: str):
-        # Token decoding logic
-        ...
-    
-    def get_current_user():
-        # Retrieve the current user logic
-=======
 - **`utils/utils.py`**：定义实用函数。
     
     ```python
@@ -171,22 +87,14 @@ project_root/
     
     def get_current_user():
         # 获取当前用户逻辑
->>>>>>> fingerprintAuth-out
         ...
     
     ```
     
-<<<<<<< HEAD
-- **`main.py`**：Define FastAPI instances and routes.
-    
-    ```python
-    Copy code in Python
-=======
 - **`main.py`**：定义 FastAPI 实例和路由。
     
     ```python
     python复制代码
->>>>>>> fingerprintAuth-out
     from fastapi import FastAPI
     from apps.web.models.users import UsersTable
     from config import DB
@@ -201,12 +109,6 @@ project_root/
     ```
     
 
-<<<<<<< HEAD
-### **summarize**
-
-Your project mainly uses FastAPI as the web framework and Peevee as the ORM to interact with the database. The project directory structure reasonably separates model definitions, utility functions, and configuration files, maintaining good organization and maintainability.
-=======
 ### **总结**
 
 你的项目主要使用 FastAPI 作为 Web 框架，Peewee 作为 ORM，与数据库进行交互。项目目录结构合理地分离了模型定义、实用函数和配置文件，保持了良好的组织和可维护性。
->>>>>>> fingerprintAuth-out

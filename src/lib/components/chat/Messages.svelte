@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
-<<<<<<< HEAD
-	import { chats, config, modelfiles, settings, user as _user, mobile } from '$lib/stores';
-=======
 	import { chats, config, modelfiles, models, settings, user as _user, mobile, deApiBaseUrl, toolflag } from '$lib/stores';
->>>>>>> fingerprintAuth-out
 	import { tick, getContext } from 'svelte';
 
 	import { toast } from 'svelte-sonner';
@@ -19,11 +15,8 @@
 	import { copyToClipboard, findWordIndices } from '$lib/utils';
 	import CompareMessages from './Messages/CompareMessages.svelte';
 	import { stringify } from 'postcss';
-<<<<<<< HEAD
-=======
 	import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
 	import { generateSearchKeyword } from "$lib/apis/de";
->>>>>>> fingerprintAuth-out
 
 	const i18n = getContext('i18n');
 
@@ -41,10 +34,7 @@
 	export let autoScroll;
 	export let history = {};
 	export let messages = [];
-<<<<<<< HEAD
-=======
 	export let chatInputPlaceholder = "";
->>>>>>> fingerprintAuth-out
 
 	export let selectedModels;
 	export let selectedModelfiles = [];
@@ -68,12 +58,9 @@
 		}
 	};
 
-<<<<<<< HEAD
-=======
 	// 用于判断是否是网络搜索需要重新赋值
 	const toolTypes = ["bing", "twitter", "youtube"];
 
->>>>>>> fingerprintAuth-out
 	const confirmEditMessage = async (messageId, content) => {
 		let userPrompt = content;
 		let userMessageId = uuidv4();
@@ -85,13 +72,10 @@
 			role: 'user',
 			content: userPrompt,
 			...(history.messages[messageId].files && { files: history.messages[messageId].files }),
-<<<<<<< HEAD
-=======
 			...(history.messages[messageId].toolflag && { toolflag: history.messages[messageId].toolflag }),
 			...(history.messages[messageId].tooltype && { tooltype: history.messages[messageId].tooltype }),
 			...(history.messages[messageId].toolInfo && { toolInfo: history.messages[messageId].toolInfo }),
 			...(history.messages[messageId].parseInfo && { parseInfo: history.messages[messageId].parseInfo }),
->>>>>>> fingerprintAuth-out
 			models: selectedModels.filter((m, mIdx) => selectedModels.indexOf(m) === mIdx)
 		};
 
@@ -107,22 +91,6 @@
 		history.messages[userMessageId] = userMessage;
 		history.currentId = userMessageId;
 
-<<<<<<< HEAD
-		// Verify the number of times the model has been used
-    let modelLimit = {}
-    for (const item of selectedModels) {
-      const {passed, message} = await conversationRefresh(localStorage.token, item);
-      if (!passed) {
-        modelLimit[item] = message;
-      }  
-    }
-
-		// Create Simulate ResopnseMessage
-		let responseMap: any = {};
-
-		await tick();
-		await sendPrompt(userPrompt, userMessageId, responseMap, modelLimit);
-=======
 		// Create Simulate ResopnseMessage
 		let responseMap: any = {};
 		userMessage?.models.forEach(async (modelId:string) => {
@@ -284,7 +252,6 @@
 
 		await tick();
 		await sendPrompt(userPrompt, responseMap, modelLimit);
->>>>>>> fingerprintAuth-out
 	};
 
 	const updateChatMessages = async () => {
@@ -444,8 +411,6 @@
 			history: history
 		});
 	};
-<<<<<<< HEAD
-=======
 
 	// 获取搜索网页
   const handleSearchWeb= async(userPrompt: string, toolType: string) => {
@@ -488,7 +453,6 @@
       return `${userPrompt}`;
     }
   };
->>>>>>> fingerprintAuth-out
 </script>
 
 <div class="h-full flex mb-16">
@@ -497,15 +461,9 @@
 			models={selectedModels}
 			modelfiles={selectedModelfiles}
 			{suggestionPrompts}
-<<<<<<< HEAD
-			submitPrompt={async (p) => {
-				let text = p;
-
-=======
 			submitPrompt={async (p, idx) => {
 				prompt = "";
 				let text = p;
->>>>>>> fingerprintAuth-out
 				if (p.includes('{{CLIPBOARD}}')) {
 					const clipboardText = await navigator.clipboard.readText().catch((err) => {
 						toast.error($i18n.t('Failed to read clipboard contents'));
@@ -515,30 +473,21 @@
 					text = p.replaceAll('{{CLIPBOARD}}', clipboardText);
 				}
 
-<<<<<<< HEAD
-				prompt = text;
-
-=======
 				if (idx == 0) {
 					chatInputPlaceholder = text;
 				} else {
 					prompt = text;
 				}
 				
->>>>>>> fingerprintAuth-out
 				await tick();
 
 				const chatInputElement = document.getElementById('chat-textarea');
 				if (chatInputElement) {
-<<<<<<< HEAD
-					prompt = p;
-=======
 					if (idx == 0) {
 						chatInputPlaceholder = text;
 					} else {
 						prompt = text;
 					}
->>>>>>> fingerprintAuth-out
 
 					chatInputElement.style.height = '';
 					chatInputElement.style.height = Math.min(chatInputElement.scrollHeight, 200) + 'px';
@@ -551,11 +500,7 @@
 						chatInputElement.setSelectionRange(word?.startIndex, word.endIndex + 1);
 					}
 				}
-<<<<<<< HEAD
-
-=======
 				
->>>>>>> fingerprintAuth-out
 				await tick();
 			}}
 		/>
@@ -563,11 +508,7 @@
 		<div class="w-full pt-2">
 			{#key chatId}
 				{#each messages as message, messageIdx}
-<<<<<<< HEAD
-					<div class=" w-full {messageIdx === messages.length - 1 ? 'pb-28' : ''}">
-=======
 					<div class=" w-full {messageIdx === messages.length - 1 ? ($toolflag ? 'pb-48' : 'pb-28') : ''}">
->>>>>>> fingerprintAuth-out
 						<div
 							class="flex flex-col justify-between px-6 md:px-20 mb-3 {$settings?.fullScreenMode ?? null
 								? 'max-w-full'
@@ -598,10 +539,7 @@
 										siblings={history.messages[message.parentId]?.childrenIds ?? []}
 										isLastMessage={messageIdx + 1 === messages.length}
 										{readOnly}
-<<<<<<< HEAD
-=======
 										{resentMessage}
->>>>>>> fingerprintAuth-out
 										{updateChatMessages}
 										{confirmEditResponseMessage}
 										{showPreviousMessage}

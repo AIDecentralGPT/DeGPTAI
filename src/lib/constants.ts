@@ -24,10 +24,7 @@ export const REQUIRED_OLLAMA_VERSION = "0.1.16";
 
 export const SUPPORTED_FILE_TYPE = [
   "application/epub+zip",
-<<<<<<< HEAD
-=======
   "application/msword",
->>>>>>> fingerprintAuth-out
   "application/pdf",
   "text/plain",
   "text/csv",
@@ -40,49 +37,6 @@ export const SUPPORTED_FILE_TYPE = [
   "application/x-javascript",
   "text/markdown",
   "audio/mpeg",
-<<<<<<< HEAD
-  "audio/wav",
-];
-
-export const SUPPORTED_FILE_EXTENSIONS = [
-  "md",
-  "rst",
-  "go",
-  "py",
-  "java",
-  "sh",
-  "bat",
-  "ps1",
-  "cmd",
-  "js",
-  "ts",
-  "css",
-  "cpp",
-  "hpp",
-  "h",
-  "c",
-  "cs",
-  "htm",
-  "html",
-  "sql",
-  "log",
-  "ini",
-  "pl",
-  "pm",
-  "r",
-  "dart",
-  "dockerfile",
-  "env",
-  "php",
-  "hs",
-  "hsc",
-  "lua",
-  "nginxconf",
-  "conf",
-  "m",
-  "mm",
-  "plsql",
-=======
   "audio/wav"
 ];
 
@@ -129,30 +83,13 @@ export const SUPPORTED_FILE_EXTENSIONS = [
   "lua",
   "m",
   "mm",
->>>>>>> fingerprintAuth-out
   "perl",
   "rb",
   "rs",
   "db2",
   "scala",
-<<<<<<< HEAD
-  "bash",
-  "swift",
-  "vue",
-  "svelte",
-  "doc",
-  "docx",
-  "pdf",
-  "csv",
-  "txt",
-  "xls",
-  "xlsx",
-  "pptx",
-  "ppt",
-=======
   "dockerfile",
   "yml"
->>>>>>> fingerprintAuth-out
 ];
 
 // Source: https://kit.svelte.dev/docs/modules#$env-static-public

@@ -476,17 +476,6 @@ export const imageGenerations = async (token: string = '', prompt: string) => {
 
 export const getImageProxy = async (image_base64: string) => {
 	try {
-<<<<<<< HEAD
-		// Initiate GET request
-		const response = await fetch(`${IMAGES_API_BASE_URL}/image_proxy/${image_base64}`);
-		if (!response.ok) {
-			throw new Error(`Request failed, status code: ${response.status}`);
-		}
-		// Retrieve the text content of the response
-		return await response.json();
-	} catch (error) {
-		throw new Error(`Request failed, status code: ${error}`);
-=======
 		// 发起 GET 请求
 		const response = await fetch(`${IMAGES_API_BASE_URL}/image_proxy/${image_base64}`);
 		if (!response.ok) {
@@ -496,6 +485,5 @@ export const getImageProxy = async (image_base64: string) => {
 		return await response.json();
 	} catch (error) {
 		throw new Error(`请求失败，状态码: ${error}`);
->>>>>>> fingerprintAuth-out
 	}
 };

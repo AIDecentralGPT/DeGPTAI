@@ -20,11 +20,7 @@ export default {
 					950: 'var(--color-gray-950, #0d0d0d)'
 				},
 				primary: {
-<<<<<<< HEAD
-					DEFAULT: 'rgba(184, 142, 86, 1)',  // You can change the default colors as needed
-=======
 					DEFAULT: 'rgba(184, 142, 86, 1)',  // 你可以根据需要更改默认颜色
->>>>>>> fingerprintAuth-out
 					light: 'rgba(184, 142, 86, 1)',
 					dark: 'rgba(184, 142, 86, 1)',
 			},
@@ -39,11 +35,7 @@ export default {
 						'pre code': false,
 						'code::before': false,
 						'code::after': false,
-<<<<<<< HEAD
-						// Modify the margin of the hr tag in the default prose style
-=======
 						// 修改默认的 prose 样式中 hr 标签的 margin
->>>>>>> fingerprintAuth-out
 						hr: {
 							marginTop: '0.1em',
 							marginBottom: '0.1em',

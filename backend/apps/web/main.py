@@ -14,19 +14,12 @@ from apps.web.routers import (
     device,
     ip_log,
     rewards,
-<<<<<<< HEAD
-    conversation,
-    third,
-    kycrestrict,
-    error_log
-=======
     reward_date,
     conversation,
     third,
     kycrestrict,
     error_log,
     completion
->>>>>>> fingerprintAuth-out
 )
 from config import (
     WEBUI_VERSION,
@@ -85,20 +78,14 @@ app.include_router(utils.router, prefix="/utils", tags=["utils"])
 app.include_router(device.router, prefix="/devices", tags=["devices"])
 app.include_router(ip_log.router, prefix="/ip_logs", tags=["ip_logs"])
 app.include_router(rewards.router, prefix="/rewards", tags=["rewards"])
-<<<<<<< HEAD
-=======
 app.include_router(reward_date.router, prefix="/rewarddate", tags=["reward_date"])
->>>>>>> fingerprintAuth-out
 app.include_router(conversation.router, prefix="/conversation", tags=["conversation"])
 app.include_router(third.router, prefix="/third", tags=["third"])
 app.include_router(kycrestrict.router, prefix="/kyc", tags=["kyc"])
 app.include_router(error_log.router, prefix="/errorlog", tags=["error_log"])
 
-<<<<<<< HEAD
-=======
 app.include_router(completion.router, prefix="/chat", tags=["aliqwen"])
 
->>>>>>> fingerprintAuth-out
 @app.get("/")
 async def get_status():
     return {

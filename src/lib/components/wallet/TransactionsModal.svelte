@@ -37,15 +37,9 @@
     
     try {
       const res = await getTransactions($user?.id);
-<<<<<<< HEAD
-      // Merge two item arrays
-      const mergedItems = [...res[0].items, ...res[1].items];
-      // Sort by time
-=======
       // 合并两个 items 数组
       const mergedItems = [...res[0].items, ...res[1].items];
       // 按时间排序
->>>>>>> fingerprintAuth-out
       mergedItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
       transactionsList = mergedItems.filter((item) => !!item.value)?.map((item) => {
@@ -92,11 +86,7 @@
     
   }
 
-<<<<<<< HEAD
-  // Paging function
-=======
   // 分页功能
->>>>>>> fingerprintAuth-out
   let currentPage = 0;
   let pageSize = 10;
   let loading = false;

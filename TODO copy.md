@@ -3,11 +3,7 @@
 
 
 
-<<<<<<< HEAD
-Focused on DBC, converted to 10, but only converted to 0.01?
-=======
 专注dbc，转10，但是只转了0.01？
->>>>>>> fingerprintAuth-out
 
 
 
@@ -44,15 +40,9 @@ Required-by: alibabacloud-cloudauth-intl20220809
 
 
 
-<<<<<<< HEAD
-Click to complete verification, merchant_biz_id and tra. Storage and verification 
-Check for plagiarism in face_id during verification 
-After completing the facial recognition, jump to the page
-=======
 点击完成校验，merchant_biz_id和tra。的存储，校验
 校验时候对 face_id的查重
 人脸完成后跳转页面
->>>>>>> fingerprintAuth-out
 
 
 
@@ -69,22 +59,14 @@ After completing the facial recognition, jump to the page
 
 
 
-<<<<<<< HEAD
-Account：
-=======
 账号：
->>>>>>> fingerprintAuth-out
 
 0x1502587239ca6893f8A70a2363E2038B1B343E8e
 0x0b49cbbdb80dfa2160508b91ef6b40c77c2c252b8c6c4da51765a3c37a4a1094
 
 
 
-<<<<<<< HEAD
-0xfa419592Eb6E61aAA113D078276f022eE0B57292  (Use this for live testing)
-=======
 0xfa419592Eb6E61aAA113D078276f022eE0B57292  (用这个通过活体检测)
->>>>>>> fingerprintAuth-out
 0xfc86cf668c2c9b5defd9f6c5859af5ac3abe27c61ec44ed3bf8a742b166d54dd
 0 0
 
@@ -94,30 +76,6 @@ DBC: 4.99
 DGC: 985.00
 
 
-<<<<<<< HEAD
-Add a check to determine if plugins have been installed
-
-Live detection 
-Three party wallet transfer dgc 
-Limit the number of times, need to transmit 
-1. User wallet public key address 
-2. Signature 
-3. Hash of signed data
-
-
-How to modify the authentication status of liveness testing if the user does not click the 'Complete liveness' button? (To modify it on the next click, two IDs need to be saved. Is there any other method?) 
-The number of rewards is determined by the Heaven interface 
-Add two pages after the domain degpt. ai/: one for 'privilege' and one for 'terms'. 
-1. Add parameters related to wallet signature. 
-2. Optimize the model calling interface that uses the project name without the NodeID parameter. 
-Share it out, 
-① The content (at least the prompt words of user A can be divided into lines for user B, and user B can directly see them when they open it). 
-② Can be gamified. Share on TG, Twitter, or WeChat. Bind the sharer's ID. Refer to Deeplink, as long as the downloaded file is automatically bound. 
-2 points can be exchanged for DGC, tasks, and points directly 
-3 Recommendations 
-On the mobile web version, add two buttons, Android Download and Apple Download, but there is no need to add a download button in the Android and Apple client. 
-I have updated the chat.degpt.ai node
-=======
 加一个检测有没有安装插件的判断
 
 活体检测
@@ -152,4 +110,3 @@ I have updated the chat.degpt.ai node
 
 
 chat.degpt.ai那个节点我更新了
->>>>>>> fingerprintAuth-out

@@ -22,11 +22,6 @@ router = APIRouter()
 ############################
 # GetDocuments
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/", response_model=List[DocumentResponse])
 async def get_documents(user=Depends(get_current_user)):
     docs = [
@@ -44,11 +39,6 @@ async def get_documents(user=Depends(get_current_user)):
 ############################
 # CreateNewDoc
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.post("/create", response_model=Optional[DocumentResponse])
 async def create_new_doc(form_data: DocumentForm, user=Depends(get_admin_user)):
     doc = Documents.get_doc_by_name(form_data.name)
@@ -77,11 +67,6 @@ async def create_new_doc(form_data: DocumentForm, user=Depends(get_admin_user)):
 ############################
 # GetDocByName
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.get("/name/{name}", response_model=Optional[DocumentResponse])
 async def get_doc_by_name(name: str, user=Depends(get_current_user)):
     doc = Documents.get_doc_by_name(name)
@@ -103,11 +88,6 @@ async def get_doc_by_name(name: str, user=Depends(get_current_user)):
 ############################
 # TagDocByName
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 class TagItem(BaseModel):
     name: str
 
@@ -138,11 +118,6 @@ async def tag_doc_by_name(form_data: TagDocumentForm, user=Depends(get_current_u
 ############################
 # UpdateDocByName
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.post("/name/{name}/update", response_model=Optional[DocumentResponse])
 async def update_doc_by_name(
     name: str, form_data: DocumentUpdateForm, user=Depends(get_admin_user)
@@ -165,11 +140,6 @@ async def update_doc_by_name(
 ############################
 # DeleteDocByName
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.delete("/name/{name}/delete", response_model=bool)
 async def delete_doc_by_name(name: str, user=Depends(get_admin_user)):
     result = Documents.delete_doc_by_name(name)

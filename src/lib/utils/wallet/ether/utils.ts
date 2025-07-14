@@ -8,18 +8,6 @@ import { updateWalletData } from "../walletUtils";
 import dayjs from 'dayjs';
 import { Base64 } from 'js-base64';
 
-<<<<<<< HEAD
-// Define RPC URL and Chain ID
-// const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // Old RPC URL
-const rpcUrl = "https://rpc.dbcwallet.io"; // New RPC URL
-// const chainId = 19850818; // Old Chain ID
-const chainId = 19880818; // New Chain ID
-
-// Create provider
-const provider = new ethers.JsonRpcProvider(rpcUrl);
-
-// Signature data
-=======
 // 定义 RPC URL 和 Chain ID
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
 const rpcUrl = "https://rpc1.dbcwallet.io"; // 新 的 RPC URL
@@ -30,7 +18,6 @@ const chainId = 19880818; //新 的 Chain ID
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 // 签名数据
->>>>>>> fingerprintAuth-out
 export async function signData(data, privateKey) {
   const wallet = new ethers.Wallet(privateKey, provider);
   const dataBytes = ethers.toUtf8Bytes(data);
@@ -40,37 +27,19 @@ export async function signData(data, privateKey) {
   return signature;
 }
 
-<<<<<<< HEAD
-// Real time price inquiry
-export async function getCurrencyPrice(currency) {
-  // This is a virtual price query example, which requires calling the real price API for actual use
-  const price = 2.5; // Assuming the price is 2.5
-=======
 // 查询实时价格
 export async function getCurrencyPrice(currency) {
   // 这里是一个虚拟的价格查询示例，实际使用时需要调用真实的价格 API
   const price = 2.5; // 假设价格为 2.5
->>>>>>> fingerprintAuth-out
   console.log(`Current ${currency} price:`, price, "USD");
   return price;
 }
 
-<<<<<<< HEAD
-// Encrypt the wallet and save it to localStorage
-=======
 // 加密钱包并保存到 localStorage
->>>>>>> fingerprintAuth-out
 export async function storeWallet(wallet, password) {
   console.log("wallet", wallet, password);
 
   const keystore = await wallet.encrypt(password);
-<<<<<<< HEAD
-  console.log("Encrypted Keystore file:", keystore);
-  return keystore;
-}
-
-// From localStorage Load and decrypt the wallet in the middle
-=======
   console.log("加密后的Keystore文件:", keystore);
   return keystore;
 
@@ -79,7 +48,6 @@ export async function storeWallet(wallet, password) {
 }
 
 // 从 localStorage 中加载并解密钱包
->>>>>>> fingerprintAuth-out
 export async function loadWallet(password) {
   const json = localStorage.getItem("ethereum_wallet");
   const wallet = await ethers.Wallet.fromEncryptedJson(json, password);
@@ -90,37 +58,19 @@ export async function loadWallet(password) {
 //   console.log('Address:', wallet.address);
 // });
 
-<<<<<<< HEAD
-// Create a new wallet account
-=======
 // 创建一个新的 钱包 账户
->>>>>>> fingerprintAuth-out
 export async function createAccount(password: string) {
   const wallet = ethers.Wallet.createRandom();
   console.log("New DBC account created:");
   console.log("Address:", wallet.address);
   console.log("Private Key:", wallet.privateKey);
-<<<<<<< HEAD
-  console.log("Mnemonic Mnemonic words:", wallet.mnemonic.phrase); // Prompt users to backup this mnemonic word
-=======
   console.log("Mnemonic 助记词:", wallet.mnemonic.phrase); // 提示用户备份这个助记词
->>>>>>> fingerprintAuth-out
 
   // const ethAddress = '0x82b1a3d719dDbFDa07AD1312c3063a829e1e66F1';
   // const balance = await provider.getBalance(ethAddress);
   // const ethValue = ethers.formatEther(balance);
 
   //       // const ethValue = ethers.formatEther(balance);
-<<<<<<< HEAD
-  //       console.log("On chain balance", balance);
-
-  // Set password to encrypt Keystore files
-  const keystore = await storeWallet(wallet, password);
-
-  return {
-    wallet, // Wallet Object
-    keystore, // Encrypted Keystore file
-=======
   //       console.log("链上余额", balance);
 
   // 设置密码以加密Keystore文件
@@ -129,16 +79,11 @@ export async function createAccount(password: string) {
   return {
     wallet, // 钱包对象
     keystore, // 加密后的Keystore文件
->>>>>>> fingerprintAuth-out
     accountPrivateKey: wallet.privateKey,
   };
 }
 
-<<<<<<< HEAD
-// Download Wallet Json
-=======
 // 下载钱包Json
->>>>>>> fingerprintAuth-out
 export function downloadKeyStore(keyStoreStr: string) {
   console.log("keyStoreStr", keyStoreStr);
 
@@ -159,9 +104,6 @@ export function downloadKeyStore(keyStoreStr: string) {
   // console.log("Generated Wallet:", json);
 }
 
-<<<<<<< HEAD
-// Import from encrypted JSON Keystore file
-=======
 // ----------导出和导入JSON文件-------------
 // // 导出为加密 JSON keystore 文件
 // async function exportEncryptedJson(wallet, password) {
@@ -183,43 +125,29 @@ export function downloadKeyStore(keyStoreStr: string) {
 // }
 
 // 从加密 JSON keystore 文件导入
->>>>>>> fingerprintAuth-out
 async function importFromEncryptedJson(json, password) {
   const wallet = await ethers.Wallet.fromEncryptedJson(json, password);
   console.log("Imported Wallet Address:", wallet.address);
   return wallet;
 }
 
-<<<<<<< HEAD
-// Signature message
-=======
 // 签名消息
->>>>>>> fingerprintAuth-out
 async function signMessage(wallet, message) {
   const signature = await wallet.signMessage(message);
   console.log("Signature:", signature);
   return signature;
 }
 
-<<<<<<< HEAD
-// verify signature
-=======
 // 验证签名
->>>>>>> fingerprintAuth-out
 function verifyMessage(message, signature) {
   const recoveredAddress = ethers.utils.verifyMessage(message, signature);
   console.log("Recovered Address:", recoveredAddress);
   return recoveredAddress;
 }
 
-<<<<<<< HEAD
-// --------Wallet login------------
-// User Signature Challenge
-=======
 // --------钱包登录------------
 
 // 用户签名挑战
->>>>>>> fingerprintAuth-out
 export async function signChallenge(wallet, challenge) {
   const walletWithProvider = new ethers.Wallet(
     wallet.privateKey,
@@ -229,21 +157,13 @@ export async function signChallenge(wallet, challenge) {
   return signature;
 }
 
-<<<<<<< HEAD
-// Example Verification Signature Function
-=======
 // 示例验证签名的函数
->>>>>>> fingerprintAuth-out
 export async function verifySignature(wallet, challenge, signature) {
   const recoveredAddress = ethers.verifyMessage(challenge, signature);
   return recoveredAddress === wallet.address;
 }
 
-<<<<<<< HEAD
-// Use mnemonic words to restore wallet
-=======
 // 使用助记词恢复钱包
->>>>>>> fingerprintAuth-out
 function restoreWallet(mnemonic) {
   const wallet = ethers.Wallet.fromMnemonic(mnemonic);
   console.log("Restored Wallet:");
@@ -251,21 +171,13 @@ function restoreWallet(mnemonic) {
   return wallet;
 }
 
-<<<<<<< HEAD
-// Example usage
-=======
 // 使用示例
->>>>>>> fingerprintAuth-out
 async function demo(params) {
   const wallet = await createAccount();
   console.log("Generated Wallet:");
   console.log("Address:", wallet.address);
   console.log("Private Key:", wallet.privateKey);
-<<<<<<< HEAD
-  console.log("Mnemonic:", wallet.mnemonic.phrase); // Prompt users to backup this mnemonic word
-=======
   console.log("Mnemonic:", wallet.mnemonic.phrase); // 提示用户备份这个助记词
->>>>>>> fingerprintAuth-out
 
   // const signature = await signChallenge(wallet, message);
   // console.log("Signature:", signature);
@@ -273,16 +185,6 @@ async function demo(params) {
   // const isValid = await verifySignature(wallet, message, signature);
   // console.log("Signature Valid:", isValid);
 
-<<<<<<< HEAD
-  // After backing up the mnemonic words, users can use the following code to restore their wallet
-  const restoredWallet = restoreWallet(wallet.mnemonic.phrase);
-
-  // Signature Challenge
-  const signature = await signChallenge(restoredWallet, message);
-  console.log("Signature:", signature);
-
-  // Verify signature
-=======
   // 用户备份助记词后，可以用以下代码恢复钱包
   const restoredWallet = restoreWallet(wallet.mnemonic.phrase);
 
@@ -291,7 +193,6 @@ async function demo(params) {
   console.log("Signature:", signature);
 
   // 验证签名
->>>>>>> fingerprintAuth-out
   const isValid = await verifySignature(
     restoredWallet.address,
     message,
@@ -300,35 +201,15 @@ async function demo(params) {
   console.log("Signature Valid:", isValid);
 }
 
-<<<<<<< HEAD
-// Import wallet through Keystore and Password
-async function importWallet(encryptedJson, password) {
-  // Import wallet from encrypted JSON Keystore file
-=======
 // 通过keystore和password 导入钱包
 async function importWallet(encryptedJson, password) {
   // 从加密 JSON keystore 文件导入钱包
->>>>>>> fingerprintAuth-out
   const importedWallet = await importFromEncryptedJson(encryptedJson, password);
   console.log("importedWallet", importedWallet);
   return importedWallet;
 }
 
 /**
-<<<<<<< HEAD
- * Unlock wallet with private key
- * @param {string} privateKey - User's wallet private key
- * @returns {object} wallet - Unlocked wallet object
- */
-export async function unlockWalletWithPrivateKey(privateKey:string) {
-  try {
-    // Create wallet object using private key and provider
-    const wallet = new ethers.Wallet(privateKey, provider);
-    console.log("Wallet address:", wallet.address);
-    return {ok: true, data: wallet};
-  } catch (error) {
-    console.error("Unlocking wallet failed:", error);
-=======
  * 使用私钥解锁钱包
  * @param {string} privateKey - 用户的钱包私钥
  * @returns {object} wallet - 解锁后的钱包对象
@@ -341,7 +222,6 @@ export async function unlockWalletWithPrivateKey(privateKey:string) {
     return {ok: true, data: wallet};
   } catch (error) {
     console.error("解锁钱包失败:", error);
->>>>>>> fingerprintAuth-out
     return {ok: false, message: "Invalid private key"};
   }
 }
@@ -351,15 +231,6 @@ async function unLockWithJsonAndPwdDemo() {
 
   const password = "your_password";
 
-<<<<<<< HEAD
-  // Export encrypted JSON Keystore file
-  const encryptedJson = await exportEncryptedJson(wallet, password);
-
-  // Import wallet from encrypted JSON Keystore file
-  const importedWallet = await importFromEncryptedJson(encryptedJson, password);
-
-  // Sign and verify messages
-=======
   // 导出加密 JSON keystore 文件
   const encryptedJson = await exportEncryptedJson(wallet, password);
 
@@ -367,7 +238,6 @@ async function unLockWithJsonAndPwdDemo() {
   const importedWallet = await importFromEncryptedJson(encryptedJson, password);
 
   // 签名和验证消息
->>>>>>> fingerprintAuth-out
   const message = "Hello, Ethereum!";
   const signature = await signMessage(importedWallet, message);
   const isValid = verifyMessage(message, signature) === importedWallet.address;
@@ -382,11 +252,7 @@ function generateRandomMessage(length) {
   return ethers.hexlify(randomBytes);
 }
 
-<<<<<<< HEAD
-// Login Wallet
-=======
 // 登录钱包
->>>>>>> fingerprintAuth-out
 async function handleWalletSignIn({
   walletImported,
   address_type,
@@ -403,10 +269,6 @@ async function handleWalletSignIn({
   let walletSignInResult = {};
   const randomMessage = generateRandomMessage(32);
 
-<<<<<<< HEAD
-  if (address_type === "threeSide") {  
-    // Using base64 encryption for transmission
-=======
   if (address_type === "threeSide") {
     // Example: Generate a random message of 32 bytes (256 bits)
     // const signature = threeSideSignature;
@@ -423,7 +285,6 @@ async function handleWalletSignIn({
     // );
     
     // 采用base64加密传输
->>>>>>> fingerprintAuth-out
     let combinedText = '';
     for (let i = 0; i < randomMessage.length; i++) {
       let charCode = randomMessage.charCodeAt(i);
@@ -449,19 +310,13 @@ async function handleWalletSignIn({
     // const { nonce, signature } = await signData(pair, password, undefined);
 
     // console.log("pair, password", pair, password);
-<<<<<<< HEAD
-    // Simulated random challenges or data
-=======
     // 模拟的随机挑战或数据
->>>>>>> fingerprintAuth-out
     const message = randomMessage;
     const prefixedMessage =
       "\x19Ethereum Signed Message:\n" + message.length + message;
 
     const signature = await signChallenge(walletImported, prefixedMessage);
 
-<<<<<<< HEAD
-=======
     // 将消息转换为十六进制字符串
     // const messageHex = ethers.hexlify(ethers.toUtf8Bytes(message));
     // console.log("Message Hex:", messageHex);
@@ -474,7 +329,6 @@ async function handleWalletSignIn({
     //   }
     // );
 
->>>>>>> fingerprintAuth-out
     walletSignInResult = await walletSignIn({
       address: walletImported?.address,
       nonce: prefixedMessage,
@@ -523,20 +377,11 @@ async function handleWalletSignIn({
       localStorage.walletImported = JSON.stringify(localWalletImported);
     }  
 
-<<<<<<< HEAD
-    // Determine whether the user is a VIP
-    const proInfo = await isPro(localStorage.token);
-    user.set({
-      ...walletSignInResult,
-      isPro: proInfo ? proInfo.is_pro : false,
-      proEndDate: proInfo ? proInfo.end_date : null
-=======
     // 获取用户是否是VIP
     const proInfo = await isPro(localStorage.token);
     user.set({
       ...walletSignInResult,
       vipInfo: proInfo
->>>>>>> fingerprintAuth-out
     });
 
   }
@@ -549,29 +394,17 @@ async function signOut(channel: string) {
   const res = await printSignIn(channel);
   localStorage.token = res.token;
   user.set(res);
-<<<<<<< HEAD
-  console.log("Fingerprint login:", res);
-=======
   console.log("指纹登录了", res);
->>>>>>> fingerprintAuth-out
 }
 
 export { provider, demo, importWallet, handleWalletSignIn, getGas, signOut };
 
 async function getGas() {
-<<<<<<< HEAD
-  // Get the current recommended gas price
-  const gasPrice = (await provider.getFeeData()).gasPrice;
-
-  // Set gasLimit to a reasonable value based on specific circumstances
-  const gasLimit = 210000; // Assuming the gasLimit of the transfer transaction here
-=======
   // 获取当前推荐的 gas price
   const gasPrice = (await provider.getFeeData()).gasPrice;
 
   // 设置 gasLimit，可以根据具体情况设定一个合理的值
   const gasLimit = 210000; // 这里假设转账交易的 gasLimit
->>>>>>> fingerprintAuth-out
 
   return {
     gasPrice: gasPrice,

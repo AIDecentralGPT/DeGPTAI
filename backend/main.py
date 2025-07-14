@@ -10,11 +10,7 @@ from fastapi import FastAPI, Request, Depends, status
 from fastapi.staticfiles import StaticFiles
 from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-<<<<<<< HEAD
-from fastapi.responses import RedirectResponse
-=======
 from fastapi.responses import RedirectResponse, FileResponse
->>>>>>> fingerprintAuth-out
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import StreamingResponse, Response
@@ -409,22 +405,14 @@ async def healthcheck():
 def redirect_to_url(request: Request, id: str):
     headers = request.headers
     host = headers.get('host')
-<<<<<<< HEAD
-    # Replace with the URL you want to redirect to
-=======
     # 替换成你想要跳转到的网址
->>>>>>> fingerprintAuth-out
     return RedirectResponse(url=f'https://{host}?inviter={id}')
 
 @app.get('/channel/{name}')
 def redirect_to_url(request: Request, name: str):
     headers = request.headers
     host = headers.get('host')
-<<<<<<< HEAD
-    # Replace with the URL you want to redirect to
-=======
     # 替换成你想要跳转到的网址
->>>>>>> fingerprintAuth-out
     return RedirectResponse(url=f'https://{host}?channel={name}')
 
 
@@ -465,8 +453,4 @@ async def add_process_time_and_error_logging(request: Request, call_next):
     except Exception as e:
         process_time = time.time() - start_time
         log.error(f"Path: {request.url.path}, Error: {str(e)}, Process Time: {process_time:.2f}s")
-<<<<<<< HEAD
-        raise  # Re throw the exception and let FastAPI's error handler handle it
-=======
         raise  # 重新抛出异常，让 FastAPI 的错误处理器处理它
->>>>>>> fingerprintAuth-out

@@ -5,11 +5,7 @@
   import Modal from "../common/Modal.svelte";
   import { toast } from "svelte-sonner";
   import { copyToClipboard } from "$lib/utils";
-<<<<<<< HEAD
-  import { user } from "$lib/stores";
-=======
   import { user, showUserVerifyModal } from "$lib/stores";
->>>>>>> fingerprintAuth-out
   import {
     getRewardsHistory,
     creatWalletCheck,
@@ -22,11 +18,7 @@
 
   export let show = true;
 
-<<<<<<< HEAD
-  // Run once when the component is mounted
-=======
   // 当组件挂载时运行一次
->>>>>>> fingerprintAuth-out
   onMount(async () => {
     if (show) {
       firstCtrl = true;
@@ -34,17 +26,10 @@
     }
   });
 
-<<<<<<< HEAD
-  // Using variables to track changes in show status
-  let previousShow = show;
-
-  // Run when show status changes
-=======
   // 使用变量来跟踪 show 状态的变化
   let previousShow = show;
 
   // 当 show 状态变化时运行
->>>>>>> fingerprintAuth-out
   beforeUpdate(async () => {
     if (show !== previousShow) {
       previousShow = show;
@@ -56,11 +41,7 @@
     }
   });
 
-<<<<<<< HEAD
-  // Paging function
-=======
   // 分页功能
->>>>>>> fingerprintAuth-out
   let currentPage = 1;
   let prePage = 1;
   let pageSize = 10;
@@ -344,10 +325,7 @@
                             toast.warning(
                               $i18n.t("Please complete the KYC verification !")
                             );
-<<<<<<< HEAD
-=======
                             $showUserVerifyModal = true;
->>>>>>> fingerprintAuth-out
                           }
                         }}
                       >
@@ -365,11 +343,7 @@
                 {dayjs(historyItem.reward_date).format("YYYY-MM-DD HH:mm:ss")}
               </td>
               <td class="px-6 py-4 whitespace-nowrap"
-<<<<<<< HEAD
-                >{historyItem.reward_type}</td
-=======
                 >{ $i18n.t(historyItem.reward_type) }</td
->>>>>>> fingerprintAuth-out
               >
             </tr>
           {/each}

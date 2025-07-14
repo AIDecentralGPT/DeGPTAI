@@ -1,9 +1,5 @@
 <script lang="ts">
-<<<<<<< HEAD
-    // Receive tweet data
-=======
     // 接收推文数据
->>>>>>> fingerprintAuth-out
     export let data;
 
     function formatText(text:string) {
@@ -13,15 +9,6 @@
     }
 
     function formatDateToTwitterStyle(dateInput:string) {
-<<<<<<< HEAD
-        // If the input is not a Date object, try converting it to a Date object
-        const date = typeof dateInput === 'object'? dateInput : new Date(dateInput);
-        if (isNaN(date.getTime())) {
-            throw new Error('The date format entered is invalid');
-        }
-
-        // Format time section
-=======
         // 如果传入的不是 Date 对象，则尝试转换为 Date 对象
         const date = typeof dateInput === 'object'? dateInput : new Date(dateInput);
         if (isNaN(date.getTime())) {
@@ -29,7 +16,6 @@
         }
 
         // 格式化时间部分
->>>>>>> fingerprintAuth-out
         const timeOptions = {
             hour: 'numeric',
             minute: 'numeric',
@@ -38,11 +24,7 @@
         const timeFormatter = new Intl.DateTimeFormat('en-US', timeOptions);
         const formattedTime = timeFormatter.format(date);
 
-<<<<<<< HEAD
-        // Format date section
-=======
         // 格式化日期部分
->>>>>>> fingerprintAuth-out
         const dateOptions = {
             month: 'short',
             day: 'numeric',
@@ -50,17 +32,10 @@
         };
         const dateFormatter = new Intl.DateTimeFormat('en-US', dateOptions);
         let formattedDate = dateFormatter.format(date);
-<<<<<<< HEAD
-        // Replace commas with dots
-        formattedDate = formattedDate.replace(',', '.');
-
-        // Combining time and date sections
-=======
         // 替换逗号为点号
         formattedDate = formattedDate.replace(',', '.');
 
         // 组合时间和日期部分
->>>>>>> fingerprintAuth-out
         return `${formattedTime} · ${formattedDate}`;
     }
 

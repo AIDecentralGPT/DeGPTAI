@@ -33,11 +33,7 @@
         {$i18n.t("Export Wallet")}
       </div>
 
-<<<<<<< HEAD
-      <!-- X Close Btn -->
-=======
       <!-- X 关闭键 -->
->>>>>>> fingerprintAuth-out
       <button
         class="self-center"
         on:click={() => {
@@ -59,17 +55,10 @@
       </button>
     </div>
 
-<<<<<<< HEAD
-    <!-- Main -->
-    <!-- flex flex-col md:space-x-4 -->
-    <div class=" w-full p-4 px-8">
-      <!-- Input password -->
-=======
     <!-- 主体 -->
     <!-- flex flex-col md:space-x-4 -->
     <div class=" w-full p-4 px-8">
       <!-- 输入密码 -->
->>>>>>> fingerprintAuth-out
       <div class="mb-6 pt-0.5 max-w-[270px]">
         <div class="flex flex-col w-full">
           <div class="flex-1 relative">
@@ -97,11 +86,7 @@
       </div>
 
 
-<<<<<<< HEAD
-<!-- Private Key -->
-=======
 <!-- 私钥 -->
->>>>>>> fingerprintAuth-out
 
 <div class="mb-4">
   <div class="mb-2">
@@ -185,11 +170,7 @@
               if ($currentWalletData?.walletInfo && password) {
                 // console.log("loading", loading);
 
-<<<<<<< HEAD
-                // Set password to encrypt Keystore files
-=======
                 // 设置密码以加密Keystore文件
->>>>>>> fingerprintAuth-out
                 console.log("=============Keystore============");
                 const keystore = await storeWallet(
                   $currentWalletData?.walletInfo,

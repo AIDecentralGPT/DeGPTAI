@@ -1,10 +1,6 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
-<<<<<<< HEAD
-// Get third search results
-=======
 // 获取第三方搜索结果
->>>>>>> fingerprintAuth-out
 export const thirdSearch = async (token: string, keyword: string, type: string) => {
 
   let error = null;
@@ -33,8 +29,6 @@ export const thirdSearch = async (token: string, keyword: string, type: string) 
 		throw error;
 	}
 	return res;
-<<<<<<< HEAD
-=======
 };
 
 // 获取网站内容
@@ -65,5 +59,4 @@ export const getWebContent = async (token: string, url: string) => {
 		throw error;
 	}
 	return res;
->>>>>>> fingerprintAuth-out
 };

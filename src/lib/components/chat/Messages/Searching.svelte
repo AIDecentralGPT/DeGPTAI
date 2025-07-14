@@ -1,18 +1,11 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	const i18n = getContext('i18n');
-<<<<<<< HEAD
-</script>
-
-<span class="text-animation text-sm font-bold">
-	{ $i18n.t("Searching...") }
-=======
   export let typeName:string = "Bing";
 </script>
 
 <span class="text-animation text-sm font-bold">
 	{typeName} { $i18n.t("Searching...") }
->>>>>>> fingerprintAuth-out
 </span>
 <style>
 	.text-animation {

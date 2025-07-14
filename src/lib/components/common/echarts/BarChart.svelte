@@ -5,11 +5,7 @@
 
   const i18n = getContext("i18n");
 
-<<<<<<< HEAD
-  // Define a specified color array
-=======
   // 定义指定的颜色数组
->>>>>>> fingerprintAuth-out
   const specifiedColors = ["#5470C6", "#91CC75", "#FAC858"];
 
   export let xData: any[] = [];
@@ -60,11 +56,7 @@
         data: [],
         barWidth: 30,
         itemStyle: {
-<<<<<<< HEAD
-          // By using callback functions to retrieve the corresponding color based on the index, color recycling is achieved
-=======
           // 通过回调函数根据索引来获取对应的颜色，实现颜色循环使用
->>>>>>> fingerprintAuth-out
           color: function (params: any) {
             return specifiedColors[params.dataIndex % specifiedColors.length];
           },

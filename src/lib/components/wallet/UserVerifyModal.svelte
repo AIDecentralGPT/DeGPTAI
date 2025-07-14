@@ -2,11 +2,7 @@
   import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
   import { WEBUI_API_BASE_URL } from "$lib/constants";
-<<<<<<< HEAD
-  import { copyToClipboard } from "$lib/utils";
-=======
   import { copyToClipboard, checkUniapp } from "$lib/utils";
->>>>>>> fingerprintAuth-out
   import {
     faceliveness,
     facelivenessRes,
@@ -14,11 +10,7 @@
     verifyCode,
     servetime,
   } from "$lib/apis/auths";
-<<<<<<< HEAD
-  import { user, theme } from "$lib/stores";
-=======
   import { user, theme, faceUrl } from "$lib/stores";
->>>>>>> fingerprintAuth-out
   import { toast } from "svelte-sonner";
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
@@ -32,11 +24,7 @@
   let address = "";
 
   function initSocket() {
-<<<<<<< HEAD
-    // Create WebSocket connection
-=======
     // 创建 WebSocket 连接
->>>>>>> fingerprintAuth-out
     let socketUrl = "";
     if (WEBUI_API_BASE_URL.includes("https://")) {
       socketUrl = WEBUI_API_BASE_URL.replace("https://", "wss://");
@@ -45,42 +33,24 @@
     }
     socket = new WebSocket(`${socketUrl}/auths/ws/` + $user?.id);
 
-<<<<<<< HEAD
-    // Monitor WebSocket connection open events
-=======
     // 监听 WebSocket 连接打开事件
->>>>>>> fingerprintAuth-out
     socket.onopen = () => {
       console.log("WebSocket connection established");
     };
 
-<<<<<<< HEAD
-    // Listening for WebSocket error events
-=======
     // 监听 WebSocket 错误事件
->>>>>>> fingerprintAuth-out
     socket.onerror = (error) => {
       console.error("WebSocket error: ", error);
     };
 
-<<<<<<< HEAD
-    // Monitor WebSocket connection closure events
-=======
     // 监听 WebSocket 连接关闭事件
->>>>>>> fingerprintAuth-out
     socket.onclose = () => {
       console.log("WebSocket connection closed");
     };
 
-<<<<<<< HEAD
-    // Monitor WebSocket message events
-    socket.addEventListener("message", (event) => {
-      // Stop countdown upon receiving message
-=======
     // 监听 WebSocket 消息事件
     socket.addEventListener("message", (event) => {
       // 接收到消息停止倒计时
->>>>>>> fingerprintAuth-out
       clearInterval(countdownQrInterval);
       let data = JSON.parse(event.data);
       if (data.passed) {
@@ -117,10 +87,7 @@
 
   async function sendVerificationCode() {
     if (countdown === 0) {
-<<<<<<< HEAD
-=======
       email = email.trim();
->>>>>>> fingerprintAuth-out
       if (validateEmail(email)) {
         sendCode(localStorage.token, email).then((res) => {
           if (res.pass) {
@@ -196,20 +163,13 @@
 
   function faceLiveness() {
     const MetaInfo = window.getMetaInfo();
-<<<<<<< HEAD
-    console.log("enter faceliveness", MetaInfo);
-=======
     console.log("进入faceliveness", MetaInfo);
->>>>>>> fingerprintAuth-out
 
     faceliveness(MetaInfo).then(async (res) => {
       console.log(res);
       faceLivenessInitialData = res;
       if (res.transaction_url) {
         if (isMobile) {
-<<<<<<< HEAD
-          await goto(res.transaction_url);
-=======
           if (checkUniapp()) {
             faceUrl.set({
               url: res.transaction_url
@@ -218,7 +178,6 @@
           } else {
             await goto(res.transaction_url);
           }
->>>>>>> fingerprintAuth-out
         } else {
           faceTime = new Date(res.face_time);
           getQrCode(res.transaction_url);
@@ -229,19 +188,11 @@
     });
   }
 
-<<<<<<< HEAD
-  // Time-Aligned
-  let timeDiff = 0;
-  function serveTime() {
-    servetime().then(async (res) => {
-      // Add a 200 millisecond request duration float
-=======
   // 时间校准
   let timeDiff = 0;
   function serveTime() {
     servetime().then(async (res) => {
       // 加200毫秒请求时长浮动
->>>>>>> fingerprintAuth-out
       timeDiff = new Date().getTime() - (new Date(res.data).getTime() + 200);
     });
   }
@@ -256,20 +207,12 @@
     });
   }
 
-<<<<<<< HEAD
-  // Validity period of QR code
-=======
   // 二维码有效时长
->>>>>>> fingerprintAuth-out
   let showQrTime = "05:00";
   let countdownQrInterval: any = null;
   function startQrCountdown() {
     if (faceTime) {
-<<<<<<< HEAD
-      // Clear the timer value first if it is not empty
-=======
       // 不为空先清除计时器值
->>>>>>> fingerprintAuth-out
       if (countdownQrInterval) {
         showQrTime = "05:00";
         clearInterval(countdownQrInterval);
@@ -323,18 +266,6 @@
   onMount(() => {
     try {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-<<<<<<< HEAD
-      // Check if it is a mobile device
-      isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(
-        userAgent
-      );
-      // Time-Aligned
-      serveTime();
-      // Dynamically introduce image authentication
-      importCaptchaJs();
-    } catch (error) {
-      addErrorLog("KYC authentication initialization:", error.toString());
-=======
       // 检查是否为移动端设备
       isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(
         userAgent
@@ -345,7 +276,6 @@
       importCaptchaJs();
     } catch (error) {
       addErrorLog("kyc认证初始化", error.toString());
->>>>>>> fingerprintAuth-out
     }
   });
 
@@ -357,29 +287,17 @@
     countdownInterval = null;
   }
 
-<<<<<<< HEAD
-  // Initialize Socket
-=======
   // 显示初始化Socket
->>>>>>> fingerprintAuth-out
   $: if (show) {
     try {
       initSocket();
       initParam();
     } catch (error) {
-<<<<<<< HEAD
-      addErrorLog("socket init", error.toString());
-    }
-  }
-
-  // Close Socket
-=======
       addErrorLog("socket初始化", error.toString());
     }
   }
 
   // 隐藏关闭Socket
->>>>>>> fingerprintAuth-out
   $: if (!show) {
     if (socket) {
       socket.close();
@@ -389,31 +307,19 @@
     }
   }
 
-<<<<<<< HEAD
-  // Close WebSocket connection during component uninstallation
-=======
   // 在组件卸载时关闭 WebSocket 连接
->>>>>>> fingerprintAuth-out
   onDestroy(() => {
     if (socket) {
       socket.close();
     }
   });
 
-<<<<<<< HEAD
-  // Image authentication related
-=======
   // 图片认证相关
->>>>>>> fingerprintAuth-out
   let checkCaptcha = false;
   const CAPTCHA_APP_ID = '199818891'
   const SLIDER_CAPTCHA_JS = 'https://captcha.api.hi.cn/captcha.js';
 
-<<<<<<< HEAD
-  // Dynamic introduction of captcha in JavaScript
-=======
   // 动态引入验证码的js
->>>>>>> fingerprintAuth-out
   function importCaptchaJs() {  
     let script = document.createElement('script');
     script.type = 'text/javascript';
@@ -495,11 +401,7 @@
       {/if}
 
       {#if current === 1}
-<<<<<<< HEAD
-        <div class="flex flex-col w-full md:w-4/5">
-=======
         <div class="flex flex-col w-full">
->>>>>>> fingerprintAuth-out
           <!-- flex-wrap gap-2 xl:flex-nowrap  xl:gap-0 -->
           <div class="flex flex-col w-full mb-3">
             <div
@@ -528,11 +430,7 @@
                     : ''}"
                   type="button"
                   on:click={async () => { await openCaptcha(); }}
-<<<<<<< HEAD
-                  disabled={countdown > 0}
-=======
                   disabled={countdown > 0 || checkCaptcha}
->>>>>>> fingerprintAuth-out
                 >
                   {#if checkCaptcha}
                     {$i18n.t("Check")}...
@@ -566,8 +464,6 @@
               class="px-4 py-2 dark:bg-zinc-950 dark:text-white bg-white text-black border border-gray-300 rounded-lg w-full md:flex-1"
             />
           </div>
-<<<<<<< HEAD
-=======
 
           <div class="flex flex-col">
             <div class="flex flex-row items-center">
@@ -578,7 +474,6 @@
             </div>
             <span class="ml-2 mt-2">{$i18n.t("If you're using a Gmail account and can't find the verification code in your Inbox, it's highly likely that it's been filtered into your SpamFolder.")}</span>
           </div>
->>>>>>> fingerprintAuth-out
         </div>
       {/if}
 
@@ -588,11 +483,7 @@
             <div class="rounded-lg flex flex-col items-center h-[288px]">
               <div class="flex flex-col items-center">
                 {#if qrcodeUrl}
-<<<<<<< HEAD
-                  <p class="text-center text-gray-100">
-=======
                   <p class="text-center text-gray-800 dark:text-gray-100">
->>>>>>> fingerprintAuth-out
                     {$i18n.t(
                       "Please use your mobile phone to scan the QR code below for identity verification"
                     )}
@@ -784,11 +675,7 @@
           {:else}
             <button
               disabled
-<<<<<<< HEAD
-              class="px-4 py-2 primaryButton text-gray-600 transition rounded-lg w-[100px]"
-=======
               class="px-4 py-2 primaryButton text-gray-600 transition rounded-lg w-[100px] mr-4"
->>>>>>> fingerprintAuth-out
             >
               {$i18n.t("Finish")}</button
             >
@@ -796,11 +683,7 @@
         {/if}
         {#if current !== 2}
           <button
-<<<<<<< HEAD
-            class=" px-4 py-2 flex justify-center items-center primaryButton text-gray-100 transition rounded-lg w-[100px]"
-=======
             class=" px-4 py-2 flex justify-center items-center primaryButton text-gray-100 transition rounded-lg w-[100px] mr-4"
->>>>>>> fingerprintAuth-out
             disabled={nextLoading}
             on:click={nextStep}
           >
@@ -857,8 +740,4 @@
   .pos-rel {
     position: relative;
   }
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> fingerprintAuth-out

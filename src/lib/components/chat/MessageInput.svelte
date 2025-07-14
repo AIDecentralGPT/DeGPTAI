@@ -8,11 +8,8 @@
     showNewWalletModal,
     showOpenWalletModal,
     showSidebar,
-<<<<<<< HEAD
-=======
     toolflag,
     tooltype
->>>>>>> fingerprintAuth-out
   } from "$lib/stores";
   import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
 
@@ -30,15 +27,6 @@
   import { transcribeAudio } from "$lib/apis/audio";
 
   import Prompts from "./MessageInput/PromptCommands.svelte";
-<<<<<<< HEAD
-  import Suggestions from "./MessageInput/Suggestions.svelte";
-  import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
-  import Documents from "./MessageInput/Documents.svelte";
-  import Models from "./MessageInput/Models.svelte";
-  import Tooltip from "../common/Tooltip.svelte";
-  import XMark from "$lib/components/icons/XMark.svelte";
-  import { user as userStore } from "$lib/stores";
-=======
   import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
   import Documents from "./MessageInput/Documents.svelte";
   import Models from "./MessageInput/Models.svelte";
@@ -49,7 +37,6 @@
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
   import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
->>>>>>> fingerprintAuth-out
 
   const i18n = getContext("i18n");
 
@@ -58,10 +45,7 @@
 
   export let autoScroll = true;
   export let selectedModel = "";
-<<<<<<< HEAD
-=======
   // export let deepsearch = false;
->>>>>>> fingerprintAuth-out
 
   let chatTextAreaElement: HTMLTextAreaElement;
   let filesInputElement: any;
@@ -69,42 +53,21 @@
   let promptsElement: any;
   let documentsElement: any;
   let modelsElement: any;
-<<<<<<< HEAD
-=======
   let urlPromptElement: any;
->>>>>>> fingerprintAuth-out
 
   let inputFiles: any;
   let dragged = false;
 
   let user: any = null;
-<<<<<<< HEAD
-  let chatInputPlaceholder = "";
-
-  // file selection
-  export let files: any[] = [];
-
-  // Search webpage activation flag
-  export let search = false;
-  export let search_type = "web";
-  let search_icon_show = false;
-  let isTouched = false;
-=======
 
   // 文件选择
   export let files: any[] = [];
   export let toolInfo: any = {url: "", trantip: ""};
->>>>>>> fingerprintAuth-out
 
   export let fileUploadEnabled = true;
   // export let speechRecognitionEnabled = true;
 
   export let prompt = "";
-<<<<<<< HEAD
-  export let messages: any[] = [];
-
-  let speechRecognition: any;
-=======
   export let chatInputPlaceholder = "";
   export let messages: any[] = [];
 
@@ -121,7 +84,6 @@
 		"Tell me what the web page is about",
 		"Write an original article referring to the web page"
 	];
->>>>>>> fingerprintAuth-out
 
   $: if (prompt) {
     if (chatTextAreaElement) {
@@ -131,8 +93,6 @@
     }
   }
 
-<<<<<<< HEAD
-=======
   $: if(chatInputPlaceholder) {
     if (chatTextAreaElement) {
       chatTextAreaElement.style.height = "";
@@ -145,7 +105,6 @@
     files = [];
   }
 
->>>>>>> fingerprintAuth-out
   let mediaRecorder: any;
   let audioChunks: any[] = [];
   let isRecording = false;
@@ -186,11 +145,7 @@
         chatTextAreaElement?.focus();
 
         if (prompt !== "" && $settings?.speechAutoSend === true) {
-<<<<<<< HEAD
-          submitPrompt(prompt, user);
-=======
           submitPrompt(prompt, toolInfo, user);
->>>>>>> fingerprintAuth-out
         }
       }
 
@@ -311,11 +266,7 @@
             console.log("recognition ended");
             isRecording = false;
             if (prompt !== "" && $settings?.speechAutoSend === true) {
-<<<<<<< HEAD
-              submitPrompt(prompt, user);
-=======
               submitPrompt(prompt, toolInfo, user);
->>>>>>> fingerprintAuth-out
             }
           };
 
@@ -345,25 +296,16 @@
       type: "doc",
       name: file.name,
       collection_name: "",
-<<<<<<< HEAD
-      upload_status: false,
-=======
       anaylis_type: "file",
       upload_status: false,
       text: "",
       image: [],
->>>>>>> fingerprintAuth-out
       error: "",
     };
 
     try {
-<<<<<<< HEAD
-      files = [...files, doc];
-
-=======
       // files = [...files, doc];
       files = [doc];
->>>>>>> fingerprintAuth-out
       if (["audio/mpeg", "audio/wav"].includes(file["type"])) {
         const res = await transcribeAudio(localStorage.token, file).catch(
           (error) => {
@@ -384,12 +326,9 @@
       if (res) {
         doc.upload_status = true;
         doc.collection_name = res.collection_name;
-<<<<<<< HEAD
-=======
         doc.anaylis_type = res.anaylis_type
         doc.text = res.text;
         doc.image = res.image;
->>>>>>> fingerprintAuth-out
         files = files;
       }
     } catch (e) {
@@ -499,25 +438,15 @@
                   canvas.height = img.height;
                   ctx?.drawImage(img, 0, 0);
                   let compressedDataUrl;
-<<<<<<< HEAD
-                  let quality = 1; // The initial mass is 1, indicating no damage
-=======
                   let quality = 1; // 初始质量为 1，表示无损
->>>>>>> fingerprintAuth-out
                   while (true) {
                     compressedDataUrl = canvas.toDataURL(file?.type, quality);
                     if (compressedDataUrl.length <= 300 * 1024) {
                       break;
                     }
-<<<<<<< HEAD
-                    quality -= 0.1; // Gradually reducing quality
-                    if (quality < 0) {
-                      break; // Prevent low quality
-=======
                     quality -= 0.1; // 逐渐降低质量
                     if (quality < 0) {
                       break; // 防止质量过低
->>>>>>> fingerprintAuth-out
                     }
                   }
                   files = [
@@ -568,8 +497,6 @@
       dropZone?.removeEventListener("dragleave", onDragLeave);
     };
   });
-<<<<<<< HEAD
-=======
 
   // const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
   //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
@@ -577,7 +504,6 @@
   const know_ext = "image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*," +
          "text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python," +
          "text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed"
->>>>>>> fingerprintAuth-out
 </script>
 
 {#if dragged}
@@ -669,12 +595,8 @@
             />
           {/if}
 
-<<<<<<< HEAD
-          <Models
-=======
           <!-- 屏蔽调@弹出model选择 -->
           <!-- <Models
->>>>>>> fingerprintAuth-out
             bind:this={modelsElement}
             bind:prompt
             bind:user
@@ -684,11 +606,7 @@
               selectedModel = e.detail;
               chatTextAreaElement?.focus();
             }}
-<<<<<<< HEAD
-          />
-=======
           /> -->
->>>>>>> fingerprintAuth-out
 
           {#if selectedModel !== ""}
             <div
@@ -724,8 +642,6 @@
               </div>
             </div>
           {/if}
-<<<<<<< HEAD
-=======
           {#if $toolflag}
             <UrlModels
               bind:this={urlPromptElement}
@@ -738,7 +654,6 @@
               }}
             />
           {/if}
->>>>>>> fingerprintAuth-out
         </div>
       </div>
     </div>
@@ -757,11 +672,7 @@
 
             <div class="flex gap-2">
               <button
-<<<<<<< HEAD
-                class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-=======
                 class=" px-2 py-1 primaryButton text-gray-100 transition rounded-lg"
->>>>>>> fingerprintAuth-out
                 on:click={async () => {
                   $showOpenWalletModal = true;
                 }}
@@ -770,11 +681,7 @@
               </button>
 
               <button
-<<<<<<< HEAD
-                class=" px-2 py-1 dark:bg-white dark:text-zinc-950 bg-black text-gray-100 transition rounded-lg"
-=======
                 class=" px-2 py-1 primaryButton text-gray-100 transition rounded-lg"
->>>>>>> fingerprintAuth-out
                 on:click={async () => {
                   $showNewWalletModal = true;
                 }}
@@ -790,14 +697,8 @@
             bind:this={filesInputElement}
             bind:files={inputFiles}
             type="file"
-<<<<<<< HEAD
-            accept="image/*"
-            hidden
-            multiple
-=======
             accept={know_ext}
             hidden
->>>>>>> fingerprintAuth-out
             on:change={() => {
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
@@ -813,25 +714,12 @@
                         canvas.height = img.height;
                         ctx?.drawImage(img, 0, 0);
                         let compressedDataUrl;
-<<<<<<< HEAD
-                        let quality = 1; // The initial mass is 1, indicating no damage
-=======
                         let quality = 1; // 初始质量为 1，表示无损
->>>>>>> fingerprintAuth-out
                         while (true) {
                           compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
                           if (compressedDataUrl.length <= 200 * 1024) {
                             break;
                           }
-<<<<<<< HEAD
-                          quality -= 0.1; // Gradually reducing quality
-                          if (quality < 0.1) {
-                            break; // Prevent low quality
-                          }
-                        };  
-                        files = [
-                          ...files,
-=======
                           quality -= 0.1; // 逐渐降低质量
                           if (quality < 0.1) {
                             break; // 防止质量过低
@@ -839,7 +727,6 @@
                         };  
                         files = [
                           // ...files,
->>>>>>> fingerprintAuth-out
                           {
                             type: "image",
                             url: compressedDataUrl,
@@ -879,14 +766,10 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-<<<<<<< HEAD
-              submitPrompt(prompt, user);
-=======
               if($toolflag && $tooltype == "translate") {
                 toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
               }
               submitPrompt(prompt, toolInfo, user);
->>>>>>> fingerprintAuth-out
             }}
           >
             {#if files.length > 0}
@@ -903,29 +786,9 @@
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
-<<<<<<< HEAD
-                        <div class="p-2.5 bg-red-400 text-white rounded-lg">
-                          {#if file.upload_status}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              class="w-6 h-6"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z"
-                                clip-rule="evenodd"
-                              />
-                              <path
-                                d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z"
-                              />
-                            </svg>
-=======
                         <div class="text-white rounded-lg {file.upload_status?'':'p-2.5 bg-red-400'}">
                           {#if file.upload_status}
                             <FileSvg bind:filename={file.name}/>
->>>>>>> fingerprintAuth-out
                           {:else}
                             <svg
                               class=" w-6 h-6 translate-y-[0.5px]"
@@ -1056,57 +919,6 @@
                   </div>
                 {/each}
               </div>
-<<<<<<< HEAD
-              <div class="flex flex-wrap gap-2 mt-1">
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("What does this picture mean?");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("What does this picture mean?") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("Explain this picture");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("Explain this picture") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("What is the main idea of this picture?");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("What is the main idea of this picture?") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("What does the symbol in the picture represent?");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("What does the symbol in the picture represent?") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-                <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
-                  on:click={() => {
-                    prompt = $i18n.t("Help me solve problems");
-                  }}>
-                  <span class="mr-1">{ $i18n.t("Help me solve problems") }</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                    <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
-                  </svg>
-                </button>
-              </div>
-            {/if}
-
-=======
               {#if files[0]?.type === "image"}
                 <div class="flex flex-wrap gap-2 mt-1">
                   <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
@@ -1242,7 +1054,6 @@
             {#if $tooltype != ""}
               <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
             {/if}
->>>>>>> fingerprintAuth-out
             <div class="flex flex-col">
               <textarea
                 id="chat-textarea"
@@ -1269,11 +1080,7 @@
                       e.preventDefault();
                     }
                     if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
-<<<<<<< HEAD
-                      submitPrompt(prompt, user);
-=======
                       submitPrompt(prompt, toolInfo, user);
->>>>>>> fingerprintAuth-out
                     }
                   }
                 }}
@@ -1300,100 +1107,6 @@
 
                   if (prompt === "" && e.key == "ArrowUp") {
                     e.preventDefault();
-<<<<<<< HEAD
-
-                    const userMessageElement = [
-                      ...document.getElementsByClassName("user-message"),
-                    ]?.at(-1);
-
-                    const editButton = [
-                      ...document.getElementsByClassName(
-                        "edit-user-message-button"
-                      ),
-                    ]?.at(-1);
-
-                    console.log(userMessageElement);
-
-                    userMessageElement.scrollIntoView({ block: "center" });
-                    editButton?.click();
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowUp"
-                  ) {
-                    e.preventDefault();
-
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectUp();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "ArrowDown"
-                  ) {
-                    e.preventDefault();
-
-                    (
-                      promptsElement ||
-                      documentsElement ||
-                      modelsElement
-                    ).selectDown();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Enter"
-                  ) {
-                    e.preventDefault();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-
-                    if (commandOptionButton) {
-                      commandOptionButton?.click();
-                    } else {
-                      document.getElementById("send-message-button")?.click();
-                    }
-                  }
-
-                  if (
-                    ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                    e.key === "Tab"
-                  ) {
-                    e.preventDefault();
-
-                    const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
-                    ]?.at(-1);
-
-                    commandOptionButton?.click();
-                  } else if (e.key === "Tab") {
-                    const words = findWordIndices(prompt);
-
-=======
                     const userMessageElement = [
                       ...document.getElementsByClassName("user-message"),
                     ]?.at(-1);
@@ -1486,7 +1199,6 @@
                   // } else 
                   if (e.key === "Tab") {
                     const words = findWordIndices(prompt);
->>>>>>> fingerprintAuth-out
                     if (words.length > 0) {
                       const word = words.at(0);
                       const fullPrompt = prompt;
@@ -1510,8 +1222,6 @@
                       Math.min(e.target.scrollHeight, 200) + "px";
                   }
 
-<<<<<<< HEAD
-=======
                   if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
                      && e.key === "ArrowUp") {
                     e.preventDefault();
@@ -1537,7 +1247,6 @@
                     commandOptionButton.scrollIntoView({ block: "center" });
                   }
 
->>>>>>> fingerprintAuth-out
                   if (e.key === "Escape") {
                     console.log("Escape");
                     selectedModel = "";
@@ -1555,11 +1264,7 @@
                   e.target.style.height =
                     Math.min(e.target.scrollHeight, 200) + "px";
                 }}
-<<<<<<< HEAD
-                on:paste={(e) => {
-=======
                 on:paste={async (e) => {
->>>>>>> fingerprintAuth-out
                   const clipboardData = e.clipboardData || window.clipboardData;
 
                   if (clipboardData && clipboardData.items) {
@@ -1570,11 +1275,7 @@
 
                         reader.onload = function (e) {
                           files = [
-<<<<<<< HEAD
-                            ...files,
-=======
                             // ...files,
->>>>>>> fingerprintAuth-out
                             {
                               type: "image",
                               url: `${e.target.result}`,
@@ -1590,277 +1291,6 @@
               />
               <div class="flex justify-between">
                 <div class="flex flex-row">
-<<<<<<< HEAD
-                  <!-- Image Upload -->
-                  {#if fileUploadEnabled}
-                    <div class="self-star mb-2 ml-1 mr-1">
-                      <Tooltip content={$i18n.t("Attach files")}>
-                        <button
-                          class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
-                          type="button"
-                          on:click={() => {
-                            filesInputElement.click();
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 16"
-                            fill="currentColor"
-                            class="w-[1.2rem] h-[1.2rem]"
-                          >
-                            <path
-                              d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
-                            />
-                          </svg>
-                        </button>
-                      </Tooltip>
-                    </div>
-                  {/if}
-                  <!-- Web Search -->
-                  <div class="self-star mb-2 ml-1 mr-1">
-                    <button class="flex flex-row items-center text-gray-800 dark:text-white transition rounded-full pr-3 cursor-pointer 
-                      ease-in-out duration-700 {(!search_icon_show && search) ? 'bg-black' : 'bg-gray-50 dark:bg-gray-800'}"
-                      type="button"
-                      on:mouseenter={async (event) => {
-                        event.stopPropagation();
-                        search_icon_show = true;
-                      }}
-                      on:mouseleave={async (event) => {
-                        event.stopPropagation();
-                        search_icon_show = false;
-                      }}
-                      on:touchstart={async (event) => {
-                        event.stopPropagation();
-                        if (!search_icon_show) {
-                          isTouched = true;
-                          search_icon_show = true;
-                        } 
-                      }}>
-                      <button class="flex flex-row pl-2 pr-1 py-2 rounded-full button-select-none {search? 'bg-black' : ''}"
-                        type="button"
-                        on:click={async (event) => {
-                          event.stopPropagation();
-                          if (checkPlatform() != "ios") {
-                            if (isTouched) {
-                              isTouched = false;
-                              return;
-                            }
-                          }
-                          search_icon_show = false;
-                          search = !search;
-                        }}>
-                        {#if search}
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="icon ml-1" 
-                            viewBox="0 0 1024 1024" 
-                            fill="#D0A870"
-                            version="1.1" 
-                            width="1em" 
-                            height="1em">
-                            <path d="M912 325.1c0 13.8-4.8 25.5-14.4 35.1L523.9 733.9l-70.3 70.3c-9.6 9.6-21.4 14.4-35.1 14.4-13.8 0-25.5-4.8-35.1-14.4l-70.3-70.3-186.7-186.8c-9.6-9.6-14.4-21.4-14.4-35.1 0-13.8 4.8-25.5 14.4-35.1l70.3-70.3c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4L418.6 559l338.5-339.1c9.6-9.6 21.4-14.4 35.1-14.4 13.8 0 25.5 4.8 35.1 14.4l70.3 70.3c9.5 9.5 14.4 21.2 14.4 34.9z"/>
-                          </svg>
-                        {/if}
-                        {#if search_type == "web"}
-                          <Tooltip content={$i18n.t("Search the Web")}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 1024 1024"
-                              class="w-[1rem] h-[1rem] ml-1 mr-1" 
-                              fill="#D0A870">
-                              <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                            </svg>
-                          </Tooltip>
-                        {/if}
-                        {#if search_type == "twitter"}
-                          <Tooltip content={$i18n.t("Search the Twitter")}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 1024 1024"
-                              class="w-[1rem] h-[1rem] ml-1 mr-1" 
-                              fill="#D0A870">
-                              <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
-                            </svg>
-                          </Tooltip>
-                        {/if}
-                        {#if search_type == "youtube"}
-                          <Tooltip content={$i18n.t("Search the YouTube")}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 1024 1024"
-                              class="w-[1rem] h-[1rem] ml-1 mr-1" 
-                              fill="#D0A870">
-                              <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                              <path d="M416.896 640l256-128.256-256-127.744z"/>
-                            </svg>
-                          </Tooltip>
-                        {/if}
-                        </button>
-                        {#if search_icon_show}
-                          {#if checkPlatform() == 'other'}
-                            <div class="flex flex-row py-1 ease-in-out duration-700 {(search_icon_show && search) ? 'px-1' : ''}">
-                              {#if search_type != "web"}
-                                <Tooltip content={$i18n.t("Search the Web")}>
-                                  <button
-                                    class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1
-                                    { (search_icon_show && search && search_type == 'web') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                    type="button"
-                                    on:click={async (event) => {
-                                      event.stopPropagation();
-                                      search_type = "web";
-                                      search_icon_show = false;
-                                      search = true;
-                                      isTouched = false;
-                                      await tick(); 
-                                    }}
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 1024 1024"
-                                      class="w-[1rem] h-[1rem]" 
-                                      fill="#D0A870">
-                                      <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                                    </svg>
-                                  </button>
-                                </Tooltip>
-                              {/if}
-                              {#if search_type != "twitter"}
-                                <Tooltip content={$i18n.t("Search the Twitter")}>
-                                  <button
-                                    class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 ml-1
-                                    { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                    type="button"
-                                    on:click={async (event) => {
-                                      event.stopPropagation();
-                                      search_type = "twitter";
-                                      search_icon_show = false;
-                                      search = true;
-                                      isTouched = false;
-                                      await tick(); 
-                                    }}
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 1024 1024"
-                                      class="w-[1rem] h-[1rem]" 
-                                      fill="#D0A870">
-                                      <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
-                                    </svg>
-                                  </button>
-                                </Tooltip>
-                              {/if}
-                              {#if search_type != "youtube"}
-                                <Tooltip content={$i18n.t("Search the YouTube")}>
-                                  <button
-                                    class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none select-none p-1 ml-1
-                                    { (search_icon_show && search && search_type == 'youtube') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                    type="button"
-                                    on:click={async (event) => {
-                                      event.stopPropagation();
-                                      search_type = "youtube";
-                                      search_icon_show = false;
-                                      search = true;
-                                      isTouched = false;
-                                      await tick();
-                                    }}
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 1024 1024"
-                                      class="w-[1rem] h-[1rem]" 
-                                      fill="#D0A870">
-                                      <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                                      <path d="M416.896 640l256-128.256-256-127.744z"/>
-                                    </svg>
-                                  </button>
-                                </Tooltip>
-                              {/if}
-                            </div>
-                          {:else}
-                            <div class="flex flex-row py-1 ease-in-out duration-700 {(search_icon_show && search) ? 'px-1' : ''}">
-                              <Tooltip content={$i18n.t("Search the Web")}>
-                                <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 button-select-none
-                                  { (search_icon_show && search && search_type == 'web') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                  type="button"
-                                  on:click={ async (event) => {
-                                    event.stopPropagation();
-                                    if (search_type == "web") {
-                                      search_icon_show = false;
-                                    }
-                                    search_type = "web";
-                                    search = true;
-                                    isTouched = false;
-                                    await tick(); 
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 1024 1024"
-                                    class="w-[1rem] h-[1rem]" 
-                                    fill="#D0A870">
-                                    <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                                  </svg>
-                                </button>
-                              </Tooltip>
-                              <Tooltip content={$i18n.t("Search the Twitter")}>
-                                <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none p-1 ml-1 button-select-none
-                                  { (search_icon_show && search && search_type == 'twitter') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                  type="button"
-                                  on:click={ async (event) => {
-                                    event.stopPropagation();
-                                    if (search_type == "twitter") {
-                                      search_icon_show = false;
-                                    }
-                                    search_type = "twitter";
-                                    search = true;
-                                    isTouched = false;
-                                    await tick(); 
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 1024 1024"
-                                    class="w-[1rem] h-[1rem]" 
-                                    fill="#D0A870">
-                                    <path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
-                                  </svg>
-                                </button>
-                              </Tooltip>
-                              <Tooltip content={$i18n.t("Search the YouTube")}>
-                                <button
-                                  class="flex flex-row items-center text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full touch-none select-none p-1 ml-1 button-select-none
-                                  { (search_icon_show && search && search_type == 'youtube') ? 'bg-gray-200 dark:bg-gray-700' : ''}"
-                                  type="button"
-                                  on:click={ async (event) => {
-                                    event.stopPropagation();
-                                    if (search_type == "youtube") {
-                                      search_icon_show = false;
-                                    }
-                                    search_type = "youtube";
-                                    search = true;
-                                    isTouched = false;
-                                    await tick(); 
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 1024 1024"
-                                    class="w-[1rem] h-[1rem]" 
-                                    fill="#D0A870">
-                                    <path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                                    <path d="M416.896 640l256-128.256-256-127.744z"/>
-                                  </svg>
-                                </button>
-                              </Tooltip>
-                            </div>
-                          {/if}
-                        {/if}
-                        <span class="text-sm font-bold text-[#D0A870] select-none {(search_icon_show && !search) ? 'ml-1' : ''}">{$i18n.t("search")}</span>
-                    </button>  
-                  </div>  
-=======
                   <!-- 图片上传 -->
                   {#if fileUploadEnabled && !$toolflag}
                     <div class="self-star mb-2 ml-1 mr-1">
@@ -1911,7 +1341,6 @@
                       <span class="text-sm ml-1">{$i18n.t("Deep Research")}</span>
                     </button>
                   </div> -->
->>>>>>> fingerprintAuth-out
                 </div>
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">
@@ -2066,20 +1495,11 @@
     visibility: hidden;
   }
   .button-select-none {
-<<<<<<< HEAD
-    -webkit-touch-callout: none; /* Disable system default menu */
-    -webkit-user-select: none; /* Safari Browser prohibits selection */
-    -khtml-user-select: none; /* Early browsers */
-    -moz-user-select: none; /* Firefox Browser prohibits selection */
-    -ms-user-select: none; /* IE Browser prohibits selection */
-    user-select: none; /* Standard grammar, no selection allowed */
-=======
     -webkit-touch-callout: none; /* 禁止系统默认菜单 */
     -webkit-user-select: none; /* Safari 浏览器禁止选择 */
     -khtml-user-select: none; /* 早期浏览器 */
     -moz-user-select: none; /* Firefox 浏览器禁止选择 */
     -ms-user-select: none; /* IE 浏览器禁止选择 */
     user-select: none; /* 标准语法，禁止选择 */
->>>>>>> fingerprintAuth-out
   }
 </style>

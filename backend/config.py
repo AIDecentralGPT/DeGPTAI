@@ -203,11 +203,7 @@ def get_config_value(config_path: str):
 T = TypeVar("T")
 
 
-<<<<<<< HEAD
-# Persistent configuration
-=======
 # 持久配置
->>>>>>> fingerprintAuth-out
 #  "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "-1")
 class PersistentConfig(Generic[T]):
     def __init__(self, env_name: str, config_path: str, env_value: T):
@@ -279,11 +275,7 @@ WEBUI_AUTH = os.environ.get("WEBUI_AUTH", "True").lower() == "true"
 WEBUI_AUTH_TRUSTED_EMAIL_HEADER = os.environ.get(
     "WEBUI_AUTH_TRUSTED_EMAIL_HEADER", None
 )
-<<<<<<< HEAD
-# Expiration duration
-=======
 # 过期时长
->>>>>>> fingerprintAuth-out
 JWT_EXPIRES_IN = PersistentConfig(
     "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "7d")
     # "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "-1")
@@ -830,55 +822,9 @@ AUDIO_OPENAI_API_VOICE = PersistentConfig(
 ####################################
 # LiteLLM
 ####################################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 ENABLE_LITELLM = os.environ.get("ENABLE_LITELLM", "True").lower() == "true"
 
 LITELLM_PROXY_PORT = int(os.getenv("LITELLM_PROXY_PORT", "14365"))
 if LITELLM_PROXY_PORT < 0 or LITELLM_PROXY_PORT > 65535:
     raise ValueError("Invalid port number for LITELLM_PROXY_PORT")
 LITELLM_PROXY_HOST = os.getenv("LITELLM_PROXY_HOST", "127.0.0.1")
-<<<<<<< HEAD
-
-
-####################################
-# Database
-####################################
-DATABASE_URL = os.environ.get("DATABASE_URL", f"postgresql://postgres:*****@172.31.50.205:9875/webui_db")
-
-
-
-####################################
-# Redis
-####################################
-REDIS_HOST='gpt-redis'
-REDIS_PORT=6379
-REDIS_DB=8
-REDIS_PWD='*******'
-
-
-####################################
-# KYC
-####################################
-FACE_DB = os.environ.get("FACE_DB", f"online_face")
-FACE_URL = os.environ.get("FACE_URL", f"https://www.degpt.ai/userVerifying")
-
-####################################
-# TWITTER
-####################################
-dev_consumer_key = '***************'
-dev_consumer_secret = '***************'
-dev_bearer_token = 'AAAAAAAAAAAAAAAAAAAAADX0vAEAAAAA***************'
-dev_access_token = '17260808639796***************'
-dev_access_token_secret = 'glwphg***************'
-
-pro_consumer_key = 'grgImO***************'
-pro_consumer_secret = 'dbIBdjsKpqffGMNZ8bHqLg9N8u***************'
-pro_bearer_token = 'AAAAAAAAAAAAAAAAAAAAADX0vA***************'
-pro_access_token = '1726080863979610112***************'
-pro_access_token_secret = 'glwphg8uY4Mlr***************'
-=======
->>>>>>> fingerprintAuth-out

@@ -6,10 +6,7 @@
 	import ProfileImage from './ProfileImage.svelte';
 	import { modelfiles, settings } from '$lib/stores';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
-<<<<<<< HEAD
-=======
 	import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
->>>>>>> fingerprintAuth-out
 
 	import { user as _user } from '$lib/stores';
 	import Image from '$lib/components/common/Image.svelte'
@@ -41,11 +38,7 @@
 		messageEditTextAreaElement.style.height = '';
 		messageEditTextAreaElement.style.height = `${messageEditTextAreaElement.scrollHeight}px`;
 
-<<<<<<< HEAD
-		messageEditTextAreaElement?.focus();
-=======
 		// messageEditTextAreaElement?.focus();
->>>>>>> fingerprintAuth-out
 	};
 
 	const editMessageConfirmHandler = async () => {
@@ -117,34 +110,9 @@
 								<button
 									class="h-16 w-72 flex items-center space-x-3 px-2.5 dark:bg-gray-850 rounded-xl border border-gray-200 dark:border-none text-left"
 									type="button"
-<<<<<<< HEAD
-									on:click={() => {
-										if (file?.url) {
-											window.open(file?.url, '_blank').focus();
-										}
-									}}
-								>
-									<div class="p-2.5 bg-red-400 text-white rounded-lg">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 24 24"
-											fill="currentColor"
-											class="w-6 h-6"
-										>
-											<path
-												fill-rule="evenodd"
-												d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z"
-												clip-rule="evenodd"
-											/>
-											<path
-												d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z"
-											/>
-										</svg>
-=======
 								>
 									<div class="text-white rounded-lg">
 										<FileSvg bind:filename={file.name}/>
->>>>>>> fingerprintAuth-out
 									</div>
 
 									<div class="flex flex-col justify-center -space-y-0.5">
@@ -190,8 +158,6 @@
 				</div>
 			{/if}
 
-<<<<<<< HEAD
-=======
 			{#if message?.toolInfo?.url}
 				<div class="w-full flex justify-end mb-2">
 					<div class="flex flex-row max-w-[200px] bg-gray-100 dark:bg-gray-850 p-3 rounded-full">
@@ -210,7 +176,6 @@
 				</div>
 			{/if}
 
->>>>>>> fingerprintAuth-out
 			{#if edit === true}
 				<div class=" w-full bg-gray-50 dark:bg-gray-800 rounded-3xl px-5 py-3 mb-2">
 					<textarea
@@ -239,11 +204,7 @@
 					<div class=" mt-2 mb-1 flex justify-end space-x-1.5 text-sm font-medium">
 						<button
 							id="close-edit-message-button"
-<<<<<<< HEAD
-							class=" px-4 py-2 bg-gray-900 hover:bg-gray-850 text-gray-100 transition rounded-3xl"
-=======
 							class=" px-4 py-2 bg-gray-900 hover:bg-gray-850 text-gray-100 transition rounded-3xl close-edit-message-button"
->>>>>>> fingerprintAuth-out
 							on:click={() => {
 								cancelEditMessage();
 							}}

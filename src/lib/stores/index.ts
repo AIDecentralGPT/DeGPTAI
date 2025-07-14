@@ -45,11 +45,7 @@ export const showChangelog = writable(false);
 
 
 // ###########
-<<<<<<< HEAD
-// Wallet related
-=======
 // 钱包相关
->>>>>>> fingerprintAuth-out
 export const showNewWalletModal = writable(false);
 export const showOpenWalletModal = writable(false);
 export const showExportWalletJsonModal = writable(false);
@@ -67,16 +63,6 @@ export const showCoinIntruModal = writable(false);
 export const showCoinIntruType = writable('dgc');
 export const dbcRate = writable({rate: 0.0002, time: ""});
 
-<<<<<<< HEAD
-
-// Page initialization completed status
-export const initPageFlag = writable(false);
-
-// Download Related
-export const showDownLoad = writable(false);
-
-// Default model request address
-=======
 // 升级VIP标志用于实时更新升级数据
 export const vipupgrade = writable(false);
 
@@ -95,23 +81,11 @@ export const showWalletView = writable(false);
 export const faceUrl = writable({url: ""});
 
 // 默认模型请求地址
->>>>>>> fingerprintAuth-out
 export const deApiBaseUrl = writable({
 	name: 'America', 
 	url: 'https://usa-chat.degpt.ai/api'
 });
 
-<<<<<<< HEAD
-// Twitter related
-export const showFollowTwitterModal = writable(false);
-export const showFollowTGGroupModal = writable(false);
-
-// Wallet data
-export let currentWalletData = writable(DefaultCurrentWalletData)
-export let threesideAccount = writable({})
-
-// Number of model visits
-=======
 // 推特相关
 export const showFollowTwitterModal = writable(false);
 export const showFollowTGGroupModal = writable(false);
@@ -125,7 +99,6 @@ export let currentWalletData = writable(DefaultCurrentWalletData)
 export let threesideAccount = writable({})
 
 // 模型访问数量
->>>>>>> fingerprintAuth-out
 export let modelLimits = writable([
 	{name: 'Llama-3.1-405B', num: 10},
 	{name: 'Qwen2-72B', num: 10},
@@ -136,18 +109,6 @@ export let modelLimits = writable([
 export let pageUpdateNumber = writable(0)
 
 
-<<<<<<< HEAD
-// Inviter ID
-export let inviterId = writable("")
-
-// Source Channel
-export let channel = writable("")
-
-
-
-
-// initialization
-=======
 // 邀请人id
 export let inviterId = writable("")
 
@@ -166,16 +127,11 @@ export const switchModel = writable({
 
 
 // 初始化
->>>>>>> fingerprintAuth-out
 
 // export const initNewChat = async () => {
 
 	
-<<<<<<< HEAD
-// 	Reset chat ID and browser history
-=======
 // 	// 重置聊天ID和浏览器历史记录
->>>>>>> fingerprintAuth-out
 // 	window.history.replaceState(history.state, '', `/`);
 // 	chatId.set('');
 

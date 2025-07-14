@@ -3,11 +3,7 @@
   import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
 
-<<<<<<< HEAD
-  import { getModels as _getModels, copyToClipboard } from "$lib/utils";
-=======
   import { getModels as _getModels, checkUniapp, copyToClipboard } from "$lib/utils";
->>>>>>> fingerprintAuth-out
   import { getLanguages } from "$lib/i18n/index";
 
   import Modal from "../common/Modal.svelte";
@@ -35,11 +31,7 @@
   let showPassword = false;
   let password = "";
   let passwordError = "";
-<<<<<<< HEAD
-  let walletCreatedData: any = null; // Data returned by creating a wallet
-=======
   let walletCreatedData: any = null; // 创建钱包返回的数据
->>>>>>> fingerprintAuth-out
   let keystoreJson: string | null = null;
 
   const validatePassword = () => {
@@ -50,11 +42,7 @@
     }
   };
 
-<<<<<<< HEAD
-  // Update user model
-=======
   // 更新用户模型
->>>>>>> fingerprintAuth-out
   const initUserModels = () => {
     if ($user?.models) {
       settings.set({ ...$settings, models: $user?.models.split(",") });
@@ -72,11 +60,7 @@
     }, 0);
   };
 
-<<<<<<< HEAD
-  // Update user language
-=======
   // 更新用户语言
->>>>>>> fingerprintAuth-out
   async function initLanguage() {
     if ($user?.language) {
       $i18n.changeLanguage($user?.language);
@@ -96,11 +80,7 @@
   $: if (!show) {
     walletCreatedData = null;
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-<<<<<<< HEAD
-    // Detecting common mobile device identifiers
-=======
     // 检测常见的移动设备标识
->>>>>>> fingerprintAuth-out
     isMobile =
       /android|iphone|ipad|iPod|blackberry|opera mini|iemobile|wpdesktop/i.test(
         userAgent
@@ -117,11 +97,7 @@
         {$i18n.t("NEW DGC WALLET")}
       </div>
 
-<<<<<<< HEAD
-      <!-- X Close Btn -->
-=======
       <!-- X 关闭键 -->
->>>>>>> fingerprintAuth-out
       <button
         class="self-center"
         on:click={() => {
@@ -141,15 +117,9 @@
       </button>
     </div>
 
-<<<<<<< HEAD
-    <!-- Main -->
-    <div class="flex flex-col md:flex-row w-full md:space-x-4 px-5 py-2">
-      <!-- Input password, carete account -->
-=======
     <!-- 主体 -->
     <div class="flex flex-col md:flex-row w-full md:space-x-4 px-5 py-2">
       <!-- 输入密码，进行创建 -->
->>>>>>> fingerprintAuth-out
       {#if !walletCreatedData}
         <div class="w-full">
           <p class="text-md mb-4 px-2">
@@ -248,70 +218,6 @@
           </div>
 
           <div class="flex justify-between my-4">
-<<<<<<< HEAD
-            <!-- Download btn -->
-            <div class="flex flex-col p-2">
-              <div class="text-sm font-medium text-center">
-                {$i18n.t("Download DeGPT to obtain rewards")}
-              </div>
-              <div class="flex flex-row mt-1 px-2">
-                <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-100"
-                  on:click={() => {
-                    window.open("/static/app/degptv1.0_0712.apk", "_blank");
-                  }}
-                >
-                  <svg
-                    class="icon mr-1 fill-white"
-                    viewBox="0 0 1024 1024"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                  >
-                    <path
-                      d="M808.398269 218.955161c20.458525 11.691232 27.566623 37.753501 15.876521 58.213157l-65.330296 114.329713c119.461015 74.88989 203.198446 202.202702 217.966199 350.95283 2.492185 25.107214-17.227161 46.882472-42.457572 46.882472H85.333333c-25.230411 0-44.949757-21.775258-42.457571-46.882472 14.120124-142.220715 91.287453-264.84528 202.445704-340.790817l-71.137484-124.491726c-11.691232-20.459656-4.583135-46.521925 15.876521-58.213157 20.459656-11.691232 46.523055-4.583135 58.214287 15.876521l71.589581 125.281766c58.218808-25.812486 122.559011-40.113448 190.028856-40.113448 60.891832 0 119.233837 11.648283 172.825431 32.893457l67.465324-118.061775c11.691232-20.459656 37.754631-27.567753 58.214287-15.876521zM317.895488 554.666667c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z m384 0c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z"
-                    />
-                  </svg>
-                  <span class="{isMobile ? 'w-full' : ''} truncate"
-                    >Android</span
-                  >
-                </button>
-                <!-- <button class="flex flex-row items-center rounded-full px-4 py-2 mr-3 bg-gray-700 dark:bg-white text-white dark:text-gray-900">
-                  <svg class="icon mr-1 fill-white dark:fill-gray-900" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-                    <path d="M131.015111 937.301333c-10.24-16.952889-17.237333-44.373333-17.237333-83.854222V170.552889c0-39.480889 7.054222-66.901333 17.237333-83.854222l413.809778 425.699555-413.809778 424.903111z m588.572445-245.134222l-422.456889 235.406222c-47.786667 26.624-77.539556 39.537778-112.071111 39.537778h-3.868445l402.773333-415.232 135.623112 140.288z m50.915555-332.117333l89.315556 49.948444c32.995556 18.545778 83.057778 52.394667 83.057777 102.4 0 49.152-50.062222 83.057778-83.057777 101.603556l-89.315556 49.948444-147.342222-151.552 147.342222-152.348444zM181.134222 56.888889h3.982222c34.474667 0 64.284444 12.913778 112.071112 39.480889l422.4 235.463111-135.566223 140.231111L181.191111 56.888889z"></path>
-                  </svg>
-                  <span>Google Play</span>
-                </button> -->
-                <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-100"
-                  on:click={() => {
-                    window.open(
-                      "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
-                      "_blank"
-                    );
-                  }}
-                >
-                  <svg
-                    class="icon fill-white"
-                    viewBox="0 0 1024 1024"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                  >
-                    <path
-                      d="M631.125333 128c6.698667 44.074667-11.861333 87.210667-36.266666 117.76-26.154667 32.725333-71.168 58.069333-114.858667 56.746667-8.021333-42.154667 12.416-85.632 37.248-114.858667 27.221333-32.213333 73.941333-56.917333 113.877333-59.648z m131.157334 620.117333c22.528-33.408 30.890667-50.261333 48.384-87.936-127.104-46.805333-147.456-221.696-21.674667-288.853333-38.4-46.506667-92.288-73.557333-143.146667-73.557333-36.693333 0-61.824 9.301333-84.650666 17.706666-19.029333 6.997333-36.437333 13.44-57.685334 13.44-22.954667 0-43.264-7.04-64.512-14.421333-23.338667-8.106667-47.872-16.64-78.293333-16.64-57.130667 0-117.888 33.792-156.416 91.52-54.186667 81.365333-44.970667 234.24 42.922667 364.501333 31.36 46.592 73.301333 98.986667 128.213333 99.413334 22.741333 0.256 37.930667-6.314667 54.314667-13.44 18.773333-8.149333 39.168-17.066667 74.496-17.194667 35.498667-0.213333 55.594667 8.746667 74.069333 17.066667 16 7.082667 30.805333 13.696 53.376 13.44 54.912-0.426667 99.2-58.453333 130.56-105.045334z"
-                    />
-                  </svg>
-                  <span class="{isMobile ? 'w-[50px]' : ''} truncate"
-                    >App Store</span
-                  >
-                </button>
-              </div>
-            </div>
-            <!-- Submit Btn -->
-=======
             <!-- 下载按钮 -->
             {#if checkUniapp()}
               <div class="flex flex-col p-2"></div>
@@ -378,7 +284,6 @@
               </div>
             {/if}
             <!-- 提交按钮 -->
->>>>>>> fingerprintAuth-out
             <div class="grid place-content-end p-2">
               <button
                 disabled={loading}
@@ -392,20 +297,12 @@
                     }
                     loading = true;
 
-<<<<<<< HEAD
-                    // 1. Create Wallet
-=======
                     // 1. 创建钱包
->>>>>>> fingerprintAuth-out
                     const { wallet, keystore, accountPrivateKey } =
                       await createAccount(password);
                     console.log("wallet", wallet);
                     keystoreJson = keystore;
-<<<<<<< HEAD
-                    // 2. Request the server to log in to the wallet account.
-=======
                     // 2. 请求服务端登录钱包账户
->>>>>>> fingerprintAuth-out
                     await handleWalletSignIn({
                       walletImported: wallet,
                       password,
@@ -416,18 +313,6 @@
 
                     loading = false;
 
-<<<<<<< HEAD
-                    // Update User Models
-                    initUserModels();
-                    // Update User Languages
-                    await initLanguage();
-
-                    // 3. Display the data of the wallet panel
-                    walletCreatedData = wallet;
-                    updateWalletData(wallet);
-
-                    // 4. auto download w3 json
-=======
                     // 更新用户模型
                     initUserModels();
                     // 更新用户语言
@@ -438,7 +323,6 @@
                     updateWalletData(wallet);
 
                     // 4. 自动下载json文件
->>>>>>> fingerprintAuth-out
                     if (keystore) {
                       downloadKeyStore(keystore);
                       toast.success(
@@ -448,11 +332,7 @@
                       );
                     }
                   } catch (error) {
-<<<<<<< HEAD
-                    addErrorLog('account login', error.toString());
-=======
                     addErrorLog('账号登陆', error.toString());
->>>>>>> fingerprintAuth-out
                   }
                 }}
               >
@@ -467,11 +347,7 @@
         </div>
       {/if}
 
-<<<<<<< HEAD
-      <!-- download secret key -->
-=======
       <!-- 下载密钥文件 -->
->>>>>>> fingerprintAuth-out
       {#if walletCreatedData}
         <div>
           {#if $user.user_no}
@@ -494,11 +370,7 @@
             class="my-4 px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
             type="submit"
             on:click={async () => {
-<<<<<<< HEAD
-              // Perform download action
-=======
               // 进行下载动作
->>>>>>> fingerprintAuth-out
               // const json = await exportAccountForKeystore(
               //   walletCreatedData?.pair,
               //   password
@@ -506,11 +378,6 @@
               if (keystoreJson) {
                 console.log("keystoreJson", keystoreJson);
 
-<<<<<<< HEAD
-                // Download Keystore File
-                downloadKeyStore(keystoreJson);
-              }
-=======
                 // 下载keystore文件
                 downloadKeyStore(keystoreJson);
               }
@@ -518,7 +385,6 @@
               // 保存账户对
 
               // console.log("exportAccountForKeystore", json);
->>>>>>> fingerprintAuth-out
             }}
           >
             {$i18n.t("Key DOWNLOAD ENCRYPTED KEY")}
@@ -598,70 +464,6 @@
           </p>
 
           <div class="flex justify-between mt-4 border-t border-dotted">
-<<<<<<< HEAD
-            <!-- download btn -->
-            <div class="flex flex-col py-2">
-              <div class="text-sm font-medium text-center">
-                {$i18n.t(" obtain rewards")}
-              </div>
-              <div class="flex flex-row mt-1 px-2">
-                <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 mr-3 primaryButton text-gray-900"
-                  on:click={() => {
-                    window.open("/static/app/degptv1.0_0712.apk", "_blank");
-                  }}
-                >
-                  <svg
-                    class="icon mr-1 fill-white dark:fill-gray-900"
-                    viewBox="0 0 1024 1024"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                  >
-                    <path
-                      d="M808.398269 218.955161c20.458525 11.691232 27.566623 37.753501 15.876521 58.213157l-65.330296 114.329713c119.461015 74.88989 203.198446 202.202702 217.966199 350.95283 2.492185 25.107214-17.227161 46.882472-42.457572 46.882472H85.333333c-25.230411 0-44.949757-21.775258-42.457571-46.882472 14.120124-142.220715 91.287453-264.84528 202.445704-340.790817l-71.137484-124.491726c-11.691232-20.459656-4.583135-46.521925 15.876521-58.213157 20.459656-11.691232 46.523055-4.583135 58.214287 15.876521l71.589581 125.281766c58.218808-25.812486 122.559011-40.113448 190.028856-40.113448 60.891832 0 119.233837 11.648283 172.825431 32.893457l67.465324-118.061775c11.691232-20.459656 37.754631-27.567753 58.214287-15.876521zM317.895488 554.666667c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z m384 0c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z"
-                    />
-                  </svg>
-                  <span class="{isMobile ? 'w-full' : ''} truncate"
-                    >Android</span
-                  >
-                </button>
-                <!-- <button class="flex flex-row items-center rounded-full px-4 py-2 mr-3 bg-gray-700 dark:bg-white text-white dark:text-gray-900">
-                  <svg class="icon mr-1 fill-white dark:fill-gray-900" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-                    <path d="M131.015111 937.301333c-10.24-16.952889-17.237333-44.373333-17.237333-83.854222V170.552889c0-39.480889 7.054222-66.901333 17.237333-83.854222l413.809778 425.699555-413.809778 424.903111z m588.572445-245.134222l-422.456889 235.406222c-47.786667 26.624-77.539556 39.537778-112.071111 39.537778h-3.868445l402.773333-415.232 135.623112 140.288z m50.915555-332.117333l89.315556 49.948444c32.995556 18.545778 83.057778 52.394667 83.057777 102.4 0 49.152-50.062222 83.057778-83.057777 101.603556l-89.315556 49.948444-147.342222-151.552 147.342222-152.348444zM181.134222 56.888889h3.982222c34.474667 0 64.284444 12.913778 112.071112 39.480889l422.4 235.463111-135.566223 140.231111L181.191111 56.888889z"></path>
-                  </svg>
-                  <span>Google Play</span>
-                </button> -->
-                <button
-                  class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-900"
-                  on:click={() => {
-                    window.open(
-                      "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
-                      "_blank"
-                    );
-                  }}
-                >
-                  <svg
-                    class="icon fill-white dark:fill-gray-900"
-                    viewBox="0 0 1024 1024"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                  >
-                    <path
-                      d="M631.125333 128c6.698667 44.074667-11.861333 87.210667-36.266666 117.76-26.154667 32.725333-71.168 58.069333-114.858667 56.746667-8.021333-42.154667 12.416-85.632 37.248-114.858667 27.221333-32.213333 73.941333-56.917333 113.877333-59.648z m131.157334 620.117333c22.528-33.408 30.890667-50.261333 48.384-87.936-127.104-46.805333-147.456-221.696-21.674667-288.853333-38.4-46.506667-92.288-73.557333-143.146667-73.557333-36.693333 0-61.824 9.301333-84.650666 17.706666-19.029333 6.997333-36.437333 13.44-57.685334 13.44-22.954667 0-43.264-7.04-64.512-14.421333-23.338667-8.106667-47.872-16.64-78.293333-16.64-57.130667 0-117.888 33.792-156.416 91.52-54.186667 81.365333-44.970667 234.24 42.922667 364.501333 31.36 46.592 73.301333 98.986667 128.213333 99.413334 22.741333 0.256 37.930667-6.314667 54.314667-13.44 18.773333-8.149333 39.168-17.066667 74.496-17.194667 35.498667-0.213333 55.594667 8.746667 74.069333 17.066667 16 7.082667 30.805333 13.696 53.376 13.44 54.912-0.426667 99.2-58.453333 130.56-105.045334z"
-                    />
-                  </svg>
-                  <span class="{isMobile ? 'w-[50px]' : ''} truncate"
-                    >App Store</span
-                  >
-                </button>
-              </div>
-            </div>
-            <!-- over btn -->
-=======
             <!-- 下载按钮 -->
             {#if checkUniapp()}
               <div class="flex flex-col py-2"></div>
@@ -723,7 +525,6 @@
               </div>
             {/if}
             <!-- 完成按钮 -->
->>>>>>> fingerprintAuth-out
             <div class="grid place-content-end p-2">
               <button
                 class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
@@ -764,10 +565,6 @@
   }
 
   .text-red-500 {
-<<<<<<< HEAD
-    color: #f56565; /* Use common errors in red */
-=======
     color: #f56565; /* 使用常见的错误红色 */
->>>>>>> fingerprintAuth-out
   }
 </style>

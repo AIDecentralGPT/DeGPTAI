@@ -218,11 +218,7 @@ export const updateUserById = async (token: string, userId: string, user: UserUp
 		body: JSON.stringify({
 			profile_image_url: user.profile_image_url,
 			email: user.email,
-<<<<<<< HEAD
-			name: user.name, // Store wallet address
-=======
 			name: user.name, // 存放钱包地址
->>>>>>> fingerprintAuth-out
 			password: user.password !== '' ? user.password : undefined
 		})
 	})
@@ -249,11 +245,8 @@ export const openProServices = async (
 	token: string,
 	tx: string,
 	amount: number,
-<<<<<<< HEAD
-=======
 	vip: string,
 	viptime: string
->>>>>>> fingerprintAuth-out
 ) => {
 	let error = null;
 
@@ -266,13 +259,9 @@ export const openProServices = async (
 		},
 		body: JSON.stringify({
 			tx,
-<<<<<<< HEAD
-			amount
-=======
 			amount,
 			vip,
 			viptime
->>>>>>> fingerprintAuth-out
 		})
 	})
 		.then(async (res) => {

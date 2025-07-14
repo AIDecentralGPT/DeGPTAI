@@ -1,14 +1,5 @@
 import urllib, urllib3
 import json
-<<<<<<< HEAD
-
-AppSecret = "**************"
-AppCode = '********************'
-Url = 'https://fscaptcha.market.alicloudapi.com/'
-
-class CaptchaApi:
-    # Obtain sliding verification information
-=======
 import os
 
 AppSecret = os.getenv("CaptchaAppSecret")
@@ -17,7 +8,6 @@ Url = os.getenv("CaptchaUrl")
 
 class CaptchaApi:
     # 获取滑动验证信息
->>>>>>> fingerprintAuth-out
     def checkCaptcha(self, captcha_code: str, client_ip: str) -> bool:
         captcha_json = json.loads(captcha_code)
         bodys = {}

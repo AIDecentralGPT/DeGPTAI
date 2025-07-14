@@ -1,9 +1,5 @@
 <script>
-<<<<<<< HEAD
-  import "../polyfills"; // Must be introduced before other code
-=======
   import "../polyfills"; // 必须在其他代码之前引入
->>>>>>> fingerprintAuth-out
   import { onMount, setContext } from "svelte";
   import {
     config,
@@ -23,11 +19,7 @@
   import "../tailwind.css";
   import "../app.css";
 
-<<<<<<< HEAD
-  // Open debugging mode
-=======
   // 打开调试模式
->>>>>>> fingerprintAuth-out
   // import VConsole from 'vconsole';
   // const vConsole = new VConsole();
 
@@ -43,17 +35,10 @@
   let loaded = false;
   const BREAKPOINT = 768;
 
-<<<<<<< HEAD
-  // Mount ServiceWorker
-  async function registServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      // Register a Service Worker and specify the type as' module 'to support ES6 module syntax
-=======
   // 挂载serviceWorker
   async function registServiceWorker() {
     if ('serviceWorker' in navigator) {
       // 注册 Service Worker，指定 type 为 'module' 以支持 ES6 模块语法
->>>>>>> fingerprintAuth-out
       navigator.serviceWorker.register('../static/sw.js', { type: 'module' })
         .then((registration) => {
           console.log('Service Worker registered success with scope:', registration.scope);
@@ -101,21 +86,13 @@
 
     document.getElementById("splash-screen")?.remove();
 
-<<<<<<< HEAD
-    // Create and insert script tags for Google Analytics
-=======
     // 创建并插入Google Analytics的script标签
->>>>>>> fingerprintAuth-out
     const script = document.createElement("script");
     script.src = "https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2";
     script.async = true;
     document.head.appendChild(script);
 
-<<<<<<< HEAD
-    // Initialize Google Analytics
-=======
     // 初始化Google Analytics
->>>>>>> fingerprintAuth-out
     script.onload = () => {
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -130,28 +107,16 @@
     };
   }
 
-<<<<<<< HEAD
-  // Retrieve request carrying parameters
-  async function initUrlParam() {
-    const queryParams = new URLSearchParams($page.url.search);
-
-    // Get invitation information
-=======
   // 获取请求携带参数
   async function initUrlParam() {
     const queryParams = new URLSearchParams($page.url.search);
 
     // 获取邀请信息
->>>>>>> fingerprintAuth-out
     let inviterVal = queryParams.get("inviter");
     if (inviterVal) {
       await inviterId.set(inviterVal);
     }
-<<<<<<< HEAD
-    // Obtain channels
-=======
     // 获取渠道
->>>>>>> fingerprintAuth-out
     let channelName = queryParams.get("channel");
     if (channelName) {
       await channel.set(channelName);
@@ -193,11 +158,7 @@
         intiLocationInfo();
       } 
     } catch (error) {
-<<<<<<< HEAD
-      addErrorLog("Home page initialization:", error.toString());
-=======
       addErrorLog("首页初始化", error.toString());
->>>>>>> fingerprintAuth-out
     }
   });
 </script>

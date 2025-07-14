@@ -72,11 +72,7 @@
   "Archive": "Архив",
   "Archived Chats": "Архивные чаты",
   "are allowed - Activate this command by typing": "разрешены - активировать эту команду, введя",
-<<<<<<< HEAD
-  "Are you sure to become a distinguished Plus member?": "Вы уверены, что хотите стать выдающимся членом Plus?",
-=======
   "Are you sure to become a distinguished member?": "Вы уверены, что хотите стать выдающимся членом?",
->>>>>>> fingerprintAuth-out
   "Are you sure?": "Вы уверены?",
   "Attach file": "Прикрепить файл",
   "Attention to detail": "Внимание к деталям",
@@ -160,10 +156,7 @@
   "Custom": "Пользовательский",
   "Customize Ollama models for a specific purpose": "Настроить модели Ollama для конкретной цели",
   "Dashboard": "Панель управления",
-<<<<<<< HEAD
-=======
   "Reward upkeep": "Поддержание вознаграждений",
->>>>>>> fingerprintAuth-out
   "Database": "База данных",
   "December": "Декабрь",
   "Default": "По умолчанию",
@@ -292,15 +285,9 @@
   "Input commands": "Ввод команд",
   "Interface": "Интерфейс",
   "Invalid Tag": "Неверный тег",
-<<<<<<< HEAD
-  "Invite a friend to create a wallet to earn 6000 DGC rewards,you friend will also earn 1000 DGC": "Пригласить друга создать кошелек и получить 6000 DGC в качестве вознаграждения, ваш друг также получит 1000 DGC",
-  "Invite friends now": "Пригласить друзей сейчас",
-  "Invite friends to create a wallet to earn 1000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Пригласить друзей создать кошелек и получить 1000 DGC в качестве вознаграждения, ваши друзья также получат 1000 DGC",
-=======
   "Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC": "Пригласить друга создать кошелек и получить 3000 DGC в качестве вознаграждения, ваш друг также получит 1000 DGC",
   "Invite friends now": "Пригласить друзей сейчас",
   "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards.": "Пригласить друзей создать кошелек и получить 3000 DGC в качестве вознаграждения, ваши друзья также получат 1000 DGC",
->>>>>>> fingerprintAuth-out
   "Invite Friends to Earn DGC Rewards": "Пригласить друзей, чтобы получить вознаграждение DGC",
   "invite new user": "Пригласить нового пользователя",
   "January": "Январь",
@@ -586,10 +573,7 @@
   "You": "Вы",
   "You can copy the private key below:": "Вы можете скопировать приватный ключ ниже:",
   "You can copy the website below:": "Вы можете скопировать веб-сайт ниже:",
-<<<<<<< HEAD
-=======
   "Copy the link and open it in a browser": "Скопируйте ссылку и откройте в браузере",
->>>>>>> fingerprintAuth-out
   "You can invite up to 10 friends per day, with a maximum reward of 10,000 DGC per day.": "Вы можете приглашать до 10 друзей в день, с максимальным вознаграждением 10,000 DGC в день.",
   "You have no archived conversations.": "У вас нет архивированных чатов.",
   "You have shared this chat": "Вы поделились этим чатом",
@@ -615,13 +599,8 @@
   "Upgrade Plan": "План обновления",
   "Upgrade": "Обновить",
   "Upgrade ": "Обновить ",
-<<<<<<< HEAD
-  "Upgrade to Plus": "Обновить до плюс",
-  "Upgrade to Plus failed!": "Обновление до плюс не удалось!",
-=======
   "Upgrade to VIP": "Повысить статус до VIP",
   "Upgrade to Vip failed!": "Повышение статуса до VIP не удалось!",
->>>>>>> fingerprintAuth-out
   "Upgrading": "Обновление в процессе",
   "Failed to obtain authorization information.": "Не удалось получить информацию об авторизации.",
   "Authorization failed!": "Авторизация не удалась!",
@@ -634,29 +613,18 @@
   "Close Wallet": "Закрыть кошелька",
   "Share to Obtain DGC": "Поделиться для получения DGC",
   "Buy": "Купить",
-<<<<<<< HEAD
-  "Node Sale": "Продажа узла",
-=======
   "Node Sale": "Продажа Node",
   "Buy DGC": "Купить DGC",
   "Enter wallet": "Открыть кошелёк",
->>>>>>> fingerprintAuth-out
   "Transactions": "Транзакции",
   "Authed KYC": "Авторизованный KYC",
   "Complete KYC": "Завершить KYC",
   "Connect Wallet": "Подключить кошелька",
-<<<<<<< HEAD
-  "Create Wallet": "Создать кошелек",
-  "Open Wallet": "Открыть кошелек",
-  "Set as default": "Установить по умолчанию",
-  "Click to select more models": "Нажмите, чтобы выбрать больше моделей",
-=======
   "Wallet": "Кошелёк",
   "Create Wallet": "Создать кошелек",
   "Open Wallet": "Открыть кошелек",
   "Set as default": "Установить по умолчанию",
   "Click to switch models": "Нажмите, чтобы сменить модель",
->>>>>>> fingerprintAuth-out
   "Unlimited DGC Reward Task": "Задача на получение неограниченного вознаграждения DGC",
   "Rewards History": "История наград",
   "Rewards Details": "Детали наград",
@@ -670,10 +638,7 @@
   "Account": "Аккаунт",
   "Statistics": "Статистика",
   "WebUI Settings": "Настройки веб-интерфейса",
-<<<<<<< HEAD
-=======
   "User interface settings": "Настройки пользовательского интерфейса",
->>>>>>> fingerprintAuth-out
   "Theme": "Тема",
   "System": "Система",
   "Dark": "Темный",
@@ -727,16 +692,6 @@
   "When an access node is located in a specific region, it will by default preferentially connect to GPU computing nodes within the same region, reducing latency and enhancing performance.": "Когда узел доступа находится в определенной области, по умолчанию он предпочтительно подключается к узлам вычислений на GPU в той же области, снижая задержку и повышая производительность.",
   "Download DeGPT to obtain rewards": "Загрузите DeGPT для получения вознаграждений.",
   "Switch Models": "Переключить модели",
-<<<<<<< HEAD
-  "Suitable for most tasks": "Подходит для большинства задач",
-  "Suitable for most tasks,Performance comparable to GPT-4o": "Подходит для большинства задач, Производительность сравнима с GPT-4o",
-  "Take photos to solve math problems": "Сделать фотографии для решения математических задач",
-  "Support image recognition": "Поддерживает распознавание изображений",
-  "Optimize code writing": "Оптимизировать написание кода",
-  "Please select at least one model.": "Пожалуйста, выберите хотя бы один модель.",
-  "You can select up to four models at most.": "Вы можете выбрать до четырех моделей максимум.",
-  "Your friend not complete the KYC verification.": "Ваш друг не завершил проверку KYC.",
-=======
   "Suitable for most tasks, taking photos to solve math problems.": "Подходит для большинства задач, решение математических задач с помощью фотографирования.",
   "Suitable for most tasks,Performance comparable to GPT-4o": "Подходит для большинства задач, Производительность сравнима с GPT-4o",
   "Deep thinking,mathematical and writing abilities ≈ o3.": "Глубокое мышление, математические и писательские способности ≈ o3.",
@@ -766,7 +721,6 @@
   "Please select at least one model.": "Пожалуйста, выберите хотя бы один модель.",
   "You can select up to four models at most.": "Вы можете выбрать до четырех моделей максимум.",
   "Your friend needs to complete the check-in three times.": "Твой друг должен выполнить регистрацию трижды.",
->>>>>>> fingerprintAuth-out
   "The KeyStore has been downloaded automatically. If necessary, you can download JSON manually or copy the private key": "KeyStore был автоматически загружен. Если необходимо, вы можете скачать JSON вручную или скопировать приватный ключ.",
   "Total": "Общее",
   "Channel Distribution": "Распределение каналов",
@@ -815,20 +769,12 @@
   "II. Referral Reward": "II. Премия за рекомендацию",
   "Wallet users who have completed KYC invite others to create wallets and complete KYC.": "Пользователи кошельков, которые завершили процедуру идентификации KYC, приглашают других создать кошельки и также завершить процедуру KYC.",
   "The number of people invited each day should not exceed 20.": "Количество приглашенных людей в день не должно превышать 20.",
-<<<<<<< HEAD
-  "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.": "Для каждого приглашенного человека, и если приглашенный человек последовательно входит в систему трижды, пригласивший получит вознаграждение в размере <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC.",
-  "III. Clock in Reward": "III. Премия за отметку времени",
-  "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.": "Премия за отметку времени действительна в течение <span style='color: rgba(184, 142, 86, 1);'>60</span> дней после завершения аутентификации.",
-  "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Войдя в систему и отметившись в течение <span style='color: rgba(184, 142, 86, 1);'>1</span> дня, можно заработать <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC в виде премии; максимальное количество премий за отметку времени - <span style='color: rgba(184, 142, 86, 1);'>30</span>.",
-  "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "Награда в размере <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC требует завершения процедуры идентификации клиента KYC, и ее необходимо забрать в тот же день. Если ее не забрать, награда истечёт.",
-=======
   "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is {{ time }}.": "Для каждого приглашенного человека, и если приглашенный человек последовательно входит в систему трижды, пригласивший получит вознаграждение в размере <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC，Дата окончания мероприятия до {{ time }}.",
   "III. Clock in Reward": "III. Премия за отметку времени",
   "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.": "Премия за отметку времени действительна в течение <span style='color: rgba(184, 142, 86, 1);'>180</span> дней после завершения аутентификации.",
   "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.": "Войдя в систему и отметившись в течение <span style='color: rgba(184, 142, 86, 1);'>1</span> дня, можно заработать <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC в виде премии; максимальное количество премий за отметку времени - <span style='color: rgba(184, 142, 86, 1);'>30</span>.",
   "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed.": "Награда в размере <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC требует завершения процедуры идентификации клиента KYC, и ее необходимо забрать в тот же день. Если ее не забрать, награда истечёт.",
   "The check-in reward has expired!": "Бонус за вход истек!",
->>>>>>> fingerprintAuth-out
   "Show me a code snippet": "Покажите мне фрагмент кода",
   "of a website's sticky header": "фиксированного заголовка веб-сайта",
   "Explain options trading": "Объясните торговлю опциями",
@@ -864,11 +810,7 @@
   "The contract address of DGC": "Адрес контракта DGC",
   "Instructions": "Инструкция",
   "If the problem remains unresolved, please join the Telegram group and follow us on X": "Если проблема остается нерешенной, пожалуйста, присоединяйтесь к группе в Telegram и следите за нами в X",
-<<<<<<< HEAD
-  "Prior to launching on the mainnet of any trading platform, DGC tokens are marked as points. These points will be converted at 1:1 ratio when DGC officially launches. DGC team will make sure that this transition goes smoothly and prevent any abuse of this policy.": "До запуска на основной сети любой торговой платформы токены DGC помечаются как очки. Эти очки будут преобразованы в соотношении 1:1, когда DGC официально запустится. Команда DGC 确保这种转换顺利进行并防止对这项政策的任何滥用。",
-=======
   "Before the mainnet launch on any trading platform, DGC tokens are designated as points. When DGC is officially launched, these points will be converted at a predetermined ratio. The DGC team will ensure a smooth conversion process and prevent any misuse of this policy.": "Перед запуском основной сети на любой торговой платформе токены DGC обозначаются как баллы. Когда DGC будет официально запущен, эти баллы будут конвертированы по заранее определенному курсу. Команда DGC обеспечит плавный процесс конвертации и предотвратит любое злоупотребление данной политикой.",
->>>>>>> fingerprintAuth-out
   "About DBC": "О DBC",
   "DeepBrainChain is the world's first AI public chain. Its native token, DBC, is used as gas fee in this project. Any DGC transactions requires a certain amount of nominal DBCs.": "DeepBrainChain - это первая публичная цепь ИИ в мире. Его собственный токен, DBC, используется в качестве комиссии за газ в этом проекте. Любая транзакция DGC требует определенного количества номинальных DBC.",
   "Download DeGPT APP": "Скачать приложение DeGPT",
@@ -886,10 +828,7 @@
   "Generating by": "Генерируется кем-то",
   "Thinking...": "Думаю...",
   "thinking...": "Думаю...",
-<<<<<<< HEAD
-=======
   "Replying...": "Отвечая...",
->>>>>>> fingerprintAuth-out
   "have thought deeply": "глубоко подумал",
   "What does this picture mean?": "Что означает это изображение?",
   "Explain this picture": "Объясните это изображение",
@@ -897,26 +836,17 @@
   "What does the symbol in the picture represent?":"Что представляет собой символ на изображении?",
   "Help me solve problems": "Помогите мне решить проблемы",
   "Last for {{ time }} seconds": "Длится {{ time }} секунд",
-<<<<<<< HEAD
-  "Search the web": "Поиск в интернете",
-  "Search the Twitter": "Поиск на Twitter",
-  "Search the YouTube": "Поиск на YouTube",
-=======
   "Tool": "Инструмент",
   "Search the Web": "Поиск в интернете",
   "Search the Twitter": "Поиск на Twitter",
   "Search the YouTube": "Поиск на YouTube",
   "Translate": "Переводить",
   "Webpage Reading": "Чтение веб-страниц",
->>>>>>> fingerprintAuth-out
   "search": "поиск",
   "Web Search": "Поиск в интернете",
   "YouTube Search": "поиск на YouTube",
   "Twitter Search": "поиск на Twitter",
   "Web Searching ...": "Выполняется поиск в интернете ...",
-<<<<<<< HEAD
-  "Think deeply and match the performance of o3 in tasks such as mathematics and creative writing": "Думайте глубоко и достигайте такого же уровня выполнения, как o3, в таких задачах, как математика и креативная писательство",
-=======
   "Paste or enter a link...": "Вставьте или введите ссылку...",
   "Enter text to translate...": "Введите текст для перевода...",
   "Auto-detect": "Автоопределение",
@@ -935,7 +865,6 @@
   "Vietnamese": "вьетнамский",
   "Chinese": "китайский",
   "Deep thinking,mathematical and writing abilities ≈ o3": "Глубокое мышление, математические и писательские способности ≈ o3",
->>>>>>> fingerprintAuth-out
   "KYC verification is limited to once every 10 minutes, Please try again later.": "Верификация KYC ограничена одной процедурой каждые 10 минут, Пожалуйста, попробуйте еще раз позже.",
   "A single IP address can be used for a maximum of two KYC verifications": "Одна IP - адрес может быть использована максимум дважды для верификации KYC.",
   "Check kyc failed, Please try again.": "Верификация KYC не удалась. Пожалуйста, попробуйте еще раз.",
@@ -943,9 +872,6 @@
   "Obtain what the content of the last question in the above questions is about, and only output the content": "Определите, о чём идёт речь в содержании последнего вопроса из вышеперечисленных вопросов, и выведите только это содержание",
   "Summarize based on the above YouTube search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска на YouTube:",
   "Summarize based on the above Twitter search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в Twitter:",
-<<<<<<< HEAD
-  "Summarize based on the above web search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в интернете:"
-=======
   "Summarize based on the above web search results:": "Сделайте обобщение на основе вышеуказанных результатов поиска в интернете:",
   "All Reward Range": "Общий диапазон вознаграждений",
   "Status": "Состояние",
@@ -1017,5 +943,4 @@
   "Failed to send transaction !": "Ошибка отправки транзакции!",
   "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC.": "Недостаточно средств на балансе DGC. Вы можете пригласить друга, чтобы получить 3000 DGC.",
   "It seems that you are offline. Please reconnect to send messages.": "Кажется, вы не в сети. Пожалуйста, переподключитесь, чтобы отправлять сообщения."
->>>>>>> fingerprintAuth-out
 }

@@ -7,11 +7,7 @@
   } from "$lib/stores";
   const i18n = getContext("i18n");
   
-<<<<<<< HEAD
-  // Display initialization socket
-=======
   // 显示初始化Socket
->>>>>>> fingerprintAuth-out
   $: if (show) {
     
   }

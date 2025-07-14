@@ -1,14 +1,10 @@
 <script>
   import { getContext } from "svelte";
-<<<<<<< HEAD
-
-=======
   import { checkUniapp } from "$lib/utils";
   import {
     downLoadUrl,
     showDownLoad
   } from "$lib/stores";
->>>>>>> fingerprintAuth-out
   const i18n = getContext("i18n");
 </script>
 
@@ -19,16 +15,12 @@
     <div class="flex gap-4 items-center">
       <button
         on:click={() => {
-<<<<<<< HEAD
-          window.open("https://x.com/DecentralGPT", "_blank");
-=======
           if (checkUniapp()) {
             $downLoadUrl = "https://x.com/DecentralGPT";
             $showDownLoad = true;
           } else {
             window.open("https://x.com/DecentralGPT", "_blank");
           }
->>>>>>> fingerprintAuth-out
         }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -54,16 +46,12 @@
       ></button>
       <button
         on:click={() => {
-<<<<<<< HEAD
-          window.open("https://t.me/DecentralGPT", "_blank");
-=======
           if (checkUniapp()) {
             $downLoadUrl = "https://t.me/DecentralGPT";
             $showDownLoad = true;
           } else {
             window.open("https://t.me/DecentralGPT", "_blank");
           }
->>>>>>> fingerprintAuth-out
         }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -89,16 +77,12 @@
       ></button>
       <button
         on:click={() => {
-<<<<<<< HEAD
-          window.open("https://medium.com/@DecentralGPT", "_blank")
-=======
           if (checkUniapp()) {
             $downLoadUrl = "https://medium.com/@DecentralGPT";
             $showDownLoad = true;
           } else {
             window.open("https://medium.com/@DecentralGPT", "_blank");
           }
->>>>>>> fingerprintAuth-out
         }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"

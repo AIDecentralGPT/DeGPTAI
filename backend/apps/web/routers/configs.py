@@ -38,11 +38,6 @@ class SetDefaultSuggestionsForm(BaseModel):
 ############################
 # SetDefaultModels
 ############################
-<<<<<<< HEAD
-
-
-=======
->>>>>>> fingerprintAuth-out
 @router.post("/default/models", response_model=str)
 async def set_global_default_models(
     request: Request, form_data: SetDefaultModelsForm, user=Depends(get_admin_user)

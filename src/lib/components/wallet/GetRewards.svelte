@@ -1,25 +1,5 @@
 <script lang="ts">
   import { getContext } from "svelte";
-<<<<<<< HEAD
-  import { toast } from "svelte-sonner";
-  import { getModels as _getModels, checkUniapp, checkPlatform } from "$lib/utils";
-  import ModelDeSelector from "$lib/components/chat/ModelDeSelector.svelte";
-
-  import {
-    chats,
-    user,
-    showShareModal,
-    showRewardsHistoryModal,
-    showNewWalletModal,
-    showRewardDetailModal,
-    showDownLoad,
-    mobile,
-  } from "$lib/stores";
-
-  import { clockIn, getRewardsCount } from "$lib/apis/rewards/index.js";
-
-  import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
-=======
   import { getModels as _getModels, checkUniapp, checkPlatform } from "$lib/utils";
 
   import {
@@ -43,7 +23,6 @@
 
   import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
   import { toast } from "svelte-sonner";
->>>>>>> fingerprintAuth-out
 
   const i18n = getContext("i18n");
 
@@ -65,11 +44,7 @@
     {
       id: "invite",
       text: "Share",
-<<<<<<< HEAD
-      reward: "6000 DGC",
-=======
       reward: "3000 DGC",
->>>>>>> fingerprintAuth-out
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M18 22q-1.25 0-2.125-.875T15 19q0-.175.025-.363t.075-.337l-7.05-4.1q-.425.375-.95.588T6 15q-1.25 0-2.125-.875T3 12t.875-2.125T6 9q.575 0 1.1.213t.95.587l7.05-4.1q-.05-.15-.075-.337T15 5q0-1.25.875-2.125T18 2t2.125.875T21 5t-.875 2.125T18 8q-.575 0-1.1-.212t-.95-.588L8.9 11.3q.05.15.075.338T9 12t-.025.363t-.075.337l7.05 4.1q.425-.375.95-.587T18 16q1.25 0 2.125.875T21 19t-.875 2.125T18 22"/></svg>',
     },
     // {
@@ -101,25 +76,6 @@
   $: if ($user?.id?.startsWith("0x")) {
     getCount();
   }
-<<<<<<< HEAD
-</script>
-
-<div>
-  <div class="flex gap-3 my-2 mt-20
-    {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
-    <div class="flex flex-col {$mobile ? '' : 'pb-6'}">
-      <ModelDeSelector />
-      <!-- <span class="text-xl ml-10 mt-1">
-        {$i18n.t("Unlimited DGC Reward Task")}
-      </span> -->
-    </div>
-    <div class="flex flex-col self-start">
-      {#if !checkUniapp() }
-        <div class="flex justify-center items-center">
-          <span class="text-base region-text-color font-bold">
-            {$i18n.t("Download DeGPT APP")}
-          </span>
-=======
 
   let modObj:any = null;
   $: {
@@ -155,7 +111,6 @@
           <!-- <span class="text-base region-text-color font-bold">
             {$i18n.t("Download DeGPT APP")}
           </span> -->
->>>>>>> fingerprintAuth-out
           {#if checkPlatform() == "ios"}
             <button
               class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
@@ -180,11 +135,7 @@
               </svg>
               <span class="truncate">App Store</span>
             </button>
-<<<<<<< HEAD
-          {:else}
-=======
           {:else if checkPlatform() == "android"}
->>>>>>> fingerprintAuth-out
             <button
               class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
@@ -201,8 +152,6 @@
               </svg>
               <span class="truncate">Google Play</span>
             </button>
-<<<<<<< HEAD
-=======
           {:else}
             <button
               class="flex gap-1 items-center cursor-pointer primaryButton ml-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
@@ -243,7 +192,6 @@
               </svg>
               <span class="truncate">App Store</span>
             </button>
->>>>>>> fingerprintAuth-out
           {/if}
           <!-- <button
             class="primaryButton text-xs text-gray-100 rounded-md ml-2 px-2 py-1 whitespace-nowrap"
@@ -269,13 +217,6 @@
         </div>  -->
       {/if}
     </div>
-<<<<<<< HEAD
-    <div class="flex text-xs {$mobile ? 'self-start' : 'self-end'}">
-      <button
-          class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg px-2 py-1"
-          on:click={() => {
-            window.open("https://www.decentralgpt.org", "_blank");
-=======
     <div class="flex text-xs gap-1 {$mobile ? 'flex-wrap self-stat' : 'self-end'}">
       <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
@@ -286,18 +227,13 @@
             } else {
               window.open("https://www.decentralgpt.org", "_blank");
             }
->>>>>>> fingerprintAuth-out
           }}
         >
           <span> {$i18n.t("Visit")}{$i18n.t("official website")}</span>
       </button>
       {#if $user?.id?.startsWith("0x")}
         <button
-<<<<<<< HEAD
-          class="flex gap-1 items-center cursor-pointer primaryButton ml-2 text-gray-100 rounded-lg px-2 py-1"
-=======
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
->>>>>>> fingerprintAuth-out
           on:click={() => {
             $showRewardsHistoryModal = true;
           }}
@@ -317,11 +253,7 @@
         </button>
       {/if}
       <button
-<<<<<<< HEAD
-        class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1"
-=======
         class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
->>>>>>> fingerprintAuth-out
         on:click={() => {
           $showRewardDetailModal = true;
         }}
@@ -339,8 +271,6 @@
         >
         <span> {$i18n.t("Rewards Details")} </span>
       </button>
-<<<<<<< HEAD
-=======
       <button
         class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
         on:click={() => {
@@ -350,7 +280,6 @@
       >
         <span> {$i18n.t("Enter wallet")} </span>
       </button>
->>>>>>> fingerprintAuth-out
     </div>
   </div>
 
@@ -377,24 +306,15 @@
                 ? "background: rgba(251, 251, 251, 0.8)"
                 : ""}
               on:click={async () => {
-<<<<<<< HEAD
-                console.log("user info ", $user);
-
-=======
->>>>>>> fingerprintAuth-out
                 if (item.id === "new_wallet") {
                   $showNewWalletModal = true;
                 } else if (item.id === "invite") {
                   $showShareModal = true;
                 } else if (item.id === "clock_in") {
-<<<<<<< HEAD
-                  if ($chats.length > 0) {
-=======
                   if (!$user?.verified) {
                     toast.warning($i18n.t("To claim the reward, you must first complete user verification !"));
                     $showUserVerifyModal = true;
                   }else if ($chats.length > 0) {
->>>>>>> fingerprintAuth-out
                     clockLoading = true;
                     await clockIn(localStorage.token)
                       .then((res) => {
