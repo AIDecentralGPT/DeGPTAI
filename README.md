@@ -1,19 +1,28 @@
-# 把本地数据库同步为postgres
+<h1 align="center">Welcome to DeGPT 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.1.1-blue.svg?cacheSeconds=2592000" />
+</p>
 
+> DeGPT, accessible at https://www.degpt.ai, is an AI-driven project leveraging advanced generative technologies. Focused on delivering intelligent solutions, it aims to enhance productivity and enable efficient, user-centric automation across diverse scenarios, with core strengths in AI-powered tooling for varied user needs.
+
+### 🏠 [Homepage](layout.svelte)
+
+### ✨ [Demo](https://test.degpt.ai)
+
+## Install
+
+```sh
+npm install
 ```
-ALTER TABLE auth
-ALTER COLUMN active TYPE text USING active::text;
 
-ALTER TABLE chat
-ALTER COLUMN archived TYPE text USING archived::text,
-ALTER COLUMN created_at TYPE text USING created_at::text,
-ALTER COLUMN updated_at TYPE text USING updated_at::text;
+## Author
 
-ALTER TABLE auth
-ALTER COLUMN active TYPE boolean USING active::boolean;
+👤 **Degpt Group**
 
-ALTER TABLE chat
-ALTER COLUMN archived TYPE boolean USING archived::boolean,
-ALTER COLUMN created_at TYPE int8 USING created_at::int8,
-ALTER COLUMN updated_at TYPE int8 USING updated_at::int8;
-```
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
