@@ -52,7 +52,7 @@
         </button>
       </div>
 
-    <div class="p-6 pt-0 shadow-md mt-0 flex-1">
+    <div class="p-6 pt-0 shadow-md mt-0 flex-1 overflow-auto">
       <div>
         <h1>{$i18n.t("Rewards Details")}</h1>
         {#each rewards as reward}
