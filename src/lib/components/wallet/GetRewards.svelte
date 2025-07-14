@@ -98,7 +98,7 @@
       <span class="w-full max-w-[600px] text-lg text-center mt-2">{ $i18n.t(modObj[0]?.desc) }</span>
     </div>
   {/if}
-  <div class="flex gap-3 my-2 mt-20
+  <div class="flex my-2 mt-20
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
     <!-- 节点选择 -->
     <!-- <div class="flex flex-col {$mobile ? '' : 'pb-6'}">
@@ -140,7 +140,7 @@
             </button>
           {:else if checkPlatform() == "android"}
             <button
-              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
+              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
                 window.open("https://play.google.com/store/apps/details?id=uni.UNIEF8864C&hl=en", "_blank");
               }}
