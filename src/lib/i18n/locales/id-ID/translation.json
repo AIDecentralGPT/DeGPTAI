@@ -668,6 +668,7 @@
   "Time expired, try again": "Waktu telah habis, coba lagi",
   "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Anda sudah mengikat verifikasi wajah KYC Anda dengan dompet lain. Hanya satu dompet yang bisa diikat.",
   "Your kyc rewards have been credited.": "Hadiah KYC Anda telah dikreditkan.",
+  "Please return to the software interface and click Complete.": "Silakan kembali ke antarmuka perangkat lunak dan klik Selesai.",
   "The identity validate fail": "Validasi identitas gagal",
   "Your haven't started live testing yet": "Anda belum memulai pengujian langsung",
   "AUTHENTICATED": "Terverifikasi",

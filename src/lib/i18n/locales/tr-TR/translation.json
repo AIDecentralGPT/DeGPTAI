@@ -668,6 +668,7 @@
   "Time expired, try again": "Süre doldu, tekrar deneyin",
   "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Zaten başka bir cüzdana yüz KYC'sini bağlamışsınız. Sadece bir cüzdan bağlanabilir.",
   "Your kyc rewards have been credited.": "KYC ödülleriniz tahsil edilmiştir.",
+  "Please return to the software interface and click Complete.": "Lütfen yazılım arayüzüne dönün ve Tamamla yı tıklayın.",
   "The identity validate fail": "Kimlik doğrulaması başarısız oldu",
   "Your haven't started live testing yet": "Canlı testleri henüz başlamadınız",
   "AUTHENTICATED": "Doğrulanmış",

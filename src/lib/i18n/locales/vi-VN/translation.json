@@ -668,6 +668,7 @@
   "Time expired, try again": "Waktu sudah habis, coba lagi",
   "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Bạn đã liên kết xác thực khuôn mặt KYC của mình với ví khác rồi. Chỉ có thể liên kết một ví.",
   "Your kyc rewards have been credited.": "Hadiah KYC Anda sudah dikreditkan",
+  "Please return to the software interface and click Complete.": "Vui lòng quay lại giao diện phần mềm và nhấp vào Hoàn thành.",
   "The identity validate fail": "Validasi identitas gagal",
   "Your haven't started live testing yet": "Anda belum memulai pengujian langsung",
   "AUTHENTICATED": "Đã được xác thực",

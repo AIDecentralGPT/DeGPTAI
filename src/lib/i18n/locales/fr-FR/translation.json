@@ -667,6 +667,7 @@
   "Time expired, try again": "Le temps est écoulé, essaie encore",
   "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "Vous avez déjà lié votre reconnaissance faciale pour la vérification KYC à un autre portefeuille. Seul un portefeuille peut être lié.",
   "Your kyc rewards have been credited.": "Vos récompenses de KYC ont été créditées.",
+  "Please return to the software interface and click Complete.": "Veuillez retourner à l'interface du logiciel et cliquer sur Terminer.",
   "The identity validate fail": "La validation de l'identité a échoué",
   "Your haven't started live testing yet": "Vous n'avez pas encore commencé les tests en direct",
   "AUTHENTICATED": "Authentifié",

@@ -667,6 +667,7 @@
   "Time expired, try again": "เวลาถึงกำหนดแล้ว,ลองใหม่",
   "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "คุณได้ผูกการตรวจสอบ KYC ด้วยการรับรู้ใบหน้าไปกับกระเป๋าเงินอื่นแล้ว เท่านั้นกระเป๋าเงินหนึ่งกระเป๋าเท่านั้นที่จะถูกผูก.",
   "Your kyc rewards have been credited.": "รางวัลจาก KYC ของคุณได้ถูกcreditedแล้ว",
+  "Please return to the software interface and click Complete.": "กรุณากลับไปที่อินเทอร์เฟซซอฟต์แวร์และคลิก เสร็จสิ้น",
   "The identity validate fail": "การตรวจสอบตัวตนล้มเหลว",
   "Your haven't started live testing yet": "คุณยังไม่ได้เริ่มทดสอบสด",
   "AUTHENTICATED": "ได้รับการยืนยันแล้ว",

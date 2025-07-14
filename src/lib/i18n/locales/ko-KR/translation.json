@@ -668,6 +668,7 @@
   "Time expired, try again": "시간이 만료되었습니다. 다시 시도해 보세요",
   "You have already bound your face KYC with another wallet. Only one wallet can be bound.": "이미 다른 지갑에 얼굴 인증 KYC를 바인딩했습니다. 한 지갑만 바인딩할 수 있습니다.",
   "Your kyc rewards have been credited.": "귀하의 KYC 보상이 이미 입금되었습니다",
+  "Please return to the software interface and click Complete.": "소프트웨어 인터페이스로 돌아가 완료 를 클릭하십시오.",
   "The identity validate fail": "본인 인증에 실패했습니다",
   "Your haven't started live testing yet": "귀하는 아직 라이브 테스트를 시작하지 않았습니다",
   "AUTHENTICATED": "인증되었습니다",
