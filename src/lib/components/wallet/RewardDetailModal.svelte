@@ -15,21 +15,13 @@
       description: [
         "Wallet users who have completed KYC invite others to create wallets and complete KYC.",
         "The number of people invited each day should not exceed 20.",
-<<<<<<< HEAD
-        "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>6,000</span> DGC."
-=======
         "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is {{ time }}."
->>>>>>> fingerprintAuth-out
       ]
     },
     {
       title: "III. Clock in Reward",
       description: [
-<<<<<<< HEAD
-        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>60</span> days after authentication is completed.",
-=======
         "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.",
->>>>>>> fingerprintAuth-out
         "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.",
         "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed."
       ]
