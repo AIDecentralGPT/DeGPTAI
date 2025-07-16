@@ -99,7 +99,7 @@ class TwitterLib:
         return tweets
 
     def search_snscrape(self, keword: str):
-        start_date = "2025-07-01"
+        start_date = "2025-01-01"
         end_date = "2025-07-09"
         query = f'{keword} since:{start_date} until:{end_date}'
 

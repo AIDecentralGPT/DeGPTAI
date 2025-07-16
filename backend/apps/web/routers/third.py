@@ -6,6 +6,7 @@ from apps.web.api.youtube import YoutubeClientApi, YoutubeSearchForm
 from apps.web.api.twitter import TwitterApi, TwitterSearchForm
 from apps.web.api.bing import BingApiInstance
 from apps.web.api.webapi import WebApiInstance, WebInfoForm
+from apps.web.api.playrighttwitter import PlayWrightInstall
 
 from utils.utils import (get_current_user)
 
@@ -16,7 +17,7 @@ router = APIRouter()
 @router.post("/search", response_model=dict)
 async def tavilySearch(form: TavilySearchForm, user=Depends(get_current_user)):
     if form.type == 'twitter':
-        data = TwitterApi.search_snscrape(form.keyword)
+        data = await PlayWrightInstall.login_twitter("美食分享")
         return { "ok": True, "data": data}
     elif form.type == 'youtube':
         data = YoutubeClientApi.search(form.keyword)
