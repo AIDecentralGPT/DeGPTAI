@@ -20,11 +20,22 @@ class PlayWrightUtil:
             try:
                 # 导航到登录页面
                 await page.goto("https://x.com/i/flow/login", wait_until="networkidle")
+                # 获取页面内容
+                page_content = await page.content()
+                # 保存到 HTML 文件
+                with open("twitter_login_page1.html", "w", encoding="utf-8") as f:
+                    f.write(page_content)
 
                 # 输入用户名
                 await page.fill('input[autocomplete="username"]', username)
                 # await page.click('button[role="button"]:has-text("下一步")')
                 await page.click('button[role="button"]:has-text("Next")')
+
+                # 获取页面内容
+                page_content = await page.content()
+                # 保存到 HTML 文件
+                with open("twitter_login_page2.html", "w", encoding="utf-8") as f:
+                    f.write(page_content)
 
                 # 输入密码
                 await page.wait_for_selector('input[name="password"]')
@@ -44,12 +55,6 @@ class PlayWrightUtil:
                 # 等待推文加载
                 await page.wait_for_selector('article[data-testid="tweet"]')
                 await self.scroll_to_load(page, scroll_times=4)
-
-                # 获取页面内容
-                page_content = await page.content()
-                # 保存到 HTML 文件
-                with open("twitter_login_page.html", "w", encoding="utf-8") as f:
-                    f.write(page_content)
                 
                 # 提取推文信息
                 tweet_datas = await page.evaluate('''() => {
