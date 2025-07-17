@@ -19,16 +19,11 @@ class PlayWrightUtil:
 
             try:
                 # 导航到登录页面
-                await page.goto("https://twitter.com/i/flow/login", wait_until="networkidle")
-
-                # 获取页面内容
-                page_content = await page.content()
-                # 保存到 HTML 文件
-                with open("twitter_login_page.html", "w", encoding="utf-8") as f:
-                    f.write(page_content)
+                await page.goto("https://x.com/i/flow/login", wait_until="networkidle")
 
                 # 输入用户名
                 await page.fill('input[autocomplete="username"]', username)
+                # await page.click('button[role="button"]:has-text("下一步")')
                 await page.click('button[role="button"]:has-text("Next")')
 
                 # 输入密码
@@ -36,14 +31,12 @@ class PlayWrightUtil:
                 await page.fill('input[name="password"]', password)
 
                 # 点击登录
+                # await page.click('button[role="button"]:has-text("登录")')
                 await page.click('button[role="button"]:has-text("Log in")')
                     
                 # 等待登录成功
                 await page.wait_for_selector('button[aria-label="账号菜单"]', timeout=15000)
                 print("登录成功！")
-
-                # 保存登录状态
-                await context.storage_state(path="twitter_auth.json")
 
                 # 现在可以访问需要登录的内容
                 await page.goto(f'https://x.com/search?q={keyword}&src=typed_query')
@@ -51,6 +44,12 @@ class PlayWrightUtil:
                 # 等待推文加载
                 await page.wait_for_selector('article[data-testid="tweet"]')
                 await self.scroll_to_load(page, scroll_times=4)
+
+                # 获取页面内容
+                page_content = await page.content()
+                # 保存到 HTML 文件
+                with open("twitter_login_page.html", "w", encoding="utf-8") as f:
+                    f.write(page_content)
                 
                 # 提取推文信息
                 tweet_datas = await page.evaluate('''() => {
