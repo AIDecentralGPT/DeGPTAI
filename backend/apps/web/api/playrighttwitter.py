@@ -25,10 +25,12 @@ class PlayWrightUtil:
 
                 # 输入用户名
                 await page.wait_for_selector('input[autocomplete="username"]')
+                await page.screenshot(path='username.png')
                 await page.fill('input[autocomplete="username"]', username)
                 # await page.click('button[role="button"]:has-text("下一步")')
                 await page.click('button[role="button"]:has-text("Next")')
 
+                await page.screenshot(path='password.png')
                 # 输入密码
                 await page.wait_for_selector('input[name="password"]')
                 # 获取页面内容
@@ -36,7 +38,7 @@ class PlayWrightUtil:
                 # 保存到 HTML 文件
                 with open("twitter_login_page.html", "w", encoding="utf-8") as f:
                     f.write(page_content)
-                    
+
                 await page.fill('input[name="password"]', password)
                 # 点击登录
                 # await page.click('button[role="button"]:has-text("登录")')
