@@ -7,13 +7,14 @@ class PlayWrightUtil:
         username = "BrookeHamp25599"
         password = "i1FpNoLs6EIVsUiu"
         async with async_playwright() as p:  # 使用async_playwright而不是sync_playwright
-            browser = await p.chromium.launch(headless=True, args=[
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-blink-features=AutomationControlled',
-                '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            ])
+            browser = await p.chromium.launch(
+                headless=True, 
+                args=[
+                    '--disable-blink-features=AutomationControlled',
+                    '--no-sandbox',
+                    '--disable-dev-shm-usage'
+                ]
+            )
             context = await browser.new_context()
             page = await context.new_page()
 
