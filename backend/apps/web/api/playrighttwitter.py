@@ -71,7 +71,7 @@ class PlayWrightUtil:
                 try:
                     # 需要截取长页面时，可以设置较大高度
                     await page.set_viewport_size({"width": 1200, "height": 2000})
-                    # 现在可以访问需要登录的内容
+                    # 现在可以访问需要搜索的内容
                     await page.goto(f'https://x.com/search?q={keyword}&src=typed_query')
 
                     # 等待推文加载
