@@ -7,7 +7,13 @@ class PlayWrightUtil:
         username = "BrookeHamp25599"
         password = "i1FpNoLs6EIVsUiu"
         async with async_playwright() as p:  # 使用async_playwright而不是sync_playwright
-            browser = await p.chromium.launch(headless=False)
+            browser = await p.chromium.launch(headless=True, args=[
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-blink-features=AutomationControlled',
+                '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            ])
             context = await browser.new_context()
             page = await context.new_page()
 
@@ -17,15 +23,15 @@ class PlayWrightUtil:
 
                 # 输入用户名
                 await page.fill('input[autocomplete="username"]', username)
-                await page.click('button[role="button"]:has-text("下一步")')
+                await page.click('button[role="button"]:has-text("Next")')
 
                 # 输入密码
                 await page.wait_for_selector('input[name="password"]')
                 await page.fill('input[name="password"]', password)
 
                 # 点击登录
-                await page.click('button[role="button"]:has-text("登录")')
-
+                await page.click('button[role="button"]:has-text("Log in")')
+                    
                 # 等待登录成功
                 await page.wait_for_selector('button[aria-label="账号菜单"]', timeout=15000)
                 print("登录成功！")
