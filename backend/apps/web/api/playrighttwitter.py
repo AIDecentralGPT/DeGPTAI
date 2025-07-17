@@ -6,6 +6,7 @@ class PlayWrightUtil:
     async def login_twitter(self, keyword: str):
         username = "BrookeHamp25599"
         password = "i1FpNoLs6EIVsUiu"
+        email = "ydarsmjzaq@rambler.ru"
         async with async_playwright() as p:  # 使用async_playwright而不是sync_playwright
             browser = await p.chromium.launch(
                 headless=True, 
@@ -24,28 +25,33 @@ class PlayWrightUtil:
                 await page.goto("https://x.com/i/flow/login", wait_until="networkidle")
 
                 # 输入用户名
-                await page.wait_for_selector('input[autocomplete="username"]')
-                await page.screenshot(path='username.png')
+                await page.wait_for_selector('input[autocomplete="username"]', timeout=3000)
+                await page.screenshot(path='playwright/username.png')
                 await page.fill('input[autocomplete="username"]', username)
                 # await page.click('button[role="button"]:has-text("下一步")')
                 await page.click('button[role="button"]:has-text("Next")')
 
-                await page.screenshot(path='password.png')
-                # 输入密码
-                await page.wait_for_selector('input[name="password"]')
-                # 获取页面内容
-                page_content = await page.content()
-                # 保存到 HTML 文件
-                with open("twitter_login_page.html", "w", encoding="utf-8") as f:
-                    f.write(page_content)
+                try:
+                    # 输入邮箱验证
+                    await page.wait_for_selector('input[data-testid="ocfEnterTextTextInput"]', timeout=3000)
+                    await page.screenshot(path='playwright/email.png')
+                    await page.fill('input[data-testid="ocfEnterTextTextInput"]', email)
+                    # await page.click('button[role="button"]:has-text("下一步")')
+                    await page.click('button[role="button"]:has-text("Next")')
+                except:
+                    print("没有邮箱验证")
 
+                # 输入密码
+                await page.wait_for_selector('input[name="password"]', timeout=3000)
+                await page.screenshot(path='playwright/password.png')
                 await page.fill('input[name="password"]', password)
                 # 点击登录
                 # await page.click('button[role="button"]:has-text("登录")')
                 await page.click('button[role="button"]:has-text("Log in")')
                     
                 # 等待登录成功
-                await page.wait_for_selector('button[aria-label="账号菜单"]', timeout=15000)
+                await page.wait_for_selector('button[aria-label="账号菜单"]')
+                await page.screenshot(path='playwright/accountmenu.png')
                 print("登录成功！")
 
                 # 现在可以访问需要登录的内容
@@ -53,6 +59,7 @@ class PlayWrightUtil:
 
                 # 等待推文加载
                 await page.wait_for_selector('article[data-testid="tweet"]')
+                await page.screenshot(path='playwright/article.png')
                 await self.scroll_to_load(page, scroll_times=4)
                 
                 # 提取推文信息
@@ -86,11 +93,12 @@ class PlayWrightUtil:
                         "tweet_created_at": tweet_data.get('tweet_created_at'),
                         "favorite_count": tweet_data.get('like')
                     })
+                await browser.close()
                 return {"content": tweet_tran}
             except Exception as e:
                 print(f"登录失败: {e}")
-            finally:
                 await browser.close()
+                return []
 
     # add page scroll
     async def scroll_to_load(self, page, scroll_times=3):
