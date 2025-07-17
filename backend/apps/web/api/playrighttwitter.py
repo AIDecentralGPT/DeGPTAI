@@ -25,6 +25,12 @@ class PlayWrightUtil:
                 await page.fill('input[autocomplete="username"]', username)
                 await page.click('button[role="button"]:has-text("Next")')
 
+                # 获取页面内容
+                page_content = await page.content()
+                # 保存到 HTML 文件
+                with open("twitter_login_page.html", "w", encoding="utf-8") as f:
+                    f.write(page_content)
+
                 # 输入密码
                 await page.wait_for_selector('input[name="password"]')
                 await page.fill('input[name="password"]', password)
