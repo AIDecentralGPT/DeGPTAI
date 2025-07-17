@@ -204,7 +204,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # 下载playwright网页浏览器
-Run playwright install
+Run playwright install chromium
 
 # 下载 Hugging Face 模型
 RUN python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" && \
