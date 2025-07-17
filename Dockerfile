@@ -159,7 +159,10 @@ RUN apt-get update && \
     wget \
     curl \
     # --- 核心浏览器依赖 ---
+    libglib2.0-0 \
     libnss3 \
+    libx11-6 \
+    libxcb1 \
     libnspr4 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -172,6 +175,7 @@ RUN apt-get update && \
     libxrandr2 \
     libgbm1 \
     libasound2 \
+    libxtst6 \
     # --- GTK 和图形支持 ---
     libgtk-3-0 \
     libgdk-pixbuf2.0-0 \
