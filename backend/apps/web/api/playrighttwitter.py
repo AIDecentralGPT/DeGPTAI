@@ -36,8 +36,8 @@ class PlayWrightUtil:
                 # 保存到 HTML 文件
                 with open("twitter_login_page.html", "w", encoding="utf-8") as f:
                     f.write(page_content)
+                    
                 await page.fill('input[name="password"]', password)
-
                 # 点击登录
                 # await page.click('button[role="button"]:has-text("登录")')
                 await page.click('button[role="button"]:has-text("Log in")')
