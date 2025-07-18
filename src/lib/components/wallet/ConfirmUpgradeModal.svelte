@@ -10,6 +10,7 @@
 
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { thirdTransferDgc, transferDgc } from "$lib/utils/wallet/ether/dgc"
+  import { tranAddress } from "$lib/constants"
 
   const i18n = getContext("i18n");
 
@@ -19,7 +20,7 @@
   export let viptype = "basic";
   export let viptime = "month";
   export let money = 3;
-  let address = "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8";
+
   async function upgradeVip() {
     if ($currentWalletData?.walletInfo) {
       loading = true;
@@ -27,14 +28,14 @@
         let response = {ok: false, msg: ""};
         if ($user?.address_type != "threeSide") {
           response = await transferDgc(
-            address,
+            tranAddress,
             money/0.0001,
             $currentWalletData?.walletInfo?.privateKey
           );
         } else {
           response = await thirdTransferDgc(
             $currentWalletData?.walletInfo?.address,
-            address,
+            tranAddress,
             money/0.0001
           );
         }

@@ -118,3 +118,6 @@ export const RewardProperties = {
   "citimes": 30,
   "endtime": "2025-08-16 00:00:00"
 }
+
+// 升级VIP钱包地址
+export const tranAddress = "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8"

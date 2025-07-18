@@ -33,6 +33,7 @@ from utils.misc import parse_duration, validate_email_format
 from web3 import Web3
 #w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
 w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io')) # 新以太坊主网
+tranAddress = "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8"
 
 # from web3.auto import w3
 import asyncio
@@ -339,7 +340,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
                         print(f"From: {from_address}")
                         print(f"To: {to_address}")
                             
-                        if to_address == "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8":
+                        if to_address == tranAddress:
                             print("执行update_user_vip")
                             update_user_vip(session_user.id, tx_hash, form_data.vip, form_data.viptime)
 
