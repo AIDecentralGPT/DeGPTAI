@@ -22,6 +22,7 @@
   import { getRewardsCount, clockIn } from "$lib/apis/rewards/index.js";
 
   import DownLoadModal from "$lib/components/download/DownLoadModal.svelte";
+  import { RewardProperties } from "$lib/constants"
   import { toast } from "svelte-sonner";
 
   const i18n = getContext("i18n");
@@ -32,19 +33,19 @@
     {
       id: "new_wallet",
       text: "Create Wallet",
-      reward: "1000 DGC",
+      reward: RewardProperties?.regist + " DGC",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6 20q-1.65 0-2.825-1.175T2 16V8q0-1.65 1.175-2.825T6 4h12q1.65 0 2.825 1.175T22 8v8q0 1.65-1.175 2.825T18 20zM6 8h12q.55 0 1.05.125t.95.4V8q0-.825-.587-1.412T18 6H6q-.825 0-1.412.588T4 8v.525q.45-.275.95-.4T6 8m-1.85 3.25l11.125 2.7q.225.05.45 0t.425-.2l3.475-2.9q-.275-.375-.7-.612T18 10H6q-.65 0-1.137.338t-.713.912"/></svg>',
     },
     {
       id: "clock_in",
       text: "Clock In",
-      reward: "3000 DGC",
+      reward: RewardProperties?.clockinall + " DGC",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M4 19q-.825 0-1.412-.587T2 17V5q0-.825.588-1.412T4 3h16q.825 0 1.413.588T22 5v12q0 .825-.587 1.413T20 19h-4v1q0 .425-.288.713T15 21H9q-.425 0-.712-.288T8 20v-1zm0-2h16V5H4zm0 0V5zm4-2h8v-.55q0-1.125-1.1-1.787T12 12t-2.9.663T8 14.45zm4-4q.825 0 1.413-.587T14 9t-.587-1.412T12 7t-1.412.588T10 9t.588 1.413T12 11"/></svg>',
     },
     {
       id: "invite",
       text: "Share",
-      reward: "3000 DGC",
+      reward: RewardProperties?.invite + " DGC",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M18 22q-1.25 0-2.125-.875T15 19q0-.175.025-.363t.075-.337l-7.05-4.1q-.425.375-.95.588T6 15q-1.25 0-2.125-.875T3 12t.875-2.125T6 9q.575 0 1.1.213t.95.587l7.05-4.1q-.05-.15-.075-.337T15 5q0-1.25.875-2.125T18 2t2.125.875T21 5t-.875 2.125T18 8q-.575 0-1.1-.212t-.95-.588L8.9 11.3q.05.15.075.338T9 12t-.025.363t-.075.337l7.05 4.1q.425-.375.95-.587T18 16q1.25 0 2.125.875T21 19t-.875 2.125T18 22"/></svg>',
     },
     // {
@@ -82,6 +83,8 @@
     let selmodels = $settings?.models ?? ['deepseek-chat'];
     if (selmodels.length > 0) {
       modObj = $models.filter(item => selmodels.includes(item?.model));
+    } else {
+      modObj = $models[0];
     }
   }
 </script>
@@ -95,7 +98,7 @@
       <span class="w-full max-w-[600px] text-lg text-center mt-2">{ $i18n.t(modObj[0]?.desc) }</span>
     </div>
   {/if}
-  <div class="flex gap-3 my-2 mt-20
+  <div class="flex my-2 mt-20
     {$mobile? 'flex-col' : 'flex-wrap items-center flex-wrap justify-between'}">
     <!-- 节点选择 -->
     <!-- <div class="flex flex-col {$mobile ? '' : 'pb-6'}">
@@ -113,7 +116,7 @@
           </span> -->
           {#if checkPlatform() == "ios"}
             <button
-              class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
+              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
                 window.open(
                   "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
@@ -137,7 +140,7 @@
             </button>
           {:else if checkPlatform() == "android"}
             <button
-              class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
+              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
                 window.open("https://play.google.com/store/apps/details?id=uni.UNIEF8864C&hl=en", "_blank");
               }}
@@ -151,10 +154,29 @@
                 <path d="M556.373333 512c0-3.413333-3.413333-10.24-6.826666-13.653333L105.813333 75.093333c-3.413333-3.413333-10.24-3.413333-13.653333-3.413333-6.826667 0-10.24 3.413333-13.653333 10.24-3.413333 10.24-6.826667 20.48-6.826667 30.72v798.72c0 10.24 3.413333 20.48 6.826667 30.72 3.413333 3.413333 6.826667 10.24 13.653333 10.24h3.413333c3.413333 0 10.24 0 10.24-3.413333l447.146667-423.253334c3.413333-3.413333 3.413333-10.24 3.413333-13.653333zM580.266667 477.866667c3.413333 3.413333 6.826667 3.413333 10.24 3.413333s6.826667 0 10.24-3.413333l122.88-116.053334c3.413333-3.413333 6.826667-10.24 6.826666-13.653333 0-6.826667-3.413333-10.24-10.24-13.653333L187.733333 44.373333c-10.24-6.826667-20.48-6.826667-30.72-10.24-6.826667 0-13.653333 3.413333-17.066666 10.24s0 13.653333 3.413333 20.48L580.266667 477.866667zM604.16 546.133333c-6.826667-6.826667-17.066667-6.826667-23.893333 0L143.36 959.146667c-3.413333 6.826667-6.826667 13.653333-3.413333 20.48 3.413333 6.826667 10.24 10.24 17.066666 10.24 10.24 0 20.48-3.413333 30.72-10.24L716.8 686.08c3.413333-3.413333 6.826667-6.826667 10.24-13.653333 0-6.826667 0-10.24-6.826667-13.653334L604.16 546.133333zM914.773333 440.32L785.066667 368.64c-6.826667-3.413333-13.653333-3.413333-20.48 3.413333l-136.533334 129.706667c-3.413333 3.413333-6.826667 6.826667-6.826666 13.653333s3.413333 10.24 6.826666 13.653334l133.12 126.293333c3.413333 3.413333 6.826667 3.413333 10.24 3.413333s6.826667 0 6.826667-3.413333l136.533333-75.093333c23.893333-13.653333 40.96-40.96 40.96-68.266667s-10.24-58.026667-40.96-71.68z" fill="#ffffff"/>
               </svg>
               <span class="truncate">Google Play</span>
+            </button>
+            <button
+              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
+              on:click={() => {
+                window.open("/static/app/degptv1.0_0712.apk", "_blank");
+              }}
+            >
+              <svg
+                class="icon mr-1 fill-white"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12">
+                <path
+                  d="M808.398269 218.955161c20.458525 11.691232 27.566623 37.753501 15.876521 58.213157l-65.330296 114.329713c119.461015 74.88989 203.198446 202.202702 217.966199 350.95283 2.492185 25.107214-17.227161 46.882472-42.457572 46.882472H85.333333c-25.230411 0-44.949757-21.775258-42.457571-46.882472 14.120124-142.220715 91.287453-264.84528 202.445704-340.790817l-71.137484-124.491726c-11.691232-20.459656-4.583135-46.521925 15.876521-58.213157 20.459656-11.691232 46.523055-4.583135 58.214287 15.876521l71.589581 125.281766c58.218808-25.812486 122.559011-40.113448 190.028856-40.113448 60.891832 0 119.233837 11.648283 172.825431 32.893457l67.465324-118.061775c11.691232-20.459656 37.754631-27.567753 58.214287-15.876521zM317.895488 554.666667c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z m384 0c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z"
+                />
+              </svg>
+              <span class="truncate">Android</span>
             </button>
           {:else}
             <button
-              class="flex gap-1 items-center cursor-pointer primaryButton ml-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
+              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
                 window.open("https://play.google.com/store/apps/details?id=uni.UNIEF8864C&hl=en", "_blank");
               }}
@@ -170,7 +192,26 @@
               <span class="truncate">Google Play</span>
             </button>
             <button
-              class="flex gap-1 items-center cursor-pointer primaryButton ml-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
+              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
+              on:click={() => {
+                window.open("/static/app/degptv1.0_0712.apk", "_blank");
+              }}
+            >
+              <svg
+                class="icon mr-1 fill-white"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12">
+                <path
+                  d="M808.398269 218.955161c20.458525 11.691232 27.566623 37.753501 15.876521 58.213157l-65.330296 114.329713c119.461015 74.88989 203.198446 202.202702 217.966199 350.95283 2.492185 25.107214-17.227161 46.882472-42.457572 46.882472H85.333333c-25.230411 0-44.949757-21.775258-42.457571-46.882472 14.120124-142.220715 91.287453-264.84528 202.445704-340.790817l-71.137484-124.491726c-11.691232-20.459656-4.583135-46.521925 15.876521-58.213157 20.459656-11.691232 46.523055-4.583135 58.214287 15.876521l71.589581 125.281766c58.218808-25.812486 122.559011-40.113448 190.028856-40.113448 60.891832 0 119.233837 11.648283 172.825431 32.893457l67.465324-118.061775c11.691232-20.459656 37.754631-27.567753 58.214287-15.876521zM317.895488 554.666667c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z m384 0c-23.563302 0-42.666667 19.102234-42.666667 42.666666s19.103364 42.666667 42.666667 42.666667c23.565563 0 42.666667-19.102234 42.666667-42.666667s-19.101104-42.666667-42.666667-42.666666z"
+                />
+              </svg>
+              <span class="truncate">Android</span>
+            </button>
+            <button
+              class="flex gap-1 items-center cursor-pointer primaryButton mr-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
                 window.open(
                   "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
@@ -321,10 +362,10 @@
                         console.log("Clock In  res", res);
                         getCount();
                         if (res?.ok) {
-                          toast.success($i18n.t(res?.message));
+                          toast.success($i18n.t(res?.message, RewardProperties));
                         }
                         if (res?.detail) {
-                          toast.warning($i18n.t(res?.detail));
+                          toast.warning($i18n.t(res?.detail, RewardProperties));
                         }
                       })
                       .catch((res) => {

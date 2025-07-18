@@ -47,10 +47,11 @@ async def bind_email(bindemail: BindEmailRequest, user=Depends(get_verified_user
     
 # 绑定图片认证
 @router.post("/bind_captcha")
-async def bind_captcha(request:Request, bindcaptcha: BindCaptchaRequest, user=Depends(get_verified_user)):
+async def bind_captcha(request: Request, bindcaptcha: BindCaptchaRequest, user=Depends(get_verified_user)):
     try:
-        clinet_ip = request.client.host
-        kycrestrict = KycRestrictInstance.update_capcher(user.id, bindcaptcha.captcha_code, clinet_ip)
+        # 获取客户端IP
+        client_ip = request.client.host
+        kycrestrict = KycRestrictInstance.update_capcher(user.id, bindcaptcha.captcha_code, client_ip)
         if kycrestrict is None:
             raise HTTPException(status_code=400, detail="The binding of the picture authentication failed")
         else:

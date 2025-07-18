@@ -205,7 +205,7 @@
 						<button
 							class=" text-xs text-center text-gray-800 dark:text-gray-400 rounded-md px-4 py-0.5 bg-gray-100 dark:bg-gray-850"
 							on:click={async () => {
-								const url = await getGravatarUrl("240892907@qq.com");
+								const url = "/static/default_headimg.jpg";
 
 								profileImageUrl = url;
 							}}>{$i18n.t('Use Gravatar')}</button

@@ -558,7 +558,7 @@
 						</div>
 					{/if}
 					<!-- 图片搜索 -->
-					{#if message?.parseInfo?.images}
+					<!-- {#if message?.parseInfo?.images}
 						<div class="flex flex-wrap mt-3">
 							{#each message?.parseInfo?.images ?? [] as item, index}
 								{#if item?.url && (visibleIndices[index]??true)}
@@ -568,7 +568,7 @@
 								{/if}
 							{/each}
 						</div>
-					{/if}
+					{/if} -->
 				{/if}
 				{#if message?.tooltype == 'youtube'}
 					<!-- youtube搜索 -->
@@ -1287,7 +1287,7 @@
 															? 'visible'
 															: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition regenerate-response-button"
 														on:click={() => {
-															regenerateResponse(message);
+															resentMessage(message?.parentId);
 														}}
 													>
 														<svg

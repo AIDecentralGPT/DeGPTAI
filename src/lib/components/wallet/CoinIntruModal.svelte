@@ -181,7 +181,7 @@
             show = false;
           }}
         >
-          {$i18n.t("I konw")}
+          {$i18n.t("I know")}
         </button>
       </div>
     </div>

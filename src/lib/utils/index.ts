@@ -604,7 +604,7 @@ export const addTextSlowly = async (updateTarget, target, text, model) => {
 				const timeoutId = setTimeout(() => {
 					resolve();
 					timeoutIdMap.delete(model); // 定时完成后移除ID
-				}, 25);
+				}, 12.5);
 				timeoutIdMap.set(model, timeoutId);
 			});
 			updateTarget(target)

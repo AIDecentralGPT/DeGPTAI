@@ -1,7 +1,9 @@
 import tweepy
+from twscrape import API
 from pydantic import BaseModel
 import requests
 import os
+import snscrape.modules.twitter as sntwitter
 
 
 consumer_key = os.getenv("dev_consumer_key")
@@ -12,15 +14,13 @@ access_token_secret = os.getenv("dev_access_token_secret")
 
 SOCIAL_KEY = os.getenv("SOCIAL_KEY")
 
-
 class TwitterSearchForm(BaseModel):
   keyword: str
 
 class TwitterLib:
     def __init__(self):
         # 进行身份验证
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_token, access_token_secret)
+        auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, access_token, access_token_secret)
         # 创建API对象，用于后续操作
         self.api = tweepy.API(auth)
         # 创建客户端对象
@@ -45,20 +45,10 @@ class TwitterLib:
     def search(self, keword: str):
         try:
             # 搜索包含特定关键词的推文
-            headers = {"Authorization": f"Bearer {bearer_token}"}
-            # 搜索最近包含 "Python" 的推文（过去 7 天内）
-            url = "https://api.twitter.com/2/tweets/search/recent"
-            params = {
-                "query": keword,          # 搜索关键字
-                "max_results": 10,          # 返回数量
-                "tweet.fields": "created_at,public_metrics"
-            }
-            response = requests.get(url, headers=headers, params=params)
-            tweets = response.json()
-            if tweets.get("data"):
-                return {"content": tweets.get("data")}
-            else:
-                return None
+            tweets = self.api.search_tweets(q=keword, count=10)
+            for tweet in tweets:
+                print("==========tweet===========", tweet)   
+            return tweets
         except Exception as e:
             print(f"出现错误：{e}")
             return None
@@ -89,5 +79,45 @@ class TwitterLib:
         except requests.exceptions.RequestException as err:
             print(f"请求异常: {err}")
             return None
+
+    async def search_twscrape(self, keword: str):
+        api = API()
+        accounts = await api.pool.get_all()
+        if not any(acc.username == "BrookeHamp25599" for acc in accounts):
+            print("==========添加账号===========")
+            await api.pool.add_account("BrookeHamp25599", "i1FpNoLs6EIVsUiu", "ydarsmjzaq@rambler.ru")
+        
+        await api.pool.login_all()     
+        tweets = []
+        async for tweet in api.search(keword, limit=10):
+            tweets.append({
+                "text": tweet.rawContent,
+                "username": tweet.user.username,
+                "date": tweet.date,
+                "url": f"https://x.com/{tweet.user.username}/status/{tweet.id}",
+            })
+        return tweets
+
+    def search_snscrape(self, keword: str):
+        start_date = "2025-01-01"
+        end_date = "2025-07-09"
+        query = f'{keword} since:{start_date} until:{end_date}'
+
+        max_tweets = 10
+        
+        # 用于存储抓取结果
+        tweets = []
+        # 遍历抓取
+        for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
+            if max_tweets and i >= max_tweets:
+                break
+            tweets.append([
+                tweet.date.strftime('%Y-%m-%d %H:%M:%S'),
+                tweet.user.username,
+                tweet.content,
+                tweet.url
+            ])
+        return tweets
+    
 
 TwitterApi = TwitterLib()

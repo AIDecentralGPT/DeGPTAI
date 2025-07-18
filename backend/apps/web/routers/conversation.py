@@ -13,6 +13,8 @@ from datetime import date
 from apps.web.models.models import ModelsInstance
 from apps.web.models.model_limit import ModelLimitInstance
 from apps.web.models.vipstatus import VIPStatuses
+from apps.web.util.userutils import UserUtils
+from apps.web.util.conversationutils import ConversationUtils
 
 
 
@@ -25,35 +27,29 @@ router = APIRouter()
 @router.post("/refresh")
 async def conversationRefresh(conversation_req: ConversationRequest, user=Depends(get_current_user)):
     try:
-        # 获取用户当前VIP信息
-        vipStatuss = VIPStatuses.get_vip_status_by_user_id(user.id)
-
         # 获取当前请求模型信息
         modelinfo = ModelsInstance.get_info_by_model(conversation_req.model)
 
-        # 获取今天的聊天次数
+        # 获取用户VIP记录
+        vipStatuss = VIPStatuses.get_vip_status_by_user_id(user.id)
+
+        # 获取用户当前角色
+        userrole = UserUtils.checkRole(user)
+
+        # 获取当前日期
         date_time = date.today()
-        conversation = ConversationInstance.get_info_by_userid_mtype_date(user.id, modelinfo.type, date_time)
 
-        total = 0
-        # 获取非VIP请求模型的总次数
-        userrole = "user"
-        if user.id.startswith("0x"):
-            userrole = "wallet"
-            if user.verified:
-                userrole = "kyc"   
-        freelimit = ModelLimitInstance.get_info_by_user_vip(userrole, "free", modelinfo.type)
-        if freelimit:
-            total = total + freelimit.limits
+        # 获取非VIP用户目前角色当前会话数据
+        conversation = ConversationInstance.get_info_by_user_mtype_date(user.id, userrole, modelinfo.type, date_time)
 
-        # 获取VIP请求模型的总次数
-        if len(vipStatuss) > 0:
-            for vipStatus in vipStatuss:
-                viplimit = ModelLimitInstance.get_info_by_user_vip("all", vipStatus.vip, modelinfo.type)
-                if viplimit:
-                    total = total + viplimit.limits
+        # 获取用户当前可使用条数
+        total = ConversationUtils.checkTotal(userrole, modelinfo.type, vipStatuss)
 
-        print("==========会话总数==========:", total)
+        print("==========可用会话总数==========:", total)
+
+        # 获取用户的聊天次数
+        user_total = ConversationUtils.checkUseTotal(user.id, userrole, conversation_req.equip_id, modelinfo.type, date_time, vipStatuss, conversation)
+        print("==========已用会话总数==========:", user_total)
 
         # 校验用户是否超数量
         result = []
@@ -67,50 +63,55 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
                     "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
                 })
             else:
-                if conversation is None:
-                    # 基础模型直接天机数量
-                    if modelinfo.type == "base":
-                        ConversationInstance.insert(user.id, modelinfo.type)
+                if user_total < total:
+                    #判断是否开启会员
+                    if len(vipStatuss) > 0:
+                        sorted_vipStatuss = sorted(vipStatuss, key=lambda x: (x.end_date, x.created_at))
+                        for vipStatus in sorted_vipStatuss:
+                            modellimit = ModelLimitInstance.get_info_by_user_vip("all", vipStatus.vip, modelinfo.type)
+                            vipconversation = ConversationInstance.get_info_by_user_mtype_vip_date(user.id, userrole, modelinfo.type, vipStatus.vip, date_time)
+                            if vipconversation is None:
+                                ConversationInstance.insert(user.id, userrole, conversation_req.equip_id, modelinfo.type, vipStatus.vip, 1)
+                                break
+                            else:
+                                if (vipconversation.chat_num < modellimit.limits):
+                                    vipconversation.chat_num += 1
+                                    ConversationInstance.update(vipconversation)
+                                    break
+
                         result.append({
                             "passed": True,
                             "model": conversation_req.model,
-                            "num": 0,
-                            "message": "Success conversation base"
-                        })
-                    # 非基础模型判断是否是VIP
-                    else:
-                        if vipStatus is not None:
-                            ConversationInstance.insert(user.id, modelinfo.type)
-                            result.append({
-                                "passed": True,
-                                "model": conversation_req.model,
-                                "num": 0,
-                                "message": "Success conversation vip"
-                            })
-                        else:
-                            result.append({
-                                "passed": False,
-                                "model": conversation_req.model,
-                                "num": conversation.chat_num,
-                                "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
-                            })
-                else:
-                    if conversation.chat_num < total:
-                        ConversationInstance.update(conversation)
-                        result.append({
-                            "passed": True,
-                            "model": conversation_req.model,
-                            "num": conversation.chat_num,
+                            "num": 1,
                             "message": "Success"
                         })
+                            
                     else:
+                        chat_num = user_total + 1
+                        if conversation is None:
+                            ConversationInstance.insert(user.id, userrole, conversation_req.equip_id, modelinfo.type, None, chat_num)
+                        else:
+                            conversation.chat_num = chat_num
+                            ConversationInstance.update(conversation)
                         result.append({
-                            "passed": False,
+                            "passed": True,
                             "model": conversation_req.model,
-                            "num": conversation.chat_num,
-                            "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
+                            "num": 1,
+                            "message": "Success"
                         })
-                        
+                else:
+                    if userrole == "wallet" and len(vipStatuss) == 0:
+                        if conversation is None:
+                            ConversationInstance.insert(user.id, userrole, conversation_req.equip_id, modelinfo.type, None, user_total)
+                        else:
+                            conversation.chat_num = user_total
+                            ConversationInstance.update(conversation)
+                    result.append({
+                        "passed": False,
+                        "model": conversation_req.model,
+                        "num": 0,
+                        "message": "The number of attempts has exceeded the limit. Please upgrade to VIP."
+                    })
         else:
             result.append({
                 "passed": True,
@@ -126,4 +127,18 @@ async def conversationRefresh(conversation_req: ConversationRequest, user=Depend
             "passed": False,
             "message": "Failed"
         }
+    
+@router.post("/total")
+async def conversationTotal(user=Depends(get_current_user)):
+
+    # 获取用户当前VIP信息
+    vipStatuss = VIPStatuses.get_vip_status_by_user_id(user.id)
+
+    # 获取今天的聊天次数
+    date_time = date.today()
+
+    result = ConversationInstance.get_info_by_userid_user_total(user, vipStatuss, date_time)
+
+    return result
+        
 
