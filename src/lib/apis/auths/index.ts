@@ -568,7 +568,7 @@ export const deleteAPIKey = async (token: string) => {
 
 
 // 验证码
-export const sendCode = async (token: string, email: string) => {
+export const sendCode = async (token: string, email: string, language: string) => {
   let error = null;
 
   const res = await fetch(`${WEBUI_API_BASE_URL}/auths/send_code`, {
@@ -578,7 +578,8 @@ export const sendCode = async (token: string, email: string) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      email: email
+      email: email,
+      language: language
     }),
   })
     .then(async (res) => {
@@ -680,6 +681,31 @@ export const faceliveness = async (metaInfo: any) => {
   })
     .then(async (res) => {
       if (!res.ok) throw await res.json();
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      error = err.detail;
+      return null;
+    });
+  if (error) {
+    throw error;
+  }
+  return res;
+};
+
+// 获取活体检测地址
+export const getliveness = async (token: string) => {
+  let error = null;
+
+  const res = await fetch(`${WEBUI_API_BASE_URL}/auths/get_liveness`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
+  })
+    .then(async (res) => {
       return res.json();
     })
     .catch((err) => {

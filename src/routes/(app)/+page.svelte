@@ -243,43 +243,21 @@
     );
     
     // 校验模型是否支持文件类型
-    // let imageModels = $models.filter(item => item.support == "image");
+    let currModel = $models.filter(item => selectedModels.includes(item?.model));
     if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
-      // let checkSelectedModels = imageModels.filter(item => selectedModels.includes(item.model))
-      //   .map(item => item.model);
-      // if (checkSelectedModels.length == 0) {
-      //   selectedModels = imageModels.map(item => item.model);
-      // } else {
-      //   selectedModels = checkSelectedModels;
-      // }
+      if (currModel[0]?.support == "text") {
+        let imageModels = $models.filter(item => item?.type == currModel[0]?.type && item?.support == "image");
+        selectedModels = [imageModels[0]?.model];
+      }
       fileFlag = true;
     } else {
       // 校验历史记录是否有图片
       let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
-      // let checkSelectModels = imageModels.filter(item => selectedModels.includes(item.model));
       if (checkMessages.length > 0) {
-        // if (checkSelectModels.length == 0) {
-        //   fileFlag = false;
-        //   switchModel.set({
-        //     content: prompt,
-        //     search: search,
-        //     searchType: search_type,
-        //     status: true
-        //   })
-        //   await initNewChat();
-        //   // 触发直接发送消息
-        //   if ($switchModel.status) {
-        //     prompt = $switchModel.content;
-        //     search = $switchModel.search;
-        //     search_type = $switchModel.searchType;
-        //     switchModel.set({content: "", search: false, searchType: 'web', status: false});
-        //     await submitPrompt(prompt, $user);
-        //   };
-        //   return;
-        // } else {
-          
-        //   selectedModels = checkSelectModels.map(item => item.model);
-        // } 
+        if (currModel[0]?.support == "text") {
+          let imageModels = $models.filter(item => item?.type == currModel[0]?.type && item?.support == "image");
+          selectedModels = [imageModels[0]?.model];
+        }
         fileFlag = true;
       } else{
         fileFlag = false;

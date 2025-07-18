@@ -6,36 +6,22 @@ from datetime import date
 from peewee import Model, CharField  # 导入Peewee中的Model和CharField
 from apps.web.internal.db import DB  # 导入数据库实例DB
 from pydantic import BaseModel  # 导入Pydantic中的BaseModel
-from typing import List, Union, Optional  # 导入类型提示
+from typing import List, Optional  # 导入类型提示
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
-from utils.misc import get_gravatar_url  # 导入获取Gravatar URL的方法
 import uuid
 import logging
-from config import (
-    SRC_LOG_LEVELS,
-    ENABLE_OPENAI_API,
-    OPENAI_API_BASE_URLS,
-    OPENAI_API_KEYS,
-    CACHE_DIR,
-    ENABLE_MODEL_FILTER,
-    MODEL_FILTER_LIST,
-    AppConfig,
-)
+from config import ( SRC_LOG_LEVELS )
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["VIP"])
 
 
 # --------钱包相关--------
-from substrateinterface import Keypair, KeypairType
-from substrateinterface.utils.ss58 import ss58_decode
-from substrateinterface.utils.hasher import blake2_256
-import json
 from web3 import Web3
 #w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
 w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io')) # 新以太坊主网
 # from web3.auto import w3
-from eth_account.messages import encode_defunct, _hash_eip191_message
-from eth_account import Account
+
+import time
 
 
 
@@ -45,8 +31,10 @@ class VIPStatus(Model):
     user_id = CharField()
     vip=CharField()
     level=IntegerField()
+    type=CharField()
     start_date = DateField()
     end_date = DateField()
+    created_at = BigIntegerField()
 
     class Meta:
         database = DB
@@ -58,16 +46,20 @@ class VIPStatusModel(BaseModel):
     user_id: str
     vip: str
     level: int
+    type: str
     start_date: date
     end_date: date
+    created_at: int
 
 class VIPStatusModelResp(BaseModel):
     id: str
     user_id: str
     vip: str
     level: int
+    type: str
     start_date: date
     end_date: date
+    created_at: int
 
 # 定义Pydantic模型VipTotalModel
 class VipTotalModel(BaseModel):
@@ -82,15 +74,17 @@ class VIPStatusTable:
         self.db = db
         db.create_tables([VIPStatus])
 
-    def insert_vip_status(self, user_id: str, vip: str, level: int, start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
+    def insert_vip_status(self, user_id: str, vip: str, level: int, type: str,start_date: date, end_date: date, order_id: str) -> Optional[VIPStatusModel]:
         # order_id = str(uuid.uuid4())
         vip_status = VIPStatusModel(
             id=order_id,
             user_id=user_id,
             vip=vip,
             level=level,
+            type=type,
             start_date=start_date,
-            end_date=end_date
+            end_date=end_date,
+            created_at= int(time.time()),
         )
         try:
             result = VIPStatus.create(**vip_status.dict())

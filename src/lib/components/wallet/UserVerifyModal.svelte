@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, onMount, onDestroy } from "svelte";
   import Modal from "../common/Modal.svelte";
-  import { WEBUI_API_BASE_URL } from "$lib/constants";
+  import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from "$lib/constants";
   import { copyToClipboard, checkUniapp } from "$lib/utils";
   import {
     faceliveness,
@@ -15,7 +15,7 @@
   import QRCode from "qrcode";
   import { goto } from "$app/navigation";
   import { addErrorLog } from "$lib/apis/errorlog";
-    import { bindCaptcha } from "$lib/apis/kycrestrict";
+  import { bindCaptcha } from "$lib/apis/kycrestrict";
 
   const i18n = getContext("i18n");
 
@@ -89,7 +89,7 @@
     if (countdown === 0) {
       email = email.trim();
       if (validateEmail(email)) {
-        sendCode(localStorage.token, email).then((res) => {
+        sendCode(localStorage.token, email, $i18n.language).then((res) => {
           if (res.pass) {
             checkCaptcha = false;
             startCountdown();
@@ -164,9 +164,7 @@
   function faceLiveness() {
     const MetaInfo = window.getMetaInfo();
     console.log("进入faceliveness", MetaInfo);
-
     faceliveness(MetaInfo).then(async (res) => {
-      console.log(res);
       faceLivenessInitialData = res;
       if (res.transaction_url) {
         if (isMobile) {
@@ -197,14 +195,29 @@
     });
   }
 
-  function getQrCode(url) {
-    QRCode.toDataURL(url, function (err, url) {
-      console.log(url);
-      qrcodeUrl = url;
-      qrCodeFinish = false;
-      checkQrResult = false;
-      startQrCountdown();
-    });
+  function getQrCode(url: string) {
+    let token = localStorage.token;
+    let lang = $i18n.language;
+    url = "https://test.degpt.ai/kyc/ewm?token=" + token + "&lang=" + lang;
+    console.log("============ewm_url==========", url);
+    let qrConfig = {
+      errorCorrectionLevel: 'M',
+      margin: 2,
+      width: 300,
+      color: {
+        dark: '#000000',
+        light: '#ffffff'
+      }
+    };
+    QRCode.toDataURL(url, qrConfig, 
+      function (err, url) {
+        console.log(url);
+        qrcodeUrl = url;
+        qrCodeFinish = false;
+        checkQrResult = false;
+        startQrCountdown();
+      }
+    );
   }
 
   // 二维码有效时长

@@ -5,13 +5,17 @@
   import {
     user,
     showConfirmUpgradeModal,
-    vipupgrade
+    vipupgrade,
+    currentWalletData
   } from "$lib/stores";
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
   import { isPro } from "$lib/apis/users/index.js";
   import Switch from "../common/Switch.svelte";
   import { toast } from "svelte-sonner";
+  import { conversationUseTotal } from "$lib/apis/chats/index.js";
   const i18n = getContext("i18n");
+
+  import { updateWalletData } from "$lib/utils/wallet/walletUtils";
 
   let checkProLoading = true;
   function checkPlus() {
@@ -55,13 +59,16 @@
   $: if (vipupgrade || !vipupgrade) {
     if ($user?.vipInfo) {
       assiganVip($user?.vipInfo);
+      getUserUserTotal();
     }
   }
 
   // 显示初始化Socket
   $: if (show) {
     checkProLoading = true;
-    checkPlus(); 
+    checkPlus();
+    isLoaded = false;
+    getUserUserTotal();
   }
 
   let viptype = "basic";
@@ -70,6 +77,53 @@
   let basicstat = false;
   let standardstat = false;
   let prostat = false;
+
+  // 获取用户使用汇总
+  let userTotal:any = {}
+  let isLoaded = false;
+  function getUserUserTotal() {
+    conversationUseTotal().then(res => {
+      console.log("=====================", res);
+      userTotal = res;
+      isLoaded = true;
+    })
+  }
+  function checkUse(type, vip) {
+    let html = "";
+    userTotal?.month_total?.forEach(item => {
+      if (item?.type==type && item?.vip == vip) {
+        if (item?.show) {
+          if (item?.time == "month") {
+            if (item?.use / item?.total > 0.9) {
+              html = "<div><span class='text-red-900 font-bold'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-red-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + "</span></div>";
+            } else {
+              html = "<div><span class='text-green-900'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-green-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + "</span></div>";
+            }
+          } else {
+            if (item?.use / (item?.total * 12) > 0.9) {
+              html = "<div><span class='text-red-900 font-bold'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-red-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + ' x 12' + "</span></div>";
+            } else {
+              html = "<div><span class='text-green-900'>" + item?.use + "</span>" + 
+                "<span class='mx-0.5 text-green-900'>/</span>" + 
+                "<span class='primaryText'>" + item?.total + ' x 12' + "</span></div>";
+            }
+          }
+        }    
+      }
+    })
+    return html;
+  }
+
+  function openUpgradeModel() {
+    updateWalletData($currentWalletData?.walletInfo);
+    $showConfirmUpgradeModal = true;
+  }
 </script>
 
 <Modal bind:show size="big">
@@ -117,10 +171,20 @@
               disabled
               class="w-full block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-white dark:text-zinc-950 bg-black text-gray-100"
             >
-              {$i18n.t("Current Status")}
+              {#if $user?.vipInfo?.length > 0}
+                {$i18n.t("Free")}
+              {:else}
+                {$i18n.t("Current Status")}
+              {/if}
             </button>
           </div>
-          
+          <div class="flex justify-center mt-2">
+            {#if userTotal?.free_total?.show}
+              <span class="{userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900 font-bold' : 'text-green-900'}">{userTotal?.free_total?.use}</span>
+              <span class="mx-0.5 {userTotal?.free_total?.use/userTotal?.free_total?.total > 0.9 ? 'text-red-900' : 'text-green-900'}">/</span>
+              <span class="primaryText">{userTotal?.free_total?.total}</span>
+            {/if}
+          </div>
           <ul
             role="list"
             class="mt-8 space-y-3 text-sm leading-6 xl:mt-10 font-bold text-gray-600 dark:text-gray-300"
@@ -279,7 +343,7 @@
                     viptype = "basic";
                     viptime = basicstat ? "year" : "month";
                     money = basicstat ? 33 : 3;
-                    $showConfirmUpgradeModal = true;
+                    openUpgradeModel();
                   } else {
                     toast.warning($i18n.t("Please create or log in to your wallet first."))
                   }
@@ -321,6 +385,9 @@
                 />
               </svg>
               {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "1,000"})}
+              {#if isLoaded}
+                {@html checkUse("base", "basic")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -336,6 +403,9 @@
                 />
               </svg>
               {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 100})}
+              {#if isLoaded}
+                {@html checkUse("adv", "basic")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -351,6 +421,9 @@
                 />
               </svg>
               {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 10})}
+              {#if isLoaded}
+                {@html checkUse("top", "basic")}
+              {/if}
             </li>
 
             <li class="flex gap-x-3">
@@ -578,7 +651,7 @@
                     viptype = "standard";
                     viptime = standardstat ? "year" : "month";
                     money = standardstat ? 88 : 8;
-                    $showConfirmUpgradeModal = true;
+                    openUpgradeModel();
                   } else {
                     toast.warning($i18n.t("Please create or log in to your wallet first."))
                   }
@@ -620,6 +693,9 @@
                 />
               </svg>
               {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "5,000"})}
+              {#if isLoaded}
+                {@html checkUse("base", "standard")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -635,6 +711,9 @@
                 />
               </svg>
               {$i18n.t("Premium Model: {{ num }} Times/Month", {num: 300})}
+              {#if isLoaded}
+                {@html checkUse("adv", "standard")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -650,6 +729,9 @@
                 />
               </svg>
               {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 100})}
+              {#if isLoaded}
+                {@html checkUse("top", "standard")}
+              {/if}
             </li>
 
             <li class="flex gap-x-3">
@@ -876,7 +958,7 @@
                     viptype = "pro";
                     viptime = prostat ? "year" : "month";
                     money = prostat ? 165 : 15;
-                    $showConfirmUpgradeModal = true;
+                    openUpgradeModel();
                   } else {
                     toast.warning($i18n.t("Please create or log in to your wallet first."))
                   }
@@ -918,6 +1000,9 @@
                 />
               </svg>
               {$i18n.t("Basic Model: {{ num }} Times/Month", {num: "10,000"})}
+              {#if isLoaded}
+                {@html checkUse("base", "pro")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -933,6 +1018,9 @@
                 />
               </svg>
               {$i18n.t("Premium Model: {{ num }} Times/Month", {num: "5,000"})}
+              {#if isLoaded}
+                {@html checkUse("adv", "pro")}
+              {/if}
             </li>
             <li class="flex gap-x-3">
               <svg
@@ -948,8 +1036,26 @@
                 />
               </svg>
               {$i18n.t("Top-tier Model: {{ num }} Times/Month", {num: 250})}
+              {#if isLoaded}
+                {@html checkUse("top", "pro")}
+              {/if}
             </li>
 
+            <li class="flex gap-x-3">
+              <svg
+                class="h-6 w-5 flex-none primaryText"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {$i18n.t("All models share memory with each other.")}
+            </li>
             <li class="flex gap-x-3">
               <svg
                 class="h-6 w-5 flex-none primaryText"

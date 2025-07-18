@@ -11,7 +11,7 @@ client = OpenAI(
 
 class GrokApi:
    def check_model(self, model: str):
-        models = ["grok-3", "grok-3-mini"]
+        models = ["grok-3", "grok-3-mini", "grok-4-0709"]
         return model in models
    
    def completion(self, param: AiModelReq):

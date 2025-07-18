@@ -2,14 +2,15 @@
   import { getContext, tick } from "svelte";
   import { toast } from "svelte-sonner";
 
-  import { getModels as _getModels } from "$lib/utils";
+  import { getModels as _getModels, checkUniapp } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import { user, currentWalletData } from "$lib/stores";
+  import { user, currentWalletData, downLoadUrl, showDownLoad } from "$lib/stores";
   import { openProServices } from "$lib/apis/users/index.js";
 
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
-  import { transferDgc } from "$lib/utils/wallet/ether/dgc"
+  import { thirdTransferDgc, transferDgc } from "$lib/utils/wallet/ether/dgc"
+  import { tranAddress } from "$lib/constants"
 
   const i18n = getContext("i18n");
 
@@ -19,16 +20,26 @@
   export let viptype = "basic";
   export let viptime = "month";
   export let money = 3;
-  let address = "0x40Ff2BD3668B38B0dd0BD7F26Aa809239Fc9113a";
+
   async function upgradeVip() {
     if ($currentWalletData?.walletInfo) {
       loading = true;
       try {
-        let response = await transferDgc(
-          address,
-          money/0.0001,
-          $currentWalletData?.walletInfo?.privateKey
-        );
+        let response = {ok: false, msg: ""};
+        if ($user?.address_type != "threeSide") {
+          response = await transferDgc(
+            tranAddress,
+            money/0.0001,
+            $currentWalletData?.walletInfo?.privateKey
+          );
+        } else {
+          response = await thirdTransferDgc(
+            $currentWalletData?.walletInfo?.address,
+            tranAddress,
+            money/0.0001
+          );
+        }
+        
         if (response?.ok) {
           if (response?.data?.hash) {
             await uploadVip(response?.data?.hash)
@@ -46,7 +57,7 @@
     }
   }
   async function uploadVip(tx: string) {
-    let result = await openProServices(localStorage.token, tx, money, viptype, viptime);
+    let result = await openProServices(localStorage.token, tx, Math.round(money/0.0001), viptype, viptime);
     if (result?.ok) {
       user.set({
         ...$user,
@@ -57,6 +68,20 @@
     } else {
       toast.error($i18n.t("Failed to upgrade to VIP!"));
     }
+  }
+
+  function floorToFixed(num, digits) {
+    let pow = Math.pow(10, digits);
+    return (Math.floor(num * pow) / pow).toFixed(digits);
+  }
+
+  function formatUSNumber(num, digits) {
+    const options = {
+      style: 'decimal',
+      minimumFractionDigits: 0,  // 最少 0 位小数
+      maximumFractionDigits: digits,  // 最多 2 位小数
+    };
+    return new Intl.NumberFormat('en-US', options).format(num);
   }
 </script>
 
@@ -94,30 +119,59 @@
     <!-- 主体 -->
     <div class="flex flex-col">
       <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-        <div class="w-full">
-          <p class="text-md mb-4 w-full">
-            {$i18n.t("Are you sure to become a distinguished member?")}
-          </p>
-          <div class="flex justify-end my-4">
-            <button
-              disabled={loading}
-              class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-              style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
-              type="submit"
-              on:click={async () => {
-                loading = true;
-                await tick();
-                await upgradeVip();
-              }}
-            >
-              {#if loading}
-                <span>{$i18n.t("Upgrading")}</span>
-              {:else}
-                <span>{$i18n.t("Yes")}</span>
-              {/if}
-            </button>
+        {#if (floorToFixed(Number($currentWalletData?.dgcBalance), 2) - (money/0.0001)) < 0}
+          <div class="w-full">
+            <p class="text-md mb-4 w-full">
+              {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: money/0.0001})}
+            </p>
+            <div class="flex justify-end my-4">
+              <button
+                disabled={loading}
+                class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+                style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+                type="submit"
+                on:click={async () => {
+                  // 用新标签打开
+                  if (checkUniapp()) {
+                    $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken";
+                    $showDownLoad = true;
+                    show = false;
+                  } else {
+                    show = false;
+                    window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+                  }
+                }}
+              >
+                <span>{$i18n.t("Recharge DGC")}</span>
+              </button>
+            </div>
           </div>
-        </div>
+        {:else}
+          <div class="w-full">
+            <p class="text-md mb-4 w-full">
+              {$i18n.t("Are you sure to become a distinguished member?")}
+            </p>
+            <div class="flex justify-end my-4">
+              <button
+                disabled={loading}
+                class=" px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+                style={loading ? "background: rgba(184, 142, 86, 0.6)" : ""}
+                type="submit"
+                on:click={async () => {
+                  loading = true;
+                  await tick();
+                  await upgradeVip();
+                }}
+              >
+                {#if loading}
+                  <span>{$i18n.t("Upgrading")}</span>
+                {:else}
+                  <span>{$i18n.t("Yes")}</span>
+                {/if}
+              </button>
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
   </div>

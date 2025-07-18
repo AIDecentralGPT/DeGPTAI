@@ -1,29 +1,29 @@
 <script lang="ts">
-  import { toast } from "svelte-sonner";
   import Modal from "../common/Modal.svelte";
   export let show = false;
-  import { onMount, getContext } from "svelte";
+  import { getContext } from "svelte";
+  import { RewardProperties } from "$lib/constants"
   const i18n = getContext("i18n");
 
   let rewards = [
     {
       title: "I. New User Creation Reward",
-      description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>1000</span> DGC reward."
+      description: "After completing new user authentication, receive a <span style='color: rgba(184, 142, 86, 1);'>{{regist}}</span> DGC reward."
     },
     {
       title: "II. Referral Reward",
       description: [
         "Wallet users who have completed KYC invite others to create wallets and complete KYC.",
-        "The number of people invited each day should not exceed 20.",
-        "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>3,000</span> DGC, The deadline for the activity is {{ time }}."
+        "The number of people invited each day should not exceed {{ipeoples}}.",
+        "For every person invited, and if the invited person signs in continuously for three times, the inviter will receive a reward of <span style='color: rgba(184, 142, 86, 1);'>{{invite}}</span> DGC, The deadline for the activity is {{endtime}}."
       ]
     },
     {
       title: "III. Clock in Reward",
       description: [
-        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>180</span> days after authentication is completed.",
-        "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>30</span> Clock in rewards.",
-        "<span style='color: rgba(184, 142, 86, 1);'>100</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed."
+        "Check in reward is valid for <span style='color: rgba(184, 142, 86, 1);'>{{civalid}}</span> days after authentication is completed.",
+        "Logging in and clocking in for <span style='color: rgba(184, 142, 86, 1);'>1</span> day can earn <span style='color: rgba(184, 142, 86, 1);'>{{clockin}}</span> DGC rewards; maximum of <span style='color: rgba(184, 142, 86, 1);'>{{citimes}}</span> Clock in rewards.",
+        "<span style='color: rgba(184, 142, 86, 1);'>{{clockin}}</span> DGC rewards requires completing KYC, and it must be claimed on the same day; it will expire if not claimed."
       ]
     }
   ];
@@ -52,7 +52,7 @@
         </button>
       </div>
 
-    <div class="p-6 pt-0 shadow-md mt-0 flex-1">
+    <div class="p-6 pt-0 shadow-md mt-0 flex-1 overflow-auto">
       <div>
         <h1>{$i18n.t("Rewards Details")}</h1>
         {#each rewards as reward}
@@ -60,11 +60,11 @@
           {#if Array.isArray(reward.description)}
             <ul>
               {#each reward.description as desc, index}
-                <li>{ index + 1}. {@html $i18n.t(desc, {time: "2025-07-15 00:00:00"})}</li>
+                <li>{ index + 1}. {@html $i18n.t(desc, RewardProperties)}</li>
               {/each}
             </ul>
           {:else}
-            <p>{@html $i18n.t(reward.description)}</p>
+            <p>{@html $i18n.t(reward.description, RewardProperties)}</p>
           {/if}
         {/each}
       </div>

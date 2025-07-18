@@ -106,3 +106,18 @@ export const DefaultCurrentWalletData = {
     dlc: 0,
   },
 };
+
+export const RewardProperties = {
+  "regist": "10,000",
+  "invite": "10,000",
+  "ipeoples": 20,
+  "itimes": 3,
+  "clockin": "1,000",
+  "clockinall": "30,000",
+  "civalid": 180,
+  "citimes": 30,
+  "endtime": "2025-08-16 00:00:00"
+}
+
+// 升级VIP钱包地址
+export const tranAddress = "0x40Ff2BD3668B38B0dd0BD7F26Aa809239Fc9113a"

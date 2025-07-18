@@ -33,6 +33,7 @@ from utils.misc import parse_duration, validate_email_format
 from web3 import Web3
 #w3 = Web3(Web3.HTTPProvider('https://rpc-testnet.dbcwallet.io'))  # 旧以太坊主网
 w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io')) # 新以太坊主网
+tranAddress = "0x40Ff2BD3668B38B0dd0BD7F26Aa809239Fc9113a"
 
 # from web3.auto import w3
 import asyncio
@@ -264,17 +265,16 @@ def update_user_vip(user_id, tx_hash, vip, time):
         # 获取当前时间并计算一个月后的日期
         start_date = datetime.now().date()
         if (time == "month"):
-            end_date = (datetime.now() + timedelta(days=30)).date()
+            end_date = (datetime.now() + timedelta(days=31)).date()
         else:
             end_date = (datetime.now() + relativedelta(years=1)).date()
 
         # 获取用户的VIP状态
-        vip_status = VIPStatuses.get_vip_status_by_userid_vip(user_id, vip)
-        
+        vip_status = VIPStatuses.get_vip_status_by_userid_vip(user_id, vip) 
         if vip_status:
             # 用户已经是VIP
             if (time == "month"):
-                new_end_date = vip_status.end_date + timedelta(days=30)
+                new_end_date = vip_status.end_date + timedelta(days=31)
             else:
                 new_end_date = vip_status.end_date + relativedelta(years=1)
             
@@ -290,6 +290,7 @@ def update_user_vip(user_id, tx_hash, vip, time):
                 user_id=user_id,
                 vip=vip,
                 level=level,
+                type=time,
                 start_date=start_date,
                 end_date=end_date,
                 order_id=tx_hash
@@ -339,7 +340,7 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
                         print(f"From: {from_address}")
                         print(f"To: {to_address}")
                             
-                        if to_address == "0x40Ff2BD3668B38B0dd0BD7F26Aa809239Fc9113a": 
+                        if to_address == tranAddress:
                             print("执行update_user_vip")
                             update_user_vip(session_user.id, tx_hash, form_data.vip, form_data.viptime)
 

@@ -680,8 +680,39 @@ export const conversationRefresh = async (token: string, model: string) => {
 			...(token && { authorization: `Bearer ${token}` })
 		},
 		body: JSON.stringify({
-			model: model
+			model,
+			equip_id: localStorage.visitor_id
 		})
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			error = err.detail;
+			console.log(err);
+			return null;
+		});
+	if (error) {
+		throw error;
+	}
+	return res;
+};
+
+
+export const conversationUseTotal = async () => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/conversation/total`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${localStorage.token}`
+		}
 	})
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();

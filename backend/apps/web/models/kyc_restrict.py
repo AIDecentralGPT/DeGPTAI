@@ -164,9 +164,6 @@ class KycRestrictTable:
                 )
                 KycRestrict.create(**kycrestrict.model_dump())
 
-            query = KycRestrict.update(captcha_code=captcha_code).where(KycRestrict.user_id == user_id)
-            query.execute()  # 执行更新操作
-
             # 查询更新后数据
             kycrestrict = KycRestrict.get(KycRestrict.user_id == user_id)
             # 将数据库对象转换为Pydantic模型并返回
