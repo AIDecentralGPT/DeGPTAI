@@ -123,6 +123,15 @@ export const switchModel = writable({
 	status: false
 });
 
+// 本地保存私钥和密码
+export const checkPasswordShow = writable(false);
+export const checkPasswordShow2 = writable(false);
+export const walletKey = writable({
+	privateKey: "",
+	checked: false,
+	password: ""
+})
+
 
 
 

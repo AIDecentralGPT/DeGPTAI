@@ -946,5 +946,6 @@
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "Die Menge an DGC ist unzureichend, es müssen zusätzliche {{ num }} DGC gekauft werden. Nach erfolgreichem Kauf der DGC, upgraden Sie auf VIP.",
   "Recharge DGC": "DGC aufladen",
   "Time expired": "Zeit abgelaufen",
-  "QR code is invalid": "QR-Code ist ungültig"
+  "QR code is invalid": "QR-Code ist ungültig",
+  "Is the password saved locally": "Wird das Passwort lokal gespeichert"
 }

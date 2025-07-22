@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import sha256 from 'js-sha256';
-import { getOllamaModels } from '$lib/apis/ollama';
-import { getOpenAIModels } from '$lib/apis/openai';
-import { getLiteLLMModels } from '$lib/apis/litellm';
+// import { getOllamaModels } from '$lib/apis/ollama';
+// import { getOpenAIModels } from '$lib/apis/openai';
+// import { getLiteLLMModels } from '$lib/apis/litellm';
 import { getDeModels } from '$lib/apis/de';
 
 export const getModels = async (token: string) => {

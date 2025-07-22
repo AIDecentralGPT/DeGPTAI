@@ -948,5 +948,6 @@
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGC 수량이 부족합니다. 추가로 {{ num }} DGC를 구매해야 합니다. DGC 구매가 성공한 후 VIP로 업그레이드하세요.",
   "Recharge DGC": "DGC 충전",
   "Time expired": "시간 만료",
-  "QR code is invalid": "QR 코드가 유효하지 않습니다"
+  "QR code is invalid": "QR 코드가 유효하지 않습니다",
+  "Is the password saved locally": "비밀번호가 로컬에 저장되나요"
 }

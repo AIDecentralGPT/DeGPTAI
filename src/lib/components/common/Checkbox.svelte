@@ -33,7 +33,7 @@
 	<div class="top-0 left-0 absolute w-full flex justify-center">
 		{#if _state === 'checked'}
 			<svg
-				class="w-3.5 h-3.5"
+				class="w-3.5 h-3.5 text-gray-800 dark:text-white"
 				aria-hidden="true"
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"

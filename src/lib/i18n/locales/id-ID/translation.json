@@ -948,5 +948,6 @@
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "Jumlah DGC tidak mencukupi, tambahan {{ num }} DGC perlu dibeli. Setelah pembelian DGC berhasil, tingkatkan ke VIP.",
   "Recharge DGC": "Isi ulang DGC",
   "Time expired": "Waktu habis",
-  "QR code is invalid": "Kode QR tidak valid"
+  "QR code is invalid": "Kode QR tidak valid",
+  "Is the password saved locally": "Apakah kata sandi disimpan secara lokal"
 }

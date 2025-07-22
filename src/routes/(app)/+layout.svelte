@@ -18,7 +18,8 @@
 		channel,
 		chats,
 		tags,
-		initPageFlag
+		initPageFlag,
+		walletKey
 	} from "$lib/stores";
 	import { page } from "$app/stores";
 
@@ -95,6 +96,13 @@
 								updateWalletData(walletImportedInfo?.data);
 							}
 						}
+
+						// 密码是否保存
+						if (localStorage.walletkey) {
+							let walletKeyObj = JSON.parse(localStorage.walletkey);
+              await walletKey.set(walletKeyObj);
+						}
+
 						// 更新用户模型
 						await initUserModels();
 						// 更新系统语言

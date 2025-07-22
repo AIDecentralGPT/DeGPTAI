@@ -391,6 +391,7 @@ async function signOut(channel: string) {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("walletImported");
+  localStorage.removeItem("walletKey");
   const res = await printSignIn(channel);
   localStorage.token = res.token;
   user.set(res);
