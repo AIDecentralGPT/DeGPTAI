@@ -440,7 +440,7 @@
 	};
 
 	// 3\2. 继续聊天会话
-	const sendPrompt = async (prompt, responseMap, modelLimit, modelId = null) => {
+	const sendPrompt = async (prompt, responseMap, modelLimit, modelId = null, reload = false) => {
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		// 对每个模型都做请求
 		await Promise.all(
@@ -486,7 +486,7 @@
               await handleLimitError(modelLimit[model.id], responseMessage);
             } else {  
               // 文本搜索
-              await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+              await sendPromptDeOpenAI(model, responseMessageId, _chatId, reload);
             }
             // if (model?.external) {
             // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
@@ -514,7 +514,7 @@
 	};
 
 	// 对话DeGpt
-	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {			
+	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId, reload) => {			
 		const responseMessage = history.messages[responseMessageId];
 		const docs = [messages[messages.length - 2]]
 			.filter((message) => message?.files ?? null)
@@ -672,7 +672,8 @@
 				{
 					model: fileFlag ? model.imagemodel : model.textmodel,
 					messages: send_message,
-					enable_thinking: model.think
+					enable_thinking: model.think,
+					reload: reload
 				},
 				$deApiBaseUrl?.url			
 			);

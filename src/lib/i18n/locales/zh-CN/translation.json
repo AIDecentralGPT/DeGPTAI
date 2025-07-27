@@ -948,5 +948,6 @@
   "Recharge DGC": "充值DGC",
   "Time expired": "时间已过期",
   "QR code is invalid": "二维码无效",
-  "Is the password saved locally": "本地是否保存密码"
+  "Is the password saved locally": "本地是否保存密码",
+  "Reconnect": "重新连接"
 }

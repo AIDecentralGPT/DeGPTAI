@@ -948,5 +948,6 @@
   "Recharge DGC": "Recargar DGC",
   "Time expired": "Tiempo expirado",
   "QR code is invalid": "El código QR no es válido",
-  "Is the password saved locally": "¿Se guarda la contraseña localmente"
+  "Is the password saved locally": "¿Se guarda la contraseña localmente",
+  "Reconnect": "Reconectar"
 }

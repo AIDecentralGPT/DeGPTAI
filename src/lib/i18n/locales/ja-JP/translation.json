@@ -949,5 +949,6 @@
   "Recharge DGC": "DGCをチャージ",
   "Time expired": "時間切れ",
   "QR code is invalid": "QRコードが無効です",
-  "Is the password saved locally": "パスワードはローカルに保存されますか"
+  "Is the password saved locally": "パスワードはローカルに保存されますか",
+  "Reconnect": "さいせつぞく"
 }

@@ -720,41 +720,7 @@
 						</div>
 					{:else}
 						<div class="w-full">
-							{#if message?.error === true}
-								<div
-									class="flex mt-2 mb-4 space-x-2 border px-4 py-3 border-red-800 bg-red-800/30 font-medium rounded-lg"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="currentColor"
-										class="w-5 h-5 self-center"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-										/>
-									</svg>
-
-									<div class=" self-center flex-1">
-										<!-- 默认错误输出信息 -->
-										{$i18n.t("It seems that you are offline. Please reconnect to send messages.")}
-									</div>
-									{#if isLastMessage}
-										<button on:click={() => {
-											resentMessage(message?.parentId);
-										}}>
-											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1402 1024" version="1.1" fill="currentColor" class="w-5 h-5 self-center">
-												<path d="M56.256426 523.180601a54.884318 54.884318 0 0 1-37.046915-94.675448l189.350896-177.001925a54.884318 54.884318 0 0 1 75.465937 1.372108l181.118249 177.001925a54.884318 54.884318 0 0 1-76.838045 78.210153L244.235214 366.760296 93.30334 508.087414a54.884318 54.884318 0 0 1-37.046914 15.093187zM1166.291751 789.369542a54.884318 54.884318 0 0 1-37.046914-15.093188L938.521833 597.27443a55.337113 55.337113 0 1 1 75.465937-80.954369l150.931873 142.699226 144.071334-141.327118a54.884318 54.884318 0 0 1 76.838045 78.210153L1204.710774 774.276354a54.884318 54.884318 0 0 1-38.419023 15.093188z"/>
-												<path d="M1163.547535 785.253218a54.884318 54.884318 0 0 1-54.884317-54.884318V513.575845c0-222.281487-181.118248-403.399735-403.399736-403.399735a403.399735 403.399735 0 0 0-264.816832 98.791772 54.922737 54.922737 0 0 1-72.721721-82.326476 513.16837 513.16837 0 0 1 850.706924 386.934439v216.793055a54.884318 54.884318 0 0 1-54.884318 54.884318zM705.263482 1024a513.16837 513.16837 0 0 1-513.16837-513.16837V294.038575a54.884318 54.884318 0 0 1 109.768635 0v216.793055c0 222.281487 181.118248 403.399735 403.399735 403.399735a402.027627 402.027627 0 0 0 271.677373-105.652312 54.884318 54.884318 0 0 1 74.093829 80.954369 511.796263 511.796263 0 0 1-345.771202 134.466578z"/>
-											</svg>
-										</button>
-									{/if}
-								</div>
-							{:else if message?.warning === true}
+							{#if message?.warning === true}
 								<div
 									class="flex mt-2 mb-4 space-x-2 border px-4 py-3 border-amber-600 bg-amber-600/30 font-medium rounded-lg"
 								>
@@ -772,15 +738,15 @@
 											d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
 										/>
 									</svg>
-									<div class=" self-center">
+									<div class="self-center w-full">
 										{message.content}
 										{#if $user?.id?.startsWith("0x")}
-											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg float-right"
 												on:click={() => { $showPriceModal = true; }}>
 												{$i18n.t("Click To Upgrade")}
 											</button>
 										{:else}
-											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg float-right"
 												on:click={() => { 
 													$showSidebar = true;
           								$showWalletView = true; }}>
@@ -840,6 +806,41 @@
 										})}
 									{/if}
 								{/each}
+								{#if message?.error === true}
+									<div
+										class="flex mt-2 mb-4 space-x-2 border px-4 py-3 border-red-800 bg-red-800/30 font-medium rounded-lg"
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke-width="1.5"
+											stroke="currentColor"
+											class="size-[1.3rem] self-center"
+											>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+											/>
+										</svg>
+										<div class="w-full inline-block">
+											<!-- 默认错误输出信息 -->
+											<span class="mr-2">{$i18n.t("It seems that you are offline. Please reconnect to send messages.")}</span>
+											{#if isLastMessage}
+												<button class="bg-[#B88E56] text-white flex flex-row float-right px-2 rounded-lg" on:click={() => {
+													resentMessage(message?.parentId, true);
+												}}>
+													<span class="mr-1">{$i18n.t("Reconnect")}</span>
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1402 1024" version="1.1" fill="currentColor" class="size-[1rem] self-center">
+														<path d="M56.256426 523.180601a54.884318 54.884318 0 0 1-37.046915-94.675448l189.350896-177.001925a54.884318 54.884318 0 0 1 75.465937 1.372108l181.118249 177.001925a54.884318 54.884318 0 0 1-76.838045 78.210153L244.235214 366.760296 93.30334 508.087414a54.884318 54.884318 0 0 1-37.046914 15.093187zM1166.291751 789.369542a54.884318 54.884318 0 0 1-37.046914-15.093188L938.521833 597.27443a55.337113 55.337113 0 1 1 75.465937-80.954369l150.931873 142.699226 144.071334-141.327118a54.884318 54.884318 0 0 1 76.838045 78.210153L1204.710774 774.276354a54.884318 54.884318 0 0 1-38.419023 15.093188z"/>
+														<path d="M1163.547535 785.253218a54.884318 54.884318 0 0 1-54.884317-54.884318V513.575845c0-222.281487-181.118248-403.399735-403.399736-403.399735a403.399735 403.399735 0 0 0-264.816832 98.791772 54.922737 54.922737 0 0 1-72.721721-82.326476 513.16837 513.16837 0 0 1 850.706924 386.934439v216.793055a54.884318 54.884318 0 0 1-54.884318 54.884318zM705.263482 1024a513.16837 513.16837 0 0 1-513.16837-513.16837V294.038575a54.884318 54.884318 0 0 1 109.768635 0v216.793055c0 222.281487 181.118248 403.399735 403.399735 403.399735a402.027627 402.027627 0 0 0 271.677373-105.652312 54.884318 54.884318 0 0 1 74.093829 80.954369 511.796263 511.796263 0 0 1-345.771202 134.466578z"/>
+													</svg>
+												</button>
+											{/if}
+										</div>
+									</div>
+								{/if}
 							{/if}
 
 							{#if message.citations}
@@ -1287,7 +1288,7 @@
 															? 'visible'
 															: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition regenerate-response-button"
 														on:click={() => {
-															resentMessage(message?.parentId);
+															resentMessage(message?.parentId, false);
 														}}
 													>
 														<svg

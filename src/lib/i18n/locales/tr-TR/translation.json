@@ -949,5 +949,6 @@
   "Recharge DGC": "DGC Şarj Et",
   "Time expired": "Süre doldu",
   "QR code is invalid": "QR kodu geçersiz",
-  "Is the password saved locally": "Şifre yerel olarak kaydediliyor mu"
+  "Is the password saved locally": "Şifre yerel olarak kaydediliyor mu",
+  "Reconnect": "Yeniden bağlanmak"
 }

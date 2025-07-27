@@ -16,6 +16,9 @@ class AliQwenApi:
    
    def completion(self, param: AiModelReq):
         try:
+            if param.reload and param.enable_thinking is False:
+                param.messages[-1].partial = True
+                
             completion = client.chat.completions.create(
                 model=param.model,
                 messages=param.messages,

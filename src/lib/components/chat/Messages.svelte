@@ -177,7 +177,7 @@
 		await sendPrompt(userPrompt, responseMap, modelLimit);
 	};
 
-	const resentMessage = async (messageId) => {
+	const resentMessage = async (messageId, reload) => {
 		let userMessage = {
 			...history.messages[messageId]
 		};
@@ -191,6 +191,12 @@
 
 		let userPrompt = userMessage?.content;
 
+		// 校验模型是否是思考模型，思考模型重新回复
+		let currModel = $models.filter(item => item.id == userMessage?.models[0]);
+		if (currModel[0]?.think) {
+			reload = false;
+		}
+		
 		// Create Simulate ResopnseMessage
 		let responseMap: any = {};
 		history.messages[messageId].childrenIds.forEach((responseMessageId: string) => {
@@ -199,7 +205,7 @@
 				...responseMessage,
 				parseInfo: "",
 				error: false,
-				content: "",
+				content: reload  ? responseMessage.content : "",
 				done: false
 			}
 			history.messages[responseMessageId] = responseMessage;
@@ -209,7 +215,7 @@
 
 		// 校验模型已使用次数
     let modelLimit = {}
-		const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+		const {passed, data} = await conversationRefresh(localStorage.token, userMessage?.models[0]);
     if (passed) {
       for (const item of selectedModels) {
         data.forEach((dItem:any) => {
@@ -251,7 +257,7 @@
     }
 
 		await tick();
-		await sendPrompt(userPrompt, responseMap, modelLimit);
+		await sendPrompt(userPrompt, responseMap, modelLimit, userMessage?.models[0], reload);
 	};
 
 	const updateChatMessages = async () => {

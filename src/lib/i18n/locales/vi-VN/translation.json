@@ -938,5 +938,6 @@
   "Recharge DGC": "Nạp DGC",
   "Time expired": "Hết thời gian",
   "QR code is invalid": "Mã QR không hợp lệ",
-  "Is the password saved locally": "Mật khẩu có được lưu cục bộ không"
+  "Is the password saved locally": "Mật khẩu có được lưu cục bộ không",
+  "Reconnect": "Kết nối lại"
 }

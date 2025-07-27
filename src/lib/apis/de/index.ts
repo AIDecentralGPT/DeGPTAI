@@ -431,7 +431,8 @@ export const generateDeTitle = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
-          enable_thinking: false
+          enable_thinking: false,
+          reload: false
         })
       });
       res = await result.json();
@@ -490,7 +491,8 @@ export const generateSearchKeyword = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
-          enable_thinking: false
+          enable_thinking: false,
+          reload: false
         })
       });
       res = await result.json();

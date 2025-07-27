@@ -475,7 +475,7 @@
     }
   };
 
-  const sendPrompt = async (prompt, responseMap = null, modelLimit = {}, modelId = null) => {
+  const sendPrompt = async (prompt, responseMap = null, modelLimit = {}, modelId = null, reload = false) => {
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
       (modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : Object.keys(responseMap)).map(
@@ -520,7 +520,7 @@
               await handleLimitError(modelLimit[model.id], responseMessage);
             } else {  
               // 文本搜索
-              await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+              await sendPromptDeOpenAI(model, responseMessageId, _chatId, reload);
             }
             // if (model?.external) {
             // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
@@ -549,7 +549,7 @@
   };
 
   // De的openai走这里！
-  const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {
+  const sendPromptDeOpenAI = async (model, responseMessageId, _chatId, reload) => {
     const responseMessage = history.messages[responseMessageId];
 
     const docs = [messages[messages.length - 2]]
@@ -589,6 +589,7 @@
             } : undefined,
             ...messages,
         ].filter((message) => message);
+      
       // 判断是否需要重新赋值
 			send_message.forEach((item, index) => {
         // 判断不同类型提问不同内容
@@ -705,7 +706,8 @@
         {
           model: fileFlag ? model.imagemodel : model.textmodel,
           messages: send_message,
-          enable_thinking: model.think
+          enable_thinking: model.think,
+          reload: reload
         },
         $deApiBaseUrl?.url,
       );
@@ -734,8 +736,9 @@
         if (model.think) {
           responseMessage.think_content = "<think>";
         }
+
         for await (const update of textStream) {
-          const { value, done, citations, error, think } = update;
+          let { value, done, citations, error, think } = update;
 
           // 校验是否思考过程
           if (model.think && think) {
@@ -752,6 +755,11 @@
               model.id,
             );
             messages = messages;
+          }
+  
+          if (value.includes("：")) {
+            console.log("=================", value);
+            error = "测试错误";
           }
 
           if (error) {
@@ -953,7 +961,7 @@
     // }
 
     responseMessage.error = true;
-    responseMessage.content = "It seems that you are offline. Please reconnect to send messages.";
+    responseMessage.errmsg = "It seems that you are offline. Please reconnect to send messages.";
       // $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
       //   provider: model.name ?? model.id,
       // }) +
@@ -1008,7 +1016,7 @@
       const model = $models.filter((m) => m.id === responseMessage.model).at(0);
 
       if (model) {
-        await sendPromptDeOpenAI(model, responseMessage.id, _chatId);
+        await sendPromptDeOpenAI(model, responseMessage.id, _chatId, false);
 
         // if (model?.external) {
         // 	await sendPromptOpenAI(

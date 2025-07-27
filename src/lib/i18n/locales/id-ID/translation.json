@@ -949,5 +949,6 @@
   "Recharge DGC": "Isi ulang DGC",
   "Time expired": "Waktu habis",
   "QR code is invalid": "Kode QR tidak valid",
-  "Is the password saved locally": "Apakah kata sandi disimpan secara lokal"
+  "Is the password saved locally": "Apakah kata sandi disimpan secara lokal",
+  "Reconnect": "Menyambung kembali"
 }
