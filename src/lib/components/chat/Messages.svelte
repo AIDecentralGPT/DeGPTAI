@@ -206,7 +206,8 @@
 				parseInfo: "",
 				error: false,
 				content: reload  ? responseMessage.content : "",
-				done: false
+				done: false,
+				reload: reload
 			}
 			history.messages[responseMessageId] = responseMessage;
 

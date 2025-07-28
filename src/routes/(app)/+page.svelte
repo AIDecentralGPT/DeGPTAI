@@ -726,6 +726,10 @@
       scrollToBottom();
 
       if (res && res.ok && res.body) {
+        // 重新加载提示取消
+        if (reload) {
+          responseMessage.reload = false;
+        }
         const textStream = await createOpenAITextStream(
           res.body,
           $settings.splitLargeChunks

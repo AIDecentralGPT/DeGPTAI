@@ -33,6 +33,7 @@
 	import Replying from './Replying.svelte';
 	import Skeleton from './Skeleton.svelte';
 	import CodeBlock from './CodeBlock.svelte';
+	import Reconnecting from './Reconnecting.svelte'
 	import Image from '$lib/components/common/Image.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import RateComment from './RateComment.svelte';
@@ -840,6 +841,9 @@
 											{/if}
 										</div>
 									</div>
+								{/if}
+								{#if message?.reload === true}
+									<Reconnecting/>	
 								{/if}
 							{/if}
 

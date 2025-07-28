@@ -678,8 +678,6 @@
 				$deApiBaseUrl?.url			
 			);
 
-
-
 			// Wait until history/message have been updated
 			await tick();
 
@@ -687,6 +685,10 @@
 
 			// 6. 创建openai对话数据流
 			if (res && res.ok && res.body) {
+				// 重新加载提示取消
+				if (reload) {
+					responseMessage.reload = false;
+				}
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 				responseMessage.replytime = Math.floor(Date.now() / 1000);
 				// 判断模型添加think头
