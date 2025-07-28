@@ -761,10 +761,10 @@
             messages = messages;
           }
   
-          if (value.includes("：")) {
-            console.log("=================", value);
-            error = "测试错误";
-          }
+          // if (value.includes("：")) {
+          //   console.log("=================", value);
+          //   error = "测试错误";
+          // }
 
           if (error) {
             await handleOpenAIError(error, null, model, responseMessage);
