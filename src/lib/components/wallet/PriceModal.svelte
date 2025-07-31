@@ -566,10 +566,6 @@
                     <span class="text-base font-bold ml-2">GPT-4.1 (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4.5 (OpenAI)</span>
-                  </div>
-                  <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4Opus (Anthropic)</span>
                   </div>
@@ -873,10 +869,6 @@
                     <span class="text-base font-bold ml-2">GPT-4.1 (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4.5 (OpenAI)</span>
-                  </div>
-                  <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">Claude 4Opus (Anthropic)</span>
                   </div>
@@ -1178,10 +1170,6 @@
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT-4.1 (OpenAI)</span>
-                  </div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4.5 (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
