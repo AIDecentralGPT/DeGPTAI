@@ -88,8 +88,7 @@ class OpenAiApi:
                     input=messages,
                     stream=param.stream,
                     tools=tools,
-                    top_p=1,
-                    temperature=0.7
+                    top_p=1
                 )
             
         except APIError as e:
