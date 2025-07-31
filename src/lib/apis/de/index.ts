@@ -212,19 +212,6 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "GPT 4.5 (OpenAI)",
-        model: "gpt-4.5-preview",
-        imagemodel: "gpt-4.5-preview",
-        textmodel: "gpt-4.5-preview",
-        think: false,
-        tip: "GPT 4.5 (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Skilled in writing and generating ideas",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
-      {
         name: "Claude 4 Opus (Anthropic)",
         model: "claude-opus-4-20250514",
         imagemodel: "claude-opus-4-20250514",

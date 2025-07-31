@@ -64,7 +64,7 @@ tools = [{
 
 class OpenAiApi:
     def check_model(self, model: str):
-        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1","gpt-4.5-preview"]
+        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1"]
         return model in models
    
     def completion(self, param: AiModelReq):
