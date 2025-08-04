@@ -18,15 +18,12 @@ class DoubaoApi:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {apikey}"
         }
-
-        print("===========param.messages=========", param.messages)
         for message in param.messages:
             if isinstance(message.content, list):
                 for file in message.content:
                     if file["type"] == "file":
                         file_url = file["file"]["file_data"]
                         file["file"]["file_data"] = FileUtils.url_to_data_url(file_url)
-        # print("===========param.messages=========", param.messages)
         data = {
             "model": param.model,  # 假设的模型名称，请替换为实际模型名称
             "messages": param.messages,

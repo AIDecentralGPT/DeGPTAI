@@ -65,7 +65,7 @@
   export let toolInfo: any = {url: "", trantip: ""};
 
   export let fileUploadEnabled = true;
-  // export let speechRecognitionEnabled = true;
+  export let speechRecognitionEnabled = true;
 
   export let prompt = "";
   export let chatInputPlaceholder = "";
@@ -206,6 +206,7 @@
     // Check if SpeechRecognition is supported
 
     if (isRecording) {
+      console.log("======================");
       if (speechRecognition) {
         speechRecognition.stop();
       }
@@ -213,6 +214,7 @@
       if (mediaRecorder) {
         mediaRecorder.stop();
       }
+      isRecording = false;
     } else {
       isRecording = true;
 
@@ -229,18 +231,19 @@
 
           // Set continuous to true for continuous recognition
           speechRecognition.continuous = true;
+          speechRecognition.interimResults = true;
 
           // Set the timeout for turning off the recognition after inactivity (in milliseconds)
-          const inactivityTimeout = 3000; // 3 seconds
+          // const inactivityTimeout = 3000; // 3 seconds
 
-          let timeoutId;
+          // let timeoutId;
           // Start recognition
           speechRecognition.start();
 
           // Event triggered when speech is recognized
           speechRecognition.onresult = async (event) => {
             // Clear the inactivity timeout
-            clearTimeout(timeoutId);
+            // clearTimeout(timeoutId);
 
             // Handle recognized speech
             console.log(event);
@@ -254,31 +257,41 @@
             chatTextAreaElement?.focus();
 
             // Restart the inactivity timeout
-            timeoutId = setTimeout(() => {
-              console.log("Speech recognition turned off due to inactivity.");
-              speechRecognition.stop();
-            }, inactivityTimeout);
+            // timeoutId = setTimeout(() => {
+            //   console.log("Speech recognition turned off due to inactivity.");
+            //   speechRecognition.stop();
+            // }, inactivityTimeout);
           };
 
           // Event triggered when recognition is ended
           speechRecognition.onend = function () {
             // Restart recognition after it ends
-            console.log("recognition ended");
-            isRecording = false;
-            if (prompt !== "" && $settings?.speechAutoSend === true) {
-              submitPrompt(prompt, toolInfo, user);
-            }
+            // console.log("recognition ended");
+            // isRecording = false;
+            // if (prompt !== "" && $settings?.speechAutoSend === true) {
+            //   submitPrompt(prompt, toolInfo, user);
+            // }
+            if (isRecording) {
+              speechRecognition.start();
+            } else {
+              if (speechRecognition) {
+                speechRecognition.stop();
+              }
+              if (mediaRecorder) {
+                mediaRecorder.stop();
+              }
+            }           
           };
 
           // Event triggered when an error occurs
           speechRecognition.onerror = function (event) {
             console.log(event);
-            toast.error(
-              $i18n.t(`Speech recognition error: {{error}}`, {
-                error: event.error,
-              })
-            );
-            isRecording = false;
+            // toast.error(
+            //   $i18n.t(`Speech recognition error: {{error}}`, {
+            //     error: event.error,
+            //   })
+            // );
+            // isRecording = false;
           };
         } else {
           toast.error(
@@ -301,6 +314,7 @@
       text: "",
       image: [],
       error: "",
+      url: ""
     };
 
     try {
@@ -329,6 +343,7 @@
         doc.anaylis_type = res.anaylis_type
         doc.text = res.text;
         doc.image = res.image;
+        doc.url = res.url;
         files = files;
       }
     } catch (e) {
@@ -1345,11 +1360,11 @@
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">
                   {#if messages.length == 0 || messages.at(-1).done == true}
-                    <!-- <Tooltip content={$i18n.t("Record voice")}>
+                    <Tooltip content={$i18n.t("Record voice")}>
                       {#if speechRecognitionEnabled}
                         <button
                           id="voice-input-button"
-                          class=" text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-850 transition rounded-full p-1.5 mr-0.5 self-center"
+                          class=" text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1.5 mr-0.5 self-center"
                           type="button"
                           on:click={() => {
                             speechRecognitionHandler();
@@ -1427,7 +1442,7 @@
                           {/if}
                         </button>
                       {/if}
-                    </Tooltip> -->
+                    </Tooltip>
   
                     <Tooltip content={$i18n.t("Send message")}>
                       <button
