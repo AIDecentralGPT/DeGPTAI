@@ -190,7 +190,7 @@
   <div class="px-5 mt-2">
     {#if dailyLoaded}
       <div class="w-full flex flex-col p-5">
-        <div class="text-gray-800 dark:text-gray-50 font-bold">{$i18n.t("Daily Active Users Data Distribution")}</div>
+        <div class="text-gray-800 dark:text-gray-50 font-bold">{$i18n.t("Daily Active Users Data Distribution")}(GMT-7)</div>
         <div class="mt-2">
           <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
