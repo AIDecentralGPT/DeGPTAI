@@ -321,7 +321,7 @@
     {/if}
   </div>
 
-  <div class="px-5">
+  <div class="px-5 mt-5">
     {#if dailyLoaded}
       <div class="w-full bg-gray-100 dark:bg-gray-50 rounded-lg p-5">
         <LineChart
