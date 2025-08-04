@@ -2,7 +2,7 @@ from peewee import *
 from pydantic import BaseModel
 from apps.web.internal.db import DB, aspect_database_operations
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
-from datetime import date
+from datetime import date, datetime
 import uuid
 
 
@@ -45,6 +45,11 @@ class DailyUsersTable:
     try:
       dailyuserss = DailyUsers.select().where(DailyUsers.active_time >= start_time).order_by(DailyUsers.active_time.desc())
       dailyusers_list = [DailyUsersModel(**model_to_dict(dailyusers)) for dailyusers in dailyuserss]
+      
+      datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
+                    0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
+      current_hour = datetime.now().hour
+      dailyusers_list[0].user_num = int(dailyusers_list[0].user_num * datelist[current_hour])
       return dailyusers_list
     except Exception as e:
       return []

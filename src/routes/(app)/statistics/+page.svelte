@@ -18,6 +18,7 @@
   // 日活跃用户数
   let page = 1;
   let total = 0;
+  let perPage = 15
   let alldata = [];
   let paginatedData = []; 
   let dailyLoaded = true;
@@ -39,8 +40,8 @@
   };
 
   function pageList() {
-    let startIndex = (page - 1) * 10;
-    let endIndex = startIndex + 10; 
+    let startIndex = (page - 1) * perPage;
+    let endIndex = startIndex + perPage; 
     paginatedData = alldata.slice(startIndex, endIndex);
   }
 
@@ -188,7 +189,7 @@
 
   <div class="px-5 mt-2">
     {#if dailyLoaded}
-      <div class="w-full flex flex-col bg-gray-100 dark:bg-gray-50 rounded-lg p-5">
+      <div class="w-full flex flex-col p-5">
         <div class="text-gray-800 dark:text-gray-50 font-bold">{$i18n.t("Daily Active Users Data Distribution")}</div>
         <div class="mt-2">
           <table
@@ -206,14 +207,14 @@
             </thead>
             <tbody>
               {#each paginatedData as item, index}
-                <tr>
-                  <td class=" px-3 py-2">
-                    { (page -1) * 10 + index + 1}
+                <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs">
+                  <td class=" px-3 py-3">
+                    { (page -1) * perPage + index + 1}
                   </td>
-                  <td class=" px-3 py-2">
+                  <td class=" px-3 py-3">
                     {item.user_num}
                   </td>
-                  <td class=" px-3 py-2">
+                  <td class=" px-3 py-3">
                     {item.active_time}
                   </td>
                 </tr>
@@ -221,7 +222,7 @@
             </tbody>
           </table>
         </div>
-        <Pagination bind:page count={total} />
+        <Pagination bind:page bind:perPage count={total} />
       </div>
     {/if}
   </div>
