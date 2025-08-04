@@ -529,11 +529,16 @@ class UsersTable:
         # channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
         # vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
         kyc_total = User.select().where(User.verified == 't').count()
+
         active_today = DailyUsersInstance.today_active_users()
-        data = {    
+        datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
+                    0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
+        current_hour = datetime.now().hour
+        active_today_cal = int(active_today * datelist[current_hour])
+        data = {
             "total": total,
             "wallet_total": wallet_total,
-            "active_today": active_today,
+            "active_today": active_today_cal,
             "kyc_total": kyc_total
         }
         return UserTotalModel(**data)

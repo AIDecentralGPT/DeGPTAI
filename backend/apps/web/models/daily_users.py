@@ -42,32 +42,12 @@ class DailyUsersTable:
   
   # 获取用户活跃数列表
   def get_active_users_list(self, start_time: str):
-    data = {
-      "date_list": [],
-      "users_list": []
-    }
-
     try:
-      dailyuserss = DailyUsers.select().where(DailyUsers.active_time >= start_time).order_by(DailyUsers.active_time.asc())
+      dailyuserss = DailyUsers.select().where(DailyUsers.active_time >= start_time).order_by(DailyUsers.active_time.desc())
       dailyusers_list = [DailyUsersModel(**model_to_dict(dailyusers)) for dailyusers in dailyuserss]
-      # 时间列表
-      date_list = []
-      for item in dailyusers_list:
-        date_list.append(item.active_time.strftime('%m-%d'))
-
-      users_list = []
-      for idx, item in enumerate(dailyusers_list):
-        if idx != len(dailyusers_list) - 1:
-          users_list.append(item.user_num)
-        else:
-          users_list.append(item.user_num)
-
-      data["date_list"] = date_list
-      data['users_list'] = users_list
-      return data
+      return dailyusers_list
     except Exception as e:
-      print("=======================", e)
-      return data
+      return []
     
 # 实例化DailyUsersTable类
 DailyUsersInstance = DailyUsersTable(DB)
