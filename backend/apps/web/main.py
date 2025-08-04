@@ -19,7 +19,8 @@ from apps.web.routers import (
     third,
     kycrestrict,
     error_log,
-    completion
+    completion,
+    daily_users
 )
 from config import (
     WEBUI_VERSION,
@@ -85,6 +86,7 @@ app.include_router(kycrestrict.router, prefix="/kyc", tags=["kyc"])
 app.include_router(error_log.router, prefix="/errorlog", tags=["error_log"])
 
 app.include_router(completion.router, prefix="/chat", tags=["aliqwen"])
+app.include_router(daily_users.router, prefix="/daily", tags=["daily_users"])
 
 @app.get("/")
 async def get_status():

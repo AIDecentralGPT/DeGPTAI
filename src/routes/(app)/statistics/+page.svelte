@@ -2,154 +2,51 @@
   import { getContext, onMount } from "svelte";
   import {
     getDisperTotal,
-    getDisperUser,
-    getThirdTotal,
-    getdisperVip,
-    getRewardsTotal,
+    getDailyUserLine
   } from "$lib/apis/users";
-  import {
-    getInviteRewardTotal,
-    syncRegisterReward,
-    syncInviteReward,
-  } from "$lib/apis/rewards";
   import { goto } from "$app/navigation";
-  import BarChart from "$lib/components/common/echarts/BarChart.svelte";
-  import LineChart from "$lib/components/common/echarts/LineChart.svelte";
   import { showSidebar } from "$lib/stores";
-  import { toast } from "svelte-sonner";
+  import Pagination from "$lib/components/common/Pagination.svelte";
 
   const i18n = getContext("i18n");
 
   let userTotal: number = 0;
   let walletTotal: number = 0;
-  let channelTotal: number = 0;
-  let vipTotal: number = 0;
+  let activeToday: number = 0;
   let kycTotal: number = 0;
 
-  let lineLoaded = false;
-  let lineXdata: any[] = [];
-  let lineSeries: any[] = [];
-  let lineTitle = $i18n.t("Recent 15 Days User Data Distribution");
-
-  let thirdLoaded = false;
-  let thirdXdata: any[] = [];
-  let thirdSeries: any[] = [];
-  let thirdTitle = $i18n.t("Channel Distribution");
-
-  let vipLoaded = false;
-  let vipXdata: any[] = [];
-  let vipSeries: any[] = [];
-  let vipTitle = $i18n.t("VIP Distribution");
-
-  let registLoaded = false;
-  let regist_total = 0;
-  let reward_total = 0;
-  let issue_total = 0;
-  let regist_reward_per = "0";
-
-  let inviteLoaded = false;
-  let invite_total = 0;
-  let invite_reward_total = 0;
-  let invite_issue_total = 0;
-  let invite_reward_per = "0";
+  // 日活跃用户数
+  let page = 1;
+  let total = 0;
+  let perPage = 15
+  let alldata = [];
+  let paginatedData = []; 
+  let dailyLoaded = true;
 
   const initInfo = () => {
     getDisperTotal(localStorage.getItem("token") || "").then((res) => {
       userTotal = res.total;
       walletTotal = res.wallet_total;
-      channelTotal = res.channel_total;
-      vipTotal = res.vip_total;
+      // channelTotal = res.channel_total;
+      // vipTotal = res.vip_total;
+      activeToday = res.active_today;
       kycTotal = res.kyc_total;
     });
-    getDisperUser(localStorage.getItem("token") || "").then((res) => {
-      lineXdata = res.date_list;
-      lineSeries.push({
-        name: $i18n.t("Wallet User Total"),
-        type: "line",
-        data: res.wallet_list,
-      });
-      lineSeries.push({
-        name: $i18n.t("Channel User Total"),
-        type: "line",
-        data: res.channel_list,
-      });
-      lineSeries.push({
-        name: $i18n.t("KYC User Total"),
-        type: "line",
-        data: res.kyc_list,
-      });
-      lineLoaded = true;
+    getDailyUserLine(localStorage.getItem("token") || "").then((data) => {
+      alldata = data;
+      total = data.length;
+      pageList();
     });
-    getThirdTotal(localStorage.getItem("token") || "").then((res) => {
-      res.forEach((item: any) => {
-        thirdXdata.push(item?.channel);
-        thirdSeries.push(item?.total);
-      });
-      thirdLoaded = true;
-    });
-    getdisperVip(localStorage.getItem("token") || "").then((res) => {
-      vipXdata = [
-        $i18n.t("VIP Total"),
-        $i18n.t("Expired Total"),
-        $i18n.t("Renew Total"),
-      ];
-      vipSeries.push(res.vip_total);
-      vipSeries.push(res.expire_total);
-      vipSeries.push(res.renew_total);
-      vipLoaded = true;
-    });
-    rewardsTotal();
-    inviteRewardTotal();
   };
 
-  function rewardsTotal() {
-    getRewardsTotal(localStorage.getItem("token") || "").then((res) => {
-      regist_total = res.regist_total;
-      reward_total = res.reward_total;
-      issue_total = res.issue_total;
-      if (issue_total == 0) {
-        regist_reward_per = reward_total == 0 ? "100" : "0";
-      } else {
-        let reward_per = (issue_total * 100) / reward_total;
-        if (reward_per >= 100) {
-          regist_reward_per = "100";
-        } else {
-          regist_reward_per = reward_per.toFixed(1);
-        }
-      }
-      registLoaded = true;
-    });
+  function pageList() {
+    let startIndex = (page - 1) * perPage;
+    let endIndex = startIndex + perPage; 
+    paginatedData = alldata.slice(startIndex, endIndex);
   }
 
-  function inviteRewardTotal() {
-    getInviteRewardTotal(localStorage.getItem("token") || "").then((res) => {
-      invite_total = res.invite_total;
-      invite_reward_total = res.invite_reward_total;
-      invite_issue_total = res.invite_issue_total;
-      if (invite_issue_total == 0) {
-        invite_reward_per = invite_reward_total == 0 ? "100" : "0";
-      } else {
-        let invitee_per = (invite_issue_total * 100) / invite_reward_total;
-        if (invitee_per >= 100) {
-          invite_reward_per = "100";
-        } else {
-          invite_reward_per = invitee_per.toFixed(1);
-        }
-      }
-      inviteLoaded = true;
-    });
-  }
-
-  function syncregisterreward() {
-    syncRegisterReward(localStorage.getItem("token") || "").then((res) => {
-      rewardsTotal();
-    });
-  }
-
-  function syncinviteereward() {
-    syncInviteReward(localStorage.getItem("token") || "").then((res) => {
-      inviteRewardTotal();
-    });
+  $: if (page) {
+    pageList();
   }
 
   onMount(() => {
@@ -230,7 +127,7 @@
         {walletTotal}
       </div>
     </div>
-    <div
+    <!-- <div
       class="flex flex-col flex-1 min-w-[200px] items-center bg-blue-100 dark:bg-blue-300 rounded-lg px-2 py-4 m-3"
     >
       <div
@@ -243,8 +140,8 @@
       >
         {channelTotal}
       </div>
-    </div>
-    <div
+    </div> -->
+    <!-- <div
       class="flex flex-col flex-1 min-w-[200px] items-center bg-violet-100 dark:bg-violet-300 rounded-lg px-2 py-4 m-3"
     >
       <div
@@ -256,6 +153,20 @@
         class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
       >
         {vipTotal}
+      </div>
+    </div> -->
+    <div
+      class="flex flex-col flex-1 min-w-[200px] items-center bg-violet-100 dark:bg-violet-300 rounded-lg px-2 py-4 m-3"
+    >
+      <div
+        class="flex text-base text-center text-gray-800 dark:text-gray-50 font-bold mt-2"
+      >
+        {$i18n.t("Daily Active Users")}
+      </div>
+      <div
+        class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
+      >
+        {activeToday}
       </div>
     </div>
     <div
@@ -276,190 +187,42 @@
 
   <hr class=" my-2 dark:border-gray-850 w-full" />
 
-  <div class="px-5">
-    {#if lineLoaded}
-      <div class="w-full bg-gray-100 dark:bg-gray-50 rounded-lg p-5">
-        <LineChart
-          bind:title={lineTitle}
-          bind:xData={lineXdata}
-          bind:seriesData={lineSeries}
-          bind:resize
-        />
-      </div>
-    {/if}
-  </div>
-
-  <div
-    class="flex justify-between flex-wrap text-gray-700 dark:text-gray-100 pt-1 pb-1"
-  >
-    {#if thirdLoaded && vipLoaded}
-      <div
-        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-5 mb-2"
-      >
-        <BarChart
-          bind:xData={thirdXdata}
-          bind:seriesData={thirdSeries}
-          bind:title={thirdTitle}
-          bind:resize
-        />
-      </div>
-      <div
-        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-5 mb-2"
-      >
-        <BarChart
-          bind:xData={vipXdata}
-          bind:seriesData={vipSeries}
-          bind:title={vipTitle}
-          bind:resize
-        />
-      </div>
-    {/if}
-  </div>
-
-  <div
-    class="flex justify-between flex-wrap text-gray-700 dark:text-gray-100 pt-1 pb-4"
-  >
-    {#if registLoaded && inviteLoaded}
-      <div
-        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-2 mb-5"
-      >
-        <div class="flex justify-between">
-          <div class="text-lg text-gray-900 font-semibold">
-            {$i18n.t("Registration Rewards")}
-          </div>
-          <button
-            class="text-sm text-gray-700 font-semibold"
-            on:click={async () => {
-              if (regist_reward_per == "100") {
-                toast.success(
-                  $i18n.t("There is no data that can be synchronized.")
-                );
-              } else {
-                toast.success(
-                  $i18n.t("The synchronous request was sent successfully.")
-                );
-                syncregisterreward();
-              }
-            }}
+  <div class="px-5 mt-2">
+    {#if dailyLoaded}
+      <div class="w-full flex flex-col p-5">
+        <div class="text-gray-800 dark:text-gray-50 font-bold">{$i18n.t("Daily Active Users Data Distribution")}</div>
+        <div class="mt-2">
+          <table
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
           >
-            {$i18n.t("Sync Data")} >
-          </button>
-        </div>
-
-        <hr class=" my-2 dark:border-gray-850 w-full" />
-        <div class="flex justify-between">
-          <div class="flex flex-col mt-2">
-            <div class="flex flex-col text-gray-900">
-              <div class="text-sm font-semibold">
-                {$i18n.t("Total Of Rewards")}
-              </div>
-              <div class="text-3xl font-semibold">{regist_total}</div>
-            </div>
-            <div class="flex flex-col text-gray-900 mt-1">
-              <div class="text-sm font-semibold">
-                {$i18n.t("Should Be Issued")}
-              </div>
-              <div class="text-sm text-gray-600">
-                ({$i18n.t("Total rewards for KYC-authenticated users")})
-              </div>
-              <div class="text-3xl font-semibold">{reward_total}</div>
-            </div>
-            <div class="flex flex-col text-gray-900 mt-1">
-              <div class="text-sm font-semibold">
-                {$i18n.t("Actually Issued")}
-              </div>
-              <div class="text-sm text-gray-600">
-                ({$i18n.t(
-                  "Total rewards actually for KYC-authenticated users."
-                )})
-              </div>
-              <div class="text-3xl font-semibold">{issue_total}</div>
-            </div>
-          </div>
-          <div class="flex-1 flex justify-center items-center">
-            <div
-              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 rounded-full
-              {regist_reward_per == '100'
-                ? 'border-green-800'
-                : 'border-yellow-600'}"
+            <thead
+              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-850 dark:text-gray-400"
             >
-              <div class="text-gray-900">{$i18n.t("Completion Rate")}</div>
-              <div class="text-3xl font-semibold text-gray-900">
-                {regist_reward_per}%
-              </div>
-            </div>
-          </div>
+              <tr>
+                <th scope="col" class="px-3 py-3"> {$i18n.t("Number")} </th>
+                <th scope="col" class="px-3 py-3"> {$i18n.t("Acitve User Total")} </th>
+                <th scope="col" class="px-3 py-3"> {$i18n.t("Active Time")} </th>
+                <th scope="col" class="px-3 py-3 text-right" />
+              </tr>
+            </thead>
+            <tbody>
+              {#each paginatedData as item, index}
+                <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-xs">
+                  <td class=" px-3 py-3">
+                    { (page -1) * perPage + index + 1}
+                  </td>
+                  <td class=" px-3 py-3">
+                    {item.user_num}
+                  </td>
+                  <td class=" px-3 py-3">
+                    {item.active_time}
+                  </td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
         </div>
-      </div>
-      <div
-        class="flex-1 min-w-[300px] bg-gray-100 dark:bg-gray-50 rounded-lg p-5 mx-5 mt-2 mb-5"
-      >
-        <div class="flex justify-between">
-          <div class="text-lg text-gray-900 font-semibold">
-            {$i18n.t("Invite Rewards")}
-          </div>
-          <button
-            class="text-sm text-gray-700 font-semibold"
-            on:click={async () => {
-              if (invite_reward_per == "100") {
-                toast.success(
-                  $i18n.t("There is no data that can be synchronized.")
-                );
-              } else {
-                toast.success(
-                  $i18n.t("The synchronous request was sent successfully.")
-                );
-                syncinviteereward();
-              }
-            }}
-          >
-            {$i18n.t("Sync Data")} >
-          </button>
-        </div>
-        <hr class=" my-2 dark:border-gray-850 w-full" />
-        <div class="flex justify-between">
-          <div class="flex flex-col mt-2">
-            <div class="flex flex-col text-gray-900">
-              <div class="text-sm font-semibold">
-                {$i18n.t("Total Of Rewards")}
-              </div>
-              <div class="text-3xl font-semibold">{invite_total}</div>
-            </div>
-            <div class="flex flex-col text-gray-900 mt-1">
-              <div class="text-sm font-semibold">
-                {$i18n.t("Should Be Issued")}
-              </div>
-              <div class="text-sm text-gray-600">
-                ({$i18n.t("Total rewards for KYC-authenticated users")})
-              </div>
-              <div class="text-3xl font-semibold">{invite_reward_total}</div>
-            </div>
-            <div class="flex flex-col text-gray-900 mt-1">
-              <div class="text-sm font-semibold">
-                {$i18n.t("Actually Issued")}
-              </div>
-              <div class="text-sm text-gray-600">
-                ({$i18n.t(
-                  "Total rewards actually for KYC-authenticated users."
-                )})
-              </div>
-              <div class="text-3xl font-semibold">{invite_issue_total}</div>
-            </div>
-          </div>
-          <div class="flex-1 flex justify-center items-center">
-            <div
-              class="flex flex-col justify-center items-center w-[200px] h-[200px] bw-16 rounded-full
-              {invite_reward_per == '100'
-                ? 'border-green-800'
-                : 'border-yellow-600'}"
-            >
-              <div class="text-gray-900">{$i18n.t("Completion Rate")}</div>
-              <div class="text-3xl font-semibold text-gray-900">
-                {invite_reward_per}%
-              </div>
-            </div>
-          </div>
-        </div>
+        <Pagination bind:page bind:perPage count={total} />
       </div>
     {/if}
   </div>

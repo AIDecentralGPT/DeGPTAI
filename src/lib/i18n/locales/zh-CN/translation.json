@@ -947,5 +947,9 @@
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGC数量不够，需要额外购买{{ num }}DGC，购买DGC成功后，再升级为VIP.",
   "Recharge DGC": "充值DGC",
   "Time expired": "时间已过期",
-  "QR code is invalid": "二维码无效"
+  "QR code is invalid": "二维码无效",
+  "Is the password saved locally": "本地是否保存密码",
+  "Reconnect": "重新连接",
+  "Daily Active Users": "日活用户",
+  "Daily Active Users Data Distribution": "日活用户数据分布"
 }
