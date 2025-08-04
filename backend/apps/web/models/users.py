@@ -4,7 +4,7 @@ from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict
 from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
 from datetime import datetime, timedelta
-import pytz
+from zoneinfo import ZoneInfo
 
 import uuid
 
@@ -538,8 +538,8 @@ class UsersTable:
         datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
                     0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
         # 获取GMT-7时区对象
-        gmt_minus_7 = pytz.timezone('Etc/GMT-7')
-        current_hour = datetime.now(gmt_minus_7).hour
+        tz_utc_minus_7 = ZoneInfo("Etc/GMT+7") 
+        current_hour = datetime.now(tz_utc_minus_7).hour
         active_today_cal = int(active_today * datelist[current_hour])
         print("=======================", current_hour, active_today, active_today_cal)
         data = {
