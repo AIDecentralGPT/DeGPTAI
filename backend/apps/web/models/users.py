@@ -541,6 +541,7 @@ class UsersTable:
         gmt_minus_7 = pytz.timezone('Etc/GMT-7')
         current_hour = datetime.now(gmt_minus_7).hour
         active_today_cal = int(active_today * datelist[current_hour])
+        print("=======================", current_hour, active_today, active_today_cal)
         data = {
             "total": total_cal,
             "wallet_total": wallet_total_cal,
