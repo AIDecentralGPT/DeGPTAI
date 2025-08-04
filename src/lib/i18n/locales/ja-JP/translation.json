@@ -950,5 +950,7 @@
   "Time expired": "時間切れ",
   "QR code is invalid": "QRコードが無効です",
   "Is the password saved locally": "パスワードはローカルに保存されますか",
-  "Reconnect": "さいせつぞく"
+  "Reconnect": "さいせつぞく",
+  "Daily Active Users": "にちかんアクティブユーザー",
+  "Daily Active Users Data Distribution": "日間アクティブユーザーのデータ分布"
 }

@@ -950,5 +950,7 @@
   "Time expired": "시간 만료",
   "QR code is invalid": "QR 코드가 유효하지 않습니다",
   "Is the password saved locally": "비밀번호가 로컬에 저장되나요",
-  "Reconnect": "다시 연결"
+  "Reconnect": "다시 연결",
+  "Daily Active Users": "일일 활성 사용자",
+  "Daily Active Users Data Distribution": "일일 활성 사용자 데이터 분포"
 }

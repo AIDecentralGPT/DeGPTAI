@@ -950,5 +950,7 @@
   "Time expired": "Waktu habis",
   "QR code is invalid": "Kode QR tidak valid",
   "Is the password saved locally": "Apakah kata sandi disimpan secara lokal",
-  "Reconnect": "Menyambung kembali"
+  "Reconnect": "Menyambung kembali",
+  "Daily Active Users": "Pengguna Aktif Harian",
+  "Daily Active Users Data Distribution": "Distribusi data pengguna aktif harian"
 }

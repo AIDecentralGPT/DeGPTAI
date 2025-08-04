@@ -939,5 +939,7 @@
   "Time expired": "Hết thời gian",
   "QR code is invalid": "Mã QR không hợp lệ",
   "Is the password saved locally": "Mật khẩu có được lưu cục bộ không",
-  "Reconnect": "Kết nối lại"
+  "Reconnect": "Kết nối lại",
+  "Daily Active Users": "Người dùng hoạt động hàng ngày",
+  "Daily Active Users Data Distribution": "Phân bố dữ liệu người dùng hoạt động hàng ngày"
 }

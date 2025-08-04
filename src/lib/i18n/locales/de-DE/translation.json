@@ -948,5 +948,7 @@
   "Time expired": "Zeit abgelaufen",
   "QR code is invalid": "QR-Code ist ungültig",
   "Is the password saved locally": "Wird das Passwort lokal gespeichert",
-  "Reconnect": "Wieder verbinden"
+  "Reconnect": "Wieder verbinden",
+  "Daily Active Users": "Tägliche aktive Nutzer",
+  "Daily Active Users Data Distribution": "Verteilung der täglichen aktiven Nutzerdaten"
 }

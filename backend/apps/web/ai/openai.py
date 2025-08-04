@@ -1,6 +1,7 @@
 import os
 from openai import OpenAI, APIError
 from apps.web.models.aimodel import AiModelReq, AiMessageModel
+from apps.web.util.fileutils import FileUtils
 
 apikey = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=apikey)
@@ -68,7 +69,20 @@ class OpenAiApi:
         return model in models
    
     def completion(self, param: AiModelReq):
-        messages = param.messages
+        for message in param.messages:
+            if isinstance(message.content, list):
+                for file in message.content:
+                    if file["type"] == "text":
+                        file["type"] = "input_text"
+                    if file["type"] == "image_url":
+                        file["type"] = "input_image"
+                        file["image_url"] = file["image_url"]["url"]
+                    if file["type"] == "file":
+                        file["type"] = "input_file"
+                        file_url = file["file"]["file_data"]
+                        file["file_url"] = file_url
+                        del file["file"]
+
         try:
             if param.enable_thinking:
                 completion = client.responses.create(
@@ -77,7 +91,7 @@ class OpenAiApi:
                         "effort": "high",       # 深度推理
                         "summary": "detailed"   # 输出详细推理步骤
                     },
-                    input=messages,
+                    input=param.messages,
                     stream=param.stream,
                     top_p=1,
                     tools=tools
@@ -85,7 +99,7 @@ class OpenAiApi:
             else:
                 completion = client.responses.create(
                     model=param.model,
-                    input=messages,
+                    input=param.messages,
                     stream=param.stream,
                     tools=tools,
                     top_p=1

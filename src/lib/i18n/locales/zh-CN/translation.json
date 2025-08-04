@@ -949,5 +949,7 @@
   "Time expired": "时间已过期",
   "QR code is invalid": "二维码无效",
   "Is the password saved locally": "本地是否保存密码",
-  "Reconnect": "重新连接"
+  "Reconnect": "重新连接",
+  "Daily Active Users": "日活用户",
+  "Daily Active Users Data Distribution": "日活用户数据分布"
 }

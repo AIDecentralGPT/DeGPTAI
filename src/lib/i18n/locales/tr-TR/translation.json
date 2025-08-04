@@ -950,5 +950,7 @@
   "Time expired": "Süre doldu",
   "QR code is invalid": "QR kodu geçersiz",
   "Is the password saved locally": "Şifre yerel olarak kaydediliyor mu",
-  "Reconnect": "Yeniden bağlanmak"
+  "Reconnect": "Yeniden bağlanmak",
+  "Daily Active Users": "Günlük Aktif Kullanıcılar",
+  "Daily Active Users Data Distribution": "Günlük aktif kullanıcı veri dağılımı"
 }

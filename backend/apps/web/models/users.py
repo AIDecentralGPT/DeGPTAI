@@ -18,6 +18,7 @@ from apps.redis.redis_client import RedisClientInstance
 import json
 from apps.web.models.reward_data import RewardDateTableInstance
 from apps.web.api.rewardapi import RegistAmount, InviteAmount
+from apps.web.models.daily_users import DailyUsersInstance
 
 
 ####################
@@ -109,8 +110,9 @@ class ChannelTotalModel(BaseModel):
 class UserTotalModel(BaseModel):
     total: int = 0  # 总数
     wallet_total: int = 0  # 钱包总数
-    channel_total: int = 0  # 第三方注册总数
-    vip_total: int = 0  # VIP总数
+    # channel_total: int = 0  # 第三方注册总数
+    # vip_total: int = 0  # VIP总数
+    active_today: int = 0  # 活跃用户总数
     kyc_total: int = 0  # 访客总数
 
 # 定义Pydantic模型UserTotalModel
@@ -524,14 +526,14 @@ class UsersTable:
     def get_user_total(self) -> Optional[UserTotalModel]:
         total = User.select().count()
         wallet_total = User.select().where(User.role != 'visitor').count()
-        channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
-        vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
+        # channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
+        # vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
         kyc_total = User.select().where(User.verified == 't').count()
+        active_today = DailyUsersInstance.today_active_users()
         data = {    
             "total": total,
             "wallet_total": wallet_total,
-            "channel_total": channel_total,
-            "vip_total": vip_total,
+            "active_today": active_today,
             "kyc_total": kyc_total
         }
         return UserTotalModel(**data)

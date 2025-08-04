@@ -6,6 +6,7 @@
     getThirdTotal,
     getdisperVip,
     getRewardsTotal,
+    getDailyUserLine
   } from "$lib/apis/users";
   import {
     getInviteRewardTotal,
@@ -24,6 +25,7 @@
   let walletTotal: number = 0;
   let channelTotal: number = 0;
   let vipTotal: number = 0;
+  let activeToday: number = 0;
   let kycTotal: number = 0;
 
   let lineLoaded = false;
@@ -53,12 +55,19 @@
   let invite_issue_total = 0;
   let invite_reward_per = "0";
 
+  // 日活跃用户数
+  let dailyLoaded = false;
+  let dailylineXdata: any[] = [];
+  let dailylineSeries: any[] = [];
+  let dailyTitle = $i18n.t("Daily Active Users Data Distribution");
+
   const initInfo = () => {
     getDisperTotal(localStorage.getItem("token") || "").then((res) => {
       userTotal = res.total;
       walletTotal = res.wallet_total;
-      channelTotal = res.channel_total;
-      vipTotal = res.vip_total;
+      // channelTotal = res.channel_total;
+      // vipTotal = res.vip_total;
+      activeToday = res.active_today;
       kycTotal = res.kyc_total;
     });
     getDisperUser(localStorage.getItem("token") || "").then((res) => {
@@ -79,6 +88,15 @@
         data: res.kyc_list,
       });
       lineLoaded = true;
+    });
+    getDailyUserLine(localStorage.getItem("token") || "").then((res) => {
+      dailylineXdata = res.date_list;
+      dailylineSeries.push({
+        name: $i18n.t("Daily Active Users"),
+        type: "line",
+        data: res.users_list,
+      });
+      dailyLoaded = true;
     });
     getThirdTotal(localStorage.getItem("token") || "").then((res) => {
       res.forEach((item: any) => {
@@ -230,7 +248,7 @@
         {walletTotal}
       </div>
     </div>
-    <div
+    <!-- <div
       class="flex flex-col flex-1 min-w-[200px] items-center bg-blue-100 dark:bg-blue-300 rounded-lg px-2 py-4 m-3"
     >
       <div
@@ -243,8 +261,8 @@
       >
         {channelTotal}
       </div>
-    </div>
-    <div
+    </div> -->
+    <!-- <div
       class="flex flex-col flex-1 min-w-[200px] items-center bg-violet-100 dark:bg-violet-300 rounded-lg px-2 py-4 m-3"
     >
       <div
@@ -256,6 +274,20 @@
         class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
       >
         {vipTotal}
+      </div>
+    </div> -->
+    <div
+      class="flex flex-col flex-1 min-w-[200px] items-center bg-violet-100 dark:bg-violet-300 rounded-lg px-2 py-4 m-3"
+    >
+      <div
+        class="flex text-base text-center text-gray-800 dark:text-gray-50 font-bold mt-2"
+      >
+        {$i18n.t("Daily Active Users")}
+      </div>
+      <div
+        class="flex text-3xl font-medium text-center text-gray-800 dark:text-gray-50 mt-1 mb-2"
+      >
+        {activeToday}
       </div>
     </div>
     <div
@@ -283,6 +315,19 @@
           bind:title={lineTitle}
           bind:xData={lineXdata}
           bind:seriesData={lineSeries}
+          bind:resize
+        />
+      </div>
+    {/if}
+  </div>
+
+  <div class="px-5">
+    {#if dailyLoaded}
+      <div class="w-full bg-gray-100 dark:bg-gray-50 rounded-lg p-5">
+        <LineChart
+          bind:title={dailyTitle}
+          bind:xData={dailylineXdata}
+          bind:seriesData={dailylineSeries}
           bind:resize
         />
       </div>

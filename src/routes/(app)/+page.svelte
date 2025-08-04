@@ -61,6 +61,7 @@
 
   import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
   import { analysisImageInfo } from "$lib/apis/rag";
+    import { FilterTypeNotSupportedError } from "viem";
 
   let inviter: any = "";
   let channelName: any = "";
@@ -552,15 +553,6 @@
   const sendPromptDeOpenAI = async (model, responseMessageId, _chatId, reload) => {
     const responseMessage = history.messages[responseMessageId];
 
-    const docs = [messages[messages.length - 2]]
-      .filter((message) => message?.files ?? null)
-      .map((message) =>
-        message.files.filter(
-          (item) => item.type === "doc" || item.type === "collection"
-        )
-      )
-      .flat(1);
-
     // 获取上一个对应模型回复的消息(每次只选一个模型可去除)
     // const modelmessage = messages;
     // if (messages.length > 2) {
@@ -648,10 +640,10 @@
 			// 过滤掉error和 content为空数据
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
 
-      // 处理图片消息
+      // 处理图片文件消息
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
-        ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+        ...((message.files?.filter((file) => file.type === "image" || file.type === "doc").length > 0 ?? false) &&
         message.role === "user"
           ? {
               content: [
@@ -663,13 +655,22 @@
                       : message?.raContent ?? message.content,
                 },
                 ...message.files
-                  .filter((file) => file.type === "image")
-                    .map((file) => ({
-                      type: "image_url",
-                      image_url: {
-                        url: file.url,
-                      },
-                    })),
+                  .filter((file) => file.type === "image" || file.type === "doc")
+                    .map((file) => (
+                      file.type === "image" ?
+                      {
+                        type: "image_url",
+                        image_url: {
+                          url: file.url,
+                        },
+                      } : {
+                        type: "file",
+                        file: {
+                          filename: file.name,
+                          file_data: file.url,
+                        },
+                      }
+                    )),
               ],
             }
           : {
@@ -679,23 +680,6 @@
                 : message?.raContent ?? message.content,
           }),
       }));
-
-      // send_message = send_message.map((message, idx, arr) => ({
-      //   role: message.role,
-      //   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
-      //   message.role === "user"
-      //     ? {
-      //         content: arr.length - 1 !== idx
-      //           ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
-      //           : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
-      //       }
-      //     : {
-      //       content:
-      //         arr.length - 1 !== idx
-      //           ? message.content
-      //           : message?.raContent ?? message.content,
-      //     }),
-      // }));
 
       // 发送内容添加 nothink 内容
       // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {

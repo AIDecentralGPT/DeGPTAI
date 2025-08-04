@@ -19,6 +19,8 @@ export const RAG_API_BASE_URL = `${WEBUI_BASE_URL}/rag/api/v1`;
 // export const DE_API_BASE_URL = `https://usa-chat.degpt.ai/api`;
 //export const DE_API_BASE_URL = `https://chat.degpt.ai/api`;
 
+export const UPLOAD_API_BASE_URL = `http://localhost:8081/api/v1`;
+
 export const WEBUI_VERSION = APP_VERSION;
 export const REQUIRED_OLLAMA_VERSION = "0.1.16";
 

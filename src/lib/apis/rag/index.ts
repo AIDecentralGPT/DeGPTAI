@@ -1,4 +1,4 @@
-import { RAG_API_BASE_URL } from '$lib/constants';
+import { RAG_API_BASE_URL, UPLOAD_API_BASE_URL } from '$lib/constants';
 
 export const getRAGConfig = async (token: string) => {
 	let error = null;
@@ -171,7 +171,7 @@ export const uploadDocToVectorDB = async (token: string, collection_name: string
 
 	let error = null;
 
-	const res = await fetch(`https://www.degptfile.info/api/v1/file/analysis`, {
+	const res = await fetch(`${UPLOAD_API_BASE_URL}/file/upload`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

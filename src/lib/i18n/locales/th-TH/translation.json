@@ -949,5 +949,7 @@
   "Time expired": "หมดเวลา",
   "QR code is invalid": "QR โค้ดไม่ถูกต้อง",
   "Is the password saved locally": "รหัสผ่านถูกบันทึกไว้ในเครื่องหรือไม่",
-  "Reconnect": "เชื่อมต่อใหม่"
+  "Reconnect": "เชื่อมต่อใหม่",
+  "Daily Active Users": "ผู้ใช้งานประจำวัน",
+  "Daily Active Users Data Distribution": "การกระจายข้อมูลผู้ใช้งานประจำวัน"
 }

@@ -949,5 +949,7 @@
   "Time expired": "Время истекло",
   "QR code is invalid": "QR-код недействителен",
   "Is the password saved locally": "รหัสผ่านถูกบันทึกไว้ในเครื่องหรือไม่",
-  "Reconnect": "Переподключить"
+  "Reconnect": "Переподключить",
+  "Daily Active Users": "Ежедневные активные пользователи",
+  "Daily Active Users Data Distribution": "Распределение данных ежедневных активных пользователей"
 }
