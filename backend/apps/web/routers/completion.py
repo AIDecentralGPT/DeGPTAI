@@ -113,8 +113,8 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                         }]
                                     }
                                     yield f"data: {json.dumps(chat_result)}\n\n"
-                        except:
-                            print("=====解析失败====", chunk)
+                        except Exception as e:
+                            print("=====解析失败====", e, chunk)
                 else:
                     chat_result = {
                         "id": str(uuid.uuid4()),
