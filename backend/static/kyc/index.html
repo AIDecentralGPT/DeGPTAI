@@ -35,7 +35,7 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const token = urlParams.get('token');
                 const lang = urlParams.get("lang");
-                const faceurl = "http://test.degpt.ai/api/v1/auths/get_liveness"
+                const faceurl = "https://test.degpt.ai/api/v1/auths/get_liveness"
                 const response = await fetch(faceurl, {
                     method: 'GET',
                     headers: {
@@ -51,10 +51,10 @@
                 if (data?.passed) {
                     window.location.href = data.data;
                 } else {
-                    window.location.href = "http://test.degpt.ai/kyc/ewm?message=" + data?.message + "&lang=" + lang;
+                    window.location.href = "https://test.degpt.ai/kyc/ewm?message=" + data?.message + "&lang=" + lang;
                 }
             } catch (error) {
-                window.location.href = "http://test.degpt.ai/kyc/ewm?message=" + error.message + "&lang=" + lang;
+                window.location.href = "https://test.degpt.ai/kyc/ewm?message=" + error.message + "&lang=" + lang;
             }
         }
         loadFaceUrl();
