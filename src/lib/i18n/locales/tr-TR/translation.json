@@ -952,5 +952,8 @@
   "Is the password saved locally": "Şifre yerel olarak kaydediliyor mu",
   "Reconnect": "Yeniden bağlanmak",
   "Daily Active Users": "Günlük Aktif Kullanıcılar",
-  "Daily Active Users Data Distribution": "Günlük aktif kullanıcı veri dağılımı"
+  "Daily Active Users Data Distribution": "Günlük aktif kullanıcı veri dağılımı",
+  "Face verification failed": "Yüz doğrulaması başarısız",
+  "KYC authentication information is incomplete": "KYC doğrulama bilgileri eksik",
+  "Captcha security authentication failed": "Captcha güvenlik doğrulaması başarısız"
 }

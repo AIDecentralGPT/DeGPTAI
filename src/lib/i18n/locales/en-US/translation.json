@@ -952,6 +952,9 @@
   "Is the password saved locally": "",
   "Reconnect": "",
   "Daily Active Users": "",
-  "Daily Active Users Data Distribution": ""
+  "Daily Active Users Data Distribution": "",
+  "Face verification failed": "",
+  "KYC authentication information is incomplete": "",
+  "Captcha security authentication failed": ""
 }
 

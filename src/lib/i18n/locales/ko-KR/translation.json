@@ -952,5 +952,8 @@
   "Is the password saved locally": "비밀번호가 로컬에 저장되나요",
   "Reconnect": "다시 연결",
   "Daily Active Users": "일일 활성 사용자",
-  "Daily Active Users Data Distribution": "일일 활성 사용자 데이터 분포"
+  "Daily Active Users Data Distribution": "일일 활성 사용자 데이터 분포",
+  "Face verification failed": "얼굴 인증에 실패했습니다",
+  "KYC authentication information is incomplete": "KYC 인증 정보가 불완전합니다",
+  "Captcha security authentication failed": "캡챠 보안 인증에 실패했습니다"
 }

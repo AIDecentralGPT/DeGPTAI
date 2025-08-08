@@ -951,5 +951,8 @@
   "Is the password saved locally": "รหัสผ่านถูกบันทึกไว้ในเครื่องหรือไม่",
   "Reconnect": "เชื่อมต่อใหม่",
   "Daily Active Users": "ผู้ใช้งานประจำวัน",
-  "Daily Active Users Data Distribution": "การกระจายข้อมูลผู้ใช้งานประจำวัน"
+  "Daily Active Users Data Distribution": "การกระจายข้อมูลผู้ใช้งานประจำวัน",
+  "Face verification failed": "การตรวจสอบใบหน้าไม่สำเร็จ",
+  "KYC authentication information is incomplete": "ข้อมูลการยืนยันตัวตน KYC ไม่สมบูรณ์",
+  "Captcha security authentication failed": "การยืนยันตัวตนความปลอดภัย Captcha ไม่สำเร็จ"
 }

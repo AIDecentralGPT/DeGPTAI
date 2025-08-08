@@ -923,7 +923,7 @@ async def faceliveness_check_for_ws(id: str):
             if face_lib.check_face_image(faceImg) == False:
                 return {
                     "passed": False,
-                    "message": "The identity validate fail",
+                    "message": "Face verification failed",
                 }
             
             # 4. 搜索该人脸照片在库中是否存在
@@ -954,7 +954,7 @@ async def faceliveness_check_for_ws(id: str):
                 if kycrestrict is None:
                     return {
                             "passed": False,
-                            "message": "The identity validate fail",
+                            "message": "KYC authentication information is incomplete",
                         }
                 kycrestricts = KycRestrictInstance.get_by_ip(kycrestrict.ip_address)
                 if  kycrestricts is not None and len(kycrestricts) >= 2:
@@ -972,7 +972,7 @@ async def faceliveness_check_for_ws(id: str):
                 if captcha_check == False:
                     return {
                             "passed": False,
-                            "message": "The identity validate fail",
+                            "message": "Captcha security authentication failed",
                         }
                 
                 # 更新用户KYC状态

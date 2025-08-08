@@ -951,5 +951,8 @@
   "Is the password saved locally": "รหัสผ่านถูกบันทึกไว้ในเครื่องหรือไม่",
   "Reconnect": "Переподключить",
   "Daily Active Users": "Ежедневные активные пользователи",
-  "Daily Active Users Data Distribution": "Распределение данных ежедневных активных пользователей"
+  "Daily Active Users Data Distribution": "Распределение данных ежедневных активных пользователей",
+  "Face verification failed": "Проверка лица не удалась",
+  "KYC authentication information is incomplete": "Информация для аутентификации KYC неполна",
+  "Captcha security authentication failed": "Аутентификация безопасности Captcha не удалась"
 }
