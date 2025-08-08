@@ -941,5 +941,8 @@
   "Is the password saved locally": "Mật khẩu có được lưu cục bộ không",
   "Reconnect": "Kết nối lại",
   "Daily Active Users": "Người dùng hoạt động hàng ngày",
-  "Daily Active Users Data Distribution": "Phân bố dữ liệu người dùng hoạt động hàng ngày"
+  "Daily Active Users Data Distribution": "Phân bố dữ liệu người dùng hoạt động hàng ngày",
+  "Face verification failed": "Xác minh khuôn mặt thất bại",
+  "KYC authentication information is incomplete": "Thông tin xác thực KYC không hoàn chỉnh",
+  "Captcha security authentication failed": "Xác thực an toàn Captcha thất bại"
 }

@@ -952,5 +952,8 @@
   "Is the password saved locally": "パスワードはローカルに保存されますか",
   "Reconnect": "さいせつぞく",
   "Daily Active Users": "にちかんアクティブユーザー",
-  "Daily Active Users Data Distribution": "日間アクティブユーザーのデータ分布"
+  "Daily Active Users Data Distribution": "日間アクティブユーザーのデータ分布",
+  "Face verification failed": "顔認証に失敗しました",
+  "KYC authentication information is incomplete": "KYC認証情報が不完全です",
+  "Captcha security authentication failed": "CAPTCHAセキュリティ認証に失敗しました"
 }

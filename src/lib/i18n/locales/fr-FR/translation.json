@@ -951,5 +951,8 @@
   "Is the password saved locally": "Le mot de passe est-il enregistré localement",
   "Reconnect": "Reconnecter",
   "Daily Active Users": "Utilisateurs Actifs Quotidiens",
-  "Daily Active Users Data Distribution": "Distribution des données des utilisateurs actifs quotidiens"
+  "Daily Active Users Data Distribution": "Distribution des données des utilisateurs actifs quotidiens",
+  "Face verification failed": "Vérification faciale échouée",
+  "KYC authentication information is incomplete": "Informations d'authentification KYC incomplètes",
+  "Captcha security authentication failed": "Échec de l'authentification de sécurité Captcha"
 }

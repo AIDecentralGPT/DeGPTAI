@@ -952,5 +952,8 @@
   "Is the password saved locally": "Apakah kata sandi disimpan secara lokal",
   "Reconnect": "Menyambung kembali",
   "Daily Active Users": "Pengguna Aktif Harian",
-  "Daily Active Users Data Distribution": "Distribusi data pengguna aktif harian"
+  "Daily Active Users Data Distribution": "Distribusi data pengguna aktif harian",
+  "Face verification failed": "Verifikasi wajah gagal",
+  "KYC authentication information is incomplete": "Informasi otentikasi KYC tidak lengkap",
+  "Captcha security authentication failed": "Otentikasi keamanan Captcha gagal"
 }
