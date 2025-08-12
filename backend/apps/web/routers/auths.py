@@ -60,6 +60,7 @@ from apps.web.models.kyc_restrict import KycRestrictInstance
 from apps.web.api.captcha import CaptchaApiInstance
 
 from apps.redis.redis_client import RedisClientInstance
+from apps.web.models.daily_users import DailyUsersInstance
 
 from constants import USER_CONSTANTS
 import logging
@@ -170,6 +171,8 @@ async def printSignIn(request: Request, form_data: FingerprintSignInForm):
         print("Error retrieving user by id:", e.message)
 
     if user:
+        DailyUsersInstance.refresh_active_today(user.last_active_at)
+        Users.update_user_last_active_by_id(user.id)
         print("User found:", user.id)
     else:
         print("User not found, creating new user")

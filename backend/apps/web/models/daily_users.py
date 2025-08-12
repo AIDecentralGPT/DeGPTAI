@@ -4,7 +4,7 @@ from apps.web.internal.db import DB, aspect_database_operations
 from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict方法
 from datetime import date, datetime, timedelta
 import uuid
-
+import time
 
 class DailyUsers(Model):
   id = CharField(primary_key=True, default=str(uuid.uuid4)) #主键
@@ -26,25 +26,37 @@ class DailyUsersTable:
     db.create_tables([DailyUsers])
 
   # 获取今日用户活跃数
-  def insert_active_today(self):
-    # 获取当前日期
-    active_time = date.today()
-    try:
-      dailyusers = DailyUsers.get_or_none(SQL('date(active_time)') == active_time)
-      if dailyusers is None:
-        dailyusers = DailyUsersModel(
-          id = str(uuid.uuid4()),
-          user_num =  1,
-          active_time = active_time
-        )
-        DailyUsers.create(**dailyusers.model_dump())
-      else:
-        dailyuser_dict = model_to_dict(dailyusers)
-        dailyuser_model = DailyUsersModel(**dailyuser_dict)
-        user_num = dailyuser_model.user_num + 1
-        DailyUsers.update(user_num = user_num).where(DailyUsers.id == dailyuser_model.id)
-    except Exception as e:
-      print("=================", e)
+  def refresh_active_today(self, checktime: int):
+    if self.is_same_day(checktime, int(time.time())) == False:
+      # 获取当前日期
+      active_time = date.today()
+      try:
+        dailyusers = DailyUsers.get_or_none(SQL('date(active_time)') == active_time)
+        if dailyusers is None:
+          dailyusers = DailyUsersModel(
+            id = str(uuid.uuid4()),
+            user_num =  1,
+            active_time = active_time
+          )
+          DailyUsers.create(**dailyusers.model_dump())
+        else:
+          dailyuser_dict = model_to_dict(dailyusers)
+          dailyuser_model = DailyUsersModel(**dailyuser_dict)
+          user_num = dailyuser_model.user_num + 1
+          update = DailyUsers.update(user_num = user_num).where(DailyUsers.id == dailyuser_model.id)
+          update.execute()
+      except Exception as e:
+        print("=================", e)
+
+  # check same datetime
+  def is_same_day(self, timestamp1, timestamp2):
+    # 将时间戳转换为datetime对象
+    dt1 = datetime.fromtimestamp(timestamp1)
+    dt2 = datetime.fromtimestamp(timestamp2)
+    # 比较年、月、日是否都相同
+    return (dt1.year == dt2.year and 
+            dt1.month == dt2.month and 
+            dt1.day == dt2.day)
 
   # 获取今日用户活跃数
   def today_active_users(self):

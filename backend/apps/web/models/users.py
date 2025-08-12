@@ -203,6 +203,9 @@ class UsersTable:
 
         # 在数据库中创建新用户
         result = User.create(**user.model_dump())
+        # 创建用户更新一个活跃数
+        DailyUsersInstance.refresh_active_today(900000000)
+        Users.update_user_last_active_by_id(result.id)
 
         print("User.create result", result.id)
 
@@ -377,11 +380,13 @@ class UsersTable:
             # print("update_user_last_active_by_id222222")
 
             user = User.get(User.id == id)  # 查询更新后的用户
+            user_dict = model_to_dict(user)
+            RedisClientInstance.add_key_value(f"user:{id}", user_dict)
             # print("update_user_last_active_by_id33333", user)
             # print(4444, UserModel(**model_to_dict(user)))
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
         except Exception as e:
-            # print("update_user_last_active_by_id error", e)
+            print("update_user_last_active_by_id error", e)
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户信息

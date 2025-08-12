@@ -7,12 +7,14 @@ from typing import List, Union, Optional, Any
 from fastapi import APIRouter
 from pydantic import BaseModel
 import logging
+import time
 
 from apps.web.models.users import UserModel, UserUpdateForm, UserRoleUpdateForm, Users, UserRoleUpdateProForm, UserModelsUpdateForm, ChannelTotalModel, UserTotalModel, UserDisperModel, UserLanguageUpdateForm
 from apps.web.models.auths import Auths
 from apps.web.models.chats import Chats
 from apps.web.models.rewards import RewardsTableInstance
 from apps.web.models.vipstatus import VIPStatuses, VIPStatusModelResp, VipTotalModel
+from apps.web.models.daily_users import DailyUsersInstance
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
 from constants import ERROR_MESSAGES
@@ -381,6 +383,9 @@ async def get_user_info(request: Request,  user=Depends(get_current_user)):
     # print("isPro session_user", session_user)
     if user:
         try:
+            # 更新用户活跃数
+            DailyUsersInstance.refresh_active_today(user.last_active_at)
+            Users.update_user_last_active_by_id(user.id)
             response = {
                 "id": user.id,
                 "email": user.email,
