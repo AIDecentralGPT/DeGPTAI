@@ -15,7 +15,6 @@ import uuid
 import logging
 import config
 import time
-import datetime
 
 logging.getLogger("passlib").setLevel(logging.ERROR)
 
