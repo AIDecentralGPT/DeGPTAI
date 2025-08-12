@@ -2,6 +2,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import HTTPException, status, Depends
 
 from apps.web.models.users import Users
+from apps.web.models.daily_users import DailyUsersInstance
 
 from pydantic import BaseModel
 from typing import Union, Optional
@@ -13,6 +14,8 @@ import jwt
 import uuid
 import logging
 import config
+import time
+import datetime
 
 logging.getLogger("passlib").setLevel(logging.ERROR)
 
@@ -187,14 +190,14 @@ def get_current_user(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=ERROR_MESSAGES.INVALID_TOKEN,
             )
-        # else:
-        #     # 更新用户的最后活跃时间
-        #     try:
-        #         Users.update_user_last_active_by_id(user.id)
-        #     except Exception as e:
-        #         print("get_current_user - user-error", e) 
-        # print("最终的user", user)
-        # 返回当前用户
+        else:
+            # 更新用户的最后活跃时间
+            try:
+                Users.update_user_last_active_by_id(user.id)
+                if is_same_day(user.last_active_at, int(time.time())) == False:
+                    DailyUsersInstance.insert_active_today()
+            except Exception as e:
+                print("get_current_user - user-error", e) 
         return user
 
     else:
@@ -204,6 +207,16 @@ def get_current_user(
             detail=ERROR_MESSAGES.UNAUTHORIZED,
         )
 
+# check same datetime
+def is_same_day(timestamp1, timestamp2):
+    # 将时间戳转换为datetime对象
+    dt1 = datetime.datetime.fromtimestamp(timestamp1)
+    dt2 = datetime.datetime.fromtimestamp(timestamp2)
+    
+    # 比较年、月、日是否都相同
+    return (dt1.year == dt2.year and 
+            dt1.month == dt2.month and 
+            dt1.day == dt2.day)
 
 def get_current_user_by_api_key(api_key: str):
     user = Users.get_user_by_api_key(api_key)

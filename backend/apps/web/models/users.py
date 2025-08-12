@@ -110,8 +110,8 @@ class ChannelTotalModel(BaseModel):
 class UserTotalModel(BaseModel):
     total: int = 0  # 总数
     wallet_total: int = 0  # 钱包总数
-    # channel_total: int = 0  # 第三方注册总数
-    # vip_total: int = 0  # VIP总数
+    channel_total: int = 0  # 第三方注册总数
+    vip_total: int = 0  # VIP总数
     active_today: int = 0  # 活跃用户总数
     kyc_total: int = 0  # 访客总数
 
@@ -371,7 +371,7 @@ class UsersTable:
     @aspect_database_operations
     def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
         try:
-            print("update_user_last_active_by_id")
+            # print("update_user_last_active_by_id")
             query = User.update(last_active_at=int(time.time())).where(User.id == id)  # 更新用户的last_active_at
             query.execute()  # 执行更新操作
             # print("update_user_last_active_by_id222222")
@@ -381,7 +381,7 @@ class UsersTable:
             # print(4444, UserModel(**model_to_dict(user)))
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
         except Exception as e:
-            print("update_user_last_active_by_id error", e)
+            # print("update_user_last_active_by_id error", e)
             return None  # 如果更新失败，返回None
 
     # 根据id更新用户信息
@@ -526,19 +526,21 @@ class UsersTable:
     def get_user_total(self) -> Optional[UserTotalModel]:
         total = User.select().count()
         wallet_total = User.select().where(User.role != 'visitor').count()
-        # channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
-        # vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
+        channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
+        vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
         kyc_total = User.select().where(User.verified == 't').count()
 
         active_today = DailyUsersInstance.today_active_users()
-        datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
-                    0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
-        current_hour = datetime.now().hour
-        active_today_cal = int(active_today * datelist[current_hour])
+        # datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
+        #             0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
+        # current_hour = datetime.now().hour
+        # active_today_cal = int(active_today * datelist[current_hour])
         data = {
             "total": total,
             "wallet_total": wallet_total,
-            "active_today": active_today_cal,
+            "channel_total": channel_total,
+            "vip_total": vip_total,
+            "active_today": active_today,
             "kyc_total": kyc_total
         }
         return UserTotalModel(**data)

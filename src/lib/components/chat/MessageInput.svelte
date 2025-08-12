@@ -204,9 +204,7 @@
 
   const speechRecognitionHandler = () => {
     // Check if SpeechRecognition is supported
-
-    if (isRecording) {
-      console.log("======================");
+    if (isRecording) {  
       if (speechRecognition) {
         speechRecognition.stop();
       }
@@ -1447,11 +1445,11 @@
                     <Tooltip content={$i18n.t("Send message")}>
                       <button
                         id="send-message-button"
-                        class="{prompt !== ''
+                        class="{(prompt !== '' && !isRecording)
                           ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
                           : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
                         type="submit"
-                        disabled={prompt === ""}
+                        disabled={prompt === "" || isRecording}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
