@@ -142,7 +142,7 @@
             <button
               class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
-                window.open("https://play.google.com/store/apps/details?id=uni.UNIEF8864C&hl=en", "_blank");
+                window.open("https://play.google.com/store/apps/details?id=com.degpt.app", "_blank");
               }}
             >
               <svg class="icon mr-1 fill-white" 
@@ -214,7 +214,7 @@
               class="flex gap-1 items-center cursor-pointer primaryButton mr-2 mr-10 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
                 window.open(
-                  "https://play.google.com/store/apps/details?id=com.degpt.app",
+                  "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
                   "_blank"
                 );
               }}

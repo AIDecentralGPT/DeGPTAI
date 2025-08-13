@@ -259,7 +259,7 @@
                     class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-100"
                     on:click={() => {
                       window.open(
-                        "https://play.google.com/store/apps/details?id=com.degpt.app",
+                        "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
                         "_blank"
                       );
                     }}
@@ -500,7 +500,7 @@
                     class="flex flex-row items-center rounded-full px-4 py-2 primaryButton text-gray-900"
                     on:click={() => {
                       window.open(
-                        "https://play.google.com/store/apps/details?id=com.degpt.app",
+                        "https://apps.apple.com/us/app/degpt/id6504377109?platform=iphone",
                         "_blank"
                       );
                     }}
