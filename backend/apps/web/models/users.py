@@ -4,7 +4,6 @@ from playhouse.shortcuts import model_to_dict  # 导入Peewee中的model_to_dict
 from typing import List, Union, Optional  # 导入类型提示
 import time  # 导入time模块
 from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
 
 import uuid
 
@@ -111,8 +110,8 @@ class ChannelTotalModel(BaseModel):
 class UserTotalModel(BaseModel):
     total: int = 0  # 总数
     wallet_total: int = 0  # 钱包总数
-    # channel_total: int = 0  # 第三方注册总数
-    # vip_total: int = 0  # VIP总数
+    channel_total: int = 0  # 第三方注册总数
+    vip_total: int = 0  # VIP总数
     active_today: int = 0  # 活跃用户总数
     kyc_total: int = 0  # 访客总数
 
@@ -204,6 +203,9 @@ class UsersTable:
 
         # 在数据库中创建新用户
         result = User.create(**user.model_dump())
+        # 创建用户更新一个活跃数
+        DailyUsersInstance.refresh_active_today(900000000)
+        Users.update_user_last_active_by_id(result.id)
 
         print("User.create result", result.id)
 
@@ -372,12 +374,14 @@ class UsersTable:
     @aspect_database_operations
     def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
         try:
-            print("update_user_last_active_by_id")
+            # print("update_user_last_active_by_id")
             query = User.update(last_active_at=int(time.time())).where(User.id == id)  # 更新用户的last_active_at
             query.execute()  # 执行更新操作
             # print("update_user_last_active_by_id222222")
 
             user = User.get(User.id == id)  # 查询更新后的用户
+            user_dict = model_to_dict(user)
+            RedisClientInstance.add_key_value(f"user:{id}", user_dict)
             # print("update_user_last_active_by_id33333", user)
             # print(4444, UserModel(**model_to_dict(user)))
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
@@ -526,27 +530,23 @@ class UsersTable:
 
     def get_user_total(self) -> Optional[UserTotalModel]:
         total = User.select().count()
-        total_cal = total+ 8000
         wallet_total = User.select().where(User.role != 'visitor').count()
-        wallet_total_cal = wallet_total + 8000
-        # channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
-        # vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
+        channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
+        vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
         kyc_total = User.select().where(User.verified == 't').count()
-        kyc_total_cal = kyc_total + 300
 
         active_today = DailyUsersInstance.today_active_users()
-        datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
-                    0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
-        # 获取GMT-7时区对象
-        tz_utc_minus_7 = ZoneInfo("Etc/GMT+7") 
-        current_hour = datetime.now(tz_utc_minus_7).hour
-        active_today_cal = int(active_today * datelist[current_hour])
-        print("=======================", current_hour, active_today, active_today_cal)
+        # datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
+        #             0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
+        # current_hour = datetime.now().hour
+        # active_today_cal = int(active_today * datelist[current_hour])
         data = {
-            "total": total_cal,
-            "wallet_total": wallet_total_cal,
-            "active_today": active_today_cal,
-            "kyc_total": kyc_total_cal
+            "total": total,
+            "wallet_total": wallet_total,
+            "channel_total": channel_total,
+            "vip_total": vip_total,
+            "active_today": active_today,
+            "kyc_total": kyc_total
         }
         return UserTotalModel(**data)
     
