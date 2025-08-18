@@ -141,9 +141,10 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                     completion = DoubaoApiInstance.completion(param)
                 elif GrokApiInstance.check_model(param.model):
                     completion = GrokApiInstance.completion(param)
-
+                
                 if completion is not None:
                     for chunk in completion:
+                        print("========================", chunk)
                         try:
                             # 符合 SSE 格式要求
                             if chunk:
@@ -204,4 +205,6 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
         # 确保使用异步客户端
         if AliQwenApiInstance.check_model(param.model):
             completion = AliQwenApiInstance.completion(param)
+        elif GeminiApiInstance.check_model(param.model):
+            completion = GeminiApiInstance.completion(param)
         return completion
