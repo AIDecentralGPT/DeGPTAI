@@ -84,7 +84,7 @@
     if (selmodels.length > 0) {
       modObj = $models.filter(item => selmodels.includes(item?.model));
     } else {
-      modObj = $models[0];
+      modObj = $models.find(item => item?.model === 'deepseek-chat');
     }
   }
 </script>
