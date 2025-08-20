@@ -258,7 +258,7 @@
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -474,7 +474,7 @@
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -782,7 +782,7 @@
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -1089,7 +1089,7 @@
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>

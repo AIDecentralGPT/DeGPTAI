@@ -28,12 +28,12 @@ export const getDeModels = async (token: string = "") => {
     models: [
       // 基础模型
       {
-        name: "DeepSeek V3",
+        name: "DeepSeek V3.1",
         model: "deepseek-chat",
         imagemodel: "deepseek-chat",
         textmodel: "deepseek-chat",
         think: false,
-        tip: "DeepSeek V3",
+        tip: "DeepSeek V3.1",
         support: "text",
         type: 1,
         desc: "Suitable for reasoning and writing",
