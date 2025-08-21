@@ -78,13 +78,14 @@
     getCount();
   }
 
-  let modObj:any = null;
+  let modObj:any = [];
   $: {
     let selmodels = $settings?.models ?? ['deepseek-chat'];
     if (selmodels.length > 0) {
       modObj = $models.filter(item => selmodels.includes(item?.model));
-    } else {
-      modObj = $models.find(item => item?.model === 'deepseek-chat');
+    }
+    if (modObj.length == 0) {
+      modObj = [$models.find(item => item?.model === 'deepseek-chat')];
     }
   }
 </script>
