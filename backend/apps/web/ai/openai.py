@@ -97,13 +97,21 @@ class OpenAiApi:
                     tools=tools
                 )
             else:
-                completion = client.responses.create(
-                    model=param.model,
-                    input=param.messages,
-                    stream=param.stream,
-                    tools=tools,
-                    top_p=1
-                )
+                if param.model == 'gpt-5-chat-latest':
+                    completion = client.responses.create(
+                        model=param.model,
+                        input=param.messages,
+                        stream=param.stream,
+                        top_p=1
+                    )
+                else:
+                    completion = client.responses.create(
+                        model=param.model,
+                        input=param.messages,
+                        stream=param.stream,
+                        tools=tools,
+                        top_p=1
+                    )
             
         except APIError as e:
             print("==========OpenAiApi Error===========", e)
