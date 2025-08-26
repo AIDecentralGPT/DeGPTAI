@@ -64,7 +64,7 @@ tools = [{
 
 class OpenAiApi:
     def check_model(self, model: str):
-        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1","gpt-5-mini","gpt-5"]
+        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1","gpt-5-mini","gpt-5-chat-latest","gpt-5"]
         return model in models
    
     def completion(self, param: AiModelReq):
@@ -83,13 +83,21 @@ class OpenAiApi:
                     tools=tools
                 )
             else:
-                completion = client.responses.create(
-                    model=param.model,
-                    input=messages,
-                    stream=param.stream,
-                    tools=tools,
-                    top_p=1
-                )
+                if param.model == 'gpt-5-chat-latest':
+                    completion = client.responses.create(
+                        model=param.model,
+                        input=param.messages,
+                        stream=param.stream,
+                        top_p=1
+                    )
+                else:
+                    completion = client.responses.create(
+                        model=param.model,
+                        input=param.messages,
+                        stream=param.stream,
+                        tools=tools,
+                        top_p=1
+                    )
             
         except APIError as e:
             print("==========OpenAiApi Error===========", e)

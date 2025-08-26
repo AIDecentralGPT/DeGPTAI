@@ -213,9 +213,9 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "GPT-5 (OpenAI)",
-        model: "gpt-5",
-        imagemodel: "gpt-5",
-        textmodel: "gpt-5",
+        model: "gpt-5-chat-latest",
+        imagemodel: "gpt-5-chat-latest",
+        textmodel: "gpt-5-chat-latest",
         think: false,
         tip: "GPT-5 (OpenAI)",
         support: "image",
