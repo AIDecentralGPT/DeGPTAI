@@ -6,8 +6,10 @@
     user,
     showConfirmUpgradeModal,
     vipupgrade,
-    currentWalletData
+    currentWalletData,
+    dgcRate
   } from "$lib/stores";
+  import { getDgcRate } from "$lib/apis/wallet/index";
   import ConfirmUpgradeModal from "./ConfirmUpgradeModal.svelte";
   import { isPro } from "$lib/apis/users/index.js";
   import Switch from "../common/Switch.svelte";
@@ -37,6 +39,23 @@
       checkProLoading = false;
     });    
   }
+
+  async function refreshDgcRate() {
+    getDgcRate(localStorage.token).then((result) => {
+      if (result) {
+        dgcRate.set({ rate: result });
+      }
+    });
+  }
+
+  // 封装成函数
+function divideAndRound(num1, num2) {
+  // 处理除数为0的情况
+  if (num2 === 0) {
+    throw new Error("除数不能为0");
+  }
+  return Math.round(num1 / num2);
+}
 
   let basicInfo = null;
   let standardInfo = null;
@@ -69,6 +88,7 @@
     checkPlus();
     isLoaded = false;
     getUserUserTotal();
+    refreshDgcRate();
   }
 
   let viptype = "basic";
@@ -304,7 +324,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$3</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
-              <span class="text-sm">(={3/0.0001}DGC)</span>
+              <span class="text-sm">(={divideAndRound(3, $dgcRate.rate)}DGC)</span>
             </div>
           </div>
           {#if basicInfo}
@@ -331,7 +351,7 @@
               <div class="flex flex-row justify-start mb-2 ml-1">
                 <div class="flex flex-row flex-wrap">
                   <span class="text-sm tracking-tight primaryText font-bold mr-1">$33 / {$i18n.t("Year")} ({$i18n.t("Instant Savings")} 8%)</span>
-                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={33/0.0001}DGC)</span>
+                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={divideAndRound(33, $dgcRate.rate)}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
                   <Switch bind:state={basicstat}/>
@@ -612,7 +632,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$8</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
-              <span class="text-sm">(={Math.round(8/0.0001)}DGC)</span>
+              <span class="text-sm">(={divideAndRound(8, $dgcRate.rate)}DGC)</span>
             </div>
           </div>
           {#if standardInfo}
@@ -639,7 +659,7 @@
               <div class="flex flex-row justify-start mb-2 ml-1">
                 <div class="flex flex-row flex-wrap">
                   <span class="text-sm tracking-tight primaryText font-bold mr-1">$88 / {$i18n.t("Year")} ({$i18n.t("Instant Savings")} 8%)</span>
-                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={Math.round(88/0.0001)}DGC)</span>
+                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={divideAndRound(88, $dgcRate.rate)}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
                   <Switch bind:state={standardstat}/>
@@ -919,7 +939,7 @@
             <div>
               <span class="text-4xl font-bold tracking-tight">$15</span>
               <span class="text-xl tracking-tight"> / {$i18n.t("Month")}</span>
-              <span class="text-sm">(={15/0.0001}DGC)</span>
+              <span class="text-sm">(={divideAndRound(15, $dgcRate.rate)}DGC)</span>
             </div>
           </div>
           {#if proInfo}
@@ -946,7 +966,7 @@
               <div class="flex flex-row justify-start mb-2 ml-1">
                 <div class="flex flex-row flex-wrap">
                   <span class="text-sm tracking-tight primaryText font-bold mr-1">$165 / {$i18n.t("Year")} ({$i18n.t("Instant Savings")} 9%)</span>
-                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={165/0.0001}DGC)</span>
+                  <span class="text-sm tracking-tight font-bold primaryText mr-2">(={divideAndRound(165, $dgcRate.rate)}DGC)</span>
                 </div>
                 <div class="flex-1 flex justify-start pt-1">
                   <Switch bind:state={prostat}/>
@@ -1223,7 +1243,7 @@
   </div>
 </Modal>
 
-<ConfirmUpgradeModal bind:viptype={viptype} bind:viptime={viptime} bind:money={money} bind:show={$showConfirmUpgradeModal} />
+<ConfirmUpgradeModal bind:viptype={viptype} bind:viptime={viptime} bind:money={money} bind:rate={$dgcRate.rate} bind:show={$showConfirmUpgradeModal} />
 
 <style>
 </style>

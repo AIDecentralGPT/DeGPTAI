@@ -2,8 +2,11 @@ import requests
 import json
 from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
+from apps.redis.redis_client import RedisClientInstance
 import threading
 import os
+import time
+import numpy as np
 
 #接口请求地址
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
@@ -43,6 +46,7 @@ class RewardApi:
                 dbc_hash = response_json['result']['Data']['DBCTxHash']
                 RewardsTableInstance.create_dbc_reward(reward.user_id, 0.1, 'new_wallet', dbc_hash, "")
                 return result
+                
             else:
                 RewardsTableInstance.update_reward(reward_id, None, False, True)
                 return None
@@ -156,16 +160,32 @@ class RewardApi:
     # 获取dbc汇率
     def getDbcRate(self):
         try:
+            current_time = time.time()
+            dgc_rate = RedisClientInstance.get_value_by_key("rate:dbc")
+            if dgc_rate is not None:
+                last_time = dgc_rate["time"]
+                if current_time - last_time <= 300:
+                    print("redis get")
+                    return dgc_rate["rate"]
             rul = "https://dbchaininfo.congtu.cloud/query/dbc_info?language=CN"
             response = requests.get(rul)
             respnose_json = json.loads(response.text)
-            print(respnose_json)
-            return respnose_json['content']['dbc_price']
+            rate = respnose_json['content']['dbc_price']
+            redis_data = {"rate": rate, "time": current_time}
+            RedisClientInstance.add_key_value("rate:dbc", redis_data)
+            return rate
         except Exception as e:
             return None
         
     # 获取dgc汇率
     def getDgcRate(self):
+        current_time = time.time()
+        dgc_rate = RedisClientInstance.get_value_by_key("rate:dgc")
+        if dgc_rate is not None:
+            last_time = dgc_rate["time"]
+            if current_time - last_time <= 300:
+                print("redis get")
+                return dgc_rate["rate"]
         # API 密钥和请求 URL
         url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
 
@@ -189,7 +209,10 @@ class RewardApi:
             data = response.json()
             if data.get("status").get("error_code") == 0:
                 num = data.get("data").get("38106").get("quote").get("USD").get("price")
-                return "{0:.8f}".format(round(num, 8))
+                tran_num = round(num, 8)
+                redis_data = {"rate": tran_num, "time": current_time}
+                RedisClientInstance.add_key_value("rate:dgc", redis_data)
+                return np.float64(tran_num)
         except requests.exceptions.HTTPError as errh:
             print(f"HTTP 错误: {errh}")
         except requests.exceptions.ConnectionError as errc:
