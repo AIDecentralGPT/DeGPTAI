@@ -116,7 +116,7 @@ export const RewardProperties = {
   "clockinall": "30,000",
   "civalid": 180,
   "citimes": 30,
-  "endtime": "2025-08-16 00:00:00"
+  "endtime": "2025-09-17 00:00:00"
 }
 
 // 升级VIP钱包地址
