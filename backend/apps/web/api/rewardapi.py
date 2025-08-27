@@ -3,6 +3,7 @@ import json
 from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
 import threading
+import os
 
 #接口请求地址
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
@@ -11,6 +12,8 @@ baseUrl = "http://34.234.201.126:8082" # 新地址
 RegistAmount = 10000
 InviteAmount = 10000
 ClockInAmount = 1000
+
+cmc_key = os.getenv("Cmc_Key")
 
 class RewardApi: 
 
@@ -160,6 +163,41 @@ class RewardApi:
             return respnose_json['content']['dbc_price']
         except Exception as e:
             return None
+        
+    # 获取dgc汇率
+    def getDgcRate(self):
+        # API 密钥和请求 URL
+        url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
+
+        # 请求头信息
+        headers = {
+            "X-CMC_PRO_API_KEY": cmc_key,
+            "Accept": "application/json"
+        }
+
+        # 请求参数（对应 curl 中的 -d 选项）
+        params = {
+            "id": "38106"
+        }
+
+        try:
+            # 发送 GET 请求（-G 选项表示使用 GET 方法发送数据）
+            response = requests.get(url, headers=headers, params=params)         
+            # 检查请求是否成功
+            response.raise_for_status()          
+            # 解析 JSON 响应
+            data = response.json()
+            if data.get("status").get("error_code") == 0:
+                num = data.get("data").get("38106").get("quote").get("USD").get("price")
+                return "{0:.8f}".format(round(num, 8))
+        except requests.exceptions.HTTPError as errh:
+            print(f"HTTP 错误: {errh}")
+        except requests.exceptions.ConnectionError as errc:
+            print(f"连接错误: {errc}")
+        except requests.exceptions.Timeout as errt:
+            print(f"超时错误: {errt}")
+        except requests.exceptions.RequestException as err:
+            print(f"请求错误: {err}")
             
         
 

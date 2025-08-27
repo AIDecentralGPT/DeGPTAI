@@ -1,13 +1,12 @@
 import os
 from openai import OpenAI, APIError
 from apps.web.models.aimodel import AiModelReq, AiMessageModel
-from apps.web.util.fileutils import FileUtils
 
 apikey = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=apikey)
 
-#sysmessage = [AiMessageModel(role="system", content="You are ChatGPT, a helpful, honest, and polite AI assistant developed by OpenAI. You answer questions clearly, provide explanations when needed, and are always respectful and concise. If you are unsure about something, you say so. You aim to be as useful as possible without pretending to know things you don’t.")]
-sysmessage = [AiMessageModel(role="system", content="用中文回复")]
+# sysmessage = [AiMessageModel(role="system", content="You are ChatGPT, a helpful, honest, and polite AI assistant developed by OpenAI. You answer questions clearly, provide explanations when needed, and are always respectful and concise. If you are unsure about something, you say so. You aim to be as useful as possible without pretending to know things you don’t.")]
+# sysmessage = [AiMessageModel(role="system", content="用中文回复")]
 tools = [{
     "type": "function",
     "name": "search_knowledge_base",
