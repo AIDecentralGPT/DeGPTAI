@@ -5,6 +5,7 @@ from apps.web.models.rewards import RewardsTableInstance, RewardsModel
 from apps.redis.redis_client import RedisClientInstance
 import threading
 import time
+import os
 
 #接口请求地址
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
@@ -13,6 +14,8 @@ baseUrl = "http://34.234.201.126:8082" # 新地址
 RegistAmount = 10000
 InviteAmount = 10000
 ClockInAmount = 1000
+
+cmc_key = os.getenv("Cmc_Key")
 
 class RewardApi: 
 
