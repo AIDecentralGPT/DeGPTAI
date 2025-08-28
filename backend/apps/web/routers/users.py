@@ -15,6 +15,7 @@ from apps.web.models.chats import Chats
 from apps.web.models.rewards import RewardsTableInstance
 from apps.web.models.vipstatus import VIPStatuses, VIPStatusModelResp, VipTotalModel
 from apps.web.models.daily_users import DailyUsersInstance
+from apps.web.models.appversion import AppVersionInstance
 
 from utils.utils import get_verified_user, get_password_hash, get_admin_user
 from constants import ERROR_MESSAGES
@@ -529,3 +530,8 @@ async def regist_total(user=Depends(get_current_user)):
 async def third_total(request: Request):
     account = request.query_params.get("account")
     return TwitterApi.check_follow_status(account, "service@decentralgpt.org")
+
+# 校验APP版本
+@router.get("/check/appversion")
+async def check_appversion():
+    return AppVersionInstance.get_app_version()
