@@ -54,12 +54,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Qwen3 (Ali Cloud)",
-        model: "qwen3-235b-a22b",
-        imagemodel: "qwen-vl-plus",
-        textmodel: "qwen3-235b-a22b",
+        name: "Qwen3 Max (Ali Cloud)",
+        model: "qwen3-max-preview",
+        imagemodel: "qvq-max",
+        textmodel: "qwen3-max-preview",
         think: false,
-        tip: "Qwen3 (Ali Cloud)",
+        tip: "Qwen3 Max (Ali Cloud)",
         support: "image",
         type: 1,
         desc: "Strong language skills",

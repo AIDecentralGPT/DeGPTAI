@@ -286,7 +286,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Qwen3 (Ali Cloud)</span>
+                    <span class="text-base font-bold ml-2">Qwen3 Max (Ali Cloud)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>
@@ -502,7 +502,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Qwen3 (Ali Cloud)</span>
+                    <span class="text-base font-bold ml-2">Qwen3 Max (Ali Cloud)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>
@@ -810,7 +810,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Qwen3 (Ali Cloud)</span>
+                    <span class="text-base font-bold ml-2">Qwen3 Max (Ali Cloud)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>
@@ -1117,7 +1117,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Qwen3 (Ali Cloud)</span>
+                    <span class="text-base font-bold ml-2">Qwen3 Max (Ali Cloud)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/qwen.png" alt="icon"/>

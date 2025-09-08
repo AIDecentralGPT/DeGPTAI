@@ -11,7 +11,7 @@ client = OpenAI(
 
 class AliQwenApi:
    def check_model(self, model: str):
-        models = ["qwen3-235b-a22b", "qwen-vl-plus", "qvq-max"]
+        models = ["qwen3-235b-a22b", "qwen-vl-plus", "qvq-max", "qwen3-max-preview"]
         return model in models
    
    def completion(self, param: AiModelReq):
