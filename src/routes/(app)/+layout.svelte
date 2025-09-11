@@ -73,7 +73,13 @@
         let localUser = JSON.parse(localStorage?.user);
         if (localUser?.address_type == "dbc") {
           getUserInfo(localStorage.token).then(async (res) => {
-						if (res?.id === localUser?.id) {							
+						if (res?.id === localUser?.id) {
+							// 刷新用户token
+							if (res?.token) {
+								localStorage.token = res?.token
+							}
+							const vipInfo = await isPro(localStorage.token);
+
 							await user.set({
 								...localUser,
 								token: res?.token,
@@ -84,14 +90,8 @@
 							});
 						}
 
-						// 刷新用户token
-						if (res?.token) {
-							localStorage.token = res?.token
-						}
-
 						localStorage.user = JSON.stringify($user);
-						const vipInfo = await isPro(localStorage.token);
-
+						
 						// 校验钱包
 						if (localStorage.walletImported) {
 							let walletImported = JSON.parse(localStorage.walletImported);
