@@ -398,8 +398,8 @@ async function signOut(channel: string) {
   localStorage.token = res.token;
   user.set(res);
 
-  console.log("token 被清除");
   console.log("==================", "token 被清除");
+  console.log("token 被清除");
 }
 
 export { provider, demo, importWallet, handleWalletSignIn, getGas, signOut };
