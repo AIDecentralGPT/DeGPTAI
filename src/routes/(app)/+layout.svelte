@@ -75,6 +75,11 @@
         if (localUser?.address_type == "dbc") {
           getUserInfo(localStorage.token).then(async (res) => {
 						if (res?.id === localUser?.id) {
+							// 获取用户信息更新一次用户Token
+							if (res?.token) {
+								localStorage.token = res.token;
+							}	
+							const vipInfo = await isPro(localStorage.token);
 							await user.set({
 								...localUser,
 								token: res?.token,
@@ -83,11 +88,7 @@
 								verified: res?.verified,
 								language: res?.language
 							});
-							// 获取用户信息更新一次用户Token
-							if (res?.token) {
-								localStorage.token = res.token;
-							}	
-							const vipInfo = await isPro(localStorage.token);
+							
 						}
 						localStorage.user = JSON.stringify($user);
 
