@@ -387,7 +387,14 @@ async def get_user_info(request: Request,  user=Depends(get_current_user)):
             # 更新用户活跃数
             DailyUsersInstance.refresh_active_today(user.last_active_at)
             Users.update_user_last_active_by_id(user.id)
+            token = create_token(
+                data={"id": user.id},
+                expires_delta=parse_duration(
+                    request.app.state.config.JWT_EXPIRES_IN),
+            )
             response = {
+                "token": token,
+                "token_type": "Bearer",
                 "id": user.id,
                 "email": user.email,
                 "name": user.name,
