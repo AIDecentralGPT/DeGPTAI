@@ -65,7 +65,7 @@ tools = [{
 
 class OpenAiApi:
     def check_model(self, model: str):
-        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1", "gpt-5-mini", "gpt-5-chat-latest", "gpt-5"]
+        models = ["gpt-4o-mini","gpt-4o","gpt-4o-audio-preview","o3","o4-mini","gpt-4.1", "gpt-5-mini", "gpt-5-chat-latest", "gpt-5"]
         return model in models
    
     def completion(self, param: AiModelReq):
@@ -77,6 +77,10 @@ class OpenAiApi:
                     if file["type"] == "image_url":
                         file["type"] = "input_image"
                         file["image_url"] = file["image_url"]["url"]
+                    if file["type"] == "audio":
+                        file["type"] = "input_audio"
+                        file["input_audio"] = file["audio"]
+                        param.model = "gpt-4o-audio-preview"
                     if file["type"] == "file":
                         file["type"] = "input_file"
                         file_url = file["file"]["file_data"]
