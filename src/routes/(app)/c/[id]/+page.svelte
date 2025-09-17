@@ -673,7 +673,8 @@
 					model: fileFlag ? model.imagemodel : model.textmodel,
 					messages: send_message,
 					enable_thinking: model.think,
-					reload: reload
+					reload: reload,
+					audio: false
 				},
 				$deApiBaseUrl?.url			
 			);
