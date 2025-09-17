@@ -85,6 +85,7 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                         try:
                             if chunk:
                                 json_dict = json.loads(chunk.model_dump_json())
+                                print("=======================", json_dict)
                                 if json_dict.get("type") == "response.reasoning_summary_text.delta":
                                     chat_result = {
                                         "id": json_dict.get("item_id"),
