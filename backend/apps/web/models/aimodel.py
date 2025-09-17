@@ -14,4 +14,5 @@ class AiModelReq(BaseModel):
     stream : bool
     enable_thinking: bool
     reload: bool
+    audio: bool
 

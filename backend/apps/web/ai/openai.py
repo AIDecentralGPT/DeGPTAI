@@ -73,65 +73,69 @@ class OpenAiApi:
         for message in param.messages:
             if isinstance(message.content, list):
                 for file in message.content:
-                    # if file["type"] == "text":
-                    #     file["type"] = "input_text"
+                    if file["type"] == "text":
+                        file["type"] = "input_text"
                     if file["type"] == "image_url":
                         file["type"] = "input_image"
                         file["image_url"] = file["image_url"]["url"]
-                    if file["type"] == "audio":
-                        file["type"] = "input_audio"
-                        file["input_audio"] = file["audio"]
-                        print("============file['audio']['data']============", file["audio"]["data"])
-                        self.base64_to_audio(file["audio"]["data"], "output_audio.wav")
-                        del file["audio"]
-                        param.model = "gpt-4o-audio-preview"
                     if file["type"] == "file":
                         file["type"] = "input_file"
                         file_url = file["file"]["file_data"]
                         file["file_url"] = file_url
-                        del file["file"]
-        
+                        del file["file"]      
         try:
-            # 构建语音请求
-            if param.model == 'gpt-4o-audio-preview':
-                print("===============================", param)
-                completion = client.chat.completions.create(
-                    model="gpt-4o-audio-preview",
-                    modalities=["text", "audio"],
-                    audio={"voice": "alloy", "format": "pcm16"},
-                    messages= param.messages,
-                    stream=param.stream
+            if param.enable_thinking:
+                completion = client.responses.create(
+                    model=param.model,
+                    reasoning={
+                        "effort": "high",       # 深度推理
+                        "summary": "detailed"   # 输出详细推理步骤
+                    },
+                    input=param.messages,
+                    stream=param.stream,
+                    top_p=1,
+                    tools=tools
                 )
             else:
-                if param.enable_thinking:
+                if param.model == 'gpt-5-chat-latest':
                     completion = client.responses.create(
                         model=param.model,
-                        reasoning={
-                            "effort": "high",       # 深度推理
-                            "summary": "detailed"   # 输出详细推理步骤
-                        },
                         input=param.messages,
                         stream=param.stream,
-                        top_p=1,
-                        tools=tools
+                        top_p=1
                     )
                 else:
-                    if param.model == 'gpt-5-chat-latest':
-                        completion = client.responses.create(
-                            model=param.model,
-                            input=param.messages,
-                            stream=param.stream,
-                            top_p=1
-                        )
-                    else:
-                        completion = client.responses.create(
-                            model=param.model,
-                            input=param.messages,
-                            stream=param.stream,
-                            tools=tools,
-                            top_p=1
-                        )
-            
+                    completion = client.responses.create(
+                        model=param.model,
+                        input=param.messages,
+                        stream=param.stream,
+                        tools=tools,
+                        top_p=1
+                    )         
+        except APIError as e:
+            print("==========OpenAiApi Error===========", e)
+            completion = None
+        except Exception as e:
+            print("==========OpenAiApi Error===========", e)
+            completion = None
+        return completion
+    
+    def completionAudio(self, param: AiModelReq):
+        for message in param.messages:
+            if isinstance(message.content, list):
+                for file in message.content:
+                    if file["type"] == "audio":
+                        file["type"] = "input_audio"
+                        file["input_audio"] = file["audio"]
+                        del file["audio"]
+        try:
+            completion = client.chat.completions.create(
+                model="gpt-4o-audio-preview",
+                modalities=["text", "audio"],
+                audio={"voice": "alloy", "format": "pcm16"},
+                messages= param.messages,
+                stream=param.stream
+            )
         except APIError as e:
             print("==========OpenAiApi Error===========", e)
             completion = None
@@ -157,7 +161,7 @@ class OpenAiApi:
         
         try:
             # 1. 解码Base64字符串为二进制数据
-            audio_bytes = base64.b64decode(base64_str)
+            audio_bytes = base64.b64decode("data:audio/wav;base64," + base64_str)
             
             # 2. 创建输出目录（如果不存在）
             output_dir = os.path.dirname(output_file_path)
@@ -218,5 +222,10 @@ class OpenAiApi:
         except Exception as e:
             print(f"错误: 转换过程中发生意外错误 - {str(e)}")
         return None
+
+    def str_to_txt(self, base64Str, filePath):
+        # 尝试打开一个不存在的文件并写入
+        with open(filePath, "w", encoding="utf-8") as file:
+            file.write(base64Str)
 
 OpenAiApiInstance = OpenAiApi()
