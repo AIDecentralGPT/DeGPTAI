@@ -61,7 +61,8 @@ export const showUserVerifyModal = writable(false);
 export const showConfirmUpgradeModal = writable(false);
 export const showCoinIntruModal = writable(false);
 export const showCoinIntruType = writable('dgc');
-export const dbcRate = writable({rate: 0.0002, time: ""});
+export const dbcRate = writable({rate: 0.0002});
+export const dgcRate = writable({rate: 0.00001});
 
 // 升级VIP标志用于实时更新升级数据
 export const vipupgrade = writable(false);

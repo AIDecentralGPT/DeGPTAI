@@ -947,5 +947,12 @@
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "จำนวน DGC ไม่เพียงพอ จำเป็นต้องซื้อ DGC เพิ่มเติมอีก {{ num }} DGC หลังจากซื้อ DGC สำเร็จแล้ว อย่าลืมอัปเกรดเป็น VIP",
   "Recharge DGC": "เติม DGC",
   "Time expired": "หมดเวลา",
-  "QR code is invalid": "QR โค้ดไม่ถูกต้อง"
+  "QR code is invalid": "QR โค้ดไม่ถูกต้อง",
+  "Is the password saved locally": "รหัสผ่านถูกบันทึกไว้ในเครื่องหรือไม่",
+  "Reconnect": "เชื่อมต่อใหม่",
+  "Daily Active Users": "ผู้ใช้งานประจำวัน",
+  "Daily Active Users Data Distribution": "การกระจายข้อมูลผู้ใช้งานประจำวัน",
+  "Face verification failed": "การตรวจสอบใบหน้าไม่สำเร็จ",
+  "KYC authentication information is incomplete": "ข้อมูลการยืนยันตัวตน KYC ไม่สมบูรณ์",
+  "Captcha security authentication failed": "การยืนยันตัวตนความปลอดภัย Captcha ไม่สำเร็จ"
 }

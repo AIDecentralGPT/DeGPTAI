@@ -28,12 +28,12 @@ export const getDeModels = async (token: string = "") => {
     models: [
       // 基础模型
       {
-        name: "DeepSeek V3",
+        name: "DeepSeek V3.1",
         model: "deepseek-chat",
         imagemodel: "deepseek-chat",
         textmodel: "deepseek-chat",
         think: false,
-        tip: "DeepSeek V3",
+        tip: "DeepSeek V3.1",
         support: "text",
         type: 1,
         desc: "Suitable for reasoning and writing",
@@ -54,12 +54,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Qwen3 (Ali Cloud)",
-        model: "qwen3-235b-a22b",
-        imagemodel: "qwen-vl-plus",
-        textmodel: "qwen3-235b-a22b",
+        name: "Qwen3 Max (Ali Cloud)",
+        model: "qwen3-max-preview",
+        imagemodel: "qvq-max",
+        textmodel: "qwen3-max-preview",
         think: false,
-        tip: "Qwen3 (Ali Cloud)",
+        tip: "Qwen3 Max (Ali Cloud)",
         support: "image",
         type: 1,
         desc: "Strong language skills",
@@ -80,12 +80,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "GPT-4o mini (OpenAI)",
-        model: "gpt-4o-mini",
-        imagemodel: "gpt-4o-mini",
-        textmodel: "gpt-4o-mini",
+        name: "GPT-5 mini (OpenAI)",
+        model: "gpt-5-mini",
+        imagemodel: "gpt-5-mini",
+        textmodel: "gpt-5-mini",
         think: false,
-        tip: "GPT-4o mini (OpenAI)",
+        tip: "GPT-5 mini (OpenAI)",
         support: "image",
         type: 1,
         desc: "Lightweight general-purpose model with fast response speed",
@@ -212,15 +212,15 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "GPT 4.5 (OpenAI)",
-        model: "gpt-4.5-preview",
-        imagemodel: "gpt-4.5-preview",
-        textmodel: "gpt-4.5-preview",
+        name: "GPT-5 (OpenAI)",
+        model: "gpt-5-chat-latest",
+        imagemodel: "gpt-5-chat-latest",
+        textmodel: "gpt-5-chat-latest",
         think: false,
-        tip: "GPT 4.5 (OpenAI)",
+        tip: "GPT-5 (OpenAI)",
         support: "image",
         type: 3,
-        desc: "Skilled in writing and generating ideas",
+        desc: "Good at fast coding and analysis",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },

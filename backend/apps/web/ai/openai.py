@@ -5,8 +5,8 @@ from apps.web.models.aimodel import AiModelReq, AiMessageModel
 apikey = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=apikey)
 
-#sysmessage = [AiMessageModel(role="system", content="You are ChatGPT, a helpful, honest, and polite AI assistant developed by OpenAI. You answer questions clearly, provide explanations when needed, and are always respectful and concise. If you are unsure about something, you say so. You aim to be as useful as possible without pretending to know things you don’t.")]
-sysmessage = [AiMessageModel(role="system", content="用中文回复")]
+# sysmessage = [AiMessageModel(role="system", content="You are ChatGPT, a helpful, honest, and polite AI assistant developed by OpenAI. You answer questions clearly, provide explanations when needed, and are always respectful and concise. If you are unsure about something, you say so. You aim to be as useful as possible without pretending to know things you don’t.")]
+# sysmessage = [AiMessageModel(role="system", content="用中文回复")]
 tools = [{
     "type": "function",
     "name": "search_knowledge_base",
@@ -64,11 +64,24 @@ tools = [{
 
 class OpenAiApi:
     def check_model(self, model: str):
-        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1","gpt-4.5-preview"]
+        models = ["gpt-4o-mini","gpt-4o","o3","o4-mini","gpt-4.1", "gpt-5-mini", "gpt-5-chat-latest", "gpt-5"]
         return model in models
    
     def completion(self, param: AiModelReq):
-        messages = param.messages
+        for message in param.messages:
+            if isinstance(message.content, list):
+                for file in message.content:
+                    if file["type"] == "text":
+                        file["type"] = "input_text"
+                    if file["type"] == "image_url":
+                        file["type"] = "input_image"
+                        file["image_url"] = file["image_url"]["url"]
+                    if file["type"] == "file":
+                        file["type"] = "input_file"
+                        file_url = file["file"]["file_data"]
+                        file["file_url"] = file_url
+                        del file["file"]
+
         try:
             if param.enable_thinking:
                 completion = client.responses.create(
@@ -77,20 +90,27 @@ class OpenAiApi:
                         "effort": "high",       # 深度推理
                         "summary": "detailed"   # 输出详细推理步骤
                     },
-                    input=messages,
+                    input=param.messages,
                     stream=param.stream,
                     top_p=1,
                     tools=tools
                 )
             else:
-                completion = client.responses.create(
-                    model=param.model,
-                    input=messages,
-                    stream=param.stream,
-                    tools=tools,
-                    top_p=1,
-                    temperature=0.7
-                )
+                if param.model == 'gpt-5-chat-latest':
+                    completion = client.responses.create(
+                        model=param.model,
+                        input=param.messages,
+                        stream=param.stream,
+                        top_p=1
+                    )
+                else:
+                    completion = client.responses.create(
+                        model=param.model,
+                        input=param.messages,
+                        stream=param.stream,
+                        tools=tools,
+                        top_p=1
+                    )
             
         except APIError as e:
             print("==========OpenAiApi Error===========", e)

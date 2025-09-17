@@ -20,6 +20,7 @@
   export let viptype = "basic";
   export let viptime = "month";
   export let money = 3;
+  export let rate = 0.0001;
 
   async function upgradeVip() {
     if ($currentWalletData?.walletInfo) {
@@ -29,14 +30,14 @@
         if ($user?.address_type != "threeSide") {
           response = await transferDgc(
             tranAddress,
-            money/0.0001,
+            Math.round(money/rate),
             $currentWalletData?.walletInfo?.privateKey
           );
         } else {
           response = await thirdTransferDgc(
             $currentWalletData?.walletInfo?.address,
             tranAddress,
-            money/0.0001
+            Math.round(money/rate)
           );
         }
         

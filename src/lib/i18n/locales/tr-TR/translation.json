@@ -948,5 +948,12 @@
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGC miktarı yetersiz, ek olarak {{ num }} DGC satın alınması gerekiyor. DGC satın alma işlemi başarılı olduktan sonra VIP'e yükseltin.",
   "Recharge DGC": "DGC Şarj Et",
   "Time expired": "Süre doldu",
-  "QR code is invalid": "QR kodu geçersiz"
+  "QR code is invalid": "QR kodu geçersiz",
+  "Is the password saved locally": "Şifre yerel olarak kaydediliyor mu",
+  "Reconnect": "Yeniden bağlanmak",
+  "Daily Active Users": "Günlük Aktif Kullanıcılar",
+  "Daily Active Users Data Distribution": "Günlük aktif kullanıcı veri dağılımı",
+  "Face verification failed": "Yüz doğrulaması başarısız",
+  "KYC authentication information is incomplete": "KYC doğrulama bilgileri eksik",
+  "Captcha security authentication failed": "Captcha güvenlik doğrulaması başarısız"
 }

@@ -948,5 +948,12 @@
   "The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.": "DGCの数量が不足しています。追加で{{ num }}DGCを購入する必要があります。DGCの購入が成功した後、VIPにアップグレードしてください。",
   "Recharge DGC": "DGCをチャージ",
   "Time expired": "時間切れ",
-  "QR code is invalid": "QRコードが無効です"
+  "QR code is invalid": "QRコードが無効です",
+  "Is the password saved locally": "パスワードはローカルに保存されますか",
+  "Reconnect": "さいせつぞく",
+  "Daily Active Users": "にちかんアクティブユーザー",
+  "Daily Active Users Data Distribution": "日間アクティブユーザーのデータ分布",
+  "Face verification failed": "顔認証に失敗しました",
+  "KYC authentication information is incomplete": "KYC認証情報が不完全です",
+  "Captcha security authentication failed": "CAPTCHAセキュリティ認証に失敗しました"
 }

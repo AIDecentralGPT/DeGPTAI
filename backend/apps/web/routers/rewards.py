@@ -344,3 +344,16 @@ async def get_dbc_rate(user=Depends(get_verified_user)):
             return 0.0002
     except Exception as e:
         return 0.0002
+    
+@router.get("/dgc_rate")
+async def get_dbc_rate(user=Depends(get_verified_user)): 
+    # 查询dgc汇率 默认0.00198537(第一次查询的值)
+    try:
+        dgc_rate = RewardApiInstance.getDgcRate()
+        if dgc_rate is not None:
+            return dgc_rate
+        else:
+            return 0.00001
+    except Exception as e:
+        print("================", e)
+        return 0.00001

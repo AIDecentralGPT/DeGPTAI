@@ -2,7 +2,11 @@ import requests
 import json
 from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
+from apps.redis.redis_client import RedisClientInstance
 import threading
+import os
+import time
+import numpy as np
 
 #接口请求地址
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
@@ -11,6 +15,8 @@ baseUrl = "http://34.234.201.126:8082" # 新地址
 RegistAmount = 10000
 InviteAmount = 10000
 ClockInAmount = 1000
+
+cmc_key = os.getenv("Cmc_Key")
 
 class RewardApi: 
 
@@ -40,6 +46,7 @@ class RewardApi:
                 dbc_hash = response_json['result']['Data']['DBCTxHash']
                 RewardsTableInstance.create_dbc_reward(reward.user_id, 0.1, 'new_wallet', dbc_hash, "")
                 return result
+                
             else:
                 RewardsTableInstance.update_reward(reward_id, None, False, True)
                 return None
@@ -153,13 +160,67 @@ class RewardApi:
     # 获取dbc汇率
     def getDbcRate(self):
         try:
+            current_time = time.time()
+            dgc_rate = RedisClientInstance.get_value_by_key("rate:dbc")
+            if dgc_rate is not None:
+                last_time = dgc_rate["time"]
+                if current_time - last_time <= 300:
+                    print("redis get")
+                    return dgc_rate["rate"]
             rul = "https://dbchaininfo.congtu.cloud/query/dbc_info?language=CN"
             response = requests.get(rul)
             respnose_json = json.loads(response.text)
-            print(respnose_json)
-            return respnose_json['content']['dbc_price']
+            rate = respnose_json['content']['dbc_price']
+            redis_data = {"rate": rate, "time": current_time}
+            RedisClientInstance.add_key_value("rate:dbc", redis_data)
+            return rate
         except Exception as e:
             return None
+        
+    # 获取dgc汇率
+    def getDgcRate(self):
+        current_time = time.time()
+        dgc_rate = RedisClientInstance.get_value_by_key("rate:dgc")
+        if dgc_rate is not None:
+            last_time = dgc_rate["time"]
+            if current_time - last_time <= 300:
+                print("redis get")
+                return dgc_rate["rate"]
+        # API 密钥和请求 URL
+        url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
+
+        # 请求头信息
+        headers = {
+            "X-CMC_PRO_API_KEY": cmc_key,
+            "Accept": "application/json"
+        }
+
+        # 请求参数（对应 curl 中的 -d 选项）
+        params = {
+            "id": "38106"
+        }
+
+        try:
+            # 发送 GET 请求（-G 选项表示使用 GET 方法发送数据）
+            response = requests.get(url, headers=headers, params=params)         
+            # 检查请求是否成功
+            response.raise_for_status()          
+            # 解析 JSON 响应
+            data = response.json()
+            if data.get("status").get("error_code") == 0:
+                num = data.get("data").get("38106").get("quote").get("USD").get("price")
+                tran_num = round(num, 8)
+                redis_data = {"rate": tran_num, "time": current_time}
+                RedisClientInstance.add_key_value("rate:dgc", redis_data)
+                return np.float64(tran_num)
+        except requests.exceptions.HTTPError as errh:
+            print(f"HTTP 错误: {errh}")
+        except requests.exceptions.ConnectionError as errc:
+            print(f"连接错误: {errc}")
+        except requests.exceptions.Timeout as errt:
+            print(f"超时错误: {errt}")
+        except requests.exceptions.RequestException as err:
+            print(f"请求错误: {err}")
             
         
 

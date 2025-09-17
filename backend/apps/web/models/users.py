@@ -18,6 +18,7 @@ from apps.redis.redis_client import RedisClientInstance
 import json
 from apps.web.models.reward_data import RewardDateTableInstance
 from apps.web.api.rewardapi import RegistAmount, InviteAmount
+from apps.web.models.daily_users import DailyUsersInstance
 
 
 ####################
@@ -111,6 +112,7 @@ class UserTotalModel(BaseModel):
     wallet_total: int = 0  # 钱包总数
     channel_total: int = 0  # 第三方注册总数
     vip_total: int = 0  # VIP总数
+    active_today: int = 0  # 活跃用户总数
     kyc_total: int = 0  # 访客总数
 
 # 定义Pydantic模型UserTotalModel
@@ -201,6 +203,9 @@ class UsersTable:
 
         # 在数据库中创建新用户
         result = User.create(**user.model_dump())
+        # 创建用户更新一个活跃数
+        DailyUsersInstance.refresh_active_today(900000000)
+        Users.update_user_last_active_by_id(result.id)
 
         print("User.create result", result.id)
 
@@ -369,12 +374,14 @@ class UsersTable:
     @aspect_database_operations
     def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
         try:
-            print("update_user_last_active_by_id")
+            # print("update_user_last_active_by_id")
             query = User.update(last_active_at=int(time.time())).where(User.id == id)  # 更新用户的last_active_at
             query.execute()  # 执行更新操作
             # print("update_user_last_active_by_id222222")
 
             user = User.get(User.id == id)  # 查询更新后的用户
+            user_dict = model_to_dict(user)
+            RedisClientInstance.add_key_value(f"user:{id}", user_dict)
             # print("update_user_last_active_by_id33333", user)
             # print(4444, UserModel(**model_to_dict(user)))
             return UserModel(**model_to_dict(user))  # 将数据库对象转换为Pydantic模型并返回
@@ -527,11 +534,18 @@ class UsersTable:
         channel_total = User.select().where(User.channel is not None, User.channel != '', User.id.like('0x%')).count()
         vip_total = User.select().where(User.id << (VIPStatus.select(VIPStatus.user_id))).count()
         kyc_total = User.select().where(User.verified == 't').count()
-        data = {    
+
+        active_today = DailyUsersInstance.today_active_users()
+        # datelist = [0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.45, 0.5, 0.6, 0.65, 
+        #             0.76, 0.82, 0.865, 0.888, 0.99, 0.993, 0.996, 1, 1, 1, 1, 1, 1]
+        # current_hour = datetime.now().hour
+        # active_today_cal = int(active_today * datelist[current_hour])
+        data = {
             "total": total,
             "wallet_total": wallet_total,
             "channel_total": channel_total,
             "vip_total": vip_total,
+            "active_today": active_today,
             "kyc_total": kyc_total
         }
         return UserTotalModel(**data)

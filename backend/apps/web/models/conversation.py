@@ -31,7 +31,7 @@ class ConversationModel(BaseModel):
     id: str # 主键
     user_id: str # 用户ID
     user_role: str # 用户角色
-    equip_id: str # 设备ID
+    equip_id: Optional[str]= None # 设备ID
     model_type: str # 模型类型
     chat_time: date  # 会话日期
     chat_num: int # 会话总数
