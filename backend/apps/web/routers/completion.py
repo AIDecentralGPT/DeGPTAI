@@ -34,7 +34,6 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                             json_dict = json.loads(chunk.model_dump_json())
                             choice = json_dict["choices"][0]
                             content = choice.get("delta").get("audio").get("transcript")
-                            content = choice.get("delta").get("audio").get("transcript")
                             if content is not None:
                                 chat_result = {
                                     "id": json_dict.get("id"),
@@ -44,6 +43,21 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                     "choices": [{
                                         "index": 0,
                                         "delta": {"content": content},
+                                        "logprobs": None,
+                                        "finish_reason": None
+                                    }]
+                                }
+                                yield f"data: {json.dumps(chat_result)}\n\n"
+                            audio = choice.get("delta").get("audio").get("data")
+                            if audio is not None:
+                                chat_result = {
+                                    "id": json_dict.get("id"),
+                                    "object": json_dict.get("object"),
+                                    "created": datetime.now().timestamp(),
+                                    "model": json_dict.get("model"),
+                                    "choices": [{
+                                        "index": 0,
+                                        "delta": {"audio": audio},
                                         "logprobs": None,
                                         "finish_reason": None
                                     }]

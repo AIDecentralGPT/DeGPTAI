@@ -432,7 +432,8 @@ export const generateDeTitle = async (
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
           enable_thinking: false,
-          reload: false
+          reload: false,
+          audio: false
         })
       });
       res = await result.json();
