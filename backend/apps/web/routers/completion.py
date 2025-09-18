@@ -30,8 +30,10 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                 for chunk in completion:
                     try:
                         if chunk:
+                            print("========================", chunk)
                             json_dict = json.loads(chunk.model_dump_json())
                             choice = json_dict["choices"][0]
+                            content = choice.get("delta").get("audio").get("transcript")
                             content = choice.get("delta").get("audio").get("transcript")
                             if content is not None:
                                 chat_result = {
@@ -175,7 +177,6 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                     
                     if completion is not None:
                         for chunk in completion:
-                            print("========================", chunk)
                             try:
                                 # 符合 SSE 格式要求
                                 if chunk:
@@ -244,5 +245,5 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
 @router.post("/completion/base64")
 async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
     base64Str = OpenAiApiInstance.audio_to_base64("test.wav")
-    OpenAiApiInstance.str_to_txt(base64Str, "text1.txt")
+    OpenAiApiInstance.str_to_txt(base64Str, "text2.txt")
     return True
