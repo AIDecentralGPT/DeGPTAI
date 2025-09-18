@@ -727,8 +727,7 @@
         }
 
         for await (const update of textStream) {
-          let { value, done, citations, error, think } = update;
-
+          let { value, audio, done, citations, error, think } = update;
           // 校验是否思考过程
           if (model.think && think) {
             first_think = true;
@@ -745,6 +744,14 @@
             );
             messages = messages;
           }
+
+          // 赋值语音模型
+          if (responseMessage.audio) {
+            responseMessage.audio = audio
+          } else {
+            responseMessage.audio = responseMessage.audio + audio
+          }
+          
   
           // if (value.includes("：")) {
           //   console.log("=================", value);

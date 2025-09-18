@@ -698,7 +698,7 @@
           responseMessage.think_content = "<think>";
         }
 				for await (const update of textStream) {
-					const { value, done, citations, error, think } = update;
+					const { value, audio, done, citations, error, think } = update;
 
 					// 校验是否思考过程
           if (model.think && think) {
@@ -715,6 +715,13 @@
               model.id,
             );
             messages = messages;
+          }
+
+					// 赋值语音模型
+          if (responseMessage.audio) {
+            responseMessage.audio = audio
+          } else {
+            responseMessage.audio = responseMessage.audio + audio
           }
 
 					if(value && !firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
