@@ -717,7 +717,7 @@
             messages = messages;
           }
 
-					// 赋值语音模型
+					// 赋值语音
           if (responseMessage.audio) {
             responseMessage.audio = audio
           } else {

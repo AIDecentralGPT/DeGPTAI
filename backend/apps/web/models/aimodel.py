@@ -16,3 +16,5 @@ class AiModelReq(BaseModel):
     reload: bool
     audio: bool
 
+class AudioModelReq(BaseModel):
+    data: str

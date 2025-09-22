@@ -9,7 +9,7 @@ from fastapi import Depends
 from utils.utils import (get_current_user)
 
 
-from apps.web.models.aimodel import AiModelReq
+from apps.web.models.aimodel import AiModelReq, AudioModelReq
 from apps.web.ai.aliqwen import AliQwenApiInstance
 from apps.web.ai.openai import OpenAiApiInstance
 from apps.web.ai.gemini import GeminiApiInstance
@@ -30,7 +30,6 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                 for chunk in completion:
                     try:
                         if chunk:
-                            print("========================", chunk)
                             json_dict = json.loads(chunk.model_dump_json())
                             choice = json_dict["choices"][0]
                             content = choice.get("delta").get("audio").get("transcript")
@@ -256,8 +255,7 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
             return completion
         
 
-@router.post("/completion/base64")
-async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
-    base64Str = OpenAiApiInstance.audio_to_base64("test.wav")
-    OpenAiApiInstance.str_to_txt(base64Str, "text2.txt")
-    return True
+@router.post("/audiototext")
+async def completion_proxy(param: AudioModelReq, user=Depends(get_current_user)):
+    content = OpenAiApiInstance.audioToTxt(param.data)
+    return content
