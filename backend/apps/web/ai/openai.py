@@ -130,7 +130,7 @@ class OpenAiApi:
                 audio={"voice": "alloy", "format": "pcm16"},
                 messages=param.messages,
                 stream=param.stream,
-                stream_options={"include_usage": True}
+                stream_options={"include_usage": True},
                 frequency_penalty=0,
                 presence_penalty=0,
                 max_completion_tokens=2048,
