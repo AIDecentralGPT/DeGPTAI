@@ -3,6 +3,8 @@ from openai import OpenAI, APIError
 from apps.web.models.aimodel import AiModelReq, AiMessageModel
 from apps.web.util.fileutils import FileUtils
 import base64
+import requests
+from io import BytesIO
 
 apikey = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=apikey)
@@ -121,12 +123,14 @@ class OpenAiApi:
                 for file in message.content:
                     if file["type"] == "audio":
                         file["type"] = "input_audio"
+                        base64Str = self.audio_url_to_base64(file["audio"]["data"])
+                        file["audio"]["data"] = base64Str
                         file["input_audio"] = file["audio"]
                         del file["audio"]
         try:
             completion = client.chat.completions.create(
                 model="gpt-4o-audio-preview",
-                modalities=["text", "audio"],
+                modalities=["text"],
                 audio={"voice": "alloy", "format": "pcm16"},
                 messages=param.messages,
                 stream=param.stream,
@@ -179,5 +183,18 @@ class OpenAiApi:
             completion = None
         return completion
 
+
+    def audio_url_to_base64(self, audio_url):
+        try:
+            response = requests.get(audio_url, stream=True)
+            response.raise_for_status()   
+            audio_bytes = BytesIO(response.content)          
+            base64_encoded = base64.b64encode(audio_bytes.read()).decode('utf-8')           
+            return base64_encoded          
+        except requests.exceptions.RequestException as e:
+            print(f"请求错误: {e}")
+        except Exception as e:
+            print(f"处理错误: {e}")   
+        return None
 
 OpenAiApiInstance = OpenAiApi()
