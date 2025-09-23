@@ -49,8 +49,7 @@ class AliQwenApi:
         )
         transcribe_response = dashscope.audio.asr.Transcription.wait(task=task_response.output.task_id)
         if transcribe_response.status_code == HTTPStatus.OK:
-            results = transcribe_response.output.get("results")
-            print("======================", results)       
+            results = transcribe_response.output.get("results")    
             for result in results:
                 resultjson = self.read_json_from_url(result.get("transcription_url"))
                 outtext = self.extract_speech_text(resultjson)
