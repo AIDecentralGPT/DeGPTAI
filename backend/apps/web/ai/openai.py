@@ -162,7 +162,7 @@ class OpenAiApi:
                                 "type": "input_audio",
                                 "input_audio": {"data": audioStr, "format": "wav"},
                             },
-                            {"type": "text", "text": "提取语音内容,只输出识别出来的内容"},
+                            {"type": "text", "text": "Extract the audio content. Strictly adhere to outputting only the recognized content, and do not output any other associated content."},
                         ]
                     }
                 ],
