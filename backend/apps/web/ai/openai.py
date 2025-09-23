@@ -162,7 +162,7 @@ class OpenAiApi:
                                 "type": "input_audio",
                                 "input_audio": {"data": audioStr, "format": "wav"},
                             },
-                            {"type": "text", "text": "Extract the audio content. Strictly adhere to outputting only the recognized content, and do not output any other associated content."},
+                            {"type": "text", "text": "You are an audio recognition result output tool and shall only return the recognized text as a string. Task: Perform audio recognition on the input audio. Requirements: 1. The content must strictly match the audio content, and unclear parts shall be marked with *. 2. Only output the recognized text without any extra characters."},
                         ]
                     }
                 ],
