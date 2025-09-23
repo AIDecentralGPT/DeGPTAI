@@ -144,6 +144,7 @@ class OpenAiApi:
             print("==========OpenAiApi Error===========", e)
             completion = None
         return completion
+    
 
     def audioToTxt(self, audioStr: str):
         try:

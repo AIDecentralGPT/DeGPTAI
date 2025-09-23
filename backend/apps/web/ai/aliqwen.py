@@ -9,21 +9,22 @@ client = OpenAI(
     base_url=apiurl,
 )
 
+
 class AliQwenApi:
-   def check_model(self, model: str):
+    def check_model(self, model: str):
         models = ["qwen3-235b-a22b", "qwen-vl-plus", "qvq-max", "qwen3-max-preview"]
         return model in models
-   
-   def completion(self, param: AiModelReq):
+
+    def completion(self, param: AiModelReq):
         try:
             if param.reload and param.enable_thinking is False:
                 param.messages[-1].partial = True
-                
+
             completion = client.chat.completions.create(
                 model=param.model,
                 messages=param.messages,
                 stream=param.stream,  # 流模式
-                extra_body={"enable_thinking": param.enable_thinking}
+                extra_body={"enable_thinking": param.enable_thinking},
             )
         except APIError as e:
             print("==========AliQwenApi Error===========", e)
@@ -32,5 +33,31 @@ class AliQwenApi:
             print("==========AliQwenApi Error===========", e)
             completion = None
         return completion
-   
+
+    def audioToTxt(self, audioStr: str):
+        try:
+            completion = client.chat.completions.create(
+                model="qwen-audio-turbo-latest",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "input_audio",
+                                "input_audio": {"data": f"data:audio/wav;base64,{audioStr}"},
+                            },
+                            {"type": "text", "text": "只输出识别的内容"},
+                        ]
+                    }
+                ]
+            )
+        except APIError as e:
+            print("==========OpenAiApi Error===========", e)
+            completion = None
+        except Exception as e:
+            print("==========OpenAiApi Error===========", e)
+            completion = None
+        return completion
+
+
 AliQwenApiInstance = AliQwenApi()

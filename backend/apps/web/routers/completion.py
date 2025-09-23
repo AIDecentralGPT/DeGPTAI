@@ -257,5 +257,5 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
 
 @router.post("/audiototext")
 async def completion_proxy(param: AudioModelReq, user=Depends(get_current_user)):
-    content = OpenAiApiInstance.audioToTxt(param.data)
+    content = AliQwenApiInstance.audioToTxt(param.data)
     return content
