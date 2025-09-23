@@ -49,12 +49,13 @@ class AliQwenApi:
         )
         transcribe_response = dashscope.audio.asr.Transcription.wait(task=task_response.output.task_id)
         if transcribe_response.status_code == HTTPStatus.OK:
-            results = transcribe_response.output.get("results")         
+            results = transcribe_response.output.get("results")
+            print("======================", results)       
             for result in results:
                 resultjson = self.read_json_from_url(result.get("transcription_url"))
                 outtext = self.extract_speech_text(resultjson)
         
-        return {"data": outtext[0]}
+        return {"data": ",".join(outtext)}
 
     def read_json_from_url(self, url):
         try:
@@ -76,11 +77,7 @@ class AliQwenApi:
         for transcript in data.get('transcripts', []):
             text = transcript.get('text', '')
             matches = re.findall(pattern, text, re.DOTALL)
-            results.extend([match.strip() for match in matches])
-            for sentence in transcript.get('sentences', []):
-                sent_text = sentence.get('text', '')
-                sent_matches = re.findall(pattern, sent_text, re.DOTALL)
-                results.extend([match.strip() for match in sent_matches])  
+            results.extend([match.strip() for match in matches]) 
         return results
 
 AliQwenApiInstance = AliQwenApi()
