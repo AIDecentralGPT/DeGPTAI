@@ -8,7 +8,7 @@ import base64
 access_key_id = os.getenv("FILE_ACCESS_KEY_ID")
 access_key_secret = os.getenv("FILE_ACCESS_KEY_SECRET")
 endpoint = os.getenv("FILE_HK_ENDPOINT")
-bucket_name = os.getenv("FILE_BUCKET_NAME")
+bucket_name = os.getenv("FILE_BUCKET_HK_NAME")
 oss_url = os.getenv("FILE_OSS_HK_URL")
 
 
