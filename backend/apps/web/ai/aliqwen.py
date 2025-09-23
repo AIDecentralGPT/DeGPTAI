@@ -44,9 +44,12 @@ class AliQwenApi:
                         "content": [
                             {
                                 "type": "input_audio",
-                                "input_audio": {"data": f"data:audio/wav;base64,{audioStr}"},
+                                "input_audio": {"data": f"data:audio/mp3;base64,{audioStr}"}
                             },
-                            {"type": "text", "text": "只输出识别的内容"},
+                            {
+                                "type": "text", 
+                                "text": "识别语音中的文本内容，只输出识别的内容"
+                            }
                         ]
                     }
                 ]
@@ -58,6 +61,5 @@ class AliQwenApi:
             print("==========OpenAiApi Error===========", e)
             completion = None
         return completion
-
 
 AliQwenApiInstance = AliQwenApi()
