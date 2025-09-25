@@ -129,7 +129,7 @@ class OpenAiApi:
                         del file["audio"]
         try:
             completion = client.chat.completions.create(
-                model="gpt-4o-audio-preview",
+                model=param.model,
                 modalities=["text"],
                 audio={"voice": "alloy", "format": "pcm16"},
                 messages=param.messages,
