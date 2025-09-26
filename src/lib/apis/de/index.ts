@@ -94,6 +94,19 @@ export const getDeModels = async (token: string = "") => {
       },
       // 高级模型
       {
+        name: "GPT 4o audio (OpenAI)",
+        model: "gpt-4o-audio-preview",
+        audiomodel: "gpt-4o-audio-preview",
+        textmodel: "gpt-4o-audio-preview",
+        think: false,
+        tip: "GPT 4o audio (OpenAI)",
+        support: "audio",
+        type: 2,
+        desc: "Skilled in writing and generating ideas",
+        modelicon: "/static/icon/gpt_round.png",
+        modelinfo: ""
+      },
+      {
         name: "DeepSeek R1",
         model: "deepseek-reasoner",
         imagemodel: "deepseek-reasoner",
