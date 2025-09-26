@@ -80,12 +80,12 @@
 
   let modObj:any = [];
   $: {
-    let selmodels = $settings?.models ?? ['deepseek-chat'];
+    let selmodels = $settings?.models ?? ['qwen3-max-preview'];
     if (selmodels.length > 0) {
       modObj = $models.filter(item => selmodels.includes(item?.model));
     }
     if (modObj.length == 0) {
-      modObj = [$models.find(item => item?.model === 'deepseek-chat')];
+      modObj = [$models.find(item => item?.model === 'qwen3-max-preview')];
     }
   }
 </script>
