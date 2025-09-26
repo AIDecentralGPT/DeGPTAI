@@ -94,19 +94,6 @@ export const getDeModels = async (token: string = "") => {
       },
       // 高级模型
       {
-        name: "GPT-4o (OpenAI)",
-        model: "gpt-4o",
-        imagemodel: "gpt-4o",
-        textmodel: "gpt-4o",
-        think: false,
-        tip: "GPT-4o (OpenAI)",
-        support: "image",
-        type: 2,
-        desc: "Multimodal graphics and text, suitable for most tasks",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
-      {
         name: "DeepSeek R1",
         model: "deepseek-reasoner",
         imagemodel: "deepseek-reasoner",
@@ -159,58 +146,6 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       // 顶级模型
-      {
-        name: "GPT o3 (OpenAI)",
-        model: "o3",
-        imagemodel: "o3",
-        textmodel: "o3",
-        think: true,
-        tip: "GPT o3 (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Using advanced reasoning",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
-      // {
-      //   name: "GPT o4-mini (OpenAI)",
-      //   model: "o4-mini",
-      //   imagemodel: "o4-mini",
-      //   textmodel: "o4-mini",
-      //   think: false,
-      //   tip: "GPT o4-mini (OpenAI)",
-      //   support: "image",
-      //   type: 3,
-      //   desc: "Using advanced reasoning",
-      //   modelicon: "/static/icon/gpt_round.png",
-      //   modelinfo: ""
-      // },
-      {
-        name: "GPT o4-mini high (OpenAI)",
-        model: "o4-mini",
-        imagemodel: "o4-mini", //o4-mini-deep-research
-        textmodel: "o4-mini",
-        think: false,
-        tip: "GPT o4-mini high (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Using advanced reasoning",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
-      {
-        name: "GPT-4.1 (OpenAI)",
-        model: "gpt-4.1",
-        imagemodel: "gpt-4.1",
-        textmodel: "gpt-4.1",
-        think: false,
-        tip: "GPT-4.1 (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Good at fast coding and analysis",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
       {
         name: "GPT-5 (OpenAI)",
         model: "gpt-5-chat-latest",

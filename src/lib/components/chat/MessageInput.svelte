@@ -65,7 +65,7 @@
   export let toolInfo: any = {url: "", trantip: ""};
 
   export let fileUploadEnabled = true;
-  export let speechRecognitionEnabled = true;
+  export let speechRecognitionEnabled = false;
 
   export let prompt = "";
   export let chatInputPlaceholder = "";
@@ -203,101 +203,101 @@
   };
 
   const speechRecognitionHandler = () => {
+    let audioRecoder = navigator.mediaDevices.getUserMedia({ audio: true });
     // Check if SpeechRecognition is supported
-    if (isRecording) {  
-      if (speechRecognition) {
-        speechRecognition.stop();
-      }
+    // if (isRecording) {  
+    //   if (speechRecognition) {
+    //     speechRecognition.stop();
+    //   }
 
-      if (mediaRecorder) {
-        mediaRecorder.stop();
-      }
-      isRecording = false;
-    } else {
-      isRecording = true;
+    //   if (mediaRecorder) {
+    //     mediaRecorder.stop();
+    //   }
+    //   isRecording = false;
+    // } else {
+    //   isRecording = true;
 
-      if ($settings?.audio?.STTEngine ?? "" !== "") {
-        startRecording();
-      } else {
-        if (
-          "SpeechRecognition" in window ||
-          "webkitSpeechRecognition" in window
-        ) {
-          // Create a SpeechRecognition object
-          speechRecognition = new (window.SpeechRecognition ||
-            window.webkitSpeechRecognition)();
+    //   if ($settings?.audio?.STTEngine ?? "" !== "") {
+    //     startRecording();
+    //   } else {
+    //     if (
+    //       "SpeechRecognition" in window ||
+    //       "webkitSpeechRecognition" in window
+    //     ) {
+    //       // Create a SpeechRecognition object
+    //       speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
-          // Set continuous to true for continuous recognition
-          speechRecognition.continuous = true;
-          speechRecognition.interimResults = true;
+    //       // Set continuous to true for continuous recognition
+    //       speechRecognition.continuous = true;
+    //       speechRecognition.interimResults = true;
 
-          // Set the timeout for turning off the recognition after inactivity (in milliseconds)
-          // const inactivityTimeout = 3000; // 3 seconds
+    //       // Set the timeout for turning off the recognition after inactivity (in milliseconds)
+    //       // const inactivityTimeout = 3000; // 3 seconds
 
-          // let timeoutId;
-          // Start recognition
-          speechRecognition.start();
+    //       // let timeoutId;
+    //       // Start recognition
+    //       speechRecognition.start();
 
-          // Event triggered when speech is recognized
-          speechRecognition.onresult = async (event) => {
-            // Clear the inactivity timeout
-            // clearTimeout(timeoutId);
+    //       // Event triggered when speech is recognized
+    //       speechRecognition.onresult = async (event) => {
+    //         // Clear the inactivity timeout
+    //         // clearTimeout(timeoutId);
 
-            // Handle recognized speech
-            console.log(event);
-            const transcript =
-              event.results[Object.keys(event.results).length - 1][0]
-                .transcript;
+    //         // Handle recognized speech
+    //         console.log(event);
+    //         const transcript =
+    //           event.results[Object.keys(event.results).length - 1][0]
+    //             .transcript;
 
-            prompt = `${prompt}${transcript}`;
+    //         prompt = `${prompt}${transcript}`;
 
-            await tick();
-            chatTextAreaElement?.focus();
+    //         await tick();
+    //         chatTextAreaElement?.focus();
 
-            // Restart the inactivity timeout
-            // timeoutId = setTimeout(() => {
-            //   console.log("Speech recognition turned off due to inactivity.");
-            //   speechRecognition.stop();
-            // }, inactivityTimeout);
-          };
+    //         // Restart the inactivity timeout
+    //         // timeoutId = setTimeout(() => {
+    //         //   console.log("Speech recognition turned off due to inactivity.");
+    //         //   speechRecognition.stop();
+    //         // }, inactivityTimeout);
+    //       };
 
-          // Event triggered when recognition is ended
-          speechRecognition.onend = function () {
-            // Restart recognition after it ends
-            // console.log("recognition ended");
-            // isRecording = false;
-            // if (prompt !== "" && $settings?.speechAutoSend === true) {
-            //   submitPrompt(prompt, toolInfo, user);
-            // }
-            if (isRecording) {
-              speechRecognition.start();
-            } else {
-              if (speechRecognition) {
-                speechRecognition.stop();
-              }
-              if (mediaRecorder) {
-                mediaRecorder.stop();
-              }
-            }           
-          };
+    //       // Event triggered when recognition is ended
+    //       speechRecognition.onend = function () {
+    //         // Restart recognition after it ends
+    //         // console.log("recognition ended");
+    //         // isRecording = false;
+    //         // if (prompt !== "" && $settings?.speechAutoSend === true) {
+    //         //   submitPrompt(prompt, toolInfo, user);
+    //         // }
+    //         if (isRecording) {
+    //           speechRecognition.start();
+    //         } else {
+    //           if (speechRecognition) {
+    //             speechRecognition.stop();
+    //           }
+    //           if (mediaRecorder) {
+    //             mediaRecorder.stop();
+    //           }
+    //         }           
+    //       };
 
-          // Event triggered when an error occurs
-          speechRecognition.onerror = function (event) {
-            console.log(event);
-            // toast.error(
-            //   $i18n.t(`Speech recognition error: {{error}}`, {
-            //     error: event.error,
-            //   })
-            // );
-            // isRecording = false;
-          };
-        } else {
-          toast.error(
-            $i18n.t("SpeechRecognition API is not supported in this browser.")
-          );
-        }
-      }
-    }
+    //       // Event triggered when an error occurs
+    //       speechRecognition.onerror = function (event) {
+    //         console.log(event);
+    //         // toast.error(
+    //         //   $i18n.t(`Speech recognition error: {{error}}`, {
+    //         //     error: event.error,
+    //         //   })
+    //         // );
+    //         // isRecording = false;
+    //       };
+    //     } else {
+    //       toast.error(
+    //         $i18n.t("SpeechRecognition API is not supported in this browser.")
+    //       );
+    //     }
+    //   }
+    // }
   };
 
   const uploadDoc = async (file) => {

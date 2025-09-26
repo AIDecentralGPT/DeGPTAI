@@ -533,7 +533,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-4o (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -569,22 +569,6 @@ function divideAndRound(num1, num2) {
               <div>
                 {$i18n.t("Accessible Top-Level Model")}
                 <div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o3 (OpenAI)</span>
-                  </div>
-                  <!-- <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o4-mini (OpenAI)</span>
-                  </div> -->
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o4-mini high (OpenAI)</span>
-                  </div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-4.1 (OpenAI)</span>
-                  </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT-5 (OpenAI)</span>
@@ -840,7 +824,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-4o (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -876,22 +860,6 @@ function divideAndRound(num1, num2) {
               <div>
                 {$i18n.t("Accessible Top-Level Model")}
                 <div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o3 (OpenAI)</span>
-                  </div>
-                  <!-- <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o4-mini (OpenAI)</span>
-                  </div> -->
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o4-mini high (OpenAI)</span>
-                  </div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-4.1 (OpenAI)</span>
-                  </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT-5 (OpenAI)</span>
@@ -1147,7 +1115,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-4o (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -1183,26 +1151,6 @@ function divideAndRound(num1, num2) {
               <div>
                 {$i18n.t("Accessible Top-Level Model")}
                 <div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o3 (OpenAI)</span>
-                  </div>
-                  <!-- <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o4-mini (OpenAI)</span>
-                  </div> -->
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT o4-mini high (OpenAI)</span>
-                  </div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-4.1 (OpenAI)</span>
-                  </div>
-                  <div class="flex flex-row items-center mt-2">
-                    <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4Opus (Anthropic)</span>
-                  </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
                     <span class="text-base font-bold ml-2">GPT-5 (OpenAI)</span>
