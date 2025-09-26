@@ -118,15 +118,21 @@ class OpenAiApi:
         return completion
 
     def completionAudio(self, param: AiModelReq):
-        for message in param.messages:
+        for message in list(param.messages):  # 遍历副本
             if isinstance(message.content, list):
                 for file in message.content:
-                    if file["type"] == "audio":
-                        file["type"] = "input_audio"
+                    if file.get("type") == "audio":
                         base64Str = self.audio_url_to_base64(file["audio"]["data"])
-                        file["audio"]["data"] = base64Str
-                        file["input_audio"] = file["audio"]
-                        del file["audio"]
+                        if base64Str is None:
+                            # 删除整个 message
+                            param.messages.remove(message)  # 直接操作原始列表
+                            break
+                        else:
+                            # 修改 file 字典（会影响原数据）
+                            file["type"] = "input_audio"
+                            file["audio"]["data"] = base64Str
+                            file["input_audio"] = file["audio"]
+                            del file["audio"]
         try:
             completion = client.chat.completions.create(
                 model=param.model,
