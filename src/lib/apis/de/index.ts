@@ -28,12 +28,12 @@ export const getDeModels = async (token: string = "") => {
     models: [
       // 基础模型
       {
-        name: "DeepSeek V3",
+        name: "DeepSeek V3.1",
         model: "deepseek-chat",
         imagemodel: "deepseek-chat",
         textmodel: "deepseek-chat",
         think: false,
-        tip: "DeepSeek V3",
+        tip: "DeepSeek V3.1",
         support: "text",
         type: 1,
         desc: "Suitable for reasoning and writing",
@@ -54,12 +54,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Qwen3 (Ali Cloud)",
-        model: "qwen3-235b-a22b",
+        name: "Qwen3 Max (Ali Cloud)",
+        model: "qwen3-max-preview",
         imagemodel: "qwen-vl-plus",
-        textmodel: "qwen3-235b-a22b",
+        textmodel: "qwen3-max-preview",
         think: false,
-        tip: "Qwen3 (Ali Cloud)",
+        tip: "Qwen3 Max (Ali Cloud)",
         support: "image",
         type: 1,
         desc: "Strong language skills",
@@ -80,12 +80,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "GPT-4o mini (OpenAI)",
-        model: "gpt-4o-mini",
-        imagemodel: "gpt-4o-mini",
-        textmodel: "gpt-4o-mini",
+        name: "GPT-5 mini (OpenAI)",
+        model: "gpt-5-mini",
+        imagemodel: "gpt-5-mini",
+        textmodel: "gpt-5-mini",
         think: false,
-        tip: "GPT-4o mini (OpenAI)",
+        tip: "GPT-5 mini (OpenAI)",
         support: "image",
         type: 1,
         desc: "Lightweight general-purpose model with fast response speed",
@@ -94,15 +94,15 @@ export const getDeModels = async (token: string = "") => {
       },
       // 高级模型
       {
-        name: "GPT-4o (OpenAI)",
-        model: "gpt-4o",
-        imagemodel: "gpt-4o",
-        textmodel: "gpt-4o",
+        name: "GPT 4o audio (OpenAI)",
+        model: "gpt-4o-audio-preview",
+        audiomodel: "gpt-4o-audio-preview",
+        textmodel: "gpt-4o-audio-preview",
         think: false,
-        tip: "GPT-4o (OpenAI)",
-        support: "image",
+        tip: "GPT 4o audio (OpenAI)",
+        support: "audio",
         type: 2,
-        desc: "Multimodal graphics and text, suitable for most tasks",
+        desc: "Focused on audio interaction",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -160,67 +160,15 @@ export const getDeModels = async (token: string = "") => {
       },
       // 顶级模型
       {
-        name: "GPT o3 (OpenAI)",
-        model: "o3",
-        imagemodel: "o3",
-        textmodel: "o3",
-        think: true,
-        tip: "GPT o3 (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Using advanced reasoning",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
-      // {
-      //   name: "GPT o4-mini (OpenAI)",
-      //   model: "o4-mini",
-      //   imagemodel: "o4-mini",
-      //   textmodel: "o4-mini",
-      //   think: false,
-      //   tip: "GPT o4-mini (OpenAI)",
-      //   support: "image",
-      //   type: 3,
-      //   desc: "Using advanced reasoning",
-      //   modelicon: "/static/icon/gpt_round.png",
-      //   modelinfo: ""
-      // },
-      {
-        name: "GPT o4-mini high (OpenAI)",
-        model: "o4-mini",
-        imagemodel: "o4-mini", //o4-mini-deep-research
-        textmodel: "o4-mini",
+        name: "GPT-5 (OpenAI)",
+        model: "gpt-5-chat-latest",
+        imagemodel: "gpt-5-chat-latest",
+        textmodel: "gpt-5-chat-latest",
         think: false,
-        tip: "GPT o4-mini high (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Using advanced reasoning",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
-      {
-        name: "GPT-4.1 (OpenAI)",
-        model: "gpt-4.1",
-        imagemodel: "gpt-4.1",
-        textmodel: "gpt-4.1",
-        think: false,
-        tip: "GPT-4.1 (OpenAI)",
+        tip: "GPT-5 (OpenAI)",
         support: "image",
         type: 3,
         desc: "Good at fast coding and analysis",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
-      },
-      {
-        name: "GPT 4.5 (OpenAI)",
-        model: "gpt-4.5-preview",
-        imagemodel: "gpt-4.5-preview",
-        textmodel: "gpt-4.5-preview",
-        think: false,
-        tip: "GPT 4.5 (OpenAI)",
-        support: "image",
-        type: 3,
-        desc: "Skilled in writing and generating ideas",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
@@ -315,15 +263,15 @@ export const generateDeOpenAIChatCompletion = async (
         break;
       } else {
         throw new Error("error");
-      } 
+      }
     } catch (err) {
       controller.abort();
       if (err?.message == "error") {
         errorUrl.push(urlObj);
       }
-      if (urlObj.name === urlObjs[urlObjs.length-1].name) {
+      if (urlObj.name === urlObjs[urlObjs.length - 1].name) {
         try {
-          let checkUrl = urlObjs.filter(item =>!errorUrl.includes(item));
+          let checkUrl = urlObjs.filter(item => !errorUrl.includes(item));
           if (checkUrl.length > 0 && !checkUrl.includes(repeatUrl)) {
             repeatUrl = checkUrl[0];
           }
@@ -334,19 +282,19 @@ export const generateDeOpenAIChatCompletion = async (
           } else {
             throw new Error("error");
           }
-        } catch(err) {
+        } catch (err) {
           error = err;
           res = null;
         }
       }
     }
   }
-  
+
 
   if (error) {
     throw error;
   }
-  
+
   return [res, controller];
 };
 
@@ -356,7 +304,7 @@ const getDeOpenAIChatCompletion = async (
   body: Object,
   controller: any,
   timeFlag: boolean,
-  token:  string = ""
+  token: string = ""
 ) => {
   let res: any;
   let overallTimeout = null
@@ -431,7 +379,9 @@ export const generateDeTitle = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
-          enable_thinking: false
+          enable_thinking: false,
+          reload: false,
+          audio: false
         })
       });
       res = await result.json();
@@ -490,7 +440,9 @@ export const generateSearchKeyword = async (
           project: "DecentralGPT",
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
-          enable_thinking: false
+          enable_thinking: false,
+          reload: false,
+          audio: false
         })
       });
       res = await result.json();
@@ -508,5 +460,54 @@ export const generateSearchKeyword = async (
   }
   return (
     res?.choices[0]?.message?.content.replace(/["']/g, "") ?? content
+  );
+};
+
+// 语音内容转换为文本
+export const tranAudioToTxt = async (
+  token: string = "",
+  data: string = "",
+  url: string
+) => {
+  let error = null;
+  let res: any;
+
+  let urls = await getDeBaseUrls();
+  let index = urls.findIndex(item => item.url === url);
+  if (index !== -1) {
+    // 移除该元素
+    let koreaItem = urls.splice(index, 1)[0];
+    // 将该元素添加到数组的开头
+    urls.unshift(koreaItem);
+  }
+  for (const domain of urls) {
+    try {
+      const result = await fetch(`${domain.url}/chat/audiototext`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          data: data
+        })
+      });
+      res = await result.json();
+      break;
+    } catch (err) {
+      console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
+      if (domain.name == urls[urls.length - 1].name) {
+        error = err;
+      }
+    }
+  }
+
+  if (error) {
+    throw error;
+  }
+
+  return (
+    res?.data ?? "No text recognized"
   );
 };

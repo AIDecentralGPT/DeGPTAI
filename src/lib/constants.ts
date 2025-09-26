@@ -1,13 +1,7 @@
-// import { browser, dev } from "$app/environment";
-// import { version } from '../../package.json';
-
 export const APP_NAME = "DeGPT";
-export const WEBUI_BASE_URL = "https://test.degpt.ai"
-// export const WEBUI_BASE_URL = browser
-//   ? dev
-//     ? `http://${location.hostname}:8080`
-//     : ``
-//   : ``;
+// export const WEBUI_BASE_URL = "http://localhost:8080";
+export const WEBUI_BASE_URL = "https://test.degpt.ai";
+// export const WEBUI_BASE_URL = "https://www.degpt.ai";
 
 export const WEBUI_API_BASE_URL = `${WEBUI_BASE_URL}/api/v1`;
 
@@ -114,7 +108,13 @@ export const RewardProperties = {
   "ipeoples": 20,
   "itimes": 3,
   "clockin": "1,000",
+  "clockinall": "30,000",
   "civalid": 180,
   "citimes": 30,
   "endtime": "2025-08-16 00:00:00"
 }
+
+// 升级VIP钱包地址
+// export const tranAddress = "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8"
+export const tranAddress = "0x40Ff2BD3668B38B0dd0BD7F26Aa809239Fc9113a"
+export const appVersionCode = 5

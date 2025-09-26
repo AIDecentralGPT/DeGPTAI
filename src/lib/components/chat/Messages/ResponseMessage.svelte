@@ -1,43 +1,53 @@
 <script lang="ts">
-	import { toast } from 'svelte-sonner';
-	import dayjs from 'dayjs';
-	import { marked } from 'marked';
-	import tippy from 'tippy.js';
-	import auto_render from 'katex/dist/contrib/auto-render.mjs';
-	import 'katex/dist/katex.min.css';
+	import { toast } from "svelte-sonner";
+	import dayjs from "dayjs";
+	import { marked } from "marked";
+	import tippy from "tippy.js";
+	import auto_render from "katex/dist/contrib/auto-render.mjs";
+	import "katex/dist/katex.min.css";
 
-	import { createEventDispatcher } from 'svelte';
-	import { onMount, tick, getContext } from 'svelte';
+	import { createEventDispatcher } from "svelte";
+	import { onMount, tick, getContext } from "svelte";
 
-	const i18n = getContext('i18n');
+	const i18n = getContext("i18n");
 
 	const dispatch = createEventDispatcher();
 
-	import { config, settings, models, theme, user, showPriceModal, showSidebar, showWalletView } from '$lib/stores';
+	import {
+		config,
+		settings,
+		models,
+		theme,
+		user,
+		showPriceModal,
+		showSidebar,
+		showWalletView,
+	} from "$lib/stores";
 
-	import { synthesizeOpenAISpeech } from '$lib/apis/audio';
-	import { imageGenerations } from '$lib/apis/images';
+	import { synthesizeOpenAISpeech } from "$lib/apis/audio";
+	import { imageGenerations } from "$lib/apis/images";
 	import {
 		approximateToHumanReadable,
 		extractSentences,
 		revertSanitizedResponseContent,
-		sanitizeResponseContent
-	} from '$lib/utils';
-	import { WEBUI_BASE_URL } from '$lib/constants';
+		sanitizeResponseContent,
+	} from "$lib/utils";
+	import { WEBUI_BASE_URL } from "$lib/constants";
 
-	import Name from './Name.svelte';
-	import ProfileImage from './ProfileImage.svelte';
-	import Thinking from './Thinking.svelte';
-	import Searching from './Searching.svelte';
-	import WebAnalysis from './WebAnalysis.svelte';
-	import Replying from './Replying.svelte';
-	import Skeleton from './Skeleton.svelte';
-	import CodeBlock from './CodeBlock.svelte';
-	import Image from '$lib/components/common/Image.svelte';
-	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import RateComment from './RateComment.svelte';
-	import CitationsModal from '$lib/components/chat/Messages/CitationsModal.svelte';
+	import Name from "./Name.svelte";
+	import ProfileImage from "./ProfileImage.svelte";
+	import Thinking from "./Thinking.svelte";
+	import Searching from "./Searching.svelte";
+	import WebAnalysis from "./WebAnalysis.svelte";
+	import Replying from "./Replying.svelte";
+	import Skeleton from "./Skeleton.svelte";
+	import CodeBlock from "./CodeBlock.svelte";
+	import Image from "$lib/components/common/Image.svelte";
+	import Tooltip from "$lib/components/common/Tooltip.svelte";
+	import RateComment from "./RateComment.svelte";
+	import CitationsModal from "$lib/components/chat/Messages/CitationsModal.svelte";
 	import TwitterEmbed from "$lib/components/twitter/TwitterEmbed.svelte";
+	import { initAudioContext, updatePCMData, startPlayback, stopPlayback} from "$lib/utils/player/index"
 
 	export let modelfiles = [];
 	export let message;
@@ -61,7 +71,7 @@
 	export let regenerateResponse: Function;
 
 	let edit = false;
-	let editedContent = '';
+	let editedContent = "";
 	let editTextAreaElement: HTMLTextAreaElement;
 	let tooltipInstance = null;
 
@@ -77,24 +87,24 @@
 
 	let selectedCitation = null;
 
-	$: tokens = thinkAnalysis((message?.think_content??'') + message?.content);
+	$: tokens = thinkAnalysis((message?.think_content ?? "") + message?.content);
 
 	function thinkAnalysis(content: any) {
 		if (content.startsWith("<think>")) {
-			let firstIndex = content.indexOf('</think>');
+			let firstIndex = content.indexOf("</think>");
 			if (firstIndex == -1) {
-				return [{type: "thinking", raw: content.replace("<think>", "")}];	
+				return [{ type: "thinking", raw: content.replace("<think>", "") }];
 			} else {
-				let token = content.split('</think>');
-				let thinkObj = {type: "thinking", raw: token[0].replace("<think>", "")};
+				let token = content.split("</think>");
+				let thinkObj = {
+					type: "thinking",
+					raw: token[0].replace("<think>", ""),
+				};
 				if (token.length > 1) {
-					return [
-						thinkObj,
-						...marked.lexer(sanitizeResponseContent(token[1]))
-					]
+					return [thinkObj, ...marked.lexer(sanitizeResponseContent(token[1]))];
 				} else {
 					return [thinkObj];
-				}	
+				}
 			}
 		} else {
 			return marked.lexer(sanitizeResponseContent(content));
@@ -105,18 +115,20 @@
 
 	// For code blocks with simple backticks
 	renderer.codespan = (code) => {
-		return `<code>${code.replaceAll('&amp;', '&')}</code>`;
+		return `<code>${code.replaceAll("&amp;", "&")}</code>`;
 	};
 
-	const { extensions, ...defaults } = marked.getDefaults() as marked.MarkedOptions & {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		extensions: any;
-	};
-
-	
+	const { extensions, ...defaults } =
+		marked.getDefaults() as marked.MarkedOptions & {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			extensions: any;
+		};
 
 	$: if (message) {
 		renderStyling();
+		if (message?.audio) {
+			PCM_BASE64 = message?.audio;
+		}
 	}
 
 	const renderStyling = async () => {
@@ -130,40 +142,53 @@
 
 		if (message.info) {
 			tooltipInstance = tippy(`#info-${message.id}`, {
-				content: `<span class="text-xs" id="tooltip-${message.id}">response_token/s: ${
+				content: `<span class="text-xs" id="tooltip-${
+					message.id
+				}">response_token/s: ${
 					`${
 						Math.round(
-							((message.info.eval_count ?? 0) / (message.info.eval_duration / 1000000000)) * 100
+							((message.info.eval_count ?? 0) /
+								(message.info.eval_duration / 1000000000)) *
+								100
 						) / 100
-					} tokens` ?? 'N/A'
+					} tokens` ?? "N/A"
 				}<br/>
 					prompt_token/s: ${
 						Math.round(
 							((message.info.prompt_eval_count ?? 0) /
 								(message.info.prompt_eval_duration / 1000000000)) *
 								100
-						) / 100 ?? 'N/A'
+						) / 100 ?? "N/A"
 					} tokens<br/>
                     total_duration: ${
-											Math.round(((message.info.total_duration ?? 0) / 1000000) * 100) / 100 ??
-											'N/A'
+											Math.round(
+												((message.info.total_duration ?? 0) / 1000000) * 100
+											) / 100 ?? "N/A"
 										}ms<br/>
                     load_duration: ${
-											Math.round(((message.info.load_duration ?? 0) / 1000000) * 100) / 100 ?? 'N/A'
+											Math.round(
+												((message.info.load_duration ?? 0) / 1000000) * 100
+											) / 100 ?? "N/A"
 										}ms<br/>
-                    prompt_eval_count: ${message.info.prompt_eval_count ?? 'N/A'}<br/>
+                    prompt_eval_count: ${
+											message.info.prompt_eval_count ?? "N/A"
+										}<br/>
                     prompt_eval_duration: ${
-											Math.round(((message.info.prompt_eval_duration ?? 0) / 1000000) * 100) /
-												100 ?? 'N/A'
+											Math.round(
+												((message.info.prompt_eval_duration ?? 0) / 1000000) *
+													100
+											) / 100 ?? "N/A"
 										}ms<br/>
-                    eval_count: ${message.info.eval_count ?? 'N/A'}<br/>
+                    eval_count: ${message.info.eval_count ?? "N/A"}<br/>
                     eval_duration: ${
-											Math.round(((message.info.eval_duration ?? 0) / 1000000) * 100) / 100 ?? 'N/A'
+											Math.round(
+												((message.info.eval_duration ?? 0) / 1000000) * 100
+											) / 100 ?? "N/A"
 										}ms<br/>
                     approximate_total: ${approximateToHumanReadable(
 											message.info.total_duration
 										)}</span>`,
-				allowHTML: true
+				allowHTML: true,
 			});
 		}
 	};
@@ -171,7 +196,7 @@
 	const renderLatex = () => {
 		let chatMessageElements = document
 			.getElementById(`message-${message.id}`)
-			?.getElementsByClassName('chat-assistant');
+			?.getElementsByClassName("chat-assistant");
 
 		if (chatMessageElements) {
 			for (const element of chatMessageElements) {
@@ -179,14 +204,14 @@
 					// customised options
 					// • auto-render specific keys, e.g.:
 					delimiters: [
-						{ left: '$$', right: '$$', display: false },
-						{ left: '$ ', right: ' $', display: false },
-						{ left: '\\(', right: '\\)', display: false },
-						{ left: '\\[', right: '\\]', display: false },
-						{ left: '[ ', right: ' ]', display: false }
+						{ left: "$$", right: "$$", display: false },
+						{ left: "$ ", right: " $", display: false },
+						{ left: "\\(", right: "\\)", display: false },
+						{ left: "\\[", right: "\\]", display: false },
+						{ left: "[ ", right: " ]", display: false },
 					],
 					// • rendering keys, e.g.:
-					throwOnError: false
+					throwOnError: false,
 				});
 			}
 		}
@@ -204,7 +229,7 @@
 					speaking = null;
 
 					if ($settings.conversationMode) {
-						document.getElementById('voice-input-button')?.click();
+						document.getElementById("voice-input-button")?.click();
 					}
 				}
 
@@ -227,24 +252,27 @@
 		} else {
 			speaking = true;
 
-			if ($settings?.audio?.TTSEngine === 'openai') {
+			if ($settings?.audio?.TTSEngine === "openai") {
 				loadingSpeech = true;
 
-				const sentences = extractSentences(message.content).reduce((mergedTexts, currentText) => {
-					const lastIndex = mergedTexts.length - 1;
-					if (lastIndex >= 0) {
-						const previousText = mergedTexts[lastIndex];
-						const wordCount = previousText.split(/\s+/).length;
-						if (wordCount < 2) {
-							mergedTexts[lastIndex] = previousText + ' ' + currentText;
+				const sentences = extractSentences(message.content).reduce(
+					(mergedTexts, currentText) => {
+						const lastIndex = mergedTexts.length - 1;
+						if (lastIndex >= 0) {
+							const previousText = mergedTexts[lastIndex];
+							const wordCount = previousText.split(/\s+/).length;
+							if (wordCount < 2) {
+								mergedTexts[lastIndex] = previousText + " " + currentText;
+							} else {
+								mergedTexts.push(currentText);
+							}
 						} else {
 							mergedTexts.push(currentText);
 						}
-					} else {
-						mergedTexts.push(currentText);
-					}
-					return mergedTexts;
-				}, []);
+						return mergedTexts;
+					},
+					[]
+				);
 
 				console.log(sentences);
 
@@ -276,7 +304,9 @@
 						const audio = new Audio(blobUrl);
 						sentencesAudio[idx] = audio;
 						loadingSpeech = false;
-						lastPlayedAudioPromise = lastPlayedAudioPromise.then(() => playAudio(idx));
+						lastPlayedAudioPromise = lastPlayedAudioPromise.then(() =>
+							playAudio(idx)
+						);
 					}
 				}
 			} else {
@@ -287,14 +317,16 @@
 						clearInterval(getVoicesLoop);
 
 						const voice =
-							voices?.filter((v) => v.name === $settings?.audio?.speaker)?.at(0) ?? undefined;
+							voices
+								?.filter((v) => v.name === $settings?.audio?.speaker)
+								?.at(0) ?? undefined;
 
 						const speak = new SpeechSynthesisUtterance(message.content);
 
 						speak.onend = () => {
 							speaking = null;
 							if ($settings.conversationMode) {
-								document.getElementById('voice-input-button')?.click();
+								document.getElementById("voice-input-button")?.click();
 							}
 						};
 						speak.voice = voice;
@@ -311,19 +343,19 @@
 
 		await tick();
 
-		editTextAreaElement.style.height = '';
+		editTextAreaElement.style.height = "";
 		editTextAreaElement.style.height = `${editTextAreaElement.scrollHeight}px`;
 	};
 
 	const editMessageConfirmHandler = async () => {
-		if (editedContent === '') {
-			editedContent = ' ';
+		if (editedContent === "") {
+			editedContent = " ";
 		}
 
 		confirmEditResponseMessage(message.id, editedContent);
 
 		edit = false;
-		editedContent = '';
+		editedContent = "";
 
 		await tick();
 		renderStyling();
@@ -331,25 +363,28 @@
 
 	const cancelEditMessage = async () => {
 		edit = false;
-		editedContent = '';
+		editedContent = "";
 		await tick();
 		renderStyling();
 	};
 
 	const generateImage = async (message) => {
 		generatingImage = true;
-		const res = await imageGenerations(localStorage.token, message.content).catch((error) => {
+		const res = await imageGenerations(
+			localStorage.token,
+			message.content
+		).catch((error) => {
 			toast.error(error);
 		});
 		console.log(res);
 
 		if (res) {
 			message.files = res.map((image) => ({
-				type: 'image',
-				url: `${image.url}`
+				type: "image",
+				url: `${image.url}`,
 			}));
 
-			dispatch('save', message);
+			dispatch("save", message);
 		}
 
 		generatingImage = false;
@@ -358,26 +393,28 @@
 	onMount(async () => {
 		await tick();
 		renderStyling();
+		await initAudioContext();
 	});
 
 	// 格式化模型名字
 	const formatModelName = (model) => {
 		// console.log("models", $models);
-		const modelName = $models.filter((item) => item.model === model)?.[0]?.name || model
-		
-		return modelName
-	}
+		const modelName =
+			$models.filter((item) => item.model === model)?.[0]?.name || model;
+
+		return modelName;
+	};
 
 	// 校验图片模型
 	const checkModelImage = (model) => {
 		// console.log("models", $models);
 		const checkModel = $models.filter((item) => item?.model === model);
-		if (checkModel.length > 0 && checkModel[0]?.support === 'image') {
+		if (checkModel.length > 0 && checkModel[0]?.support === "image") {
 			return true;
 		} else {
 			return false;
 		}
-	}
+	};
 
 	let webFlag = true;
 	$: webShow = webFlag;
@@ -385,7 +422,7 @@
 	// 隐藏web搜索
 	const handleWebHidden = () => {
 		webFlag = !webFlag;
-	}
+	};
 
 	let thinkHiden = false;
 
@@ -399,24 +436,34 @@
 			const regexText = /^[\s.,!?;:'"()[\]{}<>]+$/;
 			if (!regexText.test(item)) {
 				const regex = new RegExp(item, "gi");
-				content = content.replace(regex, match => `<span style="color: rgba(184, 142, 86, 1);">${match}</span>`);
+				content = content.replace(
+					regex,
+					(match) =>
+						`<span style="color: rgba(184, 142, 86, 1);">${match}</span>`
+				);
 			}
-		})
-    return content;
-  }
+		});
+		return content;
+	}
 
 	// 监听主题变化
 	let currentTheme = $theme;
 	$: {
-		currentTheme = ($theme === "system" || $theme === "light") ? 'light' : 'dark';
+		currentTheme = $theme === "system" || $theme === "light" ? "light" : "dark";
 	}
 
-	let visibleIndices:any = [];
+	let visibleIndices: any = [];
 	function handleImageLoadFailed({ detail }) {
-        const { index } = detail;
-        visibleIndices[index] = false;
-    }
+		const { index } = detail;
+		visibleIndices[index] = false;
+	}
 
+	let PCM_BASE64: string = "";
+	$: if (PCM_BASE64) {
+		if (message?.done) {
+			
+		}
+	}
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
@@ -428,47 +475,49 @@
 	>
 		<ProfileImage
 			src={modelfiles[message.model]?.imageUrl ??
-				($i18n.language === 'dg-DG' ? `/doge.png` : `/static/favicon.png`)}
+				($i18n.language === "dg-DG"
+					? `/doge.png`
+					: `${WEBUI_BASE_URL}/static/favicon.png`)}
 		/>
 
 		<div class="w-full overflow-hidden pl-1">
 			<!-- {console.log("modelfiles", modelfiles, message)} -->
-			<Name>	
+			<Name>
 				{#if message.model in modelfiles}
 					{modelfiles[message.model]?.title}
 				{:else}
-					{message.model ? ` ${formatModelName(message.model)}` : ''}
+					{message.model ? ` ${formatModelName(message.model)}` : ""}
 				{/if}
-				{#if message.content == '' && !message?.done}
+				{#if message.content == "" && !message?.done}
 					{#if message?.toolflag}
-						{#if message?.parseInfo?.web|| message?.parseInfo?.videos || message?.parseInfo?.content}
-							<Replying/>
+						{#if message?.parseInfo?.web || message?.parseInfo?.videos || message?.parseInfo?.content}
+							<Replying />
+						{:else if message?.tooltype == "webread"}
+							<WebAnalysis />
+						{:else if message?.tooltype == "twitter"}
+							<Searching typeName="Twitter" />
+						{:else if message?.tooltype == "youtube"}
+							<Searching typeName="YouTube" />
+						{:else if message?.tooltype == "bing"}
+							<Searching typeName="Bing" />
 						{:else}
-							{#if message?.tooltype == "webread"}
-								<WebAnalysis/>
-							{:else if message?.tooltype == "twitter"}
-								<Searching typeName="Twitter"/>
-							{:else if message?.tooltype == "youtube"}
-								<Searching typeName="YouTube"/>
-							{:else if message?.tooltype == "bing"}
-								<Searching typeName="Bing"/>
-							{:else}
-								<Thinking/>
-							{/if}
-						{/if}	
+							<Thinking />
+						{/if}
 					{:else}
-						<Thinking/>
+						<Thinking />
 					{/if}
-				{:else}
-					{#if message?.replytime && checkModelImage(message.model)}
-						<span class="text-xs">{ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) }</span>
-					{/if}	
+				{:else if message?.replytime && checkModelImage(message.model)}
+					<span class="text-xs"
+						>{$i18n.t("Last for {{ time }} seconds", {
+							time: (message?.replytime - message?.timestamp) % 60,
+						})}</span
+					>
 				{/if}
 				{#if message.timestamp}
 					<span
 						class=" self-center invisible group-hover:visible text-gray-400 text-xs font-medium uppercase"
 					>
-						{dayjs(message.timestamp * 1000).format($i18n.t('h:mm a'))}
+						{dayjs(message.timestamp * 1000).format($i18n.t("h:mm a"))}
 					</span>
 				{/if}
 			</Name>
@@ -477,7 +526,7 @@
 				<div class="my-2.5 w-full flex overflow-x-auto gap-2 flex-wrap">
 					{#each message.files as file}
 						<div>
-							{#if file.type === 'image'}
+							{#if file.type === "image"}
 								<Image src={file.url} />
 							{/if}
 						</div>
@@ -486,67 +535,129 @@
 			{/if}
 			<!-- 工具检索 -->
 			{#if message?.toolflag}
-				{#if message?.tooltype == 'web' || message?.tooltype == 'bing'}
+				{#if message?.tooltype == "web" || message?.tooltype == "bing"}
 					<!-- 网站搜索 -->
 					{#if message?.parseInfo?.web}
-						<div class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2">
+						<div
+							class="flex flex-col max-w-full rounded-2xl bg-gray-100 dark:bg-gray-800 my-2"
+						>
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
-									<div class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+									<div
+										class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5"
+									>
 										<svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 1024 1024"
-                      class="w-[1rem] h-[1rem]" 
-                      fill="#D0A870">
-                      <path d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"/>
-                    </svg>
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 1024 1024"
+											class="w-[1rem] h-[1rem]"
+											fill="#D0A870"
+										>
+											<path
+												d="M512 0a512 512 0 0 0-512 512c0 136.768 53.248 265.344 149.952 362.048C243.712 967.68 392.512 1024 510.336 1024c12.672 0 47.616-1.536 70.144-4.544a40.576 40.576 0 0 0 35.2-43.968 40 40 0 0 0-45.12-35.456 432.96 432.96 0 0 1-20.608 2.304V88.32c70.656 29.184 133.376 133.44 160.128 273.216a40 40 0 0 0 78.592-15.04c-16.512-86.272-45.376-162.048-83.968-220.992a432.448 432.448 0 0 1 239.232 385.472c1.984 53.952 77.44 54.656 80 1.024V512A511.936 511.936 0 0 0 512 0zM313.216 128.512c-60.544 97.024-89.6 210.752-96.384 343.488h-135.04a432.832 432.832 0 0 1 231.424-343.488zM81.92 552h135.04c6.72 132.8 35.84 246.4 96.32 343.488A432.832 432.832 0 0 1 81.92 552z m388.096 383.616c-119.488-57.92-165.504-240.832-173.056-383.616h173.056v383.616z m0-463.616H296.96c7.552-142.592 53.568-325.76 173.056-383.616v383.616z m547.84 293.504a80 80 0 0 1-73.28 50.496h-36.992l72.448 150.656a40 40 0 1 1-72.064 34.624l-100.032-208a40 40 0 0 1 36.032-57.28h99.392a3.072 3.072 0 0 0 0.64-1.728l-210.816-190.144a1.28 1.28 0 0 0-0.192-0.128c-0.192 0-0.704 0.192-0.96 0.448v298.816c0 1.088 1.664 2.432 2.56 2.752 52.672 2.752 52.096 77.952-0.576 80h-0.256a83.712 83.712 0 0 1-81.728-82.752V544.768c0-31.68 17.856-59.712 46.656-73.088 28.8-13.44 61.888-9.088 86.272 11.392l216.896 195.84c22.144 23.36 28.224 56.576 16 86.592z"
+											/>
+										</svg>
 									</div>
 									<div class="flex flex-col ml-1">
-										<span class="text-sm">{ $i18n.t("Web Search") }</span>
-										<span class="text-xs"> {message?.parseInfo?.web.length} Results</span>
+										<span class="text-sm">{$i18n.t("Web Search")}</span>
+										<span class="text-xs">
+											{message?.parseInfo?.web.length} Results</span
+										>
 									</div>
 								</div>
-								<button on:click={() => {
-									handleWebHidden();
-								}}>
-									<svg 
+								<button
+									on:click={() => {
+										handleWebHidden();
+									}}
+								>
+									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										viewBox="0 0 15 15"
-										width="15" height="15"  
-										fill="currentColor"  
-										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
-										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+										width="15"
+										height="15"
+										fill="currentColor"
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 {webShow
+											? 'rotate-180'
+											: 'rotate-0'}"
+									>
+										<path
+											d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z"
+											fill-rule="evenodd"
+											clip-rule="evenodd"
+										/>
 									</svg>
 								</button>
-							</div>	
-							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
+							</div>
+							<div
+								class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow
+									? 'h-0'
+									: 'h-auto'}"
+							>
 								<div class="flex flex-row px-4 mr-2">
 									{#each message?.parseInfo?.web ?? [] as item}
-										<div class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4">
+										<div
+											class="flex flex-col rounded-2xl bg-white dark:bg-black mx-2 mb-4 p-4"
+										>
 											<div class="flex flex-row">
-												<div class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-[1.2rem] h-[1.2rem] s-Fb8Dy0t5csK5">
-														<path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" class="s-Fb8Dy0t5csK5"></path>
+												<div
+													class="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden"
+												>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														viewBox="0 0 16 16"
+														fill="currentColor"
+														class="w-[1.2rem] h-[1.2rem] s-Fb8Dy0t5csK5"
+													>
+														<path
+															d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"
+															class="s-Fb8Dy0t5csK5"
+														/>
 													</svg>
 												</div>
 												<div class="ml-2">
-													<div class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis">{@html highlightedText(item.title, message?.parseInfo?.keyword??"")}</div>
-													<div class="flex flex-row items-center w-[300px] text-xs">
-														<a class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]" href="{item.url}" target="_blank">{item.url}</a>
-														<svg 
-															xmlns="http://www.w3.org/2000/svg" 
-															width="55" 
-															height="55" 
-															viewBox="0 0 24 24" 
-															fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-															class="lucide lucide-external-link h-3 w-3 ml-2">
-															<path d="M15 3h6v6"></path><path d="M10 14 21 3"/>
-															<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+													<div
+														class="w-[300px] text-sm font-bold line-clamp-1 text-ellipsis"
+													>
+														{@html highlightedText(
+															item.title,
+															message?.parseInfo?.keyword ?? ""
+														)}
+													</div>
+													<div
+														class="flex flex-row items-center w-[300px] text-xs"
+													>
+														<a
+															class="flex-start text-gray-500 font-bold line-clamp-1 text-ellipsis max-w-[200px]"
+															href={item.url}
+															target="_blank">{item.url}</a
+														>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															width="55"
+															height="55"
+															viewBox="0 0 24 24"
+															fill="none"
+															stroke="currentColor"
+															stroke-width="2"
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															class="lucide lucide-external-link h-3 w-3 ml-2"
+														>
+															<path d="M15 3h6v6" /><path d="M10 14 21 3" />
+															<path
+																d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+															/>
 														</svg>
 													</div>
 												</div>
 											</div>
-											<div class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1">{@html highlightedText(item.content, message?.parseInfo?.keyword??"")}</div>
+											<div
+												class="text-xs text-gray-500 w-[300px] line-clamp-3 text-ellipsis mt-1"
+											>
+												{@html highlightedText(
+													item.content,
+													message?.parseInfo?.keyword ?? ""
+												)}
+											</div>
 										</div>
 									{/each}
 								</div>
@@ -554,7 +665,7 @@
 							<!-- {:else}
 								<div class="bg-white rounded-2xl mx-4 mb-4 p-2">
 									<Skeleton />
-								</div>			 -->	
+								</div>			 -->
 						</div>
 					{/if}
 					<!-- 图片搜索 -->
@@ -570,56 +681,105 @@
 						</div>
 					{/if} -->
 				{/if}
-				{#if message?.tooltype == 'youtube'}
+				{#if message?.tooltype == "youtube"}
 					<!-- youtube搜索 -->
 					{#if message?.parseInfo?.videos}
-						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
+						<div
+							class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2"
+						>
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
-									<div class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+									<div
+										class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5"
+									>
 										<svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 1024 1024"
-                      class="w-[1.2rem] h-[1.2rem]" 
-                      fill="#D0A870">
-                      	<path d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"/>
-                        <path d="M416.896 640l256-128.256-256-127.744z"/>
-                    </svg>
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 1024 1024"
+											class="w-[1.2rem] h-[1.2rem]"
+											fill="#D0A870"
+										>
+											<path
+												d="M759.466667 187.349333c-55.765333-3.797333-145.493333-6.016-246.272-6.016-99.456 0-191.744 2.261333-246.869334 6.016-178.645333 12.202667-179.285333 156.928-180.096 324.864 0.810667 167.509333 1.450667 312.192 180.138667 324.48 55.253333 3.712 147.669333 5.973333 247.210667 5.973334h0.042666c100.650667 0 190.250667-2.176 245.888-5.973334 178.645333-12.245333 179.285333-156.970667 180.096-324.906666-0.853333-167.552-1.536-312.277333-180.138666-324.437334z m-5.845334 564.181334c-52.949333 3.626667-142.72 5.802667-240.042666 5.802666h-0.042667c-97.706667 0-187.989333-2.176-241.408-5.802666-79.36-5.461333-99.626667-29.696-100.565333-239.317334 0.938667-210.048 21.205333-234.325333 100.565333-239.701333 53.290667-3.669333 143.402667-5.845333 241.024-5.845333 97.450667 0 187.349333 2.176 240.469333 5.845333 79.36 5.376 99.626667 29.610667 100.565334 239.274667-0.938667 210.090667-21.205333 234.325333-100.565334 239.744z"
+											/>
+											<path d="M416.896 640l256-128.256-256-127.744z" />
+										</svg>
 									</div>
 									<div class="flex flex-col ml-1">
-										<span class="text-sm">{ $i18n.t("YouTube Search") }</span>
-										<span class="text-xs"> {message?.parseInfo?.videos.length} videos</span>
+										<span class="text-sm">{$i18n.t("YouTube Search")}</span>
+										<span class="text-xs">
+											{message?.parseInfo?.videos.length} videos</span
+										>
 									</div>
 								</div>
-								<button on:click={() => {
-									handleWebHidden();
-								}}>
-									<svg 
+								<button
+									on:click={() => {
+										handleWebHidden();
+									}}
+								>
+									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										viewBox="0 0 15 15"
-										width="15" height="15"  
-										fill="currentColor"  
-										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
-										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+										width="15"
+										height="15"
+										fill="currentColor"
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 {webShow
+											? 'rotate-180'
+											: 'rotate-0'}"
+									>
+										<path
+											d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z"
+											fill-rule="evenodd"
+											clip-rule="evenodd"
+										/>
 									</svg>
 								</button>
-							</div>	
-							<div class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow ? 'h-0' : 'h-auto'}">
+							</div>
+							<div
+								class="w-full transition ease-in-out delay-150 overflow-x-auto {webShow
+									? 'h-0'
+									: 'h-auto'}"
+							>
 								<div class="flex flex-row px-4 mr-2">
 									{#each message?.parseInfo?.videos ?? [] as item}
-										<div class="flex flex-col rounded-xl bg-white dark:bg-black mx-2 mb-4 pb-2">
-											<a class="flex flex-col w-[230px]" href="{item.video_url}" target="_blank">
-												<img class="rounded-t-xl drag-none" src={item.thumbnail_url} alt=""/>
+										<div
+											class="flex flex-col rounded-xl bg-white dark:bg-black mx-2 mb-4 pb-2"
+										>
+											<a
+												class="flex flex-col w-[230px]"
+												href={item.video_url}
+												target="_blank"
+											>
+												<img
+													class="rounded-t-xl drag-none"
+													src={item.thumbnail_url}
+													alt=""
+												/>
 												<div class="px-3 py-2">
-													<span class="line-clamp-2 text-ellipsis">{item.title}</span>
+													<span class="line-clamp-2 text-ellipsis"
+														>{item.title}</span
+													>
 													<div class="flex flex-row items-center mt-1">
 														<div class="w-[20px]">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round h-4 w-4 text-red-500">
-																<circle cx="12" cy="8" r="5"></circle>
-																<path d="M20 21a8 8 0 0 0-16 0"></path>
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																width="24"
+																height="24"
+																viewBox="0 0 24 24"
+																fill="none"
+																stroke="currentColor"
+																stroke-width="2"
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																class="lucide lucide-user-round h-4 w-4 text-red-500"
+															>
+																<circle cx="12" cy="8" r="5" />
+																<path d="M20 21a8 8 0 0 0-16 0" />
 															</svg>
 														</div>
-														<span class="ml-1 line-clamp-1 text-ellipsis text-sm">{item.channel_title}</span>
+														<span
+															class="ml-1 line-clamp-1 text-ellipsis text-sm"
+															>{item.channel_title}</span
+														>
 													</div>
 												</div>
 											</a>
@@ -630,46 +790,69 @@
 						</div>
 					{/if}
 				{/if}
-				{#if message?.tooltype == 'twitter'}
+				{#if message?.tooltype == "twitter"}
 					<!-- twitter搜索 -->
 					{#if message?.parseInfo?.content}
-						<div class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2">
+						<div
+							class="flex flex-col w-full rounded-xl bg-gray-100 dark:bg-gray-800 my-2"
+						>
 							<div class="flex justify-between items-center h-[55px] p-4">
 								<div class="flex flex-row items-center text-sm font-bold">
-									<div class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5">
+									<div
+										class="flex items-center justify-center bg-gray-50 dark:bg-gray-600 rounded-full size-[2rem] p-1.5"
+									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 1024 1024"
-											class="w-[1.5rem] h-[1.5rem]" 
-											fill="#D0A870">
-											<path d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"/>
+											class="w-[1.5rem] h-[1.5rem]"
+											fill="#D0A870"
+										>
+											<path
+												d="M761.759375 122h132.320625L605 452.4003125 945.08 902H678.8L470.24 629.3196875 231.599375 902H99.2l309.1996875-353.4L82.16 122h273.0403125l188.52 249.24z m-46.4390625 700.8h73.32L315.359375 197.0403125h-78.680625z"
+											/>
 										</svg>
 									</div>
 									<div class="flex flex-col ml-1">
-										<span class="text-sm">{ $i18n.t("Twitter Search") }</span>
-										<span class="text-xs"> {message?.parseInfo?.content.length} tweets</span>
+										<span class="text-sm">{$i18n.t("Twitter Search")}</span>
+										<span class="text-xs">
+											{message?.parseInfo?.content.length} tweets</span
+										>
 									</div>
 								</div>
-								<button on:click={() => {
-									handleWebHidden();
-								}}>
-									<svg 
+								<button
+									on:click={() => {
+										handleWebHidden();
+									}}
+								>
+									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										viewBox="0 0 15 15"
-										width="15" height="15"  
-										fill="currentColor"  
-										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 { webShow ? 'rotate-180' : 'rotate-0'}">
-										<path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill-rule="evenodd" clip-rule="evenodd"/>
+										width="15"
+										height="15"
+										fill="currentColor"
+										class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 {webShow
+											? 'rotate-180'
+											: 'rotate-0'}"
+									>
+										<path
+											d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z"
+											fill-rule="evenodd"
+											clip-rule="evenodd"
+										/>
 									</svg>
 								</button>
-							</div>	
-							<div class="w-full transition ease-in-out delay-150 overflow-x-auto overflow-y-hidden {webShow ? 'h-0' : 'h-auto'}">
+							</div>
+							<div
+								class="w-full transition ease-in-out delay-150 overflow-x-auto overflow-y-hidden {webShow
+									? 'h-0'
+									: 'h-auto'}"
+							>
 								<div class="flex flex-row px-4 mr-2">
 									{#each message?.parseInfo?.content ?? [] as item}
 										<!-- 带自定义选项 -->
-										 	<div class="mr-3 h-[300px]">
-												<TwitterEmbed data="{item}"/>
-										 	</div>
+										<div class="mr-3 h-[300px]">
+											<TwitterEmbed data={item} />
+										</div>
 									{/each}
 								</div>
 							</div>
@@ -677,26 +860,30 @@
 					{/if}
 				{/if}
 			{/if}
-			
+
 			<!-- 文本输出 -->
 			<div
-					class="prose chat-{message.role} w-full max-w-full dark:prose-invert prose-headings:my-0 prose-p:m-0 prose-p:-mb-6 prose-pre:my-0 prose-table:my-0 prose-blockquote:my-0 prose-img:my-0 prose-ul:-my-4 prose-ol:-my-4 prose-li:-my-3 prose-ul:-mb-6 prose-ol:-mb-8 prose-ol:p-0 prose-li:-mb-4 whitespace-pre-line"
-				>
+				class="prose chat-{message.role} w-full max-w-full dark:prose-invert prose-headings:my-0 prose-p:m-0 prose-p:-mb-6 prose-pre:my-0 prose-table:my-0 prose-blockquote:my-0 prose-img:my-0 prose-ul:-my-4 prose-ol:-my-4 prose-li:-my-3 prose-ul:-mb-6 prose-ol:-mb-8 prose-ol:p-0 prose-li:-mb-4 whitespace-pre-line"
+			>
 				<div>
 					{#if edit === true}
-						<div class="w-full bg-gray-50 dark:bg-gray-800 rounded-3xl px-5 py-3 my-2">
+						<div
+							class="w-full bg-gray-50 dark:bg-gray-800 rounded-3xl px-5 py-3 my-2"
+						>
 							<textarea
 								id="message-edit-{message.id}"
 								bind:this={editTextAreaElement}
 								class=" bg-transparent outline-none w-full resize-none"
 								bind:value={editedContent}
 								on:input={(e) => {
-									e.target.style.height = '';
+									e.target.style.height = "";
 									e.target.style.height = `${e.target.scrollHeight}px`;
 								}}
 							/>
 
-							<div class=" mt-2 mb-1 flex justify-end space-x-1.5 text-sm font-medium">
+							<div
+								class=" mt-2 mb-1 flex justify-end space-x-1.5 text-sm font-medium"
+							>
 								<button
 									id="close-edit-message-button"
 									class=" px-4 py-2 bg-gray-900 hover:bg-gray-850 text-gray-100 transition rounded-3xl"
@@ -704,7 +891,7 @@
 										cancelEditMessage();
 									}}
 								>
-									{$i18n.t('Cancel')}
+									{$i18n.t("Cancel")}
 								</button>
 
 								<button
@@ -714,7 +901,7 @@
 										editMessageConfirmHandler();
 									}}
 								>
-									{$i18n.t('Save')}
+									{$i18n.t("Save")}
 								</button>
 							</div>
 						</div>
@@ -741,15 +928,29 @@
 
 									<div class=" self-center flex-1">
 										<!-- 默认错误输出信息 -->
-										{$i18n.t("It seems that you are offline. Please reconnect to send messages.")}
+										{$i18n.t(
+											"It seems that you are offline. Please reconnect to send messages."
+										)}
 									</div>
 									{#if isLastMessage}
-										<button on:click={() => {
-											resentMessage(message?.parentId);
-										}}>
-											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1402 1024" version="1.1" fill="currentColor" class="w-5 h-5 self-center">
-												<path d="M56.256426 523.180601a54.884318 54.884318 0 0 1-37.046915-94.675448l189.350896-177.001925a54.884318 54.884318 0 0 1 75.465937 1.372108l181.118249 177.001925a54.884318 54.884318 0 0 1-76.838045 78.210153L244.235214 366.760296 93.30334 508.087414a54.884318 54.884318 0 0 1-37.046914 15.093187zM1166.291751 789.369542a54.884318 54.884318 0 0 1-37.046914-15.093188L938.521833 597.27443a55.337113 55.337113 0 1 1 75.465937-80.954369l150.931873 142.699226 144.071334-141.327118a54.884318 54.884318 0 0 1 76.838045 78.210153L1204.710774 774.276354a54.884318 54.884318 0 0 1-38.419023 15.093188z"/>
-												<path d="M1163.547535 785.253218a54.884318 54.884318 0 0 1-54.884317-54.884318V513.575845c0-222.281487-181.118248-403.399735-403.399736-403.399735a403.399735 403.399735 0 0 0-264.816832 98.791772 54.922737 54.922737 0 0 1-72.721721-82.326476 513.16837 513.16837 0 0 1 850.706924 386.934439v216.793055a54.884318 54.884318 0 0 1-54.884318 54.884318zM705.263482 1024a513.16837 513.16837 0 0 1-513.16837-513.16837V294.038575a54.884318 54.884318 0 0 1 109.768635 0v216.793055c0 222.281487 181.118248 403.399735 403.399735 403.399735a402.027627 402.027627 0 0 0 271.677373-105.652312 54.884318 54.884318 0 0 1 74.093829 80.954369 511.796263 511.796263 0 0 1-345.771202 134.466578z"/>
+										<button
+											on:click={() => {
+												resentMessage(message?.parentId);
+											}}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												viewBox="0 0 1402 1024"
+												version="1.1"
+												fill="currentColor"
+												class="w-5 h-5 self-center"
+											>
+												<path
+													d="M56.256426 523.180601a54.884318 54.884318 0 0 1-37.046915-94.675448l189.350896-177.001925a54.884318 54.884318 0 0 1 75.465937 1.372108l181.118249 177.001925a54.884318 54.884318 0 0 1-76.838045 78.210153L244.235214 366.760296 93.30334 508.087414a54.884318 54.884318 0 0 1-37.046914 15.093187zM1166.291751 789.369542a54.884318 54.884318 0 0 1-37.046914-15.093188L938.521833 597.27443a55.337113 55.337113 0 1 1 75.465937-80.954369l150.931873 142.699226 144.071334-141.327118a54.884318 54.884318 0 0 1 76.838045 78.210153L1204.710774 774.276354a54.884318 54.884318 0 0 1-38.419023 15.093188z"
+												/>
+												<path
+													d="M1163.547535 785.253218a54.884318 54.884318 0 0 1-54.884317-54.884318V513.575845c0-222.281487-181.118248-403.399735-403.399736-403.399735a403.399735 403.399735 0 0 0-264.816832 98.791772 54.922737 54.922737 0 0 1-72.721721-82.326476 513.16837 513.16837 0 0 1 850.706924 386.934439v216.793055a54.884318 54.884318 0 0 1-54.884318 54.884318zM705.263482 1024a513.16837 513.16837 0 0 1-513.16837-513.16837V294.038575a54.884318 54.884318 0 0 1 109.768635 0v216.793055c0 222.281487 181.118248 403.399735 403.399735 403.399735a402.027627 402.027627 0 0 0 271.677373-105.652312 54.884318 54.884318 0 0 1 74.093829 80.954369 511.796263 511.796263 0 0 1-345.771202 134.466578z"
+												/>
 											</svg>
 										</button>
 									{/if}
@@ -775,23 +976,30 @@
 									<div class=" self-center">
 										{message.content}
 										{#if $user?.id?.startsWith("0x")}
-											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
-												on:click={() => { $showPriceModal = true; }}>
+											<button
+												class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+												on:click={() => {
+													$showPriceModal = true;
+												}}
+											>
 												{$i18n.t("Click To Upgrade")}
 											</button>
 										{:else}
-											<button class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
-												on:click={() => { 
+											<button
+												class="primaryButton text-white text-sm px-2 py-1 rounded-lg"
+												on:click={() => {
 													$showSidebar = true;
-          								$showWalletView = true; }}>
+													$showWalletView = true;
+												}}
+											>
 												{$i18n.t("Enter wallet")}
 											</button>
 										{/if}
 									</div>
 								</div>
-							{:else if message.content === '' && !message?.done}
+							{:else if message.content === "" && !message?.done}
 								{#if message.search}
-									{#if message?.parseInfo?.web || message?.parseInfo?.videos || message?.parseInfo?.content}	
+									{#if message?.parseInfo?.web || message?.parseInfo?.videos || message?.parseInfo?.content}
 										<Skeleton />
 									{/if}
 								{:else}
@@ -799,33 +1007,58 @@
 								{/if}
 							{:else}
 								{#each tokens as token, tokenIdx}
-									{#if token.type === 'thinking'}
-										<button class="flex"
+									{#if token.type === "thinking"}
+										<button
+											class="flex"
 											on:click={() => {
-											  thinkHiden = !thinkHiden;
-											}}>
+												thinkHiden = !thinkHiden;
+											}}
+										>
 											{#if message.done}
 												<div class="flex flex-wrap">
-													<span class="flex-start">{ $i18n.t("have thought deeply") } </span>
-													<span class="flex-start">({ $i18n.t("Last for {{ time }} seconds", {time:(message?.replytime - message?.timestamp) % 60}) })</span>
+													<span class="flex-start"
+														>{$i18n.t("have thought deeply")}
+													</span>
+													<span class="flex-start"
+														>({$i18n.t("Last for {{ time }} seconds", {
+															time:
+																(message?.replytime - message?.timestamp) % 60,
+														})})</span
+													>
 												</div>
 											{:else}
-												<span>{ $i18n.t("thinking...") }</span>
+												<span>{$i18n.t("thinking...")}</span>
 											{/if}
-											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-												class=" self-center ml-2 size-5 transition duration-150 {thinkHiden ? 'rotate-180' : ''}">
-												<path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke-width="1.5"
+												stroke="currentColor"
+												class=" self-center ml-2 size-5 transition duration-150 {thinkHiden
+													? 'rotate-180'
+													: ''}"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="m19.5 8.25-7.5 7.5-7.5-7.5"
+												/>
 											</svg>
 										</button>
-										<div class="border-l-2 border-slate-200 pl-3 my-2 transition duration-150 {thinkHiden?'hidden':''}">
+										<div
+											class="border-l-2 border-slate-200 pl-3 my-2 transition duration-150 {thinkHiden
+												? 'hidden'
+												: ''}"
+										>
 											{@html marked.parse(token.raw, {
 												...defaults,
 												gfm: true,
 												breaks: true,
-												renderer
+												renderer,
 											})}
-										</div>	
-									{:else if token.type === 'code'}
+										</div>
+									{:else if token.type === "code"}
 										<CodeBlock
 											id={`${message.id}-${tokenIdx}`}
 											lang={token.lang}
@@ -836,7 +1069,7 @@
 											...defaults,
 											gfm: true,
 											breaks: true,
-											renderer
+											renderer,
 										})}
 									{/if}
 								{/each}
@@ -847,7 +1080,7 @@
 									{#each message.citations.reduce((acc, citation) => {
 										citation.document.forEach((document, index) => {
 											const metadata = citation.metadata?.[index];
-											const id = metadata?.source ?? 'N/A';
+											const id = metadata?.source ?? "N/A";
 
 											const existingSource = acc.find((item) => item.id === id);
 
@@ -868,7 +1101,9 @@
 													selectedCitation = citation;
 												}}
 											>
-												<div class="bg-white dark:bg-gray-700 rounded-full size-4">
+												<div
+													class="bg-white dark:bg-gray-700 rounded-full size-4"
+												>
 													{idx + 1}
 												</div>
 												<div class="flex-1 mx-2 line-clamp-1">
@@ -936,9 +1171,17 @@
 												</svg>
 											</button>
 											{#if message.done}
-												<div class="truncate">{ $i18n.t("Generated by") } {siblings.length} {siblings.length > 1 ? 'LLMs' : 'LLM'}</div>
+												<div class="truncate">
+													{$i18n.t("Generated by")}
+													{siblings.length}
+													{siblings.length > 1 ? "LLMs" : "LLM"}
+												</div>
 											{:else}
-												<div class="truncate">{ $i18n.t("Generating by") } {siblings.length} {siblings.length > 1 ? 'LLMs' : 'LLM'}</div>
+												<div class="truncate">
+													{$i18n.t("Generating by")}
+													{siblings.length}
+													{siblings.length > 1 ? "LLMs" : "LLM"}
+												</div>
 											{/if}
 										</div>
 									{/if}
@@ -946,7 +1189,7 @@
 									{#if message.done}
 										<div class="flex justify-start min-w-fit mr-4">
 											{#if !readOnly}
-												<Tooltip content={$i18n.t('Edit')} placement="bottom">
+												<Tooltip content={$i18n.t("Edit")} placement="bottom">
 													<button
 														class="{isLastMessage
 															? 'visible'
@@ -973,7 +1216,7 @@
 												</Tooltip>
 											{/if}
 
-											<Tooltip content={$i18n.t('Copy')} placement="bottom">
+											<Tooltip content={$i18n.t("Copy")} placement="bottom">
 												<button
 													class="{isLastMessage
 														? 'visible'
@@ -999,15 +1242,26 @@
 												</button>
 											</Tooltip>
 
-											<Tooltip content={$i18n.t('Read Aloud')} placement="bottom">
+											<Tooltip
+												content={$i18n.t("Read Aloud")}
+												placement="bottom"
+											>
 												<button
 													id="speak-button-{message.id}"
 													class="{isLastMessage
 														? 'visible'
 														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition"
-													on:click={() => {
+													on:click={ async () => {
 														if (!loadingSpeech) {
-															toggleSpeakMessage(message);
+															if (message?.audio) {
+																if (isPlaying) {
+																	pausePCMAudio();
+																} else {
+																	await playPCMAudio();
+																}																
+															} else {
+																toggleSpeakMessage(message);
+															}														
 														}
 													}}
 												>
@@ -1034,7 +1288,12 @@
 																		opacity: 0.2;
 																	}
 																}
-															</style><circle class="spinner_S1WN" cx="4" cy="12" r="3" /><circle
+															</style><circle
+																class="spinner_S1WN"
+																cx="4"
+																cy="12"
+																r="3"
+															/><circle
 																class="spinner_S1WN spinner_Km9P"
 																cx="12"
 																cy="12"
@@ -1115,7 +1374,12 @@
 																			opacity: 0.2;
 																		}
 																	}
-																</style><circle class="spinner_S1WN" cx="4" cy="12" r="3" /><circle
+																</style><circle
+																	class="spinner_S1WN"
+																	cx="4"
+																	cy="12"
+																	r="3"
+																/><circle
 																	class="spinner_S1WN spinner_Km9P"
 																	cx="12"
 																	cy="12"
@@ -1148,7 +1412,10 @@
 											{/if}
 
 											{#if message.info}
-												<Tooltip content={$i18n.t('Generation Info')} placement="bottom">
+												<Tooltip
+													content={$i18n.t("Generation Info")}
+													placement="bottom"
+												>
 													<button
 														class=" {isLastMessage
 															? 'visible'
@@ -1177,7 +1444,10 @@
 											{/if}
 
 											{#if !readOnly}
-												<Tooltip content={$i18n.t('Good Response')} placement="bottom">
+												<Tooltip
+													content={$i18n.t("Good Response")}
+													placement="bottom"
+												>
 													<button
 														class="{isLastMessage
 															? 'visible'
@@ -1191,7 +1461,9 @@
 
 															window.setTimeout(() => {
 																document
-																	.getElementById(`message-feedback-${message.id}`)
+																	.getElementById(
+																		`message-feedback-${message.id}`
+																	)
 																	?.scrollIntoView();
 															}, 0);
 														}}
@@ -1212,7 +1484,10 @@
 													</button>
 												</Tooltip>
 
-												<Tooltip content={$i18n.t('Bad Response')} placement="bottom">
+												<Tooltip
+													content={$i18n.t("Bad Response")}
+													placement="bottom"
+												>
 													<button
 														class="{isLastMessage
 															? 'visible'
@@ -1225,7 +1500,9 @@
 															showRateComment = true;
 															window.setTimeout(() => {
 																document
-																	.getElementById(`message-feedback-${message.id}`)
+																	.getElementById(
+																		`message-feedback-${message.id}`
+																	)
 																	?.scrollIntoView();
 															}, 0);
 														}}
@@ -1248,7 +1525,10 @@
 											{/if}
 
 											{#if isLastMessage && !readOnly}
-												<Tooltip content={$i18n.t('Continue Response')} placement="bottom">
+												<Tooltip
+													content={$i18n.t("Continue Response")}
+													placement="bottom"
+												>
 													<button
 														type="button"
 														class="{isLastMessage
@@ -1280,7 +1560,10 @@
 													</button>
 												</Tooltip>
 
-												<Tooltip content={$i18n.t('Regenerate')} placement="bottom">
+												<Tooltip
+													content={$i18n.t("Regenerate")}
+													placement="bottom"
+												>
 													<button
 														type="button"
 														class="{isLastMessage
@@ -1341,9 +1624,9 @@
 	}
 
 	.drag-none {
-    -webkit-user-drag: none;
-    -moz-user-drag: none;
-    -ms-user-drag: none;
-    user-drag: none;
-  }
+		-webkit-user-drag: none;
+		-moz-user-drag: none;
+		-ms-user-drag: none;
+		user-drag: none;
+	}
 </style>

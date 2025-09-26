@@ -167,19 +167,10 @@
     faceliveness(MetaInfo).then(async (res) => {
       faceLivenessInitialData = res;
       if (res.transaction_url) {
-        if (isMobile) {
-          if (checkUniapp()) {
-            faceUrl.set({
-              url: res.transaction_url
-            })
-            goto("/kyc")
-          } else {
-            await goto(res.transaction_url);
-          }
-        } else {
-          faceTime = new Date(res.face_time);
-          getQrCode(res.transaction_url);
-        }
+        faceUrl.set({
+          url: res.transaction_url
+        })
+        goto("/kyc")
       } else {
         toast.error(res.data.message);
       }
@@ -198,7 +189,7 @@
   function getQrCode(url: string) {
     let token = localStorage.token;
     let lang = $i18n.language;
-    url = "https://test.degpt.ai/kyc/ewm?token=" + token + "&lang=" + lang;
+    url = `${WEBUI_BASE_URL}/kyc/ewm?token=${token}&lang=${lang}`;
     console.log("============ewm_url==========", url);
     let qrConfig = {
       errorCorrectionLevel: 'M',

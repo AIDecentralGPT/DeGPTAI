@@ -8,7 +8,8 @@
     mobile,
     deApiBaseUrl,
     inviterId,
-    channel
+    channel,
+    showAppVersionModel
   } from "$lib/stores";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
@@ -20,20 +21,34 @@
   import "../app.css";
 
   // 打开调试模式
-  // import VConsole from 'vconsole';
-  // const vConsole = new VConsole();
+  import VConsole from 'vconsole';
+  const vConsole = new VConsole();
 
 
   import "tippy.js/dist/tippy.css";
 
-  import { WEBUI_BASE_URL } from "$lib/constants";
+  import { WEBUI_BASE_URL, appVersionCode } from "$lib/constants";
   import i18n, { initI18n } from "$lib/i18n";
-  import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
+  import { getAppVersion, getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
   import { addErrorLog } from '$lib/apis/errorlog';
+  import AppVersionModal from '$lib/components/appversion/AppVersionModal.svelte';
 
   setContext("i18n", i18n);
   let loaded = false;
   const BREAKPOINT = 768;
+
+  // 获取APP版本
+  let versionData = {versionName:"", desc:[], url: ""};
+  async function initAppVersion() {
+    getAppVersion().then((data) => {
+      if (data) {
+        if (data.versionCode != appVersionCode) {
+          versionData = data;
+          $showAppVersionModel = true;
+        }
+      }
+    });
+  }
 
   // 挂载serviceWorker
   async function registServiceWorker() {
@@ -148,6 +163,7 @@
   }
 
   onMount(async () => {
+    await initAppVersion();
     await registServiceWorker();
     try {
       let currentAddress = window.location.href;
@@ -162,6 +178,8 @@
     }
   });
 </script>
+
+<AppVersionModal bind:show={$showAppVersionModel} bind:versionData={versionData}/>
 
 <svelte:head>
   <title>{$WEBUI_NAME}</title>

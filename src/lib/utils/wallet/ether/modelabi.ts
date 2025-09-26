@@ -10,7 +10,8 @@ import { config } from "$lib/utils/wallet/walletconnect/index";
 
 // DGC 合约信息
 // const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧合约地址
-const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新合约地址
+// const DGC_TOKEN_CONTRACT_ADDRESS = '0x18386F368e7C211E84324337fA8f62d5093272E1'; // 新合约地址
+const DGC_TOKEN_CONTRACT_ADDRESS = '0x8E5e4a4d8aE3741DA073303e492B73cb913fb72D'; // 新合约地址
 
 // const modelUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 合约RPC网址
 const modelUrl = "https://rpc1.dbcwallet.io"; // 新 合约RPC网址

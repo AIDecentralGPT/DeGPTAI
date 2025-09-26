@@ -4,12 +4,13 @@
   import {
     mobile,
     modelfiles,
+    models,
     settings,
     showNewWalletModal,
     showOpenWalletModal,
     showSidebar,
     toolflag,
-    tooltype
+    tooltype,
   } from "$lib/stores";
   import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
 
@@ -36,7 +37,9 @@
   import Tooltip from "../common/Tooltip.svelte";
   import XMark from "$lib/components/icons/XMark.svelte";
   import { user as userStore } from "$lib/stores";
-  import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
+  import FileSvg from "$lib/components/chat/Messages/FileSvg.svelte";
+  import { RealTimeSpeech } from "../../../plugins/rtspeech";
+  import { VoiceRecord } from "../../../plugins/voice";
 
   const i18n = getContext("i18n");
 
@@ -45,6 +48,7 @@
 
   export let autoScroll = true;
   export let selectedModel = "";
+  export let switchModel: any = [];
   // export let deepsearch = false;
 
   let chatTextAreaElement: HTMLTextAreaElement;
@@ -62,10 +66,10 @@
 
   // 文件选择
   export let files: any[] = [];
-  export let toolInfo: any = {url: "", trantip: ""};
+  export let toolInfo: any = { url: "", trantip: "" };
 
   export let fileUploadEnabled = true;
-  // export let speechRecognitionEnabled = true;
+  export let speechRecognitionEnabled = true;
 
   export let prompt = "";
   export let chatInputPlaceholder = "";
@@ -74,16 +78,15 @@
   // 要翻译的语言
   let tranlang = "";
 
-  let speechRecognition: any;
-  
+  // let speechRecognition: any;
 
   let selectUrlUserPrompt = [
-		"Analyze the content of the web page",
+    "Analyze the content of the web page",
     "Summarize the web page",
     "Extract the key data from the web page",
-		"Tell me what the web page is about",
-		"Write an original article referring to the web page"
-	];
+    "Tell me what the web page is about",
+    "Write an original article referring to the web page",
+  ];
 
   $: if (prompt) {
     if (chatTextAreaElement) {
@@ -93,7 +96,7 @@
     }
   }
 
-  $: if(chatInputPlaceholder) {
+  $: if (chatInputPlaceholder) {
     if (chatTextAreaElement) {
       chatTextAreaElement.style.height = "";
       chatTextAreaElement.style.height =
@@ -105,15 +108,35 @@
     files = [];
   }
 
-  let mediaRecorder: any;
-  let audioChunks: any[] = [];
-  let isRecording = false;
-  const MIN_DECIBELS = -45;
+  $: if (switchModel) {
+    // const userselmodels = $models.filter(item => switchModel.includes(item.id));
+    // if (userselmodels.length > 0) {
+    //   const support = userselmodels[0]?.support;
+    //   if (support == "audio") {
+    //     fileUploadEnabled = false;
+    //     speechRecognitionEnabled = true;
+    //     isRecording = false;
+    //   } else if (support == "image") {
+    //     fileUploadEnabled = true;
+    //     speechRecognitionEnabled = false;
+    //     isRecording = false;
+    //   } else {
+    //     fileUploadEnabled = false;
+    //     speechRecognitionEnabled = false;
+    //     isRecording = false;
+    //   }
+    // }
+  }
 
   const scrollToBottom = () => {
     const element = document.getElementById("messages-container");
     element.scrollTop = element.scrollHeight;
   };
+
+  let mediaRecorder: any;
+  let audioChunks: any[] = [];
+  let isRecording = false;
+  const MIN_DECIBELS = -45;
 
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -145,7 +168,7 @@
         chatTextAreaElement?.focus();
 
         if (prompt !== "" && $settings?.speechAutoSend === true) {
-          submitPrompt(prompt, toolInfo, user);
+          submitPrompt(prompt, { url: "", trantip: "" }, user);
         }
       }
 
@@ -202,90 +225,121 @@
     window.URL.revokeObjectURL(url);
   };
 
-  const speechRecognitionHandler = () => {
-    // Check if SpeechRecognition is supported
+  // const speechRecognitionHandler = () => {
+  //   // Check if SpeechRecognition is supported
+  //   if (isRecording) {
+  //     if (speechRecognition) {
+  //       speechRecognition.stop();
+  //     }
 
+  //     if (mediaRecorder) {
+  //       mediaRecorder.stop();
+  //     }
+  //     isRecording = false;
+  //   } else {
+  //     isRecording = true;
+
+  //     if ($settings?.audio?.STTEngine ?? "" !== "") {
+  //       startRecording();
+  //     } else {
+  //       if (
+  //         "SpeechRecognition" in window ||
+  //         "webkitSpeechRecognition" in window
+  //       ) {
+  //         // Create a SpeechRecognition object
+  //         speechRecognition = new (window.SpeechRecognition ||
+  //           window.webkitSpeechRecognition)();
+
+  //         // Set continuous to true for continuous recognition
+  //         speechRecognition.continuous = true;
+  //         speechRecognition.interimResults = true;
+
+  //         // Set the timeout for turning off the recognition after inactivity (in milliseconds)
+  //         // const inactivityTimeout = 3000; // 3 seconds
+
+  //         // let timeoutId;
+  //         // Start recognition
+  //         speechRecognition.start();
+
+  //         // Event triggered when speech is recognized
+  //         speechRecognition.onresult = async (event) => {
+  //           // Clear the inactivity timeout
+  //           // clearTimeout(timeoutId);
+
+  //           // Handle recognized speech
+  //           console.log(event);
+  //           const transcript =
+  //             event.results[Object.keys(event.results).length - 1][0]
+  //               .transcript;
+
+  //           prompt = `${prompt}${transcript}`;
+
+  //           await tick();
+  //           chatTextAreaElement?.focus();
+
+  //           // Restart the inactivity timeout
+  //           // timeoutId = setTimeout(() => {
+  //           //   console.log("Speech recognition turned off due to inactivity.");
+  //           //   speechRecognition.stop();
+  //           // }, inactivityTimeout);
+  //         };
+
+  //         // Event triggered when recognition is ended
+  //         speechRecognition.onend = function () {
+  //           // Restart recognition after it ends
+  //           // console.log("recognition ended");
+  //           // isRecording = false;
+  //           // if (prompt !== "" && $settings?.speechAutoSend === true) {
+  //           //   submitPrompt(prompt, toolInfo, user);
+  //           // }
+  //           if (isRecording) {
+  //             speechRecognition.start();
+  //           } else {
+  //             if (speechRecognition) {
+  //               speechRecognition.stop();
+  //             }
+  //             if (mediaRecorder) {
+  //               mediaRecorder.stop();
+  //             }
+  //           }
+  //         };
+
+  //         // Event triggered when an error occurs
+  //         speechRecognition.onerror = function (event) {
+  //           console.log(event);
+  //           // toast.error(
+  //           //   $i18n.t(`Speech recognition error: {{error}}`, {
+  //           //     error: event.error,
+  //           //   })
+  //           // );
+  //           // isRecording = false;
+  //         };
+  //       } else {
+  //         toast.error(
+  //           $i18n.t("SpeechRecognition API is not supported in this browser.")
+  //         );
+  //       }
+  //     }
+  //   }
+  // };
+
+  const speechRecognitionHandler = async () => {
     if (isRecording) {
-      if (speechRecognition) {
-        speechRecognition.stop();
-      }
-
-      if (mediaRecorder) {
-        mediaRecorder.stop();
-      }
+      isRecording = false;
     } else {
-      isRecording = true;
-
-      if ($settings?.audio?.STTEngine ?? "" !== "") {
-        startRecording();
-      } else {
-        if (
-          "SpeechRecognition" in window ||
-          "webkitSpeechRecognition" in window
-        ) {
-          // Create a SpeechRecognition object
-          speechRecognition = new (window.SpeechRecognition ||
-            window.webkitSpeechRecognition)();
-
-          // Set continuous to true for continuous recognition
-          speechRecognition.continuous = true;
-
-          // Set the timeout for turning off the recognition after inactivity (in milliseconds)
-          const inactivityTimeout = 3000; // 3 seconds
-
-          let timeoutId;
-          // Start recognition
-          speechRecognition.start();
-
-          // Event triggered when speech is recognized
-          speechRecognition.onresult = async (event) => {
-            // Clear the inactivity timeout
-            clearTimeout(timeoutId);
-
-            // Handle recognized speech
-            console.log(event);
-            const transcript =
-              event.results[Object.keys(event.results).length - 1][0]
-                .transcript;
-
-            prompt = `${prompt}${transcript}`;
-
-            await tick();
-            chatTextAreaElement?.focus();
-
-            // Restart the inactivity timeout
-            timeoutId = setTimeout(() => {
-              console.log("Speech recognition turned off due to inactivity.");
-              speechRecognition.stop();
-            }, inactivityTimeout);
-          };
-
-          // Event triggered when recognition is ended
-          speechRecognition.onend = function () {
-            // Restart recognition after it ends
-            console.log("recognition ended");
-            isRecording = false;
-            if (prompt !== "" && $settings?.speechAutoSend === true) {
-              submitPrompt(prompt, toolInfo, user);
-            }
-          };
-
-          // Event triggered when an error occurs
-          speechRecognition.onerror = function (event) {
-            console.log(event);
-            toast.error(
-              $i18n.t(`Speech recognition error: {{error}}`, {
-                error: event.error,
-              })
-            );
-            isRecording = false;
-          };
-        } else {
+      const perState = await VoiceRecord.checkPermissions();
+      if (perState.audio != "granted") {
+        const perState = await VoiceRecord.requestPermissions();
+        if (perState.audio != "granted") {
           toast.error(
-            $i18n.t("SpeechRecognition API is not supported in this browser.")
+            $i18n.t(
+              "Your device does not support the speech recognition function."
+            )
           );
+          return;
         }
       }
+      isRecording = true;
     }
   };
 
@@ -301,6 +355,7 @@
       text: "",
       image: [],
       error: "",
+      url: "",
     };
 
     try {
@@ -326,9 +381,10 @@
       if (res) {
         doc.upload_status = true;
         doc.collection_name = res.collection_name;
-        doc.anaylis_type = res.anaylis_type
+        doc.anaylis_type = res.anaylis_type;
         doc.text = res.text;
         doc.image = res.image;
+        doc.url = res.url;
         files = files;
       }
     } catch (e) {
@@ -400,6 +456,8 @@
   onMount(() => {
     // window.setTimeout(() => chatTextAreaElement?.focus(), 0);
 
+    // 注册语音事件监听器
+
     const dropZone = document.querySelector("body");
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -427,13 +485,17 @@
 
         if (inputFiles && inputFiles.length > 0) {
           inputFiles.forEach((file) => {
-            if (["image/gif", "image/webp", "image/jpeg", "image/png"].includes(file["type"])) {
+            if (
+              ["image/gif", "image/webp", "image/jpeg", "image/png"].includes(
+                file["type"]
+              )
+            ) {
               let reader = new FileReader();
               reader.onload = (event) => {
                 const img = new Image();
-                img.onload = function() {
-                  const canvas = document.createElement('canvas');
-                  let ctx = canvas.getContext('2d');
+                img.onload = function () {
+                  const canvas = document.createElement("canvas");
+                  let ctx = canvas.getContext("2d");
                   canvas.width = img.width;
                   canvas.height = img.height;
                   ctx?.drawImage(img, 0, 0);
@@ -498,12 +560,219 @@
     };
   });
 
-  // const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
-  //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
+  // const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," +
+  //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," +
   //   ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml,.zip,.rar";
-  const know_ext = "image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*," +
-         "text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python," +
-         "text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed"
+  const know_ext =
+    "image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*," +
+    "text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python," +
+    "text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed";
+
+  // 新的语音逻辑
+  let startRecordingFlag = false;
+  let divWidth: any;
+  let soundBars: any[] = [];
+  let isCancel = false;
+  let isListening = false;
+  // let voicePrompt = "";
+  let volumeListener: any = null;
+  // let textListener: any = null;
+  // let hasText = false;
+  // let textValidTimer: any = null;
+  $: if (startRecordingFlag) {
+    handleWidthChange(divWidth);
+  }
+  const handleStartRecording = async () => {
+    startRecordingFlag = true;
+    handleWidthChange(divWidth);
+    await startListening();
+  };
+  const handleWidthChange = (width: any) => {
+    // 更简洁的写法
+    soundBars = Array.from({ length: Math.floor(width / 7) }, () => {
+      return {
+        width: "w-[2px]",
+        height: "3px",
+      };
+    });
+  };
+  // 检查触摸点是否在元素内
+  function isTouchInElement(touch: any) {
+    const voiceEle = document.getElementById("voiceVolume");
+    const rect = voiceEle.getBoundingClientRect();
+    return (
+      touch.clientX >= rect.left &&
+      touch.clientX <= rect.right &&
+      touch.clientY >= rect.top &&
+      touch.clientY <= rect.bottom
+    );
+  }
+  // 全局触摸移动 - 跟踪手指位置
+  document.addEventListener("touchmove", (e) => {
+    if (startRecordingFlag) {
+      const touch = e.touches[0];
+      if (isTouchInElement(touch)) {
+        isCancel = false;
+      } else {
+        isCancel = true;
+      }
+    }
+  });
+  // 触摸结束 - 清理状态
+  document.addEventListener("touchend", async () => {
+    if (startRecordingFlag) {
+      startRecordingFlag = false;
+    }
+    if (isListening) {
+      await stopListening();
+    }
+  });
+  // 开始录音识别
+  const startListening = async () => {
+    stopResponse();
+    isCancel = false;
+    if (!isListening) {
+      try {
+        const perState = await VoiceRecord.checkPermissions();
+        if (perState.audio != "granted") {
+          toast.error(
+            $i18n.t(
+              "Your device does not support the speech recognition function."
+            )
+          );
+          return;
+        }
+        const ret = await VoiceRecord.startRecording();
+        if (ret?.status) {
+          isListening = true;
+          volumeListener = await VoiceRecord.addListener(
+            "volumeChange",
+            async (data) => {
+              if (data?.db && data.db > 55) {
+                await assignSoundBars(Math.floor((data.db - 50) / 2.5) + 3);
+              } else {
+                await assignSoundBars(3);
+              }
+            }
+          );
+          // textListener = await RealTimeSpeech.addListener(
+          //   "textChange",
+          //   async (data) => {
+          //     if (data?.text) {
+          //       hasText = true;
+          //       console.log("=======实时结果=======", data?.text);
+          //     }
+          //     if (data?.content) {
+          //       voicePrompt = voicePrompt + data?.content;
+          //       console.log("=========textChange==========", voicePrompt);
+          //       await sendVoiceText();
+          //     }
+          //   }
+          // );
+        }
+      } catch (error) {
+        console.error("启动失败:", error);
+      }
+    }
+  };
+  // 结束录音识别
+  const stopListening = async () => {
+    if (isListening) {
+      isListening = false;
+      const ret = await VoiceRecord.stopRecording();
+      if (ret?.status) {
+        if (volumeListener) {
+          volumeListener.remove();
+        }
+        if (!isCancel) {
+          const checkaudio = await checkAudioDuration(ret?.filePath);
+          if (checkaudio) {
+            submitPrompt(
+              "回复语音",
+              {
+                url: "",
+                trantip: "",
+                audio: { type: "base", data: ret?.filePath },
+              },
+              user
+            );
+          } else {
+            toast.error($i18n.t("The voice clip is too short to be recognized."));
+          }
+        }
+      } else {
+        toast.error(
+          $i18n.t(
+            "Network error! Please check your network connection and try again."
+          )
+        );
+        // clearTimeout(textValidTimer);
+      }
+    }
+  };
+  // const sendVoiceText = async () => {
+  //   if (isListening) {
+  //     return;
+  //   } else {
+  //     if (textListener) {
+  //       textListener.remove();
+  //     }
+  //     if (isCancel) {
+  //       console.log("=================语音发送取消=============");
+  //     } else {
+  //       if (hasText) {
+  //         if (textValidTimer) {
+  //           clearTimeout(textValidTimer);
+  //         }
+  //         submitPrompt(voicePrompt, { url: "", trantip: "" }, user);
+  //         hasText = false;
+  //       }
+  //     }
+  //     await RealTimeSpeech.releaseRecording();
+  //     isCancel = false;
+  //   }
+  // };
+
+  // 动态检测音波
+  const assignSoundBars = async (param: number) => {
+    const newSoundBars = [...soundBars];
+    newSoundBars.shift();
+    newSoundBars.push({ width: "w-[2px]", height: `${param}px` });
+    soundBars = newSoundBars;
+    await tick();
+  };
+  // 校验录音文件时长是否超200ms
+  async function checkAudioDuration(base64Wav: string) {
+    try {
+      const pureBase64 = base64Wav.startsWith("data:")
+        ? base64Wav.split(",")[1]
+        : base64Wav;
+      const binaryStr = atob(pureBase64);
+      const arrayBuffer = new ArrayBuffer(binaryStr.length);
+      const uint8Arr = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < binaryStr.length; i++) {
+        uint8Arr[i] = binaryStr.charCodeAt(i);
+      }
+
+      // 2. 初始化 AudioContext（兼容 Safari）
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioContext();
+
+      // 3. 解码音频数据，获取时长
+      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+      const duration = audioBuffer.duration; // 时长（秒）
+      console.log("音频时长：", (duration * 1000).toFixed(1), "ms");
+
+      // 4. 关闭 AudioContext（释放资源）
+      audioCtx.close();
+
+      // 5. 判断时长是否超过 200ms
+      return duration > 0.5;
+    } catch (error) {
+      console.error("音频解码/判断失败：", error.message);
+      return false; // 解析失败视为「无效/过短」
+    }
+  }
 </script>
 
 {#if dragged}
@@ -622,7 +891,7 @@
                   )?.imageUrl ??
                     ($i18n.language === "dg-DG"
                       ? `/doge.png`
-                      : `/static/favicon.png`)}
+                      : `${WEBUI_BASE_URL}/static/favicon.png`)}
                 />
                 <div>
                   Talking to <span class=" font-medium"
@@ -646,11 +915,11 @@
             <UrlModels
               bind:this={urlPromptElement}
               bind:prompt
-              bind:selectUrlUserPrompt={selectUrlUserPrompt}
+              bind:selectUrlUserPrompt
               on:select={(e) => {
                 let selectedUserPrompt = e.detail.prompt;
                 let analysisUrl = e.detail.url;
-                submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
+                submitPrompt(selectedUserPrompt, { url: analysisUrl }, user);
               }}
             />
           {/if}
@@ -703,20 +972,30 @@
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
                 _inputFiles.forEach((file) => {
-                  if (["image/gif","image/webp","image/jpeg","image/png"].includes(file["type"])) {
+                  if (
+                    [
+                      "image/gif",
+                      "image/webp",
+                      "image/jpeg",
+                      "image/png",
+                    ].includes(file["type"])
+                  ) {
                     let reader = new FileReader();
                     reader.onload = (event) => {
                       const img = new Image();
-                      img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        let ctx = canvas.getContext('2d');
+                      img.onload = function () {
+                        const canvas = document.createElement("canvas");
+                        let ctx = canvas.getContext("2d");
                         canvas.width = img.width;
                         canvas.height = img.height;
                         ctx?.drawImage(img, 0, 0);
                         let compressedDataUrl;
                         let quality = 1; // 初始质量为 1，表示无损
                         while (true) {
-                          compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                          compressedDataUrl = canvas.toDataURL(
+                            "image/jpeg",
+                            quality
+                          );
                           if (compressedDataUrl.length <= 200 * 1024) {
                             break;
                           }
@@ -724,7 +1003,7 @@
                           if (quality < 0.1) {
                             break; // 防止质量过低
                           }
-                        };  
+                        }
                         files = [
                           // ...files,
                           {
@@ -766,7 +1045,7 @@
             dir={$settings?.chatDirection ?? "LTR"}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              if($toolflag && $tooltype == "translate") {
+              if ($toolflag && $tooltype == "translate") {
                 toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
               }
               submitPrompt(prompt, toolInfo, user);
@@ -786,9 +1065,13 @@
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
-                        <div class="text-white rounded-lg {file.upload_status?'':'p-2.5 bg-red-400'}">
+                        <div
+                          class="text-white rounded-lg {file.upload_status
+                            ? ''
+                            : 'p-2.5 bg-red-400'}"
+                        >
                           {#if file.upload_status}
-                            <FileSvg bind:filename={file.name}/>
+                            <FileSvg bind:filename={file.name} />
                           {:else}
                             <svg
                               class=" w-6 h-6 translate-y-[0.5px]"
@@ -921,49 +1204,127 @@
               </div>
               {#if files[0]?.type === "image"}
                 <div class="flex flex-wrap gap-2 mt-1">
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
                       prompt = $i18n.t("What does this picture mean?");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("What does this picture mean?") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    }}
+                  >
+                    <span class="mr-1"
+                      >{$i18n.t("What does this picture mean?")}</span
+                    >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
                       prompt = $i18n.t("Explain this picture");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Explain this picture") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    }}
+                  >
+                    <span class="mr-1">{$i18n.t("Explain this picture")}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("What is the main idea of this picture?");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("What is the main idea of this picture?") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      prompt = $i18n.t(
+                        "What is the main idea of this picture?"
+                      );
+                    }}
+                  >
+                    <span class="mr-1"
+                      >{$i18n.t("What is the main idea of this picture?")}</span
+                    >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("What does the symbol in the picture represent?");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("What does the symbol in the picture represent?") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      prompt = $i18n.t(
+                        "What does the symbol in the picture represent?"
+                      );
+                    }}
+                  >
+                    <span class="mr-1"
+                      >{$i18n.t(
+                        "What does the symbol in the picture represent?"
+                      )}</span
+                    >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
                       prompt = $i18n.t("Help me solve problems");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Help me solve problems") }</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                    }}
+                  >
+                    <span class="mr-1">{$i18n.t("Help me solve problems")}</span
+                    >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -971,79 +1332,207 @@
               {#if files[0]?.type === "doc" && files[0]?.upload_status}
                 {#if files[0]?.anaylis_type == "progrem"}
                   <div class="flex flex-wrap gap-2 mt-1">
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
                         prompt = $i18n.t("Introduce the code in the file");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Introduce the code in the file") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t("Introduce the code in the file")}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("What's the main purpose of the file's code");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("What's the main purpose of the file's code") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        prompt = $i18n.t(
+                          "What's the main purpose of the file's code"
+                        );
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t(
+                          "What's the main purpose of the file's code"
+                        )}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
                         prompt = $i18n.t("Optimize the code in the file");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Optimize the code in the file") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t("Optimize the code in the file")}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
                   </div>
                 {:else}
                   <div class="flex flex-wrap gap-2 mt-1">
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Summarize the content of this document");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Summarize the content of this document") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        prompt = $i18n.t(
+                          "Summarize the content of this document"
+                        );
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t(
+                          "Summarize the content of this document"
+                        )}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
                         prompt = $i18n.t("Generate a brief summary");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Generate a brief summary") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t("Generate a brief summary")}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
                         prompt = $i18n.t("Extract document key info");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Extract document key info") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t("Extract document key info")}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
                         prompt = $i18n.t("Polish the content of the document");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Polish the content of the document") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t("Polish the content of the document")}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
                         prompt = $i18n.t("Generate an analysis report");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Generate an analysis report") }</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      }}
+                    >
+                      <span class="mr-1"
+                        >{$i18n.t("Generate an analysis report")}</span
+                      >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -1052,15 +1541,57 @@
             {/if}
 
             {#if $tooltype != ""}
-              <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
+              <ToolsSelect
+                bind:inputplaceholder={chatInputPlaceholder}
+                bind:tranLang={tranlang}
+              />
             {/if}
             <div class="flex flex-col">
+              <div
+                class="fixed bottom-0 shadow-[0_-4px_15px_rgba(0,0,0,0.15)] rounded-2xl mx-2.5 md:mx-20 mb-4 inset-x-0 z-40
+                bg-gray-50 dark:bg-gray-800
+                {$showSidebar
+                  ? 'left-0 md:left-[246px]'
+                  : 'left-0'} right-0 text-center {startRecordingFlag
+                  ? ''
+                  : 'hidden'}"
+              >
+                <div class="text-sm pt-10 {isCancel ? 'text-red-500' : ''}">
+                  {isCancel
+                    ? $i18n.t("Release to cancel")
+                    : $i18n.t("Release to send, Swipe up to cancel")}
+                </div>
+                <!-- 语音录入界面 -->
+                <div
+                  class="{isCancel
+                    ? 'bg-red-700'
+                    : 'bg-[#B88E56]'} rounded-2xl shadow-md w-full p-2 mt-4"
+                >
+                  <!-- 声音波动动画容器 -->
+                  <div id="voiceVolume" class="flex flex-col rounded-lg">
+                    <div class="flex justify-end">
+                      <div
+                        bind:clientWidth={divWidth}
+                        class={`flex justify-center items-center gap-1 w-full h-8`}
+                      >
+                        {#each soundBars as bar}
+                          <div
+                            class="bg-gray-50 {bar.width}"
+                            style="height: {bar.height}"
+                          />
+                        {/each}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <textarea
                 id="chat-textarea"
                 bind:this={chatTextAreaElement}
-                class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
-                  ? ''
-                  : ' pl-4'} rounded-xl resize-none h-[48px]"
+                class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3
+                  {fileUploadEnabled ? '' : ' pl-4'} {isRecording
+                  ? 'hidden'
+                  : ''} rounded-xl resize-none h-[48px]"
                 placeholder={chatInputPlaceholder !== ""
                   ? chatInputPlaceholder
                   : isRecording
@@ -1120,7 +1651,7 @@
                     // editButton?.click();
                     const textarea = document.getElementById("chat-textarea");
                     if (textarea) {
-                      textarea.value = (userMessageElement?.innerText) ?? "";
+                      textarea.value = userMessageElement?.innerText ?? "";
                     }
                   }
 
@@ -1196,7 +1727,7 @@
                   //   ]?.at(-1);
 
                   //   commandOptionButton?.click();
-                  // } else 
+                  // } else
                   if (e.key === "Tab") {
                     const words = findWordIndices(prompt);
                     if (words.length > 0) {
@@ -1222,11 +1753,14 @@
                       Math.min(e.target.scrollHeight, 200) + "px";
                   }
 
-                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
-                     && e.key === "ArrowUp") {
+                  if (
+                    (prompt.startsWith("https://") ||
+                      prompt.startsWith("http://")) &&
+                    e.key === "ArrowUp"
+                  ) {
                     e.preventDefault();
 
-                    (urlPromptElement).selectUp();
+                    urlPromptElement.selectUp();
                     const commandOptionButton = [
                       ...document.getElementsByClassName(
                         "selected-command-option-button"
@@ -1234,11 +1768,14 @@
                     ]?.at(-1);
                     commandOptionButton.scrollIntoView({ block: "center" });
                   }
-                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
-                     && e.key === "ArrowDown") {
+                  if (
+                    (prompt.startsWith("https://") ||
+                      prompt.startsWith("http://")) &&
+                    e.key === "ArrowDown"
+                  ) {
                     e.preventDefault();
 
-                    (urlPromptElement).selectDown();
+                    urlPromptElement.selectDown();
                     const commandOptionButton = [
                       ...document.getElementsByClassName(
                         "selected-command-option-button"
@@ -1289,11 +1826,13 @@
                   }
                 }}
               />
-              <div class="flex justify-between">
-                <div class="flex flex-row">
+              <div class="flex justify-between items-center">
+                <div
+                  class="flex flex-row justify-center items-center mb-2 mt-2"
+                >
                   <!-- 图片上传 -->
                   {#if fileUploadEnabled && !$toolflag}
-                    <div class="self-star mb-2 ml-1 mr-1">
+                    <div class="self-star ml-1 mr-1">
                       <button
                         class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
                         type="button"
@@ -1317,9 +1856,11 @@
                   {/if}
 
                   <!-- 工具组件 -->
-                  <div class="self-star mb-2 ml-1 mr-1">
-                    <Tools bind:inputplaceholder={chatInputPlaceholder}/>
-                  </div>
+                  {#if !isRecording}
+                    <div class="self-star ml-1 mr-1">
+                      <Tools bind:inputplaceholder={chatInputPlaceholder} />
+                    </div>
+                  {/if}
 
                   <!-- 深度搜索 -->
                   <!-- <div class="self-star mb-2 ml-1 mr-1">
@@ -1342,21 +1883,30 @@
                     </button>
                   </div> -->
                 </div>
-                
-                <div class="self-end mb-2 flex space-x-1 mr-1">
-                  {#if messages.length == 0 || messages.at(-1).done == true}
-                    <!-- <Tooltip content={$i18n.t("Record voice")}>
+
+                {#if isRecording}
+                  <button
+                    class="text-base font-bold flex-1 mb-2 mt-2 p-1"
+                    on:touchstart|preventDefault={async () => {
+                      await handleStartRecording();
+                    }}>{$i18n.t("Press and hold to talk")}</button
+                  >
+                {/if}
+
+                {#if !startRecordingFlag}
+                  <div class="self-end mb-2 flex space-x-1 mr-1">
+                    {#if messages.length == 0 || messages.at(-1).done == true}
                       {#if speechRecognitionEnabled}
                         <button
                           id="voice-input-button"
-                          class=" text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-850 transition rounded-full p-1.5 mr-0.5 self-center"
+                          class=" text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1.5 mr-0.5 self-center"
                           type="button"
-                          on:click={() => {
-                            speechRecognitionHandler();
+                          on:click={async () => {
+                            await speechRecognitionHandler();
                           }}
                         >
                           {#if isRecording}
-                            <svg
+                            <!-- <svg
                               class=" w-5 h-5 translate-y-[0.5px]"
                               fill="currentColor"
                               viewBox="0 0 24 24"
@@ -1410,8 +1960,18 @@
                                 cx="20"
                                 cy="12"
                                 r="2.5"
-                              /></svg
-                            >
+                              />
+                            </svg> -->
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="w-5 h-5 translate-y-[0.5px]"
+                              viewBox="0 0 1024 1024"
+                              version="1.1"
+                              fill="currentColor"
+                              ><path
+                                d="M861.538462 708.923077c17.683692 0 32.019692 14.336 32.019692 32.019692v64a31.980308 31.980308 0 0 1-32.019692 31.980308H189.518769A31.980308 31.980308 0 0 1 157.538462 804.903385v-64c0-17.644308 14.336-31.980308 32.019692-31.980308h671.980308zM285.538462 452.923077c17.683692 0 32.019692 14.336 32.019692 32.019692v95.980308a31.980308 31.980308 0 0 1-32.019692 32.019692H189.518769A31.980308 31.980308 0 0 1 157.538462 580.923077v-96.019692c0-17.644308 14.336-31.980308 32.019692-31.980308H285.538462z m288.019692 0c17.644308 0 31.980308 14.336 31.980308 32.019692v95.980308a31.980308 31.980308 0 0 1-32.019693 32.019692h-95.980307a31.980308 31.980308 0 0 1-32.019693-32.019692v-96.019692c0-17.644308 14.336-31.980308 32.019693-31.980308h96.019692z m287.980308 0c17.683692 0 32.019692 14.336 32.019692 32.019692v95.980308a31.980308 31.980308 0 0 1-32.019692 32.019692h-96.019693a31.980308 31.980308 0 0 1-31.980307-32.019692v-96.019692c0-17.644308 14.336-31.980308 32.019692-31.980308h95.980308zM285.538462 196.923077c17.683692 0 32.019692 14.336 32.019692 32.019692V324.923077a31.980308 31.980308 0 0 1-32.019692 32.019692H189.518769A31.980308 31.980308 0 0 1 157.538462 324.923077V228.903385C157.538462 211.259077 171.874462 196.923077 189.558154 196.923077H285.538462z m288.019692 0c17.644308 0 31.980308 14.336 31.980308 32.019692V324.923077a31.980308 31.980308 0 0 1-32.019693 32.019692h-95.980307a31.980308 31.980308 0 0 1-32.019693-32.019692V228.903385c0-17.644308 14.336-31.980308 32.019693-31.980308h96.019692z m287.980308 0c17.683692 0 32.019692 14.336 32.019692 32.019692V324.923077a31.980308 31.980308 0 0 1-32.019692 32.019692h-96.019693a31.980308 31.980308 0 0 1-31.980307-32.019692V228.903385c0-17.644308 14.336-31.980308 32.019692-31.980308h95.980308z"
+                              />
+                            </svg>
                           {:else}
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -1427,52 +1987,54 @@
                           {/if}
                         </button>
                       {/if}
-                    </Tooltip> -->
-  
-                    <Tooltip content={$i18n.t("Send message")}>
+
+                      {#if !isRecording}
+                        <Tooltip content={$i18n.t("Send message")}>
+                          <button
+                            id="send-message-button"
+                            class="{prompt !== '' && !isRecording
+                              ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
+                              : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
+                            type="submit"
+                            disabled={prompt === "" || isRecording}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 16 16"
+                              fill="currentColor"
+                              class="w-5 h-5"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
+                                clip-rule="evenodd"
+                              />
+                            </svg>
+                          </button>
+                        </Tooltip>
+                      {/if}
+                    {:else}
                       <button
-                        id="send-message-button"
-                        class="{prompt !== ''
-                          ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
-                          : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
-                        type="submit"
-                        disabled={prompt === ""}
+                        class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
+                        on:click={stopResponse}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 16 16"
+                          viewBox="0 0 24 24"
                           fill="currentColor"
                           class="w-5 h-5"
                         >
                           <path
                             fill-rule="evenodd"
-                            d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
+                            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 01-1.313-1.313V9.564z"
                             clip-rule="evenodd"
                           />
                         </svg>
                       </button>
-                    </Tooltip>
-                  {:else}
-                    <button
-                      class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
-                      on:click={stopResponse}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="w-5 h-5"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 01-1.313-1.313V9.564z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  {/if}
-                </div>
-              </div>  
+                    {/if}
+                  </div>
+                {/if}
+              </div>
             </div>
           </form>
 

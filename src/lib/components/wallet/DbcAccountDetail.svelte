@@ -13,6 +13,7 @@
     showCoinIntruModal,
     showCoinIntruType,
     dbcRate,
+    dgcRate,
     settings,
     config,
     channel,
@@ -21,7 +22,7 @@
   } from "$lib/stores";
   import { addErrorLog } from "$lib/apis/errorlog";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
-  import { getDbcRate } from "$lib/apis/wallet/index";
+  import { getDbcRate, getDgcRate } from "$lib/apis/wallet/index";
   import { goto } from "$app/navigation";
   import { getLanguages } from "$lib/i18n/index";
   import { checkKyc } from "$lib/apis/kycrestrict";
@@ -37,25 +38,16 @@
 
   async function refreshDbcRate() {
     // 第一次获取
-    if ($dbcRate?.time) {
-      // 大于5分钟重新获取一次
-      const diffInMilliseconds = Math.abs(
-        new Date().getTime() - new Date($dbcRate.time).getTime()
-      );
-      if (diffInMilliseconds > 1000 * 60) {
-        getDbcRate(localStorage.token).then((result) => {
-          if (result) {
-            dbcRate.set({ rate: result, time: new Date().toLocaleString() });
-          }
-        });
+    getDbcRate(localStorage.token).then((result) => {
+      if (result) {
+        dbcRate.set({ rate: result});
       }
-    } else {
-      getDbcRate(localStorage.token).then((result) => {
-        if (result) {
-          dbcRate.set({ rate: result, time: new Date().toLocaleString() });
-        }
-      });
-    }
+    });
+    getDgcRate(localStorage.token).then((result) => {
+      if (result) {
+        dgcRate.set({ rate: result });
+      }
+    });
   }
 
   // 更新用户模型
@@ -279,10 +271,10 @@
       </div>
         
       <div class="flex justify-between">
-        <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">1DGC=0.0001u</div>
+        <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">1DGC={floorToFixed($dgcRate?.rate, 8)}u</div>
         <div class="opacity-50 leading-normal text-xs">
           Total ${floorToFixed(
-            Number($currentWalletData?.dgcBalance) * 0.0001,
+            Number($currentWalletData?.dgcBalance) * $dgcRate?.rate,
             4
           )}u
         </div>

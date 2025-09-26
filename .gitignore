@@ -3,3 +3,7 @@ node_modules
 build
 .env
 backend/pandoc-3.6.4-windows-x86_64.msi
+.github
+backend
+android
+ios

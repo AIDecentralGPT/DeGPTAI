@@ -3,7 +3,7 @@
   import { facelivenessBindRes } from "$lib/apis/auths";
   import { copyToClipboard } from "$lib/utils";
   import { toast } from "svelte-sonner";
-  import { goto } from '$app/navigation';
+  import { WEBUI_BASE_URL } from "$lib/constants";
   const i18n = getContext('i18n');
   
   let status: any = null;
@@ -29,7 +29,6 @@
         if (res.passed) {
           status = 'success';
           message = res.message;
-          setInterval(gotoHome, 500);
         } else {
           status = 'fail';
           message = res.message;
@@ -52,7 +51,7 @@
 
   // 返回首页
   function gotoHome() {
-    window.location.href = "https://test.degpt.ai"
+    window.location.href = WEBUI_BASE_URL
   }
 
 </script>
@@ -87,6 +86,7 @@
       <p>{$i18n.t(message)}</p>
       {#if status==='success'}
         <p>{$i18n.t("Your kyc rewards have been credited.")}</p>
+        <p>{$i18n.t("Please return to the software interface and click Complete.")}</p>
       {/if}
       {#if address}
         <div class="flex">

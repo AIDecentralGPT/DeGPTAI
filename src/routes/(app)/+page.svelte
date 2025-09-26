@@ -61,6 +61,7 @@
 
   import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
   import { analysisImageInfo } from "$lib/apis/rag";
+  import { uploadOssWav } from "$lib/apis/utils";
 
   let inviter: any = "";
   let channelName: any = "";
@@ -68,6 +69,7 @@
   const i18n = getContext("i18n");
 
   let stopResponseFlag = false;
+  let outputting = false;
   let autoScroll = true;
   let processing = "";
   let messagesContainerElement: HTMLDivElement;
@@ -233,6 +235,21 @@
   // Ollama functions
   //////////////////////////
   const submitPrompt = async (userPrompt, userToolInfo,_user = null) => {
+
+    // 校验是否有正在输出
+    if (outputting) {
+      const checkEnd = setInterval(() => {
+        if (!outputting && !stopResponseFlag) {
+          clearInterval(checkEnd);
+        }
+      },200);
+    } else {
+      stopResponseFlag = false;
+    }
+
+    // 调用输出标志
+    outputting = true;
+
     console.log("submitPrompt", $chatId, userPrompt);
     if (!$toolflag) {
       chatInputPlaceholder = "";
@@ -357,6 +374,14 @@
         }
       });
 
+      // 校验是否是语音
+      if (userToolInfo?.audio) {
+        const audioUrl =  await uploadOssWav(localStorage.token, userToolInfo?.audio?.data);
+        userToolInfo.audio = {type: "url", data: audioUrl};
+        // selectedModels = ['gpt-4o-audio-preview'];
+      }
+      await tick();
+
       // Reset chat input textarea
       prompt = "";
       files = [];
@@ -476,6 +501,9 @@
   };
 
   const sendPrompt = async (prompt, responseMap = null, modelLimit = {}, modelId = null) => {
+    // 调用输出标志
+    outputting = true;
+
     const _chatId = JSON.parse(JSON.stringify($chatId));
     await Promise.all(
       (modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : Object.keys(responseMap)).map(
@@ -644,14 +672,23 @@
         //   }
         // }
       });
+
+      let audio = false;
+      // 校验是否有语音
+      send_message.forEach((item, index) => {
+        if (item?.role == 'user' && item?.toolInfo?.audio) {
+          audio = true;
+        }
+      })
+
 			// 过滤掉error和 content为空数据
 			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
 
-      // 处理图片消息
+      // 处理图片语音消息
       send_message = send_message.map((message, idx, arr) => ({
         role: message.role,
-        ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
-        message.role === "user"
+        ...(((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+        message.role === "user")
           ? {
               content: [
                 {
@@ -671,7 +708,20 @@
                     })),
               ],
             }
-          : {
+          : ((message?.toolInfo?.audio ?? false) &&
+              message.role === "user") ? {
+              content: [
+                {
+                  "type": "audio",
+                  "audio": {"data": message?.toolInfo?.audio?.data, "format": "wav"}
+                },
+                {
+                  "type": "text",
+                  "text": $i18n.t("Reply in English")
+                }
+              ]
+            }
+          :{
             content:
               arr.length - 1 !== idx
                 ? message.content
@@ -703,9 +753,11 @@
       const [res, controller] = await generateDeOpenAIChatCompletion(
         localStorage.token,
         {
-          model: fileFlag ? model.imagemodel : model.textmodel,
+          model: audio ? 'gpt-4o-audio-preview' : (fileFlag ? model.imagemodel : model.textmodel),
           messages: send_message,
-          enable_thinking: model.think
+          enable_thinking: audio ? false : model.think,
+          reload: false,
+          audio: audio
         },
         $deApiBaseUrl?.url,
       );
@@ -731,17 +783,17 @@
         responseMessage.replytime = Math.floor(Date.now() / 1000);
         // 判断模型添加think头
         let first_think = false;
-        if (model.think) {
+        if (model.think && !audio) {
           responseMessage.think_content = "<think>";
         }
         for await (const update of textStream) {
-          const { value, done, citations, error, think } = update;
+          const { value, audio, done, citations, error, think } = update;
 
           // 校验是否思考过程
-          if (model.think && think) {
+          if (model.think && think && !audio) {
             first_think = true;
           }
-          if (model.think && first_think && !think) {
+          if (model.think && first_think && !think && !audio) {
             first_think = false;
             responseMessage.content = await addTextSlowly(
               (text: string) => {
@@ -754,17 +806,19 @@
             messages = messages;
           }
 
+          // 赋值语音
+          if (audio) {
+						if (responseMessage.audio) {
+							responseMessage.audio.push(audio);
+						} else {
+							responseMessage.audio = [audio];
+						}
+					}
+
           if (error) {
             await handleOpenAIError(error, null, model, responseMessage);
             break;
           }
-          // console.log(
-          //   "value, done, citations, error",
-          //   value,
-          //   done,
-          //   citations,
-          //   error
-          // );
 
           // 第一次响应的时候，把当前的id设置为当前响应的id
           if (value && !firstResAlready) {
@@ -864,6 +918,7 @@
     messages = messages;
 
     stopResponseFlag = false;
+    outputting = false;
     
     // 更新聊天记录
     if (_chatId === $chatId) {  
@@ -1230,6 +1285,7 @@
   bind:autoScroll
   bind:chatInputPlaceholder
   bind:selectedModel={atSelectedModel}
+  bind:switchModel={selectedModels}
   {messages}
   {submitPrompt}
   {stopResponse}

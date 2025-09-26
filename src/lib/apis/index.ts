@@ -34,7 +34,7 @@ export const defaultBackendConfig = async () => {
     "auth": true,
     "default_locale": "en-US",
     "images": false,
-    "default_models": "deepseek-chat",
+    "default_models": "qwen3-max-preview",
     "default_prompt_suggestions": [
 				{
 					"title": [

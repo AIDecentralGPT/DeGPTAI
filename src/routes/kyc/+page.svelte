@@ -31,7 +31,7 @@
 
 </script>
 
-<div class="w-full flex flex-col">
+<div class="w-full h-screen flex flex-col overflow-auto">
   <div class="flex flex-col items-center w-full mt-8">
     <img class="w-[160px]" src="/static/icon/faceError.png" alt="icon"/>
     <span class="font-bold mt-2">{$i18n.t("KYC Certification Instructions")}</span>

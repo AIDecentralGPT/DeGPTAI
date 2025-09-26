@@ -8,12 +8,12 @@
     "title": "中文"
   },
   {
-    "code": "ja-JP",
-    "title": "日本語"
-  },
-  {
     "code": "ko-KR",
     "title": "한국어"
+  },
+  {
+    "code": "ja-JP",
+    "title": "日本語"
   },
   {
     "code": "vi-VN",

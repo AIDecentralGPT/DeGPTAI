@@ -8,6 +8,8 @@ import { updateWalletData } from "../walletUtils";
 import dayjs from 'dayjs';
 import { Base64 } from 'js-base64';
 
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
 // 定义 RPC URL 和 Chain ID
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
 const rpcUrl = "https://rpc1.dbcwallet.io"; // 新 的 RPC URL
@@ -84,24 +86,51 @@ export async function createAccount(password: string) {
 }
 
 // 下载钱包Json
-export function downloadKeyStore(keyStoreStr: string) {
-  console.log("keyStoreStr", keyStoreStr);
+// export function downloadKeyStore(keyStoreStr: string) {
+//   console.log("keyStoreStr", keyStoreStr);
 
-  const blob = new Blob([JSON.stringify(keyStoreStr)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
+//   const blob = new Blob([JSON.stringify(keyStoreStr)], {
+//     type: "application/json",
+//   });
+//   const url = URL.createObjectURL(blob);
 
-  const link = document.createElement("a");
-  link.href = url;
-  const currentDate = dayjs();
-  const dateTime = currentDate.format('YYYYMMDDHHmm');
-  link.download = "keystore_degpt_" + dateTime + ".json";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+//   const link = document.createElement("a");
+//   link.href = url;
+//   const currentDate = dayjs();
+//   const dateTime = currentDate.format('YYYYMMDDHHmm');
+//   link.download = "keystore_degpt_" + dateTime + ".json";
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
 
-  // console.log("Generated Wallet:", json);
+//   // console.log("Generated Wallet:", json);
+// }
+
+// 下载钱包Json(修复app无法下载)
+export async function downloadKeyStore(keyStoreStr: string) {
+  try {
+    console.log("keyStoreStr", keyStoreStr);
+
+    const currentDate = dayjs();
+    const dateTime = currentDate.format('YYYYMMDDHHmm');
+    const fileName = `DeGPT/keystore_degpt_${dateTime}.json`;
+    
+    const blob = new Blob([JSON.stringify(keyStoreStr)], {
+      type: "application/json",
+    });
+    const textData = await blob.text(); // 如果 Blob 是文本类型（如 JSON）
+
+    await Filesystem.writeFile({
+      path: fileName,
+      data: textData,
+      directory: Directory.Documents,
+      encoding: Encoding.UTF8,
+      recursive: true
+    });
+  } catch (error) {
+    console.error('文件保存失败:', error);
+    throw error;
+  }
 }
 
 // ----------导出和导入JSON文件-------------

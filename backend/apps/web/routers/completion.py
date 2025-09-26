@@ -147,12 +147,8 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                         try:
                             # 符合 SSE 格式要求
                             if chunk:
-                                if DoubaoApiInstance.check_model(param.model):
-                                    decoded_line = chunk.decode('utf-8').lstrip('data: ')
-                                    json_dict = json.loads(decoded_line)
-                                else:
-                                    json_dict = json.loads(chunk.model_dump_json())
-                                    
+                                json_dict = json.loads(chunk.model_dump_json())
+
                                 # 重组返回数据格式
                                 if json_dict["choices"] is not None:
                                     choice = json_dict["choices"][0]

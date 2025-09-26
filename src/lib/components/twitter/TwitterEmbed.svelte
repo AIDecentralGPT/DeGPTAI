@@ -45,11 +45,11 @@
     <a href="https://x.com/{data.screen_name}/status/{data.id_str}" target="_blank">
         <div class="flex justify-between">
             <div class="flex flex-row items-center mr-2">
-                <img class="rounded-full" src="{data.user.profile_image_url_https}" alt="" draggable="false"/>
+                <img class="rounded-full" src="{data.profile_image_url_https}" alt="" draggable="false"/>
                 <div class="flex flex-col ml-1">
-                    <span class="text-sm font-black whitespace-nowrap overflow-hidden text-ellipsis w-[200px]">{data.user.name}</span>
+                    <span class="text-sm font-black whitespace-nowrap overflow-hidden text-ellipsis w-[200px]">{data.name}</span>
                     <div>
-                        <span class="text-sm">@{data.user.screen_name}</span>
+                        <span class="text-sm">@{data.screen_name}</span>
                         <span> · </span>
                         <span class="text-sm font-bold text-[#006FD6]">Follow</span>
                     </div>
@@ -65,8 +65,8 @@
             </div>
         </div>
         <div class="text-sm mt-2">{@html formatText(data.full_text)}</div>
-        {#if data.entities?.media}
-            <img class="w-full h-[320px] object-cover mt-2 rounded-xl" src={data.entities?.media[0]?.media_url_https} alt="" draggable="false"/>
+        {#if data?.media_url_https}
+            <img class="w-full h-[320px] object-cover mt-2 rounded-xl" src={data?.media_url_https} alt="" draggable="false"/>
         {/if}
         <div class="text-sm mt-2 dark:text-gray-600">{formatDateToTwitterStyle(data.tweet_created_at)}</div>
         <hr class="my-2 dark:border-gray-600"/>

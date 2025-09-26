@@ -2,14 +2,11 @@
     import { toast } from "svelte-sonner";
     import Modal from "../common/Modal.svelte";
     export let show = false;
-    import { onMount, getContext } from "svelte";
+    import { getContext } from "svelte";
     import { copyToClipboard } from "$lib/utils";
     const i18n = getContext("i18n");
-    import { currentWalletData, user, } from "$lib/stores";
-
-
-
-
+    import { user, } from "$lib/stores";
+    import { RewardProperties, WEBUI_BASE_URL } from "$lib/constants"
   </script>
   
   <Modal bind:show size="lg">
@@ -62,7 +59,7 @@
             </div>
             <h3 class="text-lg font-bold mb-2">01</h3>
             <p class="text-sm">
-              {$i18n.t('Invite a friend to create a wallet to earn 3000 DGC rewards,you friend will also earn 1000 DGC')}
+              {$i18n.t('Invite a friend to create a wallet to earn {{regist}} DGC rewards,you friend will also earn {{invite}} DGC', RewardProperties)}
             </p>
           </div>
           <div class=" flex flex-col justify-center items-center">
@@ -138,11 +135,11 @@
                     pr-[35px]
                     px-5 py-3 rounded-md text-sm outline-none border dark:border-none dark:bg-gray-850"
           >
-            https://{`${location.host}/invite/${$user?.id}`}
+            {`${WEBUI_BASE_URL}/invite/${$user?.id}`}
           </p>
           <button
             on:click={async () => {
-              const res = await copyToClipboard(`https://${location.host}/invite/${ $user?.id}`);
+              const res = await copyToClipboard(`${WEBUI_BASE_URL}/invite/${ $user?.id}`);
               if (res) {
                 toast.success($i18n.t("Copying to clipboard was successful!"));
               }

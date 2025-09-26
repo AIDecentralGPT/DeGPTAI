@@ -9,6 +9,8 @@
   import { currentWalletData, user, } from "$lib/stores";
   const i18n = getContext("i18n");
 
+  import { RewardProperties } from "$lib/constants"
+
   export let show = true;
 
   let modalElement = null;
@@ -189,9 +191,7 @@
                   </div>
                   <h3 class="text-lg font-bold mb-2">01</h3>
                   <p class="text-sm text-gray-600">
-                    {$i18n.t(
-                      "Invite friends to create a wallet to earn 3000 DGC rewards,your friends will also earn 1000 DGC rewards."
-                    )}
+                    {$i18n.t("Invite friends to create a wallet to earn {{regist}} DGC rewards,your friends will also earn {{invite}} DGC rewards.", RewardProperties)}
                   </p>
                 </div>
                 <div class=" flex flex-col justify-center items-center">

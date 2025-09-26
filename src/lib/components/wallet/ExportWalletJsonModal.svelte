@@ -9,6 +9,7 @@
   import {
     downloadKeyStore,
     storeWallet,
+    loadWallet
   } from "$lib/utils/wallet/ether/utils.js";
 
   const i18n = getContext("i18n");
@@ -93,9 +94,6 @@
     {$i18n.t("You can copy the private key below:")}
   </div>
   
-
-
-
   <div class="flex-1 relative">
     <p
       class="
@@ -161,22 +159,17 @@
           on:click={async () => {
             if (!password) {
               toast.error($i18n.t(`Please enter the password!`));
-
               return;
             }
             // loading= true
-
             try {
               if ($currentWalletData?.walletInfo && password) {
-                // console.log("loading", loading);
-
                 // 设置密码以加密Keystore文件
-                console.log("=============Keystore============");
                 const keystore = await storeWallet(
                   $currentWalletData?.walletInfo,
                   password
                 );
-                downloadKeyStore(keystore);
+                await downloadKeyStore(keystore);
 
                 // loading= false
                 show = false;

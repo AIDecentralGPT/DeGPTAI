@@ -119,6 +119,7 @@ export const getRegionDict = () => {
 	}
 	return regionDict;
 };
+
 export const getRegionInfo = async () => {
 	let url = `${WEBUI_API_BASE_URL}/utils/ip/info`;
 	const res = await fetch(url, {
@@ -126,6 +127,50 @@ export const getRegionInfo = async () => {
 		headers: {
 			'Content-Type': 'application/json'
 		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
+
+	return res;
+}
+
+export const getAppVersion = async () => {
+	let url = `${WEBUI_API_BASE_URL}/users/check/appversion`;
+	const res = await fetch(url, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			console.log(err);
+			return null;
+		});
+
+	return res;
+}
+
+export const uploadOssWav = async (token: string, data: string) => {
+	let url = `${WEBUI_API_BASE_URL}/upload/base`;
+	const res = await fetch(url, {
+		method: 'post',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			data: data
+		})
 	})
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();

@@ -29,6 +29,7 @@ export default defineConfig({
 		include: ['core-js']
 	},
 	server: {
+		open: false, // 禁用自动打开浏览器
 		fs: {
 			allow: [
 				'./static',
@@ -48,7 +49,7 @@ export default defineConfig({
     terserOptions: {
       // 自定义 terser 配置
       compress: {
-        drop_console: true, // 移除 console 语句
+        // drop_console: true, // 移除 console 语句
         drop_debugger: true // 移除 debugger 语句
       }
     }

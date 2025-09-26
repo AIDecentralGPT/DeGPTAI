@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { v4 as uuidv4 } from 'uuid';
-	import { toast } from 'svelte-sonner';
+	import { v4 as uuidv4 } from "uuid";
+	import { toast } from "svelte-sonner";
 
-	import { onMount, tick, getContext } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { onMount, tick, getContext } from "svelte";
+	import { goto } from "$app/navigation";
+	import { page } from "$app/stores";
 	import {
 		models,
 		modelfiles,
@@ -17,12 +17,24 @@
 		switchModel,
 		deApiBaseUrl,
 		toolflag,
-    tooltype
-	} from '$lib/stores';
-	import { copyToClipboard, splitStream, convertMessagesToHistory, addTextSlowly } from '$lib/utils';
+		tooltype,
+	} from "$lib/stores";
+	import {
+		copyToClipboard,
+		splitStream,
+		convertMessagesToHistory,
+		addTextSlowly,
+	} from "$lib/utils";
 
-	import { generateChatCompletion, cancelOllamaRequest } from '$lib/apis/ollama';
-	import { generateDeOpenAIChatCompletion, generateDeTitle, generateSearchKeyword } from '$lib/apis/de';
+	import {
+		generateChatCompletion,
+		cancelOllamaRequest,
+	} from "$lib/apis/ollama";
+	import {
+		generateDeOpenAIChatCompletion,
+		generateDeTitle,
+		generateSearchKeyword,
+	} from "$lib/apis/de";
 	import {
 		addTagById,
 		createNewChat,
@@ -32,73 +44,79 @@
 		getChatList,
 		getTagsById,
 		updateChatById,
-		conversationRefresh
-	} from '$lib/apis/chats';
-	import { generateOpenAIChatCompletion, generateTitle } from '$lib/apis/openai';
-
-	import MessageInput from '$lib/components/chat/MessageInput.svelte';
-	import Messages from '$lib/components/chat/Messages.svelte';
-	import Navbar from '$lib/components/layout/Navbar.svelte';
-
+		conversationRefresh,
+	} from "$lib/apis/chats";
 	import {
-		LITELLM_API_BASE_URL,
-		OPENAI_API_BASE_URL
-	} from '$lib/constants';
-	import { createOpenAITextStream } from '$lib/apis/streaming';
-	import { queryMemory } from '$lib/apis/memories';
-	import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch"
-	import { analysisImageInfo } from "$lib/apis/rag";
+		generateOpenAIChatCompletion,
+		generateTitle,
+	} from "$lib/apis/openai";
 
-	const i18n = getContext('i18n');
+	import MessageInput from "$lib/components/chat/MessageInput.svelte";
+	import Messages from "$lib/components/chat/Messages.svelte";
+	import Navbar from "$lib/components/layout/Navbar.svelte";
+
+	import { LITELLM_API_BASE_URL, OPENAI_API_BASE_URL } from "$lib/constants";
+	import { createOpenAITextStream } from "$lib/apis/streaming";
+	import { queryMemory } from "$lib/apis/memories";
+	import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
+	import { analysisImageInfo } from "$lib/apis/rag";
+	import { uploadOssWav } from "$lib/apis/utils";
+
+	const i18n = getContext("i18n");
 
 	let loaded = false;
 
 	let stopResponseFlag = false;
+	let outputting = false;
 	let autoScroll = true;
-	let processing = '';
+	let processing = "";
 	let messagesContainerElement: HTMLDivElement;
-	let currentRequestId = null;
+	let currentRequestId: any = null;
 
 	// let chatId = $page.params.id;
 	let showModelSelector = true;
 	let deepsearch = false;
 
-	let selectedModels = [''];
-	let atSelectedModel = '';
+	let selectedModels = [""];
+	let atSelectedModel = "";
 
 	let selectedModelfile = null;
 
 	$: selectedModelfile =
 		selectedModels.length === 1 &&
-		$modelfiles.filter((modelfile) => modelfile.tagName === selectedModels[0]).length > 0
-			? $modelfiles.filter((modelfile) => modelfile.tagName === selectedModels[0])[0]
+		$modelfiles.filter((modelfile) => modelfile.tagName === selectedModels[0])
+			.length > 0
+			? $modelfiles.filter(
+					(modelfile) => modelfile.tagName === selectedModels[0]
+			  )[0]
 			: null;
 
 	let selectedModelfiles = {};
 	$: selectedModelfiles = selectedModels.reduce((a, tagName, i, arr) => {
 		const modelfile =
-			$modelfiles.filter((modelfile) => modelfile.tagName === tagName)?.at(0) ?? undefined;
+			$modelfiles.filter((modelfile) => modelfile.tagName === tagName)?.at(0) ??
+			undefined;
 		return {
 			...a,
-			...(modelfile && { [tagName]: modelfile })
+			...(modelfile && { [tagName]: modelfile }),
 		};
 	}, {});
 
 	let chat = null;
 	let tags = [];
 
-	let title = '';
-	let prompt = '';
+	let title = "";
+	let prompt = "";
 	let files = [];
 	let fileFlag = false;
 	let messages = [];
 	let history = {
 		messages: {},
-		currentId: null
+		currentId: null,
 	};
-	let firstResAlready = false // 已经有了第一个响应
+	let firstResAlready = false; // 已经有了第一个响应
 
-	let webInfo = {url: ""}
+	let webInfo = { url: "" };
 
 	let chatInputPlaceholder = "";
 
@@ -109,10 +127,11 @@
 		while (currentMessage !== null) {
 			_messages.unshift({ ...currentMessage });
 			currentMessage =
-				currentMessage.parentId !== null ? history.messages[currentMessage.parentId] : null;
+				currentMessage.parentId !== null
+					? history.messages[currentMessage.parentId]
+					: null;
 		}
 
-		
 		// _messages.pop()
 		// console.log("messages = _messages;", _messages);
 
@@ -131,7 +150,7 @@
 				// const chatInput = document.getElementById('chat-textarea');
 				// chatInput?.focus();
 			} else {
-				await goto('/');
+				await goto("/");
 			}
 		})();
 	}
@@ -142,10 +161,12 @@
 
 	const loadChat = async () => {
 		await chatId.set($page.params.id);
-		chat = await getChatById(localStorage.token, $chatId).catch(async (error) => {
-			await goto('/');
-			return null;
-		});
+		chat = await getChatById(localStorage.token, $chatId).catch(
+			async (error) => {
+				await goto("/");
+				return null;
+			}
+		);
 
 		if (chat) {
 			tags = await getTags();
@@ -159,18 +180,18 @@
 				// 		? chatContent.models
 				// 		: [chatContent.models ?? ''];
 				selectedModels = $settings?.models;
-				
+
 				history =
 					(chatContent?.history ?? undefined) !== undefined
 						? chatContent.history
 						: convertMessagesToHistory(chatContent.messages);
 				title = chatContent.title;
 
-				let _settings = JSON.parse(localStorage.getItem('settings') ?? '{}');
+				let _settings = JSON.parse(localStorage.getItem("settings") ?? "{}");
 				await settings.set({
 					..._settings,
 					system: chatContent.system ?? _settings.system,
-					options: chatContent.options ?? _settings.options
+					options: chatContent.options ?? _settings.options,
 				});
 				autoScroll = true;
 				await tick();
@@ -190,7 +211,8 @@
 	const scrollToBottom = async () => {
 		await tick();
 		if (messagesContainerElement) {
-			messagesContainerElement.scrollTop = messagesContainerElement.scrollHeight;
+			messagesContainerElement.scrollTop =
+				messagesContainerElement.scrollHeight;
 		}
 	};
 
@@ -199,7 +221,22 @@
 	//////////////////////////
 	// 2. 点击提交按钮，触发检查
 	const submitPrompt = async (userPrompt, userToolInfo, _user = null) => {
-		console.log('submitPrompt', $chatId);
+
+		// 校验是否有正在输出
+    if (outputting) {
+      const checkEnd = setInterval(() => {
+        if (!outputting && !stopResponseFlag) {
+          clearInterval(checkEnd);
+        }
+      },200);
+    } else {
+      stopResponseFlag = false;
+    }
+
+    // 调用输出标志
+    outputting = true;
+
+		console.log("submitPrompt", $chatId);
 		if (!$toolflag) {
 			chatInputPlaceholder = "";
 		}
@@ -207,44 +244,54 @@
 		selectedModels = selectedModels.map((modelId) =>
 			$models.map((m) => m.id).includes(modelId) ? modelId : ""
 		);
-			
-		// 校验模型是否支持文件类型
-    let currModel = $models.filter(item => selectedModels.includes(item?.model));
-    if (files.length > 0 && (files[0].type == "image" || (files[0]?.image??[]).length > 0)) {
-      if (currModel[0]?.support == "text") {
-        let imageModels = $models.filter(item => item?.type == currModel[0]?.type && item?.support == "image");
-        selectedModels = [imageModels[0]?.model];
-      }
-      fileFlag = true;
-    } else {
-      // 校验历史记录是否有图片
-      let checkMessages = messages.filter(item => item.role == "user" && Array.isArray(item.files));
-      if (checkMessages.length > 0) {
-        if (currModel[0]?.support == "text") {
-          let imageModels = $models.filter(item => item?.type == currModel[0]?.type && item?.support == "image");
-          selectedModels = [imageModels[0]?.model];
-        }
-        fileFlag = true;
-      } else{
-        fileFlag = false;
-      }
-    }
 
+		// 校验模型是否支持文件类型
+		let currModel = $models.filter((item) =>
+			selectedModels.includes(item?.model)
+		);
+		if (
+			files.length > 0 &&
+			(files[0].type == "image" || (files[0]?.image ?? []).length > 0)
+		) {
+			if (currModel[0]?.support == "text") {
+				let imageModels = $models.filter(
+					(item) => item?.type == currModel[0]?.type && item?.support == "image"
+				);
+				selectedModels = [imageModels[0]?.model];
+			}
+			fileFlag = true;
+		} else {
+			// 校验历史记录是否有图片
+			let checkMessages = messages.filter(
+				(item) => item.role == "user" && Array.isArray(item.files)
+			);
+			if (checkMessages.length > 0) {
+				if (currModel[0]?.support == "text") {
+					let imageModels = $models.filter(
+						(item) =>
+							item?.type == currModel[0]?.type && item?.support == "image"
+					);
+					selectedModels = [imageModels[0]?.model];
+				}
+				fileFlag = true;
+			} else {
+				fileFlag = false;
+			}
+		}
 
 		// 如果开启网络搜索只选择一个模型回复
 		if ($toolflag) {
 			selectedModels = [selectedModels[0]];
 		}
-				
-		firstResAlready = false // 开始新对话的时候，也要还原firstResAlready为初始状态false
-		await tick()
 
-		if (selectedModels.includes('')) {
-			toast.error($i18n.t('Model not selected'));
-		} else 
-		if (messages.length != 0 && messages.at(-1).done != true) {
+		firstResAlready = false; // 开始新对话的时候，也要还原firstResAlready为初始状态false
+		await tick();
+
+		if (selectedModels.includes("")) {
+			toast.error($i18n.t("Model not selected"));
+		} else if (messages.length != 0 && messages.at(-1).done != true) {
 			// 响应未完成
-			console.log('wait');
+			console.log("wait");
 		} else if (
 			files.length > 0 &&
 			files.filter((file) => file.upload_status === false).length > 0
@@ -255,7 +302,7 @@
 			);
 		} else {
 			// 重置聊天消息文本区高度
-			document.getElementById('chat-textarea').style.height = '';
+			document.getElementById("chat-textarea").style.height = "";
 
 			// 创建用户消息
 			let userMessageId = uuidv4();
@@ -263,7 +310,7 @@
 				id: userMessageId,
 				parentId: messages.length !== 0 ? messages.at(-1).id : null,
 				childrenIds: [],
-				role: 'user',
+				role: "user",
 				user: _user ?? undefined,
 				content: userPrompt,
 				files: files.length > 0 ? files : undefined,
@@ -272,7 +319,7 @@
 				toolInfo: userToolInfo,
 				parseInfo: "", // 解析后数据
 				timestamp: Math.floor(Date.now() / 1000), // Unix epoch
-				models: selectedModels
+				models: selectedModels,
 			};
 
 			// 将消息添加到历史记录并设置 currentId 为 messageId
@@ -322,29 +369,40 @@
 				}
 			});
 
+			// 校验是否是语音
+      if (userToolInfo?.audio) {
+        const audioUrl =  await uploadOssWav(localStorage.token, userToolInfo?.audio?.data);
+        userToolInfo.audio = {type: "url", data: audioUrl};
+				// selectedModels = ['gpt-4o-audio-preview'];
+      }
+      await tick();
+
 			// 重置聊天输入文本区
-			prompt = '';
+			prompt = "";
 			files = [];
-			webInfo = {url:""};
+			webInfo = { url: "" };
 
 			scrollToBottom();
 
 			// 校验图片获取图片信息
 			// await analysisimageinfo(userMessageId);
-			
+
 			try {
 				// 校验模型已使用次数
-				let modelLimit:any = {}
-				const {passed, data} = await conversationRefresh(localStorage.token, selectedModels[0]);
+				let modelLimit: any = {};
+				const { passed, data } = await conversationRefresh(
+					localStorage.token,
+					selectedModels[0]
+				);
 				if (passed) {
 					for (const item of selectedModels) {
-						data.forEach((dItem:any) => {
-							if(dItem.model == item) {
+						data.forEach((dItem: any) => {
+							if (dItem.model == item) {
 								if (!dItem.passed) {
 									modelLimit[dItem.model] = dItem.message;
 								}
 							}
-						}) 
+						});
 					}
 				}
 
@@ -355,20 +413,23 @@
 				if ($toolflag) {
 					if ($tooltype == "webread") {
 						// 网页分析
-						if ((userToolInfo?.url??"").length > 0) {
-							let webResult = await getWebContent(localStorage.token, userToolInfo?.url);
+						if ((userToolInfo?.url ?? "").length > 0) {
+							let webResult = await getWebContent(
+								localStorage.token,
+								userToolInfo?.url
+							);
 							if (webResult?.ok) {
 								// 更新UserMessge信息
 								userMessage.parseInfo = webResult?.data;
 								history.messages[userMessageId] = userMessage;
-							} 
+							}
 							await tick();
 						}
 					} else if ($tooltype == "translate") {
-							// 更新UserMessge信息
-							userMessage.parseInfo = userToolInfo?.trantip;
-							history.messages[userMessageId] = userMessage;
-							await tick();
+						// 更新UserMessge信息
+						userMessage.parseInfo = userToolInfo?.trantip;
+						history.messages[userMessageId] = userMessage;
+						await tick();
 					} else {
 						let searchData = await handleSearchWeb(userPrompt);
 
@@ -378,7 +439,7 @@
 
 						// 更新回复会话搜索信息
 						selectedModels.map(async (modelId) => {
-							const model = $models.filter((m) => m.id === modelId).at(0);  
+							const model = $models.filter((m) => m.id === modelId).at(0);
 							if (responseMap[model?.id]) {
 								let responseMessageId = responseMap[model?.id].id;
 								let responseMessage = responseMap[model?.id];
@@ -388,7 +449,7 @@
 						});
 						await tick();
 					}
-						
+
 					scrollToBottom();
 				}
 
@@ -398,20 +459,20 @@
 						// 3\1. 创建新的会话
 						chat = await createNewChat(localStorage.token, {
 							id: $chatId,
-							title: $i18n.t('New Chat'),
+							title: $i18n.t("New Chat"),
 							models: selectedModels,
 							system: $settings.system ?? undefined,
 							options: {
-								...($settings.options ?? {})
+								...($settings.options ?? {}),
 							},
 							messages: messages,
 							history: history,
-							timestamp: Date.now()
+							timestamp: Date.now(),
 						});
 						await chats.set(await getChatList(localStorage.token));
 						await chatId.set(chat.id);
 					} else {
-						await chatId.set('local');
+						await chatId.set("local");
 					}
 					await tick();
 				}
@@ -420,264 +481,319 @@
 				await sendPrompt(userPrompt, responseMap, modelLimit);
 			} catch (err) {
 				const _chatId = JSON.parse(JSON.stringify($chatId));
-        Object.keys(responseMap).map(async (modelId) => {
-          const model = $models.filter((m) => m.id === modelId).at(0);
-          let responseMessage = responseMap[model?.id];
-          await handleOpenAIError(err, null, model, responseMessage);
+				Object.keys(responseMap).map(async (modelId) => {
+					const model = $models.filter((m) => m.id === modelId).at(0);
+					let responseMessage = responseMap[model?.id];
+					await handleOpenAIError(err, null, model, responseMessage);
 
-          // 更新消息到数据库
-          await updateChatMessage(responseMessage, _chatId);
+					// 更新消息到数据库
+					await updateChatMessage(responseMessage, _chatId);
 
-          await tick();
-          
-          if (autoScroll) {
-            scrollToBottom();
-          }
-        })
+					await tick();
+
+					if (autoScroll) {
+						scrollToBottom();
+					}
+				});
 			}
-			
 		}
 	};
 
 	// 3\2. 继续聊天会话
-	const sendPrompt = async (prompt, responseMap, modelLimit, modelId = null) => {
+	const sendPrompt = async (
+		prompt,
+		responseMap,
+		modelLimit,
+		modelId = null
+	) => {
+
+		// 调用输出标志
+    outputting = true;
+
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 		// 对每个模型都做请求
 		await Promise.all(
-			(modelId ? [modelId] : atSelectedModel !== '' ? [atSelectedModel.id] : Object.keys(responseMap)).map(
-        async (modelId) => {
-          const model = $models.filter((m) => m.id === modelId).at(0);
-          if (model) {
-            // 创建响应消息
-            let responseMessage = responseMap[model?.id];
-            let responseMessageId = responseMessage?.id;
+			(modelId
+				? [modelId]
+				: atSelectedModel !== ""
+				? [atSelectedModel.id]
+				: Object.keys(responseMap)
+			).map(async (modelId) => {
+				const model = $models.filter((m) => m.id === modelId).at(0);
+				if (model) {
+					// 创建响应消息
+					let responseMessage = responseMap[model?.id];
+					let responseMessageId = responseMessage?.id;
 
-            let userContext = null;
-            if ($settings?.memory ?? false) {
-              if (userContext === null) {
-                const res = await queryMemory(localStorage.token, prompt).catch(
-                  (error) => {
-                    toast.error(error);
-                    return null;
-                  }
-                );
+					let userContext = null;
+					if ($settings?.memory ?? false) {
+						if (userContext === null) {
+							const res = await queryMemory(localStorage.token, prompt).catch(
+								(error) => {
+									toast.error(error);
+									return null;
+								}
+							);
 
-                if (res) {
-                  if (res.documents[0].length > 0) {
-                    userContext = res.documents.reduce((acc, doc, index) => {
-                      const createdAtTimestamp =
-                        res.metadatas[index][0].created_at;
-                      const createdAtDate = new Date(createdAtTimestamp * 1000)
-                        .toISOString()
-                        .split("T")[0];
-                      acc.push(`${index + 1}. [${createdAtDate}]. ${doc[0]}`);
-                      return acc;
-                    }, []);
-                  }
+							if (res) {
+								if (res.documents[0].length > 0) {
+									userContext = res.documents.reduce((acc, doc, index) => {
+										const createdAtTimestamp =
+											res.metadatas[index][0].created_at;
+										const createdAtDate = new Date(createdAtTimestamp * 1000)
+											.toISOString()
+											.split("T")[0];
+										acc.push(`${index + 1}. [${createdAtDate}]. ${doc[0]}`);
+										return acc;
+									}, []);
+								}
 
-                  console.log(userContext);
-                }
-              }
-            }
-            responseMessage.userContext = userContext;
+								console.log(userContext);
+							}
+						}
+					}
+					responseMessage.userContext = userContext;
 
-            // 校验是否超过次数
-            if (modelLimit[model.id]) {
-              await handleLimitError(modelLimit[model.id], responseMessage);
-            } else {  
-              // 文本搜索
-              await sendPromptDeOpenAI(model, responseMessageId, _chatId);
-            }
-            // if (model?.external) {
-            // 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
-            // } else if (model) {
-            // 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
-            // }
-          } else {
-            console.error($i18n.t(`Model {{modelId}} not found`, {}));
-            // toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
-          }
-      })
+					// 校验是否超过次数
+					if (modelLimit[model.id]) {
+						await handleLimitError(modelLimit[model.id], responseMessage);
+					} else {
+						// 文本搜索
+						await sendPromptDeOpenAI(model, responseMessageId, _chatId);
+					}
+					// if (model?.external) {
+					// 	await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
+					// } else if (model) {
+					// 	await sendPromptOllama(model, prompt, responseMessageId, _chatId);
+					// }
+				} else {
+					console.error($i18n.t(`Model {{modelId}} not found`, {}));
+					// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+				}
+			})
 		);
 
 		// 所有模型响应结束后，还原firstResAlready为初始状态false
-    firstResAlready = false;
+		firstResAlready = false;
 
-    // 加载聊天列表（赋值聊天title）
-    if (messages.length == 2) {
-      window.history.replaceState(history.state, "", `/c/${_chatId}`);
-      const _title = await generateDeChatTitle(prompt);
-      await setChatTitle(_chatId, _title);
-    } else {
-      await chats.set(await getChatList(localStorage.token));
-    }
+		// 加载聊天列表（赋值聊天title）
+		if (messages.length == 2) {
+			window.history.replaceState(history.state, "", `/c/${_chatId}`);
+			const _title = await generateDeChatTitle(prompt);
+			await setChatTitle(_chatId, _title);
+		} else {
+			await chats.set(await getChatList(localStorage.token));
+		}
 	};
 
 	// 对话DeGpt
-	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {			
+	const sendPromptDeOpenAI = async (model, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
 		const docs = [messages[messages.length - 2]]
 			.filter((message) => message?.files ?? null)
 			.map((message) =>
-				message.files.filter((item) => item.type === 'doc' || item.type === 'collection')
+				message.files.filter(
+					(item) => item.type === "doc" || item.type === "collection"
+				)
 			)
 			.flat(1);
 
 		// 获取上一个对应模型回复的消息(每次只选一个模型可去除)
-    // const modelmessage = messages;
-    // if (messages.length > 2) {
-    //   let checkmessage = modelmessage[messages.length - 3];
-    //   let checkchildrenIds = history.messages[checkmessage.parentId]?.childrenIds;
-    //   if (checkchildrenIds) {
-    //     checkchildrenIds.forEach(item => {
-    //       let sonMessage = history.messages[item];
-    //       if (sonMessage.model == model.id) {
-    //         checkmessage.content = sonMessage.content;
-    //       }
-    //     });
-    //   }
-    // }
+		// const modelmessage = messages;
+		// if (messages.length > 2) {
+		//   let checkmessage = modelmessage[messages.length - 3];
+		//   let checkchildrenIds = history.messages[checkmessage.parentId]?.childrenIds;
+		//   if (checkchildrenIds) {
+		//     checkchildrenIds.forEach(item => {
+		//       let sonMessage = history.messages[item];
+		//       if (sonMessage.model == model.id) {
+		//         checkmessage.content = sonMessage.content;
+		//       }
+		//     });
+		//   }
+		// }
 
 		scrollToBottom();
 
 		// console.log("$settings.system", $settings.system, );
-		
+
 		try {
 			let send_message = [
-        $settings.system || (responseMessage?.userContext ?? null)
-          ? {
-              role: "system",
-              content: `${$settings?.system ?? ""}${
-              responseMessage?.userContext ?? null
-                ? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join("\n")}` : ""}`,
-            } : undefined,
-            ...messages,
-        ].filter((message) => message);
-			
+				$settings.system || (responseMessage?.userContext ?? null)
+					? {
+							role: "system",
+							content: `${$settings?.system ?? ""}${
+								responseMessage?.userContext ?? null
+									? `\n\nUser Context:\n${(
+											responseMessage?.userContext ?? []
+									  ).join("\n")}`
+									: ""
+							}`,
+					  }
+					: undefined,
+				...messages,
+			].filter((message) => message);
+
 			// 判断是否需要重新赋值
 			send_message.forEach((item, index) => {
-        // 判断不同类型提问不同内容
-        if (item?.role == 'user' && item?.toolflag) {
-          if (item?.tooltype == "webread") {
-            let analyContent = "网页标题：" + item?.parseInfo?.title;
-            analyContent = "；网页内容：" + item?.parseInfo?.content;
-            analyContent = analyContent + "\n" + item?.content;
-            item.content = analyContent;
-          } else if (item?.tooltype == "translate") {
-            let analyContent = item?.content + "\n" + item?.parseInfo;
-            item.content = analyContent;
-          } else if (item?.tooltype == "youtube") {
+				// 判断不同类型提问不同内容
+				if (item?.role == "user" && item?.toolflag) {
+					if (item?.tooltype == "webread") {
+						let analyContent = "网页标题：" + item?.parseInfo?.title;
+						analyContent = "；网页内容：" + item?.parseInfo?.content;
+						analyContent = analyContent + "\n" + item?.content;
+						item.content = analyContent;
+					} else if (item?.tooltype == "translate") {
+						let analyContent = item?.content + "\n" + item?.parseInfo;
+						item.content = analyContent;
+					} else if (item?.tooltype == "youtube") {
 						if (item?.parseInfo?.videos) {
-							let analyContent = item?.parseInfo?.videos.map((vItem: any) => vItem?.description).join('\n');
-							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above YouTube search results:");
+							let analyContent = item?.parseInfo?.videos
+								.map((vItem: any) => vItem?.description)
+								.join("\n");
+							analyContent =
+								analyContent +
+								"\n" +
+								$i18n.t("Summarize based on the above YouTube search results:");
 							item.content = analyContent + item.content;
 						}
-          } else if (item?.tooltype == "twitter") {
+					} else if (item?.tooltype == "twitter") {
 						if (item?.parseInfo?.content) {
-							let analyContent = item?.parseInfo?.content.map((tItem: any) => tItem?.full_text).join('\n');
-							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above Twitter search results:");
+							let analyContent = item?.parseInfo?.content
+								.map((tItem: any) => tItem?.full_text)
+								.join("\n");
+							analyContent =
+								analyContent +
+								"\n" +
+								$i18n.t("Summarize based on the above Twitter search results:");
 							item.content = analyContent + item.content;
 						}
-          } else if (item?.tooltype == "bing") {
+					} else if (item?.tooltype == "bing") {
 						if (item?.parseInfo?.web) {
-							let analyContent = item?.parseInfo?.web.map((wItem: any) => wItem?.content).join('\n');
-							analyContent = analyContent + "\n" + $i18n.t("Summarize based on the above web search results:");
+							let analyContent = item?.parseInfo?.web
+								.map((wItem: any) => wItem?.content)
+								.join("\n");
+							analyContent =
+								analyContent +
+								"\n" +
+								$i18n.t("Summarize based on the above web search results:");
 							item.content = analyContent + item.content;
 						}
-          }
-        } 
-        // else if (item?.role != 'user' && docs.length > 0) {
-        //   if (docs[0].image.length > 0) {
-        //     let content = [];
-        //     if (docs[0].text[0]?.page_content.length > 0) {
-        //       let analyContent = "";
-        //       docs[0].text.forEach(item => {
-        //         analyContent = analyContent + item?.page_content + "\n";
-        //       });
-        //       content.push({type: "text", text: "文档内容：" + analyContent + send_message[index-1].content});
-        //     } else {
-        //       content.push({type: "text", text: send_message[index-1].content});
-        //     }
-        //     content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
-        //     send_message[index-1].content = content;
-        //   } else {
-        //     let analyContent = "";
-        //     docs[0].text.forEach(item => {
-        //         analyContent = analyContent + item?.page_content + "\n";
-        //     });
-        //     send_message[index-1].content = "文档内容：" + analyContent + send_message[index-1].content;
-        //   }
-        // }
-      });
+					}
+				}
+				// else if (item?.role != 'user' && docs.length > 0) {
+				//   if (docs[0].image.length > 0) {
+				//     let content = [];
+				//     if (docs[0].text[0]?.page_content.length > 0) {
+				//       let analyContent = "";
+				//       docs[0].text.forEach(item => {
+				//         analyContent = analyContent + item?.page_content + "\n";
+				//       });
+				//       content.push({type: "text", text: "文档内容：" + analyContent + send_message[index-1].content});
+				//     } else {
+				//       content.push({type: "text", text: send_message[index-1].content});
+				//     }
+				//     content.push({type: "image_url", image_url: {url: docs[0].image[0]}});
+				//     send_message[index-1].content = content;
+				//   } else {
+				//     let analyContent = "";
+				//     docs[0].text.forEach(item => {
+				//         analyContent = analyContent + item?.page_content + "\n";
+				//     });
+				//     send_message[index-1].content = "文档内容：" + analyContent + send_message[index-1].content;
+				//   }
+				// }
+			});
+
+			let audio = false;
+			// 校验是否有语音
+			send_message.forEach((item, index) => {
+				if (item?.role == "user" && item?.toolInfo?.audio) {
+					audio = true;
+				}
+			});
 
 			// 过滤掉error和 content为空数据
-			send_message = send_message.filter(item =>!item.error).filter(item=> item.content != "");
+			send_message = send_message
+				.filter((item) => !item.error)
+				.filter((item) => item.content != "");
 
-			// 处理图片消息
-      send_message = send_message.map((message, idx, arr) => ({
-        role: message.role,
-        ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
-        message.role === "user"
-          ? {
-              content: [
-                {
-                  type: "text",
-                  text:
-                    arr.length - 1 !== idx
-                      ? message.content
-                      : message?.raContent ?? message.content,
-                },
-                ...message.files
-                  .filter((file) => file.type === "image")
-                    .map((file) => ({
-                      type: "image_url",
-                      image_url: {
-                        url: file.url,
-                      },
-                    })),
-              ],
-            }
-          : {
-            content:
-              arr.length - 1 !== idx
-                ? message.content
-                : message?.raContent ?? message.content,
-            }),
-      }));
+			// 处理图片语音消息
+			send_message = send_message.map((message, idx, arr) => ({
+				role: message.role,
+				...((message.files?.filter((file) => file.type === "image").length >
+					0 ??
+					false) &&
+				message.role === "user"
+					? {
+							content: [
+								{
+									type: "text",
+									text:
+										arr.length - 1 !== idx
+											? message.content
+											: message?.raContent ?? message.content,
+								},
+								...message.files
+									.filter((file) => file.type === "image")
+									.map((file) => ({
+										type: "image_url",
+										image_url: {
+											url: file.url,
+										},
+									})),
+							],
+					  }
+					: (message?.toolInfo?.audio ?? false) && message.role === "user"
+					? {
+							content: [
+								{
+									type: "audio",
+									audio: { data: message?.toolInfo?.audio?.data, format: "wav" },
+								},
+							],
+					  }
+					: {
+							content:
+								arr.length - 1 !== idx
+									? message.content
+									: message?.raContent ?? message.content,
+					  }),
+			}));
 
 			// send_message = send_message.map((message, idx, arr) => ({
-      //   role: message.role,
-      //   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
-      //   message.role === "user"
-      //     ? {
-      //         content: arr.length - 1 !== idx
-      //           ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
-      //           : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
-      //       }
-      //     : {
-      //       content:
-      //         arr.length - 1 !== idx
-      //           ? message.content
-      //           : message?.raContent ?? message.content,
-      //     }),
-      // }));
+			//   role: message.role,
+			//   ...((message.files?.filter((file) => file.type === "image").length > 0 ?? false) &&
+			//   message.role === "user"
+			//     ? {
+			//         content: arr.length - 1 !== idx
+			//           ? JSON.stringify(message.imageinfo) + "根据以上图片内容" + message.content
+			//           : JSON.stringify(message.imageinfo) + "根据以上图片内容" +  (message?.raContent ?? message.content),
+			//       }
+			//     : {
+			//       content:
+			//         arr.length - 1 !== idx
+			//           ? message.content
+			//           : message?.raContent ?? message.content,
+			//     }),
+			// }));
 
 			// 发送内容添加 nothink 内容
-      // if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
-      //   send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
-      // }
+			// if (!model.think && model.id == "Qwen3-235B-A22B-FP8") {
+			//   send_message[send_message.length-1].content = "/nothink" + send_message[send_message.length-1].content;
+			// }
 
 			const [res, controller] = await generateDeOpenAIChatCompletion(
 				localStorage.token,
 				{
-					model: fileFlag ? model.imagemodel : model.textmodel,
+					model: audio ? 'gpt-4o-audio-preview' : (fileFlag ? model.imagemodel : model.textmodel),
 					messages: send_message,
-					enable_thinking: model.think
+					enable_thinking: audio ? false : model.think,
+					reload: false,
+					audio: audio,
 				},
-				$deApiBaseUrl?.url			
+				$deApiBaseUrl?.url
 			);
-
-
 
 			// Wait until history/message have been updated
 			await tick();
@@ -686,34 +802,47 @@
 
 			// 6. 创建openai对话数据流
 			if (res && res.ok && res.body) {
-				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
+				const textStream = await createOpenAITextStream(
+					res.body,
+					$settings.splitLargeChunks
+				);
 				responseMessage.replytime = Math.floor(Date.now() / 1000);
 				// 判断模型添加think头
-        let first_think = false;
-        if (model.think) {
-          responseMessage.think_content = "<think>";
-        }
+				let first_think = false;
+				if (model.think && !audio) {
+					responseMessage.think_content = "<think>";
+				}
 				for await (const update of textStream) {
-					const { value, done, citations, error, think } = update;
+					const { value, audio, done, citations, error, think } = update;
 
 					// 校验是否思考过程
-          if (model.think && think) {
-            first_think = true;
-          }
-          if (model.think && first_think && !think) {
-            first_think = false;
-            responseMessage.content = await addTextSlowly(
-              (text: string) => {
-                responseMessage.content = text
-              },
-              responseMessage.content,
-              "</think>",
-              model.id,
-            );
-            messages = messages;
-          }
+					if (model.think && think && !audio) {
+						first_think = true;
+					}
+					if (model.think && first_think && !think && !audio) {
+						first_think = false;
+						responseMessage.content = await addTextSlowly(
+							(text: string) => {
+								responseMessage.content = text;
+							},
+							responseMessage.content,
+							"</think>",
+							model.id
+						);
+						messages = messages;
+					}
 
-					if(value && !firstResAlready) { // 第一次响应的时候，把当前的id设置为当前响应的id
+					// 赋值语音
+					if (audio) {
+						if (responseMessage.audio) {
+							responseMessage.audio.push(audio);
+						} else {
+							responseMessage.audio = [audio];
+						}
+					}
+
+					if (value && !firstResAlready) {
+						// 第一次响应的时候，把当前的id设置为当前响应的id
 						firstResAlready = true;
 						history.currentId = responseMessageId;
 					}
@@ -726,7 +855,7 @@
 						messages = messages;
 
 						if (stopResponseFlag) {
-							controller.abort('User: Stop Response');
+							controller.abort("User: Stop Response");
 						}
 
 						break;
@@ -737,29 +866,34 @@
 						continue;
 					}
 
+					if (!firstResAlready && responseMessage.content.length > 0) {
+						// 第一次响应的时候，把当前的id设置为当前响应的id
+						console.log(
+							"模型调用完毕？",
+							res,
+							model.id,
+							firstResAlready,
+							responseMessageId,
+							responseMessage.content
+						);
 
+						firstResAlready = true;
+						history.currentId = responseMessageId;
+						await tick();
+					}
 
-			if(!firstResAlready && responseMessage.content.length > 0) { // 第一次响应的时候，把当前的id设置为当前响应的id
-				console.log("模型调用完毕？", res, model.id, firstResAlready, responseMessageId, responseMessage.content);
-				
-				firstResAlready = true;
-				history.currentId = responseMessageId;
-				await tick();
-
-			}
-
-					if (responseMessage.content == '' && value == '\n') {
+					if (responseMessage.content == "" && value == "\n") {
 						continue;
 					} else {
 						// responseMessage.content += value;
 						responseMessage.content = await addTextSlowly(
-              (text: string) => {
-                responseMessage.content = text
-              },
-              responseMessage.content,
-              value,
-              model.id,
-            );
+							(text: string) => {
+								responseMessage.content = text;
+							},
+							responseMessage.content,
+							value,
+							model.id
+						);
 						messages = messages;
 					}
 
@@ -776,7 +910,9 @@
 
 					if ($settings.responseAutoPlayback) {
 						await tick();
-						document.getElementById(`speak-button-${responseMessage.id}`)?.click();
+						document
+							.getElementById(`speak-button-${responseMessage.id}`)
+							?.click();
 					}
 
 					if (autoScroll) {
@@ -800,25 +936,30 @@
 	};
 
 	// 更新消息到数据库
-  const updateChatMessage = async (responseMessage: any, _chatId) => {
-    await checkThinkContent(responseMessage);
-    messages = messages;
+	const updateChatMessage = async (responseMessage: any, _chatId) => {
+		await checkThinkContent(responseMessage);
+		messages = messages;
 
-    stopResponseFlag = false;
-    
-    // 更新聊天记录
-    if (_chatId === $chatId) {  
-      if ($settings.saveChatHistory ?? true) {
-        await updateChatById(localStorage.token, _chatId, {
-          messages: messages,
-          history: history
-        });
-      }
-    }
-  }
+		stopResponseFlag = false;
+		outputting = false;
 
+		// 更新聊天记录
+		if (_chatId === $chatId) {
+			if ($settings.saveChatHistory ?? true) {
+				await updateChatById(localStorage.token, _chatId, {
+					messages: messages,
+					history: history,
+				});
+			}
+		}
+	};
 
-	const sendPromptOllama = async (model, userPrompt, responseMessageId, _chatId) => {
+	const sendPromptOllama = async (
+		model,
+		userPrompt,
+		responseMessageId,
+		_chatId
+	) => {
 		model = model.id;
 		const responseMessage = history.messages[responseMessageId];
 
@@ -831,31 +972,36 @@
 		const messagesBody = [
 			$settings.system || (responseMessage?.userContext ?? null)
 				? {
-						role: 'system',
-						content: `${$settings?.system ?? ''}${
+						role: "system",
+						content: `${$settings?.system ?? ""}${
 							responseMessage?.userContext ?? null
-								? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join('\n')}`
-								: ''
-						}`
+								? `\n\nUser Context:\n${(
+										responseMessage?.userContext ?? []
+								  ).join("\n")}`
+								: ""
+						}`,
 				  }
 				: undefined,
-			...messages
+			...messages,
 		]
 			.filter((message) => message)
 			.map((message, idx, arr) => {
 				// Prepare the base message object
 				const baseMessage = {
 					role: message.role,
-					content: arr.length - 2 !== idx ? message.content : message?.raContent ?? message.content
+					content:
+						arr.length - 2 !== idx
+							? message.content
+							: message?.raContent ?? message.content,
 				};
 
 				// Extract and format image URLs if any exist
 				const imageUrls = message.files
-					?.filter((file) => file.type === 'image')
-					.map((file) => file.url.slice(file.url.indexOf(',') + 1));
+					?.filter((file) => file.type === "image")
+					.map((file) => file.url.slice(file.url.indexOf(",") + 1));
 
 				// Add images array only if it contains elements
-				if (imageUrls && imageUrls.length > 0 && message.role === 'user') {
+				if (imageUrls && imageUrls.length > 0 && message.role === "user") {
 					baseMessage.images = imageUrls;
 				}
 
@@ -881,7 +1027,9 @@
 		const docs = messages
 			.filter((message) => message?.files ?? null)
 			.map((message) =>
-				message.files.filter((item) => item.type === 'doc' || item.type === 'collection')
+				message.files.filter(
+					(item) => item.type === "doc" || item.type === "collection"
+				)
 			)
 			.flat(1);
 
@@ -893,22 +1041,24 @@
 				stop:
 					$settings?.options?.stop ?? undefined
 						? $settings.options.stop.map((str) =>
-								decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
+								decodeURIComponent(
+									JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
+								)
 						  )
-						: undefined
+						: undefined,
 			},
 			format: $settings.requestFormat ?? undefined,
 			keep_alive: $settings.keepAlive ?? undefined,
 			docs: docs.length > 0 ? docs : undefined,
-			citations: docs.length > 0
+			citations: docs.length > 0,
 		});
 
 		if (res && res.ok) {
-			console.log('controller', controller);
+			console.log("controller", controller);
 
 			const reader = res.body
 				.pipeThrough(new TextDecoderStream())
-				.pipeThrough(splitStream('\n'))
+				.pipeThrough(splitStream("\n"))
 				.getReader();
 
 			while (true) {
@@ -918,7 +1068,7 @@
 					messages = messages;
 
 					if (stopResponseFlag) {
-						controller.abort('User: Stop Response');
+						controller.abort("User: Stop Response");
 						await cancelOllamaRequest(localStorage.token, currentRequestId);
 					}
 
@@ -928,28 +1078,31 @@
 				}
 
 				try {
-					let lines = value.split('\n');
+					let lines = value.split("\n");
 
 					for (const line of lines) {
-						if (line !== '') {
+						if (line !== "") {
 							console.log(line);
 							let data = JSON.parse(line);
 
-							if ('citations' in data) {
+							if ("citations" in data) {
 								responseMessage.citations = data.citations;
 								continue;
 							}
 
-							if ('detail' in data) {
+							if ("detail" in data) {
 								throw data;
 							}
 
-							if ('id' in data) {
+							if ("id" in data) {
 								console.log(data);
 								currentRequestId = data.id;
 							} else {
 								if (data.done == false) {
-									if (responseMessage.content == '' && data.message.content == '\n') {
+									if (
+										responseMessage.content == "" &&
+										data.message.content == "\n"
+									) {
 										continue;
 									} else {
 										responseMessage.content += data.message.content;
@@ -958,10 +1111,10 @@
 								} else {
 									responseMessage.done = true;
 
-									if (responseMessage.content == '') {
+									if (responseMessage.content == "") {
 										responseMessage.error = true;
 										responseMessage.content =
-											'Oops! No text generated from Ollama, Please try again.';
+											"Oops! No text generated from Ollama, Please try again.";
 									}
 
 									responseMessage.context = data.context ?? null;
@@ -973,7 +1126,7 @@
 										prompt_eval_count: data.prompt_eval_count,
 										prompt_eval_duration: data.prompt_eval_duration,
 										eval_count: data.eval_count,
-										eval_duration: data.eval_duration
+										eval_duration: data.eval_duration,
 									};
 									messages = messages;
 
@@ -998,7 +1151,9 @@
 
 									if ($settings.responseAutoPlayback) {
 										await tick();
-										document.getElementById(`speak-button-${responseMessage.id}`)?.click();
+										document
+											.getElementById(`speak-button-${responseMessage.id}`)
+											?.click();
 									}
 								}
 							}
@@ -1006,7 +1161,7 @@
 					}
 				} catch (error) {
 					console.log(error);
-					if ('detail' in error) {
+					if ("detail" in error) {
 						toast.error(error.detail);
 					}
 					break;
@@ -1021,7 +1176,7 @@
 				if ($settings.saveChatHistory ?? true) {
 					chat = await updateChatById(localStorage.token, _chatId, {
 						messages: messages,
-						history: history
+						history: history,
 					});
 					await chats.set(await getChatList(localStorage.token));
 				}
@@ -1030,7 +1185,7 @@
 			if (res !== null) {
 				const error = await res.json();
 				console.log(error);
-				if ('detail' in error) {
+				if ("detail" in error) {
 					toast.error(error.detail);
 					responseMessage.content = error.detail;
 				} else {
@@ -1039,17 +1194,25 @@
 				}
 			} else {
 				toast.error(
-					$i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, { provider: 'Ollama' })
+					$i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
+						provider: "Ollama",
+					})
 				);
-				responseMessage.content = $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
-					provider: 'Ollama'
-				});
+				responseMessage.content = $i18n.t(
+					`Uh-oh! There was an issue connecting to {{provider}}.`,
+					{
+						provider: "Ollama",
+					}
+				);
 			}
 
 			responseMessage.error = true;
-			responseMessage.content = $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
-				provider: 'Ollama'
-			});
+			responseMessage.content = $i18n.t(
+				`Uh-oh! There was an issue connecting to {{provider}}.`,
+				{
+					provider: "Ollama",
+				}
+			);
 			responseMessage.done = true;
 			messages = messages;
 		}
@@ -1061,8 +1224,8 @@
 			scrollToBottom();
 		}
 
-		if (messages.length == 2 && messages.at(1).content !== '') {
-			window.history.replaceState(history.state, '', `/c/${_chatId}`);
+		if (messages.length == 2 && messages.at(1).content !== "") {
+			window.history.replaceState(history.state, "", `/c/${_chatId}`);
 			const _title = await generateChatTitle(userPrompt);
 			await setChatTitle(_chatId, _title);
 		}
@@ -1078,13 +1241,12 @@
 					: $settings?.title?.model ?? selectedModels[0];
 			const titleModel = $models.find((model) => model.id === titleModelId);
 
-			console.log(titleModel);
 			const title = await generateDeTitle(
 				localStorage.token,
 				$settings?.title?.prompt ??
 					$i18n.t(
 						"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
-					) + ' {{prompt}}',
+					) + " {{prompt}}",
 				titleModelId,
 				userPrompt,
 				$deApiBaseUrl?.url
@@ -1097,44 +1259,57 @@
 	};
 
 	const generateSearchChatKeyword = async (userPrompt: string) => {
-    if ($settings?.title?.auto ?? true) {
-      // 获取关键词
-      let send_messages = messages.filter(item => item.content != '')
-        .map(item => {
-					let custmessage = {role: item.role, content: item.content};
+		if ($settings?.title?.auto ?? true) {
+			// 获取关键词
+			let send_messages = messages
+				.filter((item) => item.content != "")
+				.map((item) => {
+					let custmessage = { role: item.role, content: item.content };
 					if (item.files) {
-						custmessage.content = [{"type": "text","text": item.content}];
-						item.files.forEach((fitem:any) => {
+						custmessage.content = [{ type: "text", text: item.content }];
+						item.files.forEach((fitem: any) => {
 							let url = fitem.url;
-							custmessage.content.push({"type": "image_url", "image_url": {url}})
-						})
+							custmessage.content.push({
+								type: "image_url",
+								image_url: { url },
+							});
+						});
 					}
 					return custmessage;
 				});
-      send_messages.push({
-        role: "user",
-        content: $i18n.t("Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters")
-      });
-      const title = await generateSearchKeyword(
+			send_messages.push({
+				role: "user",
+				content: $i18n.t(
+					"Sort the above user questions in chronological order, filter out repetitive, guiding and valueless key words, obtain the last user question content and only output the user question content, with a maximum of 10 characters"
+				),
+			});
+			const title = await generateSearchKeyword(
 				localStorage.token,
-        send_messages,
+				send_messages,
 				userPrompt,
-        $deApiBaseUrl?.url
-      );
-      return title;
-    } else {
-      return `${userPrompt}`;
-    }
-  };
+				$deApiBaseUrl?.url
+			);
+			return title;
+		} else {
+			return `${userPrompt}`;
+		}
+	};
 
 	// 5. 给openai发请求
-	const sendPromptOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
+	const sendPromptOpenAI = async (
+		model,
+		userPrompt,
+		responseMessageId,
+		_chatId
+	) => {
 		const responseMessage = history.messages[responseMessageId];
 
 		const docs = messages
 			.filter((message) => message?.files ?? null)
 			.map((message) =>
-				message.files.filter((item) => item.type === 'doc' || item.type === 'collection')
+				message.files.filter(
+					(item) => item.type === "doc" || item.type === "collection"
+				)
 			)
 			.flat(1);
 
@@ -1151,52 +1326,58 @@
 					messages: [
 						$settings.system || (responseMessage?.userContext ?? null)
 							? {
-									role: 'system',
-									content: `${$settings?.system ?? ''}${
+									role: "system",
+									content: `${$settings?.system ?? ""}${
 										responseMessage?.userContext ?? null
-											? `\n\nUser Context:\n${(responseMessage?.userContext ?? []).join('\n')}`
-											: ''
-									}`
+											? `\n\nUser Context:\n${(
+													responseMessage?.userContext ?? []
+											  ).join("\n")}`
+											: ""
+									}`,
 							  }
 							: undefined,
-						...messages
+						...messages,
 					]
 						.filter((message) => message)
 						.map((message, idx, arr) => ({
 							role: message.role,
-							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
-							message.role === 'user'
+							...((message.files?.filter((file) => file.type === "image")
+								.length > 0 ??
+								false) &&
+							message.role === "user"
 								? {
 										content: [
 											{
-												type: 'text',
+												type: "text",
 												text:
 													arr.length - 1 !== idx
 														? message.content
-														: message?.raContent ?? message.content
+														: message?.raContent ?? message.content,
 											},
 											...message.files
-												.filter((file) => file.type === 'image')
+												.filter((file) => file.type === "image")
 												.map((file) => ({
-													type: 'image_url',
+													type: "image_url",
 													image_url: {
-														url: file.url
-													}
-												}))
-										]
+														url: file.url,
+													},
+												})),
+										],
 								  }
 								: {
 										content:
 											arr.length - 1 !== idx
 												? message.content
-												: message?.raContent ?? message.content
-								  })
+												: message?.raContent ?? message.content,
+								  }),
 						})),
 					seed: $settings?.options?.seed ?? undefined,
 					stop:
 						$settings?.options?.stop ?? undefined
 							? $settings.options.stop.map((str) =>
-									decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
+									decodeURIComponent(
+										JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
+									)
 							  )
 							: undefined,
 					temperature: $settings?.options?.temperature ?? undefined,
@@ -1205,9 +1386,9 @@
 					frequency_penalty: $settings?.options?.repeat_penalty ?? undefined,
 					max_tokens: $settings?.options?.num_predict ?? undefined,
 					docs: docs.length > 0 ? docs : undefined,
-					citations: docs.length > 0
+					citations: docs.length > 0,
 				},
-				model?.source?.toLowerCase() === 'litellm'
+				model?.source?.toLowerCase() === "litellm"
 					? `${LITELLM_API_BASE_URL}/v1`
 					: `${OPENAI_API_BASE_URL}`
 			);
@@ -1219,7 +1400,10 @@
 
 			// 6. 创建openai对话数据流
 			if (res && res.ok && res.body) {
-				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
+				const textStream = await createOpenAITextStream(
+					res.body,
+					$settings.splitLargeChunks
+				);
 
 				for await (const update of textStream) {
 					const { value, done, citations, error } = update;
@@ -1232,7 +1416,7 @@
 						messages = messages;
 
 						if (stopResponseFlag) {
-							controller.abort('User: Stop Response');
+							controller.abort("User: Stop Response");
 						}
 
 						break;
@@ -1243,7 +1427,7 @@
 						continue;
 					}
 
-					if (responseMessage.content == '' && value == '\n') {
+					if (responseMessage.content == "" && value == "\n") {
 						continue;
 					} else {
 						responseMessage.content += value;
@@ -1263,7 +1447,9 @@
 
 					if ($settings.responseAutoPlayback) {
 						await tick();
-						document.getElementById(`speak-button-${responseMessage.id}`)?.click();
+						document
+							.getElementById(`speak-button-${responseMessage.id}`)
+							?.click();
 					}
 
 					if (autoScroll) {
@@ -1275,7 +1461,7 @@
 					if ($settings.saveChatHistory ?? true) {
 						chat = await updateChatById(localStorage.token, _chatId, {
 							messages: messages,
-							history: history
+							history: history,
 						});
 						await chats.set(await getChatList(localStorage.token));
 					}
@@ -1296,7 +1482,7 @@
 		}
 
 		if (messages.length == 2) {
-			window.history.replaceState(history.state, '', `/c/${_chatId}`);
+			window.history.replaceState(history.state, "", `/c/${_chatId}`);
 
 			const _title = await generateChatTitle(userPrompt);
 			await setChatTitle(_chatId, _title);
@@ -1304,51 +1490,68 @@
 	};
 
 	// 校验模型是否有think思考内容
-  const checkThinkContent = async(responseMessage: any) => {
+	const checkThinkContent = async (responseMessage: any) => {
 		let checkMessage = responseMessage.think_content + responseMessage.content;
-    if (checkMessage.startsWith("<think>")) {
-      const startIndex = checkMessage.indexOf('<think>');
-      const nextSearchIndex = startIndex + '<think>'.length;
-      const endIndex = checkMessage.indexOf('</think>', nextSearchIndex);
-      let extracted;
-      let remaining;
-      if (endIndex === -1) {
-        extracted = checkMessage.slice(startIndex);
-        remaining = checkMessage.slice(0, startIndex);
-      } else {
-        extracted = checkMessage.slice(startIndex, endIndex + '</think>'.length);
-        remaining = checkMessage.slice(0, startIndex) + checkMessage.slice(endIndex + '</think>'.length);
-      }
-      responseMessage.content = remaining;
-      responseMessage.think_content = extracted;
-    }
-  }
+		if (checkMessage.startsWith("<think>")) {
+			const startIndex = checkMessage.indexOf("<think>");
+			const nextSearchIndex = startIndex + "<think>".length;
+			const endIndex = checkMessage.indexOf("</think>", nextSearchIndex);
+			let extracted;
+			let remaining;
+			if (endIndex === -1) {
+				extracted = checkMessage.slice(startIndex);
+				remaining = checkMessage.slice(0, startIndex);
+			} else {
+				extracted = checkMessage.slice(
+					startIndex,
+					endIndex + "</think>".length
+				);
+				remaining =
+					checkMessage.slice(0, startIndex) +
+					checkMessage.slice(endIndex + "</think>".length);
+			}
+			responseMessage.content = remaining;
+			responseMessage.think_content = extracted;
+		}
+	};
 
-  // 获取搜索网页
-  const handleSearchWeb= async(userPrompt: string) => {
-    const ai_keyword = await generateSearchChatKeyword(userPrompt);
-    let result = await thirdSearch(localStorage.token, ai_keyword, $tooltype);
-    if (result?.ok) {
-      return result.data;
-    } else {
-      return "";
-    }
-  }
+	// 获取搜索网页
+	const handleSearchWeb = async (userPrompt: string) => {
+		const ai_keyword = await generateSearchChatKeyword(userPrompt);
+		let result = await thirdSearch(localStorage.token, ai_keyword, $tooltype);
+		if (result?.ok) {
+			return result.data;
+		} else {
+			return "";
+		}
+	};
 
 	// 获取图片描述
-  const analysisimageinfo = async(messageId: string) => {
-    let userMessage = history.messages[messageId];
-    if (userMessage.files) {
-      if (userMessage.files.length > 0 && (userMessage.files[0].type == "image" || (userMessage.files[0]?.image??[]).length > 0)) {
-        let result = await analysisImageInfo(localStorage.token, userMessage.files[0].url);
-        userMessage.imageinfo = result;
-        history.messages[messageId] = userMessage;
-      }
-    }
-    await tick();
-  }
+	const analysisimageinfo = async (messageId: string) => {
+		let userMessage = history.messages[messageId];
+		if (userMessage.files) {
+			if (
+				userMessage.files.length > 0 &&
+				(userMessage.files[0].type == "image" ||
+					(userMessage.files[0]?.image ?? []).length > 0)
+			) {
+				let result = await analysisImageInfo(
+					localStorage.token,
+					userMessage.files[0].url
+				);
+				userMessage.imageinfo = result;
+				history.messages[messageId] = userMessage;
+			}
+		}
+		await tick();
+	};
 
-	const handleOpenAIError = async (error, res: Response | null, model, responseMessage) => {
+	const handleOpenAIError = async (
+		error,
+		res: Response | null,
+		model,
+		responseMessage
+	) => {
 		// let errorMessage = '';
 		// let innerError;
 
@@ -1375,37 +1578,38 @@
 		// }
 
 		responseMessage.error = true;
-		responseMessage.content = "It seems that you are offline. Please reconnect to send messages.";
-			// $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
-			// 	provider: model.name ?? model.id
-			// }) +
-			// '\n' +
-			// errorMessage;
+		responseMessage.content =
+			"It seems that you are offline. Please reconnect to send messages.";
+		// $i18n.t(`Uh-oh! There was an issue connecting to {{provider}}.`, {
+		// 	provider: model.name ?? model.id
+		// }) +
+		// '\n' +
+		// errorMessage;
 		responseMessage.done = true;
 
 		messages = messages;
 	};
 
 	const handleLimitError = async (content: string, responseMessage: any) => {
-    responseMessage.content = $i18n.t(content);
-    responseMessage.replytime = Math.floor(Date.now() / 1000);
-    responseMessage.warning = true;
-    responseMessage.done = true;
-    messages = messages;
-    scrollToBottom();
-    await updateChatById(localStorage.token, $chatId, {
-      messages: messages,
-      history: history
-    });
-  }
+		responseMessage.content = $i18n.t(content);
+		responseMessage.replytime = Math.floor(Date.now() / 1000);
+		responseMessage.warning = true;
+		responseMessage.done = true;
+		messages = messages;
+		scrollToBottom();
+		await updateChatById(localStorage.token, $chatId, {
+			messages: messages,
+			history: history,
+		});
+	};
 
 	const stopResponse = () => {
 		stopResponseFlag = true;
-		console.log('stopResponse');
+		console.log("stopResponse");
 	};
 
 	const regenerateResponse = async (message) => {
-		console.log('regenerateResponse');
+		console.log("regenerateResponse");
 
 		if (messages.length != 0) {
 			let userMessage = history.messages[message.parentId];
@@ -1420,7 +1624,7 @@
 	};
 
 	const continueGeneration = async () => {
-		console.log('continueGeneration');
+		console.log("continueGeneration");
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 
 		if (messages.length != 0 && messages.at(-1).done == true) {
@@ -1445,15 +1649,11 @@
 				// 		responseMessage.id,
 				// 		_chatId
 				// 	);
-				await sendPromptDeOpenAI(
-					model,
-					responseMessage.id,
-					_chatId
-				);
+				await sendPromptDeOpenAI(model, responseMessage.id, _chatId);
 			}
 		} else {
-console.error($i18n.t(`Model {{modelId}} not found`, { }));
-// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
+			console.error($i18n.t(`Model {{modelId}} not found`, {}));
+			// toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 		}
 	};
 
@@ -1473,7 +1673,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 				$settings?.title?.prompt ??
 					$i18n.t(
 						"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
-					) + ' {{prompt}}',
+					) + " {{prompt}}",
 				titleModelId,
 				userPrompt,
 				model?.urls?.[0]
@@ -1497,15 +1697,19 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		}
 
 		if ($settings.saveChatHistory ?? true) {
-			chat = await updateChatById(localStorage.token, _chatId, { title: _title });
+			chat = await updateChatById(localStorage.token, _chatId, {
+				title: _title,
+			});
 			await chats.set(await getChatList(localStorage.token));
 		}
 	};
 
 	const getTags = async () => {
-		return await getTagsById(localStorage.token, $chatId).catch(async (error) => {
-			return [];
-		});
+		return await getTagsById(localStorage.token, $chatId).catch(
+			async (error) => {
+				return [];
+			}
+		);
 	};
 
 	const addTag = async (tagName) => {
@@ -1513,7 +1717,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		tags = await getTags();
 
 		chat = await updateChatById(localStorage.token, $chatId, {
-			tags: tags
+			tags: tags,
 		});
 
 		_tags.set(await getAllChatTags(localStorage.token));
@@ -1524,7 +1728,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		tags = await getTags();
 
 		chat = await updateChatById(localStorage.token, $chatId, {
-			tags: tags
+			tags: tags,
 		});
 
 		_tags.set(await getAllChatTags(localStorage.token));
@@ -1532,7 +1736,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 
 	onMount(async () => {
 		if (!($settings.saveChatHistory ?? true)) {
-			await goto('/');
+			await goto("/");
 		}
 	});
 </script>
@@ -1540,13 +1744,14 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 <svelte:head>
 	<title>
 		{title
-			? `${title.length > 30 ? `${title.slice(0, 30)}...` : title} | ${$WEBUI_NAME}`
+			? `${
+					title.length > 30 ? `${title.slice(0, 30)}...` : title
+			  } | ${$WEBUI_NAME}`
 			: `${$WEBUI_NAME}`}
 	</title>
 </svelte:head>
 
 {#if loaded}
-
 	<div
 		class="min-h-screen max-h-screen {$showSidebar
 			? 'md:max-w-[calc(100%-246px)]'
@@ -1564,7 +1769,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 					currentRequestId = null;
 				}
 				prompt = "";
-				goto('/');
+				goto("/");
 			}}
 		/>
 		<div class="flex flex-col flex-auto">
@@ -1574,7 +1779,8 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 				bind:this={messagesContainerElement}
 				on:scroll={(e) => {
 					autoScroll =
-						messagesContainerElement.scrollHeight - messagesContainerElement.scrollTop <=
+						messagesContainerElement.scrollHeight -
+							messagesContainerElement.scrollTop <=
 						messagesContainerElement.clientHeight + 45;
 				}}
 			>
@@ -1599,9 +1805,6 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		</div>
 	</div>
 
-
-
-
 	<MessageInput
 		bind:files
 		bind:webInfo
@@ -1610,6 +1813,7 @@ console.error($i18n.t(`Model {{modelId}} not found`, { }));
 		bind:autoScroll
 		bind:chatInputPlaceholder
 		bind:selectedModel={atSelectedModel}
+		bind:switchModel={selectedModels}
 		{messages}
 		{submitPrompt}
 		{stopResponse}
