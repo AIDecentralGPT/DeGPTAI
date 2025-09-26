@@ -102,7 +102,7 @@ export const getDeModels = async (token: string = "") => {
         tip: "GPT 4o audio (OpenAI)",
         support: "audio",
         type: 2,
-        desc: "Skilled in writing and generating ideas",
+        desc: "Focused on audio interaction",
         modelicon: "/static/icon/gpt_round.png",
         modelinfo: ""
       },
