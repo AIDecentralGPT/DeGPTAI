@@ -23,7 +23,7 @@ router = APIRouter()
 
 @router.post("/completion/proxy")
 async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
-    if param.audio or param.model == 'gpt-4o-audio-preview':
+    if param.audio:
         def event_generator():
             completion = OpenAiApiInstance.completionAudio(param)
             # if completion is not None:

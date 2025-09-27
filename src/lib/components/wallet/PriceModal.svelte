@@ -533,7 +533,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -824,7 +824,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -1115,7 +1115,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>

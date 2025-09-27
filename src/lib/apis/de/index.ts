@@ -94,12 +94,12 @@ export const getDeModels = async (token: string = "") => {
       },
       // 高级模型
       {
-        name: "GPT 4o audio (OpenAI)",
+        name: "GPT-4o audio (OpenAI)",
         model: "gpt-4o-audio-preview",
         audiomodel: "gpt-4o-audio-preview",
         textmodel: "gpt-4o",
         think: false,
-        tip: "GPT 4o audio (OpenAI)",
+        tip: "GPT-4o audio (OpenAI)",
         support: "audio",
         type: 2,
         desc: "Focused on audio interaction",
