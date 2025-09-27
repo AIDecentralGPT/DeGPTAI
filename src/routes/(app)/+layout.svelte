@@ -18,7 +18,8 @@
 		channel,
 		chats,
 		tags,
-		initPageFlag
+		initPageFlag,
+		walletKey
 	} from "$lib/stores";
 	import { page } from "$app/stores";
 
@@ -74,12 +75,11 @@
         if (localUser?.address_type == "dbc") {
           getUserInfo(localStorage.token).then(async (res) => {
 						if (res?.id === localUser?.id) {
-							// 刷新用户token
+							// 获取用户信息更新一次用户Token
 							if (res?.token) {
-								localStorage.token = res?.token
-							}
+								localStorage.token = res.token;
+							}	
 							const vipInfo = await isPro(localStorage.token);
-
 							await user.set({
 								...localUser,
 								token: res?.token,
@@ -88,10 +88,10 @@
 								verified: res?.verified,
 								language: res?.language
 							});
+							
 						}
-
 						localStorage.user = JSON.stringify($user);
-						
+
 						// 校验钱包
 						if (localStorage.walletImported) {
 							let walletImported = JSON.parse(localStorage.walletImported);
@@ -102,6 +102,13 @@
 								updateWalletData(walletImportedInfo?.data);
 							}
 						}
+
+						// 密码是否保存
+						if (localStorage.walletkey) {
+							let walletKeyObj = JSON.parse(localStorage.walletkey);
+              await walletKey.set(walletKeyObj);
+						}
+
 						// 更新用户模型
 						await initUserModels();
 						// 更新系统语言

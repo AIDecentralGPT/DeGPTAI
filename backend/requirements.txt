@@ -83,3 +83,4 @@ openai==1.78.1
 anthropic==0.54.0
 twscrape==0.17.0
 snscrape==0.7.0.20230622
+dashscope==1.23.3

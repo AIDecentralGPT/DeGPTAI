@@ -4,9 +4,8 @@ from typing import Optional
 from apps.web.models.rewards import RewardsTableInstance, RewardsModel
 from apps.redis.redis_client import RedisClientInstance
 import threading
-import os
 import time
-import numpy as np
+import os
 
 #接口请求地址
 #baseUrl = "http://34.234.201.126:8081" # 旧地址
@@ -46,7 +45,6 @@ class RewardApi:
                 dbc_hash = response_json['result']['Data']['DBCTxHash']
                 RewardsTableInstance.create_dbc_reward(reward.user_id, 0.1, 'new_wallet', dbc_hash, "")
                 return result
-                
             else:
                 RewardsTableInstance.update_reward(reward_id, None, False, True)
                 return None

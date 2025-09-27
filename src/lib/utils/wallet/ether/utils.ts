@@ -345,6 +345,8 @@ async function handleWalletSignIn({
   if (walletSignInResult?.token) {
     localStorage.removeItem("token");
 
+    console.log("==================", "token 被清除");
+
     localStorage.token = walletSignInResult.token;
 
     user.set(walletSignInResult);
@@ -391,10 +393,13 @@ async function signOut(channel: string) {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("walletImported");
+  localStorage.removeItem("walletKey");
   const res = await printSignIn(channel);
   localStorage.token = res.token;
   user.set(res);
-  console.log("指纹登录了", res);
+
+  console.log("==================", "token 被清除");
+  console.log("token 被清除");
 }
 
 export { provider, demo, importWallet, handleWalletSignIn, getGas, signOut };

@@ -9,6 +9,7 @@ type TextStreamUpdate = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	error?: any;
 	think?: boolean;
+	audio?: string;
 };
 
 // createOpenAITextStream takes a responseBody with a SSE response,
@@ -61,6 +62,8 @@ async function* openAIStreamToIterator(
 
 			if (parsedData.choices?.[0]?.delta?.reasoning_content != null) {
 				yield { done: false, value: parsedData.choices?.[0]?.delta?.reasoning_content ?? '', think: true };
+			} else if (parsedData.choices?.[0]?.delta?.audio != null) {
+				yield { done: false, value: '', audio: parsedData.choices?.[0]?.delta?.audio ?? '' };
 			} else {
 				yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
 			}

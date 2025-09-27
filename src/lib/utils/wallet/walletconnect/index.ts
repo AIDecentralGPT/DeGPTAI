@@ -81,7 +81,7 @@ const dbcTestnet = {
   blockExplorers: {
     default: {
       name: "Blockscout",
-      url: "https://testnet.dbcscan.io", //https://blockscout-testnet.dbcscan.io
+      url: "https://www.dbcscan.io", //https://blockscout-testnet.dbcscan.io
     },
   },
 };

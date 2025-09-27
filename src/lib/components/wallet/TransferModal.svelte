@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
-  import { currentWalletData } from "$lib/stores";
+  import { currentWalletData, walletKey, checkPasswordShow2 } from "$lib/stores";
 
   import Modal from "../common/Modal.svelte";
   import { transferDbc } from "$lib/utils/wallet/ether/dbc";
@@ -9,6 +9,7 @@
   import { provider } from "$lib/utils/wallet/ether/utils";
   import { ethers } from "ethers";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
+  import CheckPasswordModal2 from "$lib/components/wallet/CheckPasswordModal2.svelte"
 
   const i18n = getContext("i18n");
 
@@ -45,6 +46,8 @@
       // password: false,
       transferType: false,
     };
+    loading = false;
+    checkPassword = false;
   }
 
   $: if (transferType) {
@@ -143,156 +146,175 @@
       toast.error(error?.message);
     }
   }
+
+  let checkPassword = false;
+  async function checkTransfer() {
+    if (!$walletKey?.checked) {
+      $checkPasswordShow2 = true;
+    } else {
+      await handleTransfer();
+    }
+  }
+
+  function checkPasswordResult(event: any) {
+    if (event?.detail) {
+      handleTransfer();
+    }
+  }
 </script>
 
-<Modal bind:show>
-  <div class="text-gray-700 dark:text-gray-100">
-    <div class="flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
-      <div class="text-lg font-medium self-center">
-        {$i18n.t("Transfer")}
-      </div>
-      <button
-        class="self-center"
-        on:click={() => {
-          show = false;
-          loading = false;
-        }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="w-5 h-5"
-        >
-          <path
-            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-          />
-        </svg>
-      </button>
-    </div>
-
-    <div class="w-full p-6 px-8">
-      <div class="mb-6 pt-0.5 max-w-[300px]">
-        <label class="flex items-center gap-1 mb-2">
-          <span class="text-red-500 flex items-center">*</span>
-          {$i18n.t("Transfer Type")}
-        </label>
-        <div class="flex w-full">
-          <label class="mr-4">
-            <input
-              type="radio"
-              bind:group={transferType}
-              value="DBC"
-              required
-            />
-            DBC
-          </label>
-          <label>
-            <input
-              type="radio"
-              bind:group={transferType}
-              value="DGC"
-              required
-            />
-            DGC
-          </label>
+{#if $checkPasswordShow2}
+  <CheckPasswordModal2 bind:show={$checkPasswordShow2} bind:checked={checkPassword} on:change={checkPasswordResult}/>
+{:else}
+  <Modal bind:show>
+    <div class="text-gray-700 dark:text-gray-100">
+      <div class="flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
+        <div class="text-lg font-medium self-center">
+          {$i18n.t("Transfer")}
         </div>
-        {#if showError.transferType}
-          <div class="text-red-500 text-sm">
-            {$i18n.t("Transfer type is required!")}
-          </div>
-        {/if}
-      </div>
-
-      <div class="mb-6 pt-0.5 max-w-[300px]">
-        <label class="flex items-center gap-1 mb-2">
-          <span class="text-red-500 flex items-center">*</span>
-          {$i18n.t("Enter Address")}
-        </label>
-        <div class="flex flex-col w-full">
-          <input
-            bind:value={address}
-            type="text"
-            class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-            placeholder={$i18n.t("Enter Address")}
-            required
-          />
-        </div>
-        {#if showError.address}
-          <div class="text-red-500 text-sm">
-            {$i18n.t("Address is required!")}
-          </div>
-        {/if}
-      </div>
-
-      <div class="mb-6 pt-0.5 max-w-[300px]">
-        <label class="flex items-center gap-1 mb-2">
-          <span class="text-red-500 flex items-center">*</span>
-          {$i18n.t("Enter Amount")}
-        </label>
-        <div class="flex flex-col w-full">
-          <input
-            type="number"
-            bind:value={amount}
-            class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-            placeholder={$i18n.t("Enter Amount")}
-            required
-            on:input={handleAmountChange}
-            min="0.001"
-            step="0.001"
-          />
-        </div>
-        {#if showError.amount}
-          <div class="text-red-500 text-sm">
-            {$i18n.t("Amount is required!")}
-          </div>
-        {/if}
-
-
-      </div>
-
-      <!-- <div class="mb-6 pt-0.5 max-w-[300px]">
-        <label class="flex items-center gap-1 mb-2">
-          <span class="text-red-500 flex items-center">*</span>
-          {$i18n.t("Enter Password")}
-        </label>
-        <div class="flex flex-col w-full">
-          <input
-            bind:value={password}
-            type="password"
-            class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
-            placeholder={$i18n.t("Enter Password")}
-            required
-          />
-        </div>
-        {#if showError.password}
-          <div class="text-red-500 text-sm">
-            {$i18n.t("Password is required!")}
-          </div>
-        {/if}
-      </div> -->
-
-      {#if amount && gas}
-        <div class="flex flex-row mt-2">
-          <div>{$i18n.t("Estimated fuel costs:")}</div>
-          <div>{ `${ ethers.formatUnits(gas?.gasPrice) } - ${ ethers.formatUnits(gas?.maxFeePerGas)} DBC `}</div>
-          <div class="ml-2">{$i18n.t("Maximum cost:")}{` ${ ethers.formatUnits(gas?.maxFeePerGas) } DBC`}</div>
-        </div>
-      {/if}
-
-      <div class="flex justify-end mt-1">
         <button
-          disabled={loading}
-          class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
-          style={buttonStyle}
-          on:click={handleTransfer}
+          class="self-center"
+          on:click={() => {
+            show = false;
+            loading = false;
+          }}
         >
-          <span class="relative">{$i18n.t("Transfer")}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+            />
+          </svg>
         </button>
       </div>
+
+      <div class="w-full p-6 px-8">
+        <div class="mb-6 pt-0.5 max-w-[300px]">
+          <label class="flex items-center gap-1 mb-2">
+            <span class="text-red-500 flex items-center">*</span>
+            {$i18n.t("Transfer Type")}
+          </label>
+          <div class="flex w-full">
+            <label class="mr-4">
+              <input
+                type="radio"
+                bind:group={transferType}
+                value="DBC"
+                required
+              />
+              DBC
+            </label>
+            <label>
+              <input
+                type="radio"
+                bind:group={transferType}
+                value="DGC"
+                required
+              />
+              DGC
+            </label>
+          </div>
+          {#if showError.transferType}
+            <div class="text-red-500 text-sm">
+              {$i18n.t("Transfer type is required!")}
+            </div>
+          {/if}
+        </div>
+
+        <div class="mb-6 pt-0.5 max-w-[300px]">
+          <label class="flex items-center gap-1 mb-2">
+            <span class="text-red-500 flex items-center">*</span>
+            {$i18n.t("Enter Address")}
+          </label>
+          <div class="flex flex-col w-full">
+            <input
+              bind:value={address}
+              type="text"
+              class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+              placeholder={$i18n.t("Enter Address")}
+              required
+            />
+          </div>
+          {#if showError.address}
+            <div class="text-red-500 text-sm">
+              {$i18n.t("Address is required!")}
+            </div>
+          {/if}
+        </div>
+
+        <div class="mb-6 pt-0.5 max-w-[300px]">
+          <label class="flex items-center gap-1 mb-2">
+            <span class="text-red-500 flex items-center">*</span>
+            {$i18n.t("Enter Amount")}
+          </label>
+          <div class="flex flex-col w-full">
+            <input
+              type="number"
+              bind:value={amount}
+              class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+              placeholder={$i18n.t("Enter Amount")}
+              required
+              on:input={handleAmountChange}
+              min="0.001"
+              step="0.001"
+            />
+          </div>
+          {#if showError.amount}
+            <div class="text-red-500 text-sm">
+              {$i18n.t("Amount is required!")}
+            </div>
+          {/if}
+
+
+        </div>
+
+        <!-- <div class="mb-6 pt-0.5 max-w-[300px]">
+          <label class="flex items-center gap-1 mb-2">
+            <span class="text-red-500 flex items-center">*</span>
+            {$i18n.t("Enter Password")}
+          </label>
+          <div class="flex flex-col w-full">
+            <input
+              bind:value={password}
+              type="password"
+              class="px-5 py-3 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
+              placeholder={$i18n.t("Enter Password")}
+              required
+            />
+          </div>
+          {#if showError.password}
+            <div class="text-red-500 text-sm">
+              {$i18n.t("Password is required!")}
+            </div>
+          {/if}
+        </div> -->
+
+        {#if amount && gas}
+          <div class="flex flex-row mt-2">
+            <div>{$i18n.t("Estimated fuel costs:")}</div>
+            <div>{ `${ ethers.formatUnits(gas?.gasPrice) } - ${ ethers.formatUnits(gas?.maxFeePerGas)} DBC `}</div>
+            <div class="ml-2">{$i18n.t("Maximum cost:")}{` ${ ethers.formatUnits(gas?.maxFeePerGas) } DBC`}</div>
+          </div>
+        {/if}
+
+        <div class="flex justify-end mt-1">
+          <button
+            disabled={loading}
+            class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg"
+            style={buttonStyle}
+            on:click={checkTransfer}
+          >
+            <span class="relative">{$i18n.t("Transfer")}</span>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</Modal>
+  </Modal>
+{/if}
 
 <style>
   .px-8 {
