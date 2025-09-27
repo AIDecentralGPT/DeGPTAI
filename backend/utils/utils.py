@@ -13,6 +13,7 @@ import jwt
 import uuid
 import logging
 import config
+import time
 
 logging.getLogger("passlib").setLevel(logging.ERROR)
 
@@ -187,14 +188,12 @@ def get_current_user(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=ERROR_MESSAGES.INVALID_TOKEN,
             )
-        # else:
-        #     # 更新用户的最后活跃时间
-        #     try:
-        #         Users.update_user_last_active_by_id(user.id)
-        #     except Exception as e:
-        #         print("get_current_user - user-error", e) 
-        # print("最终的user", user)
-        # 返回当前用户
+        #else:
+            # 更新用户的最后活跃时间
+            # try:
+            #     Users.update_user_last_active_by_id(user.id)
+            # except Exception as e:
+            #     print("get_current_user - user-error", e)
         return user
 
     else:
@@ -203,7 +202,6 @@ def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=ERROR_MESSAGES.UNAUTHORIZED,
         )
-
 
 def get_current_user_by_api_key(api_key: str):
     user = Users.get_user_by_api_key(api_key)

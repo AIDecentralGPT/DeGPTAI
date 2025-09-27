@@ -94,6 +94,9 @@ export async function closeWallet(channel:string) {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   localStorage.removeItem("walletImported");
+  localStorage.removeItem("walletKey");
+
+  console.log("==================", "token 被清除");
 
   await printSignIn(channel);
   forceUpdate();

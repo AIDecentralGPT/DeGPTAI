@@ -1,9 +1,11 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, Field
+from typing import List, Optional
 
 class AiMessageModel(BaseModel):
     role: str
     content: object
+    prefix: Optional[bool] = Field(None, description="prefix flag") # deepseek续写字段
+    partial: Optional[bool] = Field(None, description="partial flag") # aliqwen续写字段
 
 class AiModelReq(BaseModel):
     model: str
@@ -11,4 +13,8 @@ class AiModelReq(BaseModel):
     project: str
     stream : bool
     enable_thinking: bool
+    reload: bool
+    audio: bool
 
+class AudioModelReq(BaseModel):
+    data: str

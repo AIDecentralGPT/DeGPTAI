@@ -65,7 +65,7 @@
   export let toolInfo: any = {url: "", trantip: ""};
 
   export let fileUploadEnabled = true;
-  // export let speechRecognitionEnabled = true;
+  export let speechRecognitionEnabled = false;
 
   export let prompt = "";
   export let chatInputPlaceholder = "";
@@ -203,90 +203,101 @@
   };
 
   const speechRecognitionHandler = () => {
+    let audioRecoder = navigator.mediaDevices.getUserMedia({ audio: true });
     // Check if SpeechRecognition is supported
+    // if (isRecording) {  
+    //   if (speechRecognition) {
+    //     speechRecognition.stop();
+    //   }
 
-    if (isRecording) {
-      if (speechRecognition) {
-        speechRecognition.stop();
-      }
+    //   if (mediaRecorder) {
+    //     mediaRecorder.stop();
+    //   }
+    //   isRecording = false;
+    // } else {
+    //   isRecording = true;
 
-      if (mediaRecorder) {
-        mediaRecorder.stop();
-      }
-    } else {
-      isRecording = true;
+    //   if ($settings?.audio?.STTEngine ?? "" !== "") {
+    //     startRecording();
+    //   } else {
+    //     if (
+    //       "SpeechRecognition" in window ||
+    //       "webkitSpeechRecognition" in window
+    //     ) {
+    //       // Create a SpeechRecognition object
+    //       speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
-      if ($settings?.audio?.STTEngine ?? "" !== "") {
-        startRecording();
-      } else {
-        if (
-          "SpeechRecognition" in window ||
-          "webkitSpeechRecognition" in window
-        ) {
-          // Create a SpeechRecognition object
-          speechRecognition = new (window.SpeechRecognition ||
-            window.webkitSpeechRecognition)();
+    //       // Set continuous to true for continuous recognition
+    //       speechRecognition.continuous = true;
+    //       speechRecognition.interimResults = true;
 
-          // Set continuous to true for continuous recognition
-          speechRecognition.continuous = true;
+    //       // Set the timeout for turning off the recognition after inactivity (in milliseconds)
+    //       // const inactivityTimeout = 3000; // 3 seconds
 
-          // Set the timeout for turning off the recognition after inactivity (in milliseconds)
-          const inactivityTimeout = 3000; // 3 seconds
+    //       // let timeoutId;
+    //       // Start recognition
+    //       speechRecognition.start();
 
-          let timeoutId;
-          // Start recognition
-          speechRecognition.start();
+    //       // Event triggered when speech is recognized
+    //       speechRecognition.onresult = async (event) => {
+    //         // Clear the inactivity timeout
+    //         // clearTimeout(timeoutId);
 
-          // Event triggered when speech is recognized
-          speechRecognition.onresult = async (event) => {
-            // Clear the inactivity timeout
-            clearTimeout(timeoutId);
+    //         // Handle recognized speech
+    //         console.log(event);
+    //         const transcript =
+    //           event.results[Object.keys(event.results).length - 1][0]
+    //             .transcript;
 
-            // Handle recognized speech
-            console.log(event);
-            const transcript =
-              event.results[Object.keys(event.results).length - 1][0]
-                .transcript;
+    //         prompt = `${prompt}${transcript}`;
 
-            prompt = `${prompt}${transcript}`;
+    //         await tick();
+    //         chatTextAreaElement?.focus();
 
-            await tick();
-            chatTextAreaElement?.focus();
+    //         // Restart the inactivity timeout
+    //         // timeoutId = setTimeout(() => {
+    //         //   console.log("Speech recognition turned off due to inactivity.");
+    //         //   speechRecognition.stop();
+    //         // }, inactivityTimeout);
+    //       };
 
-            // Restart the inactivity timeout
-            timeoutId = setTimeout(() => {
-              console.log("Speech recognition turned off due to inactivity.");
-              speechRecognition.stop();
-            }, inactivityTimeout);
-          };
+    //       // Event triggered when recognition is ended
+    //       speechRecognition.onend = function () {
+    //         // Restart recognition after it ends
+    //         // console.log("recognition ended");
+    //         // isRecording = false;
+    //         // if (prompt !== "" && $settings?.speechAutoSend === true) {
+    //         //   submitPrompt(prompt, toolInfo, user);
+    //         // }
+    //         if (isRecording) {
+    //           speechRecognition.start();
+    //         } else {
+    //           if (speechRecognition) {
+    //             speechRecognition.stop();
+    //           }
+    //           if (mediaRecorder) {
+    //             mediaRecorder.stop();
+    //           }
+    //         }           
+    //       };
 
-          // Event triggered when recognition is ended
-          speechRecognition.onend = function () {
-            // Restart recognition after it ends
-            console.log("recognition ended");
-            isRecording = false;
-            if (prompt !== "" && $settings?.speechAutoSend === true) {
-              submitPrompt(prompt, toolInfo, user);
-            }
-          };
-
-          // Event triggered when an error occurs
-          speechRecognition.onerror = function (event) {
-            console.log(event);
-            toast.error(
-              $i18n.t(`Speech recognition error: {{error}}`, {
-                error: event.error,
-              })
-            );
-            isRecording = false;
-          };
-        } else {
-          toast.error(
-            $i18n.t("SpeechRecognition API is not supported in this browser.")
-          );
-        }
-      }
-    }
+    //       // Event triggered when an error occurs
+    //       speechRecognition.onerror = function (event) {
+    //         console.log(event);
+    //         // toast.error(
+    //         //   $i18n.t(`Speech recognition error: {{error}}`, {
+    //         //     error: event.error,
+    //         //   })
+    //         // );
+    //         // isRecording = false;
+    //       };
+    //     } else {
+    //       toast.error(
+    //         $i18n.t("SpeechRecognition API is not supported in this browser.")
+    //       );
+    //     }
+    //   }
+    // }
   };
 
   const uploadDoc = async (file) => {
@@ -301,6 +312,7 @@
       text: "",
       image: [],
       error: "",
+      url: ""
     };
 
     try {
@@ -329,6 +341,7 @@
         doc.anaylis_type = res.anaylis_type
         doc.text = res.text;
         doc.image = res.image;
+        doc.url = res.url;
         files = files;
       }
     } catch (e) {
@@ -1345,11 +1358,11 @@
                 
                 <div class="self-end mb-2 flex space-x-1 mr-1">
                   {#if messages.length == 0 || messages.at(-1).done == true}
-                    <!-- <Tooltip content={$i18n.t("Record voice")}>
+                    <Tooltip content={$i18n.t("Record voice")}>
                       {#if speechRecognitionEnabled}
                         <button
                           id="voice-input-button"
-                          class=" text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-850 transition rounded-full p-1.5 mr-0.5 self-center"
+                          class=" text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition rounded-full p-1.5 mr-0.5 self-center"
                           type="button"
                           on:click={() => {
                             speechRecognitionHandler();
@@ -1427,16 +1440,16 @@
                           {/if}
                         </button>
                       {/if}
-                    </Tooltip> -->
+                    </Tooltip>
   
                     <Tooltip content={$i18n.t("Send message")}>
                       <button
                         id="send-message-button"
-                        class="{prompt !== ''
+                        class="{(prompt !== '' && !isRecording)
                           ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
                           : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
                         type="submit"
-                        disabled={prompt === ""}
+                        disabled={prompt === "" || isRecording}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
