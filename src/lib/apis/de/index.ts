@@ -97,7 +97,7 @@ export const getDeModels = async (token: string = "") => {
         name: "GPT 4o audio (OpenAI)",
         model: "gpt-4o-audio-preview",
         audiomodel: "gpt-4o-audio-preview",
-        textmodel: "gpt-4o-audio-preview",
+        textmodel: "gpt-4o",
         think: false,
         tip: "GPT 4o audio (OpenAI)",
         support: "audio",
