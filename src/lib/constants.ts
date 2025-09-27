@@ -122,4 +122,4 @@ export const RewardProperties = {
 }
 
 // 升级VIP钱包地址
-export const tranAddress = "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8"
+export const tranAddress = "0x40Ff2BD3668B38B0dd0BD7F26Aa809239Fc9113a"
