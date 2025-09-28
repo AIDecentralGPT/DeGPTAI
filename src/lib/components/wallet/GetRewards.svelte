@@ -159,7 +159,7 @@
             <button
               class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
-                window.open("/static/app/degpt_v2.0_250828.apk", "_blank");
+                window.open("/static/app/degpt_v2.0250928.apk", "_blank");
               }}
             >
               <svg
@@ -195,7 +195,7 @@
             <button
               class="flex gap-1 items-center cursor-pointer primaryButton mr-2 text-gray-100 rounded-lg px-2 py-1 text-xs"
               on:click={() => {
-                window.open("/static/app/degpt_v2.0_250828.apk", "_blank");
+                window.open("/static/app/degpt_v2.0250928.apk", "_blank");
               }}
             >
               <svg
