@@ -24,7 +24,8 @@
     showFollowTwitterModal,
     showFollowTGGroupModal,
     initPageFlag,
-    showWalletView
+    showWalletView,
+    binanceFlag
   } from "$lib/stores";
   import { getCurrentPair } from "$lib/utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";
@@ -277,13 +278,18 @@
 />
 
 <!-- 创建钱包 -->
-{#if showNewWalletModal}
+{#if showNewWalletModal && binanceFlag}
   <NewWalletModal bind:show={$showNewWalletModal} />
 {/if}
 
 <!-- 连接钱包 -->
-{#if showOpenWalletModal}
+{#if showOpenWalletModal && binanceFlag}
   <OpenWalletModal bind:show={$showOpenWalletModal} />
+{/if}
+
+<!-- Binance连接钱包 -->
+{#if binanceFlag}
+  <span>连接钱包</span>
 {/if}
 
 <!-- 导出钱包信息 -->

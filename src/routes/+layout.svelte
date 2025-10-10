@@ -155,7 +155,6 @@
     } else {
       await binanceFlag.set(false);
     }
-    console.log("==============binanceFlag===========", $binanceFlag);
   }
 
   onMount(async () => {
