@@ -23,7 +23,7 @@
 
   async function connectBinanceWallet() {
     try {
-      console.log("=========binancew3w=========", window.binancew3w.ethereum);
+      console.log("=========binancew3w=========", window.binancew3w);
       const accounts = await window.binancew3w.ethereum.request({
         method: "eth_requestAccounts",
       });
