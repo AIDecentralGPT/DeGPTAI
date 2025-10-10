@@ -23,18 +23,20 @@
 
   async function connectBinanceWallet() {
     try {
-      console.log("=========binancew3w=========", window.binancew3w);
-      const accounts = await window.binancew3w.ethereum.request({
-        method: "eth_requestAccounts",
+      // 调用 connect 方法，会唤起钱包授权
+      const result = await window.binancew3w.tonconnect.connect({
+        manifestUrl: "https://test.degpt.ai/static/binance/manifest.json"
       });
-      console.log("connected:", accounts[0]);
-      await handleWalletSignIn({
-        walletImported: {
-          address: accounts[0],
-        },
-        address_type: "threeSide",
-        channel: $channel,
-      });
+      if (result?.accounts?.length) {
+        console.log("TON 账户地址:", result.accounts[0].address);
+        await handleWalletSignIn({
+          walletImported: {
+            address: result.accounts[0].address,
+          },
+          address_type: "threeSide",
+          channel: $channel,
+        });
+      }   
     } catch (error) {
       console.error("connection rejected:", error);
     }

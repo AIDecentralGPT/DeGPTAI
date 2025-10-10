@@ -149,8 +149,8 @@
   }
 
   // 校验是否是币安浏览器
-  async function checkBinance() {
-    if (typeof window.binancew3w?.ethereum !== 'undefined') {
+  const checkBinance = async () => {
+    if (typeof window.binancew3w?.tonconnect !== 'undefined') {
       await binanceFlag.set(true);
     } else {
       await binanceFlag.set(false);
