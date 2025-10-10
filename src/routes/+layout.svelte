@@ -150,12 +150,12 @@
 
   // 校验是否是币安浏览器
   async function checkBinance() {
-    if (typeof window.binancew3w.ethereum !== 'undefined') {
+    if (typeof window.binancew3w?.ethereum !== 'undefined') {
       await binanceFlag.set(true);
     } else {
       await binanceFlag.set(false);
     }
-    console.log("==============binanceFlag===========", binanceFlag);
+    console.log("==============binanceFlag===========", $binanceFlag);
   }
 
   onMount(async () => {
