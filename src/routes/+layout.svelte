@@ -8,7 +8,8 @@
     mobile,
     deApiBaseUrl,
     inviterId,
-    channel
+    channel,
+    binanceFlag
   } from "$lib/stores";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
@@ -147,7 +148,18 @@
     });
   }
 
+  // 校验是否是币安浏览器
+  async function checkBinance() {
+    if (typeof window.binancew3w.ethereum !== 'undefined') {
+      await binanceFlag.set(true);
+    } else {
+      await binanceFlag.set(false);
+    }
+    console.log("==============binanceFlag===========", binanceFlag);
+  }
+
   onMount(async () => {
+    await checkBinance();
     await registServiceWorker();
     try {
       let currentAddress = window.location.href;
