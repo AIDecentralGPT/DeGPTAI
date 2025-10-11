@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { onMount, getContext } from "svelte";
   import {
     showSidebar,
     showNewWalletModal,
@@ -41,6 +41,12 @@
       console.error("connection rejected:", error);
     }
   }
+
+  onMount(async () => {
+    if ($binanceFlag) {
+      await connectBinanceWallet();
+    } 
+  });
 </script>
 
 <div name="content">
