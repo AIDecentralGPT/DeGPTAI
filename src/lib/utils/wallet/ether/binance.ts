@@ -13,7 +13,7 @@ const binanceprovider = getProvider({ chainId: 56 });
 export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);
 
 // 查询 DGC 余额
-export async function getBinanceDgcBalance(address) {
+export async function getBinanceDgcBalance(address: string) {
 
   const balanceWei = await dgcContract.balanceOf(address);
 
@@ -32,13 +32,19 @@ export async function binanceTransferDgc(address:string, toAddress:string, amoun
     return {ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."};
   }
   try {
+    // 使用币安的专用provider
+    await binanceprovider.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x38' }] // BSC主网
+    });
+    await binanceprovider.request({ method: 'eth_requestAccounts' });
     let eprovider = new ethers.BrowserProvider(binanceprovider);
     await eprovider.send('eth_requestAccounts', []);
     let signer = await eprovider.getSigner();
     // 创建 DGC 合约实例
-    const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
+    const binanceContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
     const amountWei = ethers.parseUnits(amountDgc.toString());
-    const tx = await dgcContract.transfer(toAddress, amountWei);
+    const tx = await binanceContract.transfer(toAddress, amountWei);
     const txResponse = await tx.wait();
     return {
       ok: true,
