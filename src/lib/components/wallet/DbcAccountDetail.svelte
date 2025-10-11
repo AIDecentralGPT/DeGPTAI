@@ -149,7 +149,7 @@
   </div>
 
   <!-- 二级按钮 -->
-  {#if $user?.address_type === "threeSide"}
+  {#if $user?.address_type === "threeSide" && !$binanceFlag}
     <div class="flex justify-center">
       <w3m-button class="v-btn" label="组件方式打开" />
     </div>
