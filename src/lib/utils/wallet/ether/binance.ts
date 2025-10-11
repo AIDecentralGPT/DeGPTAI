@@ -39,7 +39,6 @@ export async function binanceTransferDgc(address:string, toAddress:string, amoun
     });
     await binanceprovider.request({ method: 'eth_requestAccounts' });
     let eprovider = new ethers.BrowserProvider(binanceprovider);
-    await eprovider.send('eth_requestAccounts', []);
     let signer = await eprovider.getSigner();
     const address = await signer.getAddress();
     console.log("当前签名地址:", address);
