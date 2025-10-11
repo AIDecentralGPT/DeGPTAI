@@ -27,17 +27,16 @@
     try {
       // 调用 connect 方法，会唤起钱包授权
       const accounts = await provider.enable();
-      console.log("=========================", accounts);
-      // if (result?.accounts?.length) {
-      //   console.log("TON 账户地址:", result.accounts[0].address);
-      //   await handleWalletSignIn({
-      //     walletImported: {
-      //       address: result.accounts[0].address,
-      //     },
-      //     address_type: "threeSide",
-      //     channel: $channel,
-      //   });
-      // }
+      if (accounts?.length) {
+        console.log("TON 账户地址:", accounts[0]);
+        await handleWalletSignIn({
+          walletImported: {
+            address: accounts[0],
+          },
+          address_type: "threeSide",
+          channel: $channel,
+        });
+      }
     } catch (error) {
       console.error("connection rejected:", error);
     }
