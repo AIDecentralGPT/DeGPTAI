@@ -150,7 +150,12 @@
 
   // 校验是否是币安浏览器
   const checkBinance = async () => {
-    if (typeof window.binancew3w?.tonconnect !== 'undefined') {
+    if (typeof window.binancew3w) {
+      await window.binancew3w.connect({
+        chainType: "evm",
+        chainId: 56
+      });
+      console.log("=============ethereum==============", window.binancew3w.ethereum);
       await binanceFlag.set(true);
     } else {
       await binanceFlag.set(false);
