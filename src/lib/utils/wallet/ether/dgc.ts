@@ -6,6 +6,8 @@ import ABI from "./abi.json";
 import { getDbcBalance } from "./dbc";
 import { getAccount } from "@wagmi/core";
 import { config } from "$lib/utils/wallet/walletconnect/index";
+import { binanceFlag } from "$lib/stores";
+import { getBinanceDgcBalance } from "./binance";
 
 // DGC 合约地址
 //const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧地址
@@ -110,7 +112,10 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 // 第三方登陆转账
 export async function thirdTransferDgc(address:string, toAddress:string, amountDgc) {
   const dbcBalance = await getDbcBalance(address);
-  const dgcBalance = await getDgcBalance(address);
+  let dgcBalance = await getDgcBalance(address);
+  if (binanceFlag) {
+    dgcBalance = await getBinanceDgcBalance(address);
+  }
   if (parseFloat(dbcBalance) < 0.01) {
     return {ok: false, msg: "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance."};
   }
