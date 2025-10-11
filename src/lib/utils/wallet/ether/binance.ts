@@ -41,6 +41,8 @@ export async function binanceTransferDgc(address:string, toAddress:string, amoun
     let eprovider = new ethers.BrowserProvider(binanceprovider);
     await eprovider.send('eth_requestAccounts', []);
     let signer = await eprovider.getSigner();
+    const address = await signer.getAddress();
+    console.log("当前签名地址:", address);
     // 创建 DGC 合约实例
     const binanceContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
     const amountWei = ethers.parseUnits(amountDgc.toString());
