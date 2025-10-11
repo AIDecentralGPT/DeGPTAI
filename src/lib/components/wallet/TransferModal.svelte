@@ -160,7 +160,7 @@
 
   let checkPassword = false;
   async function checkTransfer() {
-    if (!$walletKey?.checked) {
+    if (!$walletKey?.checked && !binanceFlag) {
       $checkPasswordShow2 = true;
     } else {
       await handleTransfer();
