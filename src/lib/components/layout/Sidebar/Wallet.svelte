@@ -24,9 +24,11 @@
   async function connectBinanceWallet() {
     try {
       // 调用 connect 方法，会唤起钱包授权
-      const result = await window.binancew3w.tonconnect.connect({
-        manifestUrl: "https://test.degpt.ai/static/binance/manifest.json"
+      const result = await window.binancew3w.tonconnect.connect(2, {
+        manifestUrl: "https://test.degpt.ai/static/binance/manifest.json",
+        items: [{ name: 'ton_addr' }]
       });
+      console.log("=========================", result);
       if (result?.accounts?.length) {
         console.log("TON 账户地址:", result.accounts[0].address);
         await handleWalletSignIn({
