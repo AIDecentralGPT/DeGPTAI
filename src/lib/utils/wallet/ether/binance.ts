@@ -1,10 +1,12 @@
 import { ethers } from "ethers";
 import ABI from "./abi.json";
+import { getProvider } from "@binance/w3w-ethereum-provider";
 
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
+const binanceprovider = getProvider({ chainId: 56 });
 
 
 // 创建 DGC 合约实例
@@ -21,4 +23,29 @@ export async function getBinanceDgcBalance(address) {
 
   return balanceDGC;
 
+}
+
+// 转账
+export async function binanceTransferDgc(address:string, toAddress:string, amountDgc) {
+  const dgcBalance = await getBinanceDgcBalance(address);
+  if (parseFloat(dgcBalance) < amountDgc) {
+    return {ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."};
+  }
+  try {
+    let eprovider = new ethers.BrowserProvider(binanceprovider);
+    await eprovider.send('eth_requestAccounts', []);
+    let signer = await eprovider.getSigner();
+    // 创建 DGC 合约实例
+    const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
+    const amountWei = ethers.parseUnits(amountDgc.toString());
+    const tx = await dgcContract.transfer(toAddress, amountWei);
+    const txResponse = await tx.wait();
+    return {
+      ok: true,
+      data: txResponse
+    };
+  } catch(e) {
+    console.log("===========================", e);
+    return {ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."};
+  }
 }
