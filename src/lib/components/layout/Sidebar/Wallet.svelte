@@ -14,8 +14,10 @@
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
+  import { getProvider } from "@binance/w3w-ethereum-provider";
 
   const i18n = getContext("i18n");
+  const provider = getProvider({ chainId: 56 });
 
   export let show = false;
   export let role = "";
@@ -24,21 +26,18 @@
   async function connectBinanceWallet() {
     try {
       // 调用 connect 方法，会唤起钱包授权
-      const result = await window.binancew3w.tonconnect.connect(2, {
-        manifestUrl: "https://test.degpt.ai/static/binance/manifest.json",
-        items: [{ name: 'ton_addr' }]
-      });
-      console.log("=========================", result);
-      if (result?.accounts?.length) {
-        console.log("TON 账户地址:", result.accounts[0].address);
-        await handleWalletSignIn({
-          walletImported: {
-            address: result.accounts[0].address,
-          },
-          address_type: "threeSide",
-          channel: $channel,
-        });
-      }   
+      const accounts = await provider.enable();
+      console.log("=========================", accounts);
+      // if (result?.accounts?.length) {
+      //   console.log("TON 账户地址:", result.accounts[0].address);
+      //   await handleWalletSignIn({
+      //     walletImported: {
+      //       address: result.accounts[0].address,
+      //     },
+      //     address_type: "threeSide",
+      //     channel: $channel,
+      //   });
+      // }
     } catch (error) {
       console.error("connection rejected:", error);
     }

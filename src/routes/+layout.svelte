@@ -150,8 +150,7 @@
 
   // 校验是否是币安浏览器
   const checkBinance = async () => {
-    if (typeof window.binancew3w) {
-      console.log("=============binancew3w==============", window.binancew3w);
+    if (window.binancew3w) {
       await binanceFlag.set(true);
     } else {
       await binanceFlag.set(false);
