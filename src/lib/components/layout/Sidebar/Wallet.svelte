@@ -14,10 +14,9 @@
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
-  import { getProvider } from "@binance/w3w-ethereum-provider";
+  import { binanceprovider } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
-  const provider = getProvider({ chainId: 56 });
 
   export let show = false;
   export let role = "";
@@ -26,7 +25,7 @@
   async function connectBinanceWallet() {
     try {
       // 调用 connect 方法，会唤起钱包授权
-      const accounts = await provider.enable();
+      const accounts = await binanceprovider.enable();
       if (accounts?.length) {
         console.log("TON 账户地址:", accounts[0]);
         await handleWalletSignIn({
