@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import DGCABI from "./abi.json";
 import MODELABI from "./modelabi.json";
 import { binanceFlag, modelLimits } from "$lib/stores";
+import { get } from "svelte/store";
 import { getDbcBalance } from "$lib/utils/wallet/ether/dbc";
 import { getDgcBalance } from "$lib/utils/wallet/ether/dgc";
 import { currentWalletData } from "$lib/stores";
@@ -32,7 +33,7 @@ export const modelContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, M
 export async function checkMoney(address: string) {
     let dbcBalance = await getDbcBalance(address);
     let dgcBalance = await getDgcBalance(address);
-    if (binanceFlag) {
+    if (get(binanceFlag)) {
         dbcBalance = await getBinanceBnbBalance(address);
         dgcBalance = await getBinanceDgcBalance(address);
     }

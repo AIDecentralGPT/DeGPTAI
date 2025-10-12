@@ -95,7 +95,7 @@
   <!-- 创建，连接，打开钱包，三个按钮 -->
   {#if !($user?.id && $user?.id?.startsWith("0x"))}
     <div>
-      {#if binanceFlag}
+      {#if $binanceFlag}
         <button
           class="flex rounded-md py-2 px-2 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
           on:click={async () => {

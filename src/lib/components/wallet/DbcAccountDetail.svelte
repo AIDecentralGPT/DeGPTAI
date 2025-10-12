@@ -289,17 +289,30 @@
     <div
       class="flex flex-col px-4 py-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
     >
-      <div class="flex justify-between">
-        <div class="flex gap-1">
-          <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
-            { binanceFlag ? 'BNB' : 'DBC'}
+      {#if $binanceFlag}
+        <div class="flex justify-between">
+          <div class="flex gap-1">
+            <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
+              BNB
+            </div>
+            <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
+              {floorToFixed(Number($currentWalletData?.dbcBalance), 8)}
+            </div>
           </div>
-          <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
-            {floorToFixed(Number($currentWalletData?.dbcBalance), 8)}
+          <div class="flex flex-row opacity-50 leading-normal text-xs">
           </div>
         </div>
-        <div class="flex flex-row opacity-50 leading-normal text-xs">
-          {#if !binanceFlag}
+      {:else}
+        <div class="flex justify-between">
+          <div class="flex gap-1">
+            <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
+              DBC
+            </div>
+            <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
+              {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+            </div>
+          </div>
+          <div class="flex flex-row opacity-50 leading-normal text-xs">
             <button
               class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
               on:click={async () => {
@@ -308,20 +321,18 @@
               }}>
               ?
             </button>
-          {/if}
+          </div>
         </div>
-      </div>
-      {#if !binanceFlag}
         <div class="flex justify-between">
-          <div class="flex flex-row opacity-50 leading-normal text-xs">
-            1DBC={floorToFixed($dbcRate?.rate, 5)}u 
-          </div>
-          <div class="opacity-50 leading-normal text-xs">
-            Total ${floorToFixed(
-              Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
-              5
-            )}u
-          </div>
+            <div class="flex flex-row opacity-50 leading-normal text-xs">
+              1DBC={floorToFixed($dbcRate?.rate, 5)}u 
+            </div>
+            <div class="opacity-50 leading-normal text-xs">
+              Total ${floorToFixed(
+                Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
+                5
+              )}u
+            </div>
         </div>
       {/if}
     </div>

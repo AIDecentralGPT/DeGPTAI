@@ -120,7 +120,7 @@ export async function updateWalletData(walletInfo: any) {
   // const dbcBalance = await getDbcBalance(walletAdress);
   let dbcBalance = await getDbcBalance(walletAdress);
   let dgcBalance = await getDgcBalance(walletAdress);
-  if (binanceFlag) {
+  if (get(binanceFlag)) {
     dbcBalance = await getBinanceBnbBalance(walletAdress);
     dgcBalance = await getBinanceDgcBalance(walletAdress);
   }

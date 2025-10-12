@@ -45,7 +45,7 @@
     amount = "";
     address = "";
     password = "";
-    transferType = binanceFlag ? "DGC" : "DBC";
+    transferType = $binanceFlag ? "DGC" : "DBC";
     showError = {
       amount: false,
       address: false,
@@ -122,7 +122,7 @@
 
         try {
           let response = null;
-          if (binanceFlag) {
+          if ($binanceFlag) {
             response = await binanceTransferDgc($currentWalletData.walletInfo?.address, address, amount);
           } else {
             response = await transferMethod(
@@ -154,7 +154,7 @@
 
   let checkPassword = false;
   async function checkTransfer() {
-    if (!$walletKey?.checked && !binanceFlag) {
+    if (!$walletKey?.checked && !$binanceFlag) {
       $checkPasswordShow2 = true;
     } else {
       await handleTransfer();
@@ -208,7 +208,7 @@
             {$i18n.t("Transfer Type")}
           </label>
           <div class="flex w-full">
-            {#if !binanceFlag}
+            {#if !$binanceFlag}
               <label class="mr-4">
                 <input
                   type="radio"
@@ -302,7 +302,7 @@
           {/if}
         </div> -->
 
-        {#if amount && gas && !binanceFlag}
+        {#if amount && gas && !$binanceFlag}
           <div class="flex flex-row mt-2">
             <div>{$i18n.t("Estimated fuel costs:")}</div>
             <div>
