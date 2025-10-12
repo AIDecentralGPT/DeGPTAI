@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
-import ABI from "./abi.json";
 import { getProvider } from "@binance/w3w-ethereum-provider";
 
+const ERC20_ABI = ["function transfer(address to, uint256 amount) returns (bool)"];
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
 
@@ -10,7 +10,7 @@ const provider = new ethers.JsonRpcProvider(rpcUrl);
 export const binanceprovider = getProvider({ chainId: 56 });
 
 // 创建 DGC 合约实例
-export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);
+export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ERC20_ABI, provider);
 
 
 // 查询 BNB 余额
@@ -47,15 +47,23 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
-    const payload = { from: address, to: toAddress, value: amountDgc};
-    const res = await binanceprovider.request({
-      method: "eth_sendTransaction",
-      params: [payload],
+    await binanceprovider.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x38' }] // BSC主网
     });
-    console.log("==============================", res);
+    await binanceprovider.request({ method: 'eth_requestAccounts' });
+    const eprovider = new ethers.BrowserProvider(binanceprovider);
+    const signer = await eprovider.getSigner();
+    const currentAddress = await signer.getAddress();
+    console.log("当前签名地址:", currentAddress);
+    // 创建 DGC 合约实例
+    const binanceContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ERC20_ABI, signer);
+    const amountWei = ethers.parseUnits(amountDgc.toString());
+    const tx = await binanceContract.transfer(toAddress, amountWei);
+    const txResponse = await tx.wait();
     return {
       ok: true,
-      data: "txResponse"
+      data: txResponse
     };
   } catch (e) {
     console.log("===========================", e);
