@@ -48,6 +48,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
   }
   try {
     // 校验是否已连接钱包
+    console.log("============binanceprovider=============", binanceprovider);
     const accounts = await binanceprovider.request({ method: 'eth_accounts' });
     console.log("=========Accounts==========", accounts);
     // 格式化转账金额
