@@ -31,11 +31,14 @@ const provider = new ethers.JsonRpcProvider(modelUrl);
 export const modelContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, provider);
 
 export async function checkMoney(address: string) {
-    let dbcBalance = await getDbcBalance(address);
-    let dgcBalance = await getDgcBalance(address);
+    let dbcBalance = "0";
+    let dgcBalance = "0";
     if (get(binanceFlag)) {
         dbcBalance = await getBinanceBnbBalance(address);
         dgcBalance = await getBinanceDgcBalance(address);
+    } else {
+        dbcBalance = await getDbcBalance(address);
+        dgcBalance = await getDgcBalance(address);
     }
     await currentWalletData.update((data) => {
         return {

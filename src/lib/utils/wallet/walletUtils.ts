@@ -118,11 +118,14 @@ export async function updateWalletData(walletInfo: any) {
   await showWallet(walletInfo)
 
   // const dbcBalance = await getDbcBalance(walletAdress);
-  let dbcBalance = await getDbcBalance(walletAdress);
-  let dgcBalance = await getDgcBalance(walletAdress);
+  let dbcBalance = "0";
+  let dgcBalance = "0";
   if (get(binanceFlag)) {
     dbcBalance = await getBinanceBnbBalance(walletAdress);
     dgcBalance = await getBinanceDgcBalance(walletAdress);
+  } else {
+    dbcBalance = await getDbcBalance(walletAdress);
+    dgcBalance = await getDgcBalance(walletAdress);
   }
   
   currentWalletData.update((data) => {
