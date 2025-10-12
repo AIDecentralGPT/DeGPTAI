@@ -164,15 +164,17 @@
       >
         {$i18n.t("Transfer")}
       </button>
-      <button
-        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
-        type="submit"
-        on:click={async () => {
-          $showExportWalletJsonModal = true;
-        }}
-      >
-        {$i18n.t("Export")}
-      </button>
+      {#if !$binanceFlag}
+        <button
+          class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            $showExportWalletJsonModal = true;
+          }}
+        >
+          {$i18n.t("Export")}
+        </button>
+      {/if}
       <button
         class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
