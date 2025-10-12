@@ -12,6 +12,21 @@ export const binanceprovider = getProvider({ chainId: 56 });
 // 创建 DGC 合约实例
 export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);
 
+
+// 查询 BNB 余额
+export async function getBinanceBnbBalance(address: string) {
+
+  const balanceWei = await provider.getBalance(address);
+
+  const balanceBNB = ethers.formatUnits(balanceWei, 18);
+
+  console.log("BNB balance:",balanceWei, balanceBNB, ethers.formatEther(balanceWei), "BNB");
+
+  return balanceBNB;
+
+}
+
+
 // 查询 DGC 余额
 export async function getBinanceDgcBalance(address: string) {
 
