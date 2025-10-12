@@ -157,7 +157,6 @@
     }
   }
   function isBinanceAppDappBrowser() {
-    console.log("============userAgent===========", navigator.userAgent);
     return /BNC/i.test(navigator.userAgent) && !!window.binancew3w;
   }
 
