@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import ABI from "./abi.json";
 import { getProvider } from "@binance/w3w-ethereum-provider";
-import { utf8ToHex } from "@binance/w3w-utils";
 
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
@@ -48,26 +47,13 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
-    // 请求账户授权
-    const accounts = await binanceprovider.request({ method: 'eth_requestAccounts' });
-    await signMessage(accounts[0]);
-    
     // 格式化转账金额
-    const amountWei = ethers.parseUnits(amountDgc.toString());  
-    // 发起转账
-    const txResponse = await binanceprovider.request({
-      method: "eth_sendTransaction",
-      params: [
-        {
-          from: address,
-          to: BINANCE_DGC_CONTRACT_ADDRESS,
-          data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
-          gas: "0x19023",
-          value: 0
-        },
-      ],
-    });
-    console.log("==============================", txResponse)
+    const amountWei = ethers.parseUnits(amountDgc.toString());
+    const ethersProvider = new ethers.BrowserProvider(binanceprovider);
+    const signer = await ethersProvider.getSigner();
+    const signerContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
+    const tx = await signerContract.transfer(toAddress, amountWei);
+    const txResponse = await tx.wait();
     return {
       ok: true,
       data: txResponse
@@ -77,16 +63,3 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
 }
-
-const signMessage = async (address: string) => {
-    const message = "hello world";
-    try {
-      const res = await binanceprovider.request({
-        method: "personal_sign",
-        params: [utf8ToHex(message), address],
-      });
-      console.log("🚀 ~ signMessage ~ res:", res);
-    } catch (error) {
-      throw error;
-    }
-  };
