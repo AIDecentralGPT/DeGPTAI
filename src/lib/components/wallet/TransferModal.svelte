@@ -308,7 +308,7 @@
           {/if}
         </div> -->
 
-        {#if amount && gas}
+        {#if amount && gas && !binanceFlag}
           <div class="flex flex-row mt-2">
             <div>{$i18n.t("Estimated fuel costs:")}</div>
             <div>

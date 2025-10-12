@@ -29,8 +29,9 @@
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x38' }] // BSC主网
       });
+      let accounts = await binanceprovider.enable();
       // 调用 connect 方法，会唤起钱包授权
-      const accounts = await binanceprovider.request({
+      accounts = await binanceprovider.request({
         method: 'eth_accounts' }
       );
       if (accounts?.length) {

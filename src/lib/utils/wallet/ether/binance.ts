@@ -47,14 +47,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
-    await binanceprovider.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: '0x38' }] // BSC主网
-    });
-    await binanceprovider.request({ method: 'eth_requestAccounts' });
-    // 构造 transfer 方法的 data
-    const amountWei = ethers.parseUnits(amountDgc.toString());
-    
+    const amountWei = ethers.parseUnits(amountDgc.toString());  
     // 发起转账
     const txResponse = await binanceprovider.request({
       method: "eth_sendTransaction",
