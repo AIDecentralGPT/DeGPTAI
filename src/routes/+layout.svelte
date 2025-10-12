@@ -157,7 +157,8 @@
     }
   }
   function isBinanceAppDappBrowser() {
-    return /Binance/i.test(navigator.userAgent) && !!window.BinanceChain;
+    console.log("============userAgent===========", navigator.userAgent);
+    return /Binance/i.test(navigator.userAgent) && !!window.binancew3w;
   }
 
   onMount(async () => {
