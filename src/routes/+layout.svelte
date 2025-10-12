@@ -150,11 +150,14 @@
 
   // 校验是否是币安浏览器
   const checkBinance = async () => {
-    if (typeof window.binancew3w !== 'undefined') {
+    if (isBinanceAppDappBrowser()) {
       await binanceFlag.set(true);
     } else {
       await binanceFlag.set(false);
     }
+  }
+  function isBinanceAppDappBrowser() {
+    return /Binance/i.test(navigator.userAgent) && !!window.BinanceChain;
   }
 
   onMount(async () => {

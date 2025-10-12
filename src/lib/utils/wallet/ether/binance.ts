@@ -81,7 +81,6 @@ export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
     const txResponse = await binanceprovider.request({
       method: "eth_sendTransaction",
       params: [{
-        from: accounts[0],
         to: BINANCE_DGC_CONTRACT_ADDRESS,
         data,
         value: "0x0"
