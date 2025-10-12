@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import ABI from "./abi.json";
 import { getProvider } from "@binance/w3w-ethereum-provider";
+import { utf8ToHex } from "@binance/w3w-utils";
 
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
@@ -47,6 +48,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
+    await signMessage(address);
     // 请求账户授权
     await binanceprovider.request({ method: 'eth_requestAccounts' });
     // 格式化转账金额
@@ -74,3 +76,16 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
 }
+
+const signMessage = async (address: string) => {
+    const message = "hello world";
+    try {
+      const res = await binanceprovider.request({
+        method: "personal_sign",
+        params: [utf8ToHex(message), address],
+      });
+      console.log("🚀 ~ signMessage ~ res:", res);
+    } catch (error) {
+      throw error;
+    }
+  };
