@@ -120,15 +120,9 @@
         const transferMethod =
           transferType === "DBC" ? transferDbc : transferDgc; // 根据 transferType 选择方法
 
-        console.log(
-          "currentWalletData?.walletInfo?.privateKey",
-          $currentWalletData?.walletInfo?.privateKey
-        );
-
         try {
           let response = null;
           if (binanceFlag) {
-            console.log("============from-address============", $currentWalletData.walletInfo?.address);
             response = await binanceTransferDgc($currentWalletData.walletInfo?.address, address, amount);
           } else {
             response = await transferMethod(
