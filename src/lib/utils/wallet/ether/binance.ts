@@ -47,6 +47,11 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
+    console.log("=====================", binanceprovider);
+    // 检查当前网络
+    const chainId = await binanceprovider.request({ method: 'eth_chainId' });
+    console.log("Current chainId:", chainId);
+
     const amountWei = ethers.parseUnits(amountDgc.toString());  
     // 发起转账
     const txResponse = await binanceprovider.request({
@@ -54,7 +59,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
       params: [
         {
           from: address,
-          to: BINANCE_DGC_CONTRACT_ADDRESS, // BEP-20 代币合约地址
+          to: BINANCE_DGC_CONTRACT_ADDRESS,
           data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
           gas: "0x19023",
           value: 0
