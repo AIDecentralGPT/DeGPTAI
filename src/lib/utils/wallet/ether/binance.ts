@@ -52,15 +52,25 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
       params: [{ chainId: '0x38' }] // BSC主网
     });
     await binanceprovider.request({ method: 'eth_requestAccounts' });
-    const eprovider = new ethers.BrowserProvider(binanceprovider);
-    const signer = await eprovider.getSigner();
-    const currentAddress = await signer.getAddress();
-    console.log("当前签名地址:", currentAddress);
-    // 创建 DGC 合约实例
-    const binanceContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ERC20_ABI, signer);
-    const amountWei = ethers.parseUnits(amountDgc.toString());
-    const tx = await binanceContract.transfer(toAddress, amountWei);
-    const txResponse = await tx.wait();
+    // 构造 transfer 方法的 data
+    const data = "0xa9059cbb" + // transfer 方法签名
+      toAddress.replace('0x', '').padStart(64, '0') + // 接收地址
+      BigInt(amountDgc).toString(16).padStart(64, '0'); // 转账金额
+    
+    // 发起转账
+    const txResponse = await binanceprovider.request({
+      method: "eth_sendTransaction",
+      params: [
+        {
+          from: address,
+          to: BINANCE_DGC_CONTRACT_ADDRESS, // BEP-20 代币合约地址
+          data: data,
+          gas: "0x19023",
+          value: "0x0", // 代币转账 value 必须为 0
+        },
+      ],
+    });
+    console.log("==============================", txResponse);
     return {
       ok: true,
       data: txResponse
