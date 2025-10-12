@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
+import ABI from "./abi.json";
 import { getProvider } from "@binance/w3w-ethereum-provider";
 
-const ERC20_ABI = ["function transfer(address to, uint256 amount) returns (bool)"];
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
 
@@ -10,7 +10,7 @@ const provider = new ethers.JsonRpcProvider(rpcUrl);
 export const binanceprovider = getProvider({ chainId: 56 });
 
 // 创建 DGC 合约实例
-export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ERC20_ABI, provider);
+export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);
 
 
 // 查询 BNB 余额
@@ -70,7 +70,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
         },
       ],
     });
-    console.log("==============================", txResponse);
+    console.log("==============================", txResponse)
     return {
       ok: true,
       data: txResponse
