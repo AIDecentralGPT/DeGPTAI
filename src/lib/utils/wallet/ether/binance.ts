@@ -47,6 +47,9 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
+    // 校验是否已连接钱包
+    const accounts = await binanceprovider.request({ method: 'eth_accounts' });
+    console.log("=========Accounts==========", accounts);
     // 格式化转账金额
     const amountWei = ethers.parseUnits(amountDgc.toString());
     const ethersProvider = new ethers.BrowserProvider(binanceprovider);
