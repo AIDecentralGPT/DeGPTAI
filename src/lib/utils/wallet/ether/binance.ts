@@ -19,29 +19,26 @@ export async function getBinanceDgcBalance(address: string) {
 
   const balanceDGC = ethers.formatUnits(balanceWei, 18);
 
-  console.log("DGC balance:",balanceWei, balanceDGC, ethers.formatEther(balanceWei), "DGC");
+  console.log("DGC balance:", balanceWei, balanceDGC, ethers.formatEther(balanceWei), "DGC");
 
   return balanceDGC;
 
 }
 
 // 转账
-export async function binanceTransferDgc(address:string, toAddress:string, amountDgc) {
+export async function binanceTransferDgc(address: string, toAddress: string, amountDgc) {
   const dgcBalance = await getBinanceDgcBalance(address);
   if (parseFloat(dgcBalance) < amountDgc) {
-    return {ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."};
+    return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
     // 使用币安的专用provider
-    await binanceprovider.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: '0x38' }] // BSC主网
-    });
+    await switchBSCNetwork();
     await binanceprovider.request({ method: 'eth_requestAccounts' });
-    let eprovider = new ethers.BrowserProvider(binanceprovider);
-    let signer = await eprovider.getSigner();
-    const address = await signer.getAddress();
-    console.log("当前签名地址:", address);
+    const eprovider = new ethers.BrowserProvider(binanceprovider);
+    const signer = await eprovider.getSigner();
+    const currentAddress = await signer.getAddress();
+    console.log("当前签名地址:", currentAddress);
     // 创建 DGC 合约实例
     const binanceContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
     const amountWei = ethers.parseUnits(amountDgc.toString());
@@ -51,8 +48,36 @@ export async function binanceTransferDgc(address:string, toAddress:string, amoun
       ok: true,
       data: txResponse
     };
-  } catch(e) {
+  } catch (e) {
     console.log("===========================", e);
-    return {ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC."};
+    return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
+  }
+}
+
+const switchBSCNetwork = async () => {
+  // 切换到BSC主网
+  try {
+    await binanceprovider.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x38' }] // BSC主网
+    });
+  } catch (e) {
+    // 如果没有BSC网络配置，就添加它
+    if (e.code === 4902) {
+      await binanceprovider.request({
+        method: 'wallet_addEthereumChain',
+        params: [{
+          chainId: '0x38',
+          chainName: 'Binance Smart Chain',
+          rpcUrls: ['https://bsc-dataseed.binance.org/'],
+          nativeCurrency: {
+            name: 'BNB',
+            symbol: 'BNB',
+            decimals: 18
+          },
+          blockExplorerUrls: ['https://bscscan.com']
+        }]
+      });
+    }
   }
 }
