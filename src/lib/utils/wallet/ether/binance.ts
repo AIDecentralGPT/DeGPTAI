@@ -47,29 +47,46 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
   }
   try {
-    // 1. 检查钱包连接
+    // 校验是否已连接钱包
     const accounts = await binanceprovider.request({ method: 'eth_accounts' });
-    if (!accounts.length) {
-      await binanceprovider.request({ method: 'eth_requestAccounts' });
-    }
-
-    // 2. 编码 transfer 数据
-    const amountWei = ethers.parseUnits(amountDgc.toString(), 18); // 假设 18 位小数
-    const iface = new ethers.Interface(ABI.abi);
-    const data = iface.encodeFunctionData('transfer', [toAddress, amountWei]);
-
-    // 3. 构造交易（不要传 from / chainId / gasPrice）
-    const txParams = {
-      to: BINANCE_DGC_CONTRACT_ADDRESS,
-      data
+    console.log("=========Accounts==========", accounts);
+    // 格式化转账金额
+    const amountWei = ethers.parseUnits(amountDgc.toString());
+    const ethersProvider = new ethers.BrowserProvider(binanceprovider);
+    const signer = await ethersProvider.getSigner();
+    const signerContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
+    const tx = await signerContract.transfer(toAddress, amountWei);
+    const txResponse = await tx.wait();
+    return {
+      ok: true,
+      data: txResponse
     };
+  } catch (e) {
+    console.log("===========================", e);
+    return { ok: false, msg: "Failed to send transaction !" };
+  }
+}
 
-    // 4. 发送交易
+// binanceAPP转账
+export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
+  const accounts = await binanceprovider.request({ method: 'eth_accounts' });
+  const dgcBalance = await getBinanceDgcBalance(accounts[0]);
+  if (parseFloat(dgcBalance) < amountDgc) {
+    return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
+  }
+  try {
+    // 格式化转账金额
+    const amountWei = ethers.parseUnits(amountDgc.toString());
+    const data = new ethers.Interface(ABI?.abi).encodeFunctionData('transfer', [toAddress, amountWei]);
     const txResponse = await binanceprovider.request({
-      method: 'eth_sendTransaction',
-      params: [txParams]
+      method: "eth_sendTransaction",
+      params: [{
+        from: accounts[0],
+        to: BINANCE_DGC_CONTRACT_ADDRESS,
+        data,
+        value: "0x0"
+      }]
     });
-
     return {
       ok: true,
       data: txResponse
