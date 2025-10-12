@@ -45,7 +45,7 @@
     amount = "";
     address = "";
     password = "";
-    transferType = "DBC";
+    transferType = binanceFlag ? "DGC" : "DBC";
     showError = {
       amount: false,
       address: false,
@@ -214,15 +214,17 @@
             {$i18n.t("Transfer Type")}
           </label>
           <div class="flex w-full">
-            <label class="mr-4">
-              <input
-                type="radio"
-                bind:group={transferType}
-                value="DBC"
-                required
-              />
-              DBC
-            </label>
+            {#if binanceFlag}
+              <label class="mr-4">
+                <input
+                  type="radio"
+                  bind:group={transferType}
+                  value="DBC"
+                  required
+                />
+                DBC
+              </label>
+            {/if}
             <label>
               <input
                 type="radio"
