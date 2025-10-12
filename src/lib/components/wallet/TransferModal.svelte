@@ -214,7 +214,7 @@
             {$i18n.t("Transfer Type")}
           </label>
           <div class="flex w-full">
-            {#if binanceFlag}
+            {#if !binanceFlag}
               <label class="mr-4">
                 <input
                   type="radio"

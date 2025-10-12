@@ -53,9 +53,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     });
     await binanceprovider.request({ method: 'eth_requestAccounts' });
     // 构造 transfer 方法的 data
-    const data = "0xa9059cbb" + // transfer 方法签名
-      toAddress.replace('0x', '').padStart(64, '0') + // 接收地址
-      BigInt(amountDgc).toString(16).padStart(64, '0'); // 转账金额
+    const amountWei = ethers.parseUnits(amountDgc.toString());
     
     // 发起转账
     const txResponse = await binanceprovider.request({
@@ -64,9 +62,9 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
         {
           from: address,
           to: BINANCE_DGC_CONTRACT_ADDRESS, // BEP-20 代币合约地址
-          data: data,
+          data: dgcContract.interface.encodeFunctionData("transfer", [toAddress, amountWei]),
           gas: "0x19023",
-          value: "0x0", // 代币转账 value 必须为 0
+          value: 0
         },
       ],
     });
