@@ -71,10 +71,12 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
 export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
   console.log("==============binanceprovider=============", binanceprovider);
   try {
-    // 检查钱包连接
-    const accounts = await binanceprovider.request({ method: 'eth_accounts' });
-    if (!accounts || !accounts.length) {
-      await binanceprovider.request({ method: 'eth_requestAccounts' });
+    // ✅ 保证 WalletConnect session 已建立
+    await binanceprovider.enable();
+
+    const accounts = await binanceprovider.request({ method: "eth_accounts" });
+    if (!accounts?.length) {
+      await binanceprovider.request({ method: "eth_requestAccounts" });
     }
 
     // 校验余额是否充足
@@ -87,7 +89,7 @@ export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
     const amountWei = ethers.parseUnits(amountDgc.toString());
     const data = new ethers.Interface(ABI?.abi).encodeFunctionData('transfer', [toAddress, amountWei]);
     const txResponse = await binanceprovider.request({
-      method: "eth_sendTransaction",
+      method: "wallet_sendTransaction",
       params: [{
         from: accounts[0],
         to: BINANCE_DGC_CONTRACT_ADDRESS,
