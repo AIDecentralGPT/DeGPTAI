@@ -15,6 +15,8 @@
   // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
   import { binanceprovider } from "$lib/utils/wallet/ether/binance";
+  import { connect, disconnect, getAccount, getConnectors, sendTransaction, watchAccount } from '@wagmi/core';
+  import { config } from "$lib/utils/wallet/ether/wagmibnb";
 
   const i18n = getContext("i18n");
 
@@ -22,24 +24,42 @@
   export let role = "";
   export let className = "max-w-[240px]";
 
+  let connectors: any = [];
+  $: {
+    connectors = getConnectors(config);
+    watchAccount(config, {
+      onChange: async(newAccount) {
+        if (newAccount.address) {
+          await handleWalletSignIn({
+            walletImported: {
+              address: newAccount.address,
+            },
+            address_type: "threeSide",
+            channel: $channel,
+          });
+        }
+      }
+    });
+  }
   async function connectBinanceWallet() {
     try {
       // 切换到BSC主网
-      await binanceprovider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x38' }] // BSC主网
-      });
-      const accounts = await binanceprovider.enable();
-      if (accounts?.length) {
-        console.log("TON 账户地址:", accounts[0]);
-        await handleWalletSignIn({
-          walletImported: {
-            address: accounts[0],
-          },
-          address_type: "threeSide",
-          channel: $channel,
-        });
-      }
+      // await binanceprovider.request({
+      //   method: 'wallet_switchEthereumChain',
+      //   params: [{ chainId: '0x38' }] // BSC主网
+      // });
+      // const accounts = await binanceprovider.enable();
+      // if (accounts?.length) {
+      //   console.log("TON 账户地址:", accounts[0]);
+      //   await handleWalletSignIn({
+      //     walletImported: {
+      //       address: accounts[0],
+      //     },
+      //     address_type: "threeSide",
+      //     channel: $channel,
+      //   });
+      // }
+      await connect(config, { connector: connectors[0] });
     } catch (error) {
       console.error("connection rejected:", error);
     }
