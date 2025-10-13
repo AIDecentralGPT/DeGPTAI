@@ -70,12 +70,15 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
 // binanceAPP转账
 export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
   try {
-    console.log("===========binancew3w==========", window.binancew3w)
     // 校验是否连接
     const accounts = await binanceprovider.request({ method: "eth_accounts" });
     if (!accounts?.length) {
       await binanceprovider.request({ method: "eth_requestAccounts" });
     }
+    await binanceprovider.request({
+      method: "wallet_requestPermissions",
+      params: [{ eth_accounts: {} }],
+    });
 
     // 校验余额是否充足
     const dgcBalance = await getBinanceDgcBalance(accounts[0]);
