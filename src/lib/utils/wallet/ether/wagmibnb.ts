@@ -3,7 +3,7 @@ import { mainnet, bsc } from '@wagmi/core/chains';
 import { injected } from '@wagmi/connectors';
 
 // 创建配置
-export const config = createConfig({
+export const bnbconfig = createConfig({
   chains: [mainnet, bsc],
   transports: {
     [mainnet.id]: http(),

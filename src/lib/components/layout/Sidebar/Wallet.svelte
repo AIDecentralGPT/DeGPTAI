@@ -14,9 +14,9 @@
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
-  import { binanceprovider } from "$lib/utils/wallet/ether/binance";
+  // import { binanceprovider } from "$lib/utils/wallet/ether/binance";
   import { connect, disconnect, getAccount, getConnectors, sendTransaction, watchAccount } from '@wagmi/core';
-  import { config } from "$lib/utils/wallet/ether/wagmibnb";
+  import { bnbconfig } from "$lib/utils/wallet/ether/wagmibnb";
 
   const i18n = getContext("i18n");
 
@@ -26,9 +26,9 @@
 
   let connectors: any = [];
   $: {
-    connectors = getConnectors(config);
-    watchAccount(config, {
-      onChange: async(newAccount) {
+    connectors = getConnectors(bnbconfig);
+    watchAccount(bnbconfig, {
+      onChange: async(newAccount) => {
         if (newAccount.address) {
           await handleWalletSignIn({
             walletImported: {
@@ -59,7 +59,7 @@
       //     channel: $channel,
       //   });
       // }
-      await connect(config, { connector: connectors[0] });
+      await connect(bnbconfig, { connector: connectors[0] });
     } catch (error) {
       console.error("connection rejected:", error);
     }

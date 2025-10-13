@@ -27,10 +27,11 @@
   import { goto } from "$app/navigation";
   import { getLanguages } from "$lib/i18n/index";
   import { checkKyc } from "$lib/apis/kycrestrict";
-  import { getProvider } from "@binance/w3w-ethereum-provider";
+  import { disconnect } from '@wagmi/core';
+  import { bnbconfig } from "$lib/utils/wallet/ether/wagmibnb";
 
   const i18n = getContext("i18n");
-  const provider = getProvider({ chainId: 56 });
+  // const provider = getProvider({ chainId: 56 });
 
   function floorToFixed(num, digits) {
     let pow = Math.pow(10, digits);
@@ -180,7 +181,8 @@
         type="submit"
         on:click={async () => {
           if ($binanceFlag) {
-            await provider.disconnect();
+            await disconnect(bnbconfig)
+            //await provider.disconnect();
           }
           await closeWallet($channel);
           // 更新用户模型
