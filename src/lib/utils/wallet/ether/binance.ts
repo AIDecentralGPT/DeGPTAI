@@ -69,6 +69,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
 
 // binanceAPP转账
 export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
+  console.log("============binanceprovider==========", binanceprovider);
   const accounts = await binanceprovider.request({ method: 'eth_accounts' });
   const dgcBalance = await getBinanceDgcBalance(accounts[0]);
   if (parseFloat(dgcBalance) < amountDgc) {
@@ -81,6 +82,7 @@ export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
     const txResponse = await binanceprovider.request({
       method: "eth_sendTransaction",
       params: [{
+        from: accounts[0],
         to: BINANCE_DGC_CONTRACT_ADDRESS,
         data,
         value: "0x0"
