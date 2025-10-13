@@ -53,8 +53,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@binance/w3w-core": "^1.1.9",
 		"@binance/w3w-ethereum-provider": "^1.1.11",
-		"@binance/w3w-utils": "^1.1.8",
 		"@fingerprintjs/fingerprintjs": "^4.3.0",
 		"@gregg-cbs/svelte-date-picker": "^3.0.3",
 		"@polkadot/api": "^11.2.1",
