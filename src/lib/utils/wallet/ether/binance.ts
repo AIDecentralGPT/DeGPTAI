@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import ABI from "./abi.json";
 import { getProvider } from "@binance/w3w-ethereum-provider";
-import { Core } from "@binance/w3w-core";
 
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
@@ -9,7 +8,6 @@ const rpcUrl = "https://bsc-dataseed.binance.org/";
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 export const binanceprovider = getProvider({ chainId: 56 });
-export const binanceCore = new Core();
 
 // 创建 DGC 合约实例
 export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);
@@ -72,10 +70,7 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
 // binanceAPP转账
 export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
   try {
-    const provider = await getProvider({
-      chainId: 56,
-      showQrCodeModal: false,  // App 内用 deep‑link 呼出钱包
-    });
+    console.log("===========binancew3w==========", window.binancew3w)
     // 校验是否连接
     const accounts = await binanceprovider.request({ method: "eth_accounts" });
     if (!accounts?.length) {
