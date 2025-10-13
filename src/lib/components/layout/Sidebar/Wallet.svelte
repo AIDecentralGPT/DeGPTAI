@@ -25,7 +25,8 @@
   async function connectBinanceWallet() {
     try {
       const res = await binanceCore.connect({
-        chainId: '0x38'
+        chainId: '0x38',
+        lng: "zh-CN"
       });
       console.log("连接成功:", res);
       // 切换到BSC主网
