@@ -9,7 +9,7 @@ const rpcUrl = "https://bsc-dataseed.binance.org/";
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
 export const binanceprovider = getProvider({ chainId: 56 });
-export const client = new Core();
+export const binanceCore = new Core();
 
 // 创建 DGC 合约实例
 export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);

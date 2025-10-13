@@ -14,7 +14,7 @@
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
-  import { binanceprovider, client } from "$lib/utils/wallet/ether/binance";
+  import { binanceprovider, binanceCore } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -24,12 +24,15 @@
 
   async function connectBinanceWallet() {
     try {
+      const res = await binanceCore.connect({
+        chainId: '0x38'
+      });
+      console.log("连接成功:", res);
       // 切换到BSC主网
       await binanceprovider.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x38' }] // BSC主网
       });
-      console.log("=========binancew3w=======", window.binancew3w);
       const accounts = await binanceprovider.enable();
       if (accounts?.length) {
         console.log("TON 账户地址:", accounts[0]);
