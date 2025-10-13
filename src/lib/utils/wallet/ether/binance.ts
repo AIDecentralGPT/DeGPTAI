@@ -7,7 +7,7 @@ const rpcUrl = "https://bsc-dataseed.binance.org/";
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
-export const binanceprovider = getProvider({ chainId: 56, showQrCodeModal: true });
+export const binanceprovider = getProvider({ chainId: 56 });
 
 // 创建 DGC 合约实例
 export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);
@@ -70,6 +70,10 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
 // binanceAPP转账
 export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
   try {
+    const provider = await getProvider({
+      chainId: 56,
+      showQrCodeModal: false,  // App 内用 deep‑link 呼出钱包
+    });
     // 校验是否连接
     const accounts = await binanceprovider.request({ method: "eth_accounts" });
     if (!accounts?.length) {
