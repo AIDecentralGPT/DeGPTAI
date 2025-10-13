@@ -69,13 +69,20 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
 
 // binanceAPP转账
 export async function binanceAppTransferDgc(toAddress: string, amountDgc) {
-  console.log("============binanceprovider==========", binanceprovider);
-  const accounts = await binanceprovider.request({ method: 'eth_accounts' });
-  const dgcBalance = await getBinanceDgcBalance(accounts[0]);
-  if (parseFloat(dgcBalance) < amountDgc) {
-    return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
-  }
+  console.log("==============binanceprovider=============", binanceprovider);
   try {
+    // 检查钱包连接
+    const accounts = await binanceprovider.request({ method: 'eth_accounts' });
+    if (!accounts || !accounts.length) {
+      await binanceprovider.request({ method: 'eth_requestAccounts' });
+    }
+
+    // 校验余额是否充足
+    const dgcBalance = await getBinanceDgcBalance(accounts[0]);
+    if (parseFloat(dgcBalance) < amountDgc) {
+      return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
+    }
+
     // 格式化转账金额
     const amountWei = ethers.parseUnits(amountDgc.toString());
     const data = new ethers.Interface(ABI?.abi).encodeFunctionData('transfer', [toAddress, amountWei]);
