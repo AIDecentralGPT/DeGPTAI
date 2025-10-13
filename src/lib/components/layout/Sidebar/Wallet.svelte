@@ -25,14 +25,12 @@
   async function connectBinanceWallet() {
     try {
       // 切换到BSC主网
-      // await binanceprovider.request({
-      //   method: 'wallet_switchEthereumChain',
-      //   params: [{ chainId: '0x38' }] // BSC主网
-      // });
-      const res = await client.connect({ chainId: '0x38' });
-      console.log("===================", res);
-      // const accounts = await binanceprovider.enable();
-      const accounts: any = [];
+      await binanceprovider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x38' }] // BSC主网
+      });
+      console.log("=========binancew3w=======", window.binancew3w);
+      const accounts = await binanceprovider.enable();
       if (accounts?.length) {
         console.log("TON 账户地址:", accounts[0]);
         await handleWalletSignIn({
