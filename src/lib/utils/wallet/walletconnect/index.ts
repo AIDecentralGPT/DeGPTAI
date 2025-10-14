@@ -101,15 +101,12 @@ export const config = defaultWagmiConfig({
 });
 
 // 创建配置
-export const bnbconfig = createConfig({
+export const bnbconfig = defaultWagmiConfig({
+  projectId,
   chains: [mainnet, bsc],
+  metadata,
   transports: {
     [mainnet.id]: http(),
     [bsc.id]: http(),
   },
-  connectors: [
-    injected({
-      target: 'metaMask', // 明确声明目标钱包，增强兼容性
-    }),
-  ],
 });

@@ -16,7 +16,6 @@
   // import { goto } from "$app/navigation";
   import { connect, getConnectors, watchAccount, switchChain } from '@wagmi/core';
   import { bsc } from '@wagmi/core/chains';
-  import { bnbconfig } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -24,36 +23,7 @@
   export let role = "";
   export let className = "max-w-[240px]";
 
-  let connectors: any = [];
-  $: {
-    connectors = getConnectors(bnbconfig);
-    watchAccount(bnbconfig, {
-      onChange: async(newAccount) => {
-        if (newAccount.address) {
-          await handleWalletSignIn({
-            walletImported: {
-              address: newAccount.address,
-            },
-            address_type: "threeSide",
-            channel: $channel,
-          });
-        }
-      }
-    });
-  }
-  async function connectBinanceWallet() {
-    try {
-      await connect(bnbconfig, { connector: connectors[0] });
-      await switchChain(bnbconfig, { chainId: bsc.id });
-    } catch (error) {
-      console.error("connection rejected:", error);
-    }
-  }
-
   onMount(async () => {
-    if ($binanceFlag) {
-      await connectBinanceWallet();
-    } 
   });
 </script>
 
