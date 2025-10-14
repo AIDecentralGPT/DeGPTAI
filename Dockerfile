@@ -148,18 +148,6 @@ RUN pip3 install uv && \
     pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir; \
     fi
 
-# 安装系统依赖
-RUN apt update && apt install -y \
-    pkg-config \
-    libavformat-dev \
-    libavcodec-dev \
-    libavdevice-dev \
-    libavutil-dev \
-    libavfilter-dev \
-    libswscale-dev \
-    libswresample-dev \
-    && rm -rf /var/lib/apt/lists/*
-
 # 安装 Python 依赖
 COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 RUN uv pip install --system -r requirements.txt --no-cache-dir
