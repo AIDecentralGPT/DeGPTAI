@@ -91,7 +91,7 @@
   </div>
 
   <!-- 第三方方式登录钱包 -->
-  {#if $binanceFlag}
+  {#if $binanceFlag && !$user?.id?.startsWith("0x")}
     <!-- <WalletConnect /> -->
     <div class="walletConnect flex flex-col gap-4">
       <button
