@@ -14,10 +14,9 @@
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
-  // import { binanceprovider } from "$lib/utils/wallet/ether/binance";
   import { connect, getConnectors, watchAccount, switchChain } from '@wagmi/core';
   import { bsc } from '@wagmi/core/chains';
-  import { bnbconfig } from "$lib/utils/wallet/ether/wagmibnb";
+  import { bnbconfig } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -44,25 +43,8 @@
   }
   async function connectBinanceWallet() {
     try {
-      // 切换到BSC主网
-      // await binanceprovider.request({
-      //   method: 'wallet_switchEthereumChain',
-      //   params: [{ chainId: '0x38' }] // BSC主网
-      // });
-      // const accounts = await binanceprovider.enable();
-      // if (accounts?.length) {
-      //   console.log("TON 账户地址:", accounts[0]);
-      //   await handleWalletSignIn({
-      //     walletImported: {
-      //       address: accounts[0],
-      //     },
-      //     address_type: "threeSide",
-      //     channel: $channel,
-      //   });
-      // }
       await connect(bnbconfig, { connector: connectors[0] });
       await switchChain(bnbconfig, { chainId: bsc.id });
-      console.log("================bsc.id================", bsc.id);
     } catch (error) {
       console.error("connection rejected:", error);
     }

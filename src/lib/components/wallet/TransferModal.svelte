@@ -15,7 +15,7 @@
   import { ethers } from "ethers";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import CheckPasswordModal2 from "$lib/components/wallet/CheckPasswordModal2.svelte";
-  import { binanceAppTransferDgc } from "$lib/utils/wallet/ether/binance";
+  import { binanceTransferDgc } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -123,7 +123,7 @@
         try {
           let response = null;
           if ($binanceFlag) {
-            response = await binanceAppTransferDgc(address, amount);
+            response = await binanceTransferDgc($currentWalletData?.walletInfo?.address, address, amount);
           } else {
             response = await transferMethod(
               address,

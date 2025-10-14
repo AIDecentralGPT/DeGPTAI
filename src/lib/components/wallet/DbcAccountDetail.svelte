@@ -28,7 +28,7 @@
   import { getLanguages } from "$lib/i18n/index";
   import { checkKyc } from "$lib/apis/kycrestrict";
   import { disconnect } from '@wagmi/core';
-  import { bnbconfig } from "$lib/utils/wallet/ether/wagmibnb";
+  import { bnbconfig } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
   // const provider = getProvider({ chainId: 56 });
