@@ -192,6 +192,9 @@
       >
         {$i18n.t("Close")}
       </button>
+      {#if $binanceFlag}
+        <div class="flex-1"></div>
+      {/if}
     </div>
   {/if}
   <!-- ------------ -->
