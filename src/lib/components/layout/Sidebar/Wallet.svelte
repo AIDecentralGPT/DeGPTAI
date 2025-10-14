@@ -15,7 +15,8 @@
   // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
   // import { binanceprovider } from "$lib/utils/wallet/ether/binance";
-  import { connect, disconnect, getAccount, getConnectors, sendTransaction, watchAccount } from '@wagmi/core';
+  import { connect, getConnectors, watchAccount, switchChain } from '@wagmi/core';
+  import { bsc } from '@wagmi/core/chains';
   import { bnbconfig } from "$lib/utils/wallet/ether/wagmibnb";
 
   const i18n = getContext("i18n");
@@ -59,6 +60,7 @@
       //     channel: $channel,
       //   });
       // }
+      await switchChain(bnbconfig, { chainId: bsc.id })
       await connect(bnbconfig, { connector: connectors[0] });
     } catch (error) {
       console.error("connection rejected:", error);
