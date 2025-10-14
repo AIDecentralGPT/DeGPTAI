@@ -60,8 +60,9 @@
       //     channel: $channel,
       //   });
       // }
-      await switchChain(bnbconfig, { chainId: bsc.id })
       await connect(bnbconfig, { connector: connectors[0] });
+      await switchChain(bnbconfig, { chainId: bsc.id });
+      console.log("================bsc.id================", bsc.id);
     } catch (error) {
       console.error("connection rejected:", error);
     }
