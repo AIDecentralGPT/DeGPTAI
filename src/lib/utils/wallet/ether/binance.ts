@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import ABI from "./abi.json";
-import { sendTransaction } from '@wagmi/core';
+import { getAccount } from "@wagmi/core";
+ import { bnbconfig } from "$lib/utils/wallet/walletconnect/index";
 
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
@@ -47,14 +48,16 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
       return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
     }
 
-    // 格式化转账金额
+    const account = getAccount(bnbconfig);
+    const provider = await account?.connector?.getProvider();
+    let eprovider = new ethers.BrowserProvider(provider);
+    await eprovider.send('eth_requestAccounts', []);
+    let signer = await eprovider.getSigner();
+    // 创建 DGC 合约实例
+    const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, signer);
     const amountWei = ethers.parseUnits(amountDgc.toString());
-    const data = new ethers.Interface(ABI?.abi).encodeFunctionData('transfer', [toAddress, amountWei]);
-    const txResponse = await sendTransaction(bnbconfig, {
-      to: BINANCE_DGC_CONTRACT_ADDRESS,
-      data: data
-    });
-    console.log("==============txResponse=============", txResponse);
+    const tx = await dgcContract.transfer(toAddress, amountWei);
+    const txResponse = await tx.wait();
     return {
       ok: true,
       data: txResponse
