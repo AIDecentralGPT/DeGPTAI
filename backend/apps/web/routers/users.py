@@ -38,6 +38,8 @@ from web3 import Web3
 w3 = Web3(Web3.HTTPProvider('https://rpc1.dbcwallet.io')) # 新以太坊主网
 tranAddress = "0x75A877EAB8CbD11836E27A137f7d0856ab8b90f8"
 
+binancew3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/')) # 币安以太坊主网
+
 # from web3.auto import w3
 import asyncio
 
@@ -314,8 +316,10 @@ async def openPro(form_data: UserRoleUpdateProForm, session_user=Depends(get_cur
             # 获取交易Hash信息
             tx_hash = form_data.tx
             # tx = w3.eth.get_transaction(tx_hash)
-            
-            tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
+            if form_data.binanceflag:
+                tx_receipt = await asyncio.to_thread(binancew3.eth.wait_for_transaction_receipt, tx_hash)
+            else:
+                tx_receipt = await asyncio.to_thread(w3.eth.wait_for_transaction_receipt, tx_hash)
             # print("receipt", tx_receipt)
             print("receipt", tx_receipt)
 

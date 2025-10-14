@@ -56,34 +56,28 @@ export async function getBinanceDgcBalance(address: string) {
 
 // binance转账
 export async function binanceTransferDgc(address: string, toAddress: string, amountDgc) {
-  // 目标页面 URL（需跳转的页面地址）
-  const targetUrl = "https://test.degpt.ai";
-  // 构造深度链接（结合自定义协议）
-  const deepLink = "myapp://browser/open?url=" + encodeURIComponent(targetUrl);
-  // 触发跳转
-  window.location.href = deepLink;
-  // try {
-  //   // 校验余额是否充足
-  //   const dgcBalance = await getBinanceDgcBalance(address);
-  //   if (parseFloat(dgcBalance) < amountDgc) {
-  //     return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
-  //   }
+  try {
+    // 校验余额是否充足
+    const dgcBalance = await getBinanceDgcBalance(address);
+    if (parseFloat(dgcBalance) < amountDgc) {
+      return { ok: false, msg: "The DGC balance is not enough to pay. You can invite a friend to obtain 3000 DGC." };
+    }
 
-  //   // 格式化转账金额
-  //   const amountWei = ethers.parseUnits(amountDgc.toString());
-  //   const data = new ethers.Interface(ABI?.abi).encodeFunctionData('transfer', [toAddress, amountWei]);
-  //   const txResponse = await sendTransaction(bnbconfig, {
-  //     to: BINANCE_DGC_CONTRACT_ADDRESS,
-  //     data: data,
-  //     gas: 50000
-  //   });
-  //   console.log("==============txResponse=============", txResponse);
-  //   return {
-  //     ok: true,
-  //     data: txResponse
-  //   };
-  // } catch (e) {
-  //   console.log("===========================", e);
-  //   return { ok: false, msg: "Failed to send transaction !" };
-  // }
+    // 格式化转账金额
+    const amountWei = ethers.parseUnits(amountDgc.toString());
+    const data = new ethers.Interface(ABI?.abi).encodeFunctionData('transfer', [toAddress, amountWei]);
+    const txResponse = await sendTransaction(bnbconfig, {
+      to: BINANCE_DGC_CONTRACT_ADDRESS,
+      data: data,
+      gas: 50000
+    });
+    console.log("==============txResponse=============", txResponse);
+    return {
+      ok: true,
+      data: txResponse
+    };
+  } catch (e) {
+    console.log("===========================", e);
+    return { ok: false, msg: "Failed to send transaction !" };
+  }
 }

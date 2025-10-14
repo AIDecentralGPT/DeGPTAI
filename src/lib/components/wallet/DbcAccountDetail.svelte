@@ -372,6 +372,7 @@
     >
       {$i18n.t("Rewards")}
     </button> -->
+    {#if !$binanceFlag}
     <button
       class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
       type="submit"
@@ -381,6 +382,7 @@
     >
       {$i18n.t("Transactions")}
     </button>
+    {/if}
     {#if $user?.verified}
       <button
         class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
@@ -415,6 +417,9 @@
       >
         {$i18n.t("Complete KYC")}
       </button>
+    {/if}
+    {#if $binanceFlag}
+      <div class="flex-1"></div>
     {/if}
   </div>
 </div>

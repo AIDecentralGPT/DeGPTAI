@@ -5,13 +5,14 @@
   import { getModels as _getModels, checkUniapp } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import { user, currentWalletData, downLoadUrl, showDownLoad, walletKey, checkPasswordShow } from "$lib/stores";
+  import { user, currentWalletData, downLoadUrl, showDownLoad, walletKey, checkPasswordShow, binanceFlag } from "$lib/stores";
   import { openProServices } from "$lib/apis/users/index.js";
 
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { thirdTransferDgc, transferDgc } from "$lib/utils/wallet/ether/dgc"
   import { tranAddress } from "$lib/constants"
   import CheckPasswordModal from "$lib/components/wallet/CheckPasswordModal.svelte"
+    import { binanceTransferDgc } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -43,20 +44,29 @@
       loading = true;
       try {
         let response = {ok: false, msg: ""};
-        if ($user?.address_type != "threeSide") {
-          response = await transferDgc(
-            tranAddress,
-            Math.round(money/rate),
-            $currentWalletData?.walletInfo?.privateKey
-          );
-        } else {
-          response = await thirdTransferDgc(
+        if ($binanceFlag){
+          response = await binanceTransferDgc(
             $currentWalletData?.walletInfo?.address,
             tranAddress,
             Math.round(money/rate)
-          );
+          )
+        } else {
+          if ($user?.address_type != "threeSide") {
+            response = await transferDgc(
+              tranAddress,
+              Math.round(money/rate),
+              $currentWalletData?.walletInfo?.privateKey
+            );
+          } else {
+            response = await thirdTransferDgc(
+              $currentWalletData?.walletInfo?.address,
+              tranAddress,
+              Math.round(money/rate)
+            );
+          }
         }
         
+        console.log("==============upvip-response=============", response);
         if (response?.ok) {
           if (response?.data?.hash) {
             await uploadVip(response?.data?.hash)
@@ -75,7 +85,7 @@
   } 
 
   async function uploadVip(tx: string) {
-    let result = await openProServices(localStorage.token, tx, Math.round(money/0.0001), viptype, viptime);
+    let result = await openProServices(localStorage.token, tx, Math.round(money/0.0001), viptype, viptime, $binanceFlag);
     if (result?.ok) {
       user.set({
         ...$user,
