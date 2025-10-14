@@ -27,6 +27,8 @@
   import { goto } from "$app/navigation";
   import { getLanguages } from "$lib/i18n/index";
   import { checkKyc } from "$lib/apis/kycrestrict";
+  import { disconnect } from '@wagmi/core';
+  import { bnbconfig } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
   // const provider = getProvider({ chainId: 56 });
@@ -178,6 +180,9 @@
         class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
+          if ($binanceFlag) {
+            await disconnect(bnbconfig);
+          }
           await closeWallet($channel);
           // 更新用户模型
           await initUserModels();

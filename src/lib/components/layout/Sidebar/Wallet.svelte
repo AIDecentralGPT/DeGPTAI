@@ -12,10 +12,11 @@
   } from "$lib/stores";
   import DbcAccountDetail from "$lib/components/wallet/DbcAccountDetail.svelte";
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
-  import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
+  // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
   import { connect, getConnectors, watchAccount, switchChain } from '@wagmi/core';
   import { bsc } from '@wagmi/core/chains';
+  import { bnbconfig } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -23,7 +24,36 @@
   export let role = "";
   export let className = "max-w-[240px]";
 
+  let connectors: any = [];
+  $: {
+    connectors = getConnectors(bnbconfig);
+    watchAccount(bnbconfig, {
+      onChange: async(newAccount) => {
+        if (newAccount.address) {
+          await handleWalletSignIn({
+            walletImported: {
+              address: newAccount.address,
+            },
+            address_type: "threeSide",
+            channel: $channel,
+          });
+        }
+      }
+    });
+  }
+  async function connectBinanceWallet() {
+    try {
+      await connect(bnbconfig, { connector: connectors[0] });
+      await switchChain(bnbconfig, { chainId: bsc.id });
+    } catch (error) {
+      console.error("connection rejected:", error);
+    }
+  }
+
   onMount(async () => {
+    if ($binanceFlag) {
+      await connectBinanceWallet();
+    } 
   });
 </script>
 
@@ -62,7 +92,39 @@
 
   <!-- 第三方方式登录钱包 -->
   {#if $binanceFlag}
-    <WalletConnect />
+    <!-- <WalletConnect /> -->
+    <div class="walletConnect flex flex-col gap-4">
+      <button
+        id="btn"
+        class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+        on:click={async () => {
+          connectBinanceWallet();
+        }}
+      >
+        <div class=" self-center mr-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.4em"
+            height="1.4em"
+            viewBox="0 0 48 48"
+            ><g
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="4"
+              ><path
+                d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8m2 30a6 6 0 1 0 0-12a6 6 0 0 0 0 12m28 2a6 6 0 1 0 0-12a6 6 0 0 0 0 12M22 28a8 8 0 1 0 0-16a8 8 0 0 0 0 16m12-16a4 4 0 1 0 0-8a4 4 0 0 0 0 8"
+                clip-rule="evenodd"
+              /><path d="m11 11l4 4m15-3l-2 2m6 19.5L28 26m-14 5l4-4" /></g
+            ></svg
+          >
+        </div>
+        <div class=" self-center font-medium">
+          {$i18n.t("Connect Wallet")}
+        </div>
+      </button>
+    </div>
   {/if}
 
   <!-- 创建，连接，打开钱包，三个按钮 -->

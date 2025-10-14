@@ -3,8 +3,7 @@
   import { goto } from "$app/navigation";
   import { writable } from "svelte/store";
   import { createWeb3Modal } from "@web3modal/wagmi";
-  import { watchConnections, getAccount, watchAccount, switchChain } from "@wagmi/core";
-  import { bsc } from '@wagmi/core/chains';
+  import { watchConnections, getAccount, watchAccount } from "@wagmi/core";
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   import { closeWallet } from "$lib/utils/wallet/walletUtils";
   import {
@@ -15,7 +14,7 @@
     settings,
     config as storeConfig,
   } from "$lib/stores";
-  import { config, bnbconfig, projectId } from "$lib/utils/wallet/walletconnect/index";
+  import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
   import { addErrorLog } from "$lib/apis/errorlog";
   import { getLanguages } from "$lib/i18n/index";
 
@@ -27,7 +26,7 @@
   let modal: any = { options: { themeMode: "dark" } };
 
   onMount(() => {
-    watchConnections(bnbconfig, {
+    watchConnections(config, {
       async onChange(data) {
         if (data.length) {
           const address = data[0].accounts[0];
@@ -41,7 +40,7 @@
 
     modal = createWeb3Modal({
       themeMode: "dark",
-      wagmiConfig: bnbconfig,
+      wagmiConfig: config,
       projectId,
       enableAnalytics: true,
       enableOnramp: true,
@@ -95,14 +94,13 @@
     }
   }
 
-  watchAccount(bnbconfig, {
+  watchAccount(config, {
     async onChange() {
       try {
-        let account = getAccount(bnbconfig);
+        let account = getAccount(config);
         $threesideAccount = account;
         if (account.status === "connected") {
           if (!$user?.id === undefined || !$user?.id?.startsWith("0x")) {
-            await switchChain(bnbconfig, { chainId: bsc.id });
             await handleWalletSignIn({
               walletImported: {
                 address: account?.address,
