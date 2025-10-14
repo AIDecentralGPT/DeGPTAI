@@ -48,7 +48,7 @@
           response = await binanceTransferDgc(
             $currentWalletData?.walletInfo?.address,
             tranAddress,
-            Math.round(money/rate)
+            "100" // Math.round(money/rate)
           )
         } else {
           if ($user?.address_type != "threeSide") {
