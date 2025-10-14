@@ -68,7 +68,8 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
     const data = new ethers.Interface(ABI?.abi).encodeFunctionData('transfer', [toAddress, amountWei]);
     const txResponse = await sendTransaction(bnbconfig, {
       to: BINANCE_DGC_CONTRACT_ADDRESS,
-      data: data
+      data: data,
+      gas: 50000
     });
     console.log("==============txResponse=============", txResponse);
     return {
