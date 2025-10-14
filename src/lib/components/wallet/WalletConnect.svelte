@@ -3,7 +3,8 @@
   import { goto } from "$app/navigation";
   import { writable } from "svelte/store";
   import { createWeb3Modal } from "@web3modal/wagmi";
-  import { watchConnections, getAccount, watchAccount } from "@wagmi/core";
+  import { watchConnections, getAccount, watchAccount, switchChain } from "@wagmi/core";
+  import { bsc } from '@wagmi/core/chains';
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
   import { closeWallet } from "$lib/utils/wallet/walletUtils";
   import {
@@ -94,13 +95,14 @@
     }
   }
 
-  watchAccount(config, {
+  watchAccount(bnbconfig, {
     async onChange() {
       try {
-        let account = getAccount(config);
+        let account = getAccount(bnbconfig);
         $threesideAccount = account;
         if (account.status === "connected") {
           if (!$user?.id === undefined || !$user?.id?.startsWith("0x")) {
+            await switchChain(bnbconfig, { chainId: bsc.id });
             await handleWalletSignIn({
               walletImported: {
                 address: account?.address,
