@@ -12,7 +12,7 @@
   } from "$lib/stores";
   import DbcAccountDetail from "$lib/components/wallet/DbcAccountDetail.svelte";
   import { handleWalletSignIn } from "$lib/utils/wallet/ether/utils";
-  // import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
+  import WalletConnect from "$lib/components/wallet/WalletConnect.svelte";
   // import { goto } from "$app/navigation";
   import { connect, getConnectors, watchAccount, switchChain } from '@wagmi/core';
   import { bsc } from '@wagmi/core/chains';
@@ -91,7 +91,7 @@
   </div>
 
   <!-- 第三方方式登录钱包 -->
-  <!-- <WalletConnect /> -->
+  <WalletConnect />
 
   <!-- 创建，连接，打开钱包，三个按钮 -->
   {#if !($user?.id && $user?.id?.startsWith("0x"))}
