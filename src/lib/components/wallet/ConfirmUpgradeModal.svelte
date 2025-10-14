@@ -70,8 +70,6 @@
             );
           }
         }
-        
-        console.log("==============upvip-response=============", response);
         if (response?.ok) {
           if (response?.data?.hash) {
             await uploadVip(response?.data?.hash)

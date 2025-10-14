@@ -71,10 +71,9 @@ export async function binanceTransferDgc(address: string, toAddress: string, amo
       data: data,
       gas: 50000
     });
-    console.log("==============txResponse=============", txResponse);
     return {
       ok: true,
-      data: txResponse
+      data: { hash: txResponse }
     };
   } catch (e) {
     console.log("===========================", e);
