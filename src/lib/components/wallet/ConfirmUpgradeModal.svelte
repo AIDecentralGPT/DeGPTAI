@@ -12,7 +12,7 @@
   import { thirdTransferDgc, transferDgc } from "$lib/utils/wallet/ether/dgc"
   import { tranAddress } from "$lib/constants"
   import CheckPasswordModal from "$lib/components/wallet/CheckPasswordModal.svelte"
-    import { binanceTransferDgc } from "$lib/utils/wallet/ether/binance";
+  import { binanceTransferDgc } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -26,11 +26,16 @@
 
   let checkPassword = false;
   async function upgradeVip() {
-    if (!$walletKey?.checked) {
-      $checkPasswordShow = true;
-    } else {
+    if ($binanceFlag) {
       await toUpgradeVip();
+    } else {
+      if ($walletKey?.checked) {
+        await toUpgradeVip();
+      } else {
+        $checkPasswordShow = true;
+      }
     }
+    
   }
 
   function checkPasswordResult(event: any) {
@@ -155,10 +160,10 @@
       <!-- 主体 -->
       <div class="flex flex-col">
         <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-          {#if (floorToFixed(Number($currentWalletData?.dgcBalance), 2) - (money/0.0001)) < 0}
+          {#if (floorToFixed(Number($currentWalletData?.dgcBalance), 2) - (money/rate)) > 0}
             <div class="w-full">
               <p class="text-md mb-4 w-full">
-                {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: money/0.0001})}
+                {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: money/rate})}
               </p>
               <div class="flex justify-end my-4">
                 <button
