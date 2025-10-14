@@ -51,9 +51,9 @@
   }
 
   onMount(async () => {
-    if ($binanceFlag) {
-      await connectBinanceWallet();
-    } 
+    // if ($binanceFlag) {
+    //   await connectBinanceWallet();
+    // } 
   });
 </script>
 
