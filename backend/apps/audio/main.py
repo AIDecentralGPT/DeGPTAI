@@ -14,7 +14,7 @@ from fastapi import (
 from fastapi.responses import StreamingResponse, JSONResponse, FileResponse
 
 from fastapi.middleware.cors import CORSMiddleware
-from faster_whisper import WhisperModel
+# from faster_whisper import WhisperModel
 from pydantic import BaseModel
 
 
@@ -173,54 +173,57 @@ def transcribe(
     user=Depends(get_current_user),
 ):
     log.info(f"file.content_type: {file.content_type}")
+    return {"text": ""}
 
-    if file.content_type not in ["audio/mpeg", "audio/wav"]:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=ERROR_MESSAGES.FILE_NOT_SUPPORTED,
-        )
+    # if file.content_type not in ["audio/mpeg", "audio/wav"]:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_400_BAD_REQUEST,
+    #         detail=ERROR_MESSAGES.FILE_NOT_SUPPORTED,
+    #     )
 
-    try:
-        filename = file.filename
-        file_path = f"{UPLOAD_DIR}/{filename}"
-        contents = file.file.read()
-        with open(file_path, "wb") as f:
-            f.write(contents)
-            f.close()
+    # try:
+    #     filename = file.filename
+    #     file_path = f"{UPLOAD_DIR}/{filename}"
+    #     contents = file.file.read()
+    #     with open(file_path, "wb") as f:
+    #         f.write(contents)
+    #         f.close()
 
-        whisper_kwargs = {
-            "model_size_or_path": WHISPER_MODEL,
-            "device": whisper_device_type,
-            "compute_type": "int8",
-            "download_root": WHISPER_MODEL_DIR,
-            "local_files_only": not WHISPER_MODEL_AUTO_UPDATE,
-        }
+    #     whisper_kwargs = {
+    #         "model_size_or_path": WHISPER_MODEL,
+    #         "device": whisper_device_type,
+    #         "compute_type": "int8",
+    #         "download_root": WHISPER_MODEL_DIR,
+    #         "local_files_only": not WHISPER_MODEL_AUTO_UPDATE,
+    #     }
 
-        log.debug(f"whisper_kwargs: {whisper_kwargs}")
+    #     log.debug(f"whisper_kwargs: {whisper_kwargs}")
 
-        try:
-            model = WhisperModel(**whisper_kwargs)
-        except:
-            log.warning(
-                "WhisperModel initialization failed, attempting download with local_files_only=False"
-            )
-            whisper_kwargs["local_files_only"] = False
-            model = WhisperModel(**whisper_kwargs)
+    #     try:
+    #         model = WhisperModel(**whisper_kwargs)
+    #     except:
+    #         log.warning(
+    #             "WhisperModel initialization failed, attempting download with local_files_only=False"
+    #         )
+    #         whisper_kwargs["local_files_only"] = False
+    #         model = WhisperModel(**whisper_kwargs)
 
-        segments, info = model.transcribe(file_path, beam_size=5)
-        log.info(
-            "Detected language '%s' with probability %f"
-            % (info.language, info.language_probability)
-        )
+    #     segments, info = model.transcribe(file_path, beam_size=5)
+    #     log.info(
+    #         "Detected language '%s' with probability %f"
+    #         % (info.language, info.language_probability)
+    #     )
 
-        transcript = "".join([segment.text for segment in list(segments)])
+    #     transcript = "".join([segment.text for segment in list(segments)])
 
-        return {"text": transcript.strip()}
+    #     return {"text": transcript.strip()}
 
-    except Exception as e:
-        log.exception(e)
+        
 
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=ERROR_MESSAGES.DEFAULT(e),
-        )
+    # except Exception as e:
+    #     log.exception(e)
+
+    #     raise HTTPException(
+    #         status_code=status.HTTP_400_BAD_REQUEST,
+    #         detail=ERROR_MESSAGES.DEFAULT(e),
+    #     )
