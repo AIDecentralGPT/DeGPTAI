@@ -3,10 +3,13 @@ import {
   http,
   signMessage,
   getChainId,
-  switchChain
+  switchChain,
+  createConfig
 } from "@wagmi/core";
 
 import { defaultWagmiConfig } from "@web3modal/wagmi";
+import { mainnet, bsc } from '@wagmi/core/chains';
+import { injected } from '@wagmi/connectors';
 
 // import { provider, signData, getCurrencyPrice, getGas } from "../ether/utils";
 // const rpcUrl = "https://rpc-testnet.dbcwallet.io"; // 旧 的 RPC URL
@@ -95,4 +98,18 @@ export const config = defaultWagmiConfig({
   transports: {
     [dbcTestnet.id]: http("https://rpc1.dbcwallet.io"),
   },
+});
+
+// 创建配置
+export const bnbconfig = createConfig({
+  chains: [mainnet, bsc],
+  transports: {
+    [mainnet.id]: http(),
+    [bsc.id]: http(),
+  },
+  connectors: [
+    injected({
+      target: 'metaMask', // 明确声明目标钱包，增强兼容性
+    }),
+  ],
 });

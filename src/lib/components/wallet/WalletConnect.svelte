@@ -14,7 +14,7 @@
     settings,
     config as storeConfig,
   } from "$lib/stores";
-  import { config, projectId } from "$lib/utils/wallet/walletconnect/index";
+  import { config, bnbconfig, projectId } from "$lib/utils/wallet/walletconnect/index";
   import { addErrorLog } from "$lib/apis/errorlog";
   import { getLanguages } from "$lib/i18n/index";
 
@@ -26,7 +26,7 @@
   let modal: any = { options: { themeMode: "dark" } };
 
   onMount(() => {
-    watchConnections(config, {
+    watchConnections(bnbconfig, {
       async onChange(data) {
         if (data.length) {
           const address = data[0].accounts[0];
@@ -40,7 +40,7 @@
 
     modal = createWeb3Modal({
       themeMode: "dark",
-      wagmiConfig: config,
+      wagmiConfig: bnbconfig,
       projectId,
       enableAnalytics: true,
       enableOnramp: true,

@@ -1,27 +1,11 @@
 import { ethers } from "ethers";
 import ABI from "./abi.json";
-import { createConfig, http, sendTransaction } from '@wagmi/core';
-import { mainnet, bsc } from '@wagmi/core/chains';
-import { injected } from '@wagmi/connectors';
+import { sendTransaction } from '@wagmi/core';
 
 const BINANCE_DGC_CONTRACT_ADDRESS = '0x9cfAE8067322394e34E6b734c4a3F72aCC4a7Fe5';
 const rpcUrl = "https://bsc-dataseed.binance.org/";
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
-
-// 创建配置
-export const bnbconfig = createConfig({
-  chains: [mainnet, bsc],
-  transports: {
-    [mainnet.id]: http(),
-    [bsc.id]: http(),
-  },
-  connectors: [
-    injected({
-      target: 'metaMask', // 明确声明目标钱包，增强兼容性
-    }),
-  ],
-});
 
 // 创建 DGC 合约实例
 export const dgcContract = new ethers.Contract(BINANCE_DGC_CONTRACT_ADDRESS, ABI?.abi, provider);

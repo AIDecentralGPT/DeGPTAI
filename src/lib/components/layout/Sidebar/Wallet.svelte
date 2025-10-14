@@ -91,55 +91,14 @@
   </div>
 
   <!-- 第三方方式登录钱包 -->
-  <WalletConnect />
+  {#if $binanceFlag}
+    <WalletConnect />
+  {/if}
 
   <!-- 创建，连接，打开钱包，三个按钮 -->
   {#if !($user?.id && $user?.id?.startsWith("0x"))}
     <div>
-      {#if $binanceFlag}
-        <button
-          class="flex rounded-md py-2 px-2 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-          on:click={async () => {
-            await connectBinanceWallet();
-          }}
-        >
-          <div class=" self-center mr-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1.4em"
-              height="1.4em"
-              viewBox="0 0 512 512"
-            >
-              <rect
-                width="416"
-                height="288"
-                x="48"
-                y="144"
-                fill="none"
-                stroke="currentColor"
-                stroke-linejoin="round"
-                stroke-width="32"
-                rx="48"
-                ry="48"
-              />
-              <path
-                fill="none"
-                stroke="currentColor"
-                stroke-linejoin="round"
-                stroke-width="32"
-                d="M411.36 144v-30A50 50 0 0 0 352 64.9L88.64 109.85A50 50 0 0 0 48 159v49"
-              />
-              <path
-                fill="currentColor"
-                d="M368 320a32 32 0 1 1 32-32a32 32 0 0 1-32 32"
-              />
-            </svg>
-          </div>
-          <div class=" self-center font-medium">
-            {$i18n.t("Connect Wallet")}
-          </div>
-        </button>
-      {:else}
+      {#if !$binanceFlag}
         <button
           class="flex rounded-md py-2 px-2 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
           on:click={async () => {
