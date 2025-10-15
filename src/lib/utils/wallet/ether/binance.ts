@@ -34,7 +34,7 @@ export async function getBinanceBnbBalance(address: string) {
 
   const balanceBNB = ethers.formatUnits(balanceWei, 18);
 
-  console.log("BNB balance:",balanceWei, balanceBNB, ethers.formatEther(balanceWei), "BNB");
+  console.log("BNB balance:", balanceWei, balanceBNB, ethers.formatEther(balanceWei), "BNB");
 
   return balanceBNB;
 

@@ -356,7 +356,11 @@
           $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken";
           $showDownLoad = true;
         } else {
-          window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+          if ($binanceFlag) {
+            window.open("https://www.binance.com/en/buy/bnb", "_blank");
+          } else {
+            window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+          }      
         }
       }}
     >
@@ -373,52 +377,53 @@
       {$i18n.t("Rewards")}
     </button> -->
     {#if !$binanceFlag}
-    <button
-      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
-      type="submit"
-      on:click={async () => {
-        $showTransactionsModal = true;
-      }}
-    >
-      {$i18n.t("Transactions")}
-    </button>
-    {/if}
-    {#if $user?.verified}
-      <button
-        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
-        type="submit"
-      >
-        {$i18n.t("Authed KYC")}
-      </button>
-    {:else}
       <button
         class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
-          try {
-            const ret = await checkKyc(localStorage.token);
-            if (ret.pass) {
-              const userInfo = ret.data;
-              await user.set({
-                ...$user,
-                verified: userInfo?.verified
-              });
-              if (!$user?.verified) {
-                $showUserVerifyModal = true;
-              }
-            } else {
-              toast.error($i18n.t(ret.message))
-            }
-            
-          } catch (error) {
-            await addErrorLog("kyc认证按钮", error.toString());
-          }
+          $showTransactionsModal = true;
         }}
       >
-        {$i18n.t("Complete KYC")}
+        {$i18n.t("Transactions")}
       </button>
+      {#if $user?.verified}
+        <button
+          class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+          type="submit"
+        >
+          {$i18n.t("Authed KYC")}
+        </button>
+      {:else}
+        <button
+          class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            try {
+              const ret = await checkKyc(localStorage.token);
+              if (ret.pass) {
+                const userInfo = ret.data;
+                await user.set({
+                  ...$user,
+                  verified: userInfo?.verified
+                });
+                if (!$user?.verified) {
+                  $showUserVerifyModal = true;
+                }
+              } else {
+                toast.error($i18n.t(ret.message))
+              }
+              
+            } catch (error) {
+              await addErrorLog("kyc认证按钮", error.toString());
+            }
+          }}
+        >
+          {$i18n.t("Complete KYC")}
+        </button>
+      {/if}
     {/if}
     {#if $binanceFlag}
+      <div class="flex-1"></div>
       <div class="flex-1"></div>
     {/if}
   </div>

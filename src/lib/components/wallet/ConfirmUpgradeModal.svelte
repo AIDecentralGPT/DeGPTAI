@@ -161,7 +161,7 @@
           {#if (floorToFixed(Number($currentWalletData?.dgcBalance), 2) - (money/rate)) < 0}
             <div class="w-full">
               <p class="text-md mb-4 w-full">
-                {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: money/rate})}
+                {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", { num: Math.round(money/rate) })}
               </p>
               <div class="flex justify-end my-4">
                 <button
@@ -177,7 +177,11 @@
                       show = false;
                     } else {
                       show = false;
-                      window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+                      if ($binanceFlag) {
+                        window.open("https://www.binance.com/en/crypto/buy/USD/BNB", "_blank");    
+                      } else {
+                        window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+                      }     
                     }
                   }}
                 >
