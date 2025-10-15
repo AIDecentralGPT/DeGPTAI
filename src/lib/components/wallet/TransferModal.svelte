@@ -1,7 +1,12 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { toast } from "svelte-sonner";
-  import { currentWalletData, walletKey, checkPasswordShow2 } from "$lib/stores";
+  import {
+    currentWalletData,
+    walletKey,
+    checkPasswordShow2,
+    binanceFlag,
+  } from "$lib/stores";
 
   import Modal from "../common/Modal.svelte";
   import { transferDbc } from "$lib/utils/wallet/ether/dbc";
@@ -9,7 +14,8 @@
   import { provider } from "$lib/utils/wallet/ether/utils";
   import { ethers } from "ethers";
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
-  import CheckPasswordModal2 from "$lib/components/wallet/CheckPasswordModal2.svelte"
+  import CheckPasswordModal2 from "$lib/components/wallet/CheckPasswordModal2.svelte";
+  import { binanceTransferDgc } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -39,7 +45,7 @@
     amount = "";
     address = "";
     password = "";
-    transferType = "DBC";
+    transferType = $binanceFlag ? "DGC" : "DBC";
     showError = {
       amount: false,
       address: false,
@@ -59,8 +65,8 @@
       if (transferType === "DBC") {
         // 获取gasLimit
         const transaction = {
-          to: '0xEc9011d12CCBE93C7213C176dEFEa998bfbBA21b',
-          value: ethers.parseUnits('1')
+          to: "0xEc9011d12CCBE93C7213C176dEFEa998bfbBA21b",
+          value: ethers.parseUnits("1"),
         };
         const gasLimit = await provider.estimateGas(transaction);
         // 在这里调用 provider.getFeeData()
@@ -72,8 +78,8 @@
           gas = {
             gasPrice,
             maxFeePerGas,
-            maxPriorityFeePerGas
-          }
+            maxPriorityFeePerGas,
+          };
         });
       } else {
         // 获取预估gasLimit
@@ -87,8 +93,8 @@
           gas = {
             gasPrice,
             maxFeePerGas,
-            maxPriorityFeePerGas
-          }
+            maxPriorityFeePerGas,
+          };
         });
       }
     }
@@ -114,24 +120,23 @@
         const transferMethod =
           transferType === "DBC" ? transferDbc : transferDgc; // 根据 transferType 选择方法
 
-        console.log(
-          "currentWalletData?.walletInfo?.privateKey",
-          $currentWalletData?.walletInfo?.privateKey
-        );
-
-
         try {
-          let response = await transferMethod(
-            address,
-            amount,
-            $currentWalletData?.walletInfo?.privateKey
-          );
+          let response = null;
+          if ($binanceFlag) {
+            response = await binanceTransferDgc($currentWalletData?.walletInfo?.address, address, amount);
+          } else {
+            response = await transferMethod(
+              address,
+              amount,
+              $currentWalletData?.walletInfo?.privateKey
+            );
+          }
+
           if (response?.ok) {
             toast.success($i18n.t("Transfer successful,please be patient!"));
           } else {
             toast.error($i18n.t(response?.msg));
           }
-          
         } catch (error) {
           loading = false;
           toast.error(error?.message);
@@ -139,7 +144,7 @@
         loading = false;
 
         show = false;
-        updateWalletData($currentWalletData?.walletInfo)
+        updateWalletData($currentWalletData?.walletInfo);
       }
     } catch (error) {
       loading = false;
@@ -149,7 +154,7 @@
 
   let checkPassword = false;
   async function checkTransfer() {
-    if (!$walletKey?.checked) {
+    if (!$walletKey?.checked && !$binanceFlag) {
       $checkPasswordShow2 = true;
     } else {
       await handleTransfer();
@@ -164,7 +169,11 @@
 </script>
 
 {#if $checkPasswordShow2}
-  <CheckPasswordModal2 bind:show={$checkPasswordShow2} bind:checked={checkPassword} on:change={checkPasswordResult}/>
+  <CheckPasswordModal2
+    bind:show={$checkPasswordShow2}
+    bind:checked={checkPassword}
+    on:change={checkPasswordResult}
+  />
 {:else}
   <Modal bind:show>
     <div class="text-gray-700 dark:text-gray-100">
@@ -199,15 +208,17 @@
             {$i18n.t("Transfer Type")}
           </label>
           <div class="flex w-full">
-            <label class="mr-4">
-              <input
-                type="radio"
-                bind:group={transferType}
-                value="DBC"
-                required
-              />
-              DBC
-            </label>
+            {#if !$binanceFlag}
+              <label class="mr-4">
+                <input
+                  type="radio"
+                  bind:group={transferType}
+                  value="DBC"
+                  required
+                />
+                DBC
+              </label>
+            {/if}
             <label>
               <input
                 type="radio"
@@ -268,8 +279,6 @@
               {$i18n.t("Amount is required!")}
             </div>
           {/if}
-
-
         </div>
 
         <!-- <div class="mb-6 pt-0.5 max-w-[300px]">
@@ -293,11 +302,19 @@
           {/if}
         </div> -->
 
-        {#if amount && gas}
+        {#if amount && gas && !$binanceFlag}
           <div class="flex flex-row mt-2">
             <div>{$i18n.t("Estimated fuel costs:")}</div>
-            <div>{ `${ ethers.formatUnits(gas?.gasPrice) } - ${ ethers.formatUnits(gas?.maxFeePerGas)} DBC `}</div>
-            <div class="ml-2">{$i18n.t("Maximum cost:")}{` ${ ethers.formatUnits(gas?.maxFeePerGas) } DBC`}</div>
+            <div>
+              {`${ethers.formatUnits(gas?.gasPrice)} - ${ethers.formatUnits(
+                gas?.maxFeePerGas
+              )} DBC `}
+            </div>
+            <div class="ml-2">
+              {$i18n.t("Maximum cost:")}{` ${ethers.formatUnits(
+                gas?.maxFeePerGas
+              )} DBC`}
+            </div>
           </div>
         {/if}
 

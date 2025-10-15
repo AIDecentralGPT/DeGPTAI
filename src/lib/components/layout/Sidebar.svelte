@@ -24,7 +24,7 @@
     showFollowTwitterModal,
     showFollowTGGroupModal,
     initPageFlag,
-    showWalletView
+    showWalletView,
   } from "$lib/stores";
   import { getCurrentPair } from "$lib/utils/wallet/dbc.js";
   import { onMount, getContext } from "svelte";

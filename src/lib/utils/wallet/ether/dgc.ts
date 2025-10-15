@@ -110,7 +110,7 @@ export async function transferDgc(toAddress:string, amountDgc, privateKey) {
 // 第三方登陆转账
 export async function thirdTransferDgc(address:string, toAddress:string, amountDgc) {
   const dbcBalance = await getDbcBalance(address);
-  const dgcBalance = await getDgcBalance(address);
+  let dgcBalance = await getDgcBalance(address);
   if (parseFloat(dbcBalance) < 0.01) {
     return {ok: false, msg: "DBC balance is insufficient. You need to have at least 0.01 DBC in your wallet balance."};
   }

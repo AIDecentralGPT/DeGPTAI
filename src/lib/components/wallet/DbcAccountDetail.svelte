@@ -19,6 +19,7 @@
     channel,
     downLoadUrl,
     showDownLoad,
+    binanceFlag,
   } from "$lib/stores";
   import { addErrorLog } from "$lib/apis/errorlog";
   import { closeWallet, updateWalletData } from "$lib/utils/wallet/walletUtils";
@@ -26,8 +27,11 @@
   import { goto } from "$app/navigation";
   import { getLanguages } from "$lib/i18n/index";
   import { checkKyc } from "$lib/apis/kycrestrict";
+  import { disconnect } from '@wagmi/core';
+  import { bnbconfig } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
+  // const provider = getProvider({ chainId: 56 });
 
   function floorToFixed(num, digits) {
     let pow = Math.pow(10, digits);
@@ -146,7 +150,7 @@
   </div>
 
   <!-- 二级按钮 -->
-  {#if $user?.address_type === "threeSide"}
+  {#if $user?.address_type === "threeSide" && !$binanceFlag}
     <div class="flex justify-center">
       <w3m-button class="v-btn" label="组件方式打开" />
     </div>
@@ -161,19 +165,24 @@
       >
         {$i18n.t("Transfer")}
       </button>
+      {#if !$binanceFlag}
+        <button
+          class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            $showExportWalletJsonModal = true;
+          }}
+        >
+          {$i18n.t("Export")}
+        </button>
+      {/if}
       <button
         class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
-          $showExportWalletJsonModal = true;
-        }}
-      >
-        {$i18n.t("Export")}
-      </button>
-      <button
-        class="flex-1 px-3 py-2 primaryButton text-gray-50 transition rounded-lg text-xs"
-        type="submit"
-        on:click={async () => {
+          if ($binanceFlag) {
+            await disconnect(bnbconfig);
+          }
           await closeWallet($channel);
           // 更新用户模型
           await initUserModels();
@@ -183,6 +192,9 @@
       >
         {$i18n.t("Close")}
       </button>
+      {#if $binanceFlag}
+        <div class="flex-1"></div>
+      {/if}
     </div>
   {/if}
   <!-- ------------ -->
@@ -283,37 +295,52 @@
     <div
       class="flex flex-col px-4 py-2 rounded-md w-full text-sm outline-none border dark:border-none dark:bg-gray-850"
     >
-      <div class="flex justify-between">
-        <div class="flex gap-1">
-          <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
-            DBC
+      {#if $binanceFlag}
+        <div class="flex justify-between">
+          <div class="flex gap-1">
+            <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
+              BNB
+            </div>
+            <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
+              {floorToFixed(Number($currentWalletData?.dbcBalance), 8)}
+            </div>
           </div>
-          <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
-            {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+          <div class="flex flex-row opacity-50 leading-normal text-xs">
           </div>
         </div>
-        <div class="flex flex-row opacity-50 leading-normal text-xs">
-          <button
-            class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
-            on:click={async () => {
-              $showCoinIntruModal = true;
-              $showCoinIntruType = "dbc";
-            }}>
-            ?
-          </button>
+      {:else}
+        <div class="flex justify-between">
+          <div class="flex gap-1">
+            <div class="opacity-50 text-xs font-medium font-['Gilroy'] leading-normal">
+              DBC
+            </div>
+            <div class="opacity-80 text-xs font-medium font-['Gilroy'] leading-normal">
+              {floorToFixed(Number($currentWalletData?.dbcBalance), 2)}
+            </div>
+          </div>
+          <div class="flex flex-row opacity-50 leading-normal text-xs">
+            <button
+              class="ml-1 size-4 primaryButton saturate-200 text-white rounded-full"
+              on:click={async () => {
+                $showCoinIntruModal = true;
+                $showCoinIntruType = "dbc";
+              }}>
+              ?
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="flex justify-between">
-        <div class="flex flex-row opacity-50 leading-normal text-xs">
-          1DBC={floorToFixed($dbcRate?.rate, 5)}u 
+        <div class="flex justify-between">
+            <div class="flex flex-row opacity-50 leading-normal text-xs">
+              1DBC={floorToFixed($dbcRate?.rate, 5)}u 
+            </div>
+            <div class="opacity-50 leading-normal text-xs">
+              Total ${floorToFixed(
+                Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
+                5
+              )}u
+            </div>
         </div>
-        <div class="opacity-50 leading-normal text-xs">
-          Total ${floorToFixed(
-            Number($currentWalletData?.dbcBalance) * $dbcRate?.rate,
-            5
-          )}u
-        </div>
-      </div> 
+      {/if}
     </div>
   </div>
 
@@ -329,7 +356,11 @@
           $downLoadUrl = "https://www.drcpad.io/token?name=DGCToken";
           $showDownLoad = true;
         } else {
-          window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+          if ($binanceFlag) {
+            window.open("https://www.binance.com/en/buy/bnb", "_blank");
+          } else {
+            window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+          }      
         }
       }}
     >
@@ -345,49 +376,55 @@
     >
       {$i18n.t("Rewards")}
     </button> -->
-    <button
-      class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
-      type="submit"
-      on:click={async () => {
-        $showTransactionsModal = true;
-      }}
-    >
-      {$i18n.t("Transactions")}
-    </button>
-    {#if $user?.verified}
-      <button
-        class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
-        type="submit"
-      >
-        {$i18n.t("Authed KYC")}
-      </button>
-    {:else}
+    {#if !$binanceFlag}
       <button
         class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
         type="submit"
         on:click={async () => {
-          try {
-            const ret = await checkKyc(localStorage.token);
-            if (ret.pass) {
-              const userInfo = ret.data;
-              await user.set({
-                ...$user,
-                verified: userInfo?.verified
-              });
-              if (!$user?.verified) {
-                $showUserVerifyModal = true;
-              }
-            } else {
-              toast.error($i18n.t(ret.message))
-            }
-            
-          } catch (error) {
-            await addErrorLog("kyc认证按钮", error.toString());
-          }
+          $showTransactionsModal = true;
         }}
       >
-        {$i18n.t("Complete KYC")}
+        {$i18n.t("Transactions")}
       </button>
+      {#if $user?.verified}
+        <button
+          class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+          type="submit"
+        >
+          {$i18n.t("Authed KYC")}
+        </button>
+      {:else}
+        <button
+          class="flex-1 p-2 primaryButton text-gray-50 transition rounded-lg text-xs"
+          type="submit"
+          on:click={async () => {
+            try {
+              const ret = await checkKyc(localStorage.token);
+              if (ret.pass) {
+                const userInfo = ret.data;
+                await user.set({
+                  ...$user,
+                  verified: userInfo?.verified
+                });
+                if (!$user?.verified) {
+                  $showUserVerifyModal = true;
+                }
+              } else {
+                toast.error($i18n.t(ret.message))
+              }
+              
+            } catch (error) {
+              await addErrorLog("kyc认证按钮", error.toString());
+            }
+          }}
+        >
+          {$i18n.t("Complete KYC")}
+        </button>
+      {/if}
+    {/if}
+    {#if $binanceFlag}
+      <div class="flex-1"></div>
+      <div class="flex-1"></div>
     {/if}
   </div>
 </div>

@@ -16,7 +16,10 @@
     showWalletView,
     showNewWalletModal,
     showShareModal,
-    showUserVerifyModal
+    showUserVerifyModal,
+
+    binanceFlag
+
   } from "$lib/stores";
 
   import { getRewardsCount, clockIn } from "$lib/apis/rewards/index.js";
@@ -273,11 +276,32 @@
         >
           <span> {$i18n.t("Visit")}{$i18n.t("official website")}</span>
       </button>
-      {#if $user?.id?.startsWith("0x")}
+      {#if !$binanceFlag}
+        {#if $user?.id?.startsWith("0x")}
+          <button
+            class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
+            on:click={() => {
+              $showRewardsHistoryModal = true;
+            }}
+          >
+            <svg
+              class="primaryText cursor-pointer"
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 24 24"
+              ><path
+                fill="#ffffff"
+                d="M13.26 3C8.17 2.86 4 6.95 4 12H2.21c-.45 0-.67.54-.35.85l2.79 2.8c.2.2.51.2.71 0l2.79-2.8a.5.5 0 0 0-.36-.85H6c0-3.9 3.18-7.05 7.1-7c3.72.05 6.85 3.18 6.9 6.9c.05 3.91-3.1 7.1-7 7.1c-1.61 0-3.1-.55-4.28-1.48a.994.994 0 0 0-1.32.08c-.42.42-.39 1.13.08 1.49A8.858 8.858 0 0 0 13 21c5.05 0 9.14-4.17 9-9.26c-.13-4.69-4.05-8.61-8.74-8.74m-.51 5c-.41 0-.75.34-.75.75v3.68c0 .35.19.68.49.86l3.12 1.85c.36.21.82.09 1.03-.26c.21-.36.09-.82-.26-1.03l-2.88-1.71v-3.4c0-.4-.34-.74-.75-.74"
+              /></svg
+            >
+            <span> {$i18n.t("Rewards History")} </span>
+          </button>
+        {/if}
         <button
           class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
           on:click={() => {
-            $showRewardsHistoryModal = true;
+            $showRewardDetailModal = true;
           }}
         >
           <svg
@@ -285,34 +309,15 @@
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
             height="1em"
-            viewBox="0 0 24 24"
+            viewBox="0 0 256 256"
             ><path
               fill="#ffffff"
-              d="M13.26 3C8.17 2.86 4 6.95 4 12H2.21c-.45 0-.67.54-.35.85l2.79 2.8c.2.2.51.2.71 0l2.79-2.8a.5.5 0 0 0-.36-.85H6c0-3.9 3.18-7.05 7.1-7c3.72.05 6.85 3.18 6.9 6.9c.05 3.91-3.1 7.1-7 7.1c-1.61 0-3.1-.55-4.28-1.48a.994.994 0 0 0-1.32.08c-.42.42-.39 1.13.08 1.49A8.858 8.858 0 0 0 13 21c5.05 0 9.14-4.17 9-9.26c-.13-4.69-4.05-8.61-8.74-8.74m-.51 5c-.41 0-.75.34-.75.75v3.68c0 .35.19.68.49.86l3.12 1.85c.36.21.82.09 1.03-.26c.21-.36.09-.82-.26-1.03l-2.88-1.71v-3.4c0-.4-.34-.74-.75-.74"
+              d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88m-32-88a32 32 0 0 0 57.6 19.2a8 8 0 0 1 12.8 9.61a48 48 0 1 1 0-57.62a8 8 0 0 1-12.8 9.61A32 32 0 0 0 96 128"
             /></svg
           >
-          <span> {$i18n.t("Rewards History")} </span>
+          <span> {$i18n.t("Rewards Details")} </span>
         </button>
       {/if}
-      <button
-        class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
-        on:click={() => {
-          $showRewardDetailModal = true;
-        }}
-      >
-        <svg
-          class="primaryText cursor-pointer"
-          xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
-          viewBox="0 0 256 256"
-          ><path
-            fill="#ffffff"
-            d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88m-32-88a32 32 0 0 0 57.6 19.2a8 8 0 0 1 12.8 9.61a48 48 0 1 1 0-57.62a8 8 0 0 1-12.8 9.61A32 32 0 0 0 96 128"
-          /></svg
-        >
-        <span> {$i18n.t("Rewards Details")} </span>
-      </button>
       <button
         class="flex gap-1 items-center cursor-pointer primaryButton text-gray-100 rounded-lg my-1 px-2 py-1"
         on:click={() => {
@@ -324,79 +329,80 @@
       </button>
     </div>
   </div>
-
-  <div class="flex flex-wrap lg:justify-between">
-    {#each items as item, index}
-      {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id?.startsWith("0x"))}
-        <div
-          class="flex direction-column justify-center gap-2 w-full lg:w-2/5 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
-        >
+  {#if !$binanceFlag}
+    <div class="flex flex-wrap lg:justify-between">
+      {#each items as item, index}
+        {#if (item.id !== "new_wallet" && $user?.id?.startsWith("0x")) || (item.id === "new_wallet" && !$user?.id?.startsWith("0x"))}
           <div
-            class="flex justify-start items-center gap-2 w-[180px] lg:w-auto"
+            class="flex direction-column justify-center gap-2 w-full lg:w-2/5 lg:px-2 mb-2 text-xs lg:text-sm break-normal"
           >
-            {@html item.icon}
-            <span>{$i18n.t(item.text)}</span>
-          </div>
-          <div
-            class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg flex justify-between items-center"
-          >
-            <span class="relative">{item.reward}</span>
-            <button
-              disabled={clockLoading}
-              class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-white text-zinc-950 transition rounded-lg break-words"}
-              style={clockLoading && item.id === "clock_in"
-                ? "background: rgba(251, 251, 251, 0.8)"
-                : ""}
-              on:click={async () => {
-                if (item.id === "new_wallet") {
-                  $showNewWalletModal = true;
-                } else if (item.id === "invite") {
-                  $showShareModal = true;
-                } else if (item.id === "clock_in") {
-                  if (!$user?.verified) {
-                    toast.warning($i18n.t("To claim the reward, you must first complete user verification !"));
-                    $showUserVerifyModal = true;
-                  }else if ($chats.length > 0) {
-                    clockLoading = true;
-                    await clockIn(localStorage.token)
-                      .then((res) => {
-                        console.log("Clock In  res", res);
-                        getCount();
-                        if (res?.ok) {
-                          toast.success($i18n.t(res?.message, RewardProperties));
-                        }
-                        if (res?.detail) {
-                          toast.warning($i18n.t(res?.detail, RewardProperties));
-                        }
-                      })
-                      .catch((res) => {
-                        console.log("Clock In  error", res);
-                      });
-                    clockLoading = false;
-                  } else {
-                    toast.warning(
-                      $i18n.t(
-                        "You need to complete a conversation to receive a reward ！"
-                      )
-                    );
-                  }
-                }
-                return;
-              }}
+            <div
+              class="flex justify-start items-center gap-2 w-[180px] lg:w-auto"
             >
-              {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
-                ? clockLoading && item.id === "clock_in"
-                  ? $i18n.t("Done...")
-                  : $i18n.t("Done")
-                : clockLoading && item.id === "clock_in"
-                ? $i18n.t("Get Now...")
-                : $i18n.t("Get Now!")}
-            </button>
+              {@html item.icon}
+              <span>{$i18n.t(item.text)}</span>
+            </div>
+            <div
+              class="px-4 py-2 primaryButton text-gray-100 transition rounded-lg flex justify-between items-center"
+            >
+              <span class="relative">{item.reward}</span>
+              <button
+                disabled={clockLoading}
+                class={"px-2 lg:px-3.5 py-1 dark:bg-white dark:text-zinc-950 bg-white text-zinc-950 transition rounded-lg break-words"}
+                style={clockLoading && item.id === "clock_in"
+                  ? "background: rgba(251, 251, 251, 0.8)"
+                  : ""}
+                on:click={async () => {
+                  if (item.id === "new_wallet") {
+                    $showNewWalletModal = true;
+                  } else if (item.id === "invite") {
+                    $showShareModal = true;
+                  } else if (item.id === "clock_in") {
+                    if (!$user?.verified) {
+                      toast.warning($i18n.t("To claim the reward, you must first complete user verification !"));
+                      $showUserVerifyModal = true;
+                    }else if ($chats.length > 0) {
+                      clockLoading = true;
+                      await clockIn(localStorage.token)
+                        .then((res) => {
+                          console.log("Clock In  res", res);
+                          getCount();
+                          if (res?.ok) {
+                            toast.success($i18n.t(res?.message, RewardProperties));
+                          }
+                          if (res?.detail) {
+                            toast.warning($i18n.t(res?.detail, RewardProperties));
+                          }
+                        })
+                        .catch((res) => {
+                          console.log("Clock In  error", res);
+                        });
+                      clockLoading = false;
+                    } else {
+                      toast.warning(
+                        $i18n.t(
+                          "You need to complete a conversation to receive a reward ！"
+                        )
+                      );
+                    }
+                  }
+                  return;
+                }}
+              >
+                {(($user?.id?.startsWith("0x") && rewardsCount[item.id]) || 0) > 0
+                  ? clockLoading && item.id === "clock_in"
+                    ? $i18n.t("Done...")
+                    : $i18n.t("Done")
+                  : clockLoading && item.id === "clock_in"
+                  ? $i18n.t("Get Now...")
+                  : $i18n.t("Get Now!")}
+              </button>
+            </div>
           </div>
-        </div>
-      {/if}
-    {/each}
-  </div>
+        {/if}
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <DownLoadModal bind:show={$showDownLoad} />

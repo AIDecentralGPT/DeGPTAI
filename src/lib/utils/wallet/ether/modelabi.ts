@@ -1,12 +1,14 @@
 import { ethers } from "ethers";
 import DGCABI from "./abi.json";
 import MODELABI from "./modelabi.json";
-import { modelLimits } from "$lib/stores";
+import { binanceFlag, modelLimits } from "$lib/stores";
+import { get } from "svelte/store";
 import { getDbcBalance } from "$lib/utils/wallet/ether/dbc";
 import { getDgcBalance } from "$lib/utils/wallet/ether/dgc";
 import { currentWalletData } from "$lib/stores";
 import { getAccount } from "@wagmi/core";
 import { config } from "$lib/utils/wallet/walletconnect/index";
+import { getBinanceBnbBalance, getBinanceDgcBalance } from "./binance";
 
 // DGC 合约信息
 // const DGC_TOKEN_CONTRACT_ADDRESS = '0xC260ed583545d036ed99AA5C76583a99B7E85D26'; // 旧合约地址
@@ -29,8 +31,15 @@ const provider = new ethers.JsonRpcProvider(modelUrl);
 export const modelContract = new ethers.Contract(MODEL_TOKEN_CONTRACT_ADDRESS, MODELABI?.abi, provider);
 
 export async function checkMoney(address: string) {
-    const dbcBalance = await getDbcBalance(address);
-    const dgcBalance = await getDgcBalance(address);
+    let dbcBalance = "0";
+    let dgcBalance = "0";
+    if (get(binanceFlag)) {
+        dbcBalance = await getBinanceBnbBalance(address);
+        dgcBalance = await getBinanceDgcBalance(address);
+    } else {
+        dbcBalance = await getDbcBalance(address);
+        dgcBalance = await getDgcBalance(address);
+    }
     await currentWalletData.update((data) => {
         return {
         ...data,
