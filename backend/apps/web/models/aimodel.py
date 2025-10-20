@@ -12,9 +12,9 @@ class AiModelReq(BaseModel):
     messages: List[AiMessageModel]
     project: str
     stream : bool
-    enable_thinking: bool
-    reload: bool
-    audio: bool
+    enable_thinking: bool = Field(default=True, description="default true")
+    reload: bool = Field(default=False, description="default false")
+    audio: bool = Field(default=False, description="default false")
 
 class AudioModelReq(BaseModel):
     data: str
