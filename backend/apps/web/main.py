@@ -21,10 +21,10 @@ from apps.web.routers import (
     error_log,
     completion,
     daily_users,
-    fileupload
+    fileupload,
+    apikey
 )
 from config import (
-    WEBUI_VERSION,
     WEBUI_AUTH,
     DEFAULT_MODELS,
     DEFAULT_PROMPT_SUGGESTIONS,
@@ -89,6 +89,7 @@ app.include_router(error_log.router, prefix="/errorlog", tags=["error_log"])
 app.include_router(completion.router, prefix="/chat", tags=["aliqwen"])
 app.include_router(daily_users.router, prefix="/daily", tags=["daily_users"])
 app.include_router(fileupload.router, prefix="/upload", tags=["aliupload"])
+app.include_router(apikey.router, prefix="/apikey", tags=["apikey"])
 
 @app.get("/")
 async def get_status():

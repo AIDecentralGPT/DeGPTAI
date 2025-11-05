@@ -157,6 +157,7 @@
   "Customize Ollama models for a specific purpose": "",
   "Dashboard": "",
   "Reward upkeep": "",
+  "ApiKey upkeep": "",
   "Database": "",
   "December": "",
   "Default": "",
@@ -956,6 +957,8 @@
   "Daily Active Users Data Distribution": "",
   "Face verification failed": "",
   "KYC authentication information is incomplete": "",
-  "Captcha security authentication failed": ""
+  "Captcha security authentication failed": "",
+  "Apply for API": "",
+  "All Key": ""
 }
 

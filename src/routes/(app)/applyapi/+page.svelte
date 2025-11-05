@@ -3,16 +3,13 @@
   import { goto } from "$app/navigation";
   import { onMount, getContext } from "svelte";
 
-  import dayjs from "dayjs";
-  import relativeTime from "dayjs/plugin/relativeTime";
-  dayjs.extend(relativeTime);
-
   import { toast } from "svelte-sonner";
 
   import {
+    addApiKey,
     getList,
     switchStatus
-  } from "$lib/apis/rewarddate";
+  } from "$lib/apis/apikey";
 
   import AddRewardDateModal from "$lib/components/rewarddate/AddRewardDateModal.svelte";
   import Pagination from "$lib/components/common/Pagination.svelte";
@@ -20,7 +17,7 @@
   const i18n = getContext("i18n");
 
   let loaded = false;
-  let rewarddates: any = [];
+  let rewarddates: any[] = [];
 
   let total = 0;
 
@@ -49,6 +46,16 @@
     rewarddates = res?.data || [];
     total = res?.total;
     loading = false;
+  };
+
+  const addKeyHandler = async () => {
+    const res = await addApiKey(localStorage.token).catch((error) => {
+      toast.error(error);
+      return null;
+    });
+    if (res) {
+      handleRequest();
+    }
   };
 
   const switchStatusHandler = async (id) => {
@@ -83,7 +90,7 @@
   {#if loaded}
     <div class="flex justify-between px-4 pt-3 mt-0.5 mb-1 w-full">
       <div class="flex items-center text-xl font-semibold">
-        {$i18n.t("Reward upkeep")}
+        {$i18n.t("ApiKey upkeep")}
       </div>
       <button
         class="self-center"
@@ -109,7 +116,7 @@
     <div class="px-6 w-full">
       <div class="mt-0.5 mb-3 gap-1 flex flex-col md:flex-row justify-between">
         <div class="flex md:self-center text-base font-medium px-0.5">
-          {$i18n.t("All Reward Range")}
+          {$i18n.t("All Key")}
           <div
             class="flex self-center w-[2px] h-5 mx-2.5 bg-gray-200 dark:bg-gray-700"
           />
@@ -143,8 +150,8 @@
           </div>
           {#if $user?.role == "admin"}
             <button class="ml-2"
-              on:click={() => {
-                showAddRewardDateModal = true;
+              on:click={async () => {
+                await addKeyHandler();
               }}>
               <svg 
                 xmlns="http://www.w3.org/2000/svg"
@@ -167,9 +174,7 @@
             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-850 dark:text-gray-400"
           >
             <tr>
-              <th scope="col" class="px-3 py-3"> {$i18n.t("name")} </th>
-              <th scope="col" class="px-3 py-3"> {$i18n.t("starttime")} </th>
-              <th scope="col" class="px-3 py-3"> {$i18n.t("endtime")} </th>
+              <th scope="col" class="px-3 py-3"> Key </th>
               <th scope="col" class="px-3 py-3"> {$i18n.t("Status")} </th>
               <th scope="col" class="px-3 py-3 text-right" />
             </tr>
@@ -191,21 +196,7 @@
                 >
                   <td class="px-3 py-2 min-w-[7rem] w-max">
                     <div class="flex flex-row w-max">
-                      <div class=" font-medium self-center">{item.name}</div>
-                    </div>
-                  </td>
-                  <td
-                    class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max"
-                  >
-                    <div class="flex flex-row w-max">
-                      <div class=" font-medium self-center">{dayjs(item.start_time).format('YYYY-MM-DD')}</div>
-                    </div>
-                  </td>
-                  <td
-                    class="px-3 py-2 font-medium text-gray-900 dark:text-white w-max"
-                  >
-                    <div class="flex flex-row w-max">
-                      <div class=" font-medium self-center">{dayjs(item.end_time).format('YYYY-MM-DD')}</div>
+                      <div class=" font-medium self-center">{item.store_val}</div>
                     </div>
                   </td>
                   <td class=" px-3 py-2">

@@ -157,6 +157,7 @@
   "Customize Ollama models for a specific purpose": "Personnaliser les modèles Ollama pour un but spécifique",
   "Dashboard": "Tableau de bord",
   "Reward upkeep": "Entretien des récompenses",
+  "ApiKey upkeep": "Entretien de l'ApiKey",
   "Database": "Base de données",
   "December": "Décembre",
   "Default": "Par défaut",
@@ -955,5 +956,7 @@
   "Daily Active Users Data Distribution": "Distribution des données des utilisateurs actifs quotidiens",
   "Face verification failed": "Vérification faciale échouée",
   "KYC authentication information is incomplete": "Informations d'authentification KYC incomplètes",
-  "Captcha security authentication failed": "Échec de l'authentification de sécurité Captcha"
+  "Captcha security authentication failed": "Échec de l'authentification de sécurité Captcha",
+  "Apply for API": "Demander une API",
+  "All Key": "Toutes les Key"
 }

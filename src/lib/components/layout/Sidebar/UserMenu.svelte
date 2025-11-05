@@ -147,6 +147,24 @@
 					<div class=" self-center font-medium">{$i18n.t("Reward upkeep")}</div>
 				</button>
 			{/if}
+			{#if $user?.role === 'admin'}
+				<button
+					class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+					on:click={ async () => {
+						goto("/applyapi");
+					}}
+				>
+					<div class=" self-center mr-3">
+						<svg xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 1024 1024"
+							fill="currentColor"
+							class="w-5 h-5">
+							<path d="M512 64a448 448 0 1 1 0 896A448 448 0 0 1 512 64z m0 59.712a388.288 388.288 0 1 0 0 776.576A388.288 388.288 0 0 0 512 123.712z m168.96 147.2l45.248 45.312-42.24 42.24 60.352 60.288-45.248 45.248-60.352-60.352-39.168 39.232 42.176 42.24-45.248 45.312-42.24-42.304-42.688 42.816a119.488 119.488 0 1 1-44.416-46.144l213.76-213.824z m-316.8 274.56a59.712 59.712 0 1 0 84.48 84.48 59.712 59.712 0 0 0-84.48-84.48z"/>
+						</svg>
+					</div>
+					<div class=" self-center font-medium">{$i18n.t("Apply for API")}</div>
+				</button>
+			{/if}
 
 			<!-- <hr class=" dark:border-gray-800 my-2 p-0" /> -->
 

@@ -158,6 +158,7 @@
   "Customize Ollama models for a specific purpose": "Sesuaikan model Ollama untuk tujuan tertentu",
   "Dashboard": "Dasbor",
   "Reward upkeep": "Pemeliharaan hadiah",
+  "ApiKey upkeep": "Pemeliharaan ApiKey",
   "Database": "Basis Data",
   "December": "Desember",
   "Default": "Default",
@@ -956,5 +957,7 @@
   "Daily Active Users Data Distribution": "Distribusi data pengguna aktif harian",
   "Face verification failed": "Verifikasi wajah gagal",
   "KYC authentication information is incomplete": "Informasi otentikasi KYC tidak lengkap",
-  "Captcha security authentication failed": "Otentikasi keamanan Captcha gagal"
+  "Captcha security authentication failed": "Otentikasi keamanan Captcha gagal",
+  "Apply for API": "Mendaftar API",
+  "All Key": "Semua Key"
 }

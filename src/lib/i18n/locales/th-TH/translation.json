@@ -157,6 +157,7 @@
   "Customize Ollama models for a specific purpose": "กำหนด Ollama โมเดลเพื่อเป็นไปตามวัตถุประสงค์เฉพาะ",
   "Dashboard": "แดชบอร์ด",
   "Reward upkeep": "การรักษาเครื่องชั่ง",
+  "ApiKey upkeep": "การบำรุงรักษา ApiKey",
   "Database": "ฐานข้อมูล",
   "December": "ธันวาคม",
   "Default": "ค่าเริ่มต้น",
@@ -955,5 +956,7 @@
   "Daily Active Users Data Distribution": "การกระจายข้อมูลผู้ใช้งานประจำวัน",
   "Face verification failed": "การตรวจสอบใบหน้าไม่สำเร็จ",
   "KYC authentication information is incomplete": "ข้อมูลการยืนยันตัวตน KYC ไม่สมบูรณ์",
-  "Captcha security authentication failed": "การยืนยันตัวตนความปลอดภัย Captcha ไม่สำเร็จ"
+  "Captcha security authentication failed": "การยืนยันตัวตนความปลอดภัย Captcha ไม่สำเร็จ",
+  "Apply for API": "ขอใช้ API",
+  "All Key": "Key ทั้งหมด"
 }
