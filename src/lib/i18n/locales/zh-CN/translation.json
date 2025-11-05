@@ -153,6 +153,7 @@
   "Dark": "深色",
   "Dashboard": "数据分析",
   "Reward upkeep": "奖励维护",
+  "ApiKey upkeep": "ApiKey维护",
   "Database": "数据库",
   "December": "十二月",
   "Default": "默认",
@@ -955,5 +956,7 @@
   "Daily Active Users Data Distribution": "日活用户数据分布",
   "Face verification failed": "人脸验证失败",
   "KYC authentication information is incomplete": "KYC认证信息不完善",
-  "Captcha security authentication failed": "验证码安全认证失败"
+  "Captcha security authentication failed": "验证码安全认证失败",
+  "Apply for API": "申请API",
+  "All Key": "所有Key"
 }

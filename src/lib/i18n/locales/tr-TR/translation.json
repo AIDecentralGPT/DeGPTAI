@@ -157,6 +157,7 @@
   "Customize Ollama models for a specific purpose": "Belirli bir amaca göre Ollama modellerini özelleştir",
   "Dashboard": "Kontrol Paneli",
   "Reward upkeep": "Ödül Bakımı",
+  "ApiKey upkeep": "ApiKey bakımı",
   "Database": "Veritabanı",
   "December": "Aralık",
   "Default": "Varsayılan",
@@ -956,5 +957,7 @@
   "Daily Active Users Data Distribution": "Günlük aktif kullanıcı veri dağılımı",
   "Face verification failed": "Yüz doğrulaması başarısız",
   "KYC authentication information is incomplete": "KYC doğrulama bilgileri eksik",
-  "Captcha security authentication failed": "Captcha güvenlik doğrulaması başarısız"
+  "Captcha security authentication failed": "Captcha güvenlik doğrulaması başarısız",
+  "Apply for API": "API isteği göndermek",
+  "All Key": "Tüm Key"
 }

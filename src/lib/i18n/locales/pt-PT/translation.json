@@ -158,6 +158,7 @@
   "Customize Ollama models for a specific purpose": "Personalizar modelos Ollama para um propósito específico",
   "Dashboard": "Painel de controle",
   "Reward upkeep": "Manutenção das recompensas",
+  "ApiKey upkeep": "Manutenção da ApiKey",
   "Database": "Banco de dados",
   "December": "Dezembro",
   "Default": "Padrão",
@@ -956,5 +957,7 @@
   "Daily Active Users Data Distribution": "Distribuição de dados de usuários ativos diários",
   "Face verification failed": "Verificação facial falhou",
   "KYC authentication information is incomplete": "Informações de autenticação KYC incompletas",
-  "Captcha security authentication failed": "Autenticação de segurança do Captcha falhou"
+  "Captcha security authentication failed": "Autenticação de segurança do Captcha falhou",
+  "Apply for API": "Solicitar API",
+  "All Key": "Todas as Key"
 }

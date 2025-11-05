@@ -158,6 +158,7 @@
   "Customize Ollama models for a specific purpose": "特定の目的で Ollama モデルをカスタマイズする",
   "Dashboard": "ダッシュボード",
   "Reward upkeep": "報酬のメンテナンス",
+  "ApiKey upkeep": "ApiKey の維持管理",
   "Database": "データベース",
   "December": "12 月",
   "Default": "デフォルト",
@@ -956,5 +957,7 @@
   "Daily Active Users Data Distribution": "日間アクティブユーザーのデータ分布",
   "Face verification failed": "顔認証に失敗しました",
   "KYC authentication information is incomplete": "KYC認証情報が不完全です",
-  "Captcha security authentication failed": "CAPTCHAセキュリティ認証に失敗しました"
+  "Captcha security authentication failed": "CAPTCHAセキュリティ認証に失敗しました",
+  "Apply for API": "APIを申請する",
+  "All Key": "すべてのKey"
 }

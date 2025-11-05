@@ -2,6 +2,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import HTTPException, status, Depends
 
 from apps.web.models.users import Users
+from apps.web.util.apiutils import ApiUtilInstance
+from apps.web.models.apikey import ApiKeyTableInstance
 
 from pydantic import BaseModel
 from typing import Union, Optional
@@ -166,9 +168,11 @@ def get_current_user(
 
     # 根据API密钥进行认证
     # auth by api key
-    if auth_token.credentials.startswith("sk-"):
+    if auth_token.credentials.startswith("degpt-"):
+        apikey = ApiKeyTableInstance.getByKey(auth_token.credentials)
+        if ApiUtilInstance.verify_key_with_hash(apikey.key, apikey.store_val):
         # 调用get_current_user_by_api_key函数，传入auth_token.credentials作为参数，返回当前用户
-        return get_current_user_by_api_key(auth_token.credentials)
+            return get_current_user_by_api_key("degpt-proxy")
 
     # 解码token
     # auth by jwt token
