@@ -246,7 +246,8 @@ export const openProServices = async (
 	tx: string,
 	amount: number,
 	vip: string,
-	viptime: string
+	viptime: string,
+	binanceflag: boolean
 ) => {
 	let error = null;
 
@@ -261,7 +262,8 @@ export const openProServices = async (
 			tx,
 			amount,
 			vip,
-			viptime
+			viptime,
+			binanceflag
 		})
 	})
 		.then(async (res) => {

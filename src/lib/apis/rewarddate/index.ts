@@ -63,70 +63,15 @@ export const getList = async (token: string,page:number, search: string = "", st
 	return res ? res : [];
 };
 
-export const getById = async (token: string, id: string) => {
-	let error = null;
-
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/${userId}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		}
-	})
-		.then(async (res) => {
-			if (!res.ok) throw await res.json();
-			return res.json();
-		})
-		.catch((err) => {
-			console.log(err);
-			error = err.detail;
-			return null;
-		});
-
-	if (error) {
-		throw error;
-	}
-
-	return res;
-};
-
 export const deleteById = async (token: string, id: string) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/${id}`, {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/rewarddate/${id}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`
 		}
-	})
-		.then(async (res) => {
-			if (!res.ok) throw await res.json();
-			return res.json();
-		})
-		.catch((err) => {
-			console.log(err);
-			error = err.detail;
-			return null;
-		});
-
-	if (error) {
-		throw error;
-	}
-
-	return res;
-};
-
-export const updateById = async (token: string, id: string, data: DataForm) => {
-	let error = null;
-
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/${id}/update`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		},
-		body: JSON.stringify(data)
 	})
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();

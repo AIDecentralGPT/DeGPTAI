@@ -31,6 +31,7 @@ class UserRoleUpdateProForm(BaseModel):
     amount: int  # 定义role字段，类型为字符串
     vip: str # vip 类型
     viptime: str # vip 时间
+    binanceflag: bool #是否币安支付
 
 # 定义Pydantic模型UserRequest
 class UserRequest(BaseModel):

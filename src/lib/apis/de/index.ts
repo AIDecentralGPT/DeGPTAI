@@ -28,12 +28,12 @@ export const getDeModels = async (token: string = "") => {
     models: [
       // 基础模型
       {
-        name: "DeepSeek V3.1",
+        name: "DeepSeek V3.2",
         model: "deepseek-chat",
         imagemodel: "deepseek-chat",
         textmodel: "deepseek-chat",
         think: false,
-        tip: "DeepSeek V3.1",
+        tip: "DeepSeek V3.2",
         support: "text",
         type: 1,
         desc: "Suitable for reasoning and writing",
@@ -80,12 +80,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "GPT-5 mini (OpenAI)",
-        model: "gpt-5-mini",
-        imagemodel: "gpt-5-mini",
-        textmodel: "gpt-5-mini",
+        name: "GPT-5.1 mini (OpenAI)",
+        model: "gpt-5.1-codex-mini",
+        imagemodel: "gpt-5.1-codex-mini",
+        textmodel: "gpt-5.1-codex-mini",
         think: false,
-        tip: "GPT-5 mini (OpenAI)",
+        tip: "GPT-5.1 mini (OpenAI)",
         support: "image",
         type: 1,
         desc: "Lightweight general-purpose model with fast response speed",
@@ -160,12 +160,12 @@ export const getDeModels = async (token: string = "") => {
       },
       // 顶级模型
       {
-        name: "GPT-5 (OpenAI)",
-        model: "gpt-5-chat-latest",
-        imagemodel: "gpt-5-chat-latest",
-        textmodel: "gpt-5-chat-latest",
+        name: "GPT-5.1 (OpenAI)",
+        model: "gpt-5.1",
+        imagemodel: "gpt-5.1",
+        textmodel: "gpt-5.1",
         think: false,
-        tip: "GPT-5 (OpenAI)",
+        tip: "GPT-5.1 (OpenAI)",
         support: "image",
         type: 3,
         desc: "Good at fast coding and analysis",
@@ -173,12 +173,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Claude 4 Opus (Anthropic)",
-        model: "claude-opus-4-20250514",
-        imagemodel: "claude-opus-4-20250514",
-        textmodel: "claude-opus-4-20250514",
+        name: "Claude 4.5 Sonnet (Anthropic)",
+        model: "claude-sonnet-4-5-20250929",
+        imagemodel: "claude-sonnet-4-5-20250929",
+        textmodel: "claude-sonnet-4-5-20250929",
         think: false,
-        tip: "Claude 4 Opus (Anthropic)",
+        tip: "Claude 4.5 Sonnet (Anthropic)",
         support: "text",
         type: 3,
         desc: "Strongest in coding, suitable for complex tasks",
@@ -186,12 +186,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Claude 4 Opus Thinking (Anthropic)",
-        model: "claude-opus-4-20250514-think",
-        imagemodel: "claude-opus-4-20250514",
-        textmodel: "claude-opus-4-20250514",
+        name: "Claude 4.5 Sonnet Thinking (Anthropic)",
+        model: "claude-sonnet-4-5-20250929-think",
+        imagemodel: "claude-sonnet-4-5-20250929",
+        textmodel: "claude-sonnet-4-5-20250929",
         think: true,
-        tip: "Claude 4 Opus Thinking (Anthropic)",
+        tip: "Claude 4.5 Sonnet Thinking (Anthropic)",
         support: "text",
         type: 3,
         desc: "Deep reasoning enhancement",
@@ -441,7 +441,8 @@ export const generateSearchKeyword = async (
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
           enable_thinking: false,
-          reload: false
+          reload: false,
+          audio: false
         })
       });
       res = await result.json();

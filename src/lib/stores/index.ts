@@ -133,6 +133,9 @@ export const walletKey = writable({
 	password: ""
 })
 
+// 判断是否是币安浏览器
+export const binanceFlag = writable(false);
+
 
 
 

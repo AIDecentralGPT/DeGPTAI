@@ -353,6 +353,6 @@ async def get_dgc_rate(user=Depends(get_verified_user)):
         if dgc_rate is not None:
             return dgc_rate
         else:
-            return 0.00001
+            return None
     except Exception as e:
-        return 0.00001
+        return None

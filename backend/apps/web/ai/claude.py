@@ -7,7 +7,7 @@ client = Anthropic(api_key=apikey)
 
 class ClaudeApi:
     def check_model(self, model: str):
-        models = ["claude-opus-4-20250514"]
+        models = ["claude-opus-4-20250514", "claude-sonnet-4-5-20250929"]
         return model in models
     
     def completion(self, param: AiModelReq):

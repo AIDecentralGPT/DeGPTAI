@@ -157,6 +157,7 @@
   "Customize Ollama models for a specific purpose": "Tùy chỉnh các mô hình Ollama cho một mục đích cụ thể",
   "Dashboard": "Bảng điều khiển",
   "Reward upkeep": "Phục vụ thưởng",
+  "ApiKey upkeep": "Duy trì ApiKey",
   "Database": "Cơ sở dữ liệu",
   "December": "Tháng 12",
   "Default": "Mặc định",
@@ -945,5 +946,7 @@
   "Daily Active Users Data Distribution": "Phân bố dữ liệu người dùng hoạt động hàng ngày",
   "Face verification failed": "Xác minh khuôn mặt thất bại",
   "KYC authentication information is incomplete": "Thông tin xác thực KYC không hoàn chỉnh",
-  "Captcha security authentication failed": "Xác thực an toàn Captcha thất bại"
+  "Captcha security authentication failed": "Xác thực an toàn Captcha thất bại",
+  "Apply for API": "Yêu cầu API",
+  "All Key": "Tất cả các Key"
 }

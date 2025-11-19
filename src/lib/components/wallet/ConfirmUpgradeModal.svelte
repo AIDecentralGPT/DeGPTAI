@@ -5,13 +5,14 @@
   import { getModels as _getModels, checkUniapp } from "$lib/utils";
 
   import Modal from "../common/Modal.svelte";
-  import { user, currentWalletData, downLoadUrl, showDownLoad, walletKey, checkPasswordShow } from "$lib/stores";
+  import { user, currentWalletData, downLoadUrl, showDownLoad, walletKey, checkPasswordShow, binanceFlag } from "$lib/stores";
   import { openProServices } from "$lib/apis/users/index.js";
 
   import { updateWalletData } from "$lib/utils/wallet/walletUtils";
   import { thirdTransferDgc, transferDgc } from "$lib/utils/wallet/ether/dgc"
   import { tranAddress } from "$lib/constants"
   import CheckPasswordModal from "$lib/components/wallet/CheckPasswordModal.svelte"
+  import { binanceTransferDgc } from "$lib/utils/wallet/ether/binance";
 
   const i18n = getContext("i18n");
 
@@ -25,11 +26,16 @@
 
   let checkPassword = false;
   async function upgradeVip() {
-    if (!$walletKey?.checked) {
-      $checkPasswordShow = true;
-    } else {
+    if ($binanceFlag) {
       await toUpgradeVip();
+    } else {
+      if ($walletKey?.checked) {
+        await toUpgradeVip();
+      } else {
+        $checkPasswordShow = true;
+      }
     }
+    
   }
 
   function checkPasswordResult(event: any) {
@@ -43,20 +49,27 @@
       loading = true;
       try {
         let response = {ok: false, msg: ""};
-        if ($user?.address_type != "threeSide") {
-          response = await transferDgc(
-            tranAddress,
-            Math.round(money/rate),
-            $currentWalletData?.walletInfo?.privateKey
-          );
-        } else {
-          response = await thirdTransferDgc(
+        if ($binanceFlag){
+          response = await binanceTransferDgc(
             $currentWalletData?.walletInfo?.address,
             tranAddress,
             Math.round(money/rate)
-          );
+          )
+        } else {
+          if ($user?.address_type != "threeSide") {
+            response = await transferDgc(
+              tranAddress,
+              Math.round(money/rate),
+              $currentWalletData?.walletInfo?.privateKey
+            );
+          } else {
+            response = await thirdTransferDgc(
+              $currentWalletData?.walletInfo?.address,
+              tranAddress,
+              Math.round(money/rate)
+            );
+          }
         }
-        
         if (response?.ok) {
           if (response?.data?.hash) {
             await uploadVip(response?.data?.hash)
@@ -75,7 +88,7 @@
   } 
 
   async function uploadVip(tx: string) {
-    let result = await openProServices(localStorage.token, tx, Math.round(money/0.0001), viptype, viptime);
+    let result = await openProServices(localStorage.token, tx, Math.round(money/0.0001), viptype, viptime, $binanceFlag);
     if (result?.ok) {
       user.set({
         ...$user,
@@ -145,10 +158,10 @@
       <!-- 主体 -->
       <div class="flex flex-col">
         <div class="flex flex-col md:flex-row w-full p-4 px-8 md:space-x-4">
-          {#if (floorToFixed(Number($currentWalletData?.dgcBalance), 2) - (money/0.0001)) < 0}
+          {#if (floorToFixed(Number($currentWalletData?.dgcBalance), 2) - (money/rate)) < 0}
             <div class="w-full">
               <p class="text-md mb-4 w-full">
-                {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", {num: money/0.0001})}
+                {$i18n.t("The amount of DGC is insufficient, an additional {{ num }} DGC needs to be purchased. After the DGC purchase is successful, upgrade to VIP.", { num: Math.round(money/rate) })}
               </p>
               <div class="flex justify-end my-4">
                 <button
@@ -164,7 +177,11 @@
                       show = false;
                     } else {
                       show = false;
-                      window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+                      if ($binanceFlag) {
+                        window.open("https://www.binance.com/en/crypto/buy/USD/BNB", "_blank");    
+                      } else {
+                        window.open("https://www.drcpad.io/token?name=DGCToken", "_blank");
+                      }     
                     }
                   }}
                 >

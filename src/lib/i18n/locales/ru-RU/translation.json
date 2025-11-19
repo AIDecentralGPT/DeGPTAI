@@ -157,6 +157,7 @@
   "Customize Ollama models for a specific purpose": "Настроить модели Ollama для конкретной цели",
   "Dashboard": "Панель управления",
   "Reward upkeep": "Поддержание вознаграждений",
+  "ApiKey upkeep": "Обслуживание ApiKey",
   "Database": "База данных",
   "December": "Декабрь",
   "Default": "По умолчанию",
@@ -955,5 +956,7 @@
   "Daily Active Users Data Distribution": "Распределение данных ежедневных активных пользователей",
   "Face verification failed": "Проверка лица не удалась",
   "KYC authentication information is incomplete": "Информация для аутентификации KYC неполна",
-  "Captcha security authentication failed": "Аутентификация безопасности Captcha не удалась"
+  "Captcha security authentication failed": "Аутентификация безопасности Captcha не удалась",
+  "Apply for API": "Подать заявку на API",
+  "All Key": "Все Key"
 }

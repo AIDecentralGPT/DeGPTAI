@@ -157,6 +157,7 @@
   "Customize Ollama models for a specific purpose": "특정 목적을 위해 Ollama 모델 커스터마이징",
   "Dashboard": "대시보드",
   "Reward upkeep": "보상 유지",
+  "ApiKey upkeep": "ApiKey 유지 관리",
   "Database": "데이터베이스",
   "December": "12월",
   "Default": "기본",
@@ -956,5 +957,7 @@
   "Daily Active Users Data Distribution": "일일 활성 사용자 데이터 분포",
   "Face verification failed": "얼굴 인증에 실패했습니다",
   "KYC authentication information is incomplete": "KYC 인증 정보가 불완전합니다",
-  "Captcha security authentication failed": "캡챠 보안 인증에 실패했습니다"
+  "Captcha security authentication failed": "캡챠 보안 인증에 실패했습니다",
+  "Apply for API": "API 신청하다",
+  "All Key": "모든 Key"
 }

@@ -1,5 +1,4 @@
-<script>
-  import { WEBUI_BASE_URL } from "$lib/constants";
+<script lang="ts">
   import { WEBUI_NAME, user } from "$lib/stores";
   import { goto } from "$app/navigation";
   import { onMount, getContext } from "svelte";
@@ -11,10 +10,7 @@
   import { toast } from "svelte-sonner";
 
   import {
-    getById,
     getList,
-    deleteById,
-    updateById,
     switchStatus
   } from "$lib/apis/rewarddate";
 
@@ -24,23 +20,18 @@
   const i18n = getContext("i18n");
 
   let loaded = false;
-  let rewarddates = [];
+  let rewarddates: any = [];
 
   let total = 0;
 
   let search = "";
   let status = "";
-  let selectedData = null;
 
   let loading = false;
 
   let page = 1;
 
-  let showSettingsModal = false;
   let showAddRewardDateModal = false;
-
-  let showUserChatsModal = false;
-  let showEditUserModal = false;
 
   $: if (page || search || status) {
     handleRequest();
@@ -68,16 +59,6 @@
     if (res) {
       handleRequest();
       toast.success($i18n.t("Successfully updated."));
-    }
-  };
-
-  const deleteHandler = async (id) => {
-    const res = await deleteById(localStorage.token, id).catch((error) => {
-      toast.error(error);
-      return null;
-    });
-    if (res) {
-      handleRequest();
     }
   };
 

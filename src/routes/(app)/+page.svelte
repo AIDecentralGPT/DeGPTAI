@@ -845,6 +845,7 @@
             scrollToBottom();
           }
         }
+        console.log("=====================================")
       } else {
         await handleOpenAIError(null, res, model, responseMessage);
       }

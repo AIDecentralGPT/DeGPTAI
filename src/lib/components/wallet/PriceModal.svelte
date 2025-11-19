@@ -278,7 +278,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.2</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -294,7 +294,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-5 mini (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-5.1 mini (OpenAI)</span>
                   </div>
                 </div>
               </div>
@@ -494,7 +494,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.2</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -510,7 +510,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-5 mini (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-5.1 mini (OpenAI)</span>
                   </div>
                 </div>
               </div>
@@ -571,15 +571,15 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-5 (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-5.1 (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4Opus (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4 Opus Thinking (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet Thinking (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
@@ -786,7 +786,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.2</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -802,7 +802,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-5 mini (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-5.1 mini (OpenAI)</span>
                   </div>
               </div>
             </li>
@@ -862,15 +862,15 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-5 (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-5.1 (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4Opus (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4 Opus Thinking (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet Thinking (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
@@ -1077,7 +1077,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek V3.1</span>
+                    <span class="text-base font-bold ml-2">DeepSeek V3.2</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -1093,7 +1093,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[24px]" src="/static/icon/gpt3.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-5 mini (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-5.1 mini (OpenAI)</span>
                   </div>
               </div>
             </li>
@@ -1153,11 +1153,15 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT-5 (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-5.1 (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4 Opus Thinking (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet (Anthropic)</span>
+                  </div>
+                  <div class="flex flex-row items-center mt-2">
+                    <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet Thinking (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
