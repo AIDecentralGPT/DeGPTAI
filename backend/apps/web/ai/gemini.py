@@ -11,7 +11,7 @@ client = OpenAI(
 
 class GeminiApi:
    def check_model(self, model: str):
-        models = ["gemini-2.5-flash-preview-05-20", "gemini-2.5-pro"]
+        models = ["gemini-2.5-flash-preview-05-20", "gemini-2.5-pro", "gemini-3-pro-preview"]
         return model in models
    
    def completion(self, param: AiModelReq):
