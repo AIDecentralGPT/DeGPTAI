@@ -81,7 +81,7 @@ export const getDeModels = async (token: string = "") => {
       },
       {
         name: "GPT-5.1 mini (OpenAI)",
-        model: "gpt-5.1-chat-mini",
+        model: "gpt-5.1-codex-mini",
         imagemodel: "gpt-5.1-codex-mini",
         textmodel: "gpt-5.1-codex-mini",
         think: false,
