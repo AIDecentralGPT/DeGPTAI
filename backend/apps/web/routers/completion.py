@@ -290,6 +290,8 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                 completion = AliQwenApiInstance.completion(param)
             elif GeminiApiInstance.check_model(param.model):
                 completion = GeminiApiInstance.completion(param)
+            elif DeepseekApiInstance.check_model(param.model):
+                completion = DeepseekApiInstance.completion(param)
             return completion
         
 
