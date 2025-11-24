@@ -238,18 +238,19 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                     if json_dict["choices"] is not None:
                                         choice = json_dict["choices"][0]
                                         if param.enable_thinking and choice.get("delta").get("reasoning_content") is not None:
-                                                chat_result = {
-                                                    "id": json_dict["id"],
-                                                    "object": json_dict["object"],
-                                                    "created": json_dict["created"],
-                                                    "model": json_dict["model"],
-                                                    "choices": [{
-                                                        "index": choice.get("index"),
-                                                        "delta": {"reasoning_content": choice.get("delta").get("reasoning_content")},
-                                                        "logprobs": choice.get("logprobs"),
-                                                        "finish_reason": choice.get("finish_reason")
-                                                    }]
-                                                }
+                                            chat_result = {
+                                                "id": json_dict["id"],
+                                                "object": json_dict["object"],
+                                                "created": json_dict["created"],
+                                                "model": json_dict["model"],
+                                                "choices": [{
+                                                    "index": choice.get("index"),
+                                                    "delta": {"reasoning_content": choice.get("delta").get("reasoning_content")},
+                                                    "logprobs": choice.get("logprobs"),
+                                                    "finish_reason": choice.get("finish_reason")
+                                                }]
+                                            }
+                                            yield f"data: {json.dumps(chat_result)}\n\n"
                                         else:
                                             text = choice.get("delta").get("content")
                                             for i in range(0, len(text), 5):
