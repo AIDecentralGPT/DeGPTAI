@@ -79,7 +79,7 @@ playwright==1.43.0
 pymupdf==1.25.5
 nltk==3.9.1
 python-docx==1.1.2
-openai==1.78.1
+openai==2.8.1
 anthropic==0.54.0
 twscrape==0.17.0
 snscrape==0.7.0.20230622
