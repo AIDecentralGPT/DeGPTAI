@@ -9,18 +9,26 @@ client = OpenAI(
     base_url=apiurl,
 )
 
+
 class GrokApi:
-   def check_model(self, model: str):
-        models = ["grok-3", "grok-3-mini", "grok-4-0709", "grok-4.1"]
+    def check_model(self, model: str):
+        models = [
+            "grok-3",
+            "grok-3-mini",
+            "grok-4-0709",
+            "grok-4-1-fast-non-reasoning",
+            "grok-4-1-fast-reasoning"
+        ]
         return model in models
-   
-   def completion(self, param: AiModelReq):
+
+    def completion(self, param: AiModelReq):
         try:
             completion = client.chat.completions.create(
-                model=param.model,
-                messages=param.messages,
+                model=param.model, 
+                messages=param.messages, 
                 stream=param.stream
             )
+
         except APIError as e:
             print("==========GrokApi Error===========", e)
             completion = None
@@ -28,5 +36,6 @@ class GrokApi:
             print("==========GrokApi Error===========", e)
             completion = None
         return completion
-   
+
+
 GrokApiInstance = GrokApi()

@@ -103,7 +103,6 @@ function divideAndRound(num1, num2) {
   let isLoaded = false;
   function getUserUserTotal() {
     conversationUseTotal().then(res => {
-      console.log("=====================", res);
       userTotal = res;
       isLoaded = true;
     })
@@ -545,7 +544,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Grok 3 (Elon Musk)</span>
+                    <span class="text-base font-bold ml-2">Grok 4.1 (Elon Musk)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -583,11 +582,11 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Grok 3 Thinking (Elon Musk)</span>
+                    <span class="text-base font-bold ml-2">Grok 4.1 Thinking (Elon Musk)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gemini.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Gemini 2.5 Pro (Google)</span>
+                    <span class="text-base font-bold ml-2">Gemini 3.1 Pro (Google)</span>
                   </div>
               </div>
             </li>
@@ -836,7 +835,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Grok 3 (Elon Musk)</span>
+                    <span class="text-base font-bold ml-2">Grok 4.1 (Elon Musk)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -874,11 +873,11 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Grok 3 Thinking (Elon Musk)</span>
+                    <span class="text-base font-bold ml-2">Grok 4.1 Thinking (Elon Musk)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gemini.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Gemini 2.5 Pro (Google)</span>
+                    <span class="text-base font-bold ml-2">Gemini 3.1 Pro (Google)</span>
                   </div>
               </div>
             </li>
@@ -1127,7 +1126,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Grok 3 (Elon Musk)</span>
+                    <span class="text-base font-bold ml-2">Grok 4.1 (Elon Musk)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/doubao.png" alt="icon"/>
@@ -1165,11 +1164,11 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Grok 3 Thinking (Elon Musk)</span>
+                    <span class="text-base font-bold ml-2">Grok 4.1 Thinking (Elon Musk)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gemini.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Gemini 2.5 Pro (Google)</span>
+                    <span class="text-base font-bold ml-2">Gemini 3.1 Pro (Google)</span>
                   </div>
               </div>
             </li>
