@@ -9,7 +9,6 @@ name: Deploy to Server # 定义工作流程的名称
 on: # 定义触发工作流程的事件
   push: # 当代码被推送时
     branches: # 指定触发工作流程的分支
-      - main # 只有main分支的推送才会触发此工作流程
       - fingerprintAuth  # 指纹登录，无需用户登录 
       - wallet-connection  # 钱包管理 
       - wallet-ether  # 更新为ethers处理的钱包
