@@ -162,6 +162,7 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                             }]
                         }
                         yield f"data: {json.dumps(chat_result)}\n\n" 
+                
                 elif OpenAiApiInstance.check_model(param.model):
                     completion = OpenAiApiInstance.completion(param)
                     if completion is not None:
@@ -213,6 +214,7 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                             }]
                         }
                         yield f"data: {json.dumps(chat_result)}\n\n" 
+                
                 else:
                     completion = None
                     if AliQwenApiInstance.check_model(param.model):
@@ -225,14 +227,13 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                         completion = DoubaoApiInstance.completion(param)
                     elif GrokApiInstance.check_model(param.model):
                         completion = GrokApiInstance.completion(param)
-                    
+
                     if completion is not None:
                         for chunk in completion:
                             try:
                                 # 符合 SSE 格式要求
                                 if chunk:
                                     json_dict = json.loads(chunk.model_dump_json())
-                                        
                                     # 重组返回数据格式
                                     if json_dict["choices"] is not None:
                                         choice = json_dict["choices"][0]
@@ -249,20 +250,23 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                                     "finish_reason": choice.get("finish_reason")
                                                 }]
                                             }
+                                            yield f"data: {json.dumps(chat_result)}\n\n"
                                         else:
-                                            chat_result = {
-                                                "id": json_dict["id"],
-                                                "object": json_dict["object"],
-                                                "created": json_dict["created"],
-                                                "model": json_dict["model"],
-                                                "choices": [{
-                                                    "index": choice.get("index"),
-                                                    "delta": {"content": choice.get("delta").get("content")},
-                                                    "logprobs": choice.get("logprobs"),
-                                                    "finish_reason": choice.get("finish_reason")
-                                                }]
-                                            }
-                                        yield f"data: {json.dumps(chat_result)}\n\n"
+                                            text = choice.get("delta").get("content")
+                                            for i in range(0, len(text), 5):
+                                                chat_result = {
+                                                    "id": json_dict["id"],
+                                                    "object": json_dict["object"],
+                                                    "created": json_dict["created"],
+                                                    "model": json_dict["model"],
+                                                    "choices": [{
+                                                        "index": choice.get("index"),
+                                                        "delta": {"content": text[i:i+5]},
+                                                        "logprobs": choice.get("logprobs"),
+                                                        "finish_reason": choice.get("finish_reason")
+                                                    }]
+                                                }
+                                                yield f"data: {json.dumps(chat_result)}\n\n"
                             except Exception as e:
                                 print("=====解析失败====", chunk, e)
                     else:

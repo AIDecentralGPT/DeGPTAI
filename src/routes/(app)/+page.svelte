@@ -61,7 +61,6 @@
 
   import { thirdSearch, getWebContent } from "$lib/apis/thirdsearch";
   import { analysisImageInfo } from "$lib/apis/rag";
-    import { FilterTypeNotSupportedError } from "viem";
 
   let inviter: any = "";
   let channelName: any = "";
@@ -845,7 +844,6 @@
             scrollToBottom();
           }
         }
-        console.log("=====================================")
       } else {
         await handleOpenAIError(null, res, model, responseMessage);
       }
