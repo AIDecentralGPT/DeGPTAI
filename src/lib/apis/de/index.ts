@@ -312,7 +312,7 @@ const getDeOpenAIChatCompletion = async (
     overallTimeout = setTimeout(() => {
       controller.abort();
       throw new Error('timeout');
-    }, 10000);
+    }, 20000);
   }
   res = await fetch(`${urlObj.url}/chat/completion/proxy`, {
     signal: controller.signal,
