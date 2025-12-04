@@ -78,10 +78,11 @@ class OpenAiApi:
                         file["type"] = "input_image"
                         file["image_url"] = file["image_url"]["url"]
                     if file["type"] == "file":
-                        file["type"] = "input_file"
+                        file["type"] = "file_url"
                         file_url = file["file"]["file_data"]
                         file["file_url"] = file_url
                         del file["file"]
+        print("========================", param.messages)
         try:
             if param.enable_thinking:
                 completion = client.responses.create(

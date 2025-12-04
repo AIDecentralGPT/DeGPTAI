@@ -9,6 +9,7 @@ access_key_id = os.getenv("FILE_ACCESS_KEY_ID")
 access_key_secret = os.getenv("FILE_ACCESS_KEY_SECRET")
 endpoint = os.getenv("FILE_HK_ENDPOINT")
 bucket_name = os.getenv("FILE_BUCKET_HK_NAME")
+file_bucket_name = os.getenv("FILE_BUCKET_HK_FILE")
 oss_url = os.getenv("FILE_OSS_HK_URL")
 
 
@@ -37,6 +38,25 @@ class AliOssUtils:
             result = self.bucket.put_object(
                 file_name, audio_data, headers={"Content-Type": "audio/wav"}
             )
+
+            if result.status == 200:
+                return f"{oss_url}{file_name}"
+            else:
+                return None
+        except Exception as e:
+            print("==========Oss Upload Error==========:", e)
+            return None
+
+    def upload_file_to_oss(self, local_file, file_ext):
+        try:
+            # 获取当前日期
+            now = datetime.datetime.now()
+            # 格式化为 年/月/日 形式
+            formatted_date = now.strftime("%Y/%m/%d")
+            file_name = f"{formatted_date}/file_{uuid.uuid4()}.{file_ext}"
+
+            # 上传到 OSS
+            result = self.bucket.put_object_from_file(file_name, local_file)
 
             if result.status == 200:
                 return f"{oss_url}{file_name}"

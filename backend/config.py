@@ -25,7 +25,7 @@ from constants import ERROR_MESSAGES
 try:
     from dotenv import load_dotenv, find_dotenv
 
-    load_dotenv(find_dotenv("../.env"))
+    load_dotenv(find_dotenv(".env"))
 except ImportError:
     print("dotenv not installed, skipping...")
 

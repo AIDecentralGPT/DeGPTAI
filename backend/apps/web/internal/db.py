@@ -18,9 +18,6 @@ if os.path.exists(f"{DATA_DIR}/ollama.db"):
 else:
     pass
 
-# from dotenv import load_dotenv
-# load_dotenv()
-
 DATABASE_URL = os.getenv("DATABASE_URL")
 DB = connect(DATABASE_URL)
 log.info(f"Connected to a {DB.__class__.__name__} database.")

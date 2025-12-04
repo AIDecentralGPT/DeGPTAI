@@ -536,7 +536,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek R1</span>
+                    <span class="text-base font-bold ml-2">DeepSeek R3.2</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gemini.png" alt="icon"/>
@@ -827,7 +827,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek R1</span>
+                    <span class="text-base font-bold ml-2">DeepSeek R3.2</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gemini.png" alt="icon"/>
@@ -1118,7 +1118,7 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">DeepSeek R1</span>
+                    <span class="text-base font-bold ml-2">DeepSeek R3.2</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gemini.png" alt="icon"/>
