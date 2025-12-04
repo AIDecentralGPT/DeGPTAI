@@ -107,12 +107,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "DeepSeek R1",
+        name: "DeepSeek R3.2",
         model: "deepseek-reasoner",
         imagemodel: "deepseek-reasoner",
         textmodel: "deepseek-reasoner",
         think: true,
-        tip: "DeepSeek R1",
+        tip: "DeepSeek R3.2",
         support: "text",
         type: 2,
         desc: "Strong writing and coding skills",
