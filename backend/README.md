@@ -4,7 +4,7 @@
 
 1. **后端框架**：FastAPI
 2. **ORM**：Peewee
-3. **数据库**：从代码中未明确指定，但 Peewee 支持的数据库包括 SQLite、PostgreSQL、MySQL 等。
+3. **数据库**：PostgreSQL。
 4. **数据验证**：Pydantic
 5. **异步 HTTP 请求**：aiohttp
 6. **日志管理**：logging
@@ -23,9 +23,9 @@ project_root/
 │   ├── web/
 │   │   ├── internal/
 │   │   │   └── db.py         # 数据库的初始化和连接
-│   │   ├── models/
-│   │   │   ├── users.py      # User 模型定义
-│   │   │   └── chats.py      # Chats 模型定义（推测）
+│   │   ├── models/           
+│   │   │   ├── users.py      # User 用户定义
+│   │   │   └── chats.py      # Chats 会话记录定义
 │   │   └── internal/
 │   │       └── db.py         # 数据库连接配置
 │   └── other_apps/           # 其他应用（如有）
