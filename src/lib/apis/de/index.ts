@@ -28,12 +28,12 @@ export const getDeModels = async (token: string = "") => {
     models: [
       // 基础模型
       {
-        name: "DeepSeek V3.1",
+        name: "DeepSeek V3.2",
         model: "deepseek-chat",
         imagemodel: "deepseek-chat",
         textmodel: "deepseek-chat",
         think: false,
-        tip: "DeepSeek V3.1",
+        tip: "DeepSeek V3.2",
         support: "text",
         type: 1,
         desc: "Suitable for reasoning and writing",
@@ -94,12 +94,12 @@ export const getDeModels = async (token: string = "") => {
       },
       // 高级模型
       {
-        name: "GPT 4o audio (OpenAI)",
+        name: "GPT-4o audio (OpenAI)",
         model: "gpt-4o-audio-preview",
         audiomodel: "gpt-4o-audio-preview",
-        textmodel: "gpt-4o-audio-preview",
+        textmodel: "gpt-4o",
         think: false,
-        tip: "GPT 4o audio (OpenAI)",
+        tip: "GPT-4o audio (OpenAI)",
         support: "audio",
         type: 2,
         desc: "Focused on audio interaction",
@@ -173,12 +173,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Claude 4 Opus (Anthropic)",
-        model: "claude-opus-4-20250514",
-        imagemodel: "claude-opus-4-20250514",
-        textmodel: "claude-opus-4-20250514",
+        name: "Claude 4.5 Sonnet (Anthropic)",
+        model: "claude-sonnet-4-5-20250929",
+        imagemodel: "claude-sonnet-4-5-20250929",
+        textmodel: "claude-sonnet-4-5-20250929",
         think: false,
-        tip: "Claude 4 Opus (Anthropic)",
+        tip: "Claude 4.5 Sonnet (Anthropic)",
         support: "text",
         type: 3,
         desc: "Strongest in coding, suitable for complex tasks",
@@ -186,12 +186,12 @@ export const getDeModels = async (token: string = "") => {
         modelinfo: ""
       },
       {
-        name: "Claude 4 Opus Thinking (Anthropic)",
-        model: "claude-opus-4-20250514-think",
-        imagemodel: "claude-opus-4-20250514",
-        textmodel: "claude-opus-4-20250514",
+        name: "Claude 4.5 Sonnet Thinking (Anthropic)",
+        model: "claude-sonnet-4-5-20250929-think",
+        imagemodel: "claude-sonnet-4-5-20250929",
+        textmodel: "claude-sonnet-4-5-20250929",
         think: true,
-        tip: "Claude 4 Opus Thinking (Anthropic)",
+        tip: "Claude 4.5 Sonnet Thinking (Anthropic)",
         support: "text",
         type: 3,
         desc: "Deep reasoning enhancement",

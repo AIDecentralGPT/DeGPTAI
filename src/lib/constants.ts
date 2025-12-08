@@ -1,7 +1,7 @@
 export const APP_NAME = "DeGPT";
 // export const WEBUI_BASE_URL = "http://localhost:8080";
-export const WEBUI_BASE_URL = "https://test.degpt.ai";
-// export const WEBUI_BASE_URL = "https://www.degpt.ai";
+// export const WEBUI_BASE_URL = "https://test.degpt.ai";
+export const WEBUI_BASE_URL = "https://www.degpt.ai";
 
 export const WEBUI_API_BASE_URL = `${WEBUI_BASE_URL}/api/v1`;
 

@@ -751,6 +751,10 @@
 									type: "audio",
 									audio: { data: message?.toolInfo?.audio?.data, format: "wav" },
 								},
+                {
+                  "type": "text",
+                  "text": $i18n.t("Reply in English")
+                }
 							],
 					  }
 					: {

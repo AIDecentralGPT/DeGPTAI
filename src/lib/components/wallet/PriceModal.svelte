@@ -533,7 +533,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -575,11 +575,11 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4Opus (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4 Opus Thinking (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet Thinking (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
@@ -824,7 +824,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -866,11 +866,11 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4Opus (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4 Opus Thinking (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet Thinking (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
@@ -1115,7 +1115,7 @@ function divideAndRound(num1, num2) {
                 <div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/gpt_round.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">GPT 4o audio (OpenAI)</span>
+                    <span class="text-base font-bold ml-2">GPT-4o audio (OpenAI)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/deepseek.png" alt="icon"/>
@@ -1157,7 +1157,11 @@ function divideAndRound(num1, num2) {
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
-                    <span class="text-base font-bold ml-2">Claude 4 Opus Thinking (Anthropic)</span>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet (Anthropic)</span>
+                  </div>
+                  <div class="flex flex-row items-center mt-2">
+                    <img class="w-[22px]" src="/static/icon/claude.png" alt="icon"/>
+                    <span class="text-base font-bold ml-2">Claude 4.5 Sonnet Thinking (Anthropic)</span>
                   </div>
                   <div class="flex flex-row items-center mt-2">
                     <img class="w-[22px]" src="/static/icon/grok.png" alt="icon"/>
