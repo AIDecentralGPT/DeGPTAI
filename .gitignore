@@ -5,5 +5,10 @@ build
 backend/pandoc-3.6.4-windows-x86_64.msi
 .github
 backend
-android
+
+android/app/src/main/assets/public
+android/.gradle/
+android/build/
+android/capacitor-cordova-android-plugins
+
 ios
