@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev-old": "concurrently \" vite dev --host\" \"cd backend && ./start.sh\"",
-		"dev": "concurrently \" vite dev --host\" \"cd backend && make run\"",
+		"dev": "concurrently \" vite dev --open --host\" \"cd backend && make run\"",
 		"front": "vite dev --host ",
 		"backend": "cd backend && ./start.sh",
 		"build": "npm run pyodide:fetch && vite build",

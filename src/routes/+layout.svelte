@@ -1,38 +1,28 @@
 <script>
-  import "../polyfills"; // 必须在其他代码之前引入
-  import { onMount, setContext } from "svelte";
-  import {
-    config,
-    theme,
-    WEBUI_NAME,
-    mobile,
-    deApiBaseUrl,
-    inviterId,
-    channel,
-    binanceFlag
-  } from "$lib/stores";
-  import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
-  import { Toaster } from "svelte-sonner";
+  import '../polyfills'; // 必须在其他代码之前引入
+  import { onMount, setContext } from 'svelte';
+  import { config, theme, WEBUI_NAME, mobile, deApiBaseUrl, inviterId, channel, binanceFlag } from '$lib/stores';
+  import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
+  import { Toaster } from 'svelte-sonner';
 
-  import { getBackendConfig, defaultBackendConfig } from "$lib/apis";
+  import { getBackendConfig, defaultBackendConfig } from '$lib/apis';
 
-  import "../tailwind.css";
-  import "../app.css";
+  import '../tailwind.css';
+  import '../app.css';
 
   // 打开调试模式
   // import VConsole from 'vconsole';
   // const vConsole = new VConsole();
 
+  import 'tippy.js/dist/tippy.css';
 
-  import "tippy.js/dist/tippy.css";
-
-  import { WEBUI_BASE_URL } from "$lib/constants";
-  import i18n, { initI18n } from "$lib/i18n";
-  import { getRegionInfo, getRegionDict } from "$lib/apis/utils/index";
+  import { WEBUI_BASE_URL } from '$lib/constants';
+  import i18n, { initI18n } from '$lib/i18n';
+  import { getRegionInfo, getRegionDict } from '$lib/apis/utils/index';
   import { addErrorLog } from '$lib/apis/errorlog';
 
-  setContext("i18n", i18n);
+  setContext('i18n', i18n);
   let loaded = false;
   const BREAKPOINT = 768;
 
@@ -40,7 +30,8 @@
   async function registServiceWorker() {
     if ('serviceWorker' in navigator) {
       // 注册 Service Worker，指定 type 为 'module' 以支持 ES6 模块语法
-      navigator.serviceWorker.register('../static/sw.js', { type: 'module' })
+      navigator.serviceWorker
+        .register('../static/sw.js', { type: 'module' })
         .then((registration) => {
           console.log('Service Worker registered success with scope:', registration.scope);
         })
@@ -49,13 +40,13 @@
         });
     }
   }
-  
+
   async function initData() {
     let backendConfig = null;
     try {
       backendConfig = await defaultBackendConfig();
     } catch (error) {
-      console.error("Error loading backend config:", error);
+      console.error('Error loading backend config:', error);
     }
     // Initialize i18n even if we didn't get a backend config,
     // so `/error` can show something that's not `undefined`.
@@ -83,13 +74,13 @@
       }
     };
 
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
 
-    document.getElementById("splash-screen")?.remove();
+    document.getElementById('splash-screen')?.remove();
 
     // 创建并插入Google Analytics的script标签
-    const script = document.createElement("script");
-    script.src = "https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2";
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ELT9ER83T2';
     script.async = true;
     document.head.appendChild(script);
 
@@ -99,12 +90,12 @@
       function gtag() {
         dataLayer.push(arguments);
       }
-      gtag("js", new Date());
-      gtag("config", "G-ELT9ER83T2");
+      gtag('js', new Date());
+      gtag('config', 'G-ELT9ER83T2');
     };
 
     return () => {
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }
 
@@ -113,12 +104,12 @@
     const queryParams = new URLSearchParams($page.url.search);
 
     // 获取邀请信息
-    let inviterVal = queryParams.get("inviter");
+    let inviterVal = queryParams.get('inviter');
     if (inviterVal) {
       await inviterId.set(inviterVal);
     }
     // 获取渠道
-    let channelName = queryParams.get("channel");
+    let channelName = queryParams.get('channel');
     if (channelName) {
       await channel.set(channelName);
     }
@@ -131,16 +122,16 @@
         regionDict.Singapore.forEach((item) => {
           if (item === data?.country) {
             deApiBaseUrl.set({
-              name: "Singapore",
-              url: "https://singapore-chat.degpt.ai/api",
+              name: 'Singapore',
+              url: 'https://singapore-chat.degpt.ai/api',
             });
           }
         });
         regionDict.Korea.forEach((item) => {
           if (item === data?.country) {
             deApiBaseUrl.set({
-              name: "Korea",
-              url: "https://korea-chat.degpt.ai/api",
+              name: 'Korea',
+              url: 'https://korea-chat.degpt.ai/api',
             });
           }
         });
@@ -155,7 +146,7 @@
     } else {
       await binanceFlag.set(false);
     }
-  }
+  };
   function isBinanceAppDappBrowser() {
     return /BNC/i.test(navigator.userAgent) && !!window.binancew3w;
   }
@@ -168,27 +159,20 @@
       await initData();
       await initUrlParam();
       loaded = true;
-      if (currentAddress.indexOf("userVerifying") < 0) {
+      if (currentAddress.indexOf('userVerifying') < 0) {
         intiLocationInfo();
-      } 
+      }
     } catch (error) {
-      addErrorLog("首页初始化", error.toString());
+      addErrorLog('首页初始化', error.toString());
     }
   });
 </script>
 
 <svelte:head>
   <title>{$WEBUI_NAME}</title>
-  <link
-    crossorigin="anonymous"
-    rel="icon"
-    href="{WEBUI_BASE_URL}/static/favicon.png"
-  />
+  <link crossorigin="anonymous" rel="icon" href="/favicon.png" />
 
-  <script
-    type="text/javascript"
-    src="https://hkwebcdn.yuncloudauth.com/cdn/jsvm_all.js"
-  ></script>
+  <script type="text/javascript" src="https://hkwebcdn.yuncloudauth.com/cdn/jsvm_all.js"></script>
 
   <!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
   <!-- feel free to make a PR to fix if anyone wants to see it return -->

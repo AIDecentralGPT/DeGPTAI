@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { toast } from "svelte-sonner";
-  import { onMount, tick, getContext } from "svelte";
+  import { toast } from 'svelte-sonner';
+  import { onMount, tick, getContext } from 'svelte';
   import {
     mobile,
     modelfiles,
@@ -9,42 +9,34 @@
     showOpenWalletModal,
     showSidebar,
     toolflag,
-    tooltype
-  } from "$lib/stores";
-  import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
+    tooltype,
+  } from '$lib/stores';
+  import { blobToFile, findWordIndices, checkPlatform } from '$lib/utils';
 
-  import {
-    uploadDocToVectorDB,
-    uploadWebToVectorDB,
-    uploadYoutubeTranscriptionToVectorDB,
-  } from "$lib/apis/rag";
-  import {
-    SUPPORTED_FILE_TYPE,
-    SUPPORTED_FILE_EXTENSIONS,
-    WEBUI_BASE_URL,
-  } from "$lib/constants";
+  import { uploadDocToVectorDB, uploadWebToVectorDB, uploadYoutubeTranscriptionToVectorDB } from '$lib/apis/rag';
+  import { SUPPORTED_FILE_TYPE, SUPPORTED_FILE_EXTENSIONS, WEBUI_BASE_URL } from '$lib/constants';
 
-  import { transcribeAudio } from "$lib/apis/audio";
+  import { transcribeAudio } from '$lib/apis/audio';
 
-  import Prompts from "./MessageInput/PromptCommands.svelte";
-  import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
-  import Documents from "./MessageInput/Documents.svelte";
-  import Models from "./MessageInput/Models.svelte";
-  import UrlModels from "./MessageInput/UrlModels.svelte";
-  import Tools from "./MessageInput/Tools.svelte";
-  import ToolsSelect from "./MessageInput/ToolsSelect.svelte";
-  import Tooltip from "../common/Tooltip.svelte";
-  import XMark from "$lib/components/icons/XMark.svelte";
-  import { user as userStore } from "$lib/stores";
+  import Prompts from './MessageInput/PromptCommands.svelte';
+  import AddFilesPlaceholder from '../AddFilesPlaceholder.svelte';
+  import Documents from './MessageInput/Documents.svelte';
+  import Models from './MessageInput/Models.svelte';
+  import UrlModels from './MessageInput/UrlModels.svelte';
+  import Tools from './MessageInput/Tools.svelte';
+  import ToolsSelect from './MessageInput/ToolsSelect.svelte';
+  import Tooltip from '../common/Tooltip.svelte';
+  import XMark from '$lib/components/icons/XMark.svelte';
+  import { user as userStore } from '$lib/stores';
   import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
 
-  const i18n = getContext("i18n");
+  const i18n = getContext('i18n');
 
   export let submitPrompt: Function;
   export let stopResponse: Function;
 
   export let autoScroll = true;
-  export let selectedModel = "";
+  export let selectedModel = '';
   // export let deepsearch = false;
 
   let chatTextAreaElement: HTMLTextAreaElement;
@@ -62,42 +54,39 @@
 
   // 文件选择
   export let files: any[] = [];
-  export let toolInfo: any = {url: "", trantip: ""};
+  export let toolInfo: any = { url: '', trantip: '' };
 
   export let fileUploadEnabled = true;
   export let speechRecognitionEnabled = false;
 
-  export let prompt = "";
-  export let chatInputPlaceholder = "";
+  export let prompt = '';
+  export let chatInputPlaceholder = '';
   export let messages: any[] = [];
 
   // 要翻译的语言
-  let tranlang = "";
+  let tranlang = '';
 
   let speechRecognition: any;
-  
 
   let selectUrlUserPrompt = [
-		"Analyze the content of the web page",
-    "Summarize the web page",
-    "Extract the key data from the web page",
-		"Tell me what the web page is about",
-		"Write an original article referring to the web page"
-	];
+    'Analyze the content of the web page',
+    'Summarize the web page',
+    'Extract the key data from the web page',
+    'Tell me what the web page is about',
+    'Write an original article referring to the web page',
+  ];
 
   $: if (prompt) {
     if (chatTextAreaElement) {
-      chatTextAreaElement.style.height = "";
-      chatTextAreaElement.style.height =
-        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+      chatTextAreaElement.style.height = '';
+      chatTextAreaElement.style.height = Math.min(chatTextAreaElement.scrollHeight, 200) + 'px';
     }
   }
 
-  $: if(chatInputPlaceholder) {
+  $: if (chatInputPlaceholder) {
     if (chatTextAreaElement) {
-      chatTextAreaElement.style.height = "";
-      chatTextAreaElement.style.height =
-        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+      chatTextAreaElement.style.height = '';
+      chatTextAreaElement.style.height = Math.min(chatTextAreaElement.scrollHeight, 200) + 'px';
     }
   }
 
@@ -111,7 +100,7 @@
   const MIN_DECIBELS = -45;
 
   const scrollToBottom = () => {
-    const element = document.getElementById("messages-container");
+    const element = document.getElementById('messages-container');
     element.scrollTop = element.scrollHeight;
   };
 
@@ -120,31 +109,29 @@
     mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.onstart = () => {
       isRecording = true;
-      console.log("Recording started");
+      console.log('Recording started');
     };
     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
     mediaRecorder.onstop = async () => {
       isRecording = false;
-      console.log("Recording stopped");
+      console.log('Recording stopped');
 
       // Create a blob from the audio chunks
-      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
 
-      const file = blobToFile(audioBlob, "recording.wav");
+      const file = blobToFile(audioBlob, 'recording.wav');
 
-      const res = await transcribeAudio(localStorage.token, file).catch(
-        (error) => {
-          toast.error(error);
-          return null;
-        }
-      );
+      const res = await transcribeAudio(localStorage.token, file).catch((error) => {
+        toast.error(error);
+        return null;
+      });
 
       if (res) {
         prompt = res.text;
         await tick();
         chatTextAreaElement?.focus();
 
-        if (prompt !== "" && $settings?.speechAutoSend === true) {
+        if (prompt !== '' && $settings?.speechAutoSend === true) {
           submitPrompt(prompt, toolInfo, user);
         }
       }
@@ -193,11 +180,11 @@
 
   const saveRecording = (blob) => {
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     document.body.appendChild(a);
-    a.style = "display: none";
+    a.style = 'display: none';
     a.href = url;
-    a.download = "recording.wav";
+    a.download = 'recording.wav';
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -205,7 +192,7 @@
   const speechRecognitionHandler = () => {
     let audioRecoder = navigator.mediaDevices.getUserMedia({ audio: true });
     // Check if SpeechRecognition is supported
-    // if (isRecording) {  
+    // if (isRecording) {
     //   if (speechRecognition) {
     //     speechRecognition.stop();
     //   }
@@ -278,7 +265,7 @@
     //           if (mediaRecorder) {
     //             mediaRecorder.stop();
     //           }
-    //         }           
+    //         }
     //       };
 
     //       // Event triggered when an error occurs
@@ -304,41 +291,39 @@
     console.log(file);
 
     const doc = {
-      type: "doc",
+      type: 'doc',
       name: file.name,
-      collection_name: "",
-      anaylis_type: "file",
+      collection_name: '',
+      anaylis_type: 'file',
       upload_status: false,
-      text: "",
+      text: '',
       image: [],
-      error: "",
-      url: ""
+      error: '',
+      url: '',
     };
 
     try {
       // files = [...files, doc];
       files = [doc];
-      if (["audio/mpeg", "audio/wav"].includes(file["type"])) {
-        const res = await transcribeAudio(localStorage.token, file).catch(
-          (error) => {
-            toast.error(error);
-            return null;
-          }
-        );
+      if (['audio/mpeg', 'audio/wav'].includes(file['type'])) {
+        const res = await transcribeAudio(localStorage.token, file).catch((error) => {
+          toast.error(error);
+          return null;
+        });
 
         if (res) {
           console.log(res);
-          const blob = new Blob([res.text], { type: "text/plain" });
+          const blob = new Blob([res.text], { type: 'text/plain' });
           file = blobToFile(blob, `${file.name}.txt`);
         }
       }
 
-      const res = await uploadDocToVectorDB(localStorage.token, "", file);
+      const res = await uploadDocToVectorDB(localStorage.token, '', file);
 
       if (res) {
         doc.upload_status = true;
         doc.collection_name = res.collection_name;
-        doc.anaylis_type = res.anaylis_type
+        doc.anaylis_type = res.anaylis_type;
         doc.text = res.text;
         doc.image = res.image;
         doc.url = res.url;
@@ -355,17 +340,17 @@
     console.log(url);
 
     const doc = {
-      type: "doc",
+      type: 'doc',
       name: url,
-      collection_name: "",
+      collection_name: '',
       upload_status: false,
       url: url,
-      error: "",
+      error: '',
     };
 
     try {
       files = [...files, doc];
-      const res = await uploadWebToVectorDB(localStorage.token, "", url);
+      const res = await uploadWebToVectorDB(localStorage.token, '', url);
 
       if (res) {
         doc.upload_status = true;
@@ -383,20 +368,17 @@
     console.log(url);
 
     const doc = {
-      type: "doc",
+      type: 'doc',
       name: url,
-      collection_name: "",
+      collection_name: '',
       upload_status: false,
       url: url,
-      error: "",
+      error: '',
     };
 
     try {
       files = [...files, doc];
-      const res = await uploadYoutubeTranscriptionToVectorDB(
-        localStorage.token,
-        url
-      );
+      const res = await uploadYoutubeTranscriptionToVectorDB(localStorage.token, url);
 
       if (res) {
         doc.upload_status = true;
@@ -413,11 +395,11 @@
   onMount(() => {
     // window.setTimeout(() => chatTextAreaElement?.focus(), 0);
 
-    const dropZone = document.querySelector("body");
+    const dropZone = document.querySelector('body');
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        console.log("Escape");
+      if (event.key === 'Escape') {
+        console.log('Escape');
         dragged = false;
       }
     };
@@ -440,11 +422,11 @@
 
         if (inputFiles && inputFiles.length > 0) {
           inputFiles.forEach((file) => {
-            if (["image/gif", "image/webp", "image/jpeg", "image/png"].includes(file["type"])) {
+            if (['image/gif', 'image/webp', 'image/jpeg', 'image/png'].includes(file['type'])) {
               let reader = new FileReader();
               reader.onload = (event) => {
                 const img = new Image();
-                img.onload = function() {
+                img.onload = function () {
                   const canvas = document.createElement('canvas');
                   let ctx = canvas.getContext('2d');
                   canvas.width = img.width;
@@ -465,7 +447,7 @@
                   files = [
                     ...files,
                     {
-                      type: "image",
+                      type: 'image',
                       url: compressedDataUrl,
                     },
                   ];
@@ -474,16 +456,15 @@
               };
               reader.readAsDataURL(file);
             } else if (
-              SUPPORTED_FILE_TYPE.includes(file["type"]) ||
-              SUPPORTED_FILE_EXTENSIONS.includes(file.name.split(".").at(-1))
+              SUPPORTED_FILE_TYPE.includes(file['type']) ||
+              SUPPORTED_FILE_EXTENSIONS.includes(file.name.split('.').at(-1))
             ) {
               uploadDoc(file);
             } else {
               toast.error(
-                $i18n.t(
-                  `Unknown File Type {{file_type}}, but accepting and treating as plain text`,
-                  { file_type: file["type"] }
-                )
+                $i18n.t(`Unknown File Type {{file_type}}, but accepting and treating as plain text`, {
+                  file_type: file['type'],
+                })
               );
               uploadDoc(file);
             }
@@ -496,27 +477,28 @@
       dragged = false;
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
-    dropZone?.addEventListener("dragover", onDragOver);
-    dropZone?.addEventListener("drop", onDrop);
-    dropZone?.addEventListener("dragleave", onDragLeave);
+    dropZone?.addEventListener('dragover', onDragOver);
+    dropZone?.addEventListener('drop', onDrop);
+    dropZone?.addEventListener('dragleave', onDragLeave);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
 
-      dropZone?.removeEventListener("dragover", onDragOver);
-      dropZone?.removeEventListener("drop", onDrop);
-      dropZone?.removeEventListener("dragleave", onDragLeave);
+      dropZone?.removeEventListener('dragover', onDragOver);
+      dropZone?.removeEventListener('drop', onDrop);
+      dropZone?.removeEventListener('dragleave', onDragLeave);
     };
   });
 
-  // const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," + 
-  //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," + 
+  // const know_ext = ".gif,.webp,.jpeg,.png,.jpg,.pdf,.ppt,.pptx,.doc,.docx,.rtf,.xls,.xlsx,.csv,.txt," +
+  //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," +
   //   ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml,.zip,.rar";
-  const know_ext = "image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*," +
-         "text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python," +
-         "text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed"
+  const know_ext =
+    'image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*,' +
+    'text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python,' +
+    'text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed';
 </script>
 
 {#if dragged}
@@ -528,9 +510,7 @@
     role="region"
     aria-label="Drag and Drop Container"
   >
-    <div
-      class="absolute w-full h-full backdrop-blur bg-gray-800/40 flex justify-center"
-    >
+    <div class="absolute w-full h-full backdrop-blur bg-gray-800/40 flex justify-center">
       <div class="m-auto pt-64 flex flex-col justify-center">
         <div class="max-w-md">
           <AddFilesPlaceholder />
@@ -540,21 +520,13 @@
   </div>
 {/if}
 
-<div
-  class="fixed bottom-0 {$showSidebar
-    ? 'left-0 md:left-[246px]'
-    : 'left-0'} right-0"
->
+<div class="fixed bottom-0 {$showSidebar ? 'left-0 md:left-[246px]' : 'left-0'} right-0">
   <div class="w-full">
-    <div
-      class="px-2.5 md:px-16 -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center"
-    >
+    <div class="px-2.5 md:px-16 -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center">
       <div class="flex flex-col w-full">
         <div class="relative">
           {#if autoScroll === false && messages.length > 0}
-            <div
-              class=" absolute -top-12 left-0 right-0 flex justify-center z-30"
-            >
+            <div class=" absolute -top-12 left-0 right-0 flex justify-center z-30">
               <button
                 class=" bg-white border border-gray-100 dark:border-none dark:bg-white/20 p-1.5 rounded-full"
                 on:click={() => {
@@ -562,12 +534,7 @@
                   scrollToBottom();
                 }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  class="w-5 h-5"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                   <path
                     fill-rule="evenodd"
                     d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"
@@ -580,9 +547,9 @@
         </div>
 
         <div class="w-full relative">
-          {#if prompt.charAt(0) === "/"}
+          {#if prompt.charAt(0) === '/'}
             <Prompts bind:this={promptsElement} bind:prompt />
-          {:else if prompt.charAt(0) === "#"}
+          {:else if prompt.charAt(0) === '#'}
             <Documents
               bind:this={documentsElement}
               bind:prompt
@@ -599,7 +566,7 @@
                 files = [
                   ...files,
                   {
-                    type: e?.detail?.type ?? "doc",
+                    type: e?.detail?.type ?? 'doc',
                     ...e.detail,
                     upload_status: true,
                   },
@@ -621,7 +588,7 @@
             }}
           /> -->
 
-          {#if selectedModel !== ""}
+          {#if selectedModel !== ''}
             <div
               class="px-3 py-2.5 text-left w-full flex justify-between items-center absolute bottom-0 left-0 right-0 bg-gradient-to-t from-50% from-white dark:from-gray-900"
             >
@@ -630,24 +597,18 @@
                   crossorigin="anonymous"
                   alt="model profile"
                   class="size-5 max-w-[28px] object-cover rounded-full"
-                  src={$modelfiles.find(
-                    (modelfile) => modelfile.tagName === selectedModel.id
-                  )?.imageUrl ??
-                    ($i18n.language === "dg-DG"
-                      ? `/doge.png`
-                      : `${WEBUI_BASE_URL}/static/favicon.png`)}
+                  src={$modelfiles.find((modelfile) => modelfile.tagName === selectedModel.id)?.imageUrl ??
+                    ($i18n.language === 'dg-DG' ? `/doge.png` : `/favicon.png`)}
                 />
                 <div>
-                  Talking to <span class=" font-medium"
-                    >{selectedModel.name}
-                  </span>
+                  Talking to <span class=" font-medium">{selectedModel.name} </span>
                 </div>
               </div>
               <div>
                 <button
                   class="flex items-center"
                   on:click={() => {
-                    selectedModel = "";
+                    selectedModel = '';
                   }}
                 >
                   <XMark />
@@ -659,11 +620,11 @@
             <UrlModels
               bind:this={urlPromptElement}
               bind:prompt
-              bind:selectUrlUserPrompt={selectUrlUserPrompt}
+              bind:selectUrlUserPrompt
               on:select={(e) => {
                 let selectedUserPrompt = e.detail.prompt;
                 let analysisUrl = e.detail.url;
-                submitPrompt(selectedUserPrompt, {url: analysisUrl}, user);
+                submitPrompt(selectedUserPrompt, { url: analysisUrl }, user);
               }}
             />
           {/if}
@@ -673,14 +634,12 @@
 
     <div class="bg-white dark:bg-gray-900">
       <div class="px-2.5 md:px-20 mx-auto inset-x-0">
-        {#if messages?.filter((item) => item.role === "assistant").length >= 5 && $userStore?.role === "visitor"}
+        {#if messages?.filter((item) => item.role === 'assistant').length >= 5 && $userStore?.role === 'visitor'}
           <div
             class="flex gap-1 items-center flex-wrap flex-1 justify-between mb-2 p-4 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
           >
             <span>
-              {$i18n.t(
-                "Get smarter replies, upload files and pictures, and enjoy more features."
-              )}
+              {$i18n.t('Get smarter replies, upload files and pictures, and enjoy more features.')}
             </span>
 
             <div class="flex gap-2">
@@ -690,7 +649,7 @@
                   $showOpenWalletModal = true;
                 }}
               >
-                {$i18n.t("Open Wallet")}
+                {$i18n.t('Open Wallet')}
               </button>
 
               <button
@@ -699,7 +658,7 @@
                   $showNewWalletModal = true;
                 }}
               >
-                {$i18n.t("Create Wallet")}
+                {$i18n.t('Create Wallet')}
               </button>
             </div>
           </div>
@@ -716,11 +675,11 @@
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
                 _inputFiles.forEach((file) => {
-                  if (["image/gif","image/webp","image/jpeg","image/png"].includes(file["type"])) {
+                  if (['image/gif', 'image/webp', 'image/jpeg', 'image/png'].includes(file['type'])) {
                     let reader = new FileReader();
                     reader.onload = (event) => {
                       const img = new Image();
-                      img.onload = function() {
+                      img.onload = function () {
                         const canvas = document.createElement('canvas');
                         let ctx = canvas.getContext('2d');
                         canvas.width = img.width;
@@ -737,37 +696,34 @@
                           if (quality < 0.1) {
                             break; // 防止质量过低
                           }
-                        };  
+                        }
                         files = [
                           // ...files,
                           {
-                            type: "image",
+                            type: 'image',
                             url: compressedDataUrl,
                           },
                         ];
                       };
                       img.src = event.target.result;
                       inputFiles = null;
-                      filesInputElement.value = "";
+                      filesInputElement.value = '';
                     };
                     reader.readAsDataURL(file);
                   } else if (
-                    SUPPORTED_FILE_TYPE.includes(file["type"]) ||
-                    SUPPORTED_FILE_EXTENSIONS.includes(
-                      file.name.split(".").at(-1)
-                    )
+                    SUPPORTED_FILE_TYPE.includes(file['type']) ||
+                    SUPPORTED_FILE_EXTENSIONS.includes(file.name.split('.').at(-1))
                   ) {
                     uploadDoc(file);
-                    filesInputElement.value = "";
+                    filesInputElement.value = '';
                   } else {
                     toast.error(
-                      $i18n.t(
-                        `Unknown File Type {{file_type}}, but accepting and treating as plain text`,
-                        { file_type: file["type"] }
-                      )
+                      $i18n.t(`Unknown File Type {{file_type}}, but accepting and treating as plain text`, {
+                        file_type: file['type'],
+                      })
                     );
                     uploadDoc(file);
-                    filesInputElement.value = "";
+                    filesInputElement.value = '';
                   }
                 });
               } else {
@@ -776,11 +732,11 @@
             }}
           />
           <form
-            dir={$settings?.chatDirection ?? "LTR"}
+            dir={$settings?.chatDirection ?? 'LTR'}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              if($toolflag && $tooltype == "translate") {
-                toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
+              if ($toolflag && $tooltype == 'translate') {
+                toolInfo.trantip = $i18n.t('Translate to') + ' ' + tranlang;
               }
               submitPrompt(prompt, toolInfo, user);
             }}
@@ -789,19 +745,15 @@
               <div class="mx-2 mt-2 mb-1 flex flex-wrap gap-2">
                 {#each files as file, fileIdx}
                   <div class=" relative group">
-                    {#if file.type === "image"}
-                      <img
-                        src={file.url}
-                        alt="input"
-                        class=" h-16 w-16 rounded-xl object-cover"
-                      />
-                    {:else if file.type === "doc"}
+                    {#if file.type === 'image'}
+                      <img src={file.url} alt="input" class=" h-16 w-16 rounded-xl object-cover" />
+                    {:else if file.type === 'doc'}
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
-                        <div class="text-white rounded-lg {file.upload_status?'':'p-2.5 bg-red-400'}">
+                        <div class="text-white rounded-lg {file.upload_status ? '' : 'p-2.5 bg-red-400'}">
                           {#if file.upload_status}
-                            <FileSvg bind:filename={file.name}/>
+                            <FileSvg bind:filename={file.name} />
                           {:else}
                             <svg
                               class=" w-6 h-6 translate-y-[0.5px]"
@@ -821,60 +773,38 @@
                                 @keyframes spinner_8HQG {
                                   0%,
                                   57.14% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0.66,
-                                      0.66,
-                                      1
-                                    );
+                                    animation-timing-function: cubic-bezier(0.33, 0.66, 0.66, 1);
                                     transform: translate(0);
                                   }
                                   28.57% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0,
-                                      0.66,
-                                      0.33
-                                    );
+                                    animation-timing-function: cubic-bezier(0.33, 0, 0.66, 0.33);
                                     transform: translateY(-6px);
                                   }
                                   100% {
                                     transform: translate(0);
                                   }
                                 }
-                              </style><circle
-                                class="spinner_qM83"
-                                cx="4"
-                                cy="12"
-                                r="2.5"
-                              /><circle
+                              </style><circle class="spinner_qM83" cx="4" cy="12" r="2.5" /><circle
                                 class="spinner_qM83 spinner_oXPr"
                                 cx="12"
                                 cy="12"
                                 r="2.5"
-                              /><circle
-                                class="spinner_qM83 spinner_ZTLf"
-                                cx="20"
-                                cy="12"
-                                r="2.5"
-                              /></svg
+                              /><circle class="spinner_qM83 spinner_ZTLf" cx="20" cy="12" r="2.5" /></svg
                             >
                           {/if}
                         </div>
 
                         <div class="flex flex-col justify-center -space-y-0.5">
-                          <div
-                            class=" dark:text-gray-100 text-sm font-medium line-clamp-1"
-                          >
+                          <div class=" dark:text-gray-100 text-sm font-medium line-clamp-1">
                             {file.name}
                           </div>
 
                           <div class=" text-gray-500 text-sm">
-                            {$i18n.t("Document")}
+                            {$i18n.t('Document')}
                           </div>
                         </div>
                       </div>
-                    {:else if file.type === "collection"}
+                    {:else if file.type === 'collection'}
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
@@ -895,14 +825,12 @@
                         </div>
 
                         <div class="flex flex-col justify-center -space-y-0.5">
-                          <div
-                            class=" dark:text-gray-100 text-sm font-medium line-clamp-1"
-                          >
+                          <div class=" dark:text-gray-100 text-sm font-medium line-clamp-1">
                             {file?.title ?? `#${file.name}`}
                           </div>
 
                           <div class=" text-gray-500 text-sm">
-                            {$i18n.t("Collection")}
+                            {$i18n.t('Collection')}
                           </div>
                         </div>
                       </div>
@@ -917,12 +845,7 @@
                           files = files;
                         }}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          class="w-4 h-4"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                           <path
                             d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
                           />
@@ -932,131 +855,222 @@
                   </div>
                 {/each}
               </div>
-              {#if files[0]?.type === "image"}
+              {#if files[0]?.type === 'image'}
                 <div class="flex flex-wrap gap-2 mt-1">
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("What does this picture mean?");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("What does this picture mean?") }</span>
+                      prompt = $i18n.t('What does this picture mean?');
+                    }}
+                  >
+                    <span class="mr-1">{$i18n.t('What does this picture mean?')}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("Explain this picture");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Explain this picture") }</span>
+                      prompt = $i18n.t('Explain this picture');
+                    }}
+                  >
+                    <span class="mr-1">{$i18n.t('Explain this picture')}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("What is the main idea of this picture?");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("What is the main idea of this picture?") }</span>
+                      prompt = $i18n.t('What is the main idea of this picture?');
+                    }}
+                  >
+                    <span class="mr-1">{$i18n.t('What is the main idea of this picture?')}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("What does the symbol in the picture represent?");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("What does the symbol in the picture represent?") }</span>
+                      prompt = $i18n.t('What does the symbol in the picture represent?');
+                    }}
+                  >
+                    <span class="mr-1">{$i18n.t('What does the symbol in the picture represent?')}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
-                  <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                  <button
+                    class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("Help me solve problems");
-                    }}>
-                    <span class="mr-1">{ $i18n.t("Help me solve problems") }</span>
+                      prompt = $i18n.t('Help me solve problems');
+                    }}
+                  >
+                    <span class="mr-1">{$i18n.t('Help me solve problems')}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                      <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </button>
                 </div>
               {/if}
-              {#if files[0]?.type === "doc" && files[0]?.upload_status}
-                {#if files[0]?.anaylis_type == "progrem"}
+              {#if files[0]?.type === 'doc' && files[0]?.upload_status}
+                {#if files[0]?.anaylis_type == 'progrem'}
                   <div class="flex flex-wrap gap-2 mt-1">
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Introduce the code in the file");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Introduce the code in the file") }</span>
+                        prompt = $i18n.t('Introduce the code in the file');
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t('Introduce the code in the file')}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
                         prompt = $i18n.t("What's the main purpose of the file's code");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("What's the main purpose of the file's code") }</span>
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t("What's the main purpose of the file's code")}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Optimize the code in the file");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Optimize the code in the file") }</span>
+                        prompt = $i18n.t('Optimize the code in the file');
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t('Optimize the code in the file')}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
                   </div>
                 {:else}
                   <div class="flex flex-wrap gap-2 mt-1">
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Summarize the content of this document");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Summarize the content of this document") }</span>
+                        prompt = $i18n.t('Summarize the content of this document');
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t('Summarize the content of this document')}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Generate a brief summary");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Generate a brief summary") }</span>
+                        prompt = $i18n.t('Generate a brief summary');
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t('Generate a brief summary')}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Extract document key info");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Extract document key info") }</span>
+                        prompt = $i18n.t('Extract document key info');
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t('Extract document key info')}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Polish the content of the document");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Polish the content of the document") }</span>
+                        prompt = $i18n.t('Polish the content of the document');
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t('Polish the content of the document')}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
-                    <button class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
+                    <button
+                      class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Generate an analysis report");
-                      }}>
-                      <span class="mr-1">{ $i18n.t("Generate an analysis report") }</span>
+                        prompt = $i18n.t('Generate an analysis report');
+                      }}
+                    >
+                      <span class="mr-1">{$i18n.t('Generate an analysis report')}</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-rule="evenodd" d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414" clip-rule="evenodd"/>
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M12.793 3.793a1 1 0 0 1 1.414 0l7.5 7.5a1 1 0 0 1 0 1.414l-7.5 7.5a1 1 0 0 1-1.414-1.414L18.586 13H3a1 1 0 1 1 0-2h15.586l-5.793-5.793a1 1 0 0 1 0-1.414"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -1064,8 +1078,8 @@
               {/if}
             {/if}
 
-            {#if $tooltype != ""}
-              <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang}/>
+            {#if $tooltype != ''}
+              <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang} />
             {/if}
             <div class="flex flex-col">
               <textarea
@@ -1074,25 +1088,21 @@
                 class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
                   ? ''
                   : ' pl-4'} rounded-xl resize-none h-[48px]"
-                placeholder={chatInputPlaceholder !== ""
+                placeholder={chatInputPlaceholder !== ''
                   ? chatInputPlaceholder
                   : isRecording
-                  ? $i18n.t("Listening...")
-                  : $i18n.t("Send a Message")}
+                  ? $i18n.t('Listening...')
+                  : $i18n.t('Send a Message')}
                 bind:value={prompt}
                 on:keypress={(e) => {
                   if (
                     !$mobile ||
-                    !(
-                      "ontouchstart" in window ||
-                      navigator.maxTouchPoints > 0 ||
-                      navigator.msMaxTouchPoints > 0
-                    )
+                    !('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0)
                   ) {
                     if (e.keyCode == 13 && !e.shiftKey) {
                       e.preventDefault();
                     }
-                    if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
+                    if (prompt !== '' && e.keyCode == 13 && !e.shiftKey) {
                       submitPrompt(prompt, toolInfo, user);
                     }
                   }
@@ -1101,39 +1111,29 @@
                   const isCtrlPressed = e.ctrlKey || e.metaKey; // metaKey is for Cmd key on Mac
 
                   // Check if Ctrl + R is pressed
-                  if (
-                    prompt === "" &&
-                    isCtrlPressed &&
-                    e.key.toLowerCase() === "r"
-                  ) {
+                  if (prompt === '' && isCtrlPressed && e.key.toLowerCase() === 'r') {
                     e.preventDefault();
-                    console.log("regenerate");
+                    console.log('regenerate');
 
-                    const regenerateButton = [
-                      ...document.getElementsByClassName(
-                        "regenerate-response-button"
-                      ),
-                    ]?.at(-1);
+                    const regenerateButton = [...document.getElementsByClassName('regenerate-response-button')]?.at(-1);
 
                     regenerateButton?.click();
                   }
 
-                  if (prompt === "" && e.key == "ArrowUp") {
+                  if (prompt === '' && e.key == 'ArrowUp') {
                     e.preventDefault();
-                    const userMessageElement = [
-                      ...document.getElementsByClassName("user-message"),
-                    ]?.at(-1);
+                    const userMessageElement = [...document.getElementsByClassName('user-message')]?.at(-1);
                     // 开启新的edit
                     // const editButton = [
                     //   ...document.getElementsByClassName(
                     //     "edit-user-message-button"
                     //   ),
                     // ]?.at(-1);
-                    userMessageElement?.scrollIntoView({ block: "center" });
+                    userMessageElement?.scrollIntoView({ block: 'center' });
                     // editButton?.click();
-                    const textarea = document.getElementById("chat-textarea");
+                    const textarea = document.getElementById('chat-textarea');
                     if (textarea) {
-                      textarea.value = (userMessageElement?.innerText) ?? "";
+                      textarea.value = userMessageElement?.innerText ?? '';
                     }
                   }
 
@@ -1209,8 +1209,8 @@
                   //   ]?.at(-1);
 
                   //   commandOptionButton?.click();
-                  // } else 
-                  if (e.key === "Tab") {
+                  // } else
+                  if (e.key === 'Tab') {
                     const words = findWordIndices(prompt);
                     if (words.length > 0) {
                       const word = words.at(0);
@@ -1224,65 +1224,53 @@
                       await tick();
 
                       e.preventDefault();
-                      e.target.setSelectionRange(
-                        word?.startIndex,
-                        word.endIndex + 1
-                      );
+                      e.target.setSelectionRange(word?.startIndex, word.endIndex + 1);
                     }
 
-                    e.target.style.height = "";
-                    e.target.style.height =
-                      Math.min(e.target.scrollHeight, 200) + "px";
+                    e.target.style.height = '';
+                    e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
                   }
 
-                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
-                     && e.key === "ArrowUp") {
+                  if ((prompt.startsWith('https://') || prompt.startsWith('http://')) && e.key === 'ArrowUp') {
                     e.preventDefault();
 
-                    (urlPromptElement).selectUp();
+                    urlPromptElement.selectUp();
                     const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
+                      ...document.getElementsByClassName('selected-command-option-button'),
                     ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
+                    commandOptionButton.scrollIntoView({ block: 'center' });
                   }
-                  if ((prompt.startsWith("https://") || prompt.startsWith("http://"))
-                     && e.key === "ArrowDown") {
+                  if ((prompt.startsWith('https://') || prompt.startsWith('http://')) && e.key === 'ArrowDown') {
                     e.preventDefault();
 
-                    (urlPromptElement).selectDown();
+                    urlPromptElement.selectDown();
                     const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
+                      ...document.getElementsByClassName('selected-command-option-button'),
                     ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
+                    commandOptionButton.scrollIntoView({ block: 'center' });
                   }
 
-                  if (e.key === "Escape") {
-                    console.log("Escape");
-                    selectedModel = "";
+                  if (e.key === 'Escape') {
+                    console.log('Escape');
+                    selectedModel = '';
                   }
                 }}
                 rows="1"
                 on:input={(e) => {
-                  e.target.style.height = "";
-                  e.target.style.height =
-                    Math.min(e.target.scrollHeight, 200) + "px";
+                  e.target.style.height = '';
+                  e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
                   user = null;
                 }}
                 on:focus={(e) => {
-                  e.target.style.height = "";
-                  e.target.style.height =
-                    Math.min(e.target.scrollHeight, 200) + "px";
+                  e.target.style.height = '';
+                  e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
                 }}
                 on:paste={async (e) => {
                   const clipboardData = e.clipboardData || window.clipboardData;
 
                   if (clipboardData && clipboardData.items) {
                     for (const item of clipboardData.items) {
-                      if (item.type.indexOf("image") !== -1) {
+                      if (item.type.indexOf('image') !== -1) {
                         const blob = item.getAsFile();
                         const reader = new FileReader();
 
@@ -1290,7 +1278,7 @@
                           files = [
                             // ...files,
                             {
-                              type: "image",
+                              type: 'image',
                               url: `${e.target.result}`,
                             },
                           ];
@@ -1331,7 +1319,7 @@
 
                   <!-- 工具组件 -->
                   <div class="self-star mb-2 ml-1 mr-1">
-                    <Tools bind:inputplaceholder={chatInputPlaceholder}/>
+                    <Tools bind:inputplaceholder={chatInputPlaceholder} />
                   </div>
 
                   <!-- 深度搜索 -->
@@ -1355,10 +1343,10 @@
                     </button>
                   </div> -->
                 </div>
-                
+
                 <div class="self-end mb-2 flex space-x-1 mr-1">
                   {#if messages.length == 0 || messages.at(-1).done == true}
-                    <Tooltip content={$i18n.t("Record voice")}>
+                    <Tooltip content={$i18n.t('Record voice')}>
                       {#if speechRecognitionEnabled}
                         <button
                           id="voice-input-button"
@@ -1387,43 +1375,23 @@
                                 @keyframes spinner_8HQG {
                                   0%,
                                   57.14% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0.66,
-                                      0.66,
-                                      1
-                                    );
+                                    animation-timing-function: cubic-bezier(0.33, 0.66, 0.66, 1);
                                     transform: translate(0);
                                   }
                                   28.57% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0,
-                                      0.66,
-                                      0.33
-                                    );
+                                    animation-timing-function: cubic-bezier(0.33, 0, 0.66, 0.33);
                                     transform: translateY(-6px);
                                   }
                                   100% {
                                     transform: translate(0);
                                   }
                                 }
-                              </style><circle
-                                class="spinner_qM83"
-                                cx="4"
-                                cy="12"
-                                r="2.5"
-                              /><circle
+                              </style><circle class="spinner_qM83" cx="4" cy="12" r="2.5" /><circle
                                 class="spinner_qM83 spinner_oXPr"
                                 cx="12"
                                 cy="12"
                                 r="2.5"
-                              /><circle
-                                class="spinner_qM83 spinner_ZTLf"
-                                cx="20"
-                                cy="12"
-                                r="2.5"
-                              /></svg
+                              /><circle class="spinner_qM83 spinner_ZTLf" cx="20" cy="12" r="2.5" /></svg
                             >
                           {:else}
                             <svg
@@ -1441,22 +1409,17 @@
                         </button>
                       {/if}
                     </Tooltip>
-  
-                    <Tooltip content={$i18n.t("Send message")}>
+
+                    <Tooltip content={$i18n.t('Send message')}>
                       <button
                         id="send-message-button"
-                        class="{(prompt !== '' && !isRecording)
+                        class="{prompt !== '' && !isRecording
                           ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
                           : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
                         type="submit"
-                        disabled={prompt === "" || isRecording}
+                        disabled={prompt === '' || isRecording}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 16 16"
-                          fill="currentColor"
-                          class="w-5 h-5"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-5 h-5">
                           <path
                             fill-rule="evenodd"
                             d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
@@ -1470,12 +1433,7 @@
                       class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
                       on:click={stopResponse}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="w-5 h-5"
-                      >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                         <path
                           fill-rule="evenodd"
                           d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 01-1.313-1.313V9.564z"
@@ -1485,7 +1443,7 @@
                     </button>
                   {/if}
                 </div>
-              </div>  
+              </div>
             </div>
           </form>
 

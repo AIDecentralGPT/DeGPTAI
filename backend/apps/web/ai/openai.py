@@ -64,7 +64,7 @@ class OpenAiApi:
             "gpt-5-chat-latest",
             "gpt-5",
             "gpt-5.1-codex-mini",
-            "gpt-5.1"
+            "gpt-5.2"
         ]
         return model in models
 
