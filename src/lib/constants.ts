@@ -5,7 +5,7 @@ export const APP_NAME = 'DeGPT';
 export const WEBUI_BASE_URL = browser ? (dev ? `http://${location.hostname}:8080` : ``) : ``;
 
 export const WEBUI_API_BASE_URL = `${WEBUI_BASE_URL}/api/v1`;
-// export const WEBUI_API_BASE_URL = `https://test.degpt.ai/api/v1`;
+//export const WEBUI_API_BASE_URL = `https://test.degpt.ai/api/v1`;
 
 export const LITELLM_API_BASE_URL = `${WEBUI_BASE_URL}/litellm/api`;
 export const OLLAMA_API_BASE_URL = `${WEBUI_BASE_URL}/ollama`;
