@@ -7,7 +7,7 @@
   import 'katex/dist/katex.min.css';
 
   import { createEventDispatcher } from 'svelte';
-  import { onMount, tick, getContext } from 'svelte';
+  import { onMount, tick, getContext, onDestroy } from 'svelte';
 
   const i18n = getContext('i18n');
 
@@ -412,15 +412,52 @@
   $: if (isLastMessage && message?.error === true) {
     console.log('🚨 检测到断开连接 UI 出现，正在自动重连...');
 
-    // 加个 500ms 延时，让用户能稍微看到一下“闪过”的报错，体验更自然，
-    // 同时也防止网络太差时瞬间死循环请求
-    setTimeout(() => {
-      // 调用重连 (相当于帮你点了那个按钮)
-      if (message.parentId) {
-        resentMessage(message.parentId, true);
-      }
-    }, 500);
+    if (message.parentId) {
+      resentMessage(message.parentId, true);
+    }
   }
+
+  // -----------------------------------------------------------------------
+  // ➕ 新增：解决“一直 Pending”问题的静默检测
+  // -----------------------------------------------------------------------
+
+  let lastChangeTime = Date.now();
+  let watchdogTimer: any;
+
+  // 1. 喂狗：只要内容有变化，就更新时间，证明还活着
+  $: if (message && message.content) {
+    lastChangeTime = Date.now();
+  }
+
+  onMount(() => {
+    // 2. 巡逻：每 3 秒检查一次
+    watchdogTimer = setInterval(() => {
+      // 如果已经做完了，或者已经报错了(报错会被上面的逻辑处理)，就不管
+      if (message.done || message.error || readOnly) return;
+
+      const now = Date.now();
+      const silenceTime = now - lastChangeTime;
+
+      // 🔍 核心逻辑：
+      // 如果处于“正在生成”状态，但超过 15 秒(15000ms)没动静
+      // 说明请求 Pending 死了
+      if (silenceTime > 10000) {
+        console.log(`💀 [僵尸检测] 请求卡死 Pending 超过 ${silenceTime}ms，强制重连...`);
+
+        // 重置时间，防止瞬间重复触发
+        lastChangeTime = Date.now();
+
+        // 强制再次发起请求，打破 Pending 状态
+        if (message.parentId) {
+          resentMessage(message.parentId, true);
+        }
+      }
+    }, 3000);
+  });
+
+  onDestroy(() => {
+    if (watchdogTimer) clearInterval(watchdogTimer);
+  });
 </script>
 
 <CitationsModal bind:show={showCitationModal} citation={selectedCitation} />
