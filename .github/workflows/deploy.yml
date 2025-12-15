@@ -9,14 +9,14 @@ name: Deploy to Server # 定义工作流程的名称
 on: # 定义触发工作流程的事件
   push: # 当代码被推送时
     branches: # 指定触发工作流程的分支
-      - fingerprintAuth  # 指纹登录，无需用户登录 
-      - wallet-connection  # 钱包管理 
-      - wallet-ether  # 更新为ethers处理的钱包
-      - degpt-binance  # 更新为ethers处理的钱包
+      - main # main
+      - fingerprintAuth # 指纹登录，无需用户登录
+      - wallet-connection # 钱包管理
+      - wallet-ether # 更新为ethers处理的钱包
+      - degpt-binance # 更新为ethers处理的钱包
 
 jobs: # 定义需要执行的工作
   build: # 工作的标识符，这里是构建工作
-
     runs-on: ubuntu-latest # 指定运行环境为最新版本的Ubuntu虚拟环境
 
     steps: # 定义执行的步骤
@@ -25,8 +25,7 @@ jobs: # 定义需要执行的工作
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-        # run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
-
+        # run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       - name: Build and Push Docker image # 步骤名称
         uses: docker/build-push-action@v5 # 使用docker/build-push-action@v2动作，用于构建并推送Docker镜像
@@ -36,7 +35,6 @@ jobs: # 定义需要执行的工作
 
           push: true # 推送镜像到Docker Hub
           tags: dianbobo202311/open-webui:latest # 设置镜像的标签
-
 
       - name: Deploy to Server # 步骤名称
         timeout-minutes: 40 # 设置超时时间为40分钟
@@ -48,10 +46,11 @@ jobs: # 定义需要执行的工作
           key: ${{ secrets.SSH_PRIVATE_KEY }} # SSH私钥
 
           script: | # 通过SSH执行的脚本
-      
+
+
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
             docker pull dianbobo202311/open-webui:latest # 拉取最新的Docker镜像
-      
+
             # 检查并停止已经运行的容器
             if [ "$(docker ps -q -f name=open-webui)" ]; then
               docker stop open-webui # 停止运行中的容器
@@ -64,11 +63,10 @@ jobs: # 定义需要执行的工作
               done
 
             fi
-      
+
             # 运行新的Docker容器
             docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:latest # 运行Docker容器
             docker images -q | tail -n +3 | xargs docker rmi # 删除除前2个以外的所有Docker镜像
-
 
 # 注释解释
 # docker run --rm -d --name open-webui dianbobo202311/open-webui:latest
@@ -76,7 +74,6 @@ jobs: # 定义需要执行的工作
 # -d: 后台运行容器
 # --name open-webui: 为容器指定一个名称
 # dianbobo202311/open-webui:latest: 使用的镜像及其标签
-
 
 # 先提前到服务器安装docker并docker login
 
@@ -86,6 +83,4 @@ jobs: # 定义需要执行的工作
 
 # 步骤2：登录
 # docker login -u XXX  -p xxx
-
-
 
