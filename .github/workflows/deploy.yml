@@ -34,7 +34,7 @@ jobs: # 定义需要执行的工作
           # password: ${{ secrets.DOCKER_PASSWORD }}
 
           push: true # 推送镜像到Docker Hub
-          tags: dianbobo202311/open-webui:latest # 设置镜像的标签
+          tags: 18879011721/open-webui:latest # 设置镜像的标签
 
       - name: Deploy to Server # 步骤名称
         timeout-minutes: 40 # 设置超时时间为40分钟
@@ -48,8 +48,9 @@ jobs: # 定义需要执行的工作
           script: | # 通过SSH执行的脚本
 
 
+
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin # 登陆docker
-            docker pull dianbobo202311/open-webui:latest # 拉取最新的Docker镜像
+            docker pull 18879011721/open-webui:latest # 拉取最新的Docker镜像
 
             # 检查并停止已经运行的容器
             if [ "$(docker ps -q -f name=open-webui)" ]; then
@@ -65,15 +66,15 @@ jobs: # 定义需要执行的工作
             fi
 
             # 运行新的Docker容器
-            docker run -p 3000:8080 -d --rm --name open-webui dianbobo202311/open-webui:latest # 运行Docker容器
+            docker run -p 3000:8080 -d --rm --name open-webui 18879011721/open-webui:latest # 运行Docker容器
             docker images -q | tail -n +3 | xargs docker rmi # 删除除前2个以外的所有Docker镜像
 
 # 注释解释
-# docker run --rm -d --name open-webui dianbobo202311/open-webui:latest
+# docker run --rm -d --name open-webui 18879011721/open-webui:latest
 # --rm: 容器退出时自动清理容器文件系统
 # -d: 后台运行容器
 # --name open-webui: 为容器指定一个名称
-# dianbobo202311/open-webui:latest: 使用的镜像及其标签
+# 18879011721/open-webui:latest: 使用的镜像及其标签
 
 # 先提前到服务器安装docker并docker login
 
