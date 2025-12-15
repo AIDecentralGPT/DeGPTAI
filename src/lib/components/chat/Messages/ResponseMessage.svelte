@@ -404,28 +404,22 @@
     visibleIndices[index] = false;
   }
 
-  // 1. 监听页面可见性 (必须有，否则 Svelte 不知道你切回来了)
-  let isPageVisible = true;
+  // -----------------------------------------------------------------------
+  // 🔴 极简方案：只要“错误UI”一出现，就自动点重连
+  // -----------------------------------------------------------------------
 
-  onMount(() => {
-    const updateVis = () => {
-      isPageVisible = document.visibilityState === 'visible';
-    };
-    // 初始化检测一次
-    updateVis();
+  // Svelte 的响应式监听：只要 message.error 变成 true，且是最后一条消息
+  $: if (isLastMessage && message?.error === true) {
+    console.log('🚨 检测到断开连接 UI 出现，正在自动重连...');
 
-    document.addEventListener('visibilitychange', updateVis);
-    return () => document.removeEventListener('visibilitychange', updateVis);
-  });
-
-  // 2. 核心逻辑：自动点击“重连”
-  // 只要同时满足：页面可见 + 是最后一条 + 报错了 -> 自动重试
-  $: if (isPageVisible && isLastMessage && message?.error === true) {
-    console.log('检测到连接中断报错，正在自动点击重连...');
-
-    // 这里的 resentMessage 会把 message.error 变成 false，
-    // 所以这个 if 里的代码只会执行一次，不会死循环。
-    resentMessage(message?.parentId, true);
+    // 加个 500ms 延时，让用户能稍微看到一下“闪过”的报错，体验更自然，
+    // 同时也防止网络太差时瞬间死循环请求
+    setTimeout(() => {
+      // 调用重连 (相当于帮你点了那个按钮)
+      if (message.parentId) {
+        resentMessage(message.parentId, true);
+      }
+    }, 500);
   }
 </script>
 
