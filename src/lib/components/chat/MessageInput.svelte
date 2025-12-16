@@ -633,7 +633,7 @@
     </div>
 
     <div class="bg-white dark:bg-gray-900">
-      <div class="px-2.5 md:px-20 mx-auto inset-x-0">
+      <div class="px-4 md:px-20 mx-auto inset-x-0">
         {#if messages?.filter((item) => item.role === 'assistant').length >= 5 && $userStore?.role === 'visitor'}
           <div
             class="flex gap-1 items-center flex-wrap flex-1 justify-between mb-2 p-4 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
@@ -664,7 +664,7 @@
           </div>
         {/if}
 
-        <div class=" pb-4">
+        <div class="pb-4">
           <input
             bind:this={filesInputElement}
             bind:files={inputFiles}
@@ -733,7 +733,7 @@
           />
           <form
             dir={$settings?.chatDirection ?? 'LTR'}
-            class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
+            class=" flex flex-col relative w-full rounded-3xl bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
               if ($toolflag && $tooltype == 'translate') {
                 toolInfo.trantip = $i18n.t('Translate to') + ' ' + tranlang;
@@ -1081,11 +1081,11 @@
             {#if $tooltype != ''}
               <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang} />
             {/if}
-            <div class="flex flex-col">
+            <div class="flex flex-col gap-4 p-3">
               <textarea
                 id="chat-textarea"
                 bind:this={chatTextAreaElement}
-                class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3 {fileUploadEnabled
+                class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-2 px-2 {fileUploadEnabled
                   ? ''
                   : ' pl-4'} rounded-xl resize-none h-[48px]"
                 placeholder={chatInputPlaceholder !== ''
@@ -1290,11 +1290,11 @@
                   }
                 }}
               />
-              <div class="flex justify-between">
+              <div class="flex justify-between items-center">
                 <div class="flex flex-row">
                   <!-- 图片上传 -->
                   {#if fileUploadEnabled && !$toolflag}
-                    <div class="self-star mb-2 ml-1 mr-1">
+                    <div class="mr-1">
                       <button
                         class="bg-gray-50 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition rounded-full p-1.5"
                         type="button"
@@ -1318,7 +1318,7 @@
                   {/if}
 
                   <!-- 工具组件 -->
-                  <div class="self-star mb-2 ml-1 mr-1">
+                  <div class="self-star ml-1 mr-1">
                     <Tools bind:inputplaceholder={chatInputPlaceholder} />
                   </div>
 
@@ -1344,7 +1344,7 @@
                   </div> -->
                 </div>
 
-                <div class="self-end mb-2 flex space-x-1 mr-1">
+                <div class="self-end flex space-x-1 mr-1">
                   {#if messages.length == 0 || messages.at(-1).done == true}
                     <Tooltip content={$i18n.t('Record voice')}>
                       {#if speechRecognitionEnabled}

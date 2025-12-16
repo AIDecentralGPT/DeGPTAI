@@ -1,127 +1,119 @@
 <script lang="ts">
-	import Bolt from '$lib/components/icons/Bolt.svelte';
-	import { onMount, getContext } from 'svelte';
-	import { toolflag, tooltype} from '$lib/stores'
+  import Bolt from '$lib/components/icons/Bolt.svelte';
+  import { onMount, getContext } from 'svelte';
+  import { toolflag, tooltype } from '$lib/stores';
+  import Icon from '@iconify/svelte';
 
-	const i18n = getContext('i18n');
+  const i18n = getContext('i18n');
 
-	export let submitPrompt: Function;
-	export let suggestionPrompts = [];
+  export let submitPrompt: Function;
+  export let suggestionPrompts = [];
 
-	let prompts = [];
+  let prompts = [];
 
-	$: prompts = suggestionPrompts;
-		// .reduce((acc, current) => [...acc, ...[current]], [])
-		// .sort(() => Math.random() - 0.5);
-	// suggestionPrompts.length <= 4
-	// 	? suggestionPrompts
-	// 	: suggestionPrompts.sort(() => Math.random() - 0.5).slice(0, 4);
+  $: prompts = suggestionPrompts;
+  // .reduce((acc, current) => [...acc, ...[current]], [])
+  // .sort(() => Math.random() - 0.5);
+  // suggestionPrompts.length <= 4
+  // 	? suggestionPrompts
+  // 	: suggestionPrompts.sort(() => Math.random() - 0.5).slice(0, 4);
 
-	onMount(() => {
-		const containerElement = document.getElementById('suggestions-container');
+  onMount(() => {
+    const containerElement = document.getElementById('suggestions-container');
 
-		if (containerElement) {
-			containerElement.addEventListener('wheel', function (event) {
-				if (event.deltaY !== 0) {
-					// If scrolling vertically, prevent default behavior
-					event.preventDefault();
-					// Adjust horizontal scroll position based on vertical scroll
-					containerElement.scrollLeft += event.deltaY;
-				}
-			});
-		}
-	});
+    if (containerElement) {
+      containerElement.addEventListener('wheel', function (event) {
+        if (event.deltaY !== 0) {
+          // If scrolling vertically, prevent default behavior
+          event.preventDefault();
+          // Adjust horizontal scroll position based on vertical scroll
+          containerElement.scrollLeft += event.deltaY;
+        }
+      });
+    }
+  });
 </script>
 
 {#if prompts.length > 0}
-	<div class="mb-2 flex gap-1 text-sm font-medium items-center text-gray-600 dark:text-gray-600">
-		<Bolt />
-		{$i18n.t('Suggested')}
-	</div>
+  <div
+    class="mb-1.5 flex gap-1 text-xs font-medium uppercase tracking-widest items-center text-gray-500 dark:text-gray-400 px-1"
+  >
+    <Icon icon="lucide:sparkles" class="w-4 h-4" />
+
+    {$i18n.t('Suggested')}
+  </div>
 {/if}
 
 <div class="w-full">
-	<div
-		class="relative w-full flex gap-2 snap-x snap-mandatory md:snap-none overflow-x-auto tabs"
-		id="suggestions-container"
-	>
-		{#each prompts as prompt, promptIdx}
-			<div class="snap-center shrink-0">
-				<button
-					class="flex flex-col flex-1 shrink-0 w-64 justify-between h-36 p-5 px-6 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-3xl transition group
-					bg-gray-50 dark:bg-gray-850"
-					on:click={() => {
-						if (promptIdx == 0) {
-							$toolflag = true;
-							$tooltype = "webread";
-						} else {
-							$toolflag = false;
-							$tooltype = "";
-						}
-						submitPrompt($i18n.t(prompt.content), promptIdx);
-					}}
-				>
-					<div class="flex flex-col text-left">
-						{#if prompt.title && prompt.title[0] !== ''}
-							<div
-								class="font-medium dark:text-gray-300 dark:group-hover:text-gray-200 transition"
-							>
-								{$i18n.t(prompt.title[0])}
-							</div>
-							<div class="text-sm text-gray-600 font-normal line-clamp-2">{$i18n.t(prompt.title[1])}</div>
-						{:else}
-							<div
-								class=" self-center text-sm font-medium dark:text-gray-300 dark:group-hover:text-gray-100 transition line-clamp-2"
-							>
-								{$i18n.t(prompt.content)}
-							</div>
-						{/if}
-					</div>
+  <div
+    class="relative w-full flex gap-4 snap-x snap-mandatory md:snap-none overflow-x-auto pb-4 no-scrollbar"
+    id="suggestions-container "
+  >
+    {#each prompts as prompt, promptIdx}
+      <div class="snap-center shrink-0">
+        <button
+          class="flex flex-col flex-1 shrink-0 w-72 justify-between h-32 p-4 rounded-3xl transition-all duration-300 group
+                 border border-gray-200 dark:border-white/5
+                 bg-white dark:bg-[#1a1a1a]
+                 hover:bg-gray-50 dark:hover:bg-[#252525]
+                 active:scale-[0.98]"
+          on:click={() => {
+            if (promptIdx == 0) {
+              $toolflag = true;
+              $tooltype = 'webread';
+            } else {
+              $toolflag = false;
+              $tooltype = '';
+            }
+            submitPrompt($i18n.t(prompt.content), promptIdx);
+          }}
+        >
+          <div class="flex flex-col text-left space-y-1">
+            {#if prompt.title && prompt.title[0] !== ''}
+              <div
+                class="text-base font-bold text-gray-800 dark:text-gray-100 group-hover:text-primary transition-colors"
+              >
+                {$i18n.t(prompt.title[0])}
+              </div>
+              <div class="text-sm text-gray-500 dark:text-gray-400 font-normal leading-relaxed line-clamp-2">
+                {$i18n.t(prompt.title[1])}
+              </div>
+            {:else}
+              <div
+                class="self-center text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors line-clamp-3"
+              >
+                {$i18n.t(prompt.content)}
+              </div>
+            {/if}
+          </div>
 
-					<div class="w-full flex justify-between">
-						<div
-							class="text-xs text-gray-400 group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500 transition self-center"
-						>
-							{$i18n.t('Prompt')}
-						</div>
+          <div class="w-full flex justify-between items-end">
+            <div
+              class="text-[10px] uppercase font-bold tracking-wider text-gray-400 dark:text-gray-600 group-hover:text-gray-500 dark:group-hover:text-gray-500 transition self-center"
+            >
+              {$i18n.t('Prompt')}
+            </div>
 
-						<div
-							class="self-end p-1 rounded-lg text-gray-300 group-hover:text-gray-800 dark:text-gray-700 dark:group-hover:text-gray-100 transition"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 16 16"
-								fill="currentColor"
-								class="size-4"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
-									clip-rule="evenodd"
-								/>
-							</svg>
-						</div>
-					</div>
-				</button>
-			</div>
-		{/each}
-
-		<!-- <div class="snap-center shrink-0">
-		<img
-			class="shrink-0 w-80 h-40 rounded-lg shadow-xl bg-white"
-			src="https://images.unsplash.com/photo-1604999565976-8913ad2ddb7c?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=320&amp;h=160&amp;q=80"
-		/>
-	</div> -->
-	</div>
+            <div
+              class="p-2 rounded-full bg-gray-100 dark:bg-white/5 text-gray-400 group-hover:bg-amber-100 group-hover:text-amber-600 dark:group-hover:bg-amber-500/20 dark:group-hover:text-amber-500 transition-all"
+            >
+              <Icon icon="mdi-light:arrow-up" class="w-3 h-3" />
+            </div>
+          </div>
+        </button>
+      </div>
+    {/each}
+  </div>
 </div>
 
 <style>
-	.tabs::-webkit-scrollbar {
-		display: none; /* for Chrome, Safari and Opera */
-	}
+  /* 隐藏滚动条的核心代码 */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 
-	.tabs {
-		-ms-overflow-style: none; /* IE and Edge */
-		scrollbar-width: none; /* Firefox */
-	}
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 </style>
