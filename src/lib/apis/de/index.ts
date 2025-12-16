@@ -1,229 +1,227 @@
-import { promptTemplate } from "$lib/utils";
+import { promptTemplate } from '$lib/utils';
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 // 获取De的所有请求节点
 export const getDeBaseUrls = async () => {
-
   const baseUrls = [
     {
-      name: "America",
+      name: 'America',
       url: WEBUI_API_BASE_URL,
     },
     {
-      name: "Singapore",
+      name: 'Singapore',
       url: WEBUI_API_BASE_URL,
     },
     {
-      name: "Korea",
+      name: 'Korea',
       url: WEBUI_API_BASE_URL,
-    }
+    },
   ];
   return baseUrls;
 };
 
 // 获取De的所有模型列表
-export const getDeModels = async (token: string = "") => {
-
+export const getDeModels = async (token: string = '') => {
   const format_res = {
     models: [
       // 基础模型
       {
-        name: "DeepSeek V3.2",
-        model: "deepseek-chat",
-        imagemodel: "deepseek-chat",
-        textmodel: "deepseek-chat",
+        name: 'DeepSeek V3.2',
+        model: 'deepseek-chat',
+        imagemodel: 'deepseek-chat',
+        textmodel: 'deepseek-chat',
         think: false,
-        tip: "DeepSeek V3.2",
-        support: "text",
+        tip: 'DeepSeek V3.2',
+        support: 'text',
         type: 1,
-        desc: "Suitable for reasoning and writing",
-        modelicon: "/static/icon/deepseek.png",
-        modelinfo: ""
+        desc: 'Suitable for reasoning and writing',
+        modelicon: '/static/icon/deepseek.png',
+        modelinfo: '',
       },
       {
-        name: "DouBao 1.6 (TikTok)",
-        model: "doubao-seed-1-6-250615",
-        imagemodel: "doubao-seed-1-6-250615",
-        textmodel: "doubao-seed-1-6-250615",
+        name: 'DouBao 1.6 (TikTok)',
+        model: 'doubao-seed-1-6-250615',
+        imagemodel: 'doubao-seed-1-6-250615',
+        textmodel: 'doubao-seed-1-6-250615',
         think: false,
-        tip: "DouBao 1.6 (TikTok)",
-        support: "image",
+        tip: 'DouBao 1.6 (TikTok)',
+        support: 'image',
         type: 1,
-        desc: "Multimodal graphics and text, suitable for daily tasks",
-        modelicon: "/static/icon/doubao.png",
-        modelinfo: ""
+        desc: 'Multimodal graphics and text, suitable for daily tasks',
+        modelicon: '/static/icon/doubao.png',
+        modelinfo: '',
       },
       {
-        name: "Qwen3 Max (Ali Cloud)",
-        model: "qwen3-max-preview",
-        imagemodel: "qwen-vl-plus",
-        textmodel: "qwen3-max-preview",
+        name: 'Qwen3 Max (Ali Cloud)',
+        model: 'qwen3-max-preview',
+        imagemodel: 'qwen-vl-plus',
+        textmodel: 'qwen3-max-preview',
         think: false,
-        tip: "Qwen3 Max (Ali Cloud)",
-        support: "image",
+        tip: 'Qwen3 Max (Ali Cloud)',
+        support: 'image',
         type: 1,
-        desc: "Strong language skills",
-        modelicon: "/static/icon/qwen.png",
-        modelinfo: ""
+        desc: 'Strong language skills',
+        modelicon: '/static/icon/qwen.png',
+        modelinfo: '',
       },
       {
-        name: "Qwen3 Thinking (Ali Cloud)",
-        model: "qwen3-235b-a22b-think",
-        imagemodel: "qvq-max",
-        textmodel: "qwen3-235b-a22b",
+        name: 'Qwen3 Thinking (Ali Cloud)',
+        model: 'qwen3-235b-a22b-think',
+        imagemodel: 'qvq-max',
+        textmodel: 'qwen3-235b-a22b',
         think: true,
-        tip: "Qwen3 Thinking (Ali Cloud)",
-        support: "image",
+        tip: 'Qwen3 Thinking (Ali Cloud)',
+        support: 'image',
         type: 1,
-        desc: "Enhanced reasoning, suitable for complex tasks",
-        modelicon: "/static/icon/qwen.png",
-        modelinfo: ""
+        desc: 'Enhanced reasoning, suitable for complex tasks',
+        modelicon: '/static/icon/qwen.png',
+        modelinfo: '',
       },
       {
-        name: "GPT-5 mini (OpenAI)",
-        model: "gpt-5-mini",
-        imagemodel: "gpt-5-mini",
-        textmodel: "gpt-5-mini",
+        name: 'GPT-5 mini (OpenAI)',
+        model: 'gpt-5-mini',
+        imagemodel: 'gpt-5-mini',
+        textmodel: 'gpt-5-mini',
         think: false,
-        tip: "GPT-5 mini (OpenAI)",
-        support: "image",
+        tip: 'GPT-5 mini (OpenAI)',
+        support: 'image',
         type: 1,
-        desc: "Lightweight general-purpose model with fast response speed",
-        modelicon: "/static/icon/gpt3.png",
-        modelinfo: ""
+        desc: 'Lightweight general-purpose model with fast response speed',
+        modelicon: '/static/icon/gpt3.png',
+        modelinfo: '',
       },
       // 高级模型
       {
-        name: "GPT-4o audio (OpenAI)",
-        model: "gpt-4o-audio-preview",
-        audiomodel: "gpt-4o-audio-preview",
-        textmodel: "gpt-4o",
+        name: 'GPT-4o audio (OpenAI)',
+        model: 'gpt-4o-audio-preview',
+        audiomodel: 'gpt-4o-audio-preview',
+        textmodel: 'gpt-4o',
         think: false,
-        tip: "GPT-4o audio (OpenAI)",
-        support: "audio",
+        tip: 'GPT-4o audio (OpenAI)',
+        support: 'audio',
         type: 2,
-        desc: "Focused on audio interaction",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
+        desc: 'Focused on audio interaction',
+        modelicon: '/static/icon/gpt_round.png',
+        modelinfo: '',
       },
       {
-        name: "DeepSeek R1",
-        model: "deepseek-reasoner",
-        imagemodel: "deepseek-reasoner",
-        textmodel: "deepseek-reasoner",
+        name: 'DeepSeek R1',
+        model: 'deepseek-reasoner',
+        imagemodel: 'deepseek-reasoner',
+        textmodel: 'deepseek-reasoner',
         think: true,
-        tip: "DeepSeek R1",
-        support: "text",
+        tip: 'DeepSeek R1',
+        support: 'text',
         type: 2,
-        desc: "Strong writing and coding skills",
-        modelicon: "/static/icon/deepseek.png",
-        modelinfo: ""
+        desc: 'Strong writing and coding skills',
+        modelicon: '/static/icon/deepseek.png',
+        modelinfo: '',
       },
       {
-        name: "Gemini 2.5 Flash (Google)",
-        model: "gemini-2.5-flash-preview-05-20",
-        imagemodel: "gemini-2.5-flash-preview-05-20",
-        textmodel: "gemini-2.5-flash-preview-05-20",
+        name: 'Gemini 2.5 Flash (Google)',
+        model: 'gemini-2.5-flash-preview-05-20',
+        imagemodel: 'gemini-2.5-flash-preview-05-20',
+        textmodel: 'gemini-2.5-flash-preview-05-20',
         think: false,
-        tip: "Gemini 2.5 Flash (Google)",
-        support: "text",
+        tip: 'Gemini 2.5 Flash (Google)',
+        support: 'text',
         type: 2,
-        desc: "Multimodal graphics and text, quick response",
-        modelicon: "/static/icon/gemini.png",
-        modelinfo: ""
+        desc: 'Multimodal graphics and text, quick response',
+        modelicon: '/static/icon/gemini.png',
+        modelinfo: '',
       },
       {
-        name: "Grok 4 (Elon Musk)",
-        model: "grok-4-0709",
-        imagemodel: "grok-4-0709",
-        textmodel: "grok-4-0709",
+        name: 'Grok 4 (Elon Musk)',
+        model: 'grok-4-0709',
+        imagemodel: 'grok-4-0709',
+        textmodel: 'grok-4-0709',
         think: false,
-        tip: "Grok 4 (Elon Musk)",
-        support: "image",
+        tip: 'Grok 4 (Elon Musk)',
+        support: 'image',
         type: 2,
-        desc: "Expert in Q&A, lively expression style",
-        modelicon: "/static/icon/grok.png",
-        modelinfo: ""
+        desc: 'Expert in Q&A, lively expression style',
+        modelicon: '/static/icon/grok.png',
+        modelinfo: '',
       },
       {
-        name: "DouBao 1.6 Thinking (TikTok)",
-        model: "doubao-seed-1-6-thinking-250615",
-        imagemodel: "doubao-seed-1-6-thinking-250615",
-        textmodel: "doubao-seed-1-6-thinking-250615",
+        name: 'DouBao 1.6 Thinking (TikTok)',
+        model: 'doubao-seed-1-6-thinking-250615',
+        imagemodel: 'doubao-seed-1-6-thinking-250615',
+        textmodel: 'doubao-seed-1-6-thinking-250615',
         think: true,
-        tip: "DouBao 1.6 Thinking (TikTok)",
-        support: "image",
+        tip: 'DouBao 1.6 Thinking (TikTok)',
+        support: 'image',
         type: 2,
-        desc: "Multimodal graphics and text, reasoning enhancement",
-        modelicon: "/static/icon/doubao.png",
-        modelinfo: ""
+        desc: 'Multimodal graphics and text, reasoning enhancement',
+        modelicon: '/static/icon/doubao.png',
+        modelinfo: '',
       },
       // 顶级模型
       {
-        name: "GPT-5 (OpenAI)",
-        model: "gpt-5-chat-latest",
-        imagemodel: "gpt-5-chat-latest",
-        textmodel: "gpt-5-chat-latest",
+        name: 'GPT-5 (OpenAI)',
+        model: 'gpt-5-chat-latest',
+        imagemodel: 'gpt-5-chat-latest',
+        textmodel: 'gpt-5-chat-latest',
         think: false,
-        tip: "GPT-5 (OpenAI)",
-        support: "image",
+        tip: 'GPT-5 (OpenAI)',
+        support: 'image',
         type: 3,
-        desc: "Good at fast coding and analysis",
-        modelicon: "/static/icon/gpt_round.png",
-        modelinfo: ""
+        desc: 'Good at fast coding and analysis',
+        modelicon: '/static/icon/gpt_round.png',
+        modelinfo: '',
       },
       {
-        name: "Claude 4.5 Sonnet (Anthropic)",
-        model: "claude-sonnet-4-5-20250929",
-        imagemodel: "claude-sonnet-4-5-20250929",
-        textmodel: "claude-sonnet-4-5-20250929",
+        name: 'Claude 4.5 Sonnet (Anthropic)',
+        model: 'claude-sonnet-4-5-20250929',
+        imagemodel: 'claude-sonnet-4-5-20250929',
+        textmodel: 'claude-sonnet-4-5-20250929',
         think: false,
-        tip: "Claude 4.5 Sonnet (Anthropic)",
-        support: "text",
+        tip: 'Claude 4.5 Sonnet (Anthropic)',
+        support: 'text',
         type: 3,
-        desc: "Strongest in coding, suitable for complex tasks",
-        modelicon: "/static/icon/claude.png",
-        modelinfo: ""
+        desc: 'Strongest in coding, suitable for complex tasks',
+        modelicon: '/static/icon/claude.png',
+        modelinfo: '',
       },
       {
-        name: "Claude 4.5 Sonnet Thinking (Anthropic)",
-        model: "claude-sonnet-4-5-20250929-think",
-        imagemodel: "claude-sonnet-4-5-20250929",
-        textmodel: "claude-sonnet-4-5-20250929",
+        name: 'Claude 4.5 Sonnet Thinking (Anthropic)',
+        model: 'claude-sonnet-4-5-20250929-think',
+        imagemodel: 'claude-sonnet-4-5-20250929',
+        textmodel: 'claude-sonnet-4-5-20250929',
         think: true,
-        tip: "Claude 4.5 Sonnet Thinking (Anthropic)",
-        support: "text",
+        tip: 'Claude 4.5 Sonnet Thinking (Anthropic)',
+        support: 'text',
         type: 3,
-        desc: "Deep reasoning enhancement",
-        modelicon: "/static/icon/claude.png",
-        modelinfo: ""
+        desc: 'Deep reasoning enhancement',
+        modelicon: '/static/icon/claude.png',
+        modelinfo: '',
       },
       {
-        name: "Grok 3 Thinking (Elon Musk)",
-        model: "grok-3-mini",
-        imagemodel: "grok-3-mini",
-        textmodel: "grok-3-mini",
+        name: 'Grok 3 Thinking (Elon Musk)',
+        model: 'grok-3-mini',
+        imagemodel: 'grok-3-mini',
+        textmodel: 'grok-3-mini',
         think: true,
-        tip: "Grok 3 Thinking (Elon Musk)",
-        support: "image",
+        tip: 'Grok 3 Thinking (Elon Musk)',
+        support: 'image',
         type: 3,
-        desc: "Strengthened logical reasoning and knowledge expression",
-        modelicon: "/static/icon/grok.png",
-        modelinfo: ""
+        desc: 'Strengthened logical reasoning and knowledge expression',
+        modelicon: '/static/icon/grok.png',
+        modelinfo: '',
       },
       {
-        name: "Gemini 2.5 Pro (Google)",
-        model: "gemini-2.5-pro",
-        imagemodel: "gemini-2.5-pro",
-        textmodel: "gemini-2.5-pro",
+        name: 'Gemini 2.5 Pro (Google)',
+        model: 'gemini-2.5-pro',
+        imagemodel: 'gemini-2.5-pro',
+        textmodel: 'gemini-2.5-pro',
         think: false,
-        tip: "Gemini 2.5 Pro (Google)",
-        support: "text",
+        tip: 'Gemini 2.5 Pro (Google)',
+        support: 'text',
         type: 3,
-        desc: "Powerful multimodal capabilities, proficient in graphics, text, and code",
-        modelicon: "/static/icon/gemini.png",
-        modelinfo: ""
-      }
+        desc: 'Powerful multimodal capabilities, proficient in graphics, text, and code',
+        modelicon: '/static/icon/gemini.png',
+        modelinfo: '',
+      },
     ],
   };
   return (format_res?.models ?? []).map((model) => ({
@@ -235,17 +233,16 @@ export const getDeModels = async (token: string = "") => {
 
 // 和De的模型对话
 export const generateDeOpenAIChatCompletion = async (
-  token: string = "",
+  token: string = '',
   body: object,
-  url: string,
+  url: string
 ): Promise<[Response | null, AbortController]> => {
-
   let controller: any;
   let res: any;
   let error = null;
 
   let urlObjs = await getDeBaseUrls();
-  let index = urlObjs.findIndex(item => item.url === url);
+  let index = urlObjs.findIndex((item) => item.url === url);
   if (index !== -1) {
     // 移除该元素
     let koreaItem = urlObjs.splice(index, 1)[0];
@@ -262,16 +259,16 @@ export const generateDeOpenAIChatCompletion = async (
       if (res.status == 200) {
         break;
       } else {
-        throw new Error("error");
+        throw new Error('error');
       }
     } catch (err) {
       controller.abort();
-      if (err?.message == "error") {
+      if (err?.message == 'error') {
         errorUrl.push(urlObj);
       }
       if (urlObj.name === urlObjs[urlObjs.length - 1].name) {
         try {
-          let checkUrl = urlObjs.filter(item => !errorUrl.includes(item));
+          let checkUrl = urlObjs.filter((item) => !errorUrl.includes(item));
           if (checkUrl.length > 0 && !checkUrl.includes(repeatUrl)) {
             repeatUrl = checkUrl[0];
           }
@@ -280,7 +277,7 @@ export const generateDeOpenAIChatCompletion = async (
           if (res.status == 200) {
             break;
           } else {
-            throw new Error("error");
+            throw new Error('error');
           }
         } catch (err) {
           error = err;
@@ -289,7 +286,6 @@ export const generateDeOpenAIChatCompletion = async (
       }
     }
   }
-
 
   if (error) {
     throw error;
@@ -304,26 +300,27 @@ const getDeOpenAIChatCompletion = async (
   body: Object,
   controller: any,
   timeFlag: boolean,
-  token: string = ""
+  token: string = ''
 ) => {
   let res: any;
-  let overallTimeout = null
+  let overallTimeout = null;
   if (timeFlag) {
     overallTimeout = setTimeout(() => {
       controller.abort();
       throw new Error('timeout');
-    }, 10000);
+    }, 120000);
   }
+  console.log('ai会话请求封装');
   res = await fetch(`${urlObj.url}/chat/completion/proxy`, {
     signal: controller.signal,
-    method: "POST",
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       ...body,
-      project: "DecentralGPT",
+      project: 'DecentralGPT',
       stream: true,
     }),
   }).finally(() => {
@@ -333,11 +330,11 @@ const getDeOpenAIChatCompletion = async (
   });
 
   return res;
-}
+};
 
 // 型对话给提问内容添加一个简语
 export const generateDeTitle = async (
-  token: string = "",
+  token: string = '',
   template: string,
   model: string,
   prompt: string,
@@ -347,7 +344,7 @@ export const generateDeTitle = async (
   let res: any;
 
   let urls = await getDeBaseUrls();
-  let index = urls.findIndex(item => item.url === url);
+  let index = urls.findIndex((item) => item.url === url);
   if (index !== -1) {
     // 移除该元素
     let koreaItem = urls.splice(index, 1)[0];
@@ -360,10 +357,10 @@ export const generateDeTitle = async (
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/chat/completion/proxy`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -371,23 +368,23 @@ export const generateDeTitle = async (
           // node_id: nodeList?.[0],
           messages: [
             {
-              role: "user",
+              role: 'user',
               content: template,
             },
           ],
           stream: false,
-          project: "DecentralGPT",
+          project: 'DecentralGPT',
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
           enable_thinking: false,
           reload: false,
-          audio: false
-        })
+          audio: false,
+        }),
       });
       res = await result.json();
       break;
     } catch (err) {
-      console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
+      console.log('会话TITLE-ERROR', '域名：' + domain.name + '请求失败');
       if (domain.name == urls[urls.length - 1].name) {
         error = err;
       }
@@ -398,24 +395,16 @@ export const generateDeTitle = async (
     throw error;
   }
 
-  return (
-    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? "New Chat"
-  );
+  return res?.choices[0]?.message?.content.replace(/["']/g, '') ?? 'New Chat';
 };
 
-
 // 获取最后提问的词语
-export const generateSearchKeyword = async (
-  token: string = "",
-  messages: Object,
-  content: string,
-  url: string
-) => {
+export const generateSearchKeyword = async (token: string = '', messages: Object, content: string, url: string) => {
   let error = null;
   let res: any;
 
   let urls = await getDeBaseUrls();
-  let index = urls.findIndex(item => item.url === url);
+  let index = urls.findIndex((item) => item.url === url);
   if (index !== -1) {
     // 移除该元素
     let koreaItem = urls.splice(index, 1)[0];
@@ -426,10 +415,10 @@ export const generateSearchKeyword = async (
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/chat/completion/proxy`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -437,18 +426,18 @@ export const generateSearchKeyword = async (
           // node_id: nodeList?.[0],
           messages: messages,
           stream: false,
-          project: "DecentralGPT",
+          project: 'DecentralGPT',
           // Restricting the max tokens to 50 to avoid long titles
           max_tokens: 50,
           enable_thinking: false,
           reload: false,
-          audio: false
-        })
+          audio: false,
+        }),
       });
       res = await result.json();
       break;
     } catch (err) {
-      console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
+      console.log('会话TITLE-ERROR', '域名：' + domain.name + '请求失败');
       if (domain.name == urls[urls.length - 1].name) {
         error = err;
       }
@@ -458,22 +447,16 @@ export const generateSearchKeyword = async (
   if (error) {
     throw error;
   }
-  return (
-    res?.choices[0]?.message?.content.replace(/["']/g, "") ?? content
-  );
+  return res?.choices[0]?.message?.content.replace(/["']/g, '') ?? content;
 };
 
 // 语音内容转换为文本
-export const tranAudioToTxt = async (
-  token: string = "",
-  data: string = "",
-  url: string
-) => {
+export const tranAudioToTxt = async (token: string = '', data: string = '', url: string) => {
   let error = null;
   let res: any;
 
   let urls = await getDeBaseUrls();
-  let index = urls.findIndex(item => item.url === url);
+  let index = urls.findIndex((item) => item.url === url);
   if (index !== -1) {
     // 移除该元素
     let koreaItem = urls.splice(index, 1)[0];
@@ -483,20 +466,20 @@ export const tranAudioToTxt = async (
   for (const domain of urls) {
     try {
       const result = await fetch(`${domain.url}/chat/audiototext`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          data: data
-        })
+          data: data,
+        }),
       });
       res = await result.json();
       break;
     } catch (err) {
-      console.log("会话TITLE-ERROR", "域名：" + domain.name + "请求失败");
+      console.log('会话TITLE-ERROR', '域名：' + domain.name + '请求失败');
       if (domain.name == urls[urls.length - 1].name) {
         error = err;
       }
@@ -507,7 +490,5 @@ export const tranAudioToTxt = async (
     throw error;
   }
 
-  return (
-    res?.data ?? "No text recognized"
-  );
+  return res?.data ?? 'No text recognized';
 };
