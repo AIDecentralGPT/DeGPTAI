@@ -16,42 +16,38 @@ import { defineConfig } from 'vite';
 // };
 
 export default defineConfig({
-	plugins: [
-		sveltekit()
-	],
-	define: {
-		APP_VERSION: JSON.stringify(process.env.npm_package_version)
-	},
-	worker: {
-		format: 'es'
-	},
-	optimizeDeps: {
-		include: ['core-js']
-	},
-	server: {
-		open: false, // 禁用自动打开浏览器
-		fs: {
-			allow: [
-				'./static',
-			],
-		}
-	},
-	build: {
+  plugins: [sveltekit()],
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
+  worker: {
+    format: 'es',
+  },
+  optimizeDeps: {
+    include: ['core-js'],
+  },
+  server: {
+    open: false, // 禁用自动打开浏览器
+    fs: {
+      allow: ['./static'],
+    },
+  },
+  build: {
     // 开启代码压缩
     minify: 'terser',
-		rollupOptions: {
-			output: {
-				assetFileNames: 'assets/[name]-[hash][extname]',
-				chunkFileNames: 'chunks/[name]-[hash].js',
-				entryFileNames: 'entries/[name]-[hash].js'
-			}
-		},
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'chunks/[name]-[hash].js',
+        entryFileNames: 'entries/[name]-[hash].js',
+      },
+    },
     terserOptions: {
       // 自定义 terser 配置
       compress: {
         // drop_console: true, // 移除 console 语句
-        drop_debugger: true // 移除 debugger 语句
-      }
-    }
-  }
+        drop_debugger: true, // 移除 debugger 语句
+      },
+    },
+  },
 });

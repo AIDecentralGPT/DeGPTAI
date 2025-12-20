@@ -1,27 +1,20 @@
 <script lang="ts">
-  import { getContext, onMount } from "svelte";
-  import { toast } from "svelte-sonner";
+  import { getContext, onMount } from 'svelte';
+  import { toast } from 'svelte-sonner';
 
-  import {
-    WEBUI_NAME,
-    chatId,
-    showArchivedChats,
-    showSidebar,
-    user,
-    initPageFlag
-  } from "$lib/stores";
+  import { WEBUI_NAME, chatId, showArchivedChats, showSidebar, user, initPageFlag } from '$lib/stores';
 
-  import ShareChatModal from "../chat/ShareChatModal.svelte";
-  import ModelSelector from "../chat/ModelSelector.svelte";
-  import Tooltip from "../common/Tooltip.svelte";
-  import Menu from "./Navbar/Menu.svelte";
-  import UserMenu from "./Sidebar/UserMenu.svelte";
-  import LanguageMenu from "./Sidebar/LanguageMenu.svelte";
-  import MenuLines from "../icons/MenuLines.svelte";
+  import ShareChatModal from '../chat/ShareChatModal.svelte';
+  import ModelSelector from '../chat/ModelSelector.svelte';
+  import Tooltip from '../common/Tooltip.svelte';
+  import Menu from './Navbar/Menu.svelte';
+  import UserMenu from './Sidebar/UserMenu.svelte';
+  import LanguageMenu from './Sidebar/LanguageMenu.svelte';
+  import MenuLines from '../icons/MenuLines.svelte';
   import { generateInitialsImage } from '$lib/utils';
 
   import { getLanguages } from '$lib/i18n';
-  const i18n = getContext("i18n");
+  const i18n = getContext('i18n');
 
   export let initNewChat: Function;
   export let title: string = $WEBUI_NAME;
@@ -42,34 +35,36 @@
     // 检查是否为移动端设备
     isMobile = /android|iPad|iPhone|iPod|IEMobile|Opera Mini/i.test(userAgent);
     languages = await getLanguages();
-	});
+  });
 
-
-	const demo = async () => {
-
+  const demo = async () => {
     // 在调用服务端初始化请求时需要传入该MetaInfo值
     const MetaInfo = window.getMetaInfo();
 
-    console.log("MetaInfo:", MetaInfo);
-    toast.success(JSON.stringify(MetaInfo))
-    
+    console.log('MetaInfo:', MetaInfo);
+    toast.success(JSON.stringify(MetaInfo));
+
     // 接下来您进行调用服务端初始化请求获取TransactionUrl
     const TransactionUrl = ''; // 此处值应为调用服务端初始化接口返回的TransactionUrl
 
     // // 接下来直接跳转TransactionUrl即可开始服务
     // window.location.href = TransactionUrl;
-
-}
-
+  };
 </script>
 
-
-
 <ShareChatModal bind:show={showShareChatModal} chatId={$chatId} />
-<nav id="nav" class=" sticky py-2.5 top-0 flex flex-row justify-center z-30">
+<nav
+  id="nav"
+  class=" sticky py-2.5 top-0 flex flex-row justify-center z-30 pt-[calc(env(safe-area-inset-top)+2px)]
+"
+>
   <div class=" flex max-w-full w-full mx-auto px-5 pt-0.5 md:px-[1rem]">
     <div class="flex items-center w-full max-w-full">
-      <div class="{$showSidebar ? 'md:hidden' : ''} mr-3 self-start flex flex-none items-center text-gray-600 dark:text-gray-400">
+      <div
+        class="{$showSidebar
+          ? 'md:hidden'
+          : ''} mr-3 self-start flex flex-none items-center text-gray-600 dark:text-gray-400"
+      >
         <button
           id="sidebar-toggle-button"
           class="cursor-pointer px-2 py-2 flex rounded-xl hover:bg-gray-100 dark:hover:bg-gray-850 transition"
@@ -88,9 +83,7 @@
         {/if}
       </div>
 
-      <div
-        class="self-start flex flex-none items-center text-gray-600 dark:text-gray-400"
-      >
+      <div class="self-start flex flex-none items-center text-gray-600 dark:text-gray-400">
         <!-- <div class="md:hidden flex self-center w-[1px] h-5 mx-2 bg-gray-300 dark:bg-stone-700" /> -->
 
         {#if shareEnabled}
@@ -127,8 +120,8 @@
             </button>
           </Menu>
         {/if}
-        
-        <Tooltip content={$i18n.t("New Chat")}>
+
+        <Tooltip content={$i18n.t('New Chat')}>
           <button
             id="new-chat-button"
             class=" flex {$showSidebar
@@ -139,12 +132,7 @@
             }}
           >
             <div class=" m-auto self-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-5 h-5"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                 <path
                   d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z"
                 />
@@ -160,24 +148,25 @@
             className="max-w-[200px]"
             role={$user?.role}
             on:show={(e) => {
-              if (e.detail === "archived-chat") {
+              if (e.detail === 'archived-chat') {
                 showArchivedChats.set(true);
               }
-            }}>
-              <button
-                class="select-none flex rounded-xl p-1.5 w-full hover:bg-gray-100 dark:hover:bg-gray-850 transition"
-                aria-label="User Menu"
-              >
-                <div class=" self-center">
-                  <div class="size-8 object-cover rounded-full bg-primary">
-                    <img
-                      src={ $user.profile_image_url=="" ? generateInitialsImage($user.name) : $user.profile_image_url }
-                      alt="profile"
-                      class=" rounded-full size-8 object-cover"
-                    />
-                  </div>
+            }}
+          >
+            <button
+              class="select-none flex rounded-xl p-1.5 w-full hover:bg-gray-100 dark:hover:bg-gray-850 transition"
+              aria-label="User Menu"
+            >
+              <div class=" self-center">
+                <div class="size-8 object-cover rounded-full bg-primary">
+                  <img
+                    src={$user.profile_image_url == '' ? generateInitialsImage($user.name) : $user.profile_image_url}
+                    alt="profile"
+                    class=" rounded-full size-8 object-cover"
+                  />
                 </div>
-              </button>
+              </div>
+            </button>
           </UserMenu>
         {/if}
         <!-- {#if isMobile}

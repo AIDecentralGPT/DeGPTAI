@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { toast } from "svelte-sonner";
-  import { onMount, tick, getContext } from "svelte";
+  import { toast } from 'svelte-sonner';
+  import { onMount, tick, getContext } from 'svelte';
   import {
     mobile,
     modelfiles,
@@ -11,43 +11,35 @@
     showSidebar,
     toolflag,
     tooltype,
-  } from "$lib/stores";
-  import { blobToFile, findWordIndices, checkPlatform } from "$lib/utils";
+  } from '$lib/stores';
+  import { blobToFile, findWordIndices, checkPlatform } from '$lib/utils';
 
-  import {
-    uploadDocToVectorDB,
-    uploadWebToVectorDB,
-    uploadYoutubeTranscriptionToVectorDB,
-  } from "$lib/apis/rag";
-  import {
-    SUPPORTED_FILE_TYPE,
-    SUPPORTED_FILE_EXTENSIONS,
-    WEBUI_BASE_URL,
-  } from "$lib/constants";
+  import { uploadDocToVectorDB, uploadWebToVectorDB, uploadYoutubeTranscriptionToVectorDB } from '$lib/apis/rag';
+  import { SUPPORTED_FILE_TYPE, SUPPORTED_FILE_EXTENSIONS, WEBUI_BASE_URL } from '$lib/constants';
 
-  import { transcribeAudio } from "$lib/apis/audio";
+  import { transcribeAudio } from '$lib/apis/audio';
 
-  import Prompts from "./MessageInput/PromptCommands.svelte";
-  import AddFilesPlaceholder from "../AddFilesPlaceholder.svelte";
-  import Documents from "./MessageInput/Documents.svelte";
-  import Models from "./MessageInput/Models.svelte";
-  import UrlModels from "./MessageInput/UrlModels.svelte";
-  import Tools from "./MessageInput/Tools.svelte";
-  import ToolsSelect from "./MessageInput/ToolsSelect.svelte";
-  import Tooltip from "../common/Tooltip.svelte";
-  import XMark from "$lib/components/icons/XMark.svelte";
-  import { user as userStore } from "$lib/stores";
-  import FileSvg from "$lib/components/chat/Messages/FileSvg.svelte";
-  import { RealTimeSpeech } from "../../../plugins/rtspeech";
-  import { VoiceRecord } from "../../../plugins/voice";
+  import Prompts from './MessageInput/PromptCommands.svelte';
+  import AddFilesPlaceholder from '../AddFilesPlaceholder.svelte';
+  import Documents from './MessageInput/Documents.svelte';
+  import Models from './MessageInput/Models.svelte';
+  import UrlModels from './MessageInput/UrlModels.svelte';
+  import Tools from './MessageInput/Tools.svelte';
+  import ToolsSelect from './MessageInput/ToolsSelect.svelte';
+  import Tooltip from '../common/Tooltip.svelte';
+  import XMark from '$lib/components/icons/XMark.svelte';
+  import { user as userStore } from '$lib/stores';
+  import FileSvg from '$lib/components/chat/Messages/FileSvg.svelte';
+  import { RealTimeSpeech } from '../../../plugins/rtspeech';
+  import { VoiceRecord } from '../../../plugins/voice';
 
-  const i18n = getContext("i18n");
+  const i18n = getContext('i18n');
 
   export let submitPrompt: Function;
   export let stopResponse: Function;
 
   export let autoScroll = true;
-  export let selectedModel = "";
+  export let selectedModel = '';
   export let switchModel: any = [];
   // export let deepsearch = false;
 
@@ -66,41 +58,39 @@
 
   // 文件选择
   export let files: any[] = [];
-  export let toolInfo: any = { url: "", trantip: "" };
+  export let toolInfo: any = { url: '', trantip: '' };
 
   export let fileUploadEnabled = true;
   export let speechRecognitionEnabled = true;
 
-  export let prompt = "";
-  export let chatInputPlaceholder = "";
+  export let prompt = '';
+  export let chatInputPlaceholder = '';
   export let messages: any[] = [];
 
   // 要翻译的语言
-  let tranlang = "";
+  let tranlang = '';
 
   // let speechRecognition: any;
 
   let selectUrlUserPrompt = [
-    "Analyze the content of the web page",
-    "Summarize the web page",
-    "Extract the key data from the web page",
-    "Tell me what the web page is about",
-    "Write an original article referring to the web page",
+    'Analyze the content of the web page',
+    'Summarize the web page',
+    'Extract the key data from the web page',
+    'Tell me what the web page is about',
+    'Write an original article referring to the web page',
   ];
 
   $: if (prompt) {
     if (chatTextAreaElement) {
-      chatTextAreaElement.style.height = "";
-      chatTextAreaElement.style.height =
-        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+      chatTextAreaElement.style.height = '';
+      chatTextAreaElement.style.height = Math.min(chatTextAreaElement.scrollHeight, 200) + 'px';
     }
   }
 
   $: if (chatInputPlaceholder) {
     if (chatTextAreaElement) {
-      chatTextAreaElement.style.height = "";
-      chatTextAreaElement.style.height =
-        Math.min(chatTextAreaElement.scrollHeight, 200) + "px";
+      chatTextAreaElement.style.height = '';
+      chatTextAreaElement.style.height = Math.min(chatTextAreaElement.scrollHeight, 200) + 'px';
     }
   }
 
@@ -108,28 +98,8 @@
     files = [];
   }
 
-  $: if (switchModel) {
-    // const userselmodels = $models.filter(item => switchModel.includes(item.id));
-    // if (userselmodels.length > 0) {
-    //   const support = userselmodels[0]?.support;
-    //   if (support == "audio") {
-    //     fileUploadEnabled = false;
-    //     speechRecognitionEnabled = true;
-    //     isRecording = false;
-    //   } else if (support == "image") {
-    //     fileUploadEnabled = true;
-    //     speechRecognitionEnabled = false;
-    //     isRecording = false;
-    //   } else {
-    //     fileUploadEnabled = false;
-    //     speechRecognitionEnabled = false;
-    //     isRecording = false;
-    //   }
-    // }
-  }
-
   const scrollToBottom = () => {
-    const element = document.getElementById("messages-container");
+    const element = document.getElementById('messages-container');
     element.scrollTop = element.scrollHeight;
   };
 
@@ -143,32 +113,30 @@
     mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.onstart = () => {
       isRecording = true;
-      console.log("Recording started");
+      console.log('Recording started');
     };
     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
     mediaRecorder.onstop = async () => {
       isRecording = false;
-      console.log("Recording stopped");
+      console.log('Recording stopped');
 
       // Create a blob from the audio chunks
-      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
 
-      const file = blobToFile(audioBlob, "recording.wav");
+      const file = blobToFile(audioBlob, 'recording.wav');
 
-      const res = await transcribeAudio(localStorage.token, file).catch(
-        (error) => {
-          toast.error(error);
-          return null;
-        }
-      );
+      const res = await transcribeAudio(localStorage.token, file).catch((error) => {
+        toast.error(error);
+        return null;
+      });
 
       if (res) {
         prompt = res.text;
         await tick();
         chatTextAreaElement?.focus();
 
-        if (prompt !== "" && $settings?.speechAutoSend === true) {
-          submitPrompt(prompt, { url: "", trantip: "" }, user);
+        if (prompt !== '' && $settings?.speechAutoSend === true) {
+          submitPrompt(prompt, { url: '', trantip: '' }, user);
         }
       }
 
@@ -216,126 +184,24 @@
 
   const saveRecording = (blob) => {
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     document.body.appendChild(a);
-    a.style = "display: none";
+    a.style = 'display: none';
     a.href = url;
-    a.download = "recording.wav";
+    a.download = 'recording.wav';
     a.click();
     window.URL.revokeObjectURL(url);
   };
-
-  // const speechRecognitionHandler = () => {
-  //   // Check if SpeechRecognition is supported
-  //   if (isRecording) {
-  //     if (speechRecognition) {
-  //       speechRecognition.stop();
-  //     }
-
-  //     if (mediaRecorder) {
-  //       mediaRecorder.stop();
-  //     }
-  //     isRecording = false;
-  //   } else {
-  //     isRecording = true;
-
-  //     if ($settings?.audio?.STTEngine ?? "" !== "") {
-  //       startRecording();
-  //     } else {
-  //       if (
-  //         "SpeechRecognition" in window ||
-  //         "webkitSpeechRecognition" in window
-  //       ) {
-  //         // Create a SpeechRecognition object
-  //         speechRecognition = new (window.SpeechRecognition ||
-  //           window.webkitSpeechRecognition)();
-
-  //         // Set continuous to true for continuous recognition
-  //         speechRecognition.continuous = true;
-  //         speechRecognition.interimResults = true;
-
-  //         // Set the timeout for turning off the recognition after inactivity (in milliseconds)
-  //         // const inactivityTimeout = 3000; // 3 seconds
-
-  //         // let timeoutId;
-  //         // Start recognition
-  //         speechRecognition.start();
-
-  //         // Event triggered when speech is recognized
-  //         speechRecognition.onresult = async (event) => {
-  //           // Clear the inactivity timeout
-  //           // clearTimeout(timeoutId);
-
-  //           // Handle recognized speech
-  //           console.log(event);
-  //           const transcript =
-  //             event.results[Object.keys(event.results).length - 1][0]
-  //               .transcript;
-
-  //           prompt = `${prompt}${transcript}`;
-
-  //           await tick();
-  //           chatTextAreaElement?.focus();
-
-  //           // Restart the inactivity timeout
-  //           // timeoutId = setTimeout(() => {
-  //           //   console.log("Speech recognition turned off due to inactivity.");
-  //           //   speechRecognition.stop();
-  //           // }, inactivityTimeout);
-  //         };
-
-  //         // Event triggered when recognition is ended
-  //         speechRecognition.onend = function () {
-  //           // Restart recognition after it ends
-  //           // console.log("recognition ended");
-  //           // isRecording = false;
-  //           // if (prompt !== "" && $settings?.speechAutoSend === true) {
-  //           //   submitPrompt(prompt, toolInfo, user);
-  //           // }
-  //           if (isRecording) {
-  //             speechRecognition.start();
-  //           } else {
-  //             if (speechRecognition) {
-  //               speechRecognition.stop();
-  //             }
-  //             if (mediaRecorder) {
-  //               mediaRecorder.stop();
-  //             }
-  //           }
-  //         };
-
-  //         // Event triggered when an error occurs
-  //         speechRecognition.onerror = function (event) {
-  //           console.log(event);
-  //           // toast.error(
-  //           //   $i18n.t(`Speech recognition error: {{error}}`, {
-  //           //     error: event.error,
-  //           //   })
-  //           // );
-  //           // isRecording = false;
-  //         };
-  //       } else {
-  //         toast.error(
-  //           $i18n.t("SpeechRecognition API is not supported in this browser.")
-  //         );
-  //       }
-  //     }
-  //   }
-  // };
 
   const speechRecognitionHandler = async () => {
     if (isRecording) {
       isRecording = false;
     } else {
       const perState = await VoiceRecord.checkPermissions();
-      if (perState.audio != "granted") {
+      if (perState.audio != 'granted') {
         const perState = await VoiceRecord.requestPermissions();
-        if (perState.audio != "granted") {
-          toast.error(
-            $i18n.t(
-              "Your device does not support the speech recognition function."
-            )
-          );
+        if (perState.audio != 'granted') {
+          toast.error($i18n.t('Your device does not support the speech recognition function.'));
           return;
         }
       }
@@ -347,36 +213,34 @@
     console.log(file);
 
     const doc = {
-      type: "doc",
+      type: 'doc',
       name: file.name,
-      collection_name: "",
-      anaylis_type: "file",
+      collection_name: '',
+      anaylis_type: 'file',
       upload_status: false,
-      text: "",
+      text: '',
       image: [],
-      error: "",
-      url: "",
+      error: '',
+      url: '',
     };
 
     try {
       // files = [...files, doc];
       files = [doc];
-      if (["audio/mpeg", "audio/wav"].includes(file["type"])) {
-        const res = await transcribeAudio(localStorage.token, file).catch(
-          (error) => {
-            toast.error(error);
-            return null;
-          }
-        );
+      if (['audio/mpeg', 'audio/wav'].includes(file['type'])) {
+        const res = await transcribeAudio(localStorage.token, file).catch((error) => {
+          toast.error(error);
+          return null;
+        });
 
         if (res) {
           console.log(res);
-          const blob = new Blob([res.text], { type: "text/plain" });
+          const blob = new Blob([res.text], { type: 'text/plain' });
           file = blobToFile(blob, `${file.name}.txt`);
         }
       }
 
-      const res = await uploadDocToVectorDB(localStorage.token, "", file);
+      const res = await uploadDocToVectorDB(localStorage.token, '', file);
 
       if (res) {
         doc.upload_status = true;
@@ -398,17 +262,17 @@
     console.log(url);
 
     const doc = {
-      type: "doc",
+      type: 'doc',
       name: url,
-      collection_name: "",
+      collection_name: '',
       upload_status: false,
       url: url,
-      error: "",
+      error: '',
     };
 
     try {
       files = [...files, doc];
-      const res = await uploadWebToVectorDB(localStorage.token, "", url);
+      const res = await uploadWebToVectorDB(localStorage.token, '', url);
 
       if (res) {
         doc.upload_status = true;
@@ -426,20 +290,17 @@
     console.log(url);
 
     const doc = {
-      type: "doc",
+      type: 'doc',
       name: url,
-      collection_name: "",
+      collection_name: '',
       upload_status: false,
       url: url,
-      error: "",
+      error: '',
     };
 
     try {
       files = [...files, doc];
-      const res = await uploadYoutubeTranscriptionToVectorDB(
-        localStorage.token,
-        url
-      );
+      const res = await uploadYoutubeTranscriptionToVectorDB(localStorage.token, url);
 
       if (res) {
         doc.upload_status = true;
@@ -458,11 +319,11 @@
 
     // 注册语音事件监听器
 
-    const dropZone = document.querySelector("body");
+    const dropZone = document.querySelector('body');
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        console.log("Escape");
+      if (event.key === 'Escape') {
+        console.log('Escape');
         dragged = false;
       }
     };
@@ -485,17 +346,13 @@
 
         if (inputFiles && inputFiles.length > 0) {
           inputFiles.forEach((file) => {
-            if (
-              ["image/gif", "image/webp", "image/jpeg", "image/png"].includes(
-                file["type"]
-              )
-            ) {
+            if (['image/gif', 'image/webp', 'image/jpeg', 'image/png'].includes(file['type'])) {
               let reader = new FileReader();
               reader.onload = (event) => {
                 const img = new Image();
                 img.onload = function () {
-                  const canvas = document.createElement("canvas");
-                  let ctx = canvas.getContext("2d");
+                  const canvas = document.createElement('canvas');
+                  let ctx = canvas.getContext('2d');
                   canvas.width = img.width;
                   canvas.height = img.height;
                   ctx?.drawImage(img, 0, 0);
@@ -514,7 +371,7 @@
                   files = [
                     ...files,
                     {
-                      type: "image",
+                      type: 'image',
                       url: compressedDataUrl,
                     },
                   ];
@@ -523,16 +380,15 @@
               };
               reader.readAsDataURL(file);
             } else if (
-              SUPPORTED_FILE_TYPE.includes(file["type"]) ||
-              SUPPORTED_FILE_EXTENSIONS.includes(file.name.split(".").at(-1))
+              SUPPORTED_FILE_TYPE.includes(file['type']) ||
+              SUPPORTED_FILE_EXTENSIONS.includes(file.name.split('.').at(-1))
             ) {
               uploadDoc(file);
             } else {
               toast.error(
-                $i18n.t(
-                  `Unknown File Type {{file_type}}, but accepting and treating as plain text`,
-                  { file_type: file["type"] }
-                )
+                $i18n.t(`Unknown File Type {{file_type}}, but accepting and treating as plain text`, {
+                  file_type: file['type'],
+                })
               );
               uploadDoc(file);
             }
@@ -545,18 +401,18 @@
       dragged = false;
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
-    dropZone?.addEventListener("dragover", onDragOver);
-    dropZone?.addEventListener("drop", onDrop);
-    dropZone?.addEventListener("dragleave", onDragLeave);
+    dropZone?.addEventListener('dragover', onDragOver);
+    dropZone?.addEventListener('drop', onDrop);
+    dropZone?.addEventListener('dragleave', onDragLeave);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
 
-      dropZone?.removeEventListener("dragover", onDragOver);
-      dropZone?.removeEventListener("drop", onDrop);
-      dropZone?.removeEventListener("dragleave", onDragLeave);
+      dropZone?.removeEventListener('dragover', onDragOver);
+      dropZone?.removeEventListener('drop', onDrop);
+      dropZone?.removeEventListener('dragleave', onDragLeave);
     };
   });
 
@@ -564,9 +420,9 @@
   //   ".log,.xml,.ini,.json,.md,.html,.htm,.css,.ts,.js,.cpp,.asp,.aspx,.config,.sql,.plsql,.py,.go,.vue,.java,.c," +
   //   ".cs,.h,.hsc,.bash,.swift,.svelte,.env,.r,.lua,.m,.mm,.perl,.rb,.rs,.db2,.scala,.dockerfile,.yml,.zip,.rar";
   const know_ext =
-    "image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*," +
-    "text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python," +
-    "text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed";
+    'image/*,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel,text/*,' +
+    'text/markdown,text/html,text/css,application/javascript,text/x-csrc,text/x-c++,text/x-python,' +
+    'text/x-java-source,text/x-csharp,text/x-shellscript,text/x-swift,application/x-zip-compressed,application/x-rar-compressed';
 
   // 新的语音逻辑
   let startRecordingFlag = false;
@@ -591,14 +447,14 @@
     // 更简洁的写法
     soundBars = Array.from({ length: Math.floor(width / 7) }, () => {
       return {
-        width: "w-[2px]",
-        height: "3px",
+        width: 'w-[2px]',
+        height: '3px',
       };
     });
   };
   // 检查触摸点是否在元素内
   function isTouchInElement(touch: any) {
-    const voiceEle = document.getElementById("voiceVolume");
+    const voiceEle = document.getElementById('voiceVolume');
     const rect = voiceEle.getBoundingClientRect();
     return (
       touch.clientX >= rect.left &&
@@ -608,7 +464,7 @@
     );
   }
   // 全局触摸移动 - 跟踪手指位置
-  document.addEventListener("touchmove", (e) => {
+  document.addEventListener('touchmove', (e) => {
     if (startRecordingFlag) {
       const touch = e.touches[0];
       if (isTouchInElement(touch)) {
@@ -619,7 +475,7 @@
     }
   });
   // 触摸结束 - 清理状态
-  document.addEventListener("touchend", async () => {
+  document.addEventListener('touchend', async () => {
     if (startRecordingFlag) {
       startRecordingFlag = false;
     }
@@ -634,44 +490,23 @@
     if (!isListening) {
       try {
         const perState = await VoiceRecord.checkPermissions();
-        if (perState.audio != "granted") {
-          toast.error(
-            $i18n.t(
-              "Your device does not support the speech recognition function."
-            )
-          );
+        if (perState.audio != 'granted') {
+          toast.error($i18n.t('Your device does not support the speech recognition function.'));
           return;
         }
         const ret = await VoiceRecord.startRecording();
         if (ret?.status) {
           isListening = true;
-          volumeListener = await VoiceRecord.addListener(
-            "volumeChange",
-            async (data) => {
-              if (data?.db && data.db > 55) {
-                await assignSoundBars(Math.floor((data.db - 50) / 2.5) + 3);
-              } else {
-                await assignSoundBars(3);
-              }
+          volumeListener = await VoiceRecord.addListener('volumeChange', async (data) => {
+            if (data?.db && data.db > 55) {
+              await assignSoundBars(Math.floor((data.db - 50) / 2.5) + 3);
+            } else {
+              await assignSoundBars(3);
             }
-          );
-          // textListener = await RealTimeSpeech.addListener(
-          //   "textChange",
-          //   async (data) => {
-          //     if (data?.text) {
-          //       hasText = true;
-          //       console.log("=======实时结果=======", data?.text);
-          //     }
-          //     if (data?.content) {
-          //       voicePrompt = voicePrompt + data?.content;
-          //       console.log("=========textChange==========", voicePrompt);
-          //       await sendVoiceText();
-          //     }
-          //   }
-          // );
+          });
         }
       } catch (error) {
-        console.error("启动失败:", error);
+        console.error('启动失败:', error);
       }
     }
   };
@@ -688,24 +523,20 @@
           const checkaudio = await checkAudioDuration(ret?.filePath);
           if (checkaudio) {
             submitPrompt(
-              "回复语音",
+              '回复语音',
               {
-                url: "",
-                trantip: "",
-                audio: { type: "base", data: ret?.filePath },
+                url: '',
+                trantip: '',
+                audio: { type: 'base', data: ret?.filePath },
               },
               user
             );
           } else {
-            toast.error($i18n.t("The voice clip is too short to be recognized."));
+            toast.error($i18n.t('The voice clip is too short to be recognized.'));
           }
         }
       } else {
-        toast.error(
-          $i18n.t(
-            "Network error! Please check your network connection and try again."
-          )
-        );
+        toast.error($i18n.t('Network error! Please check your network connection and try again.'));
         // clearTimeout(textValidTimer);
       }
     }
@@ -737,16 +568,14 @@
   const assignSoundBars = async (param: number) => {
     const newSoundBars = [...soundBars];
     newSoundBars.shift();
-    newSoundBars.push({ width: "w-[2px]", height: `${param}px` });
+    newSoundBars.push({ width: 'w-[2px]', height: `${param}px` });
     soundBars = newSoundBars;
     await tick();
   };
   // 校验录音文件时长是否超200ms
   async function checkAudioDuration(base64Wav: string) {
     try {
-      const pureBase64 = base64Wav.startsWith("data:")
-        ? base64Wav.split(",")[1]
-        : base64Wav;
+      const pureBase64 = base64Wav.startsWith('data:') ? base64Wav.split(',')[1] : base64Wav;
       const binaryStr = atob(pureBase64);
       const arrayBuffer = new ArrayBuffer(binaryStr.length);
       const uint8Arr = new Uint8Array(arrayBuffer);
@@ -761,7 +590,7 @@
       // 3. 解码音频数据，获取时长
       const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
       const duration = audioBuffer.duration; // 时长（秒）
-      console.log("音频时长：", (duration * 1000).toFixed(1), "ms");
+      console.log('音频时长：', (duration * 1000).toFixed(1), 'ms');
 
       // 4. 关闭 AudioContext（释放资源）
       audioCtx.close();
@@ -769,7 +598,7 @@
       // 5. 判断时长是否超过 200ms
       return duration > 0.5;
     } catch (error) {
-      console.error("音频解码/判断失败：", error.message);
+      console.error('音频解码/判断失败：', error.message);
       return false; // 解析失败视为「无效/过短」
     }
   }
@@ -784,9 +613,7 @@
     role="region"
     aria-label="Drag and Drop Container"
   >
-    <div
-      class="absolute w-full h-full backdrop-blur bg-gray-800/40 flex justify-center"
-    >
+    <div class="absolute w-full h-full backdrop-blur bg-gray-800/40 flex justify-center">
       <div class="m-auto pt-64 flex flex-col justify-center">
         <div class="max-w-md">
           <AddFilesPlaceholder />
@@ -796,21 +623,13 @@
   </div>
 {/if}
 
-<div
-  class="fixed bottom-0 {$showSidebar
-    ? 'left-0 md:left-[246px]'
-    : 'left-0'} right-0"
->
+<div class="fixed bottom-0 {$showSidebar ? 'left-0 md:left-[246px]' : 'left-0'} right-0">
   <div class="w-full">
-    <div
-      class="px-2.5 md:px-16 -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center"
-    >
+    <div class="px-2.5 md:px-16 -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center">
       <div class="flex flex-col w-full">
         <div class="relative">
           {#if autoScroll === false && messages.length > 0}
-            <div
-              class=" absolute -top-12 left-0 right-0 flex justify-center z-30"
-            >
+            <div class=" absolute -top-12 left-0 right-0 flex justify-center z-30">
               <button
                 class=" bg-white border border-gray-100 dark:border-none dark:bg-white/20 p-1.5 rounded-full"
                 on:click={() => {
@@ -818,12 +637,7 @@
                   scrollToBottom();
                 }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  class="w-5 h-5"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                   <path
                     fill-rule="evenodd"
                     d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"
@@ -836,9 +650,9 @@
         </div>
 
         <div class="w-full relative">
-          {#if prompt.charAt(0) === "/"}
+          {#if prompt.charAt(0) === '/'}
             <Prompts bind:this={promptsElement} bind:prompt />
-          {:else if prompt.charAt(0) === "#"}
+          {:else if prompt.charAt(0) === '#'}
             <Documents
               bind:this={documentsElement}
               bind:prompt
@@ -855,7 +669,7 @@
                 files = [
                   ...files,
                   {
-                    type: e?.detail?.type ?? "doc",
+                    type: e?.detail?.type ?? 'doc',
                     ...e.detail,
                     upload_status: true,
                   },
@@ -877,7 +691,7 @@
             }}
           /> -->
 
-          {#if selectedModel !== ""}
+          {#if selectedModel !== ''}
             <div
               class="px-3 py-2.5 text-left w-full flex justify-between items-center absolute bottom-0 left-0 right-0 bg-gradient-to-t from-50% from-white dark:from-gray-900"
             >
@@ -886,24 +700,18 @@
                   crossorigin="anonymous"
                   alt="model profile"
                   class="size-5 max-w-[28px] object-cover rounded-full"
-                  src={$modelfiles.find(
-                    (modelfile) => modelfile.tagName === selectedModel.id
-                  )?.imageUrl ??
-                    ($i18n.language === "dg-DG"
-                      ? `/doge.png`
-                      : `${WEBUI_BASE_URL}/static/favicon.png`)}
+                  src={$modelfiles.find((modelfile) => modelfile.tagName === selectedModel.id)?.imageUrl ??
+                    ($i18n.language === 'dg-DG' ? `/doge.png` : `${WEBUI_BASE_URL}/static/favicon.png`)}
                 />
                 <div>
-                  Talking to <span class=" font-medium"
-                    >{selectedModel.name}
-                  </span>
+                  Talking to <span class=" font-medium">{selectedModel.name} </span>
                 </div>
               </div>
               <div>
                 <button
                   class="flex items-center"
                   on:click={() => {
-                    selectedModel = "";
+                    selectedModel = '';
                   }}
                 >
                   <XMark />
@@ -929,14 +737,12 @@
 
     <div class="bg-white dark:bg-gray-900">
       <div class="px-2.5 md:px-20 mx-auto inset-x-0">
-        {#if messages?.filter((item) => item.role === "assistant").length >= 5 && $userStore?.role === "visitor"}
+        {#if messages?.filter((item) => item.role === 'assistant').length >= 5 && $userStore?.role === 'visitor'}
           <div
             class="flex gap-1 items-center flex-wrap flex-1 justify-between mb-2 p-4 px-6 bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 rounded-3xl transition group"
           >
             <span>
-              {$i18n.t(
-                "Get smarter replies, upload files and pictures, and enjoy more features."
-              )}
+              {$i18n.t('Get smarter replies, upload files and pictures, and enjoy more features.')}
             </span>
 
             <div class="flex gap-2">
@@ -946,7 +752,7 @@
                   $showOpenWalletModal = true;
                 }}
               >
-                {$i18n.t("Open Wallet")}
+                {$i18n.t('Open Wallet')}
               </button>
 
               <button
@@ -955,7 +761,7 @@
                   $showNewWalletModal = true;
                 }}
               >
-                {$i18n.t("Create Wallet")}
+                {$i18n.t('Create Wallet')}
               </button>
             </div>
           </div>
@@ -972,30 +778,20 @@
               if (inputFiles && inputFiles.length > 0) {
                 const _inputFiles = Array.from(inputFiles);
                 _inputFiles.forEach((file) => {
-                  if (
-                    [
-                      "image/gif",
-                      "image/webp",
-                      "image/jpeg",
-                      "image/png",
-                    ].includes(file["type"])
-                  ) {
+                  if (['image/gif', 'image/webp', 'image/jpeg', 'image/png'].includes(file['type'])) {
                     let reader = new FileReader();
                     reader.onload = (event) => {
                       const img = new Image();
                       img.onload = function () {
-                        const canvas = document.createElement("canvas");
-                        let ctx = canvas.getContext("2d");
+                        const canvas = document.createElement('canvas');
+                        let ctx = canvas.getContext('2d');
                         canvas.width = img.width;
                         canvas.height = img.height;
                         ctx?.drawImage(img, 0, 0);
                         let compressedDataUrl;
                         let quality = 1; // 初始质量为 1，表示无损
                         while (true) {
-                          compressedDataUrl = canvas.toDataURL(
-                            "image/jpeg",
-                            quality
-                          );
+                          compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
                           if (compressedDataUrl.length <= 200 * 1024) {
                             break;
                           }
@@ -1007,33 +803,30 @@
                         files = [
                           // ...files,
                           {
-                            type: "image",
+                            type: 'image',
                             url: compressedDataUrl,
                           },
                         ];
                       };
                       img.src = event.target.result;
                       inputFiles = null;
-                      filesInputElement.value = "";
+                      filesInputElement.value = '';
                     };
                     reader.readAsDataURL(file);
                   } else if (
-                    SUPPORTED_FILE_TYPE.includes(file["type"]) ||
-                    SUPPORTED_FILE_EXTENSIONS.includes(
-                      file.name.split(".").at(-1)
-                    )
+                    SUPPORTED_FILE_TYPE.includes(file['type']) ||
+                    SUPPORTED_FILE_EXTENSIONS.includes(file.name.split('.').at(-1))
                   ) {
                     uploadDoc(file);
-                    filesInputElement.value = "";
+                    filesInputElement.value = '';
                   } else {
                     toast.error(
-                      $i18n.t(
-                        `Unknown File Type {{file_type}}, but accepting and treating as plain text`,
-                        { file_type: file["type"] }
-                      )
+                      $i18n.t(`Unknown File Type {{file_type}}, but accepting and treating as plain text`, {
+                        file_type: file['type'],
+                      })
                     );
                     uploadDoc(file);
-                    filesInputElement.value = "";
+                    filesInputElement.value = '';
                   }
                 });
               } else {
@@ -1042,11 +835,11 @@
             }}
           />
           <form
-            dir={$settings?.chatDirection ?? "LTR"}
+            dir={$settings?.chatDirection ?? 'LTR'}
             class=" flex flex-col relative w-full rounded-3xl px-1.5 bg-gray-100 dark:bg-gray-850 dark:text-gray-100 button-select-none"
             on:submit|preventDefault={() => {
-              if ($toolflag && $tooltype == "translate") {
-                toolInfo.trantip = $i18n.t("Translate to") + " " + tranlang;
+              if ($toolflag && $tooltype == 'translate') {
+                toolInfo.trantip = $i18n.t('Translate to') + ' ' + tranlang;
               }
               submitPrompt(prompt, toolInfo, user);
             }}
@@ -1055,21 +848,13 @@
               <div class="mx-2 mt-2 mb-1 flex flex-wrap gap-2">
                 {#each files as file, fileIdx}
                   <div class=" relative group">
-                    {#if file.type === "image"}
-                      <img
-                        src={file.url}
-                        alt="input"
-                        class=" h-16 w-16 rounded-xl object-cover"
-                      />
-                    {:else if file.type === "doc"}
+                    {#if file.type === 'image'}
+                      <img src={file.url} alt="input" class=" h-16 w-16 rounded-xl object-cover" />
+                    {:else if file.type === 'doc'}
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
-                        <div
-                          class="text-white rounded-lg {file.upload_status
-                            ? ''
-                            : 'p-2.5 bg-red-400'}"
-                        >
+                        <div class="text-white rounded-lg {file.upload_status ? '' : 'p-2.5 bg-red-400'}">
                           {#if file.upload_status}
                             <FileSvg bind:filename={file.name} />
                           {:else}
@@ -1091,60 +876,38 @@
                                 @keyframes spinner_8HQG {
                                   0%,
                                   57.14% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0.66,
-                                      0.66,
-                                      1
-                                    );
+                                    animation-timing-function: cubic-bezier(0.33, 0.66, 0.66, 1);
                                     transform: translate(0);
                                   }
                                   28.57% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0,
-                                      0.66,
-                                      0.33
-                                    );
+                                    animation-timing-function: cubic-bezier(0.33, 0, 0.66, 0.33);
                                     transform: translateY(-6px);
                                   }
                                   100% {
                                     transform: translate(0);
                                   }
                                 }
-                              </style><circle
-                                class="spinner_qM83"
-                                cx="4"
-                                cy="12"
-                                r="2.5"
-                              /><circle
+                              </style><circle class="spinner_qM83" cx="4" cy="12" r="2.5" /><circle
                                 class="spinner_qM83 spinner_oXPr"
                                 cx="12"
                                 cy="12"
                                 r="2.5"
-                              /><circle
-                                class="spinner_qM83 spinner_ZTLf"
-                                cx="20"
-                                cy="12"
-                                r="2.5"
-                              /></svg
+                              /><circle class="spinner_qM83 spinner_ZTLf" cx="20" cy="12" r="2.5" /></svg
                             >
                           {/if}
                         </div>
 
                         <div class="flex flex-col justify-center -space-y-0.5">
-                          <div
-                            class=" dark:text-gray-100 text-sm font-medium line-clamp-1"
-                          >
+                          <div class=" dark:text-gray-100 text-sm font-medium line-clamp-1">
                             {file.name}
                           </div>
 
                           <div class=" text-gray-500 text-sm">
-                            {$i18n.t("Document")}
+                            {$i18n.t('Document')}
                           </div>
                         </div>
                       </div>
-                    {:else if file.type === "collection"}
+                    {:else if file.type === 'collection'}
                       <div
                         class="h-16 w-[15rem] flex items-center space-x-3 px-2.5 dark:bg-gray-600 rounded-xl border border-gray-200 dark:border-none"
                       >
@@ -1165,14 +928,12 @@
                         </div>
 
                         <div class="flex flex-col justify-center -space-y-0.5">
-                          <div
-                            class=" dark:text-gray-100 text-sm font-medium line-clamp-1"
-                          >
+                          <div class=" dark:text-gray-100 text-sm font-medium line-clamp-1">
                             {file?.title ?? `#${file.name}`}
                           </div>
 
                           <div class=" text-gray-500 text-sm">
-                            {$i18n.t("Collection")}
+                            {$i18n.t('Collection')}
                           </div>
                         </div>
                       </div>
@@ -1187,12 +948,7 @@
                           files = files;
                         }}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          class="w-4 h-4"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                           <path
                             d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
                           />
@@ -1202,24 +958,16 @@
                   </div>
                 {/each}
               </div>
-              {#if files[0]?.type === "image"}
+              {#if files[0]?.type === 'image'}
                 <div class="flex flex-wrap gap-2 mt-1">
                   <button
                     class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("What does this picture mean?");
+                      prompt = $i18n.t('What does this picture mean?');
                     }}
                   >
-                    <span class="mr-1"
-                      >{$i18n.t("What does this picture mean?")}</span
-                    >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                    <span class="mr-1">{$i18n.t('What does this picture mean?')}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                       <path
                         fill="currentColor"
                         fill-rule="evenodd"
@@ -1231,17 +979,11 @@
                   <button
                     class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("Explain this picture");
+                      prompt = $i18n.t('Explain this picture');
                     }}
                   >
-                    <span class="mr-1">{$i18n.t("Explain this picture")}</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                    <span class="mr-1">{$i18n.t('Explain this picture')}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                       <path
                         fill="currentColor"
                         fill-rule="evenodd"
@@ -1253,21 +995,11 @@
                   <button
                     class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t(
-                        "What is the main idea of this picture?"
-                      );
+                      prompt = $i18n.t('What is the main idea of this picture?');
                     }}
                   >
-                    <span class="mr-1"
-                      >{$i18n.t("What is the main idea of this picture?")}</span
-                    >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                    <span class="mr-1">{$i18n.t('What is the main idea of this picture?')}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                       <path
                         fill="currentColor"
                         fill-rule="evenodd"
@@ -1279,23 +1011,11 @@
                   <button
                     class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t(
-                        "What does the symbol in the picture represent?"
-                      );
+                      prompt = $i18n.t('What does the symbol in the picture represent?');
                     }}
                   >
-                    <span class="mr-1"
-                      >{$i18n.t(
-                        "What does the symbol in the picture represent?"
-                      )}</span
-                    >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                    <span class="mr-1">{$i18n.t('What does the symbol in the picture represent?')}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                       <path
                         fill="currentColor"
                         fill-rule="evenodd"
@@ -1307,18 +1027,11 @@
                   <button
                     class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                     on:click={() => {
-                      prompt = $i18n.t("Help me solve problems");
+                      prompt = $i18n.t('Help me solve problems');
                     }}
                   >
-                    <span class="mr-1">{$i18n.t("Help me solve problems")}</span
-                    >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                    <span class="mr-1">{$i18n.t('Help me solve problems')}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                       <path
                         fill="currentColor"
                         fill-rule="evenodd"
@@ -1329,25 +1042,17 @@
                   </button>
                 </div>
               {/if}
-              {#if files[0]?.type === "doc" && files[0]?.upload_status}
-                {#if files[0]?.anaylis_type == "progrem"}
+              {#if files[0]?.type === 'doc' && files[0]?.upload_status}
+                {#if files[0]?.anaylis_type == 'progrem'}
                   <div class="flex flex-wrap gap-2 mt-1">
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Introduce the code in the file");
+                        prompt = $i18n.t('Introduce the code in the file');
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t("Introduce the code in the file")}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t('Introduce the code in the file')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1359,23 +1064,11 @@
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t(
-                          "What's the main purpose of the file's code"
-                        );
+                        prompt = $i18n.t("What's the main purpose of the file's code");
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t(
-                          "What's the main purpose of the file's code"
-                        )}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t("What's the main purpose of the file's code")}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1387,19 +1080,11 @@
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Optimize the code in the file");
+                        prompt = $i18n.t('Optimize the code in the file');
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t("Optimize the code in the file")}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t('Optimize the code in the file')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1414,23 +1099,11 @@
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t(
-                          "Summarize the content of this document"
-                        );
+                        prompt = $i18n.t('Summarize the content of this document');
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t(
-                          "Summarize the content of this document"
-                        )}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t('Summarize the content of this document')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1442,19 +1115,11 @@
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Generate a brief summary");
+                        prompt = $i18n.t('Generate a brief summary');
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t("Generate a brief summary")}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t('Generate a brief summary')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1466,19 +1131,11 @@
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Extract document key info");
+                        prompt = $i18n.t('Extract document key info');
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t("Extract document key info")}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t('Extract document key info')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1490,19 +1147,11 @@
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Polish the content of the document");
+                        prompt = $i18n.t('Polish the content of the document');
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t("Polish the content of the document")}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t('Polish the content of the document')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1514,19 +1163,11 @@
                     <button
                       class="flex items-center bg-white dark:bg-gray-950 ml-2 px-2 py-1 text-sm rounded-lg"
                       on:click={() => {
-                        prompt = $i18n.t("Generate an analysis report");
+                        prompt = $i18n.t('Generate an analysis report');
                       }}
                     >
-                      <span class="mr-1"
-                        >{$i18n.t("Generate an analysis report")}</span
-                      >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <span class="mr-1">{$i18n.t('Generate an analysis report')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           fill-rule="evenodd"
@@ -1540,45 +1181,28 @@
               {/if}
             {/if}
 
-            {#if $tooltype != ""}
-              <ToolsSelect
-                bind:inputplaceholder={chatInputPlaceholder}
-                bind:tranLang={tranlang}
-              />
+            {#if $tooltype != ''}
+              <ToolsSelect bind:inputplaceholder={chatInputPlaceholder} bind:tranLang={tranlang} />
             {/if}
             <div class="flex flex-col">
               <div
                 class="fixed bottom-0 shadow-[0_-4px_15px_rgba(0,0,0,0.15)] rounded-2xl mx-2.5 md:mx-20 mb-4 inset-x-0 z-40
                 bg-gray-50 dark:bg-gray-800
-                {$showSidebar
-                  ? 'left-0 md:left-[246px]'
-                  : 'left-0'} right-0 text-center {startRecordingFlag
+                {$showSidebar ? 'left-0 md:left-[246px]' : 'left-0'} right-0 text-center {startRecordingFlag
                   ? ''
                   : 'hidden'}"
               >
                 <div class="text-sm pt-10 {isCancel ? 'text-red-500' : ''}">
-                  {isCancel
-                    ? $i18n.t("Release to cancel")
-                    : $i18n.t("Release to send, Swipe up to cancel")}
+                  {isCancel ? $i18n.t('Release to cancel') : $i18n.t('Release to send, Swipe up to cancel')}
                 </div>
                 <!-- 语音录入界面 -->
-                <div
-                  class="{isCancel
-                    ? 'bg-red-700'
-                    : 'bg-[#B88E56]'} rounded-2xl shadow-md w-full p-2 mt-4"
-                >
+                <div class="{isCancel ? 'bg-red-700' : 'bg-[#B88E56]'} rounded-2xl shadow-md w-full p-2 mt-4">
                   <!-- 声音波动动画容器 -->
                   <div id="voiceVolume" class="flex flex-col rounded-lg">
                     <div class="flex justify-end">
-                      <div
-                        bind:clientWidth={divWidth}
-                        class={`flex justify-center items-center gap-1 w-full h-8`}
-                      >
+                      <div bind:clientWidth={divWidth} class={`flex justify-center items-center gap-1 w-full h-8`}>
                         {#each soundBars as bar}
-                          <div
-                            class="bg-gray-50 {bar.width}"
-                            style="height: {bar.height}"
-                          />
+                          <div class="bg-gray-50 {bar.width}" style="height: {bar.height}" />
                         {/each}
                       </div>
                     </div>
@@ -1589,28 +1213,22 @@
                 id="chat-textarea"
                 bind:this={chatTextAreaElement}
                 class="scrollbar-hidden bg-gray-100 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-3 px-3
-                  {fileUploadEnabled ? '' : ' pl-4'} {isRecording
-                  ? 'hidden'
-                  : ''} rounded-xl resize-none h-[48px]"
-                placeholder={chatInputPlaceholder !== ""
+                  {fileUploadEnabled ? '' : ' pl-4'} {isRecording ? 'hidden' : ''} rounded-xl resize-none h-[48px]"
+                placeholder={chatInputPlaceholder !== ''
                   ? chatInputPlaceholder
                   : isRecording
-                  ? $i18n.t("Listening...")
-                  : $i18n.t("Send a Message")}
+                  ? $i18n.t('Listening...')
+                  : $i18n.t('Send a Message')}
                 bind:value={prompt}
                 on:keypress={(e) => {
                   if (
                     !$mobile ||
-                    !(
-                      "ontouchstart" in window ||
-                      navigator.maxTouchPoints > 0 ||
-                      navigator.msMaxTouchPoints > 0
-                    )
+                    !('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0)
                   ) {
                     if (e.keyCode == 13 && !e.shiftKey) {
                       e.preventDefault();
                     }
-                    if (prompt !== "" && e.keyCode == 13 && !e.shiftKey) {
+                    if (prompt !== '' && e.keyCode == 13 && !e.shiftKey) {
                       submitPrompt(prompt, toolInfo, user);
                     }
                   }
@@ -1619,116 +1237,33 @@
                   const isCtrlPressed = e.ctrlKey || e.metaKey; // metaKey is for Cmd key on Mac
 
                   // Check if Ctrl + R is pressed
-                  if (
-                    prompt === "" &&
-                    isCtrlPressed &&
-                    e.key.toLowerCase() === "r"
-                  ) {
+                  if (prompt === '' && isCtrlPressed && e.key.toLowerCase() === 'r') {
                     e.preventDefault();
-                    console.log("regenerate");
+                    console.log('regenerate');
 
-                    const regenerateButton = [
-                      ...document.getElementsByClassName(
-                        "regenerate-response-button"
-                      ),
-                    ]?.at(-1);
+                    const regenerateButton = [...document.getElementsByClassName('regenerate-response-button')]?.at(-1);
 
                     regenerateButton?.click();
                   }
 
-                  if (prompt === "" && e.key == "ArrowUp") {
+                  if (prompt === '' && e.key == 'ArrowUp') {
                     e.preventDefault();
-                    const userMessageElement = [
-                      ...document.getElementsByClassName("user-message"),
-                    ]?.at(-1);
+                    const userMessageElement = [...document.getElementsByClassName('user-message')]?.at(-1);
                     // 开启新的edit
                     // const editButton = [
                     //   ...document.getElementsByClassName(
                     //     "edit-user-message-button"
                     //   ),
                     // ]?.at(-1);
-                    userMessageElement?.scrollIntoView({ block: "center" });
+                    userMessageElement?.scrollIntoView({ block: 'center' });
                     // editButton?.click();
-                    const textarea = document.getElementById("chat-textarea");
+                    const textarea = document.getElementById('chat-textarea');
                     if (textarea) {
-                      textarea.value = userMessageElement?.innerText ?? "";
+                      textarea.value = userMessageElement?.innerText ?? '';
                     }
                   }
 
-                  // if (
-                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                  //   e.key === "ArrowUp"
-                  // ) {
-                  //   e.preventDefault();
-
-                  //   (
-                  //     promptsElement ||
-                  //     documentsElement ||
-                  //     modelsElement
-                  //   ).selectUp();
-
-                  //   const commandOptionButton = [
-                  //     ...document.getElementsByClassName(
-                  //       "selected-command-option-button"
-                  //     ),
-                  //   ]?.at(-1);
-                  //   commandOptionButton.scrollIntoView({ block: "center" });
-                  // }
-
-                  // if (
-                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                  //   e.key === "ArrowDown"
-                  // ) {
-                  //   e.preventDefault();
-
-                  //   (
-                  //     promptsElement ||
-                  //     documentsElement ||
-                  //     modelsElement
-                  //   ).selectDown();
-
-                  //   const commandOptionButton = [
-                  //     ...document.getElementsByClassName(
-                  //       "selected-command-option-button"
-                  //     ),
-                  //   ]?.at(-1);
-                  //   commandOptionButton.scrollIntoView({ block: "center" });
-                  // }
-
-                  // if (
-                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                  //   e.key === "Enter"
-                  // ) {
-                  //   e.preventDefault();
-
-                  //   const commandOptionButton = [
-                  //     ...document.getElementsByClassName(
-                  //       "selected-command-option-button"
-                  //     ),
-                  //   ]?.at(-1);
-
-                  //   if (commandOptionButton) {
-                  //     commandOptionButton?.click();
-                  //   } else {
-                  //     document.getElementById("send-message-button")?.click();
-                  //   }
-                  // }
-
-                  // if (
-                  //   ["/", "#", "@"].includes(prompt.charAt(0)) &&
-                  //   e.key === "Tab"
-                  // ) {
-                  //   e.preventDefault();
-
-                  //   const commandOptionButton = [
-                  //     ...document.getElementsByClassName(
-                  //       "selected-command-option-button"
-                  //     ),
-                  //   ]?.at(-1);
-
-                  //   commandOptionButton?.click();
-                  // } else
-                  if (e.key === "Tab") {
+                  if (e.key === 'Tab') {
                     const words = findWordIndices(prompt);
                     if (words.length > 0) {
                       const word = words.at(0);
@@ -1742,71 +1277,53 @@
                       await tick();
 
                       e.preventDefault();
-                      e.target.setSelectionRange(
-                        word?.startIndex,
-                        word.endIndex + 1
-                      );
+                      e.target.setSelectionRange(word?.startIndex, word.endIndex + 1);
                     }
 
-                    e.target.style.height = "";
-                    e.target.style.height =
-                      Math.min(e.target.scrollHeight, 200) + "px";
+                    e.target.style.height = '';
+                    e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
                   }
 
-                  if (
-                    (prompt.startsWith("https://") ||
-                      prompt.startsWith("http://")) &&
-                    e.key === "ArrowUp"
-                  ) {
+                  if ((prompt.startsWith('https://') || prompt.startsWith('http://')) && e.key === 'ArrowUp') {
                     e.preventDefault();
 
                     urlPromptElement.selectUp();
                     const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
+                      ...document.getElementsByClassName('selected-command-option-button'),
                     ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
+                    commandOptionButton.scrollIntoView({ block: 'center' });
                   }
-                  if (
-                    (prompt.startsWith("https://") ||
-                      prompt.startsWith("http://")) &&
-                    e.key === "ArrowDown"
-                  ) {
+                  if ((prompt.startsWith('https://') || prompt.startsWith('http://')) && e.key === 'ArrowDown') {
                     e.preventDefault();
 
                     urlPromptElement.selectDown();
                     const commandOptionButton = [
-                      ...document.getElementsByClassName(
-                        "selected-command-option-button"
-                      ),
+                      ...document.getElementsByClassName('selected-command-option-button'),
                     ]?.at(-1);
-                    commandOptionButton.scrollIntoView({ block: "center" });
+                    commandOptionButton.scrollIntoView({ block: 'center' });
                   }
 
-                  if (e.key === "Escape") {
-                    console.log("Escape");
-                    selectedModel = "";
+                  if (e.key === 'Escape') {
+                    console.log('Escape');
+                    selectedModel = '';
                   }
                 }}
                 rows="1"
                 on:input={(e) => {
-                  e.target.style.height = "";
-                  e.target.style.height =
-                    Math.min(e.target.scrollHeight, 200) + "px";
+                  e.target.style.height = '';
+                  e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
                   user = null;
                 }}
                 on:focus={(e) => {
-                  e.target.style.height = "";
-                  e.target.style.height =
-                    Math.min(e.target.scrollHeight, 200) + "px";
+                  e.target.style.height = '';
+                  e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
                 }}
                 on:paste={async (e) => {
                   const clipboardData = e.clipboardData || window.clipboardData;
 
                   if (clipboardData && clipboardData.items) {
                     for (const item of clipboardData.items) {
-                      if (item.type.indexOf("image") !== -1) {
+                      if (item.type.indexOf('image') !== -1) {
                         const blob = item.getAsFile();
                         const reader = new FileReader();
 
@@ -1814,7 +1331,7 @@
                           files = [
                             // ...files,
                             {
-                              type: "image",
+                              type: 'image',
                               url: `${e.target.result}`,
                             },
                           ];
@@ -1827,9 +1344,7 @@
                 }}
               />
               <div class="flex justify-between items-center">
-                <div
-                  class="flex flex-row justify-center items-center mb-2 mt-2"
-                >
+                <div class="flex flex-row justify-center items-center mb-2 mt-2">
                   <!-- 图片上传 -->
                   {#if fileUploadEnabled && !$toolflag}
                     <div class="self-star ml-1 mr-1">
@@ -1861,27 +1376,6 @@
                       <Tools bind:inputplaceholder={chatInputPlaceholder} />
                     </div>
                   {/if}
-
-                  <!-- 深度搜索 -->
-                  <!-- <div class="self-star mb-2 ml-1 mr-1">
-                    <button class="flex flex-row items-center transition rounded-full cursor-pointer px-3 py-1.5
-                      {deepsearch ? 'bg-[#D0A870] text-white' : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'}"
-                      type="button"
-                      on:click={async (event) => {
-                        event.stopPropagation();
-                        deepsearch = !deepsearch;
-                      }}>
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        class="w-[1.1rem] h-[1.1rem]"
-                        fill="currentColor">
-                        <path d="M2.656 17.344c-1.016-1.015-1.15-2.75-.313-4.925.325-.825.73-1.617 1.205-2.365L3.582 10l-.033-.054c-.5-.799-.91-1.596-1.206-2.365-.836-2.175-.703-3.91.313-4.926.56-.56 1.364-.86 2.335-.86 1.425 0 3.168.636 4.957 1.756l.053.034.053-.034c1.79-1.12 3.532-1.757 4.957-1.757.972 0 1.776.3 2.335.86 1.014 1.015 1.148 2.752.312 4.926a13.892 13.892 0 0 1-1.206 2.365l-.034.054.034.053c.5.8.91 1.596 1.205 2.365.837 2.175.704 3.911-.311 4.926-.56.56-1.364.861-2.335.861-1.425 0-3.168-.637-4.957-1.757L10 16.415l-.053.033c-1.79 1.12-3.532 1.757-4.957 1.757-.972 0-1.776-.3-2.335-.86zm13.631-4.399c-.187-.488-.429-.988-.71-1.492l-.075-.132-.092.12a22.075 22.075 0 0 1-3.968 3.968l-.12.093.132.074c1.308.734 2.559 1.162 3.556 1.162.563 0 1.006-.138 1.298-.43.3-.3.436-.774.428-1.346-.008-.575-.159-1.264-.449-2.017zm-6.345 1.65l.058.042.058-.042a19.881 19.881 0 0 0 4.551-4.537l.043-.058-.043-.058a20.123 20.123 0 0 0-2.093-2.458 19.732 19.732 0 0 0-2.458-2.08L10 5.364l-.058.042A19.883 19.883 0 0 0 5.39 9.942L5.348 10l.042.059c.631.874 1.332 1.695 2.094 2.457a19.74 19.74 0 0 0 2.458 2.08zm6.366-10.902c-.293-.293-.736-.431-1.298-.431-.998 0-2.248.429-3.556 1.163l-.132.074.12.092a21.938 21.938 0 0 1 3.968 3.968l.092.12.074-.132c.282-.504.524-1.004.711-1.492.29-.753.442-1.442.45-2.017.007-.572-.129-1.045-.429-1.345zM3.712 7.055c.202.514.44 1.013.712 1.493l.074.13.092-.119a21.94 21.94 0 0 1 3.968-3.968l.12-.092-.132-.074C7.238 3.69 5.987 3.262 4.99 3.262c-.563 0-1.006.138-1.298.43-.3.301-.436.774-.428 1.346.007.575.159 1.264.448 2.017zm0 5.89c-.29.753-.44 1.442-.448 2.017-.008.572.127 1.045.428 1.345.293.293.736.431 1.298.431.997 0 2.247-.428 3.556-1.162l.131-.074-.12-.093a21.94 21.94 0 0 1-3.967-3.968l-.093-.12-.074.132a11.712 11.712 0 0 0-.71 1.492z" fill="currentColor" stroke="currentColor" stroke-width=".1"/>
-                        <path d="M10.706 11.704A1.843 1.843 0 0 1 8.155 10a1.845 1.845 0 1 1 2.551 1.704z" fill="currentColor" stroke="currentColor" stroke-width=".2"/>
-                      </svg>
-                      <span class="text-sm ml-1">{$i18n.t("Deep Research")}</span>
-                    </button>
-                  </div> -->
                 </div>
 
                 {#if isRecording}
@@ -1889,7 +1383,7 @@
                     class="text-base font-bold flex-1 mb-2 mt-2 p-1"
                     on:touchstart|preventDefault={async () => {
                       await handleStartRecording();
-                    }}>{$i18n.t("Press and hold to talk")}</button
+                    }}>{$i18n.t('Press and hold to talk')}</button
                   >
                 {/if}
 
@@ -1906,62 +1400,6 @@
                           }}
                         >
                           {#if isRecording}
-                            <!-- <svg
-                              class=" w-5 h-5 translate-y-[0.5px]"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                              ><style>
-                                .spinner_qM83 {
-                                  animation: spinner_8HQG 1.05s infinite;
-                                }
-                                .spinner_oXPr {
-                                  animation-delay: 0.1s;
-                                }
-                                .spinner_ZTLf {
-                                  animation-delay: 0.2s;
-                                }
-                                @keyframes spinner_8HQG {
-                                  0%,
-                                  57.14% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0.66,
-                                      0.66,
-                                      1
-                                    );
-                                    transform: translate(0);
-                                  }
-                                  28.57% {
-                                    animation-timing-function: cubic-bezier(
-                                      0.33,
-                                      0,
-                                      0.66,
-                                      0.33
-                                    );
-                                    transform: translateY(-6px);
-                                  }
-                                  100% {
-                                    transform: translate(0);
-                                  }
-                                }
-                              </style><circle
-                                class="spinner_qM83"
-                                cx="4"
-                                cy="12"
-                                r="2.5"
-                              /><circle
-                                class="spinner_qM83 spinner_oXPr"
-                                cx="12"
-                                cy="12"
-                                r="2.5"
-                              /><circle
-                                class="spinner_qM83 spinner_ZTLf"
-                                cx="20"
-                                cy="12"
-                                r="2.5"
-                              />
-                            </svg> -->
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               class="w-5 h-5 translate-y-[0.5px]"
@@ -1989,14 +1427,14 @@
                       {/if}
 
                       {#if !isRecording}
-                        <Tooltip content={$i18n.t("Send message")}>
+                        <Tooltip content={$i18n.t('Send message')}>
                           <button
                             id="send-message-button"
                             class="{prompt !== '' && !isRecording
                               ? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
                               : 'text-white bg-gray-300 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 self-center"
                             type="submit"
-                            disabled={prompt === "" || isRecording}
+                            disabled={prompt === '' || isRecording}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -2015,15 +1453,11 @@
                       {/if}
                     {:else}
                       <button
+                        type="button"
                         class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
-                        on:click={stopResponse}
+                        on:click|preventDefault|stopPropagation={stopResponse}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          class="w-5 h-5"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                           <path
                             fill-rule="evenodd"
                             d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 01-1.313-1.313V9.564z"
