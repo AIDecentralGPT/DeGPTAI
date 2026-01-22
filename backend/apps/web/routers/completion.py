@@ -6,7 +6,7 @@ import json
 import uuid
 
 from fastapi import Depends
-from utils.utils import (get_current_user)
+from utils.utils import get_current_user
 
 
 from apps.web.models.aimodel import AiModelReq, AudioModelReq
@@ -21,9 +21,11 @@ from apps.web.ai.grok import GrokApiInstance
 
 router = APIRouter()
 
+
 @router.post("/completion/proxy")
 async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
     if param.audio:
+
         def event_generator():
             completion = OpenAiApiInstance.completionAudio(param)
             # if completion is not None:
@@ -62,7 +64,7 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
             #                         }]
             #                     }
             #                     yield f"data: {json.dumps(chat_result)}\n\n"
-                                
+
             #         except Exception as e:
             #             print("=====解析失败====", e, chunk)
             # yield f"data: [DONE]\n\n"
@@ -77,12 +79,18 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                 "object": json_dict["object"],
                                 "created": json_dict["created"],
                                 "model": json_dict["model"],
-                                "choices": [{
-                                    "index": choice.get("index"),
-                                    "delta": {"content": choice.get("delta").get("content")},
-                                    "logprobs": choice.get("logprobs"),
-                                    "finish_reason": choice.get("finish_reason")
-                                }]
+                                "choices": [
+                                    {
+                                        "index": choice.get("index"),
+                                        "delta": {
+                                            "content": choice.get("delta").get(
+                                                "content"
+                                            )
+                                        },
+                                        "logprobs": choice.get("logprobs"),
+                                        "finish_reason": choice.get("finish_reason"),
+                                    }
+                                ],
                             }
                             yield f"data: {json.dumps(chat_result)}\n\n"
                     except Exception as e:
@@ -93,21 +101,26 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                     "object": param.model,
                     "created": datetime.now().timestamp(),
                     "model": param.model,
-                    "choices": [{
-                        "index": 0,
-                        "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
-                        "logprobs": None,
-                        "finish_reason": None
-                    }]
+                    "choices": [
+                        {
+                            "index": 0,
+                            "delta": {
+                                "content": "Sorry, you don't have sufficient access rights at the moment."
+                            },
+                            "logprobs": None,
+                            "finish_reason": None,
+                        }
+                    ],
                 }
                 yield f"data: {json.dumps(chat_result)}\n\n"
 
             yield f"data: [DONE]\n\n"
-            
+
         return StreamingResponse(event_generator(), media_type="text/event-stream")
-         
+
     else:
         if param.stream:
+
             def event_generator():
                 if ClaudeApiInstance.check_model(param.model):
                     completion = ClaudeApiInstance.completion(param)
@@ -124,12 +137,18 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                                 "object": param.model,
                                                 "created": datetime.now().timestamp(),
                                                 "model": param.model,
-                                                "choices": [{
-                                                    "index": 0,
-                                                    "delta": {"reasoning_content": data.get("thinking")},
-                                                    "logprobs": None,
-                                                    "finish_reason": None
-                                                }]
+                                                "choices": [
+                                                    {
+                                                        "index": 0,
+                                                        "delta": {
+                                                            "reasoning_content": data.get(
+                                                                "thinking"
+                                                            )
+                                                        },
+                                                        "logprobs": None,
+                                                        "finish_reason": None,
+                                                    }
+                                                ],
                                             }
                                             yield f"data: {json.dumps(chat_result)}\n\n"
                                         if data.get("text"):
@@ -138,12 +157,16 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                                 "object": param.model,
                                                 "created": datetime.now().timestamp(),
                                                 "model": param.model,
-                                                "choices": [{
-                                                    "index": 0,
-                                                    "delta": {"content": data.get("text")},
-                                                    "logprobs": None,
-                                                    "finish_reason": None
-                                                }]
+                                                "choices": [
+                                                    {
+                                                        "index": 0,
+                                                        "delta": {
+                                                            "content": data.get("text")
+                                                        },
+                                                        "logprobs": None,
+                                                        "finish_reason": None,
+                                                    }
+                                                ],
                                             }
                                             yield f"data: {json.dumps(chat_result)}\n\n"
                             except:
@@ -154,15 +177,19 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                             "object": param.model,
                             "created": datetime.now().timestamp(),
                             "model": param.model,
-                            "choices": [{
-                                "index": 0,
-                                "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
-                                "logprobs": None,
-                                "finish_reason": None
-                            }]
+                            "choices": [
+                                {
+                                    "index": 0,
+                                    "delta": {
+                                        "content": "Sorry, you don't have sufficient access rights at the moment."
+                                    },
+                                    "logprobs": None,
+                                    "finish_reason": None,
+                                }
+                            ],
                         }
-                        yield f"data: {json.dumps(chat_result)}\n\n" 
-                
+                        yield f"data: {json.dumps(chat_result)}\n\n"
+
                 elif OpenAiApiInstance.check_model(param.model):
                     completion = OpenAiApiInstance.completion(param)
                     if completion is not None:
@@ -170,32 +197,50 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                             try:
                                 if chunk:
                                     json_dict = json.loads(chunk.model_dump_json())
-                                    if json_dict.get("type") == "response.reasoning_summary_text.delta":
+                                    if (
+                                        json_dict.get("type")
+                                        == "response.reasoning_summary_text.delta"
+                                    ):
                                         chat_result = {
                                             "id": json_dict.get("item_id"),
                                             "object": param.model,
                                             "created": datetime.now().timestamp(),
                                             "model": param.model,
-                                            "choices": [{
-                                                "index": 0,
-                                                "delta": {"reasoning_content": json_dict.get("delta")},
-                                                "logprobs": None,
-                                                "finish_reason": None
-                                            }]
+                                            "choices": [
+                                                {
+                                                    "index": 0,
+                                                    "delta": {
+                                                        "reasoning_content": json_dict.get(
+                                                            "delta"
+                                                        )
+                                                    },
+                                                    "logprobs": None,
+                                                    "finish_reason": None,
+                                                }
+                                            ],
                                         }
                                         yield f"data: {json.dumps(chat_result)}\n\n"
-                                    if json_dict.get("type") == "response.output_text.delta":
+                                    if (
+                                        json_dict.get("type")
+                                        == "response.output_text.delta"
+                                    ):
                                         chat_result = {
                                             "id": json_dict.get("item_id"),
                                             "object": param.model,
                                             "created": datetime.now().timestamp(),
                                             "model": param.model,
-                                            "choices": [{
-                                                "index": 0,
-                                                "delta": {"content": json_dict.get("delta")},
-                                                "logprobs": None,
-                                                "finish_reason": None
-                                            }]
+                                            "choices": [
+                                                {
+                                                    "index": 0,
+                                                    "delta": {
+                                                        "content": json_dict.get(
+                                                            "delta"
+                                                        )
+                                                    },
+                                                    "logprobs": None,
+                                                    "finish_reason": None,
+                                                }
+                                            ],
                                         }
                                         yield f"data: {json.dumps(chat_result)}\n\n"
                             except Exception as e:
@@ -206,15 +251,19 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                             "object": param.model,
                             "created": datetime.now().timestamp(),
                             "model": param.model,
-                            "choices": [{
-                                "index": 0,
-                                "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
-                                "logprobs": None,
-                                "finish_reason": None
-                            }]
+                            "choices": [
+                                {
+                                    "index": 0,
+                                    "delta": {
+                                        "content": "Sorry, you don't have sufficient access rights at the moment."
+                                    },
+                                    "logprobs": None,
+                                    "finish_reason": None,
+                                }
+                            ],
                         }
-                        yield f"data: {json.dumps(chat_result)}\n\n" 
-                
+                        yield f"data: {json.dumps(chat_result)}\n\n"
+
                 else:
                     completion = None
                     if AliQwenApiInstance.check_model(param.model):
@@ -237,18 +286,36 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                     # 重组返回数据格式
                                     if json_dict["choices"] is not None:
                                         choice = json_dict["choices"][0]
-                                        if param.enable_thinking and choice.get("delta").get("reasoning_content") is not None:
+                                        if (
+                                            param.enable_thinking
+                                            and choice.get("delta").get(
+                                                "reasoning_content"
+                                            )
+                                            is not None
+                                        ):
                                             chat_result = {
                                                 "id": json_dict["id"],
                                                 "object": json_dict["object"],
                                                 "created": json_dict["created"],
                                                 "model": json_dict["model"],
-                                                "choices": [{
-                                                    "index": choice.get("index"),
-                                                    "delta": {"reasoning_content": choice.get("delta").get("reasoning_content")},
-                                                    "logprobs": choice.get("logprobs"),
-                                                    "finish_reason": choice.get("finish_reason")
-                                                }]
+                                                "choices": [
+                                                    {
+                                                        "index": choice.get("index"),
+                                                        "delta": {
+                                                            "reasoning_content": choice.get(
+                                                                "delta"
+                                                            ).get(
+                                                                "reasoning_content"
+                                                            )
+                                                        },
+                                                        "logprobs": choice.get(
+                                                            "logprobs"
+                                                        ),
+                                                        "finish_reason": choice.get(
+                                                            "finish_reason"
+                                                        ),
+                                                    }
+                                                ],
                                             }
                                             yield f"data: {json.dumps(chat_result)}\n\n"
                                         else:
@@ -259,12 +326,24 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                                                     "object": json_dict["object"],
                                                     "created": json_dict["created"],
                                                     "model": json_dict["model"],
-                                                    "choices": [{
-                                                        "index": choice.get("index"),
-                                                        "delta": {"content": text[i:i+5]},
-                                                        "logprobs": choice.get("logprobs"),
-                                                        "finish_reason": choice.get("finish_reason")
-                                                    }]
+                                                    "choices": [
+                                                        {
+                                                            "index": choice.get(
+                                                                "index"
+                                                            ),
+                                                            "delta": {
+                                                                "content": text[
+                                                                    i : i + 5
+                                                                ]
+                                                            },
+                                                            "logprobs": choice.get(
+                                                                "logprobs"
+                                                            ),
+                                                            "finish_reason": choice.get(
+                                                                "finish_reason"
+                                                            ),
+                                                        }
+                                                    ],
                                                 }
                                                 yield f"data: {json.dumps(chat_result)}\n\n"
                             except Exception as e:
@@ -275,20 +354,26 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                             "object": param.model,
                             "created": datetime.now().timestamp(),
                             "model": param.model,
-                            "choices": [{
-                                "index": 0,
-                                "delta": {"content": "Sorry, you don't have sufficient access rights at the moment."},
-                                "logprobs": None,
-                                "finish_reason": None
-                            }]
+                            "choices": [
+                                {
+                                    "index": 0,
+                                    "delta": {
+                                        "content": "Sorry, you don't have sufficient access rights at the moment."
+                                    },
+                                    "logprobs": None,
+                                    "finish_reason": None,
+                                }
+                            ],
                         }
                         yield f"data: {json.dumps(chat_result)}\n\n"
-                        
+
                 yield f"data: [DONE]\n\n"
 
             return StreamingResponse(event_generator(), media_type="text/event-stream")
-        
+
         else:
+            # === 修复这里：非流式请求逻辑 ===
+            completion = None  # <--- 1. 必须先初始化变量
             # 确保使用异步客户端
             if AliQwenApiInstance.check_model(param.model):
                 completion = AliQwenApiInstance.completion(param)
@@ -300,7 +385,7 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
             elif OpenAiApiInstance.check_model(param.model):
                 completion = OpenAiApiInstance.completion(param)
             return completion
-        
+
 
 @router.post("/audiototext")
 async def completion_proxy(param: AudioModelReq, user=Depends(get_current_user)):

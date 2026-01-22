@@ -401,19 +401,21 @@ async def get_opensearch_xml():
 async def healthcheck():
     return {"status": True}
 
-@app.get('/invite/{id}')
+
+@app.get("/invite/{id}")
 def redirect_to_url(request: Request, id: str):
     headers = request.headers
-    host = headers.get('host')
+    host = headers.get("host")
     # 替换成你想要跳转到的网址
-    return RedirectResponse(url=f'https://{host}?inviter={id}')
+    return RedirectResponse(url=f"https://{host}?inviter={id}")
 
-@app.get('/channel/{name}')
+
+@app.get("/channel/{name}")
 def redirect_to_url(request: Request, name: str):
     headers = request.headers
-    host = headers.get('host')
+    host = headers.get("host")
     # 替换成你想要跳转到的网址
-    return RedirectResponse(url=f'https://{host}?channel={name}')
+    return RedirectResponse(url=f"https://{host}?channel={name}")
 
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -452,5 +454,7 @@ async def add_process_time_and_error_logging(request: Request, call_next):
         return response
     except Exception as e:
         process_time = time.time() - start_time
-        log.error(f"Path: {request.url.path}, Error: {str(e)}, Process Time: {process_time:.2f}s")
+        log.error(
+            f"Path: {request.url.path}, Error: {str(e)}, Process Time: {process_time:.2f}s"
+        )
         raise  # 重新抛出异常，让 FastAPI 的错误处理器处理它
