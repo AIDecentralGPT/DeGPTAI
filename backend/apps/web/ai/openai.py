@@ -64,7 +64,7 @@ class OpenAiApi:
             "gpt-5-chat-latest",
             "gpt-5",
             "gpt-5.1",
-            "gpt-5.2"
+            "gpt-5.2",
         ]
         return model in models
 
@@ -147,7 +147,7 @@ class OpenAiApi:
                 presence_penalty=0,
                 max_completion_tokens=2048,
                 temperature=1,
-                top_p=1
+                top_p=1,
             )
         except APIError as e:
             print("==========OpenAiApi Error===========", e)
@@ -156,7 +156,6 @@ class OpenAiApi:
             print("==========OpenAiApi Error===========", e)
             completion = None
         return completion
-    
 
     def audioToTxt(self, audioStr: str):
         try:
@@ -175,13 +174,16 @@ class OpenAiApi:
                                 "type": "input_audio",
                                 "input_audio": {"data": audioStr, "format": "wav"},
                             },
-                            {"type": "text", "text": "You are an audio recognition result output tool and shall only return the recognized text as a string. Task: Perform audio recognition on the input audio. Requirements: 1. The content must strictly match the audio content, and unclear parts shall be marked with *. 2. Only output the recognized text without any extra characters."},
-                        ]
+                            {
+                                "type": "text",
+                                "text": "You are an audio recognition result output tool and shall only return the recognized text as a string. Task: Perform audio recognition on the input audio. Requirements: 1. The content must strictly match the audio content, and unclear parts shall be marked with *. 2. Only output the recognized text without any extra characters.",
+                            },
+                        ],
                     }
                 ],
                 stream=False,
                 temperature=1,
-                top_p=1
+                top_p=1,
             )
         except APIError as e:
             print("==========OpenAiApi Error===========", e)
@@ -191,18 +193,18 @@ class OpenAiApi:
             completion = None
         return completion
 
-
     def audio_url_to_base64(self, audio_url):
         try:
             response = requests.get(audio_url, stream=True)
-            response.raise_for_status()   
-            audio_bytes = BytesIO(response.content)          
-            base64_encoded = base64.b64encode(audio_bytes.read()).decode('utf-8')           
-            return base64_encoded          
+            response.raise_for_status()
+            audio_bytes = BytesIO(response.content)
+            base64_encoded = base64.b64encode(audio_bytes.read()).decode("utf-8")
+            return base64_encoded
         except requests.exceptions.RequestException as e:
             print(f"请求错误: {e}")
         except Exception as e:
-            print(f"处理错误: {e}")   
+            print(f"处理错误: {e}")
         return None
+
 
 OpenAiApiInstance = OpenAiApi()

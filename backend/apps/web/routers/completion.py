@@ -296,6 +296,9 @@ async def completion_proxy(param: AiModelReq, user=Depends(get_current_user)):
                 completion = GeminiApiInstance.completion(param)
             elif DeepseekApiInstance.check_model(param.model):
                 completion = DeepseekApiInstance.completion(param)
+                # 🔥🔥🔥【新增】添加对 OpenAI (GPT-5.2) 的支持 🔥🔥🔥
+            elif OpenAiApiInstance.check_model(param.model):
+                completion = OpenAiApiInstance.completion(param)
             return completion
         
 
