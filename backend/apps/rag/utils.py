@@ -18,8 +18,8 @@ from langchain.retrievers import (
     EnsembleRetriever,
 )
 
-from typing import Optional
-from config import SRC_LOG_LEVELS, CHROMA_CLIENT
+# from typing import Optional
+# from config import SRC_LOG_LEVELS, CHROMA_CLIENT
 
 
 log = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ log.setLevel(SRC_LOG_LEVELS["RAG"])
 
 def query_doc(
     collection_name: str,
-    query: str,
+    # query: str,
     embedding_function,
     k: int,
 ):
